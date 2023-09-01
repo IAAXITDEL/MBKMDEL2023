@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "480354966438",
+    "project_id": "dev-iaa-ts1",
+    "storage_bucket": "dev-iaa-ts1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:480354966438:android:cdc69cd6a884053dc88d67",
+        "android_client_info": {
+          "package_name": "com.airasia.ts_one"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "480354966438-9irkm68eco84fmjfiits9gu5ncsrf871.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-owJp4T30qp4YP4DS2LyMSLDjkX6prcE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "480354966438-9irkm68eco84fmjfiits9gu5ncsrf871.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>480354966438-9col9lc1hhnhld0co2d37a8ro5a6o46a.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.480354966438-9col9lc1hhnhld0co2d37a8ro5a6o46a</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAEkc28cxlD8kr82sfjr_TOwLFws837eJg</string>
+	<key>GCM_SENDER_ID</key>
+	<string>480354966438</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.airasia.tsOne</string>
+	<key>PROJECT_ID</key>
+	<string>dev-iaa-ts1</string>
+	<key>STORAGE_BUCKET</key>
+	<string>dev-iaa-ts1.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:480354966438:ios:e239c1a17ae26c81c88d67</string>
+</dict>
+</plist>
