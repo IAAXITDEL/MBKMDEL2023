@@ -117,6 +117,9 @@ class UserRepoImpl implements UserRepo {
         UserCredential userCredential =
             await _auth!.signInWithCredential(credential);
 
+
+        print(_auth!.currentUser);
+
         // if current user is not null and user credential is not null, it means login is successful
         if (_auth!.currentUser != null && userCredential.user != null) {
           // get user data from firestore database by finding the uid of the current user

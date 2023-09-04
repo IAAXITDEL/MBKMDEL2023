@@ -17,6 +17,9 @@ import 'package:ts_one/presentation/view_model/assessment_results_viewmodel.dart
 import 'package:ts_one/presentation/view_model/assessment_viewmodel.dart';
 import 'package:ts_one/presentation/view_model/user_viewmodel.dart';
 
+import 'package:get/get.dart';
+
+import 'app/routes/app_pages.dart';
 void main() async {
   // ensure that all the widgets are loaded before running the app
   WidgetsFlutterBinding.ensureInitialized();
@@ -70,11 +73,18 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
+    // return MaterialApp(
+    //   title: 'Flutter Demo',
+    //   theme: tsOneThemeData,
+    //   onGenerateRoute: AppRoutes.generateRoute,
+    //   home: const SplashScreenView(title: 'TS1 AirAsia'),
+    //   debugShowCheckedModeBanner: false,
+    // );
+    return GetMaterialApp(
+      title: "Air Asia",
       theme: tsOneThemeData,
-      onGenerateRoute: AppRoutes.generateRoute,
       home: const SplashScreenView(title: 'TS1 AirAsia'),
+      getPages: AppPages.routes,
       debugShowCheckedModeBanner: false,
     );
   }

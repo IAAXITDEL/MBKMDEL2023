@@ -79,6 +79,9 @@ dependencies:
   flutter_progress_hud: ^2.0.2
   excel: ^2.1.0
 
+  get: ^4.6.5
+  persistent_bottom_nav_bar: ^5.0.2
+  avatar_glow: 2.0.2
 dev_dependencies:
   flutter_launcher_icons: ^0.13.1
 

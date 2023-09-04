@@ -5,6 +5,10 @@ import 'package:ts_one/data/users/user_preferences.dart';
 import 'package:ts_one/di/locator.dart';
 import 'package:ts_one/presentation/routes.dart';
 
+import 'package:get/get.dart';
+
+import '../../app/routes/app_pages.dart';
+
 class SplashScreenView extends StatefulWidget {
   const SplashScreenView({super.key, required this.title});
 
@@ -32,8 +36,9 @@ class _SplashScreenViewState extends State<SplashScreenView> {
         Navigator.pushNamedAndRemoveUntil(
             context, NamedRoute.login, (route) => false);
       } else {
-        Navigator.pushNamedAndRemoveUntil(
-            context, NamedRoute.home, (route) => false);
+        Get.toNamed(Routes.MAIN_HOME);
+        // Navigator.pushNamedAndRemoveUntil(
+        //     context, NamedRoute.home, (route) => false);
       }
     });
   }

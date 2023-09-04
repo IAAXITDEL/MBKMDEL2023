@@ -55,25 +55,28 @@ class _MainViewState extends State<MainView> {
   @override
   Widget build(BuildContext context) {
     int backPressTime = 0;
-    return WillPopScope(
-      onWillPop: () async {
-        if (backPressTime + 300 > DateTime
-            .now()
-            .millisecondsSinceEpoch) {
-          return true;
-        } else {
-          backPressTime = DateTime
-              .now()
-              .millisecondsSinceEpoch;
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text(
-              "Press back button again to exit",
-            ),
-          ));
-          return false;
-        }
-      },
-      child: Scaffold(
+    return
+      // WillPopScope(
+      // onWillPop: () async {
+      //   if (backPressTime + 300 > DateTime
+      //       .now()
+      //       .millisecondsSinceEpoch) {
+      //     return true;
+      //   }
+      //   else {
+      //     backPressTime = DateTime
+      //         .now()
+      //         .millisecondsSinceEpoch;
+      //     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      //       content: Text(
+      //         "Press back button again to exit",
+      //       ),
+      //     ));
+      //     return false;
+      //   }
+      // },
+      // child:
+      Scaffold(
         body: IndexedStack(
           index: _selectedNav,
           children: _screens,
@@ -104,7 +107,7 @@ class _MainViewState extends State<MainView> {
           showUnselectedLabels: true,
           onTap: _changeSelectedNav,
         ),
-      ),
-    );
+      );
+    // );
   }
 }
