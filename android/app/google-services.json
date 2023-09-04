@@ -14,7 +14,31 @@
       },
       "oauth_client": [
         {
-          "client_id": "480354966438-9irkm68eco84fmjfiits9gu5ncsrf871.apps.googleusercontent.com",
+          "client_id": "480354966438-3junhsinqbss0jcvpak9s1lkm0lqccvc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.airasia.ts_one",
+            "certificate_hash": "d8a36c0de8cea45a89fdd3a7aaec1f4a1aec679d"
+          }
+        },
+        {
+          "client_id": "480354966438-oabevbajuh799r27shh7t449o5o5mad7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.airasia.ts_one",
+            "certificate_hash": "1c3785f24e9945d7774360f6a554e3ceb96853c9"
+          }
+        },
+        {
+          "client_id": "480354966438-vloe0rql37ijonhdl1n5vi17111kjbig.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.airasia.ts_one",
+            "certificate_hash": "544ccf387e81d6a68b632defb36d9c3731428746"
+          }
+        },
+        {
+          "client_id": "480354966438-iklkdpc4j80mkgg0o9h5clglhljn7vbm.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -29,6 +53,13 @@
             {
               "client_id": "480354966438-9irkm68eco84fmjfiits9gu5ncsrf871.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "480354966438-9col9lc1hhnhld0co2d37a8ro5a6o46a.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.airasia.tsOne"
+              }
             }
           ]
         }

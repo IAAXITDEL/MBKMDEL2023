@@ -9,8 +9,9 @@ import 'package:ts_one/presentation/routes.dart';
 import 'package:ts_one/presentation/theme.dart';
 import 'package:ts_one/presentation/view_model/user_viewmodel.dart';
 
+import '../../../app/routes/app_pages.dart';
 import '../../../data/users/users.dart';
-
+import 'package:get/get.dart';
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
 
@@ -170,9 +171,9 @@ class _LoginViewState extends State<LoginView> {
                           UserAuth userAuth = await viewModel.loginWithGoogle();
 
                           if (!mounted) return;
-
                           if (userAuth.userCredential != null &&
                               userAuth.userModel != null) {
+                            print("dapatkan menu");
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(
@@ -192,8 +193,9 @@ class _LoginViewState extends State<LoginView> {
 
                             if (!mounted) return;
 
-                            Navigator.pushNamedAndRemoveUntil(
-                                context, NamedRoute.home, (route) => false);
+                            // Navigator.pushNamedAndRemoveUntil(
+                            //     context, NamedRoute.home, (route) => false);
+                            Get.toNamed(Routes.MAIN_HOME);
                           } else {
                             log("Error: ${userAuth.errorMessage}");
                             Fluttertoast.showToast(msg: "Error: ${userAuth.errorMessage}");
