@@ -50,6 +50,10 @@ class UserModel with ChangeNotifier {
   static String keyPrivilegeUpdateUser = "update-user"; // for admin to update a user
   static String keyPrivilegeDeleteUser = "delete-user"; // for admin to delete a user
 
+  static String keyPrivilegeOCC = "manage-device-occ"; // for occ to manage the device
+  static String keyPilotRequestDevice = "pilot-request-device"; // for occ to request the device
+    static String keyFORequestDevice = "fo-request-device"; // for FO to request the device
+
   /** ALL POSITIONS */
   static String keyPositionCaptain = "CAPT";
   static String keyPositionFirstOfficer = "FO";

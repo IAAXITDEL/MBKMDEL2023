@@ -40,6 +40,17 @@ abstract class Routes {
   static const NAVADMIN = _Paths.NAVADMIN;
   static const HOMECC = _Paths.HOMECC;
   static const PROFILECC = _Paths.PROFILECC;
+
+  //EFB
+  static const NAVOCC = _Paths.NAVOCC;
+  static const HOMEOCC = _Paths.HOMEOCC;
+  static const LISTDEVICEOCC = _Paths.LISTDEVICEOCC;
+
+  //EFB PILOT
+  static const HOMEPILOT = _Paths.HOMEPILOT;
+
+  //EFB FO
+  static const HOMEFO = _Paths.HOMEFO;
 }
 
 abstract class _Paths {
@@ -81,4 +92,16 @@ abstract class _Paths {
   static const NAVADMIN = '/navadmin';
   static const HOMECC = '/homecc';
   static const PROFILECC = '/profilecc';
+
+  //EFB
+  static const NAVOCC = '/navocc';
+  static const HOMEOCC = '/homeocc';
+  static const LISTDEVICEOCC = '/listdeviceocc';
+
+  //PILOT EFB
+  static const HOMEPILOT = '/homepilot';
+
+
+  //OCC EFB
+  static const HOMEFO = '/homefo';
 }

@@ -82,6 +82,8 @@ dependencies:
   get: ^4.6.5
   persistent_bottom_nav_bar: ^5.0.2
   avatar_glow: 2.0.2
+  response: ^1.0.0
+  qr_flutter: ^4.1.0
 dev_dependencies:
   flutter_launcher_icons: ^0.13.1
 
