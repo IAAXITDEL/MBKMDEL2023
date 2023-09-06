@@ -129,6 +129,16 @@ class UserRepoImpl implements UserRepo {
               .where(UserModel.keyEmail, isEqualTo: userCredential.user!.email)
               .get();
 
+
+          if (userData.docs.isNotEmpty) {
+            final userDataDoc = userData.docs.first;
+            await userDataDoc.reference.update({
+              "PHOTOURL": userCredential.user!.photoURL ?? "noimage",
+            });
+          } else {
+            // Handle the case where no matching document is found
+          }
+
           // create user model from firebase user and user data from firestore
           UserModel userModel = UserModel.fromFirebaseUser(userData.docs[0].data());
 

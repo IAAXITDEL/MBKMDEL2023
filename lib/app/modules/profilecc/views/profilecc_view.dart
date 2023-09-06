@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
+import '../../../../presentation/shared_components/TitleText.dart';
 import '../../../../presentation/theme.dart';
 import '../controllers/profilecc_controller.dart';
 
@@ -15,6 +16,8 @@ class ProfileccView extends GetView<ProfileccController> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         actions: [
+
+          // LOGOUT
           Container(
             margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
             child: ElevatedButton(
@@ -24,7 +27,7 @@ class ProfileccView extends GetView<ProfileccController> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10))),
                 onPressed: () {
-                  // authC.logout();
+                  controller.logout();
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -37,7 +40,10 @@ class ProfileccView extends GetView<ProfileccController> {
                     SizedBox(
                       width: 10,
                     ),
-                    Text("Logout")
+                    Text("Logout",style: const TextStyle(
+                      color: TsOneColor.surface,
+                      fontFamily: 'Poppins',
+                    ),)
                   ],
                 )),
           )
@@ -46,7 +52,7 @@ class ProfileccView extends GetView<ProfileccController> {
       body: Center(
         child: Column(
           children: [
-            Text( "PROFILE"),
+            RedTitleText(text: "PROFILE"),
             AvatarGlow(
               endRadius: 110,
               glowColor: Colors.black,
@@ -63,8 +69,9 @@ class ProfileccView extends GetView<ProfileccController> {
             //   "${authC.user.value.name!}",
             //   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             // ),
+            BlackTitleText(text: controller.userPreferences.getName(),),
             Text(
-              "847598342385",
+             controller.userPreferences.getIDNo().toString(),
               style: TextStyle(color: tsOneColorScheme.secondaryContainer),
             ),
             SizedBox(
