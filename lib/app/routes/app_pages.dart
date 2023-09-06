@@ -1,11 +1,12 @@
 import 'package:get/get.dart';
-import 'package:ts_one/app/modules/efb/occ/bindings/device_binding.dart';
-import 'package:ts_one/app/modules/pa/occ/bindings/navocc_binding.dart';
 
 import '../../presentation/main_view.dart';
 import '../../presentation/view/users/login.dart';
 import '../modules/efb/fo/bindings/homefo_binding.dart';
 import '../modules/efb/fo/views/main_view_fo.dart';
+import '../modules/efb/occ/bindings/device_binding.dart';
+import '../modules/efb/occ/bindings/homeocc_binding.dart';
+import '../modules/efb/occ/views/homeocc_view.dart';
 import '../modules/efb/occ/views/listdevice/listdevice.dart';
 import '../modules/efb/pilot/bindings/homepilot_binding.dart';
 import '../modules/efb/pilot/views/main_view_pilot.dart';
@@ -15,13 +16,10 @@ import '../modules/main_home/bindings/main_home_binding.dart';
 import '../modules/main_home/views/main_home_view.dart';
 import '../modules/pa/navadmin/bindings/navadmin_binding.dart';
 import '../modules/pa/navadmin/views/navadmin_view.dart';
+import '../modules/pa/occ/bindings/navocc_binding.dart';
+import '../modules/pa/occ/views/navocc_view.dart';
 import '../modules/profilecc/bindings/profilecc_binding.dart';
 import '../modules/profilecc/views/profilecc_view.dart';
-
-import '../modules/pa/occ/views/navocc_view.dart';
-import '../modules/efb/occ/bindings/homeocc_binding.dart';
-import '../modules/efb/occ/views/homeocc_view.dart';
-
 
 part 'app_routes.dart';
 
@@ -46,7 +44,9 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.NAVADMIN,
-      page: () => NavadminView(initialIndex: 0,),
+      page: () => NavadminView(
+        initialIndex: 0,
+      ),
       binding: NavadminBinding(),
     ),
     GetPage(
@@ -59,8 +59,6 @@ class AppPages {
       page: () => const ProfileccView(),
       binding: ProfileccBinding(),
     ),
-
-
 
     //EFB -------------------------------------------------
     GetPage(
@@ -79,16 +77,12 @@ class AppPages {
       binding: DeviceBinding(),
     ),
 
-
-
-
     //Pilot EFB
     GetPage(
       name: _Paths.HOMEPILOT,
-      page: () => const HomePilotView(),
+      page: () => HomePilotView(),
       binding: HomePilotBinding(),
     ),
-
 
     //FO EFB
     GetPage(
@@ -96,5 +90,6 @@ class AppPages {
       page: () => const HomeFOView(),
       binding: HomeFOBinding(),
     ),
+
   ];
 }

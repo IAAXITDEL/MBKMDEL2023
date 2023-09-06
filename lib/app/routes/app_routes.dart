@@ -101,7 +101,6 @@ abstract class _Paths {
   //PILOT EFB
   static const HOMEPILOT = '/homepilot';
 
-
   //OCC EFB
   static const HOMEFO = '/homefo';
 }
