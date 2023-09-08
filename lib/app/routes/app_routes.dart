@@ -40,6 +40,19 @@ abstract class Routes {
   static const NAVADMIN = _Paths.NAVADMIN;
   static const HOMECC = _Paths.HOMECC;
   static const PROFILECC = _Paths.PROFILECC;
+
+
+  //EFB
+  static const NAVOCC = _Paths.NAVOCC;
+  static const HOMEOCC = _Paths.HOMEOCC;
+  static const LISTDEVICEOCC = _Paths.LISTDEVICEOCC;
+
+  //EFB PILOT
+  static const HOMEPILOT = _Paths.HOMEPILOT;
+
+  //EFB FO
+  static const HOMEFO = _Paths.HOMEFO;
+
   static const TRAININGCC = _Paths.TRAININGCC;
   static const PILOTCREWCC = _Paths.PILOTCREWCC;
   static const TRAININGTYPECC = _Paths.TRAININGTYPECC;
@@ -47,6 +60,7 @@ abstract class Routes {
   static String ATTENDANCE_CONFIRCC(String attendanceId) {
     return _Paths.ATTENDANCE_CONFIRCC(attendanceId);
   }
+
 
 
 }
@@ -90,6 +104,19 @@ abstract class _Paths {
   static const NAVADMIN = '/navadmin';
   static const HOMECC = '/homecc';
   static const PROFILECC = '/profilecc';
+
+
+  //EFB
+  static const NAVOCC = '/navocc';
+  static const HOMEOCC = '/homeocc';
+  static const LISTDEVICEOCC = '/listdeviceocc';
+
+  //PILOT EFB
+  static const HOMEPILOT = '/homepilot';
+
+  //OCC EFB
+  static const HOMEFO = '/homefo';
+
   static const TRAININGCC = '/trainingcc';
   static const PILOTCREWCC = '/pilotcrewcc';
   static const TRAININGTYPECC = '/trainingtypecc';
@@ -97,5 +124,6 @@ abstract class _Paths {
   static String ATTENDANCE_CONFIRCC(String attendanceId) {
     return '/attendance-confircc/$attendanceId';
   }
+
 
 }

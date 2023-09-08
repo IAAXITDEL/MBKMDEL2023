@@ -147,7 +147,49 @@ class MainHomeView extends GetView<MainHomeController> {
                     ],
                   ),
                 ),
+              ),
+              InkWell(
+                onTap: (){
+                  Get.toNamed(Routes.NAVOCC);
+                },
+                child: Card(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: Get.width,
+                        height: 200,
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                                fit: BoxFit.fitWidth,
+                                image: AssetImage(
+                                    "assets/images/Cool Kids Alone Time.png"))),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                              child: Container(
+                                padding: EdgeInsets.all(10),
+                                color: Colors.white,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text("Electronic Flight Bag (EFB)"),
+                                    Text("EFB Handover ")
+                                  ],
+                                ),
+                              ))
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
               )
+
             ],
           ),
         )));

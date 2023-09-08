@@ -23,19 +23,35 @@ import '../../presentation/view/users/add_user.dart';
 import '../../presentation/view/users/all_users.dart';
 import '../../presentation/view/users/detail_user.dart';
 import '../../presentation/view/users/login.dart';
+
+import '../modules/efb/fo/bindings/homefo_binding.dart';
+import '../modules/efb/fo/views/main_view_fo.dart';
+import '../modules/efb/occ/bindings/device_binding.dart';
+import '../modules/efb/occ/bindings/homeocc_binding.dart';
+import '../modules/efb/occ/views/homeocc_view.dart';
+import '../modules/efb/occ/views/listdevice/listdevice.dart';
+import '../modules/efb/pilot/bindings/homepilot_binding.dart';
+import '../modules/efb/pilot/views/main_view_pilot.dart';
+
 import '../../presentation/view/users/update_user.dart';
 import '../modules/add_attendancecc/bindings/add_attendancecc_binding.dart';
 import '../modules/add_attendancecc/views/add_attendancecc_view.dart';
 import '../modules/attendance_confircc/bindings/attendance_confircc_binding.dart';
 import '../modules/attendance_confircc/views/attendance_confircc_view.dart';
+
 import '../modules/homecc/bindings/homecc_binding.dart';
 import '../modules/homecc/views/homecc_view.dart';
 import '../modules/main_home/bindings/main_home_binding.dart';
 import '../modules/main_home/views/main_home_view.dart';
 import '../modules/pa/navadmin/bindings/navadmin_binding.dart';
 import '../modules/pa/navadmin/views/navadmin_view.dart';
+
+import '../modules/pa/occ/bindings/navocc_binding.dart';
+import '../modules/pa/occ/views/navocc_view.dart';
+
 import '../modules/pilotcrewcc/bindings/pilotcrewcc_binding.dart';
 import '../modules/pilotcrewcc/views/pilotcrewcc_view.dart';
+
 import '../modules/profilecc/bindings/profilecc_binding.dart';
 import '../modules/profilecc/views/profilecc_view.dart';
 import '../modules/trainingcc/bindings/trainingcc_binding.dart';
@@ -198,6 +214,38 @@ class AppPages {
       page: () => const ProfileccView(),
       binding: ProfileccBinding(),
     ),
+
+
+    //EFB -------------------------------------------------
+    GetPage(
+      name: _Paths.NAVOCC,
+      page: () => NavOCCView(),
+      binding: NavOCCBinding(),
+    ),
+    GetPage(
+      name: _Paths.HOMEOCC,
+      page: () => const HomeOCCView(),
+      binding: HomeOCCBinding(),
+    ),
+    GetPage(
+      name: _Paths.LISTDEVICEOCC,
+      page: () => ListDevice(),
+      binding: DeviceBinding(),
+    ),
+
+    //Pilot EFB
+    GetPage(
+      name: _Paths.HOMEPILOT,
+      page: () => HomePilotView(),
+      binding: HomePilotBinding(),
+    ),
+
+    //FO EFB
+    GetPage(
+      name: _Paths.HOMEFO,
+      page: () => const HomeFOView(),
+      binding: HomeFOBinding(),
+
     GetPage(
       name: _Paths.TRAININGCC,
       page: () => const TrainingccView(),
@@ -222,6 +270,7 @@ class AppPages {
       name: _Paths.ATTENDANCE_CONFIRCC(':attendanceId'),
       page: () =>  AttendanceConfirccView(),
       binding: AttendanceConfirccBinding(),
+
     ),
 
   ];

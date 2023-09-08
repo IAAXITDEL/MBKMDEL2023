@@ -82,6 +82,16 @@ dependencies:
   get: ^4.6.5
   persistent_bottom_nav_bar: ^5.0.2
   avatar_glow: 2.0.2
+
+  response: ^1.0.0
+  qr_flutter: ^4.1.0
+  flutter_barcode_scanner: ^2.0.0
+
+  flutter_signature_pad: ^3.0.1
+  uuid: ^4.0.0
+
+  google_nav_bar: ^5.0.6
+
   lottie: ^2.3.2
   google_fonts: 5.1.0
   dropdown_search: ^3.0.1
@@ -89,6 +99,7 @@ dependencies:
 
 dev_dependencies:
   flutter_launcher_icons: ^0.13.1
+  syncfusion_flutter_signaturepad: ^22.2.11
 
   flutter_test:
     sdk: flutter
