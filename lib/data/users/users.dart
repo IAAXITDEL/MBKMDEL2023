@@ -16,7 +16,7 @@ class UserModel with ChangeNotifier {
   int idNo = Util.defaultIntIfNull;
   String name = "";
   String rank = "";
-  List <String> instructor = [];
+  List<String> instructor = [];
   String licenseNo = "";
   String attribute = "";
   DateTime licenseExpiry = DateTime.now();
@@ -37,18 +37,32 @@ class UserModel with ChangeNotifier {
   static String keyPrivileges = "PRIVILEGES";
 
   /** ALL PRIVILEGES */
-  static String keyPrivilegeCreateAssessment = "create-assessment"; // for instructor to make a new assessment
-  static String keyPrivilegeUpdateAssessment = "update-assessment"; // for instructor to update an unconfirmed assessment
+  static String keyPrivilegeCreateAssessment =
+      "create-assessment"; // for instructor to make a new assessment
+  static String keyPrivilegeUpdateAssessment =
+      "update-assessment"; // for instructor to update an unconfirmed assessment
 
   // for instructor, examinee, CPTS, and admin to confirm an assessment.
   // for instructor, examinee, and CPTS to any assessments related to them.
   static String keyPrivilegeConfirmAssessment = "confirm-assessment";
 
-  static String keyPrivilegeViewAllAssessments = "view-all-assessments"; // for CPTS and admin to view all assessments
-  static String keyPrivilegeManageFormAssessment = "manage-form-assessment"; // for CPTS and admin to manage form assessment
-  static String keyPrivilegeCreateUser = "create-user"; // for admin to create a new user
-  static String keyPrivilegeUpdateUser = "update-user"; // for admin to update a user
-  static String keyPrivilegeDeleteUser = "delete-user"; // for admin to delete a user
+  static String keyPrivilegeViewAllAssessments =
+      "view-all-assessments"; // for CPTS and admin to view all assessments
+  static String keyPrivilegeManageFormAssessment =
+      "manage-form-assessment"; // for CPTS and admin to manage form assessment
+  static String keyPrivilegeCreateUser =
+      "create-user"; // for admin to create a new user
+  static String keyPrivilegeUpdateUser =
+      "update-user"; // for admin to update a user
+  static String keyPrivilegeDeleteUser =
+      "delete-user"; // for admin to delete a user
+
+  static String keyPrivilegeOCC =
+      "manage-device-occ"; // for occ to manage the device
+  static String keyPilotRequestDevice =
+      "pilot-request-device"; // for occ to request the device
+  static String keyFORequestDevice =
+      "fo-request-device"; // for FO to request the device
 
   /** ALL POSITIONS */
   static String keyPositionCaptain = "CAPT";
@@ -71,12 +85,17 @@ class UserModel with ChangeNotifier {
     idNo = map[keyIDNo];
     name = map[keyName];
     rank = map[keyRank];
-    instructor = (map[keyInstructor] as List<dynamic>).map((item) => item.toString()).toList();
+    instructor = (map[keyInstructor] as List<dynamic>)
+        .map((item) => item.toString())
+        .toList();
     attribute = map[keyAttribute];
     licenseNo = map[keyLicenseNo];
-    licenseExpiry = DateTime.fromMillisecondsSinceEpoch(map[keyLicenseExpiry].seconds * 1000);
+    licenseExpiry = DateTime.fromMillisecondsSinceEpoch(
+        map[keyLicenseExpiry].seconds * 1000);
     if (map[keyPrivileges] != null) {
-      privileges = (map[keyPrivileges] as List<dynamic>).map((item) => item.toString()).toList();
+      privileges = (map[keyPrivileges] as List<dynamic>)
+          .map((item) => item.toString())
+          .toList();
     }
   }
 
@@ -125,5 +144,6 @@ class UserAuth {
   String errorMessage = "";
 
   @override
-  String toString() => 'UserAuth(userCredential: $userCredential, userModel: $userModel)';
+  String toString() =>
+      'UserAuth(userCredential: $userCredential, userModel: $userModel)';
 }

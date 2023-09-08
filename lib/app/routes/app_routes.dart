@@ -40,6 +40,19 @@ abstract class Routes {
   static const NAVADMIN = _Paths.NAVADMIN;
   static const HOMECC = _Paths.HOMECC;
   static const PROFILECC = _Paths.PROFILECC;
+
+
+  //EFB
+  static const NAVOCC = _Paths.NAVOCC;
+  static const HOMEOCC = _Paths.HOMEOCC;
+  static const LISTDEVICEOCC = _Paths.LISTDEVICEOCC;
+
+  //EFB PILOT
+  static const HOMEPILOT = _Paths.HOMEPILOT;
+
+  //EFB FO
+  static const HOMEFO = _Paths.HOMEFO;
+
   static const TRAININGCC = _Paths.TRAININGCC;
   static const PILOTCREWCC = _Paths.PILOTCREWCC;
   static const TRAININGTYPECC = _Paths.TRAININGTYPECC;
@@ -48,6 +61,7 @@ abstract class Routes {
     return _Paths.ATTENDANCE_CONFIRCC(attendanceId);
   }
 
+
   static const NAVCAPTAIN = _Paths.NAVCAPTAIN;
   static const HOME_INSTRUCTORCC = _Paths.HOME_INSTRUCTORCC;
   static const TRAINING_INSTRUCTORCC = _Paths.TRAINING_INSTRUCTORCC;
@@ -55,6 +69,7 @@ abstract class Routes {
   static const INSTRUCTOR_MAIN_HOMECC = _Paths.INSTRUCTOR_MAIN_HOMECC;
   static const NAVINSTRUCTOR = _Paths.NAVINSTRUCTOR;
   static const ATTENDANCE_PENDINGCC = _Paths.ATTENDANCE_PENDINGCC;
+
 }
 
 abstract class _Paths {
@@ -96,6 +111,19 @@ abstract class _Paths {
   static const NAVADMIN = '/navadmin';
   static const HOMECC = '/homecc';
   static const PROFILECC = '/profilecc';
+
+
+  //EFB
+  static const NAVOCC = '/navocc';
+  static const HOMEOCC = '/homeocc';
+  static const LISTDEVICEOCC = '/listdeviceocc';
+
+  //PILOT EFB
+  static const HOMEPILOT = '/homepilot';
+
+  //OCC EFB
+  static const HOMEFO = '/homefo';
+
   static const TRAININGCC = '/trainingcc';
   static const PILOTCREWCC = '/pilotcrewcc';
   static const TRAININGTYPECC = '/trainingtypecc';
@@ -104,6 +132,7 @@ abstract class _Paths {
     return '/attendance-confircc/$attendanceId';
   }
 
+
   static const NAVCAPTAIN = '/navcaptain';
   static const HOME_INSTRUCTORCC = '/home-instructorcc';
   static const TRAINING_INSTRUCTORCC = '/training-instructorcc';
@@ -111,4 +140,5 @@ abstract class _Paths {
   static const INSTRUCTOR_MAIN_HOMECC = '/instructor-main-homecc';
   static const NAVINSTRUCTOR = '/navinstructor';
   static const ATTENDANCE_PENDINGCC = '/attendance-pendingcc';
+
 }
