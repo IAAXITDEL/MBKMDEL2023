@@ -78,6 +78,8 @@ class UserModel with ChangeNotifier {
   static String keySubPositionTRG = "TRG"; // trainee pilot
   static String keySubPositionUT = "UT"; // under training pilot
 
+  static String keySubPositionICC = "ICC"; //Instructor Control Card
+
   UserModel.fromFirebaseUser(Map<String, dynamic> map) {
     email = map[keyEmail]; // if null, return empty string
     idNo = map[keyIDNo];

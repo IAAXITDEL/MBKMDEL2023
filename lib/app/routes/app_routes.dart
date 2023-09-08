@@ -62,6 +62,13 @@ abstract class Routes {
   }
 
 
+  static const NAVCAPTAIN = _Paths.NAVCAPTAIN;
+  static const HOME_INSTRUCTORCC = _Paths.HOME_INSTRUCTORCC;
+  static const TRAINING_INSTRUCTORCC = _Paths.TRAINING_INSTRUCTORCC;
+  static const HOME_ADMINCC = _Paths.HOME_ADMINCC;
+  static const INSTRUCTOR_MAIN_HOMECC = _Paths.INSTRUCTOR_MAIN_HOMECC;
+  static const NAVINSTRUCTOR = _Paths.NAVINSTRUCTOR;
+  static const ATTENDANCE_PENDINGCC = _Paths.ATTENDANCE_PENDINGCC;
 
 }
 
@@ -125,5 +132,13 @@ abstract class _Paths {
     return '/attendance-confircc/$attendanceId';
   }
 
+
+  static const NAVCAPTAIN = '/navcaptain';
+  static const HOME_INSTRUCTORCC = '/home-instructorcc';
+  static const TRAINING_INSTRUCTORCC = '/training-instructorcc';
+  static const HOME_ADMINCC = '/home-admincc';
+  static const INSTRUCTOR_MAIN_HOMECC = '/instructor-main-homecc';
+  static const NAVINSTRUCTOR = '/navinstructor';
+  static const ATTENDANCE_PENDINGCC = '/attendance-pendingcc';
 
 }

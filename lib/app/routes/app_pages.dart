@@ -39,12 +39,25 @@ import '../modules/add_attendancecc/views/add_attendancecc_view.dart';
 import '../modules/attendance_confircc/bindings/attendance_confircc_binding.dart';
 import '../modules/attendance_confircc/views/attendance_confircc_view.dart';
 
+import '../modules/attendance_pendingcc/bindings/attendance_pendingcc_binding.dart';
+import '../modules/attendance_pendingcc/views/attendance_pendingcc_view.dart';
+import '../modules/home_admincc/bindings/home_admincc_binding.dart';
+import '../modules/home_admincc/views/home_admincc_view.dart';
+import '../modules/home_instructorcc/bindings/home_instructorcc_binding.dart';
+import '../modules/home_instructorcc/views/home_instructorcc_view.dart';
 import '../modules/homecc/bindings/homecc_binding.dart';
 import '../modules/homecc/views/homecc_view.dart';
+import '../modules/instructor_main_homecc/bindings/instructor_main_homecc_binding.dart';
+import '../modules/instructor_main_homecc/views/instructor_main_homecc_view.dart';
 import '../modules/main_home/bindings/main_home_binding.dart';
 import '../modules/main_home/views/main_home_view.dart';
 import '../modules/pa/navadmin/bindings/navadmin_binding.dart';
 import '../modules/pa/navadmin/views/navadmin_view.dart';
+
+import '../modules/pa/navcaptain/bindings/navcaptain_binding.dart';
+import '../modules/pa/navcaptain/views/navcaptain_view.dart';
+import '../modules/pa/navinstructor/bindings/navinstructor_binding.dart';
+import '../modules/pa/navinstructor/views/navinstructor_view.dart';
 
 import '../modules/pa/occ/bindings/navocc_binding.dart';
 import '../modules/pa/occ/views/navocc_view.dart';
@@ -54,6 +67,8 @@ import '../modules/pilotcrewcc/views/pilotcrewcc_view.dart';
 
 import '../modules/profilecc/bindings/profilecc_binding.dart';
 import '../modules/profilecc/views/profilecc_view.dart';
+import '../modules/training_instructorcc/bindings/training_instructorcc_binding.dart';
+import '../modules/training_instructorcc/views/training_instructorcc_view.dart';
 import '../modules/trainingcc/bindings/trainingcc_binding.dart';
 import '../modules/trainingcc/views/trainingcc_view.dart';
 import '../modules/trainingtypecc/bindings/trainingtypecc_binding.dart';
@@ -215,7 +230,6 @@ class AppPages {
       binding: ProfileccBinding(),
     ),
 
-
     //EFB -------------------------------------------------
     GetPage(
       name: _Paths.NAVOCC,
@@ -268,10 +282,47 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.ATTENDANCE_CONFIRCC(':attendanceId'),
-      page: () =>  AttendanceConfirccView(),
+      page: () => AttendanceConfirccView(),
       binding: AttendanceConfirccBinding(),
-
     ),
-
+    GetPage(
+      name: _Paths.NAVCAPTAIN,
+      page: () => NavcaptainView(
+        initialIndex: 0,
+      ),
+      binding: NavcaptainBinding(),
+    ),
+    GetPage(
+      name: _Paths.HOME_INSTRUCTORCC,
+      page: () => const HomeInstructorccView(),
+      binding: HomeInstructorccBinding(),
+    ),
+    GetPage(
+      name: _Paths.TRAINING_INSTRUCTORCC,
+      page: () => TrainingInstructorccView(),
+      binding: TrainingInstructorccBinding(),
+    ),
+    GetPage(
+      name: _Paths.HOME_ADMINCC,
+      page: () => const HomeAdminccView(),
+      binding: HomeAdminccBinding(),
+    ),
+    GetPage(
+      name: _Paths.INSTRUCTOR_MAIN_HOMECC,
+      page: () => const InstructorMainHomeccView(),
+      binding: InstructorMainHomeccBinding(),
+    ),
+    GetPage(
+      name: _Paths.NAVINSTRUCTOR,
+      page: () => NavinstructorView(
+        initialIndex: 0,
+      ),
+      binding: NavinstructorBinding(),
+    ),
+    GetPage(
+      name: _Paths.ATTENDANCE_PENDINGCC,
+      page: () => AttendancePendingccView(),
+      binding: AttendancePendingccBinding(),
+    ),
   ];
 }

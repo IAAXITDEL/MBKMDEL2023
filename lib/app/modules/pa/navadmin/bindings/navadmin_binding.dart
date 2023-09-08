@@ -11,14 +11,6 @@ class NavadminBinding extends Bindings {
     Get.lazyPut<NavadminController>(
       () => NavadminController(),
     );
-    Get.lazyPut<ProfileccController>(
-          () => ProfileccController(),
-    );
-    Get.lazyPut<PilotcrewccController>(
-          () => PilotcrewccController(),
-    );
-    Get.lazyPut<TrainingccController>(
-          () => TrainingccController(),
-    );
+
   }
 }

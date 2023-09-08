@@ -9,6 +9,7 @@ import '../../../../data/users/user_preferences.dart';
 import '../../../../data/users/users.dart';
 import '../../../../di/locator.dart';
 import '../../../../presentation/view_model/assessment_results_viewmodel.dart';
+import '../../../routes/app_pages.dart';
 
 class MainHomeController extends GetxController {
   late UserPreferences userPreferences;
@@ -74,6 +75,32 @@ class MainHomeController extends GetxController {
   @override
   void onReady() {
     super.onReady();
+  }
+
+
+  Future<void> cekRole() async {
+    userPreferences = getItLocator<UserPreferences>();
+
+    // SEBAGAI CPTS
+    if( userPreferences.getInstructor().contains(UserModel.keyCPTS) && userPreferences.getRank().contains(UserModel.keyPositionCaptain) || userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)){
+      print(userPreferences.getRank());
+    }
+    // SEBAGAI INSTRUCTOR
+    else if( userPreferences.getInstructor().contains(UserModel.keySubPositionICC) && userPreferences.getRank().contains(UserModel.keyPositionCaptain) || userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)){
+      Get.toNamed(Routes.INSTRUCTOR_MAIN_HOMECC);
+    }
+    // SEBAGAI PILOT
+    else if( userPreferences.getRank().contains(UserModel.keyPositionCaptain) || userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)){
+      Get.toNamed(Routes.NAVCAPTAIN);
+    }
+    // SEBAGAI PILOT ADMINISTRATOR
+    else if( userPreferences.getRank().contains("Pilot Administrator")){
+      Get.toNamed(Routes.NAVADMIN);
+    }
+    // SEBAGAI ALL STAR
+    else{
+    }
+
   }
 
   @override

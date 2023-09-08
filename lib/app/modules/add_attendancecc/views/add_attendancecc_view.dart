@@ -17,8 +17,6 @@ import '../controllers/add_attendancecc_controller.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 
 class AddAttendanceccView extends GetView<AddAttendanceccController> {
-  final int id = (Get.arguments as Map<String, dynamic>)["id"];
-  final String name = (Get.arguments as Map<String, dynamic>)["name"];
   AddAttendanceccView({Key? key}) : super(key: key);
   final _formKey = GlobalKey<FormState>();
 
@@ -28,6 +26,8 @@ class AddAttendanceccView extends GetView<AddAttendanceccController> {
     var subjectC = TextEditingController();
     var vanueC = TextEditingController();
     var dateC = TextEditingController();
+
+    subjectC.text = controller.argumentname.value;
     int? instructorC = 0;
 
     Future<void> add(String subject, String date, String vanue, int instructor, int idtrainingtype) async {
@@ -39,8 +39,8 @@ class AddAttendanceccView extends GetView<AddAttendanceccController> {
         );
 
         Get.offAllNamed(Routes.TRAININGTYPECC, arguments: {
-          "id" : id,
-          "name" : name
+          "id" : controller.argumentid.value,
+          "name" : controller.argumentname.value
         });
       });
     }
@@ -68,7 +68,7 @@ class AddAttendanceccView extends GetView<AddAttendanceccController> {
                 SizedBox(height: 20,),
 
                 //-------------------------SUBJECT-----------------------
-                FormTextField(text: "Subject", textController: subjectC),
+                FormTextField(text: "Subject", textController: subjectC, readOnly: true,),
                 SizedBox(height: 10,),
 
                 //--------------------------DATE--------------------------
@@ -198,7 +198,7 @@ class AddAttendanceccView extends GetView<AddAttendanceccController> {
                                   dateC.text,
                                   vanueC.text,
                                   instructorC!,
-                                  id,
+                                  controller.argumentid.value,
                                 ),
                                 builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
                                   if (snapshot.connectionState == ConnectionState.waiting) {
