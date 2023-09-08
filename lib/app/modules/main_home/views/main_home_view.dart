@@ -108,6 +108,7 @@ class MainHomeView extends GetView<MainHomeController> {
 
               InkWell(
                 onTap: (){
+
                   Get.toNamed(Routes.NAVADMIN);
                 },
                 child: Card(

@@ -41,6 +41,7 @@ abstract class Routes {
   static const HOMECC = _Paths.HOMECC;
   static const PROFILECC = _Paths.PROFILECC;
 
+
   //EFB
   static const NAVOCC = _Paths.NAVOCC;
   static const HOMEOCC = _Paths.HOMEOCC;
@@ -51,6 +52,17 @@ abstract class Routes {
 
   //EFB FO
   static const HOMEFO = _Paths.HOMEFO;
+
+  static const TRAININGCC = _Paths.TRAININGCC;
+  static const PILOTCREWCC = _Paths.PILOTCREWCC;
+  static const TRAININGTYPECC = _Paths.TRAININGTYPECC;
+  static const ADD_ATTENDANCECC = _Paths.ADD_ATTENDANCECC;
+  static String ATTENDANCE_CONFIRCC(String attendanceId) {
+    return _Paths.ATTENDANCE_CONFIRCC(attendanceId);
+  }
+
+
+
 }
 
 abstract class _Paths {
@@ -93,6 +105,7 @@ abstract class _Paths {
   static const HOMECC = '/homecc';
   static const PROFILECC = '/profilecc';
 
+
   //EFB
   static const NAVOCC = '/navocc';
   static const HOMEOCC = '/homeocc';
@@ -103,4 +116,14 @@ abstract class _Paths {
 
   //OCC EFB
   static const HOMEFO = '/homefo';
+
+  static const TRAININGCC = '/trainingcc';
+  static const PILOTCREWCC = '/pilotcrewcc';
+  static const TRAININGTYPECC = '/trainingtypecc';
+  static const ADD_ATTENDANCECC = '/add-attendancecc';
+  static String ATTENDANCE_CONFIRCC(String attendanceId) {
+    return '/attendance-confircc/$attendanceId';
+  }
+
+
 }

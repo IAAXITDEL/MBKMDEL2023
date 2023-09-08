@@ -6,7 +6,9 @@ import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import '../../../../../presentation/theme.dart';
 import '../../../homecc/views/homecc_view.dart';
+import '../../../pilotcrewcc/views/pilotcrewcc_view.dart';
 import '../../../profilecc/views/profilecc_view.dart';
+import '../../../trainingcc/views/trainingcc_view.dart';
 import '../controllers/navadmin_controller.dart';
 
 
@@ -30,8 +32,8 @@ class _NavadminState extends State<NavadminView> {
   List<Widget> _buildScreens() {
     return [
       HomeccView(),
-      ProfileccView(),
-      HomeccView(),
+      TrainingccView(),
+      PilotcrewccView(),
       ProfileccView(),
     ];
   }

@@ -42,6 +42,10 @@ class TsOneColor {
   static const Color onSurface = Color(0xFF000000);
   static const Color onBackground = Color(0xFF000000);
   static const Color onError = Color(0xFFFFFFFF);
+
+  // CC COLOR
+  static const Color greenColor = Color(0xFF14AE5C);
+  static final Color orangeColor = const Color(0xFFE3A225);
 }
 
 TextTheme tsOneTextTheme = TextTheme(
