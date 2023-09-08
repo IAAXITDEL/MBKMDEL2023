@@ -191,14 +191,6 @@ class TrainingtypeccController extends GetxController {
     argumentname.value = name;
   }
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
 
-  @override
-  void onClose() {
-    super.onClose();
-  }
 
 }

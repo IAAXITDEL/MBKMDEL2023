@@ -1,9 +1,10 @@
-import 'package:ts_one/app/modules/efb/occ/views/listdevice/listdevice.dart';
 import 'package:ts_one/app/modules/efb/occ/controllers/device_controller.dart';
 
 import 'package:flutter/material.dart';
 
 class AddDevice extends StatefulWidget {
+  const AddDevice({super.key});
+
   @override
   State<StatefulWidget> createState(){
     return _AddDevice();
@@ -29,6 +30,7 @@ class _AddDevice extends State<AddDevice>{
         if (value == null || value.trim().isEmpty){
           return 'This Field is Required';
         }
+        return null;
       },
       decoration: InputDecoration(
           contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
@@ -43,6 +45,7 @@ class _AddDevice extends State<AddDevice>{
         if (value == null || value.trim().isEmpty){
           return 'This Field is Required';
         }
+        return null;
       },
       decoration: InputDecoration(
           contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
@@ -57,6 +60,7 @@ class _AddDevice extends State<AddDevice>{
         if (value == null || value.trim().isEmpty){
           return 'This Field is Required';
         }
+        return null;
       },
       decoration: InputDecoration(
           contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
@@ -71,6 +75,7 @@ class _AddDevice extends State<AddDevice>{
         if (value == null || value.trim().isEmpty){
           return 'This Field is Required';
         }
+        return null;
       },
       decoration: InputDecoration(
           contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
@@ -85,6 +90,7 @@ class _AddDevice extends State<AddDevice>{
         if (value == null || value.trim().isEmpty){
           return 'This Field is Required';
         }
+        return null;
       },
       decoration: InputDecoration(
           contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
@@ -99,6 +105,7 @@ class _AddDevice extends State<AddDevice>{
         if (value == null || value.trim().isEmpty){
           return 'This Field is Required';
         }
+        return null;
       },
       decoration: InputDecoration(
           contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
@@ -142,7 +149,7 @@ class _AddDevice extends State<AddDevice>{
             }
           }
         },
-        child: Text(
+        child: const Text(
           "Save",
           style: TextStyle(color: Colors.white),
           textAlign: TextAlign.center,
@@ -153,7 +160,7 @@ class _AddDevice extends State<AddDevice>{
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-          title: Center(
+          title: const Center(
             child: Text(
               "Add Device",
               style: TextStyle(
@@ -193,7 +200,7 @@ class _AddDevice extends State<AddDevice>{
                 ),
               ),
             ),
-            SizedBox(height: 110.0),
+            const SizedBox(height: 110.0),
             SaveButon,
           ],
         ),

@@ -12,22 +12,22 @@ class HomeOCCView extends GetView<HomeOCCController> {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(HomeOCCController());
-    bool _isContainerClicked = false;
+    bool isContainerClicked = false;
 
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 50),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
           child: Column(
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Hi, ${controller.titleToGreet!}",
+                    "Hi, ${controller.titleToGreet}",
                     style: tsOneTextTheme.headlineLarge,
                   ),
-                  Spacer(),
+                  const Spacer(),
                   Icon(
                     Icons.notifications_active_outlined,
                     color: tsOneColorScheme.onSecondary,
@@ -71,7 +71,7 @@ class HomeOCCView extends GetView<HomeOCCController> {
                   ],
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Row(
                 children: [
                   Expanded(
@@ -118,7 +118,7 @@ class HomeOCCView extends GetView<HomeOCCController> {
                   ),
                 ],
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -126,13 +126,13 @@ class HomeOCCView extends GetView<HomeOCCController> {
                   style: tsOneTextTheme.displayMedium,
                 ),
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               Container(
-                padding: EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(16.0),
                 decoration: BoxDecoration(
                   //border: Border.all(color: Colors.grey, width: 1.0),
                   border: Border.all(
-                    color: _isContainerClicked ? Colors.red : Colors.grey,
+                    color: isContainerClicked ? Colors.red : Colors.grey,
                     width: 1.0,
                   ),
                   borderRadius: BorderRadius.circular(20.0),
@@ -144,11 +144,11 @@ class HomeOCCView extends GetView<HomeOCCController> {
                           controller.userPreferences.getPhotoURL()),
                       radius: 20.0,
                     ),
-                    SizedBox(width: 16.0),
+                    const SizedBox(width: 16.0),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
+                        children: const [
                           Text(
                             'Pilot name',
                             style: TextStyle(
@@ -162,7 +162,7 @@ class HomeOCCView extends GetView<HomeOCCController> {
                         ],
                       ),
                     ),
-                    Icon(
+                    const Icon(
                       Icons.arrow_forward_ios,
                       size: 15,
                       color: Colors.red,
@@ -170,7 +170,7 @@ class HomeOCCView extends GetView<HomeOCCController> {
                   ],
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(

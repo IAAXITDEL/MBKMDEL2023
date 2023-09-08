@@ -2,11 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:pdf/widgets.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:ts_one/presentation/theme.dart';
 
 import '../../../../presentation/shared_components/TitleText.dart';
-import '../../../../presentation/shared_components/customdialogbox.dart';
 import '../../../../presentation/shared_components/formdatefield.dart';
 import '../../../../presentation/shared_components/formtextfield.dart';
 import '../../../../util/error_screen.dart';
@@ -62,7 +62,7 @@ class AddAttendanceccView extends GetView<AddAttendanceccController> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                RedTitleText(text: "ADD ATTENDANCE"),
+                const RedTitleText(text: "ADD ATTENDANCE"),
                 Text("REDUCED VERTICAL SEPARATION MINIMA (RVSM)"),
 
                 SizedBox(height: 20,),
@@ -149,11 +149,11 @@ class AddAttendanceccView extends GetView<AddAttendanceccController> {
 
                       mode: Mode.MENU,
                       showSelectedItems: true,
-                      dropdownSearchDecoration: InputDecoration(
+                      dropdownSearchDecoration: const InputDecoration(
                         labelText: "INSTRUCTOR",
                       ),
                       showSearchBox: true,
-                      searchFieldProps: TextFieldProps(
+                      searchFieldProps: const TextFieldProps(
                         cursorColor: TsOneColor.primary,
                       ),
                       items: userNames,
@@ -202,12 +202,12 @@ class AddAttendanceccView extends GetView<AddAttendanceccController> {
                                 ),
                                 builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
                                   if (snapshot.connectionState == ConnectionState.waiting) {
-                                    return LoadingScreen(); // Show loading screen
+                                    return const LoadingScreen(); // Show loading screen
                                   }
 
                                   if (snapshot.hasError) {
                                     // Handle error if needed
-                                    return ErrorScreen();
+                                    return const ErrorScreen();
                                   } else {
                                     return Container();
                                   }
@@ -219,8 +219,8 @@ class AddAttendanceccView extends GetView<AddAttendanceccController> {
 
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: TsOneColor.greenColor,
-                      minimumSize: Size(double.infinity, 50),
+                      backgroundColor: TsOneColor.greenColor,
+                      minimumSize: const Size(double.infinity, 50),
                     ),
                     child:  Text('Submit', style: TextStyle(color: Colors.white),),
                   ),

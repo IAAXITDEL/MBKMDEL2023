@@ -214,7 +214,7 @@ class AppPages {
     //-------------CONTROL CARD-----------------
     GetPage(
       name: _Paths.NAVADMIN,
-      page: () => NavadminView(
+      page: () => const NavadminView(
         initialIndex: 0,
       ),
       binding: NavadminBinding(),
@@ -233,7 +233,7 @@ class AppPages {
     //EFB -------------------------------------------------
     GetPage(
       name: _Paths.NAVOCC,
-      page: () => NavOCCView(),
+      page: () => const NavOCCView(),
       binding: NavOCCBinding(),
     ),
     GetPage(
@@ -243,14 +243,14 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.LISTDEVICEOCC,
-      page: () => ListDevice(),
+      page: () => const ListDevice(),
       binding: DeviceBinding(),
     ),
 
     //Pilot EFB
     GetPage(
       name: _Paths.HOMEPILOT,
-      page: () => HomePilotView(),
+      page: () => const HomePilotView(),
       binding: HomePilotBinding(),
     ),
 
@@ -272,7 +272,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.TRAININGTYPECC,
-      page: () => TrainingtypeccView(),
+      page: () => const TrainingtypeccView(),
       binding: TrainingtypeccBinding(),
     ),
     GetPage(
@@ -282,12 +282,12 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.ATTENDANCE_CONFIRCC(':attendanceId'),
-      page: () => AttendanceConfirccView(),
+      page: () => const AttendanceConfirccView(),
       binding: AttendanceConfirccBinding(),
     ),
     GetPage(
       name: _Paths.NAVCAPTAIN,
-      page: () => NavcaptainView(
+      page: () => const NavcaptainView(
         initialIndex: 0,
       ),
       binding: NavcaptainBinding(),
@@ -314,14 +314,14 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.NAVINSTRUCTOR,
-      page: () => NavinstructorView(
+      page: () => const NavinstructorView(
         initialIndex: 0,
       ),
       binding: NavinstructorBinding(),
     ),
     GetPage(
       name: _Paths.ATTENDANCE_PENDINGCC,
-      page: () => AttendancePendingccView(),
+      page: () => const AttendancePendingccView(),
       binding: AttendancePendingccBinding(),
     ),
   ];

@@ -5,11 +5,12 @@
 import 'package:ts_one/app/modules/efb/pilot/views/pilotreturndeviceview_view.dart';
   import '../../../../../presentation/theme.dart';
   import '../../../../../util/util.dart';
-  import '../../occ/model/device.dart';
   import '../controllers/homepilot_controller.dart';
   import '../controllers/requestdevice_controller.dart';
 
   class HomePilotView extends GetView<HomePilotController> {
+  const HomePilotView({super.key});
+
     @override
     Widget build(BuildContext context) {
       final controller = Get.put(HomePilotController());
@@ -18,14 +19,14 @@ import 'package:ts_one/app/modules/efb/pilot/views/pilotreturndeviceview_view.da
       return Scaffold(
         body: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 50),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
             child: Column(
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Hi, ${controller.titleToGreet!}",
+                      "Hi, ${controller.titleToGreet}",
                       style: tsOneTextTheme.headlineLarge,
                     ),
                   ],
@@ -67,12 +68,12 @@ import 'package:ts_one/app/modules/efb/pilot/views/pilotreturndeviceview_view.da
                     ],
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 FutureBuilder<QuerySnapshot>(
                   future: requestDeviceController.getPilotDevices(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return CircularProgressIndicator();
+                      return const CircularProgressIndicator();
                     } else if (snapshot.hasError) {
                       return Text('Error: ${snapshot.error}');
                     } else {
@@ -87,16 +88,16 @@ import 'package:ts_one/app/modules/efb/pilot/views/pilotreturndeviceview_view.da
                               style: tsOneTextTheme.headlineLarge,
                               textAlign: TextAlign.left,
                             ),
-                            Text(
+                            const Text(
                               "There is no data that needs confirmation",
                             ),
-                            SizedBox(height: 15),
+                            const SizedBox(height: 15),
                             Text(
                               "Device Used",
                               style: tsOneTextTheme.headlineLarge,
                               textAlign: TextAlign.left,
                             ),
-                            Text(
+                            const Text(
                               "(You have to returned the device so that you can request another device!)",
                               style: TextStyle(
                                 color: Colors.red,
@@ -104,7 +105,7 @@ import 'package:ts_one/app/modules/efb/pilot/views/pilotreturndeviceview_view.da
                                 fontStyle: FontStyle.italic,
                               ),
                             ),
-                            SizedBox(height: 10),
+                            const SizedBox(height: 10),
                             Column(
                               children: pilotDevicesSnapshot.docs.map((doc) {
                                 String deviceName = doc['device_name'];
@@ -125,10 +126,10 @@ import 'package:ts_one/app/modules/efb/pilot/views/pilotreturndeviceview_view.da
                                     },
                                     style: ButtonStyle(
                                       padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                                        EdgeInsets.all(18.0),
+                                        const EdgeInsets.all(18.0),
                                       ),
                                       side: MaterialStateProperty.all<BorderSide>(
-                                        BorderSide(
+                                        const BorderSide(
                                           color: Colors.yellow, // Warna border line kuning
                                           width: 2.0,
                                         ),
@@ -154,16 +155,16 @@ import 'package:ts_one/app/modules/efb/pilot/views/pilotreturndeviceview_view.da
                                           children: [
                                             Text(
                                               deviceName,
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 fontSize: 12.0,
                                                 fontWeight: FontWeight.bold,
                                                 color: Colors.black,
                                               ),
                                             ),
-                                            SizedBox(height: 5.0),
+                                            const SizedBox(height: 5.0),
                                             Text(
                                               'ID: $deviceId',
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 fontSize: 10.0,
                                                 color: Colors.black,
                                               ),
@@ -189,19 +190,13 @@ import 'package:ts_one/app/modules/efb/pilot/views/pilotreturndeviceview_view.da
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => PilotrequestdeviceView(),
+                                    builder: (context) => const PilotrequestdeviceView(),
                                   ),
                                 );
                               },
-                              child: Text(
-                                "Request Device",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
                               style: ButtonStyle(
                                 padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                                  EdgeInsets.symmetric(vertical: 15, horizontal: 90),
+                                  const EdgeInsets.symmetric(vertical: 15, horizontal: 90),
                                 ),
                                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
@@ -212,13 +207,19 @@ import 'package:ts_one/app/modules/efb/pilot/views/pilotreturndeviceview_view.da
                                   Colors.white,
                                 ),
                               ),
+                              child: const Text(
+                                "Request Device",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
                             Text(
                               "Need Confirmation",
                               style: tsOneTextTheme.headlineLarge,
                               textAlign: TextAlign.left,
                             ),
-                            Text(
+                            const Text(
                               "There is no data that needs confirmation",
                             ),
                             Text(

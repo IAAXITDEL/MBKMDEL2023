@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
-import '../../../../presentation/shared_components/TitleText.dart';
 import '../../../../presentation/theme.dart';
 import '../controllers/home_admincc_controller.dart';
 
@@ -29,7 +28,7 @@ class HomeAdminccView extends GetView<HomeAdminccController> {
             )
           ],
         ),
-        SizedBox(height: 10,),
+        const SizedBox(height: 10,),
         Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10.0),
@@ -39,7 +38,7 @@ class HomeAdminccView extends GetView<HomeAdminccController> {
                 color: Colors.grey.withOpacity(0.3),
                 spreadRadius: 2,
                 blurRadius: 3,
-                offset: Offset(0, 2),
+                offset: const Offset(0, 2),
               ),
             ],
           ),
@@ -56,7 +55,7 @@ class HomeAdminccView extends GetView<HomeAdminccController> {
                 "Noel Alex",
                 style: tsOneTextTheme.labelSmall,
               ),
-              trailing: Icon(Icons.navigate_next),
+              trailing: const Icon(Icons.navigate_next),
             ),
           ),
         ),

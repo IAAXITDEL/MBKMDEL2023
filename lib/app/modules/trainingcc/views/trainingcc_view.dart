@@ -19,11 +19,11 @@ class TrainingccView extends GetView<TrainingccController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: RedTitleText(text :'TRAINING'),
+        title: const RedTitleText(text :'TRAINING'),
       ),
       body: SingleChildScrollView(
         child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
                 // ------------------------------------ LIST TRAINING ----------------------------------
@@ -32,17 +32,17 @@ class TrainingccView extends GetView<TrainingccController> {
                   stream: controller.trainingStream(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                       return LoadingScreen(); // Placeholder while loading
+                       return const LoadingScreen(); // Placeholder while loading
                     }
 
                     if (snapshot.hasError) {
-                       return ErrorScreen();
+                       return const ErrorScreen();
                     }
 
                     var listTraining= snapshot.data!.docs;
 
                     return GridView.builder(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 3,
                         mainAxisSpacing: 5,
                         crossAxisSpacing: 5,
@@ -94,10 +94,10 @@ class TrainingccView extends GetView<TrainingccController> {
                   },
                 ),
 
-                SizedBox(height: 20,),
+                const SizedBox(height: 20,),
                 // ------------------------------------ TRAINING REMARK ----------------------------------
                 Row(
-                  children: [
+                  children: const [
                     RedTitleText(text: "TRAINING REMARK"),
                   ],
                 ),
@@ -106,7 +106,7 @@ class TrainingccView extends GetView<TrainingccController> {
                   stream: controller.trainingRemarkStream(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return LoadingScreen(); // Placeholder while loading
+                      return const LoadingScreen(); // Placeholder while loading
                     }
 
                     if (snapshot.hasError) {
@@ -128,7 +128,7 @@ class TrainingccView extends GetView<TrainingccController> {
                               flex: 1,
                               child: Text(
                                 listTrainingRemark[index]["training_code"],
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                                style: const TextStyle(fontWeight: FontWeight.bold),
                               ),
                             ),
                             Expanded(
@@ -141,7 +141,7 @@ class TrainingccView extends GetView<TrainingccController> {
                     );
                   },
                 ),
-                SizedBox(height: 20,),
+                const SizedBox(height: 20,),
 
               ],
             )

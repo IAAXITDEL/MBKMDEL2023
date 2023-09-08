@@ -9,8 +9,6 @@ import 'package:ts_one/di/locator.dart';
 import 'package:ts_one/domain/assessment_repo.dart';
 import 'package:ts_one/domain/assessment_results_repo.dart';
 import 'package:ts_one/domain/user_repo.dart';
-import 'package:ts_one/firebase_options.dart';
-import 'package:ts_one/presentation/routes.dart';
 import 'package:ts_one/presentation/theme.dart';
 import 'package:ts_one/presentation/view/splash_screen.dart';
 import 'package:ts_one/presentation/view_model/assessment_results_viewmodel.dart';

@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -13,7 +12,7 @@ import '../controllers/trainingtypecc_controller.dart';
 
 
 class TrainingtypeccView extends StatefulWidget {
-  TrainingtypeccView({Key? key}) : super(key: key);
+  const TrainingtypeccView({Key? key}) : super(key: key);
 
   @override
   _TrainingtypeccViewState createState() => _TrainingtypeccViewState();
@@ -40,19 +39,19 @@ class _TrainingtypeccViewState extends State<TrainingtypeccView>
     TrainingtypeccController controller = Get.find<TrainingtypeccController>();
     return Scaffold(
       appBar: AppBar(
-        title: Text('Back', style: TextStyle(color: Colors.black)),
-        iconTheme: IconThemeData(color: Colors.black),
+        title: const Text('Back', style: TextStyle(color: Colors.black)),
+        iconTheme: const IconThemeData(color: Colors.black),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             RedTitleText(text: controller.argumentname.value),
-            Text("REDUCED VERTICAL SEPARATION MINIMA"),
+            const Text("REDUCED VERTICAL SEPARATION MINIMA"),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.end,
@@ -65,14 +64,14 @@ class _TrainingtypeccViewState extends State<TrainingtypeccView>
                     });
                   },
                   child: Container(
-                    padding: EdgeInsets.all(7),
-                    margin: EdgeInsets.symmetric(vertical: 20),
+                    padding: const EdgeInsets.all(7),
+                    margin: const EdgeInsets.symmetric(vertical: 20),
                     decoration: BoxDecoration(
                       color: TsOneColor.greenColor,
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Row(
-                      children: [
+                      children: const [
                         Icon(
                           Icons.add_box_outlined,
                           color: Colors.white,
@@ -94,13 +93,13 @@ class _TrainingtypeccViewState extends State<TrainingtypeccView>
             //-------------------- TAB BAR ------------------------
             Container(
               child: TabBar(
-                labelPadding: EdgeInsets.symmetric(horizontal: 1.0),
+                labelPadding: const EdgeInsets.symmetric(horizontal: 1.0),
                 indicatorColor: TsOneColor.primary,
                 indicatorWeight: 3,
                 labelColor: TsOneColor.primary,
                 unselectedLabelColor: TsOneColor.secondaryContainer,
                 controller: _tabController,
-                tabs: [
+                tabs: const [
                   Tab(text: "Pending"),
                   Tab(text: "Confirmation"),
                   Tab(text: "Done",)
@@ -115,17 +114,17 @@ class _TrainingtypeccViewState extends State<TrainingtypeccView>
                     stream: controller.getCombinedAttendanceStream(controller.argumentid.value, "pending"),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return LoadingScreen(); // Placeholder while loading
+                        return const LoadingScreen(); // Placeholder while loading
                       }
 
                       if (snapshot.hasError) {
-                        return ErrorScreen();
+                        return const ErrorScreen();
                       }
 
                       var listAttendance= snapshot.data!;
 
                       if(listAttendance.isEmpty){
-                        return EmptyScreen();
+                        return const EmptyScreen();
                       }
 
                       return ListView.builder(
@@ -147,7 +146,7 @@ class _TrainingtypeccViewState extends State<TrainingtypeccView>
                               ),
                               title: Text(listAttendance[index]["name"].toString()),
                               subtitle: Text(listAttendance[index]["date"]),
-                              trailing: Icon(Icons.navigate_next),
+                              trailing: const Icon(Icons.navigate_next),
                             );
                           }
                       );
@@ -157,16 +156,16 @@ class _TrainingtypeccViewState extends State<TrainingtypeccView>
                     stream: controller.getCombinedAttendanceStream(controller.argumentid.value, "confirmation"),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return LoadingScreen(); // Placeholder while loading
+                        return const LoadingScreen(); // Placeholder while loading
                       }
 
                       if (snapshot.hasError) {
-                        return ErrorScreen();
+                        return const ErrorScreen();
                       }
 
                       var listAttendance= snapshot.data!;
                       if(listAttendance.isEmpty){
-                        return EmptyScreen();
+                        return const EmptyScreen();
                       }
 
                       return ListView.builder(
@@ -185,7 +184,7 @@ class _TrainingtypeccViewState extends State<TrainingtypeccView>
                               ),
                               title: Text(listAttendance[index]["name"].toString()),
                               subtitle: Text(listAttendance[index]["date"]),
-                              trailing: Icon(Icons.navigate_next),
+                              trailing: const Icon(Icons.navigate_next),
                               onTap: () => Get.toNamed(Routes.ATTENDANCE_CONFIRCC(listAttendance[index]["id"]),  arguments: {
                                 "id" : listAttendance[index]["id"],
                               }),
@@ -198,16 +197,16 @@ class _TrainingtypeccViewState extends State<TrainingtypeccView>
                     stream: controller.getCombinedAttendanceStream(controller.argumentid.value, "done"),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return LoadingScreen(); // Placeholder while loading
+                        return const LoadingScreen(); // Placeholder while loading
                       }
 
                       if (snapshot.hasError) {
-                        return ErrorScreen();
+                        return const ErrorScreen();
                       }
 
                       var listAttendance= snapshot.data!;
                       if(listAttendance.isEmpty){
-                        return EmptyScreen();
+                        return const EmptyScreen();
                       }
 
                       return ListView.builder(
@@ -226,7 +225,7 @@ class _TrainingtypeccViewState extends State<TrainingtypeccView>
                               ),
                               title: Text(listAttendance[index]["name"].toString()),
                               subtitle: Text(listAttendance[index]["date"]),
-                              trailing: Icon(Icons.navigate_next),
+                              trailing: const Icon(Icons.navigate_next),
                               onTap: () {
                                 // Action when item is tapped
                               },

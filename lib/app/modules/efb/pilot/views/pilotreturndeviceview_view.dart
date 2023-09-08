@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ts_one/app/modules/efb/pilot/views/main_view_pilot.dart';
 import 'package:ts_one/app/modules/efb/pilot/views/pilotsignature_view.dart';
-import 'package:ts_one/presentation/theme.dart';
 
 class PilotreturndeviceviewView extends StatefulWidget {
   final String deviceName;
-  PilotreturndeviceviewView({required this.deviceName});
+  const PilotreturndeviceviewView({super.key, required this.deviceName});
 
   @override
   _PilotreturndeviceviewViewState createState() =>
@@ -37,7 +35,7 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Device Used'),
+        title: const Text('Device Used'),
         centerTitle: true,
       ),
       body: Column(
@@ -55,7 +53,7 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
             ]),
             builder: (context, snapshotList) {
               if (snapshotList.connectionState == ConnectionState.waiting) {
-                return CircularProgressIndicator();
+                return const CircularProgressIndicator();
               } else if (snapshotList.hasError) {
                 return Center(
                   child: Text('Error: ${snapshotList.error.toString()}'),
@@ -65,7 +63,7 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                 final deviceSnapshot = snapshotList.data![0];
                 final pilotDeviceSnapshot = snapshotList.data![1];
                 final deviceData = deviceSnapshot.docs.isNotEmpty
-                    ? deviceSnapshot.docs.first.data() as Map<String, dynamic>
+                    ? deviceSnapshot.docs.first.data()
                     : <String, dynamic>{};
 
                 // Handle null values gracefully
@@ -80,7 +78,7 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
 
                 // Handle data from 'pilot-device-1' collection
                 final pilotDeviceData = pilotDeviceSnapshot.docs.isNotEmpty
-                    ? pilotDeviceSnapshot.docs.first.data() as Map<String, dynamic>
+                    ? pilotDeviceSnapshot.docs.first.data()
                     : <String, dynamic>{};
                 final occOnDuty = pilotDeviceData['occ_on_duty'] as String? ?? 'N/A';
 
@@ -88,9 +86,9 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                   return Row(
                     children: [
                       Text(label),
-                      SizedBox(width: 8), // Spasi antara label dan nilai
-                      Text(':'),
-                      SizedBox(width: 8), // Spasi antara ":" dan nilai
+                      const SizedBox(width: 8), // Spasi antara label dan nilai
+                      const Text(':'),
+                      const SizedBox(width: 8), // Spasi antara ":" dan nilai
                       Text(value),
                     ],
                   );
@@ -103,7 +101,7 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                       child: Card(
                         color: Colors.grey[200], // Warna abu-abu
                         child: ListTile(
-                          title: Text('Device Info', style: TextStyle(fontWeight: FontWeight.bold)),
+                          title: const Text('Device Info', style: TextStyle(fontWeight: FontWeight.bold)),
                           subtitle: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -125,14 +123,14 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
               }
             },
           ),
-          SizedBox(height: 15,),
+          const SizedBox(height: 15,),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
-                  children: [
+                  children: const [
                     Text('Return Device',
                     style: TextStyle(
                       fontSize: 15,
@@ -142,7 +140,7 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                   ],
                 ),
                 Row(
-                  children: [
+                  children: const [
                     Text('Choose who you want to return it to',
                       style: TextStyle(
                         fontSize: 12,
@@ -153,7 +151,7 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
               ],
             ),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal:20),
             child: Column(
@@ -171,7 +169,7 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                         });
                       },
                     ),
-                    Text('Return To OCC'),
+                    const Text('Return To OCC'),
                   ],
                 ),
                 Row(
@@ -186,13 +184,13 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                         });
                       },
                     ),
-                    Text('Return To Other Pilot'),
+                    const Text('Return To Other Pilot'),
                   ],
                 ),
               ],
             ),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           ElevatedButton(
             onPressed: () async {
               // Handle the next button click based on radio button selection
@@ -212,7 +210,7 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                 // ...
               }
             },
-            child: Text('Next'),
+            child: const Text('Next'),
           ),
 
         ],

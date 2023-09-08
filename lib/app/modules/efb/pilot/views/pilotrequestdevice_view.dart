@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
-import 'package:get/get.dart';
 import 'package:ts_one/app/modules/efb/pilot/controllers/requestdevice_controller.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 import '../../occ/model/device.dart';
 
 class PilotrequestdeviceView extends StatefulWidget {
+  const PilotrequestdeviceView({super.key});
+
   @override
   _PilotrequestdeviceView createState() => _PilotrequestdeviceView();
 }
@@ -44,7 +45,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(
+          title: const Text(
             'Confirm Booking',
             style: TextStyle(
               color: Colors.black,
@@ -56,7 +57,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
             child: ListBody(
               children: <Widget>[
                 if (deviceInUse)
-                  Text(
+                  const Text(
                     'Device is already in use.',
                     style: TextStyle(
                       color: Colors.red,
@@ -64,7 +65,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                       fontFamily: 'Poppins',
                     ),
                   ),
-                Text(
+                const Text(
                   'Are you sure you want to book this device?',
                   style: TextStyle(
                     color: Colors.black,
@@ -77,14 +78,14 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             if (!deviceInUse)
               TextButton(
-                child: Text(
+                child: const Text(
                   'Confirm',
                   style: TextStyle(
                     color: Colors.black,
@@ -134,7 +135,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Request Device',
           style: TextStyle(
             color: Colors.black,
@@ -145,7 +146,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
               Row(
@@ -166,7 +167,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                       ),
                     ),
                   ),
-                  SizedBox(width: 16.0),
+                  const SizedBox(width: 16.0),
                   ElevatedButton(
                     onPressed: () async {
                       String qrCode =
@@ -185,13 +186,13 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                         });
                       }
                     },
-                    child: Icon(Icons.qr_code_2),
+                    child: const Icon(Icons.qr_code_2),
                   ),
                 ],
               ),
 
               if (isDeviceNotFound) // Show message if device is not found
-                Text(
+                const Text(
                   'Device not found',
                   style: TextStyle(color: Colors.red),
                 ),
@@ -211,7 +212,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                   )
                       .toList(),
                 ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
               if (selectedDevice != null) // Show attributes if a device is selected
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -224,7 +225,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                     Text('Condition: ${selectedDevice!.condition}'),
                   ],
                 ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
               TextField(
                 controller: OccOnDutyController,
                 decoration: InputDecoration(
@@ -234,7 +235,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                   ),
                 ),
               ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
               ElevatedButton(
                 onPressed: () {
                   if (selectedDevice != null &&
@@ -242,7 +243,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                     _showConfirmationDialog();
                   }
                 },
-                child: Text('Confirmation'),
+                child: const Text('Confirmation'),
               ),
             ],
           ),

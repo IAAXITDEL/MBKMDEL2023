@@ -14,7 +14,7 @@ class ProfileccController extends GetxController {
   late UserPreferences userPreferences;
   late bool _canViewAllAssessments;
 
-  GoogleSignIn _googleSignIn = GoogleSignIn();
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   @override
   void onInit() {
@@ -45,14 +45,6 @@ class ProfileccController extends GetxController {
     }
   }
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
 
-  @override
-  void onClose() {
-    super.onClose();
-  }
 
 }

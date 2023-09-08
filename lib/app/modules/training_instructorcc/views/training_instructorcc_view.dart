@@ -41,30 +41,30 @@ class _TrainingInstructorccViewState extends State<TrainingInstructorccView>
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Back', style: TextStyle(color: Colors.black)),
-        iconTheme: IconThemeData(color: Colors.black),
+        title: const Text('Back', style: TextStyle(color: Colors.black)),
+        iconTheme: const IconThemeData(color: Colors.black),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
       body:  Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             RedTitleText(text: controller.argumentname.value),
 
-            SizedBox(height: 20,),
+            const SizedBox(height: 20,),
             //-------------------- TAB BAR ------------------------
             Container(
               child: TabBar(
-                labelPadding: EdgeInsets.symmetric(horizontal: 1.0),
+                labelPadding: const EdgeInsets.symmetric(horizontal: 1.0),
                 indicatorColor: TsOneColor.primary,
                 indicatorWeight: 3,
                 labelColor: TsOneColor.primary,
                 unselectedLabelColor: TsOneColor.secondaryContainer,
                 controller: _tabController,
-                tabs: [
+                tabs: const [
                   Tab(text: "Confirmation"),
                   Tab(text: "Done",)
                 ],
@@ -78,17 +78,17 @@ class _TrainingInstructorccViewState extends State<TrainingInstructorccView>
                     stream: controller.getCombinedAttendanceStream(widget.id, "pending"),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return LoadingScreen(); // Placeholder while loading
+                        return const LoadingScreen(); // Placeholder while loading
                       }
 
                       if (snapshot.hasError) {
-                        return ErrorScreen();
+                        return const ErrorScreen();
                       }
 
                       var listAttendance= snapshot.data!;
 
                       if(listAttendance.isEmpty){
-                        return EmptyScreen();
+                        return const EmptyScreen();
                       }
 
 
@@ -112,7 +112,7 @@ class _TrainingInstructorccViewState extends State<TrainingInstructorccView>
                               ),
                               title: Text(listAttendance[index]["subject"].toString()),
                               subtitle: Text(listAttendance[index]["date"]),
-                              trailing: Icon(Icons.navigate_next),
+                              trailing: const Icon(Icons.navigate_next),
                             );
                           }
                       );
@@ -122,17 +122,17 @@ class _TrainingInstructorccViewState extends State<TrainingInstructorccView>
                     stream: controller.getCombinedAttendanceStream(widget.id, "confirmation"),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return LoadingScreen(); // Placeholder while loading
+                        return const LoadingScreen(); // Placeholder while loading
                       }
 
                       if (snapshot.hasError) {
-                        return ErrorScreen();
+                        return const ErrorScreen();
                       }
 
                       var listAttendance= snapshot.data!;
 
                       if(listAttendance.isEmpty){
-                        return EmptyScreen();
+                        return const EmptyScreen();
                       }
 
                       return ListView.builder(
@@ -151,7 +151,7 @@ class _TrainingInstructorccViewState extends State<TrainingInstructorccView>
                               ),
                               title: Text(listAttendance[index]["name"].toString()),
                               subtitle: Text(listAttendance[index]["date"]),
-                              trailing: Icon(Icons.navigate_next),
+                              trailing: const Icon(Icons.navigate_next),
                               onTap: () {
                                 // Action when item is tapped
                               },

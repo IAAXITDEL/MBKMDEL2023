@@ -5,7 +5,7 @@ import 'package:ts_one/app/modules/efb/occ/controllers/device_controller.dart';
 
 class EditDevice extends StatefulWidget {
   final Device? device;
-  EditDevice({this.device});
+  const EditDevice({super.key, this.device});
 
   @override
   State<StatefulWidget> createState() {
@@ -49,6 +49,7 @@ class _EditDevice extends State<EditDevice> {
           if (value == null || value.trim().isEmpty) {
             return 'This field is required';
           }
+          return null;
         },
         decoration: InputDecoration(
             labelText: 'Device Number',
@@ -62,6 +63,7 @@ class _EditDevice extends State<EditDevice> {
           if (value == null || value.trim().isEmpty) {
             return 'This field is required';
           }
+          return null;
         },
         decoration: InputDecoration(
             labelText: 'Ios Version',
@@ -76,6 +78,7 @@ class _EditDevice extends State<EditDevice> {
         if (value == null || value.trim().isEmpty){
           return 'This Field is Required';
         }
+        return null;
       },
       decoration: InputDecoration(
           labelText: 'Fly Smart Version',
@@ -90,6 +93,7 @@ class _EditDevice extends State<EditDevice> {
         if (value == null || value.trim().isEmpty){
           return 'This Field is Required';
         }
+        return null;
       },
       decoration: InputDecoration(
           labelText: 'Lido Version',
@@ -104,6 +108,7 @@ class _EditDevice extends State<EditDevice> {
         if (value == null || value.trim().isEmpty){
           return 'This Field is Required';
         }
+        return null;
       },
       decoration: InputDecoration(
           labelText: 'Docu Version',
@@ -118,6 +123,7 @@ class _EditDevice extends State<EditDevice> {
         if (value == null || value.trim().isEmpty){
           return 'This Field is Required';
         }
+        return null;
       },
       decoration: InputDecoration(
           contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
@@ -173,7 +179,7 @@ class _EditDevice extends State<EditDevice> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Center(
+        title: const Center(
           child: Text(
             "Edit Device",
             style: TextStyle(
@@ -212,7 +218,7 @@ class _EditDevice extends State<EditDevice> {
                 ),
               ),
             ),
-            SizedBox(height: 110.0),
+            const SizedBox(height: 110.0),
             SaveButon,
           ],
         ),

@@ -19,11 +19,11 @@ class ProfileccView extends GetView<ProfileccController> {
 
           // LOGOUT
           Container(
-            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+            margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
             child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                    primary: tsOneColorScheme.primary,
-                    padding: EdgeInsets.symmetric(vertical: 4, horizontal: 10),
+                    backgroundColor: tsOneColorScheme.primary,
+                    padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10))),
                 onPressed: () {
@@ -31,7 +31,7 @@ class ProfileccView extends GetView<ProfileccController> {
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
+                  children: const [
                     Icon(
                       Icons.logout,
                       color: Colors.white,
@@ -40,7 +40,7 @@ class ProfileccView extends GetView<ProfileccController> {
                     SizedBox(
                       width: 10,
                     ),
-                    Text("Logout",style: const TextStyle(
+                    Text("Logout",style: TextStyle(
                       color: TsOneColor.surface,
                       fontFamily: 'Poppins',
                     ),)
@@ -52,13 +52,13 @@ class ProfileccView extends GetView<ProfileccController> {
       body: Center(
         child: Column(
           children: [
-            RedTitleText(text: "PROFILE"),
+            const RedTitleText(text: "PROFILE"),
             AvatarGlow(
               endRadius: 110,
               glowColor: Colors.black,
-              duration: Duration(seconds: 2),
+              duration: const Duration(seconds: 2),
               child: Container(
-                  margin: EdgeInsets.all(15),
+                  margin: const EdgeInsets.all(15),
                   width: 175,
                   height: 175,
                   child: ClipRRect(
@@ -74,38 +74,38 @@ class ProfileccView extends GetView<ProfileccController> {
              controller.userPreferences.getIDNo().toString(),
               style: TextStyle(color: tsOneColorScheme.secondaryContainer),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
               child: Column(
                 children: [
                   Row(
                     children: [
-                      Expanded(flex: 3, child: Text("Email")),
-                      Expanded(flex: 1, child: Text(":")),
-                      Expanded(flex: 6, child: Text("noel@airasia.com")),
+                      Expanded(flex: 3, child: const Text("Email")),
+                      Expanded(flex: 1, child: const Text(":")),
+                      Expanded(flex: 6, child: const Text("noel@airasia.com")),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Row(
                     children: [
-                      Expanded(flex: 3, child: Text("ID NO")),
-                      Expanded(flex: 1, child: Text(":")),
-                      Expanded(flex: 6, child: Text("1007074")),
+                      Expanded(flex: 3, child: const Text("ID NO")),
+                      Expanded(flex: 1, child: const Text(":")),
+                      Expanded(flex: 6, child: const Text("1007074")),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Row(
                     children: [
-                      Expanded(flex: 3, child: Text("LOA NO")),
-                      Expanded(flex: 1, child: Text(":")),
-                      Expanded(flex: 6, child: Text("2345/KAPEL/VIII/2022")),
+                      Expanded(flex: 3, child: const Text("LOA NO")),
+                      Expanded(flex: 1, child: const Text(":")),
+                      Expanded(flex: 6, child: const Text("2345/KAPEL/VIII/2022")),
                     ],
                   )
                 ],
