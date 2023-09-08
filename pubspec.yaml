@@ -96,11 +96,10 @@ dependencies:
   google_fonts: 5.1.0
   dropdown_search: ^3.0.1
   quickalert: ^1.0.1
-  syncfusion_flutter_signaturepad: 22.2.10
+  syncfusion_flutter_signaturepad: ^22.2.10
 
 dev_dependencies:
   flutter_launcher_icons: ^0.13.1
-  syncfusion_flutter_signaturepad: ^22.2.11
 
   flutter_test:
     sdk: flutter

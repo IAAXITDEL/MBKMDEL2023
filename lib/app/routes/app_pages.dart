@@ -59,7 +59,6 @@ import '../modules/pa/navcaptain/views/navcaptain_view.dart';
 import '../modules/pa/navinstructor/bindings/navinstructor_binding.dart';
 import '../modules/pa/navinstructor/views/navinstructor_view.dart';
 
-
 import '../modules/pa/occ/bindings/navocc_binding.dart';
 import '../modules/pa/occ/views/navocc_view.dart';
 
@@ -231,7 +230,6 @@ class AppPages {
       binding: ProfileccBinding(),
     ),
 
-
     //EFB -------------------------------------------------
     GetPage(
       name: _Paths.NAVOCC,
@@ -261,7 +259,7 @@ class AppPages {
       name: _Paths.HOMEFO,
       page: () => const HomeFOView(),
       binding: HomeFOBinding(),
-
+    ),
     GetPage(
       name: _Paths.TRAININGCC,
       page: () => const TrainingccView(),
@@ -286,7 +284,6 @@ class AppPages {
       name: _Paths.ATTENDANCE_CONFIRCC(':attendanceId'),
       page: () => AttendanceConfirccView(),
       binding: AttendanceConfirccBinding(),
-
     ),
     GetPage(
       name: _Paths.NAVCAPTAIN,
