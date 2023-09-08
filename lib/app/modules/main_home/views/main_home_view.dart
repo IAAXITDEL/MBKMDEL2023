@@ -78,6 +78,29 @@ class MainHomeView extends GetView<MainHomeController> {
                   ),
                 ),
               ),
+              SizedBox(height: 10,),
+              Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.0),
+                    color: Colors.white
+                ),
+                child: InkWell(
+                  onTap: (){
+                    Get.toNamed(Routes.NAVOCC);
+                  },
+                  child: ListTile(
+                    title: Text(
+                      "EFB",
+                      style: tsOneTextTheme.headlineLarge,
+                    ),
+                    subtitle: Text(
+                      "Electronic Flight Bag (EFB)",
+                      style: tsOneTextTheme.labelSmall,
+                    ),
+                    trailing: Icon(Icons.navigate_next),
+                  ),
+                ),
+              ),
 
             ],
           ),
