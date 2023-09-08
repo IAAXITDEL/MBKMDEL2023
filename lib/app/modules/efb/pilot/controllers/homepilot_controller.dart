@@ -49,24 +49,6 @@ class HomePilotController extends GetxController {
     super.onInit();
   }
 
-  Future<QuerySnapshot> _getPilotDevices() async {
-    User? user = _auth.currentUser;
-
-    if (user != null) {
-      String uid = user.uid;
-
-      // Ambil data perangkat yang dipinjam oleh pilot dengan status "in-use-pilot".
-      QuerySnapshot snapshot = await _firestore.collection('pilot-device-1')
-          .where('user_uid', isEqualTo: uid)
-          .where('status-device-1', isEqualTo: 'in-use-pilot')
-          .get();
-
-      return snapshot; // Return the QuerySnapshot directly.
-    } else {
-      throw Exception('User not logged in'); // You can handle this case as needed.
-    }
-  }
-
 
   @override
   void onReady() {

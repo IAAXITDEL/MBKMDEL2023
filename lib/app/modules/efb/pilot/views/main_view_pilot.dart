@@ -2,6 +2,7 @@
   import 'package:flutter/material.dart';
   import 'package:get/get.dart';
   import 'package:ts_one/app/modules/efb/pilot/views/pilotrequestdevice_view.dart';
+import 'package:ts_one/app/modules/efb/pilot/views/pilotreturndeviceview_view.dart';
   import '../../../../../presentation/theme.dart';
   import '../../../../../util/util.dart';
   import '../../occ/model/device.dart';
@@ -77,8 +78,7 @@
                     } else {
                       QuerySnapshot? pilotDevicesSnapshot = snapshot.data;
 
-                      if (pilotDevicesSnapshot != null &&
-                          pilotDevicesSnapshot.docs.isNotEmpty) {
+                      if (pilotDevicesSnapshot != null && pilotDevicesSnapshot.docs.isNotEmpty) {
                         // Data "in-use-pilot" sudah ada, maka tombol "Request Device" disembunyikan
                         return Column(
                           children: [
@@ -114,7 +114,14 @@
                                   alignment: Alignment.centerLeft,
                                   child: ElevatedButton(
                                     onPressed: () {
-                                      // Tambahkan aksi yang ingin Anda lakukan saat tombol ditekan di sini
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => PilotreturndeviceviewView(
+                                            deviceName: deviceName,
+                                          ),
+                                        ),
+                                      );
                                     },
                                     style: ButtonStyle(
                                       padding: MaterialStateProperty.all<EdgeInsetsGeometry>(

@@ -27,16 +27,24 @@ class RequestdeviceController extends GetxController {
     if (user != null) {
       String uid = user.uid; // Mendapatkan UID pengguna yang saat ini masuk
 
-      await _firestore.collection('pilot-device-1').add({
+      // Membuat referensi koleksi 'pilot-device-1' tanpa menambahkan dokumen
+      CollectionReference pilotDeviceCollection = _firestore.collection('pilot-device-1');
+
+      // Mendapatkan ID dokumen yang baru akan dibuat
+      String newDeviceId = pilotDeviceCollection.doc().id;
+
+      await pilotDeviceCollection.doc(newDeviceId).set({
+        'user_uid': uid, // Merekam UID pengguna yang saat ini masuk'
         'device_uid': deviceUid,
         'device_name': deviceName,
         'occ_on_duty': occOnDuty,
-        'status-device-1' : 'in-use-pilot',
-        'user_uid': uid, // Merekam UID pengguna yang saat ini masuk
+        'status-device-1': 'in-use-pilot',
+        'document_id': newDeviceId, // Menyimpan ID dokumen sebagai field
         'timestamp': FieldValue.serverTimestamp(),
       });
     }
   }
+
 
   // Tambahkan method untuk memeriksa apakah perangkat sudah digunakan
   Future<bool> isDeviceInUse(String deviceUid) async {
