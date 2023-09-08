@@ -15,6 +15,7 @@ class FormTextField extends StatelessWidget {
     return TextFormField(
       controller: textController,
       obscureText: false,
+      readOnly: readOnly,
       validator: (value) {
         if (value == null || value.isEmpty) {   // Validation Logic
           return 'Please enter the ${text}';

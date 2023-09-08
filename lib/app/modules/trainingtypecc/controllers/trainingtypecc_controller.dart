@@ -4,6 +4,9 @@ import 'package:get/get.dart';
 import '../../../../presentation/view_model/attendance_model.dart';
 
 class TrainingtypeccController extends GetxController {
+
+  final RxInt argumentid = 0.obs;
+  final RxString argumentname = "".obs;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   // List untuk training remark
@@ -180,6 +183,12 @@ class TrainingtypeccController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    final Map<String, dynamic> args = Get.arguments as Map<String, dynamic>;
+    final int id = args["id"] as int;
+    argumentid.value = id;
+
+    final String name = (Get.arguments as Map<String, dynamic>)["name"];
+    argumentname.value = name;
   }
 
   @override

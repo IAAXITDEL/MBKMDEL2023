@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
+import '../../../../presentation/shared_components/TitleText.dart';
+import '../../home_admincc/views/home_admincc_view.dart';
+import '../../home_instructorcc/views/home_instructorcc_view.dart';
 import '../controllers/homecc_controller.dart';
 
 class HomeccView extends GetView<HomeccController> {
@@ -10,14 +13,11 @@ class HomeccView extends GetView<HomeccController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('HomeccView'),
-        centerTitle: true,
+        title: RedTitleText(text: "Hello, Noel", ),
       ),
-      body: const Center(
-        child: Text(
-          'HomeccView is working',
-          style: TextStyle(fontSize: 20),
-        ),
+      body: Padding(
+        padding: EdgeInsets.all(20),
+        child: controller.titleToGreet == 'Captain' ? HomeInstructorccView() : HomeAdminccView(),
       ),
     );
   }
