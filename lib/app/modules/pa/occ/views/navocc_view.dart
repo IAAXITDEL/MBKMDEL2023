@@ -156,6 +156,7 @@ class _NavOCCView extends State<NavOCCView> {
               icon: Icons.list_alt_rounded,
               text: 'Device',
             ),
+            if (_canManageDevice)
             GButton(
               icon: Icons.history_toggle_off_outlined,
               text: 'History',

@@ -245,7 +245,7 @@ class AppPages {
       name: _Paths.HOMEFO,
       page: () => const HomeFOView(),
       binding: HomeFOBinding(),
-
+    ),
     GetPage(
       name: _Paths.TRAININGCC,
       page: () => const TrainingccView(),
