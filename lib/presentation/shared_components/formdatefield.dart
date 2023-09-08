@@ -9,13 +9,15 @@ import '../theme.dart';
 class FormDateField extends StatelessWidget {
   final TextEditingController textController;
   final String text;
-  const FormDateField( {Key? key,required this.text, required this.textController}) : super(key: key);
+  final bool readOnly;
+  const FormDateField( {Key? key,required this.text, required this.textController, this.readOnly = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: textController,
       obscureText: false,
+      readOnly: readOnly,
       validator: (value) {
         if (value == null || value.isEmpty) {   // Validation Logic
           return 'Please enter the ${text}';
@@ -40,7 +42,6 @@ class FormDateField extends StatelessWidget {
           ),
           labelText: text
       ),
-      readOnly: true,
       onTap: () async {
         DateTime? pickedDate = await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(1945), lastDate: DateTime(2300));
         if(pickedDate != null){

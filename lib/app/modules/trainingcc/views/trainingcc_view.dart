@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ts_one/presentation/shared_components/TitleText.dart';
 
+import '../../../../data/users/user_preferences.dart';
+import '../../../../data/users/users.dart';
+import '../../../../di/locator.dart';
 import '../../../../presentation/theme.dart';
 import '../../../../util/error_screen.dart';
 import '../../../../util/loading_screen.dart';
@@ -57,10 +60,25 @@ class TrainingccView extends GetView<TrainingccController> {
                           elevation: 5,
                           child: InkWell(
                             onTap: () {
-                              Get.toNamed(Routes.TRAININGTYPECC, arguments: {
+                              late UserPreferences userPreferences;
+                              userPreferences = getItLocator<UserPreferences>();
+
+                              // SEBAGAI INSTRUCTOR
+                              if( userPreferences.getInstructor().contains(UserModel.keySubPositionICC)){
+                                Get.toNamed(Routes.TRAINING_INSTRUCTORCC, arguments: {
                                 "id" : trainingData["id"],
                                 "name" : trainingData["training"]
-                              });
+                                });
+                              }
+
+                              // SEBAGAI PILOT ADMINISTRATOR
+                              else{
+                                Get.toNamed(Routes.TRAININGTYPECC, arguments: {
+                                  "id" : trainingData["id"],
+                                  "name" : trainingData["training"]
+                                });
+                              }
+
                             },
                             splashColor: TsOneColor.primary,
                             child: Center(

@@ -4,14 +4,15 @@ import '../theme.dart';
 
 class RedTitleText extends StatelessWidget {
   final String text;
-  const RedTitleText({Key? key, required this.text}) : super(key: key);
+  final double size;
+  const RedTitleText({Key? key, required this.text, this.size = 20}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: const TextStyle(
-        fontSize: 20,
+      style:  TextStyle(
+        fontSize: size ,
         fontWeight: FontWeight.w600,
         color: TsOneColor.primary,
         fontFamily: 'Poppins',
@@ -23,14 +24,15 @@ class RedTitleText extends StatelessWidget {
 
 class BlackTitleText extends StatelessWidget {
   final String text;
-  const BlackTitleText({Key? key, required this.text}) : super(key: key);
+  final double size;
+  const BlackTitleText({Key? key, required this.text, this.size = 20}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: const TextStyle(
-        fontSize: 20,
+      style: TextStyle(
+        fontSize: size,
         fontWeight: FontWeight.w600,
         fontFamily: 'Poppins',
         decorationColor: TsOneColor.primary,

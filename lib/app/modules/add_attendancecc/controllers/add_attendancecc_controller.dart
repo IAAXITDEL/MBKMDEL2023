@@ -11,10 +11,16 @@ import '../../../../presentation/shared_components/customdialogbox.dart';
 
 class AddAttendanceccController extends GetxController {
 
-
+  final RxInt argumentid = 0.obs;
+  final RxString argumentname = "".obs;
   @override
   void onInit() {
     super.onInit();
+    final Map<String, dynamic> args = Get.arguments as Map<String, dynamic>;
+    final int id = args["id"] as int;
+    argumentid.value = id;
+    final String name = (Get.arguments as Map<String, dynamic>)["name"];
+    argumentname.value = name;
   }
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -43,6 +49,8 @@ class AddAttendanceccController extends GetxController {
           "status": "pending",
           "keyAttendance": getRandomString(6),
           "idTrainingType": idtrainingtype,
+          "departement" : null,
+          "room" : null,
           "creationTime": DateTime.now().toIso8601String(),
           "updatedTime": DateTime.now().toIso8601String(),
         });
@@ -60,7 +68,7 @@ class AddAttendanceccController extends GetxController {
   Stream<QuerySnapshot<Map<String, dynamic>>> instructorStream() {
     return firestore
         .collection('users')
-        .where("INSTRUCTOR", arrayContains: "CC")
+        .where("INSTRUCTOR", arrayContains: "ICC")
         .snapshots();
   }
 

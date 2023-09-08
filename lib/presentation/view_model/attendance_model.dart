@@ -38,7 +38,7 @@ class AttendanceModel {
       status: json['status'],
       subject: json['subject'],
       updatedTime: json['updatedTime'],
-        vanue: json['venue'],
+        vanue: json['vanue'],
       name: json['name'],
         photoURL: json['photoURL']
     );
@@ -55,7 +55,7 @@ class AttendanceModel {
     data['status'] = this.status;
     data['subject'] = this.subject;
     data['updatedTime'] = this.updatedTime;
-    data['venue'] = this.vanue;
+    data['vanue'] = this.vanue;
     data['name'] = this.name;
     data['photoURL'] = this.photoURL;
     return data;
