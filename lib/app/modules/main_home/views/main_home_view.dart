@@ -13,182 +13,71 @@ class MainHomeView extends GetView<MainHomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: TsOneColor.primary,
         body: SingleChildScrollView(
             child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 50),
           child: Column(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Hi, ${controller.titleToGreet!}",
-                    style: tsOneTextTheme.headlineLarge,
-                  ),
-                ],
-              ),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Good ${controller.timeToGreet}',
-                  style: tsOneTextTheme.labelMedium,
+              Center(
+                child: Container(
+                  child: Image.asset("assets/images/airasia_logo_circle.png",  fit: BoxFit.cover,),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20),
-                child: Row(
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.only(right: 4.0),
-                      child: Icon(
-                        Icons.calendar_month_outlined,
-                        color: TsOneColor.onSecondary,
-                        size: 32,
-                      ),
+              Text(
+                "WELCOME",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+              Text(
+                "Please select the desired menu",
+                style: TextStyle(color: Colors.white),
+              ),
+              SizedBox(height: 20,),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10.0),
+                  color: Colors.white
+                ),
+                child: InkWell(
+                  onTap: (){
+                    Get.offAllNamed(Routes.home);
+                  },
+                  child: ListTile(
+                    title: Text(
+                      "TS -1",
+                      style: tsOneTextTheme.headlineLarge,
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          Util.convertDateTimeDisplay(
-                              DateTime.now().toString(), "EEEE"),
-                          style: tsOneTextTheme.labelSmall,
-                        ),
-                        Text(
-                          Util.convertDateTimeDisplay(
-                              DateTime.now().toString(), "dd MMMM yyyy"),
-                          style: tsOneTextTheme.labelSmall,
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-              ),
-              InkWell(
-                onTap: (){
-                  Get.offAllNamed(Routes.home);
-                },
-                child: Card(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: Get.width,
-                        height: 200,
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                                fit: BoxFit.fitWidth,
-                                image: AssetImage(
-                                    "assets/images/Cool Kids Alone Time.png"))),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                              child: Container(
-                                padding: EdgeInsets.all(10),
-                                color: Colors.white,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text("TS-1"),
-                                    Text("Training Simulator -1")
-                                  ],
-                                ),
-                              ))
-                        ],
-                      ),
-                    ],
+                    subtitle: Text(
+                      "Training Simulator",
+                      style: tsOneTextTheme.labelSmall,
+                    ),
+                    trailing: Icon(Icons.navigate_next),
                   ),
                 ),
               ),
-
-              InkWell(
-                onTap: (){
-
-                  Get.toNamed(Routes.NAVADMIN);
-                },
-                child: Card(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: Get.width,
-                        height: 200,
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                                fit: BoxFit.fitWidth,
-                                image: AssetImage(
-                                    "assets/images/Cool Kids Alone Time.png"))),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                              child: Container(
-                                padding: EdgeInsets.all(10),
-                                color: Colors.white,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text("Control Card"),
-                                    Text("Training ")
-                                  ],
-                                ),
-                              ))
-                        ],
-                      ),
-                    ],
+              SizedBox(height: 10,),
+              Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.0),
+                    color: Colors.white
+                ),
+                child: InkWell(
+                  onTap: (){
+                    controller.cekRole();
+                  },
+                  child: ListTile(
+                    title: Text(
+                      "Training Card",
+                      style: tsOneTextTheme.headlineLarge,
+                    ),
+                    subtitle: Text(
+                      "Pilot Training and Proficiency Control Card",
+                      style: tsOneTextTheme.labelSmall,
+                    ),
+                    trailing: Icon(Icons.navigate_next),
                   ),
                 ),
               ),
-              InkWell(
-                onTap: (){
-                  Get.toNamed(Routes.NAVOCC);
-                },
-                child: Card(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: Get.width,
-                        height: 200,
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                                fit: BoxFit.fitWidth,
-                                image: AssetImage(
-                                    "assets/images/Cool Kids Alone Time.png"))),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                              child: Container(
-                                padding: EdgeInsets.all(10),
-                                color: Colors.white,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text("Electronic Flight Bag (EFB)"),
-                                    Text("EFB Handover ")
-                                  ],
-                                ),
-                              ))
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              )
 
             ],
           ),
