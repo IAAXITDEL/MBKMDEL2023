@@ -1,12 +1,15 @@
-
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:ts_one/app/modules/efb/occ/model/device.dart';
 import 'package:ts_one/app/modules/efb/occ/views/listdevice/editdevice.dart';
 import 'package:ts_one/app/modules/efb/occ/views/listdevice/adddevice.dart';
 import 'package:ts_one/app/modules/efb/occ/views/listdevice/showdevice.dart';
 import 'package:ts_one/app/modules/efb/occ/controllers/device_controller.dart';
 
+import '../../../../../../presentation/theme.dart';
+import '../../../../../routes/app_pages.dart';
 
 class ListDevice extends StatefulWidget {
   @override
@@ -16,7 +19,8 @@ class ListDevice extends StatefulWidget {
 }
 
 class _ListDeviceState extends State<ListDevice> {
-  final Stream<QuerySnapshot> collectionReference = DeviceController.readDevice();
+  final Stream<QuerySnapshot> collectionReference =
+      DeviceController.readDevice();
   String searchQuery = "";
   TextEditingController searchController = TextEditingController();
 
@@ -40,7 +44,7 @@ class _ListDeviceState extends State<ListDevice> {
                 ),
               ),
             ),
-                (route) => true,
+            (route) => true,
           );
         } else if (value == 'delete') {
           _showDeleteConfirmationDialog(e.id);
@@ -60,7 +64,7 @@ class _ListDeviceState extends State<ListDevice> {
                 ),
               ),
             ),
-                (route) => true,
+            (route) => true,
           );
         }
       },
@@ -105,41 +109,48 @@ class _ListDeviceState extends State<ListDevice> {
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: Color(0xFFE6E6E6),
-          title: Text('Delete Device',
+          title: Text(
+            'Delete Device',
             style: TextStyle(
               color: Colors.redAccent,
               fontWeight: FontWeight.bold,
               fontFamily: 'Poppins',
-            ),),
-          content: Text('Are you sure you want to delete this device?',
+            ),
+          ),
+          content: Text(
+            'Are you sure you want to delete this device?',
             style: TextStyle(
               color: Colors.black,
               fontFamily: 'Poppins',
-            ),),
+            ),
+          ),
           actions: <Widget>[
             TextButton(
-              child: Text('Cancel',
+              child: Text(
+                'Cancel',
                 style: TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
                   fontFamily: 'Poppins',
                 ),
               ),
-
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text('Delete',
+              child: Text(
+                'Delete',
                 style: TextStyle(
                   color: Colors.redAccent,
                   fontWeight: FontWeight.bold,
                   fontFamily: 'Poppins',
-                ),),
+                ),
+              ),
               onPressed: () async {
                 Navigator.of(context).pop(); // Close the dialog
-                var response = await DeviceController.deleteDevice(uid: deviceId);
+                var response =
+                    await DeviceController.deleteDevice(uid: deviceId);
                 if (response.code != 200) {
                   showDialog(
                     context: context,
@@ -158,53 +169,60 @@ class _ListDeviceState extends State<ListDevice> {
     );
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      //resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Center(
           child: Text(
             "List of Device",
-            style: TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Poppins',
-            ),
+            style: tsOneTextTheme.headlineLarge,
           ),
         ),
-        backgroundColor: Colors.white,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ElevatedButton.icon(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (BuildContext context) => AddDevice()),
-                );
-              },
-              icon: Icon(Icons.add),
-              label: Text("Add Device"),
-              style: ElevatedButton.styleFrom(
-                primary: Colors.transparent,
-                elevation: 0,
-                onPrimary: Colors.black,
-                textStyle: TextStyle(fontSize: 16),
+        backgroundColor: TsOneColor.onPrimary,
+        automaticallyImplyLeading: false,
+      ),
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        child: Column(
+          children: [
+            Align(
+              alignment: Alignment.centerRight,
+              child: Container(
+                width: 155,
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                    backgroundColor: TsOneColor.primary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => AddDevice()),
+                    );
+                  },
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.add_box_outlined,
+                        color: TsOneColor.onPrimary,
+                      ),
+                      SizedBox(width: 10),
+                      Text(
+                        "Add Device",
+                        style: TextStyle(color: TsOneColor.onPrimary),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
-          ),
-        ],
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
+            SizedBox(height: 10),
+            TextField(
               controller: searchController,
               onChanged: (value) {
                 setState(() {
@@ -213,63 +231,76 @@ class _ListDeviceState extends State<ListDevice> {
               },
               decoration: InputDecoration(
                 hintText: "Search Device Number",
+                hintStyle: const TextStyle(
+                  color: TsOneColor.onSecondary,
+                ),
                 prefixIcon: Icon(Icons.search),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(30)),
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
                 ),
               ),
             ),
-          ),
-          Expanded(
-            child: StreamBuilder(
-              stream: collectionReference,
-              builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                if (snapshot.hasData) {
-                  final filteredData = snapshot.data!.docs.where((e) => e["deviceno"].toString().toLowerCase().contains(searchQuery.toLowerCase())).toList();
+            SizedBox(height: 10),
+            Expanded(
+              child: StreamBuilder(
+                stream: collectionReference,
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.hasData) {
+                    final filteredData = snapshot.data!.docs
+                        .where((e) => e["deviceno"]
+                            .toString()
+                            .toLowerCase()
+                            .contains(searchQuery.toLowerCase()))
+                        .toList();
 
-                  if (filteredData.isEmpty) {
-                    return Center(
-                      child: Text(
-                        "No Device found",
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,  fontFamily: 'Poppins'),
+                    if (filteredData.isEmpty) {
+                      return Center(
+                        child: Text("No Device found",
+                            style: tsOneTextTheme.labelSmall),
+                      );
+                    }
+
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: ListView(
+                        children: filteredData.map((e) {
+                          return Container(
+                            height: 80,
+                            child: Card(
+                              color: TsOneColor.onPrimary,
+                              child: Column(
+                                children: [
+                                  ListTile(
+                                    title: Text(
+                                      "${e["deviceno"]}",
+                                      style: tsOneTextTheme.bodyMedium,
+                                    ),
+                                    subtitle: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        // ... other sub-items ...
+                                      ],
+                                    ),
+                                    trailing: _buildEditDeleteButton(
+                                        e), // Pass 'e' here
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        }).toList(),
                       ),
                     );
                   }
 
-                  return Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: ListView(
-                      children: filteredData.map((e) {
-                        return Container(
-                          height: 80,
-                          child: Card(
-                            color: Color(0xFFE6E6E6),
-                            child: Column(
-                              children: [
-                                ListTile(
-                                  title: Text("Device Number: ${e["deviceno"]}"),
-                                  subtitle: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      // ... other sub-items ...
-                                    ],
-                                  ),
-                                  trailing: _buildEditDeleteButton(e), // Pass 'e' here
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                  );
-                }
-
-                return Container();
-              },
+                  return Container();
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

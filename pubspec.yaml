@@ -85,8 +85,12 @@ dependencies:
   response: ^1.0.0
   qr_flutter: ^4.1.0
   flutter_barcode_scanner: ^2.0.0
+<<<<<<< HEAD
   flutter_signature_pad: ^3.0.1
   uuid: ^4.0.0
+=======
+  google_nav_bar: ^5.0.6
+>>>>>>> b622314de3f048615921cbf19dcb8bdd98d51c6c
 dev_dependencies:
   flutter_launcher_icons: ^0.13.1
   syncfusion_flutter_signaturepad: ^22.2.11
