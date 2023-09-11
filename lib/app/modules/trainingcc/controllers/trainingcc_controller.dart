@@ -16,7 +16,7 @@ class TrainingccController extends GetxController {
   final RxInt argumentid = 0.obs;
   final RxString argumentname = "".obs;
 
-  final RxBool cekPilot = true.obs;
+  final RxBool cekPilot = false.obs;
 
   // List untuk training remark
   Stream<QuerySnapshot<Map<String, dynamic>>> trainingRemarkStream() {
