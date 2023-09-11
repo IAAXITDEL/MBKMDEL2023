@@ -8,7 +8,8 @@ class FormTextField extends StatelessWidget {
   final TextEditingController textController;
   final String text;
   final bool readOnly;
-  const FormTextField( {Key? key,required this.text, required this.textController, this.readOnly = false}) : super(key: key);
+  final IconData? icon;
+  const FormTextField( {Key? key,required this.text, required this.textController, this.readOnly = false,  this.icon}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +24,7 @@ class FormTextField extends StatelessWidget {
         return null;
       },
       decoration: InputDecoration(
+          suffixIcon: Icon(icon, color: TsOneColor.primary,),
           contentPadding: EdgeInsets.symmetric(vertical: 0,horizontal: 10),
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(

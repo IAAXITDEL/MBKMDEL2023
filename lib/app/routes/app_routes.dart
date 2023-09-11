@@ -41,7 +41,6 @@ abstract class Routes {
   static const HOMECC = _Paths.HOMECC;
   static const PROFILECC = _Paths.PROFILECC;
 
-
   //EFB
   static const NAVOCC = _Paths.NAVOCC;
   static const HOMEOCC = _Paths.HOMEOCC;
@@ -57,19 +56,23 @@ abstract class Routes {
   static const PILOTCREWCC = _Paths.PILOTCREWCC;
   static const TRAININGTYPECC = _Paths.TRAININGTYPECC;
   static const ADD_ATTENDANCECC = _Paths.ADD_ATTENDANCECC;
-  static String ATTENDANCE_CONFIRCC(String attendanceId) {
-    return _Paths.ATTENDANCE_CONFIRCC(attendanceId);
-  }
+  // static String ATTENDANCE_CONFIRCC(String attendanceId) {
+  //   return _Paths.ATTENDANCE_CONFIRCC(attendanceId);
+  // }
 
-
-  static const NAVCAPTAIN = _Paths.NAVCAPTAIN;
   static const HOME_INSTRUCTORCC = _Paths.HOME_INSTRUCTORCC;
   static const TRAINING_INSTRUCTORCC = _Paths.TRAINING_INSTRUCTORCC;
   static const HOME_ADMINCC = _Paths.HOME_ADMINCC;
   static const INSTRUCTOR_MAIN_HOMECC = _Paths.INSTRUCTOR_MAIN_HOMECC;
   static const NAVINSTRUCTOR = _Paths.NAVINSTRUCTOR;
   static const ATTENDANCE_PENDINGCC = _Paths.ATTENDANCE_PENDINGCC;
-
+  static const ATTENDANCE_CONFIRCC = _Paths.ATTENDANCE_CONFIRCC;
+  static const ATTENDANCE_INSTRUCTORCONFIRCC =
+      _Paths.ATTENDANCE_INSTRUCTORCONFIRCC;
+  static const HOME_PILOTCC = _Paths.HOME_PILOTCC;
+  static const NAVPILOT = _Paths.NAVPILOT;
+  static const ATTENDANCE_PILOTCC = _Paths.ATTENDANCE_PILOTCC;
+  static const LIST_ATTENDANCECC = _Paths.LIST_ATTENDANCECC;
 }
 
 abstract class _Paths {
@@ -112,7 +115,6 @@ abstract class _Paths {
   static const HOMECC = '/homecc';
   static const PROFILECC = '/profilecc';
 
-
   //EFB
   static const NAVOCC = '/navocc';
   static const HOMEOCC = '/homeocc';
@@ -128,17 +130,20 @@ abstract class _Paths {
   static const PILOTCREWCC = '/pilotcrewcc';
   static const TRAININGTYPECC = '/trainingtypecc';
   static const ADD_ATTENDANCECC = '/add-attendancecc';
-  static String ATTENDANCE_CONFIRCC(String attendanceId) {
-    return '/attendance-confircc/$attendanceId';
-  }
+  // static String ATTENDANCE_CONFIRCC(String attendanceId) {
+  //   return '/attendance-confircc/$attendanceId';
+  // }
 
-
-  static const NAVCAPTAIN = '/navcaptain';
   static const HOME_INSTRUCTORCC = '/home-instructorcc';
   static const TRAINING_INSTRUCTORCC = '/training-instructorcc';
   static const HOME_ADMINCC = '/home-admincc';
   static const INSTRUCTOR_MAIN_HOMECC = '/instructor-main-homecc';
   static const NAVINSTRUCTOR = '/navinstructor';
   static const ATTENDANCE_PENDINGCC = '/attendance-pendingcc';
-
+  static const ATTENDANCE_CONFIRCC = '/attendance-confircc';
+  static const ATTENDANCE_INSTRUCTORCONFIRCC = '/attendance-instructorconfircc';
+  static const HOME_PILOTCC = '/home-pilotcc';
+  static const NAVPILOT = '/navpilot';
+  static const ATTENDANCE_PILOTCC = '/attendance-pilotcc';
+  static const LIST_ATTENDANCECC = '/list-attendancecc';
 }
