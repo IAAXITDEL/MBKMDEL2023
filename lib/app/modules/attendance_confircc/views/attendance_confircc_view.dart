@@ -39,6 +39,7 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
     void _clearSignature() {
       _signaturePadKey.currentState?.clear();
     }
+    ;
 
 
     Future<void> confir() async {
@@ -112,7 +113,8 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                   }
 
                   var listAttendance = snapshot.data!;
-                  print(listAttendance);
+
+
                   if (listAttendance != null && listAttendance.isNotEmpty) {
                     subjectC.text = listAttendance[0]["subject"];
                     dateC.text = listAttendance[0]["date"];
@@ -125,6 +127,7 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                     // Handle the case where the list is empty or null
                     subjectC.text = "No Subject Data Available";
                   }
+
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -203,10 +206,31 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                       SizedBox(
                         height: 20,
                       ),
-                      FormTextField(
-                          text: "Chair Person/ Instructor ",
-                          textController: instructorC,
-                          readOnly: true,
+                      InkWell(
+                        onTap: (){Get.toNamed(Routes.LIST_ATTENDANCECC,arguments: {
+                          "id" : controller.argumentid.value,
+                        });},
+                        child:  Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                color: TsOneColor.secondaryContainer,
+                                width: 1,
+                              ),
+                              borderRadius: BorderRadius.circular(10)
+                          ),
+                          child: ListTile(
+                            title: Text(
+                              "Chair Person/ Instructor",
+                              style: tsOneTextTheme.labelSmall,
+                            ),
+                            subtitle: Text(
+                              listAttendance[0]["name"],
+                              style: tsOneTextTheme.headlineMedium,
+                            ),
+                            trailing: Icon(Icons.navigate_next),
+                          ),
+
+                        ),
                       ),
                       SizedBox(
                         height: 20,
@@ -229,7 +253,7 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                               style: tsOneTextTheme.labelSmall,
                             ),
                             subtitle: Text(
-                              "10 people",
+                              "${controller.jumlah.value.toString()} person",
                               style: tsOneTextTheme.headlineMedium,
                             ),
                             trailing: Icon(Icons.navigate_next),
@@ -282,7 +306,9 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                          SizedBox(
                            height: 10,
                          ),
-                         Text("Signature"),
+                         Row(children: [
+                           Text("Signature"),
+                         ],),
                          Container(
                            decoration: BoxDecoration(
                              border: Border.all(

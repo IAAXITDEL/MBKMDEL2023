@@ -16,6 +16,8 @@ class TrainingccController extends GetxController {
   final RxInt argumentid = 0.obs;
   final RxString argumentname = "".obs;
 
+  final RxBool cekPilot = true.obs;
+
   // List untuk training remark
   Stream<QuerySnapshot<Map<String, dynamic>>> trainingRemarkStream() {
     return firestore
@@ -50,7 +52,7 @@ class TrainingccController extends GetxController {
     }
     // SEBAGAI PILOT
     else if( userPreferences.getRank().contains(UserModel.keyPositionCaptain) || userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)){
-      return true;
+      cekPilot.value = true;
     }
     // SEBAGAI PILOT ADMINISTRATOR
     else if( userPreferences.getRank().contains("Pilot Administrator")){
