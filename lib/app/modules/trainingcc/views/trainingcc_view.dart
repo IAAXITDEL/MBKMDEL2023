@@ -158,8 +158,9 @@ class TrainingccView extends GetView<TrainingccController> {
                             onTap: () {
                               controller.argumentid.value =  trainingData["id"];
                             controller.argumentname.value =  trainingData["training"];
-                               final cek = controller.cekRole();
-                               if(cek == true){
+                                controller.cekRole();
+                                print("test ${controller.cekPilot.value}");
+                               if(controller.cekPilot.value  == true){
                                  add(controller.argumentid.value);
                                }
                             },

@@ -20,6 +20,7 @@ class AttendanceConfirccController extends GetxController {
 
   final RxString argumentid = "".obs;
   final RxString argumentname = "".obs;
+  final RxInt jumlah = 0.obs;
 
   final RxString role = "".obs;
   @override
@@ -28,7 +29,7 @@ class AttendanceConfirccController extends GetxController {
     final Map<String, dynamic> args = Get.arguments as Map<String, dynamic>;
     final String id = args["id"];
     argumentid.value = id;
-
+    attendanceStream();
     cekRole();
   }
 
@@ -49,7 +50,6 @@ class AttendanceConfirccController extends GetxController {
           return attendanceModel.toJson();
         }),
       );
-
       return attendanceData;
     });
   }
@@ -97,6 +97,19 @@ class AttendanceConfirccController extends GetxController {
       "updatedTime": DateTime.now().toIso8601String(),
       //signature icc url
     });
+  }
+
+
+//mendapatkan panjang list attendance
+  Future<int> attendanceStream() async {
+    final attendanceQuery = await _firestore
+        .collection('attendance-detail')
+        .where("idattendance", isEqualTo: argumentid.value)
+        .get();
+
+    jumlah.value = attendanceQuery.docs.length;
+    print(attendanceQuery.docs.length);
+    return attendanceQuery.docs.length;
   }
 
 

@@ -39,6 +39,11 @@ class ListAttendanceccView extends GetView<ListAttendanceccController> {
               return SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: DataTable(
+                  headingTextStyle: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: Colors.black
+                  ),
                   columnSpacing: 12.0,
                   columns: [
                     DataColumn(label: Text('NO'),  numeric: true,),
@@ -54,6 +59,12 @@ class ListAttendanceccView extends GetView<ListAttendanceccController> {
                     int index = entry.key;
                     Map<String, dynamic> list = entry.value;
                     return DataRow(
+                      color: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+                        if (index % 2 == 0) {
+                          return Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.2);
+                        }
+                        return null;
+                      }),
                       cells: [
                         DataCell(Text((index + 1).toString())),
                         DataCell(Text(list['name'].toString())),
