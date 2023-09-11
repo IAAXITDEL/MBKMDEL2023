@@ -37,7 +37,6 @@ class TrainingInstructorccController extends GetxController {
         }),
       );
 
-      print(usersData);
       return attendanceData;
     });
   }

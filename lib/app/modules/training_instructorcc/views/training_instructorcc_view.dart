@@ -96,7 +96,7 @@ class _TrainingInstructorccViewState extends State<TrainingInstructorccView>
                           itemCount: listAttendance.length,
                           itemBuilder: (context, index) {
                             return ListTile(
-                              onTap: () => Get.toNamed(Routes.ATTENDANCE_CONFIRCC(listAttendance[index]["id"]),  arguments: {
+                              onTap: () => Get.toNamed(Routes.ATTENDANCE_INSTRUCTORCONFIRCC,  arguments: {
                                 "id" : listAttendance[index]["id"],
                                 "name" : listAttendance[index]["subject"],
                               }),

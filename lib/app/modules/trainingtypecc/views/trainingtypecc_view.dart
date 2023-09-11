@@ -140,7 +140,7 @@ class _TrainingtypeccViewState extends State<TrainingtypeccView>
                                 backgroundColor: Colors.black26,
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(100),
-                                  child : listAttendance[index]["photoURL"] == "noimage" ?  Image.asset(
+                                  child : listAttendance[index]["photoURL"] == null ?  Image.asset(
                                     "assets/images/placeholder_person.png",
                                     fit: BoxFit.cover,
                                   ) : Image.network("${listAttendance[index]["photoURL"]}", fit: BoxFit.cover),),
@@ -161,6 +161,7 @@ class _TrainingtypeccViewState extends State<TrainingtypeccView>
                       }
 
                       if (snapshot.hasError) {
+                        print("Error: ${snapshot.error}");
                         return ErrorScreen();
                       }
 
@@ -186,7 +187,7 @@ class _TrainingtypeccViewState extends State<TrainingtypeccView>
                               title: Text(listAttendance[index]["name"].toString()),
                               subtitle: Text(listAttendance[index]["date"]),
                               trailing: Icon(Icons.navigate_next),
-                              onTap: () => Get.toNamed(Routes.ATTENDANCE_CONFIRCC(listAttendance[index]["id"]),  arguments: {
+                              onTap: () => Get.toNamed(Routes.ATTENDANCE_CONFIRCC,  arguments: {
                                 "id" : listAttendance[index]["id"],
                               }),
                             );
@@ -227,9 +228,9 @@ class _TrainingtypeccViewState extends State<TrainingtypeccView>
                               title: Text(listAttendance[index]["name"].toString()),
                               subtitle: Text(listAttendance[index]["date"]),
                               trailing: Icon(Icons.navigate_next),
-                              onTap: () {
-                                // Action when item is tapped
-                              },
+                              onTap: () => Get.toNamed(Routes.ATTENDANCE_CONFIRCC,  arguments: {
+                                "id" : listAttendance[index]["id"],
+                              }),
                             );
                           }
                       );

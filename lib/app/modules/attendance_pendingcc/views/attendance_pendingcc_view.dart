@@ -19,7 +19,7 @@ class AttendancePendingccView extends GetView<AttendancePendingccController> {
     var dateC = TextEditingController();
     var instructorC = TextEditingController();
 
-    var departementC = TextEditingController();
+    var departmentC = TextEditingController();
     var trainingtypeC = TextEditingController();
     var roomC = TextEditingController();
 
@@ -48,7 +48,6 @@ class AttendancePendingccView extends GetView<AttendancePendingccController> {
                   }
 
                   var listAttendance = snapshot.data!;
-                  print(listAttendance);
                   if (listAttendance != null && listAttendance.isNotEmpty) {
                     subjectC.text = listAttendance[0]["subject"];
                     dateC.text = listAttendance[0]["date"];
@@ -95,8 +94,8 @@ class AttendancePendingccView extends GetView<AttendancePendingccController> {
                         children: [
                           Expanded(
                             child: FormTextField(
-                              text: "Departement",
-                              textController: departementC,),
+                              text: "Department",
+                              textController: departmentC,),
                           ),
                           SizedBox(
                             width: 10,
