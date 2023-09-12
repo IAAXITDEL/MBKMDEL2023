@@ -51,9 +51,10 @@ class RequestdeviceController extends GetxController {
 
   // Tambahkan method untuk memeriksa apakah perangkat sudah digunakan
   Future<bool> isDeviceInUse(String deviceUid) async {
-    QuerySnapshot snapshot = await _firestore.collection('pilot-device-1')
+    QuerySnapshot snapshot = await _firestore
+        .collection('pilot-device-1')
         .where('device_uid', isEqualTo: deviceUid)
-        .where('status-device-1', isEqualTo: 'in-use-pilot')
+        .where('status-device-1', whereIn: ['in-use-pilot', 'waiting-confirmation-1', 'need-confirmation-occ'])
         .get();
 
     return snapshot.docs.isNotEmpty;
