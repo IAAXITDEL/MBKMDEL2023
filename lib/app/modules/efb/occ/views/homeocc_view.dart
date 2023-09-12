@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ts_one/app/modules/efb/occ/views/confirm_request_pilot_view.dart';
 import 'package:ts_one/app/modules/efb/occ/views/confirm_return_back_pilot_view.dart';
+import 'package:ts_one/util/error_screen.dart';
+import 'package:ts_one/util/loading_screen.dart';
 import '../../../../../presentation/theme.dart';
+import '../../../../../util/empty_screen_efb.dart';
 import '../../../../../util/util.dart';
 import '../controllers/homeocc_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -78,12 +81,16 @@ class HomeOCCView extends GetView<HomeOCCController> {
                 ],
               ),
             ),
-            TabBar(
-              tabs: [
-                Tab(text: "Confirm To Use"),
-                Tab(text: "In Use"),
-                Tab(text: "Need Confirmation"),
-              ],
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: TabBar(
+                isScrollable: true, // Set this to true to enable scrolling for tabs
+                tabs: [
+                  Tab(text: "Confirm To Use"),
+                  Tab(text: "In Use"),
+                  Tab(text: "Need Confirmation"),
+                ],
+              ),
             ),
             Expanded(
               child: TabBarView(
@@ -97,8 +104,7 @@ class HomeOCCView extends GetView<HomeOCCController> {
           ],
         ),
       ),
-
-          );
+    );
   }
 }
 
@@ -116,15 +122,15 @@ class FirebaseDataTab extends StatelessWidget {
           .snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator();
+          return LoadingScreen();
         }
 
         if (snapshot.hasError) {
-          return Text("Error: ${snapshot.error}");
+          return const ErrorScreen();
         }
 
         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-          return Text("No data found for this status.");
+          return const EmptyScreenEFB();
         }
 
         final documents = snapshot.data!.docs;
@@ -159,7 +165,6 @@ class FirebaseDataTab extends StatelessWidget {
                 final userName = userData['NAME'] ?? 'No Name';
                 final photoUrl = userData['PHOTOURL'] as String?; // Get the profile photo URL
                 final dataId = documents[index].id; // Mendapatkan ID dokumen
-
 
                 // Build the widget with the user's name and profile photo
                 return Padding(
@@ -217,7 +222,6 @@ class FirebaseDataTab extends StatelessWidget {
                             radius: 20.0, // Adjust the radius as needed
                           ),
 
-
                           SizedBox(width: 14.0), // Add spacing between the image and text
                           Flexible(
                             child: Column(
@@ -255,5 +259,3 @@ class FirebaseDataTab extends StatelessWidget {
     );
   }
 }
-
-

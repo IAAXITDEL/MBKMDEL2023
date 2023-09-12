@@ -47,7 +47,11 @@ class HomeOCCController extends GetxController {
   }
 
 
+  final selectedIndex = 0.obs;
 
+  void changeTabIndex(int index) {
+    selectedIndex.value = index;
+  }
 
   void increment() => count.value++;
 }
