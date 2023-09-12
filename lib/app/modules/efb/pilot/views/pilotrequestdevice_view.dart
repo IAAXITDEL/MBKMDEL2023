@@ -104,19 +104,17 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
   }
 
   Future<void> _saveBooking() async {
-    if (selectedDevice != null && OccOnDutyController.text.isNotEmpty) {
+    if (selectedDevice != null) {
 
       // Create the booking entry with necessary information
       _bookingService.requestDevice(
         selectedDevice!.uid,
         selectedDevice!.deviceno,
-        OccOnDutyController.text,
-          'in-use-pilot',
+          'waiting-confirmation-1',
       );
 
       setState(() {
         selectedDevice = null;
-        OccOnDutyController.clear();
         deviceNoController.clear();
       });
 
@@ -225,20 +223,9 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                   ],
                 ),
               SizedBox(height: 16.0),
-              TextField(
-                controller: OccOnDutyController,
-                decoration: InputDecoration(
-                  labelText: 'OCC On Duty',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30.0),
-                  ),
-                ),
-              ),
-              SizedBox(height: 16.0),
               ElevatedButton(
                 onPressed: () {
-                  if (selectedDevice != null &&
-                      OccOnDutyController.text.isNotEmpty) {
+                  if (selectedDevice != null ) {
                     _showConfirmationDialog();
                   }
                 },

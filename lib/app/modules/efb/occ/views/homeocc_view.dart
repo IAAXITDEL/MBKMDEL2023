@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
-
+import 'package:ts_one/app/modules/efb/occ/views/confirm_request_pilot_view.dart';
+import 'package:ts_one/app/modules/efb/occ/views/confirm_return_back_pilot_view.dart';
 import '../../../../../presentation/theme.dart';
 import '../../../../../util/util.dart';
 import '../controllers/homeocc_controller.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HomeOCCView extends GetView<HomeOCCController> {
   const HomeOCCView({Key? key}) : super(key: key);
@@ -14,174 +15,244 @@ class HomeOCCView extends GetView<HomeOCCController> {
     final controller = Get.put(HomeOCCController());
     bool _isContainerClicked = false;
 
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 50),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        body: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 50),
+              child: Column(
                 children: [
-                  Text(
-                    "Hi, ${controller.titleToGreet!}",
-                    style: tsOneTextTheme.headlineLarge,
-                  ),
-                  Spacer(),
-                  Icon(
-                    Icons.notifications_active_outlined,
-                    color: tsOneColorScheme.onSecondary,
-                  )
-                ],
-              ),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Good ${controller.timeToGreet}',
-                  style: tsOneTextTheme.labelMedium,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20),
-                child: Row(
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.only(right: 4.0),
-                      child: Icon(
-                        Icons.calendar_month_outlined,
-                        color: TsOneColor.onSecondary,
-                        size: 32,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Hi, ${controller.titleToGreet!}",
+                        style: tsOneTextTheme.headlineLarge,
                       ),
+                      Spacer(),
+                      Icon(
+                        Icons.notifications_active_outlined,
+                        color: tsOneColorScheme.onSecondary,
+                      )
+                    ],
+                  ),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Good ${controller.timeToGreet}',
+                      style: tsOneTextTheme.labelMedium,
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    child: Row(
                       children: [
-                        Text(
-                          Util.convertDateTimeDisplay(
-                              DateTime.now().toString(), "EEEE"),
-                          style: tsOneTextTheme.labelSmall,
+                        const Padding(
+                          padding: EdgeInsets.only(right: 4.0),
+                          child: Icon(
+                            Icons.calendar_month_outlined,
+                            color: TsOneColor.onSecondary,
+                            size: 32,
+                          ),
                         ),
-                        Text(
-                          Util.convertDateTimeDisplay(
-                              DateTime.now().toString(), "dd MMMM yyyy"),
-                          style: tsOneTextTheme.labelSmall,
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              Util.convertDateTimeDisplay(
+                                  DateTime.now().toString(), "EEEE"),
+                              style: tsOneTextTheme.labelSmall,
+                            ),
+                            Text(
+                              Util.convertDateTimeDisplay(
+                                  DateTime.now().toString(), "dd MMMM yyyy"),
+                              style: tsOneTextTheme.labelSmall,
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 10),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      onTapOutside: (event) {
-                        FocusManager.instance.primaryFocus?.unfocus();
-                      },
-                      onChanged: (value) {
-                        // if (value.isNotEmpty) {
-                        //   value = value.toTitleCase();
-
-                        //   setState(() {
-                        //     isSearchingAll = true;
-                        //   });
-                        //   log("searching for $value");
-                        //   searchAssessmentBasedOnName(value);
-                        // } else {
-                        //   getAllAssessments();
-                        //   log("EMMTPY");
-                        //   setState(() {
-                        //     isSearchingAll = false;
-                        //   });
-                        // }
-                      },
-                      cursorColor: TsOneColor.primary,
-                      decoration: InputDecoration(
-                          fillColor: TsOneColor.onPrimary,
-                          filled: true,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20),
-                            borderSide:
-                                const BorderSide(color: TsOneColor.primary),
-                          ),
-                          hintText: 'Search...',
-                          hintStyle: const TextStyle(
-                            color: TsOneColor.onSecondary,
-                          ),
-                          prefixIcon: Container(
-                            padding: const EdgeInsets.all(16),
-                            width: 32,
-                            child: const Icon(Icons.search),
-                          )),
-                    ),
                   ),
                 ],
               ),
-              SizedBox(height: 15),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Need Confirmation',
-                  style: tsOneTextTheme.displayMedium,
-                ),
+            ),
+            TabBar(
+              tabs: [
+                Tab(text: "Confirm To Use"),
+                Tab(text: "In Use"),
+                Tab(text: "Need Confirmation"),
+              ],
+            ),
+            Expanded(
+              child: TabBarView(
+                children: [
+                  FirebaseDataTab(status: "waiting-confirmation-1"),
+                  FirebaseDataTab(status: "in-use-pilot"),
+                  FirebaseDataTab(status: "need-confirmation-occ"),
+                ],
               ),
-              SizedBox(height: 15),
-              Container(
-                padding: EdgeInsets.all(16.0),
-                decoration: BoxDecoration(
-                  //border: Border.all(color: Colors.grey, width: 1.0),
-                  border: Border.all(
-                    color: _isContainerClicked ? Colors.red : Colors.grey,
-                    width: 1.0,
-                  ),
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
-                child: Row(
-                  children: [
-                    CircleAvatar(
-                      backgroundImage: NetworkImage(
-                          controller.userPreferences.getPhotoURL()),
-                      radius: 20.0,
-                    ),
-                    SizedBox(width: 16.0),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Pilot name',
-                            style: TextStyle(
-                                fontSize: 15.0, fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            'IAAICT004573',
-                            style:
-                                TextStyle(fontSize: 12.0, color: Colors.grey),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Icon(
-                      Icons.arrow_forward_ios,
-                      size: 15,
-                      color: Colors.red,
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 10),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'In Use',
-                  style: tsOneTextTheme.displayMedium,
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
   }
 }
+
+class FirebaseDataTab extends StatelessWidget {
+  final String status;
+
+  FirebaseDataTab({required this.status});
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance
+          .collection("pilot-device-1")
+          .where("status-device-1", isEqualTo: status)
+          .snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return CircularProgressIndicator();
+        }
+
+        if (snapshot.hasError) {
+          return Text("Error: ${snapshot.error}");
+        }
+
+        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+          return Text("No data found for this status.");
+        }
+
+        final documents = snapshot.data!.docs;
+        return ListView.builder(
+          itemCount: documents.length,
+          itemBuilder: (context, index) {
+            final data = documents[index].data() as Map<String, dynamic>;
+
+            // Get the user_uid from the document
+            final userUid = data['user_uid'];
+
+            // Get the user's name using a FutureBuilder
+            return FutureBuilder<DocumentSnapshot>(
+              future: FirebaseFirestore.instance
+                  .collection("users")
+                  .doc(userUid)
+                  .get(),
+              builder: (context, userSnapshot) {
+                if (userSnapshot.connectionState == ConnectionState.waiting) {
+                  return CircularProgressIndicator();
+                }
+
+                if (userSnapshot.hasError) {
+                  return Text("Error: ${userSnapshot.error}");
+                }
+
+                if (!userSnapshot.hasData || !userSnapshot.data!.exists) {
+                  return Text("User data not found");
+                }
+
+                final userData = userSnapshot.data!.data() as Map<String, dynamic>;
+                final userName = userData['NAME'] ?? 'No Name';
+                final photoUrl = userData['PHOTOURL'] as String?; // Get the profile photo URL
+                final dataId = documents[index].id; // Mendapatkan ID dokumen
+
+
+                // Build the widget with the user's name and profile photo
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 3.0),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if (status == "waiting-confirmation-1") {
+                          // Navigasi ke halaman ConfirmRequestPilotView dengan membawa ID data yang diperlukan
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => ConfirmRequestPilotView(dataId: dataId),
+                            ),
+                          );
+                        } else if (status == "need-confirmation-occ") {
+                          // Navigasi ke halaman ConfirmReturnBackPilotView dengan membawa ID data yang diperlukan
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => ConfirmReturnBackPilotView(dataId: dataId),
+                            ),
+                          );
+                        }
+                      },
+                      style: ButtonStyle(
+                        padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                          EdgeInsets.all(18.0),
+                        ),
+                        side: MaterialStateProperty.all<BorderSide>(
+                          BorderSide(
+                            color: Colors.black,
+                            width: 2.0,
+                          ),
+                        ),
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                          Colors.white,
+                        ),
+                        overlayColor: MaterialStateProperty.all<Color>(
+                          Colors.red.withOpacity(0.2),
+                        ),
+                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
+                        ),
+                      ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Display the profile image
+                          CircleAvatar(
+                            backgroundImage: photoUrl != null
+                                ? NetworkImage(photoUrl as String)
+                                : AssetImage('assets/default_profile_image.png') as ImageProvider, // You can provide a default image
+                            radius: 20.0, // Adjust the radius as needed
+                          ),
+
+
+                          SizedBox(width: 14.0), // Add spacing between the image and text
+                          Flexible(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  userName, // Use the user's name
+                                  style: TextStyle(
+                                    fontSize: 12.0,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
+                                ),
+
+                                Text(
+                                  'Device Name: ${data['device_name'] ?? 'No Data'}',
+                                  style: TextStyle(
+                                    fontSize: 10.0,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            );
+          },
+        );
+      },
+    );
+  }
+}
+
+

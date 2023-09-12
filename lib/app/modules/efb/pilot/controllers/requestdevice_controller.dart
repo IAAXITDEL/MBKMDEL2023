@@ -15,36 +15,39 @@ class RequestdeviceController extends GetxController {
   TextEditingController deviceNoController = TextEditingController();
   //TODO: Implement RequestdeviceController
 
-
   Future<List<Device>> getDevices() async {
     QuerySnapshot snapshot = await _firestore.collection("Device").get();
     return snapshot.docs.map((doc) => Device.fromFirestore(doc)).toList();
   }
 
-  void requestDevice(String deviceUid, String deviceName, String occOnDuty, String statusdevice1) async {
+  void requestDevice(String deviceUid, String deviceName, String statusdevice1) async {
     User? user = _auth.currentUser;
 
     if (user != null) {
-      String uid = user.uid; // Mendapatkan UID pengguna yang saat ini masuk
+      // Query koleksi 'users' untuk mendapatkan dokumen pengguna berdasarkan emailnya
+      QuerySnapshot userQuery = await _firestore.collection('users').where('EMAIL', isEqualTo: user.email).get();
 
-      // Membuat referensi koleksi 'pilot-device-1' tanpa menambahkan dokumen
-      CollectionReference pilotDeviceCollection = _firestore.collection('pilot-device-1');
+      if (userQuery.docs.isNotEmpty) {
+        // Mengambil ID dokumen pengguna dari hasil query
+        String userUid = userQuery.docs.first.id;
 
-      // Mendapatkan ID dokumen yang baru akan dibuat
-      String newDeviceId = pilotDeviceCollection.doc().id;
+        // Membuat referensi koleksi 'pilot-device-1' tanpa menambahkan dokumen
+        CollectionReference pilotDeviceCollection = _firestore.collection('pilot-device-1');
 
-      await pilotDeviceCollection.doc(newDeviceId).set({
-        'user_uid': uid, // Merekam UID pengguna yang saat ini masuk'
-        'device_uid': deviceUid,
-        'device_name': deviceName,
-        'occ_on_duty': occOnDuty,
-        'status-device-1': 'in-use-pilot',
-        'document_id': newDeviceId, // Menyimpan ID dokumen sebagai field
-        'timestamp': FieldValue.serverTimestamp(),
-      });
+        // Mendapatkan ID dokumen yang baru akan dibuat
+        String newDeviceId = pilotDeviceCollection.doc().id;
+
+        await pilotDeviceCollection.doc(newDeviceId).set({
+          'user_uid': userUid, // Menggunakan ID dokumen pengguna sebagai 'user_uid'
+          'device_uid': deviceUid,
+          'device_name': deviceName,
+          'status-device-1': 'waiting-confirmation-1',
+          'document_id': newDeviceId, // Menyimpan ID dokumen sebagai field
+          'timestamp': FieldValue.serverTimestamp(),
+        });
+      }
     }
   }
-
 
   // Tambahkan method untuk memeriksa apakah perangkat sudah digunakan
   Future<bool> isDeviceInUse(String deviceUid) async {
@@ -61,22 +64,35 @@ class RequestdeviceController extends GetxController {
     User? user = _auth.currentUser;
 
     if (user != null) {
-      String uid = user.uid;
+      // Get the user's email
+      String userEmail = user.email ?? "";
 
-      // Ambil data perangkat yang dipinjam oleh pilot dengan status "in-use-pilot".
-      QuerySnapshot snapshot = await _firestore.collection('pilot-device-1')
-          .where('user_uid', isEqualTo: uid)
-          .where('status-device-1', isEqualTo: 'in-use-pilot')
+      // Query the 'users' collection to find the document with the matching email
+      QuerySnapshot userSnapshot = await _firestore
+          .collection('users')
+          .where('EMAIL', isEqualTo: userEmail)
+          .limit(1) // Limit to 1 document, assuming email is unique
           .get();
 
-      return snapshot; // Return the QuerySnapshot directly.
+      if (userSnapshot.docs.isNotEmpty) {
+        // Get the user's document ID (user_id)
+        String userId = userSnapshot.docs.first.id;
+
+        // Query the 'pilot-device-1' collection based on the 'user_id'
+        QuerySnapshot snapshot = await _firestore
+            .collection('pilot-device-1')
+            .where('user_uid', isEqualTo: userId)
+            .where('status-device-1', whereIn: ['in-use-pilot', 'waiting-confirmation-1','need-confirmation-occ'])
+            .get();
+
+        return snapshot; // Return the QuerySnapshot directly.
+      } else {
+        throw Exception('User not found in the "users" collection');
+      }
     } else {
       throw Exception('User not logged in'); // You can handle this case as needed.
     }
   }
-
-
-
 
 
   final count = 0.obs;
