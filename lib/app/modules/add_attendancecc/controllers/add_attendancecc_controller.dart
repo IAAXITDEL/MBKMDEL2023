@@ -46,7 +46,6 @@ class AddAttendanceccController extends GetxController {
           "status": "pending",
           "keyAttendance": getRandomString(6),
           "idTrainingType": idtrainingtype,
-          "departement" : null,
           "room" : null,
           "creationTime": DateTime.now().toIso8601String(),
           "updatedTime": DateTime.now().toIso8601String(),
