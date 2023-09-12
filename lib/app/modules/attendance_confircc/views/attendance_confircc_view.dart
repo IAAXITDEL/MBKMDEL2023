@@ -29,7 +29,7 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
     var dateC = TextEditingController();
     var instructorC = TextEditingController();
 
-    var departmentC = TextEditingController();
+    var departementC = TextEditingController();
     var trainingtypeC = TextEditingController();
     var roomC = TextEditingController();
 
@@ -38,10 +38,8 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
     void _clearSignature() {
       signaturePadKey.currentState?.clear();
     }
-    ;
 
 
-<<<<<<< HEAD
     Future<void> saveSignature() async {
       // Mengambil objek ui.Image dari SfSignaturePad
       ui.Image image = await signaturePadKey.currentState!.toImage();
@@ -68,42 +66,23 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
     }
 
     Future<void> confir(String departement, String trainingType, String room) async {
-=======
-    Future<void> confir() async {
->>>>>>> 780cee346bb4a3479e06cc8caa51eab6eedb54f4
       try {
-        controller.confirattendance().then((status) async {
+        controller.confirattendance(departement, trainingType, room).then((status) async {
           // Menunggu hingga saveSignature selesai
-          Uint8List? signatureData = await _signaturePadKey.currentState!.toImage().then((image) async {
-            ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
-            return byteData?.buffer.asUint8List();
+          await saveSignature();
+
+          // Menampilkan QuickAlert setelah saveSignature berhasil
+          await QuickAlert.show(
+            context: context,
+            type: QuickAlertType.success,
+            text: 'Confirmation Attendance Completed Successfully!',
+          );
+
+          // Navigasi ke halaman lain setelah menampilkan QuickAlert
+          Get.offAllNamed(Routes.TRAINING_INSTRUCTORCC, arguments: {
+          "id" : controller.argumentid.value,
+          "name" : controller.argumentname.value
           });
-
-          if (signatureData != null) {
-            await controller.saveSignature(signatureData);
-
-            // Menampilkan QuickAlert setelah saveSignature berhasil
-            await QuickAlert.show(
-              context: context,
-              type: QuickAlertType.success,
-              text: 'Confirmation Attendance Completed Successfully!',
-            );
-
-            // Navigasi ke halaman lain setelah menampilkan QuickAlert
-            Get.offAllNamed(Routes.TRAININGTYPECC, arguments: {
-              "id" : controller.argumentid.value,
-              "name" : controller.argumentname.value
-            });
-          } else {
-            // Handle jika signatureData null
-            print('Error: Signature data is null');
-            // Menampilkan QuickAlert untuk kesalahan
-            await QuickAlert.show(
-              context: context,
-              type: QuickAlertType.error,
-              text: 'An error occurred while saving the signature.',
-            );
-          }
         });
       } catch (error) {
         // Penanganan kesalahan jika saveSignature gagal
@@ -141,26 +120,16 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                   }
 
                   var listAttendance = snapshot.data!;
-<<<<<<< HEAD
                   print(listAttendance);
                   if (listAttendance.isNotEmpty) {
-=======
-
-
-                  if (listAttendance != null && listAttendance.isNotEmpty) {
->>>>>>> 780cee346bb4a3479e06cc8caa51eab6eedb54f4
                     subjectC.text = listAttendance[0]["subject"];
                     dateC.text = listAttendance[0]["date"];
-                    departmentC.text = listAttendance[0]["department"];
                     vanueC.text = listAttendance[0]["vanue"];
-                    trainingtypeC.text = listAttendance[0]["trainingType"];
-                    roomC.text = listAttendance[0]["room"];
                     instructorC.text = listAttendance[0]["name"];
                   } else {
                     // Handle the case where the list is empty or null
                     subjectC.text = "No Subject Data Available";
                   }
-
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -198,10 +167,8 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                         children: [
                           Expanded(
                             child: FormTextField(
-                              text: "Department",
-                              textController: departmentC,
-                                readOnly: true
-                            ),
+                                text: "Departement",
+                                textController: departementC,),
                           ),
                           const SizedBox(
                             width: 10,
@@ -223,23 +190,21 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                           Expanded(
                             child: FormTextField(
                                 text: "Training Type",
-                                textController: trainingtypeC,
-                                readOnly: true),
+                                textController: trainingtypeC),
                           ),
                           const SizedBox(
                             width: 10,
                           ),
                           Expanded(
                             child: FormTextField(
-                              text: "Room",
-                              textController: roomC,),
+                                text: "Room",
+                                textController: roomC,),
                           )
                         ],
                       ),
                       const SizedBox(
                         height: 20,
                       ),
-<<<<<<< HEAD
                       FormTextField(
                           text: "Chair Person/ Instructor ",
                           textController: instructorC,
@@ -252,64 +217,6 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                           textController: subjectC,
                           readOnly: true),
                       const SizedBox(
-=======
-                      InkWell(
-                        onTap: (){Get.toNamed(Routes.LIST_ATTENDANCECC,arguments: {
-                          "id" : controller.argumentid.value,
-                        });},
-                        child:  Container(
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                color: TsOneColor.secondaryContainer,
-                                width: 1,
-                              ),
-                              borderRadius: BorderRadius.circular(10)
-                          ),
-                          child: ListTile(
-                            title: Text(
-                              "Chair Person/ Instructor",
-                              style: tsOneTextTheme.labelSmall,
-                            ),
-                            subtitle: Text(
-                              listAttendance[0]["name"],
-                              style: tsOneTextTheme.headlineMedium,
-                            ),
-                            trailing: Icon(Icons.navigate_next),
-                          ),
-
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      InkWell(
-                        onTap: (){Get.toNamed(Routes.LIST_ATTENDANCECC,arguments: {
-                        "id" : controller.argumentid.value,
-                        });},
-                        child:  Container(
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                color: TsOneColor.secondaryContainer,
-                                width: 1,
-                              ),
-                              borderRadius: BorderRadius.circular(10)
-                          ),
-                          child: ListTile(
-                            title: Text(
-                              "Attendance",
-                              style: tsOneTextTheme.labelSmall,
-                            ),
-                            subtitle: Text(
-                              "${controller.jumlah.value.toString()} person",
-                              style: tsOneTextTheme.headlineMedium,
-                            ),
-                            trailing: Icon(Icons.navigate_next),
-                          ),
-
-                        ),
-                      ),
-                      SizedBox(
->>>>>>> 780cee346bb4a3479e06cc8caa51eab6eedb54f4
                         height: 20,
                       ),
                       const Text("Attendance"),
@@ -317,7 +224,6 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                         children: [
                           Row(
                             children: [
-<<<<<<< HEAD
                               Obx(
                                     () => Radio<String>(
                                   value: "Meeting",
@@ -332,14 +238,11 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                                 style: tsOneTextTheme.labelSmall,
                               ),
                               const SizedBox(
-=======
-                              SizedBox(
->>>>>>> 780cee346bb4a3479e06cc8caa51eab6eedb54f4
                                 width: 10,
                               ),
                               Obx(
                                     () => Radio<String>(
-                                  value: listAttendance[0]["attendanceType"],
+                                  value: "Training",
                                   groupValue: controller.selectedMeeting.value,
                                   onChanged: (String? newValue) {
                                     controller.selectMeeting(newValue);
@@ -347,7 +250,7 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                                 ),
                               ),
                               Text(
-                                listAttendance[0]["attendanceType"],
+                                "Training",
                                 style: tsOneTextTheme.labelSmall,
                               ),
                             ],
@@ -362,7 +265,6 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                         size: 16,
                       ),
 
-<<<<<<< HEAD
                       //--------------------------- ATTANDANCE --------------------
                       const SizedBox(
                         height: 10,
@@ -469,79 +371,6 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                           child: const Text('Submit', style: TextStyle(color: Colors.white),),
                         ),
                       ),
-=======
-
-                      // Jika status masih konfirmasi
-                      listAttendance[0]["status"] == "confirmation" ?
-                     Column(
-                       children: [
-                         //--------------------------- ATTANDANCE --------------------
-                         SizedBox(
-                           height: 10,
-                         ),
-                         Row(children: [
-                           Text("Signature"),
-                         ],),
-                         Container(
-                           decoration: BoxDecoration(
-                             border: Border.all(
-                               color: TsOneColor.secondaryContainer,
-                               width: 1,
-                             ),
-                           ),
-                           child: SfSignaturePad(
-                             key: _signaturePadKey,
-                             backgroundColor: Colors.grey.withOpacity(0.1),
-                           ),
-                         ),
-
-                         Row(
-                           crossAxisAlignment: CrossAxisAlignment.end,
-                           mainAxisAlignment: MainAxisAlignment.end,
-                           children: [
-                             ElevatedButton(
-                               onPressed: _clearSignature,
-                               style: ButtonStyle(
-                                 backgroundColor: MaterialStateProperty.all<Color>(
-                                     TsOneColor.primary),
-                               ),
-                               child: Container(
-                                 decoration:
-                                 BoxDecoration(color: TsOneColor.primary),
-                                 child: Row(
-                                   children: [
-                                     Icon(
-                                       Icons.clear_outlined,
-                                       color: Colors.white,
-                                       size: 20,
-                                     ),
-                                     SizedBox(
-                                       width: 5,
-                                     ),
-                                     Text("Clear", style: TextStyle(color: Colors.white))
-                                   ],
-                                 ),
-                               ),
-                             ),
-                           ],
-                         ),
-                         //-------------------------SUBMIT-----------------------
-                         Padding(
-                           padding: const EdgeInsets.symmetric(vertical: 16.0),
-                           child: ElevatedButton(
-                             onPressed: () {
-                               confir();
-                             },
-                             style: ElevatedButton.styleFrom(
-                               primary: TsOneColor.greenColor,
-                               minimumSize: Size(double.infinity, 50),
-                             ),
-                             child: Text('Submit', style: TextStyle(color: Colors.white),),
-                           ),
-                         ),
-                       ],
-                     ) : Container()
->>>>>>> 780cee346bb4a3479e06cc8caa51eab6eedb54f4
                     ],
                   );
                 }),

@@ -4,24 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import '../../../../../presentation/theme.dart';
-import '../../../home_pilotcc/views/home_pilotcc_view.dart';
 import '../../../homecc/views/homecc_view.dart';
 import '../../../profilecc/views/profilecc_view.dart';
 import '../../../trainingcc/views/trainingcc_view.dart';
-<<<<<<< HEAD:lib/app/modules/pa/navcaptain/views/navcaptain_view.dart
-=======
-import '../controllers/navpilot_controller.dart';
->>>>>>> 780cee346bb4a3479e06cc8caa51eab6eedb54f4:lib/app/modules/pa/navpilot/views/navpilot_view.dart
 
-class NavpilotView extends StatefulWidget {
+class NavcaptainView extends StatefulWidget {
   final int initialIndex;
-  const NavpilotView({Key? key, required this.initialIndex}) : super(key: key);
+  const NavcaptainView({Key? key, required this.initialIndex}) : super(key: key);
 
   @override
-  State<NavpilotView> createState() => _NavpilotState();
+  State<NavcaptainView> createState() => _NavcaptainState();
 }
 
-class _NavpilotState extends State<NavpilotView> {
+class _NavcaptainState extends State<NavcaptainView> {
   late PersistentTabController _controller;
 
   @override
@@ -32,15 +27,9 @@ class _NavpilotState extends State<NavpilotView> {
 
   List<Widget> _buildScreens() {
     return [
-<<<<<<< HEAD:lib/app/modules/pa/navcaptain/views/navcaptain_view.dart
       const HomeccView(),
       const TrainingccView(),
       const ProfileccView(),
-=======
-      HomePilotccView(),
-      TrainingccView(),
-      ProfileccView(),
->>>>>>> 780cee346bb4a3479e06cc8caa51eab6eedb54f4:lib/app/modules/pa/navpilot/views/navpilot_view.dart
     ];
   }
 
@@ -101,6 +90,4 @@ class _NavpilotState extends State<NavpilotView> {
     );
   }
 }
-
-
 

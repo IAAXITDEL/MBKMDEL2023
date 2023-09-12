@@ -1,7 +1,4 @@
-import 'dart:typed_data';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
 
 import '../../../../data/users/user_preferences.dart';
@@ -20,7 +17,6 @@ class AttendanceConfirccController extends GetxController {
 
   final RxString argumentid = "".obs;
   final RxString argumentname = "".obs;
-  final RxInt jumlah = 0.obs;
 
   final RxString role = "".obs;
   @override
@@ -29,7 +25,7 @@ class AttendanceConfirccController extends GetxController {
     final Map<String, dynamic> args = Get.arguments as Map<String, dynamic>;
     final String id = args["id"];
     argumentid.value = id;
-    attendanceStream();
+
     cekRole();
   }
 
@@ -50,6 +46,8 @@ class AttendanceConfirccController extends GetxController {
           return attendanceModel.toJson();
         }),
       );
+
+      print(attendanceData);
       return attendanceData;
     });
   }
@@ -71,45 +69,18 @@ class AttendanceConfirccController extends GetxController {
 
   }
 
-
-  Future<void> saveSignature(Uint8List signatureData) async {
-    // Membuat referensi untuk Firebase Storage
-    final Reference storageReference = FirebaseStorage.instance.ref().child(
-        'signature-cc/${argumentid.value}-pilot-administrator-${DateTime.now()}.png');
-
-    // Mengunggah data gambar ke Firebase Storage
-    await storageReference.putData(signatureData);
-
-    // Mendapatkan URL gambar yang diunggah
-    final String imageUrl = await storageReference.getDownloadURL();
-
-    // Menyimpan URL gambar di database Firestore
-    await FirebaseFirestore.instance.collection('attendance').doc(argumentid.value).update({
-      'signature-pilot-administrator-url': imageUrl
-    });
-  }
-
   //confir attendance oleh instructor
-  Future<void> confirattendance() async {
+  Future<void> confirattendance(String departement, String trainingType, String room) async {
     CollectionReference attendance = _firestore.collection('attendance');
     await attendance.doc(argumentid.value.toString()).update({
-      "status" : "done",
-      "updatedTime": DateTime.now().toIso8601String(),
+      "departement": departement,
+      "trainingType" :  trainingType,
+      "room" : room,
+      "attendance" : selectedMeeting.value,
+      "status" : "confirmation",
+
       //signature icc url
     });
-  }
-
-
-//mendapatkan panjang list attendance
-  Future<int> attendanceStream() async {
-    final attendanceQuery = await _firestore
-        .collection('attendance-detail')
-        .where("idattendance", isEqualTo: argumentid.value)
-        .get();
-
-    jumlah.value = attendanceQuery.docs.length;
-    print(attendanceQuery.docs.length);
-    return attendanceQuery.docs.length;
   }
 
 
