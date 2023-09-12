@@ -10,7 +10,7 @@ import 'dart:io';
 class ShowDevice extends StatelessWidget {
   final Device device;
 
-  ShowDevice({required this.device});
+  const ShowDevice({super.key, required this.device});
 
 
   Future<void> _createQR() async {
@@ -21,7 +21,7 @@ class ShowDevice extends StatelessWidget {
         build: (context) {
           return pw.Center(
             child: pw.Padding(
-              padding: pw.EdgeInsets.symmetric(vertical: 20), // Add vertical padding
+              padding: const pw.EdgeInsets.symmetric(vertical: 20), // Add vertical padding
               child: pw.Row(
                 mainAxisAlignment: pw.MainAxisAlignment.center,
                 crossAxisAlignment: pw.CrossAxisAlignment.center,
@@ -38,7 +38,7 @@ class ShowDevice extends StatelessWidget {
                     crossAxisAlignment: pw.CrossAxisAlignment.center,
                     children: [
                       pw.Text(device.deviceno,
-                        style: pw.TextStyle(fontSize: 50,),
+                        style: const pw.TextStyle(fontSize: 50,),
                       ),
                     ],
                   ),
@@ -66,7 +66,7 @@ class ShowDevice extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Device Details'),
+        title: const Text('Device Details'),
       ),
       body: Center(
         child: Column(
@@ -79,7 +79,7 @@ class ShowDevice extends StatelessWidget {
             Text("Lido Version: ${device.lidoversion}"),
             Text("Docu Version: ${device.docuversion}"),
             Text("Condition: ${device.condition}"),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             QrImageView(
               data: deviceNo,
               version: QrVersions.auto,
@@ -87,7 +87,7 @@ class ShowDevice extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: _createQR,
-              child: Text('Export QR Code'),
+              child: const Text('Export QR Code'),
             ),
           ],
         ),

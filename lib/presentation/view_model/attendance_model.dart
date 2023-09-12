@@ -45,19 +45,19 @@ class AttendanceModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['creationTime'] = this.creationTime;
-    data['date'] = this.date;
-    data['idTrainingType'] = this.idTrainingType;
-    data['instructor'] = this.instructor;
-    data['keyAttendance'] = this.keyAttendance;
-    data['status'] = this.status;
-    data['subject'] = this.subject;
-    data['updatedTime'] = this.updatedTime;
-    data['vanue'] = this.vanue;
-    data['name'] = this.name;
-    data['photoURL'] = this.photoURL;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['creationTime'] = creationTime;
+    data['date'] = date;
+    data['idTrainingType'] = idTrainingType;
+    data['instructor'] = instructor;
+    data['keyAttendance'] = keyAttendance;
+    data['status'] = status;
+    data['subject'] = subject;
+    data['updatedTime'] = updatedTime;
+    data['vanue'] = vanue;
+    data['name'] = name;
+    data['photoURL'] = photoURL;
     return data;
   }
 }

@@ -13,11 +13,11 @@ class HomeccView extends GetView<HomeccController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: RedTitleText(text: "Hello, Noel", ),
+        title: const RedTitleText(text: "Hello, Noel", ),
       ),
       body: Padding(
-        padding: EdgeInsets.all(20),
-        child: controller.titleToGreet == 'Captain' ? HomeInstructorccView() : HomeAdminccView(),
+        padding: const EdgeInsets.all(20),
+        child: controller.titleToGreet == 'Captain' ? const HomeInstructorccView() : const HomeAdminccView(),
       ),
     );
   }

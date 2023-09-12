@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../theme.dart';
 
@@ -18,21 +17,21 @@ class FormTextField extends StatelessWidget {
       readOnly: readOnly,
       validator: (value) {
         if (value == null || value.isEmpty) {   // Validation Logic
-          return 'Please enter the ${text}';
+          return 'Please enter the $text';
         }
         return null;
       },
       decoration: InputDecoration(
-          contentPadding: EdgeInsets.symmetric(vertical: 0,horizontal: 10),
-          enabledBorder: OutlineInputBorder(
+          contentPadding: const EdgeInsets.symmetric(vertical: 0,horizontal: 10),
+          enabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(
               color: TsOneColor.secondaryContainer,
             ),
           ),
-          border: OutlineInputBorder(
+          border: const OutlineInputBorder(
               borderSide: BorderSide(color: TsOneColor.secondaryContainer)
           ),
-          focusedBorder: OutlineInputBorder(
+          focusedBorder: const OutlineInputBorder(
             borderSide: BorderSide(
               color: Colors.green,
             ),

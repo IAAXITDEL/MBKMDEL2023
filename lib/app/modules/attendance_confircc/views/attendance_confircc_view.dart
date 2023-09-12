@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -21,7 +20,7 @@ import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
 import 'dart:ui' as ui;
 
 class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
-  AttendanceConfirccView({Key? key}) : super(key: key);
+  const AttendanceConfirccView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
 
@@ -34,16 +33,16 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
     var trainingtypeC = TextEditingController();
     var roomC = TextEditingController();
 
-    final GlobalKey<SfSignaturePadState> _signaturePadKey;
-    _signaturePadKey = GlobalKey();
+    final GlobalKey<SfSignaturePadState> signaturePadKey;
+    signaturePadKey = GlobalKey();
     void _clearSignature() {
-      _signaturePadKey.currentState?.clear();
+      signaturePadKey.currentState?.clear();
     }
 
 
     Future<void> saveSignature() async {
       // Mengambil objek ui.Image dari SfSignaturePad
-      ui.Image image = await _signaturePadKey.currentState!.toImage();
+      ui.Image image = await signaturePadKey.currentState!.toImage();
 
       // Mengonversi ui.Image menjadi data gambar
       ByteData? byteData = await image.toByteData(
@@ -100,29 +99,29 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text('Back', style: TextStyle(color: Colors.black)),
-          iconTheme: IconThemeData(color: Colors.black),
+          title: const Text('Back', style: TextStyle(color: Colors.black)),
+          iconTheme: const IconThemeData(color: Colors.black),
           // backgroundColor: Colors.transparent,
           elevation: 0,
         ),
         body: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: StreamBuilder<List<Map<String, dynamic>>>(
                 stream: controller
                     .getCombinedAttendanceStream(controller.argumentid.value.toString()),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return LoadingScreen(); // Placeholder while loading
+                    return const LoadingScreen(); // Placeholder while loading
                   }
 
                   if (snapshot.hasError) {
-                    return ErrorScreen();
+                    return const ErrorScreen();
                   }
 
                   var listAttendance = snapshot.data!;
                   print(listAttendance);
-                  if (listAttendance != null && listAttendance.isNotEmpty) {
+                  if (listAttendance.isNotEmpty) {
                     subjectC.text = listAttendance[0]["subject"];
                     dateC.text = listAttendance[0]["date"];
                     vanueC.text = listAttendance[0]["vanue"];
@@ -135,9 +134,9 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      RedTitleText(text: "ATTENDANCE LIST"),
-                      Text("REDUCED VERTICAL SEPARATION MINIMA (RVSM)"),
-                      SizedBox(
+                      const RedTitleText(text: "ATTENDANCE LIST"),
+                      const Text("REDUCED VERTICAL SEPARATION MINIMA (RVSM)"),
+                      const SizedBox(
                         height: 20,
                       ),
                       Row(
@@ -149,7 +148,7 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                                 textController: subjectC,
                                 readOnly: true),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 10,
                           ),
                           Expanded(
@@ -160,7 +159,7 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                           )
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       Row(
@@ -171,7 +170,7 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                                 text: "Departement",
                                 textController: departementC,),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 10,
                           ),
                           Expanded(
@@ -182,7 +181,7 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                           )
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       Row(
@@ -193,7 +192,7 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                                 text: "Training Type",
                                 textController: trainingtypeC),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 10,
                           ),
                           Expanded(
@@ -203,24 +202,24 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                           )
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       FormTextField(
                           text: "Chair Person/ Instructor ",
                           textController: instructorC,
                           readOnly: true),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       FormTextField(
                           text: "Attandance",
                           textController: subjectC,
                           readOnly: true),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
-                      Text("Attendance"),
+                      const Text("Attendance"),
                       Row(
                         children: [
                           Row(
@@ -238,7 +237,7 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                                 "Meeting",
                                 style: tsOneTextTheme.labelSmall,
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 10,
                               ),
                               Obx(
@@ -260,17 +259,17 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                         ],
                       ),
 
-                      Text("Class Password"),
+                      const Text("Class Password"),
                       RedTitleText(
                         text: listAttendance[0]["keyAttendance"],
                         size: 16,
                       ),
 
                       //--------------------------- ATTANDANCE --------------------
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
-                      Text("Signature"),
+                      const Text("Signature"),
                       Container(
                         decoration: BoxDecoration(
                           border: Border.all(
@@ -279,15 +278,15 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                           ),
                         ),
                         child: SfSignaturePad(
-                          key: _signaturePadKey,
+                          key: signaturePadKey,
                           backgroundColor: Colors.grey.withOpacity(0.1),
                         ),
                       ),
                       InkWell(
-                        child: Text("Save As Image"),
+                        child: const Text("Save As Image"),
                         onTap: () async {
                           // Mengambil objek ui.Image dari SfSignaturePad
-                          ui.Image image = await _signaturePadKey.currentState!.toImage();
+                          ui.Image image = await signaturePadKey.currentState!.toImage();
 
                           // Mengonversi ui.Image menjadi data gambar
                           ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
@@ -316,10 +315,10 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                             MaterialPageRoute(
                               builder: (context) => Scaffold(
                                 appBar: AppBar(
-                                  title: Text("Signature Image"),
+                                  title: const Text("Signature Image"),
                                 ),
                                 body: Center(
-                                  child: Image.memory(uint8List!),
+                                  child: Image.memory(uint8List),
                                 ),
                               ),
                             ),
@@ -340,9 +339,9 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                             ),
                             child: Container(
                               decoration:
-                                  BoxDecoration(color: TsOneColor.primary),
+                                  const BoxDecoration(color: TsOneColor.primary),
                               child: Row(
-                                children: [
+                                children: const [
                                   Icon(
                                     Icons.clear_outlined,
                                     color: Colors.white,
@@ -366,10 +365,10 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                             confir(departementC.text, trainingtypeC.text, roomC.text);
                           },
                           style: ElevatedButton.styleFrom(
-                            primary: TsOneColor.greenColor,
-                            minimumSize: Size(double.infinity, 50),
+                            backgroundColor: TsOneColor.greenColor,
+                            minimumSize: const Size(double.infinity, 50),
                           ),
-                          child: Text('Submit', style: TextStyle(color: Colors.white),),
+                          child: const Text('Submit', style: TextStyle(color: Colors.white),),
                         ),
                       ),
                     ],

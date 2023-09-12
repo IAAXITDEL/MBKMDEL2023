@@ -13,7 +13,7 @@ class HomeOCCView extends GetView<HomeOCCController> {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(HomeOCCController());
-    bool _isContainerClicked = false;
+    bool isContainerClicked = false;
 
     return DefaultTabController(
       length: 3,
@@ -97,7 +97,8 @@ class HomeOCCView extends GetView<HomeOCCController> {
           ],
         ),
       ),
-    );
+
+          );
   }
 }
 

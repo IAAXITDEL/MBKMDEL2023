@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:get/get.dart';
-import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:ts_one/app/modules/efb/fo/views/main_view_fo.dart';
 import 'package:ts_one/app/modules/efb/occ/views/homeocc_view.dart';
 
@@ -35,10 +33,10 @@ class _NavOCCView extends State<NavOCCView> {
     if (_userPreferences.getPrivileges().contains(UserModel.keyPrivilegeOCC)) {
       _canManageDevice = true;
       _screens = [
-        HomeOCCView(),
-        ListDevice(),
-        HomeccView(),
-        ProfileccView(),
+        const HomeOCCView(),
+        const ListDevice(),
+        const HomeccView(),
+        const ProfileccView(),
       ];
     } else if (_userPreferences
         .getPrivileges()
@@ -51,9 +49,9 @@ class _NavOCCView extends State<NavOCCView> {
       ];
     } else {
       _screens = [
-        HomeFOView(),
-        HomeFOView(),
-        ProfileccView(),
+        const HomeFOView(),
+        const HomeFOView(),
+        const ProfileccView(),
       ];
     }
 
@@ -142,17 +140,17 @@ class _NavOCCView extends State<NavOCCView> {
           gap: 8,
           activeColor: Colors.white,
           iconSize: 24,
-          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-          duration: Duration(milliseconds: 300),
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+          duration: const Duration(milliseconds: 300),
           tabBackgroundColor: tsOneColorScheme.primary,
           selectedIndex: _selectedNav,
           onTabChange: _changeSelectedNav,
           tabs: [
-            GButton(
+            const GButton(
               icon: Icons.home_filled,
               text: 'Home',
             ),
-            GButton(
+            const GButton(
               icon: Icons.list_alt_rounded,
               text: 'Device',
             ),
@@ -162,11 +160,11 @@ class _NavOCCView extends State<NavOCCView> {
               text: 'History',
             ),
             if (_canManageDevice)
-              GButton(
+              const GButton(
                 icon: Icons.analytics_outlined,
                 text: 'Analytics',
               ),
-            GButton(
+            const GButton(
               icon: Icons.person_outline_outlined,
               text: 'Profile',
             ),

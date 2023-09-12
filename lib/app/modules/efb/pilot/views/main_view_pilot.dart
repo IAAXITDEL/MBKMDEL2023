@@ -90,8 +90,7 @@ class HomePilotView extends GetView<HomePilotController> {
                       doc['status-device-1'] == 'waiting-confirmation-1')
                           .toList();
                       final needConfirmationOccDocs = pilotDevicesSnapshot.docs
-                          .where((doc) =>
-                      doc['status-device-1'] == 'need-confirmation-occ')
+                          .where((doc) => doc['status-device-1'] == 'need-confirmation-occ')
                           .toList();
                       return Column(
                         children: [
@@ -118,7 +117,7 @@ class HomePilotView extends GetView<HomePilotController> {
                                           builder: (context) =>
                                               PilotreturndeviceviewView(
                                                 deviceName: deviceName,
-                                                  deviceId : deviceId,
+                                                deviceId : deviceId,
                                               ),
                                         ),
                                       );
@@ -162,81 +161,6 @@ class HomePilotView extends GetView<HomePilotController> {
                                         Column(
                                           crossAxisAlignment:
                                           CrossAxisAlignment.start, // Mengatur teks ke kiri
-                                          children: [
-                                            Text(
-                                              deviceName,
-                                              style: TextStyle(
-                                                fontSize: 12.0,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                            SizedBox(height: 5.0),
-                                            Text(
-                                              'ID: $deviceId',
-                                              style: TextStyle(
-                                                fontSize: 10.0,
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                );
-                              }).toList(),
-                            ),
-                            SizedBox(height: 15),
-                          ],
-
-
-                          // Display 'waiting-confirmation-1' data
-                          if (needConfirmationOccDocs.isNotEmpty) ...[
-                            Text(
-                              "Waiting OCC To Confirm",
-                              style: tsOneTextTheme.headlineLarge,
-                              textAlign: TextAlign.left,
-                            ),
-                            Column(
-                              children: needConfirmationOccDocs.map((doc) {
-                                String deviceName = doc['device_name'];
-                                String deviceId = doc.id;
-
-                                return Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      // Handle the button click action for 'need-confirmation-1' data
-                                      // You can customize this action as needed.
-                                    },
-                                    style: ButtonStyle(
-                                      padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                                        EdgeInsets.all(18.0),
-                                      ),
-                                      side: MaterialStateProperty.all<BorderSide>(
-                                        BorderSide(
-                                          color: Colors.yellow, // Warna border line kuning
-                                          width: 2.0,
-                                        ),
-                                      ),
-                                      backgroundColor: MaterialStateProperty.all<Color>(
-                                        Colors.white, // Warna latar belakang putih
-                                      ),
-                                      overlayColor: MaterialStateProperty.all<Color>(
-                                        Colors.yellow.withOpacity(0.2), // Warna kuning dengan opacity saat ditekan
-                                      ),
-                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                        RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(15.0),
-                                        ),
-                                      ),
-                                    ),
-                                    child: Row(
-                                      crossAxisAlignment: CrossAxisAlignment.start, // Mengatur item rata kiri
-                                      children: [
-                                        Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start, // Mengatur teks ke kiri
                                           children: [
                                             Text(
                                               deviceName,
@@ -339,9 +263,81 @@ class HomePilotView extends GetView<HomePilotController> {
                             SizedBox(height: 15),
                           ],
 
+
+                          if (needConfirmationOccDocs.isNotEmpty) ...[
+                            Text(
+                              "Waiting For OCC To Confirm",
+                              style: tsOneTextTheme.headlineLarge,
+                              textAlign: TextAlign.left,
+                            ),
+                            Column(
+                              children: needConfirmationOccDocs.map((doc) {
+                                String deviceName = doc['device_name'];
+                                String deviceId = doc.id;
+
+                                return Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      // Handle the button click action for 'waiting-confirmation-1' data
+                                      // You can customize this action as needed.
+                                    },
+                                    style: ButtonStyle(
+                                      padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                                        EdgeInsets.all(18.0),
+                                      ),
+                                      side: MaterialStateProperty.all<BorderSide>(
+                                        BorderSide(
+                                          color: Colors.yellow, // Warna border line kuning
+                                          width: 2.0,
+                                        ),
+                                      ),
+                                      backgroundColor: MaterialStateProperty.all<Color>(
+                                        Colors.white, // Warna latar belakang putih
+                                      ),
+                                      overlayColor: MaterialStateProperty.all<Color>(
+                                        Colors.yellow.withOpacity(0.2), // Warna kuning dengan opacity saat ditekan
+                                      ),
+                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(15.0),
+                                        ),
+                                      ),
+                                    ),
+                                    child: Row(
+                                      crossAxisAlignment: CrossAxisAlignment.start, // Mengatur item rata kiri
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start, // Mengatur teks ke kiri
+                                          children: [
+                                            Text(
+                                              deviceName,
+                                              style: TextStyle(
+                                                fontSize: 12.0,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                            SizedBox(height: 5.0),
+                                            Text(
+                                              'ID: $deviceId',
+                                              style: TextStyle(
+                                                fontSize: 10.0,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+                            SizedBox(height: 15),
+                          ],
+
                         ],
-
-
                       );
                     } else {
                       // Data not found, show "Request Device" button

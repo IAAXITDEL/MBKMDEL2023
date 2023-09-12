@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'package:get/get.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import '../../../../../presentation/theme.dart';
@@ -9,7 +8,6 @@ import '../../../homecc/views/homecc_view.dart';
 import '../../../pilotcrewcc/views/pilotcrewcc_view.dart';
 import '../../../profilecc/views/profilecc_view.dart';
 import '../../../trainingcc/views/trainingcc_view.dart';
-import '../controllers/navadmin_controller.dart';
 
 
 class NavadminView extends StatefulWidget {
@@ -31,32 +29,32 @@ class _NavadminState extends State<NavadminView> {
 
   List<Widget> _buildScreens() {
     return [
-      HomeccView(),
-      TrainingccView(),
-      PilotcrewccView(),
-      ProfileccView(),
+      const HomeccView(),
+      const TrainingccView(),
+      const PilotcrewccView(),
+      const ProfileccView(),
     ];
   }
 
   List<PersistentBottomNavBarItem> _navBarsItems() {
     return [
       PersistentBottomNavBarItem(
-        icon: Icon(CupertinoIcons.house_alt),
+        icon: const Icon(CupertinoIcons.house_alt),
         activeColorPrimary: tsOneColorScheme.primary,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(CupertinoIcons.square_list),
+        icon: const Icon(CupertinoIcons.square_list),
         activeColorPrimary: tsOneColorScheme.primary,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(CupertinoIcons.person_2),
+        icon: const Icon(CupertinoIcons.person_2),
         activeColorPrimary: tsOneColorScheme.primary,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(CupertinoIcons.profile_circled),
+        icon: const Icon(CupertinoIcons.profile_circled),
         activeColorPrimary: tsOneColorScheme.primary,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
@@ -84,12 +82,12 @@ class _NavadminState extends State<NavadminView> {
       ),
       popAllScreensOnTapOfSelectedTab: true,
       popActionScreens: PopActionScreensType.all,
-      itemAnimationProperties: ItemAnimationProperties(
+      itemAnimationProperties: const ItemAnimationProperties(
         // Navigation Bar's items animation properties.
         duration: Duration(milliseconds: 200),
         curve: Curves.ease,
       ),
-      screenTransitionAnimation: ScreenTransitionAnimation(
+      screenTransitionAnimation: const ScreenTransitionAnimation(
         // Screen transition animation on change of selected tab.
         animateTabTransition: true,
         curve: Curves.ease,

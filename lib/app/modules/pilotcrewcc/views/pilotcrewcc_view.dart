@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -13,13 +12,13 @@ class PilotcrewccView extends GetView<PilotcrewccController> {
 
     return Scaffold(
       appBar: AppBar(
-        title: RedTitleText(text: 'PILOT / CABIN CREW',),
+        title: const RedTitleText(text: 'PILOT / CABIN CREW',),
         backgroundColor: Colors.white,
         elevation: 0,
       ),
       body: Center(
         child: Padding(
-            padding: EdgeInsets.all(20),
+            padding: const EdgeInsets.all(20),
             child: Column(
               children: [
                 TextFormField(
@@ -28,16 +27,16 @@ class PilotcrewccView extends GetView<PilotcrewccController> {
                   decoration: InputDecoration(
                     hintText: "Search",
                     border: OutlineInputBorder(borderRadius: BorderRadius.circular(4.0)),
-                    focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
-                    prefixIcon: Icon(Icons.search),
+                    focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
+                    prefixIcon: const Icon(Icons.search),
                     suffixIcon: IconButton(
-                      icon: Icon(Icons.clear), onPressed: () {
+                      icon: const Icon(Icons.clear), onPressed: () {
                       controller.searchC.clear();
                     },
                     ),
                   ),
                 ),
-                SizedBox(height: 20,),
+                const SizedBox(height: 20,),
 
                 Expanded(
                   child: SingleChildScrollView(
@@ -53,8 +52,8 @@ class PilotcrewccView extends GetView<PilotcrewccController> {
                             // Get.toNamed(Routes.PILOT_CABIN_CREW_PROFILE);
                           },
                           child: Container(
-                            padding: EdgeInsets.all(5),
-                            margin: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                            padding: const EdgeInsets.all(5),
+                            margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               color: Colors.white,
@@ -63,7 +62,7 @@ class PilotcrewccView extends GetView<PilotcrewccController> {
                                   color: Colors.grey.withOpacity(0.8),
                                   spreadRadius: 2,
                                   blurRadius: 3,
-                                  offset: Offset(0, 2),
+                                  offset: const Offset(0, 2),
                                 ),
                               ],
                             ),
@@ -73,21 +72,21 @@ class PilotcrewccView extends GetView<PilotcrewccController> {
                               subtitle: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text('847598342385'),
+                                  const Text('847598342385'),
                                   Container(
-                                    padding: EdgeInsets.symmetric(vertical: 3, horizontal: 10),
+                                    padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 10),
                                     decoration: BoxDecoration(
                                       color: Colors.green,
                                       borderRadius: BorderRadius.circular(10),
                                     ),
-                                    child: Text(
+                                    child: const Text(
                                       "Ready",
                                       style: TextStyle(fontSize: 10, color: Colors.white),
                                     ),
                                   ),
                                 ],
                               ),
-                              trailing: Icon(Icons.navigate_next),
+                              trailing: const Icon(Icons.navigate_next),
                             ),
                           ),
                         );
