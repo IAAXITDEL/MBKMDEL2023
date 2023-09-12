@@ -250,7 +250,7 @@ class AppPages {
     //Pilot EFB
     GetPage(
       name: _Paths.HOMEPILOT,
-      page: () => const HomePilotView(),
+      page: () => HomePilotView(),
       binding: HomePilotBinding(),
     ),
 

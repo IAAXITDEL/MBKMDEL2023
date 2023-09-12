@@ -4,7 +4,9 @@ import 'package:ts_one/app/modules/efb/pilot/views/pilotsignature_view.dart';
 
 class PilotreturndeviceviewView extends StatefulWidget {
   final String deviceName;
-  const PilotreturndeviceviewView({super.key, required this.deviceName});
+  final String deviceId;
+  PilotreturndeviceviewView({required this.deviceName, required this.deviceId});
+
 
   @override
   _PilotreturndeviceviewViewState createState() =>
@@ -80,7 +82,7 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                 final pilotDeviceData = pilotDeviceSnapshot.docs.isNotEmpty
                     ? pilotDeviceSnapshot.docs.first.data()
                     : <String, dynamic>{};
-                final occOnDuty = pilotDeviceData['occ_on_duty'] as String? ?? 'N/A';
+                final occOnDuty = pilotDeviceData['occ-on-duty'] as String? ?? 'N/A';
 
                 Widget buildInfoRow(String label, String value) {
                   return Row(

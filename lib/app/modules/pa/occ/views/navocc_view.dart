@@ -35,7 +35,7 @@ class _NavOCCView extends State<NavOCCView> {
       _screens = [
         const HomeOCCView(),
         const ListDevice(),
-        const HomeccView(),
+        const HomeOCCView(),
         const ProfileccView(),
       ];
     } else if (_userPreferences
@@ -43,15 +43,15 @@ class _NavOCCView extends State<NavOCCView> {
         .contains(UserModel.keyPilotRequestDevice)) {
       _pilotRequestDevice = true;
       _screens = [
-        const HomePilotView(),
-        const HomePilotView(),
-        const ProfileccView(),
+        HomePilotView(),
+        HomePilotView(),
+        ProfileccView(),
       ];
     } else {
       _screens = [
-        const HomeFOView(),
-        const HomeFOView(),
-        const ProfileccView(),
+        HomeFOView(),
+        HomeFOView(),
+        HomePilotView(),
       ];
     }
 
@@ -154,7 +154,8 @@ class _NavOCCView extends State<NavOCCView> {
               icon: Icons.list_alt_rounded,
               text: 'Device',
             ),
-            const GButton(
+            if (_canManageDevice)
+            GButton(
               icon: Icons.history_toggle_off_outlined,
               text: 'History',
             ),

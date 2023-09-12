@@ -74,7 +74,7 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
                             ElevatedButton(
                               onPressed: () async {
                                 MaterialPageRoute(
-                                  builder: (context) => const HomePilotView(),
+                                  builder: (context) => HomePilotView(),
                                 ); // Tutup dialog konfirmasi
 
                                 try {
