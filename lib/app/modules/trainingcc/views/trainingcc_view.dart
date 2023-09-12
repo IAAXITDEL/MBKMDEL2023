@@ -2,15 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:quickalert/models/quickalert_type.dart';
-import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:ts_one/presentation/shared_components/TitleText.dart';
 
 import '../../../../data/users/user_preferences.dart';
 import '../../../../data/users/users.dart';
 import '../../../../di/locator.dart';
 import '../../../../presentation/theme.dart';
-import '../../../../presentation/view_model/attendance_model.dart';
 import '../../../../util/error_screen.dart';
 import '../../../../util/loading_screen.dart';
 import '../../../routes/app_pages.dart';
@@ -20,99 +17,6 @@ class TrainingccView extends GetView<TrainingccController> {
   const TrainingccView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-
-    Future<void> add(int training) async {
-      String message = '';
-
-      List<AttendanceModel> attendanceList = await controller.checkClassStream(controller.argumentid.value);
-
-      if (attendanceList.isNotEmpty) {
-        // Do something with the attendanceList
-        await QuickAlert.show(
-          context: context,
-          type: QuickAlertType.warning,
-          text: 'You have been joined to the class!',
-        );
-       Get.toNamed(Routes.ATTENDANCE_PILOTCC, arguments: {
-         "id" : attendanceList[0].id,
-       });
-      } else {
-        // The list is empty
-        await QuickAlert.show(
-          context: context,
-          type: QuickAlertType.info,
-          barrierDismissible: true,
-          confirmBtnText: 'Submit',
-          title: 'Attendance Key',
-          widget: TextFormField(
-            decoration: const InputDecoration(
-              alignLabelWithHint: true,
-              hintText: '',
-              prefixIcon: Icon(
-                Icons.lock_outline,
-              ),
-            ),
-            textInputAction: TextInputAction.next,
-            onChanged: (value) => message = value,
-          ),
-          onConfirmBtnTap: () async {
-            if (message.length < 5) {
-              await QuickAlert.show(
-                context: context,
-                type: QuickAlertType.error,
-                text: 'Please input something',
-              );
-              return;
-            }
-
-            await showDialog(
-              context: context,
-              builder: (context) {
-                return StreamBuilder<List<Map<String, dynamic>>>(
-                  stream: controller.joinClassStream(message, training),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return LoadingScreen();
-                    }
-
-                    if (snapshot.hasError) {
-                      return ErrorScreen();
-                    }
-
-
-                    if (snapshot.data!.isEmpty) {
-                      Future.delayed(Duration.zero, () {
-                        QuickAlert.show(
-                          context: context,
-                          type: QuickAlertType.error,
-                          text: "The class key is wrong, Please enter the key again!",
-                        );
-                      });
-                    } else {
-                      Future.delayed(Duration.zero, () {
-                        QuickAlert.show(
-                          context: context,
-                          type: QuickAlertType.success,
-                          text: "You have been joined to the class!",
-                        );
-                      });
-                    }
-                    return SizedBox.shrink(); // Return an empty widget to avoid the error.
-                  },
-                );
-              },
-            );
-
-            Navigator.of(context, rootNavigator: true).pop();
-          },
-        );
-        
-      }
-      
-    }
-
-
-
     return Scaffold(
       appBar: AppBar(
         title: const RedTitleText(text :'TRAINING'),
@@ -156,13 +60,25 @@ class TrainingccView extends GetView<TrainingccController> {
                           elevation: 5,
                           child: InkWell(
                             onTap: () {
-                              controller.argumentid.value =  trainingData["id"];
-                            controller.argumentname.value =  trainingData["training"];
-                                controller.cekRole();
-                                print("test ${controller.cekPilot.value}");
-                               if(controller.cekPilot.value  == true){
-                                 add(controller.argumentid.value);
-                               }
+                              late UserPreferences userPreferences;
+                              userPreferences = getItLocator<UserPreferences>();
+
+                              // SEBAGAI INSTRUCTOR
+                              if( userPreferences.getInstructor().contains(UserModel.keySubPositionICC)){
+                                Get.toNamed(Routes.TRAINING_INSTRUCTORCC, arguments: {
+                                "id" : trainingData["id"],
+                                "name" : trainingData["training"]
+                                });
+                              }
+
+                              // SEBAGAI PILOT ADMINISTRATOR
+                              else{
+                                Get.toNamed(Routes.TRAININGTYPECC, arguments: {
+                                  "id" : trainingData["id"],
+                                  "name" : trainingData["training"]
+                                });
+                              }
+
                             },
                             splashColor: TsOneColor.primary,
                             child: Center(

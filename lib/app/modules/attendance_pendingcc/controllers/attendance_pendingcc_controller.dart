@@ -28,6 +28,7 @@ class AttendancePendingccController extends GetxController {
         }),
       );
 
+      print(attendanceData);
       return attendanceData;
     });
   }

@@ -61,7 +61,7 @@ class InstructorMainHomeccView extends GetView<InstructorMainHomeccController> {
                     ),
                     child: InkWell(
                       onTap: (){
-                        Get.toNamed(Routes.NAVPILOT);
+                        Get.toNamed(Routes.NAVCAPTAIN);
                       },
                       child: ListTile(
                         title: Text(

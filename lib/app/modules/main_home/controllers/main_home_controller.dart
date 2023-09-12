@@ -86,8 +86,7 @@ class MainHomeController extends GetxController {
     }
     // SEBAGAI PILOT
     else if( userPreferences.getRank().contains(UserModel.keyPositionCaptain) || userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)){
-      print("ini pilot");
-      Get.toNamed(Routes.NAVPILOT);
+      Get.toNamed(Routes.NAVCAPTAIN);
     }
     // SEBAGAI PILOT ADMINISTRATOR
     else if( userPreferences.getRank().contains("Pilot Administrator")){
@@ -95,7 +94,6 @@ class MainHomeController extends GetxController {
     }
     // SEBAGAI ALL STAR
     else{
-      print(userPreferences.getRank());
     }
 
   }
