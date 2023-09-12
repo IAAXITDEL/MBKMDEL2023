@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -15,7 +16,7 @@ class ProfileccController extends GetxController {
   late bool _canViewAllAssessments;
 
   GoogleSignIn _googleSignIn = GoogleSignIn();
-
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
   @override
   void onInit() {
     // viewModel = Provider.of<UserViewModel>(context, listen: false);
@@ -27,6 +28,17 @@ class ProfileccController extends GetxController {
     });
     super.onInit();
   }
+
+
+  //Mendapatkan data pribadi
+  Stream<QuerySnapshot<Map<String, dynamic>>> profileList() {
+    userPreferences = getItLocator<UserPreferences>();
+    return firestore
+        .collection('users')
+        .where("ID NO", isEqualTo: userPreferences.getIDNo())
+        .snapshots();
+  }
+
 
   void checkCanViewAllAssessments() {
     if (userPreferences.getPrivileges().contains(UserModel.keyPrivilegeViewAllAssessments)) {

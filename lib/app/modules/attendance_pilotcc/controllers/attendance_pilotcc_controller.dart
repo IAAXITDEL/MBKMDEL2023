@@ -15,6 +15,8 @@ class AttendancePilotccController extends GetxController {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   final RxString idattendance = "".obs;
   late UserPreferences userPreferences;
+  final RxBool showText = false.obs;
+  final RxBool cekstatus = false.obs;
 
   @override
   void onInit() {
@@ -22,6 +24,7 @@ class AttendancePilotccController extends GetxController {
 
     final String id = (Get.arguments as Map<String, dynamic>)["id"];
     idattendance.value = id;
+    checkSignature();
   }
 
   //Mendapatkan data kelas yang diikuti
@@ -43,6 +46,27 @@ class AttendancePilotccController extends GetxController {
       return attendanceData;
     });
   }
+
+  //Mendapatkan status pilot apakah sudah tanda tangan atau belum
+  Future<void> checkSignature() async {
+    try {
+      final attendancedet = await firestore.collection('attendance-detail').where("idattendance", isEqualTo: idattendance.value).get();
+
+      if (attendancedet.docs.isNotEmpty) {
+        final status = attendancedet.docs[0]["status"];
+        print("Status: $status");
+        if(status == "join"){
+          cekstatus.value = true;
+        }
+
+      } else {
+        print("Tidak ada data yang sesuai dengan kriteria pencarian.");
+      }
+    } catch (e) {
+      print('Error in : $e');
+    }
+  }
+
 
 
   Future<void> saveSignature(GlobalKey<SfSignaturePadState> _signaturePadKey) async {

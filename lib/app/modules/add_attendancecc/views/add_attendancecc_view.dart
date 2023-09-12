@@ -177,10 +177,7 @@ class AddAttendanceccView extends GetView<AddAttendanceccController> {
                       },
                     );
                   },
-                )
-                ,
-
-
+                ),
                 SizedBox(height: 30,),
 
                 //-------------------------SUBMIT-----------------------
@@ -225,7 +222,6 @@ class AddAttendanceccView extends GetView<AddAttendanceccController> {
                     child:  Text('Submit', style: TextStyle(color: Colors.white),),
                   ),
                 )
-
               ],
             ),
           ),

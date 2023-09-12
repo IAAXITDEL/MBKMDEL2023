@@ -53,11 +53,11 @@ class AttendancePilotccView extends GetView<AttendancePilotccController> {
       body: SingleChildScrollView(
         child: Center(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20),
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             child: Column(
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10.0),
                     color: TsOneColor.surface,
@@ -211,70 +211,96 @@ class AttendancePilotccView extends GetView<AttendancePilotccController> {
                   ),
                 ),
                 // SIGNATURE
+                Obx(() {
+                  return controller.cekstatus.value
+                      ? Column(
+                    children: [
+                      Row(children: [Text("Signature",),],),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: TsOneColor.secondaryContainer,
+                            width: 1,
+                          ),
+                        ),
+                        child: SfSignaturePad(
+                          key: _signaturePadKey,
+                          backgroundColor: Colors.grey.withOpacity(0.1),
+                        ),
+                      ),
+                      Obx(() {
+                        return controller.showText.value
+                            ? Row(
+                          children: [
+                            Text("*Please add your sign here!*", style: TextStyle(color: Colors.red)),
+                          ],
+                        )
+                            : SizedBox();
+                      }),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          InkWell(
+                            onTap: (){_clearSignature();},
+                            child: Container(
+                              padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                              decoration:
+                              BoxDecoration(color: TsOneColor.primary,
+                                  borderRadius: BorderRadius.circular(5)),
+                              child: Row(
+                                children: [
+                                  Text("Clear", style: TextStyle(color: Colors.white)),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Icon(
+                                    Icons.clear_outlined,
+                                    color: Colors.white,
+                                    size: 15,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                      //-------------------------SUBMIT-----------------------
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 16.0),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            //   confir(departmentC.text, trainingtypeC.text, roomC.text);
+                            List<Path> paths =
+                            _signaturePadKey.currentState!.toPathList();
+                            if(paths.isNotEmpty){
+                              saveSignature( _signaturePadKey);
+                            }else{
+                              controller.showText.value = true;
+                              controller.update();
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            primary: TsOneColor.greenColor,
+                            minimumSize: Size(double.infinity, 50),
+                          ),
+                          child: Text('Attendance', style: TextStyle(color: Colors.white),),
+                        ),
+                      ),
+                    ],
+                  )
+                      : SizedBox();
+                }),
                 const SizedBox(
                   height: 10,
                 ),
-                Row(children: [Text("Signature",),],),
-                const SizedBox(
-                  height: 5,
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: TsOneColor.secondaryContainer,
-                      width: 1,
-                    ),
-                  ),
-                  child: SfSignaturePad(
-                    key: _signaturePadKey,
-                    backgroundColor: Colors.grey.withOpacity(0.1),
-                  ),
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    ElevatedButton(
-                      onPressed: _clearSignature,
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                            TsOneColor.primary),
-                      ),
-                      child: Container(
-                        decoration:
-                        BoxDecoration(color: TsOneColor.primary),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.clear_outlined,
-                              color: Colors.white,
-                              size: 20,
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Text("Clear", style: TextStyle(color: Colors.white))
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                //-------------------------SUBMIT-----------------------
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      //   confir(departmentC.text, trainingtypeC.text, roomC.text);
-                      saveSignature( _signaturePadKey);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      primary: TsOneColor.greenColor,
-                      minimumSize: Size(double.infinity, 50),
-                    ),
-                    child: Text('Attendance', style: TextStyle(color: Colors.white),),
-                  ),
-                ),
+
               ],
             ),
           ),

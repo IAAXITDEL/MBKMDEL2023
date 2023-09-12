@@ -126,19 +126,17 @@ class TrainingccController extends GetxController {
 
       // Gabungkan data berdasarkan kondisi, misalnya instructor == ID NO
       final combinedData = <AttendanceModel>[];
-
-      for (final attendance in attendancedetailData) {
-        final matchedAttendance = attendanceData.firstWhere(
-              (attendances) => attendances.id == attendance.idattendance,
-        );
-
-        if (matchedAttendance != null) {
-          // Jika ada kecocokan, tambahkan ke combinedData
-          combinedData.add(matchedAttendance);
+      for (final attendance in attendanceData) {
+        for (final detail in attendancedetailData) {
+          if (attendance.id == detail.idattendance) {
+            combinedData.add(attendance);
+            break; // Keluar dari loop inner jika cocok ditemukan
+          }
         }
       }
 
       return combinedData;
+
     } catch (e) {
       print('Error fetching combined data: $e');
       return [];

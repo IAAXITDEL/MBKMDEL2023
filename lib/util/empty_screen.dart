@@ -23,7 +23,7 @@ class EmptyScreen extends StatelessWidget {
             ),
             Center(
               child: Text(
-                "You have no attendance \n that need confirmation ",
+                "You have no list ",
                 style: tsOneTextTheme.labelMedium,
               ),
             ),

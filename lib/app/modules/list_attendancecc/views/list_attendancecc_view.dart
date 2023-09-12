@@ -32,6 +32,7 @@ class ListAttendanceccView extends GetView<ListAttendanceccController> {
               }
 
               var listAttendance= snapshot.data!;
+              print(listAttendance.length);
               if(listAttendance.isEmpty){
                 return EmptyScreen();
               }

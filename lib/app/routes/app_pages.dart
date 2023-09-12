@@ -320,7 +320,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.ATTENDANCE_INSTRUCTORCONFIRCC,
-      page: () => const AttendanceInstructorconfirccView(),
+      page: () => AttendanceInstructorconfirccView(),
       binding: AttendanceInstructorconfirccBinding(),
     ),
     GetPage(

@@ -104,6 +104,7 @@ class AttendanceConfirccController extends GetxController {
   Future<int> attendanceStream() async {
     final attendanceQuery = await _firestore
         .collection('attendance-detail')
+        .where("status", isEqualTo: "done")
         .where("idattendance", isEqualTo: argumentid.value)
         .get();
 

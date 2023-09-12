@@ -5,7 +5,7 @@ import '../../../../presentation/view_model/attendance_model.dart';
 
 class AttendancePendingccController extends GetxController {
   final RxString argument = "".obs;
-
+  final RxInt jumlah = 0.obs;
   @override
   void onInit() {
     super.onInit();
@@ -30,6 +30,18 @@ class AttendancePendingccController extends GetxController {
 
       return attendanceData;
     });
+  }
+
+  //mendapatkan panjang list attendance
+  Future<int> attendanceStream() async {
+    final attendanceQuery = await _firestore
+        .collection('attendance-detail')
+        .where("idattendance", isEqualTo: argument.value)
+        .get();
+
+    jumlah.value = attendanceQuery.docs.length;
+    print(attendanceQuery.docs.length);
+    return attendanceQuery.docs.length;
   }
 
 

@@ -8,6 +8,7 @@ import '../../../../presentation/shared_components/formtextfield.dart';
 import '../../../../presentation/theme.dart';
 import '../../../../util/error_screen.dart';
 import '../../../../util/loading_screen.dart';
+import '../../../routes/app_pages.dart';
 import '../controllers/attendance_pendingcc_controller.dart';
 
 class AttendancePendingccView extends GetView<AttendancePendingccController> {
@@ -132,17 +133,61 @@ class AttendancePendingccView extends GetView<AttendancePendingccController> {
                       SizedBox(
                         height: 20,
                       ),
-                      FormTextField(
-                          text: "Chair Person/ Instructor ",
-                          textController: instructorC,
-                          readOnly: true),
+                      InkWell(
+                        onTap: (){Get.toNamed(Routes.LIST_ATTENDANCECC,arguments: {
+                          "id" : controller.argument.value,
+                        });},
+                        child:  Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                color: TsOneColor.secondaryContainer,
+                                width: 1,
+                              ),
+                              borderRadius: BorderRadius.circular(10)
+                          ),
+                          child: ListTile(
+                            title: Text(
+                              "Chair Person/ Instructor",
+                              style: tsOneTextTheme.labelSmall,
+                            ),
+                            subtitle: Text(
+                              listAttendance[0]["name"],
+                              style: tsOneTextTheme.headlineMedium,
+                            ),
+                            trailing: Icon(Icons.navigate_next),
+                          ),
+
+                        ),
+                      ),
                       SizedBox(
                         height: 20,
                       ),
-                      FormTextField(
-                          text: "Attandance",
-                          textController: subjectC,
-                          readOnly: true),
+                      InkWell(
+                        onTap: (){Get.toNamed(Routes.LIST_ATTENDANCECC,arguments: {
+                          "id" : controller.argument.value,
+                        });},
+                        child:  Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                color: TsOneColor.secondaryContainer,
+                                width: 1,
+                              ),
+                              borderRadius: BorderRadius.circular(10)
+                          ),
+                          child: ListTile(
+                            title: Text(
+                              "Attendance",
+                              style: tsOneTextTheme.labelSmall,
+                            ),
+                            subtitle: Text(
+                              "${controller.jumlah.value.toString()} person",
+                              style: tsOneTextTheme.headlineMedium,
+                            ),
+                            trailing: Icon(Icons.navigate_next),
+                          ),
+
+                        ),
+                      ),
                       SizedBox(
                         height: 20,
                       ),

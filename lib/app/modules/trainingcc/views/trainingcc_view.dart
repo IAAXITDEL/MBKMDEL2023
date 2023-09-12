@@ -26,11 +26,12 @@ class TrainingccView extends GetView<TrainingccController> {
 
       List<AttendanceModel> attendanceList = await controller.checkClassStream(controller.argumentid.value);
 
+      print("cek ${attendanceList.isNotEmpty}");
       if (attendanceList.isNotEmpty) {
         // Do something with the attendanceList
         await QuickAlert.show(
           context: context,
-          type: QuickAlertType.warning,
+          type: QuickAlertType.success,
           text: 'You have been joined to the class!',
         );
        Get.toNamed(Routes.ATTENDANCE_PILOTCC, arguments: {
@@ -78,8 +79,7 @@ class TrainingccView extends GetView<TrainingccController> {
                     if (snapshot.hasError) {
                       return ErrorScreen();
                     }
-
-
+                    var listAttendance= snapshot.data!;
                     if (snapshot.data!.isEmpty) {
                       Future.delayed(Duration.zero, () {
                         QuickAlert.show(
@@ -89,6 +89,7 @@ class TrainingccView extends GetView<TrainingccController> {
                         );
                       });
                     } else {
+                      print(listAttendance[0]["id"]);
                       Future.delayed(Duration.zero, () {
                         QuickAlert.show(
                           context: context,
@@ -96,6 +97,10 @@ class TrainingccView extends GetView<TrainingccController> {
                           text: "You have been joined to the class!",
                         );
                       });
+
+                      // Get.toNamed(Routes.ATTENDANCE_PILOTCC, arguments: {
+                      //   "id" : listAttendance[0]["id"],
+                      // });
                     }
                     return SizedBox.shrink(); // Return an empty widget to avoid the error.
                   },
@@ -159,7 +164,6 @@ class TrainingccView extends GetView<TrainingccController> {
                               controller.argumentid.value =  trainingData["id"];
                             controller.argumentname.value =  trainingData["training"];
                                 controller.cekRole();
-                                print("test ${controller.cekPilot.value}");
                                if(controller.cekPilot.value  == true){
                                  add(controller.argumentid.value);
                                }

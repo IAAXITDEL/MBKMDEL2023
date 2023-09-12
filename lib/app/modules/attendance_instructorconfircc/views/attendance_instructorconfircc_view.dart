@@ -21,10 +21,10 @@ import '../controllers/attendance_instructorconfircc_controller.dart';
 
 class AttendanceInstructorconfirccView
     extends GetView<AttendanceInstructorconfirccController> {
-  const AttendanceInstructorconfirccView({Key? key}) : super(key: key);
+  AttendanceInstructorconfirccView({Key? key}) : super(key: key);
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-
     var subjectC = TextEditingController();
     var vanueC = TextEditingController();
     var dateC = TextEditingController();
@@ -40,14 +40,13 @@ class AttendanceInstructorconfirccView
       _signaturePadKey.currentState?.clear();
     }
 
-
     Future<void> saveSignature() async {
       // Mengambil objek ui.Image dari SfSignaturePad
       ui.Image image = await _signaturePadKey.currentState!.toImage();
 
       // Mengonversi ui.Image menjadi data gambar
-      ByteData? byteData = await image.toByteData(
-          format: ui.ImageByteFormat.png);
+      ByteData? byteData =
+          await image.toByteData(format: ui.ImageByteFormat.png);
       Uint8List? uint8List = byteData?.buffer.asUint8List();
 
       // Membuat referensi untuk Firebase Storage
@@ -61,14 +60,18 @@ class AttendanceInstructorconfirccView
       final String imageUrl = await storageReference.getDownloadURL();
 
       // Menyimpan URL gambar di database Firestore
-      await FirebaseFirestore.instance.collection('attendance').doc(controller.argumentid.value.toString()).update({
-        'signature-icc-url': imageUrl
-      });
+      await FirebaseFirestore.instance
+          .collection('attendance')
+          .doc(controller.argumentid.value.toString())
+          .update({'signature-icc-url': imageUrl});
     }
 
-    Future<void> confir(String department, String trainingType, String room) async {
+    Future<void> confir(
+        String department, String trainingType, String room) async {
       try {
-        controller.confirattendance(department, trainingType, room).then((status) async {
+        controller
+            .confirattendance(department, trainingType, room)
+            .then((status) async {
           // Menunggu hingga saveSignature selesai
           await saveSignature();
 
@@ -81,8 +84,8 @@ class AttendanceInstructorconfirccView
 
           // Navigasi ke halaman lain setelah menampilkan QuickAlert
           Get.offAllNamed(Routes.TRAINING_INSTRUCTORCC, arguments: {
-            "id" : controller.argumentid.value,
-            "name" : controller.argumentname.value
+            "id": controller.argumentid.value,
+            "name": controller.argumentname.value
           });
         });
       } catch (error) {
@@ -107,224 +110,305 @@ class AttendanceInstructorconfirccView
         ),
         body: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20),
-            child: StreamBuilder<List<Map<String, dynamic>>>(
-                stream: controller
-                    .getCombinedAttendanceStream(controller.argumentid.value.toString()),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return LoadingScreen(); // Placeholder while loading
-                  }
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: Form(
+                key: _formKey,
+                child: StreamBuilder<List<Map<String, dynamic>>>(
+                    stream: controller.getCombinedAttendanceStream(
+                        controller.argumentid.value.toString()),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return LoadingScreen(); // Placeholder while loading
+                      }
 
-                  if (snapshot.hasError) {
-                    return ErrorScreen();
-                  }
+                      if (snapshot.hasError) {
+                        return ErrorScreen();
+                      }
 
-                  var listAttendance = snapshot.data!;
-                  if (listAttendance != null && listAttendance.isNotEmpty) {
-                    subjectC.text = listAttendance[0]["subject"];
-                    dateC.text = listAttendance[0]["date"];
-                    vanueC.text = listAttendance[0]["vanue"];
-                    instructorC.text = listAttendance[0]["name"];
-                  } else {
-                    // Handle the case where the list is empty or null
-                    subjectC.text = "No Subject Data Available";
-                  }
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      RedTitleText(text: "ATTENDANCE LIST"),
-                      Text("REDUCED VERTICAL SEPARATION MINIMA (RVSM)"),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
+                      var listAttendance = snapshot.data!;
+                      if (listAttendance != null && listAttendance.isNotEmpty) {
+                        subjectC.text = listAttendance[0]["subject"];
+                        dateC.text = listAttendance[0]["date"];
+                        vanueC.text = listAttendance[0]["vanue"];
+                        instructorC.text = listAttendance[0]["name"];
+                      } else {
+                        // Handle the case where the list is empty or null
+                        subjectC.text = "No Subject Data Available";
+                      }
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Expanded(
-                            child: FormTextField(
-                                text: "Subject",
-                                textController: subjectC,
-                                readOnly: true),
-                          ),
+                          RedTitleText(text: "ATTENDANCE LIST"),
+                          Text("REDUCED VERTICAL SEPARATION MINIMA (RVSM)"),
                           SizedBox(
-                            width: 10,
+                            height: 20,
                           ),
-                          Expanded(
-                            child: FormDateField(
-                                text: "Date",
-                                textController: dateC,
-                                readOnly: true),
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Expanded(
-                            child: FormTextField(
-                              text: "Department",
-                              textController: departmentC,),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Expanded(
-                            child: FormTextField(
-                                text: "Vanue",
-                                textController: vanueC,
-                                readOnly: true),
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Expanded(
-                            child: FormTextField(
-                                text: "Training Type",
-                                textController: trainingtypeC,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Expanded(
-                            child: FormTextField(
-                              text: "Room",
-                              textController: roomC,),
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      FormTextField(
-                          text: "Chair Person/ Instructor ",
-                          textController: instructorC,
-                          readOnly: true),
-
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Text("Attendance Type"),
-                      Row(
-                        children: [
                           Row(
+                            mainAxisSize: MainAxisSize.min,
                             children: [
-                              Obx(
-                                    () => Radio<String>(
-                                  value: "Meeting",
-                                  groupValue: controller.selectedMeeting.value,
-                                  onChanged: (String? newValue) {
-                                    controller.selectMeeting(newValue);
-                                  },
-                                ),
-                              ),
-                              Text(
-                                "Meeting",
-                                style: tsOneTextTheme.labelSmall,
+                              Expanded(
+                                child: FormTextField(
+                                    text: "Subject",
+                                    textController: subjectC,
+                                    readOnly: true),
                               ),
                               SizedBox(
                                 width: 10,
                               ),
-                              Obx(
-                                    () => Radio<String>(
-                                  value: "Training",
-                                  groupValue: controller.selectedMeeting.value,
-                                  onChanged: (String? newValue) {
-                                    controller.selectMeeting(newValue);
-                                  },
+                              Expanded(
+                                child: FormDateField(
+                                    text: "Date",
+                                    textController: dateC,
+                                    readOnly: true),
+                              )
+                            ],
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Expanded(
+                                child: FormTextField(
+                                  text: "Department",
+                                  textController: departmentC,
                                 ),
                               ),
-                              Text(
-                                "Training",
-                                style: tsOneTextTheme.labelSmall,
+                              SizedBox(
+                                width: 10,
                               ),
+                              Expanded(
+                                child: FormTextField(
+                                    text: "Vanue",
+                                    textController: vanueC,
+                                    readOnly: true),
+                              )
                             ],
-                          )
-
-                        ],
-                      ),
-
-                      Text("Class Password"),
-                      RedTitleText(
-                        text: listAttendance[0]["keyAttendance"],
-                        size: 16,
-                      ),
-
-                      //--------------------------- ATTANDANCE --------------------
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text("Signature"),
-                      Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: TsOneColor.secondaryContainer,
-                            width: 1,
                           ),
-                        ),
-                        child: SfSignaturePad(
-                          key: _signaturePadKey,
-                          backgroundColor: Colors.grey.withOpacity(0.1),
-                        ),
-                      ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          ElevatedButton(
-                            onPressed: _clearSignature,
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  TsOneColor.primary),
-                            ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Expanded(
+                                child: FormTextField(
+                                  text: "Training Type",
+                                  textController: trainingtypeC,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Expanded(
+                                child: FormTextField(
+                                  text: "Room",
+                                  textController: roomC,
+                                ),
+                              )
+                            ],
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          FormTextField(
+                              text: "Chair Person/ Instructor ",
+                              textController: instructorC,
+                              readOnly: true),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Get.toNamed(Routes.LIST_ATTENDANCECC, arguments: {
+                                "id": controller.argumentid.value,
+                                "status": "confirmation",
+                              });
+                            },
                             child: Container(
-                              decoration:
-                              BoxDecoration(color: TsOneColor.primary),
-                              child: Row(
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: TsOneColor.secondaryContainer,
+                                    width: 1,
+                                  ),
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: ListTile(
+                                title: Text(
+                                  "Attendance",
+                                  style: tsOneTextTheme.labelSmall,
+                                ),
+                                subtitle: Text(
+                                  "${controller.jumlah.value.toString()} person",
+                                  style: tsOneTextTheme.headlineMedium,
+                                ),
+                                trailing: Icon(Icons.navigate_next),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Text("Attendance Type"),
+                          Row(
+                            children: [
+                              Row(
                                 children: [
-                                  Icon(
-                                    Icons.clear_outlined,
-                                    color: Colors.white,
-                                    size: 20,
+                                  Obx(
+                                    () => Radio<String>(
+                                      value: "Meeting",
+                                      groupValue:
+                                          controller.selectedMeeting.value,
+                                      onChanged: (String? newValue) {
+                                        controller.selectMeeting(newValue);
+                                      },
+                                    ),
+                                  ),
+                                  Text(
+                                    "Meeting",
+                                    style: tsOneTextTheme.labelSmall,
                                   ),
                                   SizedBox(
-                                    width: 5,
+                                    width: 10,
                                   ),
-                                  Text("Clear", style: TextStyle(color: Colors.white))
+                                  Obx(
+                                    () => Radio<String>(
+                                      value: "Training",
+                                      groupValue:
+                                          controller.selectedMeeting.value,
+                                      onChanged: (String? newValue) {
+                                        controller.selectMeeting(newValue);
+                                      },
+                                    ),
+                                  ),
+                                  Text(
+                                    "Training",
+                                    style: tsOneTextTheme.labelSmall,
+                                  ),
                                 ],
+                              )
+                            ],
+                          ),
+
+                          Text("Class Password"),
+                          RedTitleText(
+                            text: listAttendance[0]["keyAttendance"],
+                            size: 16,
+                          ),
+
+                          //--------------------------- ATTANDANCE --------------------
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text("Signature"),
+                          Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: TsOneColor.secondaryContainer,
+                                width: 1,
+                              ),
+                            ),
+                            child: SfSignaturePad(
+                              key: _signaturePadKey,
+                              backgroundColor: Colors.grey.withOpacity(0.1),
+                            ),
+                          ),
+                          Obx(() {
+                            return controller.showText.value
+                                ? Row(
+                              children: [
+                                Text("Please add your sign here!", style: TextStyle(color: Colors.red)),
+                              ],
+                            )
+                                : SizedBox();
+                          }),
+
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              InkWell(
+                                onTap: (){_clearSignature();},
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                                  decoration:
+                                  BoxDecoration(color: TsOneColor.primary,
+                                      borderRadius: BorderRadius.circular(5)),
+                                  child: Row(
+                                    children: [
+                                      Text("Clear", style: TextStyle(color: Colors.white)),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Icon(
+                                        Icons.clear_outlined,
+                                        color: Colors.white,
+                                        size: 15,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                          //-------------------------SUBMIT-----------------------
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 16.0),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                List<Path> paths =
+                                _signaturePadKey.currentState!.toPathList();
+                                if(paths.isNotEmpty){
+                                  controller.ceksign.value = true;
+                                  controller.showText.value = false;
+                                  controller.update();
+                                }else{
+                                  controller.showText.value = true;
+                                  controller.update();
+                                }
+
+
+                                if (_formKey.currentState != null &&
+                                    _formKey.currentState!.validate() && controller.ceksign.value == true) {
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return FutureBuilder<void>(
+                                          future: confir(departmentC.text,
+                                              trainingtypeC.text, roomC.text),
+                                          builder: (BuildContext context,
+                                              AsyncSnapshot<void> snapshot) {
+                                            if (snapshot.connectionState ==
+                                                ConnectionState.waiting) {
+                                              return LoadingScreen();
+                                            }
+
+                                            if (snapshot.hasError) {
+                                              // Handle error if needed
+                                              return ErrorScreen();
+                                            } else {
+                                              return Container();
+                                            }
+                                          },
+                                        );
+                                      });
+                                }
+                              },
+                              style: ElevatedButton.styleFrom(
+                                primary: TsOneColor.greenColor,
+                                minimumSize: Size(double.infinity, 50),
+                              ),
+                              child: Text(
+                                'Submit',
+                                style: TextStyle(color: Colors.white),
                               ),
                             ),
                           ),
                         ],
-                      ),
-                      //-------------------------SUBMIT-----------------------
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 16.0),
-                        child: ElevatedButton(
-                          onPressed: () {
-                            confir(departmentC.text, trainingtypeC.text, roomC.text);
-                          },
-                          style: ElevatedButton.styleFrom(
-                            primary: TsOneColor.greenColor,
-                            minimumSize: Size(double.infinity, 50),
-                          ),
-                          child: Text('Submit', style: TextStyle(color: Colors.white),),
-                        ),
-                      ),
-                    ],
-                  );
-                }),
-          ),
+                      );
+                    }),
+              )),
         ));
   }
 }

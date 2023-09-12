@@ -6,6 +6,7 @@ import '../../../../presentation/view_model/attendance_detail_model.dart';
 class ListAttendanceccController extends GetxController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final RxString argumentid = "".obs;
+  final RxString argumentstatus = "".obs;
 
   @override
   void onInit() {
@@ -13,12 +14,16 @@ class ListAttendanceccController extends GetxController {
     final Map<String, dynamic> args = Get.arguments as Map<String, dynamic>;
     final String id = args["id"];
     argumentid.value = id;
+
+    final Map<String, dynamic> sta = Get.arguments as Map<String, dynamic>;
+    final String status = sta["status"];
+    argumentstatus.value = status;
   }
 
 
 
   Stream<List<Map<String, dynamic>>> getCombinedAttendanceStream() {
-    return _firestore.collection('attendance-detail').where("idattendance", isEqualTo: argumentid.value).where("status", isEqualTo: "confirmation").snapshots().asyncMap((attendanceQuery) async {
+    return _firestore.collection('attendance-detail').where("idattendance", isEqualTo: argumentid.value).where("status", isEqualTo: argumentstatus.value).snapshots().asyncMap((attendanceQuery) async {
       final usersQuery = await _firestore.collection('users').get();
       final usersData = usersQuery.docs.map((doc) => doc.data()).toList();
 

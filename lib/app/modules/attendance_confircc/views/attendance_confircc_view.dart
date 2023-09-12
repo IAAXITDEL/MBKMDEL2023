@@ -209,6 +209,7 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                       InkWell(
                         onTap: (){Get.toNamed(Routes.LIST_ATTENDANCECC,arguments: {
                           "id" : controller.argumentid.value,
+                          "status" : "done"
                         });},
                         child:  Container(
                           decoration: BoxDecoration(
@@ -321,35 +322,35 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                              backgroundColor: Colors.grey.withOpacity(0.1),
                            ),
                          ),
-
+                         SizedBox(
+                           height: 10,
+                         ),
                          Row(
                            crossAxisAlignment: CrossAxisAlignment.end,
                            mainAxisAlignment: MainAxisAlignment.end,
                            children: [
-                             ElevatedButton(
-                               onPressed: _clearSignature,
-                               style: ButtonStyle(
-                                 backgroundColor: MaterialStateProperty.all<Color>(
-                                     TsOneColor.primary),
-                               ),
+                             InkWell(
+                               onTap: (){_clearSignature();},
                                child: Container(
+                                 padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                                  decoration:
-                                 BoxDecoration(color: TsOneColor.primary),
+                                 BoxDecoration(color: TsOneColor.primary,
+                                     borderRadius: BorderRadius.circular(5)),
                                  child: Row(
                                    children: [
-                                     Icon(
-                                       Icons.clear_outlined,
-                                       color: Colors.white,
-                                       size: 20,
-                                     ),
+                                     Text("Clear", style: TextStyle(color: Colors.white)),
                                      SizedBox(
                                        width: 5,
                                      ),
-                                     Text("Clear", style: TextStyle(color: Colors.white))
+                                     Icon(
+                                       Icons.clear_outlined,
+                                       color: Colors.white,
+                                       size: 15,
+                                     ),
                                    ],
                                  ),
                                ),
-                             ),
+                             )
                            ],
                          ),
                          //-------------------------SUBMIT-----------------------

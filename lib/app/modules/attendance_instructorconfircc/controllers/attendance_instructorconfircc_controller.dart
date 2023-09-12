@@ -16,15 +16,18 @@ class AttendanceInstructorconfirccController extends GetxController {
 
   final RxString argumentid = "".obs;
   final RxString argumentname = "".obs;
-
+  final RxInt jumlah = 0.obs;
   final RxString role = "".obs;
+
+  final RxBool ceksign = false.obs;
+  final RxBool showText = false.obs;
   @override
   void onInit() {
     super.onInit();
     final Map<String, dynamic> args = Get.arguments as Map<String, dynamic>;
     final String id = args["id"];
     argumentid.value = id;
-
+    attendanceStream();
     cekRole();
   }
 
@@ -67,6 +70,7 @@ class AttendanceInstructorconfirccController extends GetxController {
   //confir attendance oleh instructor
   Future<void> confirattendance(String department, String trainingType, String room) async {
     CollectionReference attendance = _firestore.collection('attendance');
+    CollectionReference attendancedetail = _firestore.collection('attendance-detail');
     await attendance.doc(argumentid.value.toString()).update({
       "department": department,
       "trainingType" :  trainingType,
@@ -77,8 +81,35 @@ class AttendanceInstructorconfirccController extends GetxController {
 
       //signature icc url
     });
+
+
+    // Ubah status pilot yang mengikuti kelas menjadi done
+    QuerySnapshot querySnapshot = await attendancedetail
+        .where("idattendance", isEqualTo: argumentid.value.toString())
+        .get();
+
+
+    querySnapshot.docs.forEach((doc) async {
+      await doc.reference.update({
+        "status" : "done",
+        "updatedTime": DateTime.now().toIso8601String(),
+      });
+    });
   }
 
+
+  //mendapatkan panjang list attendance
+  Future<int> attendanceStream() async {
+    final attendanceQuery = await _firestore
+        .collection('attendance-detail')
+        .where("idattendance", isEqualTo: argumentid.value)
+        .where("status", isEqualTo: "confirmation")
+        .get();
+
+    jumlah.value = attendanceQuery.docs.length;
+    print(attendanceQuery.docs.length);
+    return attendanceQuery.docs.length;
+  }
 
   @override
   void onReady() {
