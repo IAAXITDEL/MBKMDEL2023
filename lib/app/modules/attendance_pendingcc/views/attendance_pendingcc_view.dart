@@ -20,7 +20,7 @@ class AttendancePendingccView extends GetView<AttendancePendingccController> {
     var dateC = TextEditingController();
     var instructorC = TextEditingController();
 
-    var departmentC = TextEditingController();
+    var departementC = TextEditingController();
     var trainingtypeC = TextEditingController();
     var roomC = TextEditingController();
 
@@ -28,28 +28,29 @@ class AttendancePendingccView extends GetView<AttendancePendingccController> {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text('Back', style: TextStyle(color: Colors.black)),
-          iconTheme: IconThemeData(color: Colors.black),
+          title: const Text('Back', style: TextStyle(color: Colors.black)),
+          iconTheme: const IconThemeData(color: Colors.black),
           // backgroundColor: Colors.transparent,
           elevation: 0,
         ),
         body: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: StreamBuilder<List<Map<String, dynamic>>>(
                 stream: controller
                     .getCombinedAttendanceStream(controller.argument.value),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return LoadingScreen(); // Placeholder while loading
+                    return const LoadingScreen(); // Placeholder while loading
                   }
 
                   if (snapshot.hasError) {
-                    return ErrorScreen();
+                    return const ErrorScreen();
                   }
 
                   var listAttendance = snapshot.data!;
-                  if (listAttendance != null && listAttendance.isNotEmpty) {
+                  print(listAttendance);
+                  if (listAttendance.isNotEmpty) {
                     subjectC.text = listAttendance[0]["subject"];
                     dateC.text = listAttendance[0]["date"];
                     vanueC.text = listAttendance[0]["vanue"];
@@ -62,9 +63,9 @@ class AttendancePendingccView extends GetView<AttendancePendingccController> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      RedTitleText(text: "ATTENDANCE LIST"),
-                      Text("REDUCED VERTICAL SEPARATION MINIMA (RVSM)"),
-                      SizedBox(
+                      const RedTitleText(text: "ATTENDANCE LIST"),
+                      const Text("REDUCED VERTICAL SEPARATION MINIMA (RVSM)"),
+                      const SizedBox(
                         height: 20,
                       ),
                       Row(
@@ -76,7 +77,7 @@ class AttendancePendingccView extends GetView<AttendancePendingccController> {
                                 textController: subjectC,
                                 readOnly: true),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 10,
                           ),
                           Expanded(
@@ -87,7 +88,7 @@ class AttendancePendingccView extends GetView<AttendancePendingccController> {
                           )
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       Row(
@@ -95,10 +96,10 @@ class AttendancePendingccView extends GetView<AttendancePendingccController> {
                         children: [
                           Expanded(
                             child: FormTextField(
-                              text: "Department",
-                              textController: departmentC,),
+                              text: "Departement",
+                              textController: departementC,),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 10,
                           ),
                           Expanded(
@@ -109,7 +110,7 @@ class AttendancePendingccView extends GetView<AttendancePendingccController> {
                           )
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       Row(
@@ -120,7 +121,7 @@ class AttendancePendingccView extends GetView<AttendancePendingccController> {
                                 text: "Training Type",
                                 textController: trainingtypeC),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 10,
                           ),
                           Expanded(
@@ -130,7 +131,7 @@ class AttendancePendingccView extends GetView<AttendancePendingccController> {
                           )
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       InkWell(
@@ -188,10 +189,7 @@ class AttendancePendingccView extends GetView<AttendancePendingccController> {
 
                         ),
                       ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Text("Class Password"),
+                      const Text("Class Password"),
                       RedTitleText(
                         text: listAttendance[0]["keyAttendance"],
                         size: 16,

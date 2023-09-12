@@ -2,12 +2,9 @@
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:quickalert/quickalert.dart';
 
-import '../../../../presentation/shared_components/customdialogbox.dart';
 
 class AddAttendanceccController extends GetxController {
 
@@ -27,7 +24,7 @@ class AddAttendanceccController extends GetxController {
 
   //Membuat random string untuk key attendance
   static const _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
-  Random _rnd = Random();
+  final Random _rnd = Random();
 
   String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
       length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
@@ -40,8 +37,8 @@ class AddAttendanceccController extends GetxController {
     String formattedDate = DateFormat('ddMMyyyyHHmmss').format(DateTime.now());
     try {
       if (instructor != 0) {
-        await attendance.doc("attendance-${idtrainingtype}-${formattedDate}").set({
-          "id" : "attendance-${idtrainingtype}-${formattedDate}",
+        await attendance.doc("attendance-$idtrainingtype-$formattedDate").set({
+          "id" : "attendance-$idtrainingtype-$formattedDate",
           "subject": subject,
           "date": date,
           "vanue": vanue,
@@ -49,6 +46,7 @@ class AddAttendanceccController extends GetxController {
           "status": "pending",
           "keyAttendance": getRandomString(6),
           "idTrainingType": idtrainingtype,
+          "departement" : null,
           "room" : null,
           "creationTime": DateTime.now().toIso8601String(),
           "updatedTime": DateTime.now().toIso8601String(),
@@ -73,14 +71,6 @@ class AddAttendanceccController extends GetxController {
 
 
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
 
-  @override
-  void onClose() {
-    super.onClose();
-  }
 
 }

@@ -1,13 +1,11 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:typed_data';
-import 'dart:io';
 
 import 'package:ts_one/app/modules/efb/pilot/views/main_view_pilot.dart';
 
@@ -17,7 +15,7 @@ class SignaturePadPage extends StatefulWidget {
   GlobalKey<SfSignaturePadState>();
   Uint8List? signatureImage;
 
-  SignaturePadPage({required this.documentId});
+  SignaturePadPage({super.key, required this.documentId});
 
   @override
   _SignaturePadPageState createState() => _SignaturePadPageState();
@@ -28,14 +26,14 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Signature Pad'),
+        title: const Text('Signature Pad'),
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              Text('Borrower Signature'),
+              const Text('Borrower Signature'),
               Container(
                 decoration: BoxDecoration(border: Border.all(width: 1)),
                 child: SfSignaturePad(
@@ -59,7 +57,7 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
                 onPressed: () {
                   widget._signaturePadKey.currentState?.clear();
                 },
-                child: Text('Clear Signature'),
+                child: const Text('Clear Signature'),
               ),
               ElevatedButton(
                 onPressed: () async {
@@ -70,13 +68,13 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
                       context: context,
                       builder: (context) {
                         return AlertDialog(
-                          title: Text('Konfirmasi'),
-                          content: Text('Apakah Anda yakin ingin menyimpan tanda tangan ini?'),
+                          title: const Text('Konfirmasi'),
+                          content: const Text('Apakah Anda yakin ingin menyimpan tanda tangan ini?'),
                           actions: [
                             ElevatedButton(
                               onPressed: () async {
                                 MaterialPageRoute(
-                                  builder: (context) => HomePilotView(),
+                                  builder: (context) => const HomePilotView(),
                                 ); // Tutup dialog konfirmasi
 
                                 try {
@@ -89,8 +87,8 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
                                     context: context,
                                     builder: (context) {
                                       return AlertDialog(
-                                        title: Text('Sukses'),
-                                        content: Text('Tanda tangan berhasil disimpan.'),
+                                        title: const Text('Sukses'),
+                                        content: const Text('Tanda tangan berhasil disimpan.'),
                                         actions: [
                                           ElevatedButton(
                                             onPressed: () {
@@ -99,7 +97,7 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
                                               Navigator.pop(context); // Kembali ke halaman sebelumnya (pilot)
                                               Navigator.pop(context); // Kembali ke halaman sebelumnya (pilot)
                                             },
-                                            child: Text('OK'),
+                                            child: const Text('OK'),
                                           ),
                                         ],
                                       );
@@ -111,15 +109,15 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
                                     context: context,
                                     builder: (context) {
                                       return AlertDialog(
-                                        title: Text('Error'),
-                                        content: Text(
+                                        title: const Text('Error'),
+                                        content: const Text(
                                             'Terjadi kesalahan saat menyimpan tanda tangan.'),
                                         actions: [
                                           ElevatedButton(
                                             onPressed: () {
                                               Navigator.pop(context); // Tutup dialog error
                                             },
-                                            child: Text('OK'),
+                                            child: const Text('OK'),
                                           ),
                                         ],
                                       );
@@ -127,13 +125,13 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
                                   );
                                 }
                               },
-                              child: Text('Ya'), // Tombol konfirmasi "Ya"
+                              child: const Text('Ya'), // Tombol konfirmasi "Ya"
                             ),
                             ElevatedButton(
                               onPressed: () {
                                 Navigator.pop(context); // Tutup dialog konfirmasi
                               },
-                              child: Text('Tidak'), // Tombol konfirmasi "Tidak"
+                              child: const Text('Tidak'), // Tombol konfirmasi "Tidak"
                             ),
                           ],
                         );
@@ -141,7 +139,7 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
                     );
                   }
                 },
-                child: Text('Simpan Tanda Tangan'),
+                child: const Text('Simpan Tanda Tangan'),
               ),
 
             ],
@@ -188,7 +186,7 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
     } catch (e) {
       // Handle error jika diperlukan
       print("Error uploading signature: $e");
-      throw e;
+      rethrow;
     }
   }
 }

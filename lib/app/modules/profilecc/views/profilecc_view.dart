@@ -102,7 +102,7 @@ class ProfileccView extends GetView<ProfileccController> {
                     var listAttendance = snapshot.data!;
                     return Container(
                       padding:
-                          EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+                      EdgeInsets.symmetric(horizontal: 40, vertical: 20),
                       child: Column(
                         children: [
                           Row(

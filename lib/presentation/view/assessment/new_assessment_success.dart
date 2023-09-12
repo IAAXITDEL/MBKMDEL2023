@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:ts_one/data/assessments/new_assessment.dart';
 import 'package:ts_one/presentation/routes.dart';
 
 class NewAssessmentSuccess extends StatefulWidget {

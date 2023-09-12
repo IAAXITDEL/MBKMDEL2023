@@ -132,6 +132,7 @@ class TrainingtypeccController extends GetxController {
         attendance.name = user['NAME']; // Set 'nama' di dalam model
         attendance.photoURL = user['PHOTOURL'];
       }
+      print(attendanceData[0].photoURL);
       return attendanceData;
     } catch (e) {
       print('Error fetching combined data: $e');
@@ -190,14 +191,6 @@ class TrainingtypeccController extends GetxController {
     argumentname.value = name;
   }
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
 
-  @override
-  void onClose() {
-    super.onClose();
-  }
 
 }

@@ -165,8 +165,8 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                         children: [
                           Expanded(
                             child: FormTextField(
-                              text: "Department",
-                              textController: departmentC,
+                                text: "Department",
+                                textController: departmentC,
                                 readOnly: true
                             ),
                           ),
@@ -238,7 +238,7 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                       ),
                       InkWell(
                         onTap: (){Get.toNamed(Routes.LIST_ATTENDANCECC,arguments: {
-                        "id" : controller.argumentid.value,
+                          "id" : controller.argumentid.value,
                         });},
                         child:  Container(
                           decoration: BoxDecoration(
@@ -301,74 +301,74 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
 
                       // Jika status masih konfirmasi
                       listAttendance[0]["status"] == "confirmation" ?
-                     Column(
-                       children: [
-                         //--------------------------- ATTANDANCE --------------------
-                         SizedBox(
-                           height: 10,
-                         ),
-                         Row(children: [
-                           Text("Signature"),
-                         ],),
-                         Container(
-                           decoration: BoxDecoration(
-                             border: Border.all(
-                               color: TsOneColor.secondaryContainer,
-                               width: 1,
-                             ),
-                           ),
-                           child: SfSignaturePad(
-                             key: _signaturePadKey,
-                             backgroundColor: Colors.grey.withOpacity(0.1),
-                           ),
-                         ),
-                         SizedBox(
-                           height: 10,
-                         ),
-                         Row(
-                           crossAxisAlignment: CrossAxisAlignment.end,
-                           mainAxisAlignment: MainAxisAlignment.end,
-                           children: [
-                             InkWell(
-                               onTap: (){_clearSignature();},
-                               child: Container(
-                                 padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                                 decoration:
-                                 BoxDecoration(color: TsOneColor.primary,
-                                     borderRadius: BorderRadius.circular(5)),
-                                 child: Row(
-                                   children: [
-                                     Text("Clear", style: TextStyle(color: Colors.white)),
-                                     SizedBox(
-                                       width: 5,
-                                     ),
-                                     Icon(
-                                       Icons.clear_outlined,
-                                       color: Colors.white,
-                                       size: 15,
-                                     ),
-                                   ],
-                                 ),
-                               ),
-                             )
-                           ],
-                         ),
-                         //-------------------------SUBMIT-----------------------
-                         Padding(
-                           padding: const EdgeInsets.symmetric(vertical: 16.0),
-                           child: ElevatedButton(
-                             onPressed: () {
-                               confir();
-                             },
-                             style: ElevatedButton.styleFrom(
-                               primary: TsOneColor.greenColor,
-                               minimumSize: Size(double.infinity, 50),
-                             ),
-                             child: Text('Submit', style: TextStyle(color: Colors.white),),
-                           ),
-                         ),
-                       ],
-                     ) : Container()
+                      Column(
+                        children: [
+                          //--------------------------- ATTANDANCE --------------------
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Row(children: [
+                            Text("Signature"),
+                          ],),
+                          Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: TsOneColor.secondaryContainer,
+                                width: 1,
+                              ),
+                            ),
+                            child: SfSignaturePad(
+                              key: _signaturePadKey,
+                              backgroundColor: Colors.grey.withOpacity(0.1),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              InkWell(
+                                onTap: (){_clearSignature();},
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                                  decoration:
+                                  BoxDecoration(color: TsOneColor.primary,
+                                      borderRadius: BorderRadius.circular(5)),
+                                  child: Row(
+                                    children: [
+                                      Text("Clear", style: TextStyle(color: Colors.white)),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Icon(
+                                        Icons.clear_outlined,
+                                        color: Colors.white,
+                                        size: 15,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                          //-------------------------SUBMIT-----------------------
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 16.0),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                confir();
+                              },
+                              style: ElevatedButton.styleFrom(
+                                primary: TsOneColor.greenColor,
+                                minimumSize: Size(double.infinity, 50),
+                              ),
+                              child: Text('Submit', style: TextStyle(color: Colors.white),),
+                            ),
+                          ),
+                        ],
+                      ) : Container()
                     ],
                   );
                 }),

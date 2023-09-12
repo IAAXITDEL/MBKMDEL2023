@@ -2,7 +2,6 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:googleapis/connectors/v1.dart';
 
 import '../../../../data/assessments/assessment_results.dart';
 import '../../../../data/users/user_preferences.dart';
@@ -72,10 +71,6 @@ class MainHomeController extends GetxController {
   }
 
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
 
 
   Future<void> cekRole() async {
@@ -99,14 +94,9 @@ class MainHomeController extends GetxController {
     }
     // SEBAGAI ALL STAR
     else{
-      print(userPreferences.getRank());
     }
 
   }
 
-  @override
-  void onClose() {
-    super.onClose();
-  }
 
 }

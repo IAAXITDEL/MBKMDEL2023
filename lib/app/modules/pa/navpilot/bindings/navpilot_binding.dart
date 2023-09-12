@@ -9,7 +9,7 @@ class NavpilotBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut<NavpilotController>(
-      () => NavpilotController(),
+          () => NavpilotController(),
     );
     Get.lazyPut<HomePilotccController>(
           () => HomePilotccController(),

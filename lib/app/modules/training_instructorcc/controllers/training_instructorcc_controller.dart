@@ -37,18 +37,11 @@ class TrainingInstructorccController extends GetxController {
         }),
       );
 
+      print(usersData);
       return attendanceData;
     });
   }
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
 
-  @override
-  void onClose() {
-    super.onClose();
-  }
 
 }

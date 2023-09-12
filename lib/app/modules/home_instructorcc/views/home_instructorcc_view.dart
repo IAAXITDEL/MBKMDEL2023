@@ -7,7 +7,6 @@ import '../../../../presentation/theme.dart';
 import '../../../../util/empty_screen.dart';
 import '../../../../util/error_screen.dart';
 import '../../../../util/loading_screen.dart';
-import '../../../routes/app_pages.dart';
 import '../controllers/home_instructorcc_controller.dart';
 
 class HomeInstructorccView extends GetView<HomeInstructorccController> {
@@ -18,8 +17,8 @@ class HomeInstructorccView extends GetView<HomeInstructorccController> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            RedTitleText(text: 'TRAINING OVERVIEW', size: 14,),
-            SizedBox(height: 20,),
+            const RedTitleText(text: 'TRAINING OVERVIEW', size: 14,),
+            const SizedBox(height: 20,),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -27,25 +26,25 @@ class HomeInstructorccView extends GetView<HomeInstructorccController> {
                   "Training Simulator",
                   style: tsOneTextTheme.labelMedium,
                 ),
-                Icon(Icons.search),
+                const Icon(Icons.search),
               ],
             ),
-            SizedBox(height: 20,),
+            const SizedBox(height: 20,),
             Expanded(child: StreamBuilder<List<Map<String, dynamic>>>(
               stream: controller.getCombinedAttendanceStream("pending"),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return LoadingScreen(); // Placeholder while loading
+                  return const LoadingScreen(); // Placeholder while loading
                 }
 
                 if (snapshot.hasError) {
-                  return ErrorScreen();
+                  return const ErrorScreen();
                 }
 
                 var listAttendance= snapshot.data!;
 
                 if(listAttendance.isEmpty){
-                  return EmptyScreen();
+                  return const EmptyScreen();
                 }
 
 
@@ -61,7 +60,7 @@ class HomeInstructorccView extends GetView<HomeInstructorccController> {
                               color: Colors.grey.withOpacity(0.3),
                               spreadRadius: 2,
                               blurRadius: 3,
-                              offset: Offset(0, 2),
+                              offset: const Offset(0, 2),
                             ),
                           ],
                         ),
@@ -78,7 +77,7 @@ class HomeInstructorccView extends GetView<HomeInstructorccController> {
                               listAttendance[index]["date"],
                               style: tsOneTextTheme.labelSmall,
                             ),
-                            trailing: Icon(Icons.navigate_next),
+                            trailing: const Icon(Icons.navigate_next),
                           ),
                         ),
                       );

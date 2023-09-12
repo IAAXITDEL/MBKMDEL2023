@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import '../../../../data/users/user_preferences.dart';
 import '../../../../data/users/users.dart';
 import '../../../../di/locator.dart';
-import '../../../routes/app_pages.dart';
 
 class InstructorMainHomeccController extends GetxController {
 
@@ -18,19 +17,7 @@ class InstructorMainHomeccController extends GetxController {
     }
   }
 
-  @override
-  void onInit() {
-    super.onInit();
-  }
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
 
-  @override
-  void onClose() {
-    super.onClose();
-  }
 
 }

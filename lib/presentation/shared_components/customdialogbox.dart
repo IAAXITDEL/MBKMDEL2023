@@ -1,5 +1,3 @@
-import 'dart:ui';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../theme.dart';
@@ -30,14 +28,14 @@ class _CustomDialogBoxState extends State<CustomDialogBox> {
     return Stack(
       children: <Widget>[
         Container(
-          padding: EdgeInsets.only(left: 20,top: 50, right: 20,bottom: 20
+          padding: const EdgeInsets.only(left: 20,top: 50, right: 20,bottom: 20
           ),
-          margin: EdgeInsets.only(top: 45),
+          margin: const EdgeInsets.only(top: 45),
           decoration: BoxDecoration(
               shape: BoxShape.rectangle,
               color: Colors.white,
               borderRadius: BorderRadius.circular(20),
-              boxShadow: [
+              boxShadow: const [
                 BoxShadow(color: Colors.black,offset: Offset(0,5),
                     blurRadius: 10
                 ),
@@ -46,10 +44,10 @@ class _CustomDialogBoxState extends State<CustomDialogBox> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Text(widget.title,style: TextStyle(fontSize: 22,fontWeight: FontWeight.w600),),
-              SizedBox(height: 15,),
-              Text(widget.descriptions,style: TextStyle(fontSize: 14),textAlign: TextAlign.center,),
-              SizedBox(height: 22,),
+              Text(widget.title,style: const TextStyle(fontSize: 22,fontWeight: FontWeight.w600),),
+              const SizedBox(height: 15,),
+              Text(widget.descriptions,style: const TextStyle(fontSize: 14),textAlign: TextAlign.center,),
+              const SizedBox(height: 22,),
               // Align(
               //   alignment: Alignment.bottomRight,
               //   child: TextButton(
@@ -68,7 +66,7 @@ class _CustomDialogBoxState extends State<CustomDialogBox> {
             backgroundColor: Colors.white,
             radius: 50,
             child: ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(45)),
+                borderRadius: const BorderRadius.all(Radius.circular(45)),
                 child: Icon(widget.icon, color: TsOneColor.primary,size: 100,)
             ),
           ),
@@ -77,7 +75,7 @@ class _CustomDialogBoxState extends State<CustomDialogBox> {
           top: 40,
           right: 0,
           child: IconButton(
-            icon: Icon(Icons.close, color: TsOneColor.primary),
+            icon: const Icon(Icons.close, color: TsOneColor.primary),
             onPressed: () {
               Navigator.of(context).pop();
             },

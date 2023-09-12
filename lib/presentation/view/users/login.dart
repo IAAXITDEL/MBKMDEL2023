@@ -5,7 +5,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:ts_one/data/users/user_preferences.dart';
 import 'package:ts_one/di/locator.dart';
-import 'package:ts_one/presentation/routes.dart';
 import 'package:ts_one/presentation/theme.dart';
 import 'package:ts_one/presentation/view_model/user_viewmodel.dart';
 
@@ -31,7 +30,7 @@ class _LoginViewState extends State<LoginView> {
     super.initState();
   }
 
-  bool _hidePassword = true;
+  final bool _hidePassword = true;
 
   @override
   Widget build(BuildContext context) {

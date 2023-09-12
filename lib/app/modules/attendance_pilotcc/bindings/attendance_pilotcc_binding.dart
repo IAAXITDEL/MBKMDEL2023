@@ -6,7 +6,7 @@ class AttendancePilotccBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut<AttendancePilotccController>(
-      () => AttendancePilotccController(),
+          () => AttendancePilotccController(),
     );
   }
 }

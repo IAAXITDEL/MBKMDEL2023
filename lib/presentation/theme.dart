@@ -4,12 +4,10 @@ ThemeData tsOneThemeData = ThemeData(
   // colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
 
   // turn this off if you want to use the default color scheme
-  colorScheme: tsOneColorScheme,
   primaryColor: const Color(0xFFE32526),
-  backgroundColor: tsOneColorScheme.background,
   visualDensity: VisualDensity.adaptivePlatformDensity,
   useMaterial3: true,
-  fontFamily: 'Poppins',
+  fontFamily: 'Poppins', colorScheme: tsOneColorScheme.copyWith(background: tsOneColorScheme.background),
 );
 
 ColorScheme tsOneColorScheme = const ColorScheme(
@@ -45,7 +43,7 @@ class TsOneColor {
 
   // CC COLOR
   static const Color greenColor = Color(0xFF14AE5C);
-  static final Color orangeColor = const Color(0xFFE3A225);
+  static const Color orangeColor = Color(0xFFE3A225);
 }
 
 TextTheme tsOneTextTheme = TextTheme(

@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 
-class NavOCCController extends GetxController {
+class NavcaptainController extends GetxController {
+  //TODO: Implement NavcaptainController
+
   final count = 0.obs;
 
 

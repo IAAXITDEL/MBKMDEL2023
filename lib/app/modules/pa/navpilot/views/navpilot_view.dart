@@ -93,6 +93,3 @@ class _NavpilotState extends State<NavpilotView> {
     );
   }
 }
-
-
-

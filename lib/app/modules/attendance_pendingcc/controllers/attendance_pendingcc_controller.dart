@@ -28,6 +28,7 @@ class AttendancePendingccController extends GetxController {
         }),
       );
 
+      print(attendanceData);
       return attendanceData;
     });
   }
@@ -45,14 +46,6 @@ class AttendancePendingccController extends GetxController {
   }
 
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
 
-  @override
-  void onClose() {
-    super.onClose();
-  }
 
 }

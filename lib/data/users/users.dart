@@ -36,7 +36,7 @@ class UserModel with ChangeNotifier {
   static String keyIDNo = "ID NO";
   static String keyPrivileges = "PRIVILEGES";
 
-  /** ALL PRIVILEGES */
+  /// ALL PRIVILEGES
   static String keyPrivilegeCreateAssessment =
       "create-assessment"; // for instructor to make a new assessment
   static String keyPrivilegeUpdateAssessment =
@@ -64,11 +64,11 @@ class UserModel with ChangeNotifier {
   static String keyFORequestDevice =
       "fo-request-device"; // for FO to request the device
 
-  /** ALL POSITIONS */
+  /// ALL POSITIONS
   static String keyPositionCaptain = "CAPT";
   static String keyPositionFirstOfficer = "FO";
 
-  /** ALL SUBPOSITIONS */
+  /// ALL SUBPOSITIONS
   static String keySubPositionCCP = "CCP"; // chief check pilot
   static String keyCPTS = "CPTS"; // chief pilot training standards
   static String keySubPositionFIA = "FIA"; // flight instructor assistant

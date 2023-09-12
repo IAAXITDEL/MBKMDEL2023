@@ -6,7 +6,7 @@ class AttendanceInstructorconfirccBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut<AttendanceInstructorconfirccController>(
-      () => AttendanceInstructorconfirccController(),
+          () => AttendanceInstructorconfirccController(),
     );
   }
 }

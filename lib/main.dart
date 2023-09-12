@@ -9,17 +9,16 @@ import 'package:ts_one/di/locator.dart';
 import 'package:ts_one/domain/assessment_repo.dart';
 import 'package:ts_one/domain/assessment_results_repo.dart';
 import 'package:ts_one/domain/user_repo.dart';
-import 'package:ts_one/firebase_options.dart';
-import 'package:ts_one/presentation/routes.dart';
 import 'package:ts_one/presentation/theme.dart';
 import 'package:ts_one/presentation/view/splash_screen.dart';
 import 'package:ts_one/presentation/view_model/assessment_results_viewmodel.dart';
 import 'package:ts_one/presentation/view_model/assessment_viewmodel.dart';
 import 'package:ts_one/presentation/view_model/user_viewmodel.dart';
-
+import 'package:ts_one/firebase_options.dart';
 import 'package:get/get.dart';
 
 import 'app/routes/app_pages.dart';
+
 void main() async {
   // ensure that all the widgets are loaded before running the app
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,22 +39,22 @@ void main() async {
   }
 
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: Color(0xFFFDFDFD), // the same as the app's background color in tsOneColorScheme.background
-      statusBarIconBrightness: Brightness.dark,
+    statusBarColor: Color(
+        0xFFFDFDFD), // the same as the app's background color in tsOneColorScheme.background
+    statusBarIconBrightness: Brightness.dark,
   ));
 
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(
-          create: (_) => UserViewModel(
-              repo: getItLocator<UserRepo>(),
-              userPreferences: getItLocator<UserPreferences>()
-          ),
+        create: (_) => UserViewModel(
+            repo: getItLocator<UserRepo>(),
+            userPreferences: getItLocator<UserPreferences>()),
       ),
       ChangeNotifierProvider(
-          create: (_) => AssessmentViewModel(
-              repo: getItLocator<AssessmentRepo>(),
-          ),
+        create: (_) => AssessmentViewModel(
+          repo: getItLocator<AssessmentRepo>(),
+        ),
       ),
       ChangeNotifierProvider(
         create: (_) => AssessmentResultsViewModel(

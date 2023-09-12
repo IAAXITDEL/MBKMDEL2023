@@ -5,20 +5,18 @@ import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import '../../../../../presentation/theme.dart';
 import '../../../homecc/views/homecc_view.dart';
-import '../../../pilotcrewcc/views/pilotcrewcc_view.dart';
 import '../../../profilecc/views/profilecc_view.dart';
 import '../../../trainingcc/views/trainingcc_view.dart';
 
-
-class NavadminView extends StatefulWidget {
+class NavcaptainView extends StatefulWidget {
   final int initialIndex;
-  const NavadminView({Key? key, required this.initialIndex}) : super(key: key);
+  const NavcaptainView({Key? key, required this.initialIndex}) : super(key: key);
 
   @override
-  State<NavadminView> createState() => _NavadminState();
+  State<NavcaptainView> createState() => _NavcaptainState();
 }
 
-class _NavadminState extends State<NavadminView> {
+class _NavcaptainState extends State<NavcaptainView> {
   late PersistentTabController _controller;
 
   @override
@@ -31,7 +29,6 @@ class _NavadminState extends State<NavadminView> {
     return [
       const HomeccView(),
       const TrainingccView(),
-      const PilotcrewccView(),
       const ProfileccView(),
     ];
   }
@@ -45,11 +42,6 @@ class _NavadminState extends State<NavadminView> {
       ),
       PersistentBottomNavBarItem(
         icon: const Icon(CupertinoIcons.square_list),
-        activeColorPrimary: tsOneColorScheme.primary,
-        inactiveColorPrimary: CupertinoColors.systemGrey,
-      ),
-      PersistentBottomNavBarItem(
-        icon: const Icon(CupertinoIcons.person_2),
         activeColorPrimary: tsOneColorScheme.primary,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
@@ -98,3 +90,4 @@ class _NavadminState extends State<NavadminView> {
     );
   }
 }
+

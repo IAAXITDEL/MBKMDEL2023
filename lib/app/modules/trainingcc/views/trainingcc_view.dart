@@ -34,9 +34,9 @@ class TrainingccView extends GetView<TrainingccController> {
           type: QuickAlertType.success,
           text: 'You have been joined to the class!',
         );
-       Get.toNamed(Routes.ATTENDANCE_PILOTCC, arguments: {
-         "id" : attendanceList[0].id,
-       });
+        Get.toNamed(Routes.ATTENDANCE_PILOTCC, arguments: {
+          "id" : attendanceList[0].id,
+        });
       } else {
         // The list is empty
         await QuickAlert.show(
@@ -111,9 +111,9 @@ class TrainingccView extends GetView<TrainingccController> {
             Navigator.of(context, rootNavigator: true).pop();
           },
         );
-        
+
       }
-      
+
     }
 
 
@@ -133,11 +133,11 @@ class TrainingccView extends GetView<TrainingccController> {
                   stream: controller.trainingStream(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                       return LoadingScreen(); // Placeholder while loading
+                      return LoadingScreen(); // Placeholder while loading
                     }
 
                     if (snapshot.hasError) {
-                       return ErrorScreen();
+                      return ErrorScreen();
                     }
 
                     var listTraining= snapshot.data!.docs;
@@ -162,11 +162,11 @@ class TrainingccView extends GetView<TrainingccController> {
                           child: InkWell(
                             onTap: () {
                               controller.argumentid.value =  trainingData["id"];
-                            controller.argumentname.value =  trainingData["training"];
-                                controller.cekRole();
-                               if(controller.cekPilot.value  == true){
-                                 add(controller.argumentid.value);
-                               }
+                              controller.argumentname.value =  trainingData["training"];
+                              controller.cekRole();
+                              if(controller.cekPilot.value  == true){
+                                add(controller.argumentid.value);
+                              }
                             },
                             splashColor: TsOneColor.primary,
                             child: Center(

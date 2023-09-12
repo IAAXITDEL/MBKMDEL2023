@@ -7,10 +7,6 @@ import '../../../../presentation/view_model/attendance_model.dart';
 
 class HomeInstructorccController extends GetxController {
 
-  @override
-  void onInit() {
-    super.onInit();
-  }
   late UserPreferences userPreferences;
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -35,15 +31,7 @@ class HomeInstructorccController extends GetxController {
     });
   }
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
 
-  @override
-  void onClose() {
-    super.onClose();
-  }
 
 
 }

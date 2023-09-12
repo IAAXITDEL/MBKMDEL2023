@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:ts_one/app/modules/efb/occ/model/device.dart';
 import 'package:ts_one/app/modules/efb/occ/views/listdevice/editdevice.dart';
 import 'package:ts_one/app/modules/efb/occ/views/listdevice/adddevice.dart';
@@ -9,9 +7,10 @@ import 'package:ts_one/app/modules/efb/occ/views/listdevice/showdevice.dart';
 import 'package:ts_one/app/modules/efb/occ/controllers/device_controller.dart';
 
 import '../../../../../../presentation/theme.dart';
-import '../../../../../routes/app_pages.dart';
 
 class ListDevice extends StatefulWidget {
+  const ListDevice({super.key});
+
   @override
   State<StatefulWidget> createState() {
     return _ListDeviceState();
@@ -72,7 +71,7 @@ class _ListDeviceState extends State<ListDevice> {
         PopupMenuItem(
           value: 'edit',
           child: Row(
-            children: [
+            children: const [
               Icon(Icons.edit, color: Colors.yellowAccent),
               SizedBox(width: 8),
               Text('Edit'),
@@ -82,7 +81,7 @@ class _ListDeviceState extends State<ListDevice> {
         PopupMenuItem(
           value: 'show',
           child: Row(
-            children: [
+            children: const [
               Icon(Icons.qr_code, color: Colors.lightBlueAccent),
               SizedBox(width: 8),
               Text('Show'),
@@ -92,7 +91,7 @@ class _ListDeviceState extends State<ListDevice> {
         PopupMenuItem(
           value: 'delete',
           child: Row(
-            children: [
+            children: const [
               Icon(Icons.delete, color: Colors.red),
               SizedBox(width: 8),
               Text('Delete'),
@@ -108,8 +107,8 @@ class _ListDeviceState extends State<ListDevice> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Color(0xFFE6E6E6),
-          title: Text(
+          backgroundColor: const Color(0xFFE6E6E6),
+          title: const Text(
             'Delete Device',
             style: TextStyle(
               color: Colors.redAccent,
@@ -117,7 +116,7 @@ class _ListDeviceState extends State<ListDevice> {
               fontFamily: 'Poppins',
             ),
           ),
-          content: Text(
+          content: const Text(
             'Are you sure you want to delete this device?',
             style: TextStyle(
               color: Colors.black,
@@ -126,7 +125,7 @@ class _ListDeviceState extends State<ListDevice> {
           ),
           actions: <Widget>[
             TextButton(
-              child: Text(
+              child: const Text(
                 'Cancel',
                 style: TextStyle(
                   color: Colors.black,
@@ -139,7 +138,7 @@ class _ListDeviceState extends State<ListDevice> {
               },
             ),
             TextButton(
-              child: Text(
+              child: const Text(
                 'Delete',
                 style: TextStyle(
                   color: Colors.redAccent,
@@ -184,12 +183,12 @@ class _ListDeviceState extends State<ListDevice> {
         automaticallyImplyLeading: false,
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
             Align(
               alignment: Alignment.centerRight,
-              child: Container(
+              child: SizedBox(
                 width: 155,
                 child: TextButton(
                   style: TextButton.styleFrom(
@@ -202,11 +201,11 @@ class _ListDeviceState extends State<ListDevice> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (BuildContext context) => AddDevice()),
+                          builder: (BuildContext context) => const AddDevice()),
                     );
                   },
                   child: Row(
-                    children: [
+                    children: const [
                       Icon(
                         Icons.add_box_outlined,
                         color: TsOneColor.onPrimary,
@@ -221,7 +220,7 @@ class _ListDeviceState extends State<ListDevice> {
                 ),
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             TextField(
               controller: searchController,
               onChanged: (value) {
@@ -229,9 +228,9 @@ class _ListDeviceState extends State<ListDevice> {
                   searchQuery = value;
                 });
               },
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: "Search Device Number",
-                hintStyle: const TextStyle(
+                hintStyle: TextStyle(
                   color: TsOneColor.onSecondary,
                 ),
                 prefixIcon: Icon(Icons.search),
@@ -240,7 +239,7 @@ class _ListDeviceState extends State<ListDevice> {
                 ),
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Expanded(
               child: StreamBuilder(
                 stream: collectionReference,
@@ -265,7 +264,7 @@ class _ListDeviceState extends State<ListDevice> {
                       padding: const EdgeInsets.only(top: 8.0),
                       child: ListView(
                         children: filteredData.map((e) {
-                          return Container(
+                          return SizedBox(
                             height: 80,
                             child: Card(
                               color: TsOneColor.onPrimary,
@@ -279,7 +278,7 @@ class _ListDeviceState extends State<ListDevice> {
                                     subtitle: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
-                                      children: <Widget>[
+                                      children: const <Widget>[
                                         // ... other sub-items ...
                                       ],
                                     ),

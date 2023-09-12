@@ -35,7 +35,7 @@ class AttendanceDetailModel {
         name: json['name'],
         photoURL: json['photoURL'],
         rank: json['rank'],
-      license: json['license']
+        license: json['license']
 
     );
   }

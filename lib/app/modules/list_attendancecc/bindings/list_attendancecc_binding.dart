@@ -6,7 +6,7 @@ class ListAttendanceccBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut<ListAttendanceccController>(
-      () => ListAttendanceccController(),
+          () => ListAttendanceccController(),
     );
   }
 }

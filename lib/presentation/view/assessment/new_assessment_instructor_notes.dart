@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:focus_detector/focus_detector.dart';
-import 'package:googleapis/apigeeregistry/v1.dart';
 import 'package:provider/provider.dart';
 import 'package:ts_one/presentation/view_model/assessment_results_viewmodel.dart';
 import 'package:ts_one/util/util.dart';
