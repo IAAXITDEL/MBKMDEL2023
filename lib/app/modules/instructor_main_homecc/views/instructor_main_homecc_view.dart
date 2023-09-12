@@ -14,7 +14,7 @@ class InstructorMainHomeccView extends GetView<InstructorMainHomeccController> {
         backgroundColor: TsOneColor.primary,
         body: SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 50),
               child: Column(
                 children: [
                   Center(
@@ -22,15 +22,15 @@ class InstructorMainHomeccView extends GetView<InstructorMainHomeccController> {
                       child: Image.asset("assets/images/airasia_logo_circle.png",  fit: BoxFit.cover,),
                     ),
                   ),
-                  const Text(
+                  Text(
                     "WELCOME",
                     style: TextStyle(color: Colors.white, fontSize: 20),
                   ),
-                  const Text(
+                  Text(
                     "Please select the desired menu",
                     style: TextStyle(color: Colors.white),
                   ),
-                  const SizedBox(height: 20,),
+                  SizedBox(height: 20,),
                   Container(
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10.0),
@@ -49,11 +49,11 @@ class InstructorMainHomeccView extends GetView<InstructorMainHomeccController> {
                           "Pilot Training and Proficiency Control Card",
                           style: tsOneTextTheme.labelSmall,
                         ),
-                        trailing: const Icon(Icons.navigate_next),
+                        trailing: Icon(Icons.navigate_next),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 10,),
+                  SizedBox(height: 10,),
                   Container(
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10.0),
@@ -61,7 +61,7 @@ class InstructorMainHomeccView extends GetView<InstructorMainHomeccController> {
                     ),
                     child: InkWell(
                       onTap: (){
-                        Get.toNamed(Routes.NAVCAPTAIN);
+                        Get.toNamed(Routes.NAVPILOT);
                       },
                       child: ListTile(
                         title: Text(
@@ -72,7 +72,7 @@ class InstructorMainHomeccView extends GetView<InstructorMainHomeccController> {
                           "Pilot Training and Proficiency Control Card",
                           style: tsOneTextTheme.labelSmall,
                         ),
-                        trailing: const Icon(Icons.navigate_next),
+                        trailing: Icon(Icons.navigate_next),
                       ),
                     ),
                   ),

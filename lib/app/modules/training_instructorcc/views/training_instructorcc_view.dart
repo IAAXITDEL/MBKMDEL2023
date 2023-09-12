@@ -41,30 +41,30 @@ class _TrainingInstructorccViewState extends State<TrainingInstructorccView>
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Back', style: TextStyle(color: Colors.black)),
-        iconTheme: const IconThemeData(color: Colors.black),
+        title: Text('Back', style: TextStyle(color: Colors.black)),
+        iconTheme: IconThemeData(color: Colors.black),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
       body:  Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding: EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             RedTitleText(text: controller.argumentname.value),
 
-            const SizedBox(height: 20,),
+            SizedBox(height: 20,),
             //-------------------- TAB BAR ------------------------
             Container(
               child: TabBar(
-                labelPadding: const EdgeInsets.symmetric(horizontal: 1.0),
+                labelPadding: EdgeInsets.symmetric(horizontal: 1.0),
                 indicatorColor: TsOneColor.primary,
                 indicatorWeight: 3,
                 labelColor: TsOneColor.primary,
                 unselectedLabelColor: TsOneColor.secondaryContainer,
                 controller: _tabController,
-                tabs: const [
+                tabs: [
                   Tab(text: "Confirmation"),
                   Tab(text: "Done",)
                 ],
@@ -78,17 +78,17 @@ class _TrainingInstructorccViewState extends State<TrainingInstructorccView>
                     stream: controller.getCombinedAttendanceStream(widget.id, "pending"),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const LoadingScreen(); // Placeholder while loading
+                        return LoadingScreen(); // Placeholder while loading
                       }
 
                       if (snapshot.hasError) {
-                        return const ErrorScreen();
+                        return ErrorScreen();
                       }
 
                       var listAttendance= snapshot.data!;
 
                       if(listAttendance.isEmpty){
-                        return const EmptyScreen();
+                        return EmptyScreen();
                       }
 
 
@@ -96,7 +96,7 @@ class _TrainingInstructorccViewState extends State<TrainingInstructorccView>
                           itemCount: listAttendance.length,
                           itemBuilder: (context, index) {
                             return ListTile(
-                              onTap: () => Get.toNamed(Routes.ATTENDANCE_CONFIRCC(listAttendance[index]["id"]),  arguments: {
+                              onTap: () => Get.toNamed(Routes.ATTENDANCE_INSTRUCTORCONFIRCC,  arguments: {
                                 "id" : listAttendance[index]["id"],
                                 "name" : listAttendance[index]["subject"],
                               }),
@@ -112,7 +112,7 @@ class _TrainingInstructorccViewState extends State<TrainingInstructorccView>
                               ),
                               title: Text(listAttendance[index]["subject"].toString()),
                               subtitle: Text(listAttendance[index]["date"]),
-                              trailing: const Icon(Icons.navigate_next),
+                              trailing: Icon(Icons.navigate_next),
                             );
                           }
                       );
@@ -122,17 +122,17 @@ class _TrainingInstructorccViewState extends State<TrainingInstructorccView>
                     stream: controller.getCombinedAttendanceStream(widget.id, "confirmation"),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const LoadingScreen(); // Placeholder while loading
+                        return LoadingScreen(); // Placeholder while loading
                       }
 
                       if (snapshot.hasError) {
-                        return const ErrorScreen();
+                        return ErrorScreen();
                       }
 
                       var listAttendance= snapshot.data!;
 
                       if(listAttendance.isEmpty){
-                        return const EmptyScreen();
+                        return EmptyScreen();
                       }
 
                       return ListView.builder(
@@ -151,7 +151,7 @@ class _TrainingInstructorccViewState extends State<TrainingInstructorccView>
                               ),
                               title: Text(listAttendance[index]["name"].toString()),
                               subtitle: Text(listAttendance[index]["date"]),
-                              trailing: const Icon(Icons.navigate_next),
+                              trailing: Icon(Icons.navigate_next),
                               onTap: () {
                                 // Action when item is tapped
                               },

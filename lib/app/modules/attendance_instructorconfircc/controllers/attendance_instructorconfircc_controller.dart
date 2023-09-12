@@ -1,7 +1,4 @@
-import 'dart:typed_data';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
 
 import '../../../../data/users/user_preferences.dart';
@@ -9,8 +6,7 @@ import '../../../../data/users/users.dart';
 import '../../../../di/locator.dart';
 import '../../../../presentation/view_model/attendance_model.dart';
 
-class AttendanceConfirccController extends GetxController {
-
+class AttendanceInstructorconfirccController extends GetxController {
   var selectedMeeting = "Training".obs;
   late UserPreferences userPreferences;
 
@@ -21,8 +17,10 @@ class AttendanceConfirccController extends GetxController {
   final RxString argumentid = "".obs;
   final RxString argumentname = "".obs;
   final RxInt jumlah = 0.obs;
-
   final RxString role = "".obs;
+
+  final RxBool ceksign = false.obs;
+  final RxBool showText = false.obs;
   @override
   void onInit() {
     super.onInit();
@@ -67,53 +65,51 @@ class AttendanceConfirccController extends GetxController {
       role.value = "Pilot Administrator";
     }
 
-    print(role.value);
-
-  }
-
-
-  Future<void> saveSignature(Uint8List signatureData) async {
-    // Membuat referensi untuk Firebase Storage
-    final Reference storageReference = FirebaseStorage.instance.ref().child(
-        'signature-cc/${argumentid.value}-pilot-administrator-${DateTime.now()}.png');
-
-    // Mengunggah data gambar ke Firebase Storage
-    await storageReference.putData(signatureData);
-
-    // Mendapatkan URL gambar yang diunggah
-    final String imageUrl = await storageReference.getDownloadURL();
-
-    // Menyimpan URL gambar di database Firestore
-    await FirebaseFirestore.instance.collection('attendance').doc(argumentid.value).update({
-      'signature-pilot-administrator-url': imageUrl
-    });
   }
 
   //confir attendance oleh instructor
-  Future<void> confirattendance() async {
+  Future<void> confirattendance(String department, String trainingType, String room) async {
     CollectionReference attendance = _firestore.collection('attendance');
+    CollectionReference attendancedetail = _firestore.collection('attendance-detail');
     await attendance.doc(argumentid.value.toString()).update({
-      "status" : "done",
+      "department": department,
+      "trainingType" :  trainingType,
+      "room" : room,
+      "attendanceType" : selectedMeeting.value,
+      "status" : "confirmation",
       "updatedTime": DateTime.now().toIso8601String(),
+
       //signature icc url
+    });
+
+
+    // Ubah status pilot yang mengikuti kelas menjadi done
+    QuerySnapshot querySnapshot = await attendancedetail
+        .where("idattendance", isEqualTo: argumentid.value.toString())
+        .get();
+
+
+    querySnapshot.docs.forEach((doc) async {
+      await doc.reference.update({
+        "status" : "done",
+        "updatedTime": DateTime.now().toIso8601String(),
+      });
     });
   }
 
 
-//mendapatkan panjang list attendance
+  //mendapatkan panjang list attendance
   Future<int> attendanceStream() async {
     final attendanceQuery = await _firestore
         .collection('attendance-detail')
-        .where("status", isEqualTo: "done")
         .where("idattendance", isEqualTo: argumentid.value)
+        .where("status", isEqualTo: "confirmation")
         .get();
 
     jumlah.value = attendanceQuery.docs.length;
     print(attendanceQuery.docs.length);
     return attendanceQuery.docs.length;
   }
-
-
 
   @override
   void onReady() {
