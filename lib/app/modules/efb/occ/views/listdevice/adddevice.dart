@@ -156,6 +156,15 @@ class _AddDevice extends State<AddDevice> {
       ),
     );
 
+    Future<void> _showQuickAlert(BuildContext context) async {
+      await QuickAlert.show(
+        context: context,
+        type: QuickAlertType.success,
+        text: 'You have succesfully Added a Device',
+      );
+      Navigator.of(context).pop();
+    }
+
     final SaveButon = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(4.0),
@@ -174,12 +183,7 @@ class _AddDevice extends State<AddDevice> {
                 condition: _condition.text);
             if (response.code == 200) {
               //Success
-              await QuickAlert.show(
-                context: context,
-                type: QuickAlertType.success,
-                text: 'You have succesfully Added a Device',
-              );
-              Get.offAllNamed(Routes.LISTDEVICEOCC);
+              _showQuickAlert(context);
             } else {
               //Not successful
               QuickAlert.show(
@@ -187,24 +191,6 @@ class _AddDevice extends State<AddDevice> {
                   type: QuickAlertType.error,
                   text: 'Failed to add device: ${response.message}');
             }
-
-            // if (response.code == 200) {
-            //   showDialog(
-            //       context: context,
-            //       builder: (context) {
-            //         return AlertDialog(
-            //           content: Text(response.message.toString()),
-            //         );
-            //       });
-            // } else {
-            //   showDialog(
-            //       context: context,
-            //       builder: (context) {
-            //         return AlertDialog(
-            //           content: Text(response.message.toString()),
-            //         );
-            //       });
-            // }
           }
         },
         child: const Text(

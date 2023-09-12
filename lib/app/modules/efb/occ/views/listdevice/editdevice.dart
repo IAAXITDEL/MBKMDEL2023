@@ -142,7 +142,7 @@ class _EditDevice extends State<EditDevice> {
       await QuickAlert.show(
         context: context,
         type: QuickAlertType.success,
-        text: 'Device successfully updated!',
+        text: 'Device successfully updated',
       );
       Navigator.of(context).pop();
     }
@@ -158,17 +158,35 @@ class _EditDevice extends State<EditDevice> {
             ),
             content: Text('Are you sure you want to update this device?'),
             actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(true);
-                },
-                child: Text('Yes'),
+              Container(
+                width: 115,
+                child: TextButton(
+                    style: TextButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                            side: BorderSide(color: TsOneColor.onSecondary))),
+                    onPressed: () {
+                      Navigator.of(context).pop(false);
+                    },
+                    child: Text('No',
+                        style: TextStyle(color: TsOneColor.onSecondary))),
               ),
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(false);
-                },
-                child: Text('No'),
+              SizedBox(
+                width: 15,
+              ),
+              Container(
+                width: 115,
+                child: TextButton(
+                    style: TextButton.styleFrom(
+                        backgroundColor: TsOneColor.greenColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        )),
+                    onPressed: () {
+                      Navigator.of(context).pop(true);
+                    },
+                    child: Text('Yes',
+                        style: TextStyle(color: TsOneColor.onPrimary))),
               ),
             ],
           );
@@ -203,24 +221,6 @@ class _EditDevice extends State<EditDevice> {
                 uid: _uid.text);
 
             _showConfirmationDialog(context);
-
-            // if (response.code != 200) {
-            //   showDialog(
-            //       context: context,
-            //       builder: (context) {
-            //         return AlertDialog(
-            //           content: Text(response.message.toString()),
-            //         );
-            //       });
-            // } else {
-            //   showDialog(
-            //       context: context,
-            //       builder: (context) {
-            //         return AlertDialog(
-            //           content: Text(response.message.toString()),
-            //         );
-            //       });
-            // }
           }
         },
         child: Text(

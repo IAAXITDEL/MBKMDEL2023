@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:quickalert/quickalert.dart';
 import 'package:ts_one/app/modules/efb/occ/model/device.dart';
 import 'package:ts_one/app/modules/efb/occ/views/listdevice/editdevice.dart';
 import 'package:ts_one/app/modules/efb/occ/views/listdevice/adddevice.dart';
@@ -145,18 +146,15 @@ class _ListDeviceState extends State<ListDevice> {
                         borderRadius: BorderRadius.circular(20.0),
                       )),
                   onPressed: () async {
-                    Navigator.of(context).pop(); // Close the dialog
+                    Navigator.of(context).pop();
                     var response =
                         await DeviceController.deleteDevice(uid: deviceId);
-                    if (response.code != 200) {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            content: Text(response.message.toString()),
-                          );
-                        },
-                      );
+
+                    if (response.code == 200) {
+                      await QuickAlert.show(
+                          context: context,
+                          type: QuickAlertType.success,
+                          text: 'Device successfully delete');
                     }
                   },
                   child: Text('Yes',
@@ -283,20 +281,50 @@ class _ListDeviceState extends State<ListDevice> {
                     itemCount: filteredData.length,
                     itemBuilder: (context, index) {
                       final e = filteredData[index];
-                      return Container(
-                        child: Card(
-                          color: TsOneColor.onPrimary,
-                          child: Column(
-                            children: [
-                              ListTile(
-                                title: Text(
-                                  "${e["deviceno"]}",
-                                  style: tsOneTextTheme.bodyMedium,
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 3),
+                        child: Container(
+                          child: Expanded(
+                              child: DecoratedBox(
+                            decoration: BoxDecoration(
+                                //color: TsOneColor.secondaryContainer,
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(4.0),
+                                boxShadow: const [
+                                  BoxShadow(
+                                      color: TsOneColor.surface,
+                                      blurRadius: 10,
+                                      spreadRadius: 2,
+                                      offset: Offset(1, 1),
+                                      blurStyle: BlurStyle.normal)
+                                ]),
+                            child: Column(
+                              children: [
+                                ListTile(
+                                  title: Text(
+                                    "${e["deviceno"]}",
+                                    style: tsOneTextTheme.bodyMedium,
+                                  ),
+                                  trailing: _buildEditDeleteButton(e),
                                 ),
-                                trailing: _buildEditDeleteButton(e),
-                              ),
-                            ],
-                          ),
+                              ],
+                            ),
+                          )),
+                          // child: Card(
+                          //   color: TsOneColor.surface,
+                          //   child: Column(
+                          //     children: [
+                          //       ListTile(
+                          //         title: Text(
+                          //           "${e["deviceno"]}",
+                          //           style: tsOneTextTheme.bodyMedium,
+                          //         ),
+                          //         trailing: _buildEditDeleteButton(e),
+                          //       ),
+                          //     ],
+                          //   ),
+                          // ),
                         ),
                       );
                     },
