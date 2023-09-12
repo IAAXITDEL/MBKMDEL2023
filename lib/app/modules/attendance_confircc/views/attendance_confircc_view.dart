@@ -63,7 +63,7 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
 
             // Navigasi ke halaman lain setelah menampilkan QuickAlert
             Get.offAllNamed(Routes.TRAININGTYPECC, arguments: {
-              "id" : controller.argumentid.value,
+              "id" : controller.argumentTrainingType.value,
               "name" : controller.argumentname.value
             });
           } else {
@@ -114,15 +114,14 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
 
                   var listAttendance = snapshot.data!;
 
-
                   if (listAttendance != null && listAttendance.isNotEmpty) {
-                    subjectC.text = listAttendance[0]["subject"];
-                    dateC.text = listAttendance[0]["date"];
-                    departmentC.text = listAttendance[0]["department"];
-                    vanueC.text = listAttendance[0]["vanue"];
-                    trainingtypeC.text = listAttendance[0]["trainingType"];
-                    roomC.text = listAttendance[0]["room"];
-                    instructorC.text = listAttendance[0]["name"];
+                    subjectC.text = listAttendance[0]["subject"] ?? "N/A";
+                    dateC.text = listAttendance[0]["date"] ?? "N/A";
+                    departmentC.text = listAttendance[0]["department"] ?? "N/A";
+                    vanueC.text = listAttendance[0]["vanue"] ?? "N/A";
+                    trainingtypeC.text = listAttendance[0]["trainingType"] ?? "N/A";
+                    roomC.text = listAttendance[0]["room"] ?? "N/A";
+                    instructorC.text = listAttendance[0]["name"]  ?? "N/A";
                   } else {
                     // Handle the case where the list is empty or null
                     subjectC.text = "No Subject Data Available";
@@ -133,7 +132,7 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       RedTitleText(text: "ATTENDANCE LIST"),
-                      Text("REDUCED VERTICAL SEPARATION MINIMA (RVSM)"),
+                     // Text("REDUCED VERTICAL SEPARATION MINIMA (RVSM)"),
                       SizedBox(
                         height: 20,
                       ),
@@ -207,10 +206,13 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                         height: 20,
                       ),
                       InkWell(
-                        onTap: (){Get.toNamed(Routes.LIST_ATTENDANCECC,arguments: {
-                          "id" : controller.argumentid.value,
-                          "status" : "done"
-                        });},
+                        onTap: (){
+                          if(controller.jumlah.value > 0 ){
+                            Get.toNamed(Routes.LIST_ATTENDANCECC,arguments: {
+                              "id" : controller.argumentid.value,
+                              "status" : "done"
+                            });
+                          }},
                         child:  Container(
                           decoration: BoxDecoration(
                               border: Border.all(
@@ -237,9 +239,14 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                         height: 20,
                       ),
                       InkWell(
-                        onTap: (){Get.toNamed(Routes.LIST_ATTENDANCECC,arguments: {
-                          "id" : controller.argumentid.value,
-                        });},
+                        onTap: (){
+                          if(controller.jumlah.value > 0 ){
+                            Get.toNamed(Routes.LIST_ATTENDANCECC,arguments: {
+                              "id" : controller.argumentid.value,
+                              "status" : "done"
+                            });
+                          }
+                        },
                         child:  Container(
                           decoration: BoxDecoration(
                               border: Border.all(
@@ -291,16 +298,18 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
 
                         ],
                       ),
-
+                      SizedBox(
+                        height: 20,
+                      ),
                       Text("Class Password"),
                       RedTitleText(
-                        text: listAttendance[0]["keyAttendance"],
+                        text: listAttendance[0]["keyAttendance"] ?? "N/A",
                         size: 16,
                       ),
 
 
                       // Jika status masih konfirmasi
-                      listAttendance[0]["status"] == "confirmation" ?
+                      ((listAttendance[0]["status"] == "confirmation") && (controller.role.value == "Pilot Administrator")) ?
                       Column(
                         children: [
                           //--------------------------- ATTANDANCE --------------------
@@ -322,6 +331,15 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                               backgroundColor: Colors.grey.withOpacity(0.1),
                             ),
                           ),
+                          Obx(() {
+                            return controller.showText.value
+                                ? Row(
+                              children: [
+                                Text("*Please add your sign here!*", style: TextStyle(color: Colors.red)),
+                              ],
+                            )
+                                : SizedBox();
+                          }),
                           SizedBox(
                             height: 10,
                           ),
@@ -358,7 +376,17 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                             padding: const EdgeInsets.symmetric(vertical: 16.0),
                             child: ElevatedButton(
                               onPressed: () {
-                                confir();
+                                List<Path> paths =
+                                _signaturePadKey.currentState!.toPathList();
+                                if(paths.isNotEmpty){
+                                  controller.showText.value = false;
+                                  controller.update();
+                                  confir();
+                                }else{
+                                  controller.showText.value = true;
+                                  controller.update();
+                                }
+
                               },
                               style: ElevatedButton.styleFrom(
                                 primary: TsOneColor.greenColor,

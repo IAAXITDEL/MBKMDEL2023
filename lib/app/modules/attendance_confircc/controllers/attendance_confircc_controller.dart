@@ -21,6 +21,8 @@ class AttendanceConfirccController extends GetxController {
   final RxString argumentid = "".obs;
   final RxString argumentname = "".obs;
   final RxInt jumlah = 0.obs;
+  final RxBool showText = false.obs;
+  final RxInt argumentTrainingType = 0.obs;
 
   final RxString role = "".obs;
   @override
@@ -50,6 +52,7 @@ class AttendanceConfirccController extends GetxController {
           return attendanceModel.toJson();
         }),
       );
+      argumentTrainingType.value = attendanceData[0]["idTrainingType"];
       return attendanceData;
     });
   }
@@ -67,7 +70,6 @@ class AttendanceConfirccController extends GetxController {
       role.value = "Pilot Administrator";
     }
 
-    print(role.value);
 
   }
 
@@ -109,7 +111,6 @@ class AttendanceConfirccController extends GetxController {
         .get();
 
     jumlah.value = attendanceQuery.docs.length;
-    print(attendanceQuery.docs.length);
     return attendanceQuery.docs.length;
   }
 

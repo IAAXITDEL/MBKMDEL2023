@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:ts_one/app/modules/pa/navadmin/views/navadmin_view.dart';
 import 'package:ts_one/presentation/shared_components/TitleText.dart';
 
 import '../../../../presentation/theme.dart';
@@ -40,10 +41,13 @@ class _TrainingtypeccViewState extends State<TrainingtypeccView>
     TrainingtypeccController controller = Get.find<TrainingtypeccController>();
     return Scaffold(
       appBar: AppBar(
-        title: Text('Back', style: TextStyle(color: Colors.black)),
-        iconTheme: IconThemeData(color: Colors.black),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Get.to(()=>NavadminView(initialIndex: 1,));
+          },
+        ),
+        title: Text("Back"),
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20),
@@ -52,7 +56,7 @@ class _TrainingtypeccViewState extends State<TrainingtypeccView>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             RedTitleText(text: controller.argumentname.value),
-            Text("REDUCED VERTICAL SEPARATION MINIMA"),
+           // Text("REDUCED VERTICAL SEPARATION MINIMA"),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.end,

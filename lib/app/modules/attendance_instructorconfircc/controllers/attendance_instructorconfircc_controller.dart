@@ -15,6 +15,7 @@ class AttendanceInstructorconfirccController extends GetxController {
   }
 
   final RxString argumentid = "".obs;
+  final RxInt argumentTrainingType = 0.obs;
   final RxString argumentname = "".obs;
   final RxInt jumlah = 0.obs;
   final RxString role = "".obs;
@@ -48,6 +49,8 @@ class AttendanceInstructorconfirccController extends GetxController {
           return attendanceModel.toJson();
         }),
       );
+      print(attendanceData[0]["attendanceType"]);
+      argumentTrainingType.value = attendanceData[0]["idTrainingType"];
       return attendanceData;
     });
   }
@@ -78,7 +81,7 @@ class AttendanceInstructorconfirccController extends GetxController {
       "attendanceType" : selectedMeeting.value,
       "status" : "confirmation",
       "updatedTime": DateTime.now().toIso8601String(),
-
+      "keyAttendance" : null
       //signature icc url
     });
 

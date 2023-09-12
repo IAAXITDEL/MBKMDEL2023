@@ -7,6 +7,7 @@ import '../../../../presentation/theme.dart';
 import '../../../../util/empty_screen.dart';
 import '../../../../util/error_screen.dart';
 import '../../../../util/loading_screen.dart';
+import '../../../routes/app_pages.dart';
 import '../controllers/home_instructorcc_controller.dart';
 
 class HomeInstructorccView extends GetView<HomeInstructorccController> {
@@ -52,6 +53,7 @@ class HomeInstructorccView extends GetView<HomeInstructorccController> {
                     itemCount: listAttendance.length,
                     itemBuilder: (context, index) {
                       return Container(
+                        margin: EdgeInsets.symmetric(vertical: 5),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10.0),
                           color: Colors.white,
@@ -65,9 +67,9 @@ class HomeInstructorccView extends GetView<HomeInstructorccController> {
                           ],
                         ),
                         child: InkWell(
-                          onTap: (){
-
-                          },
+                          onTap: () => Get.toNamed(Routes.ATTENDANCE_INSTRUCTORCONFIRCC,  arguments: {
+                            "id" : listAttendance[index]["id"],
+                          }),
                           child: ListTile(
                             title: Text(
                               listAttendance[index]["subject"],

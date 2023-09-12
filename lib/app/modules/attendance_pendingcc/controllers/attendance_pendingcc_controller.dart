@@ -38,10 +38,10 @@ class AttendancePendingccController extends GetxController {
     final attendanceQuery = await _firestore
         .collection('attendance-detail')
         .where("idattendance", isEqualTo: argument.value)
+        .where("status", isEqualTo: "done")
         .get();
 
     jumlah.value = attendanceQuery.docs.length;
-    print(attendanceQuery.docs.length);
     return attendanceQuery.docs.length;
   }
 

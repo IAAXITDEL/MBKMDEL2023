@@ -15,7 +15,6 @@ class ListAttendanceccView extends GetView<ListAttendanceccController> {
     return Scaffold(
       appBar: AppBar(
         title: RedTitleText(text: "ATTENDANCE LIST",),
-        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Padding(

@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:ts_one/app/modules/training_instructorcc/views/training_instructorcc_view.dart';
+import 'package:ts_one/app/modules/trainingtypecc/controllers/trainingtypecc_controller.dart';
 
 import '../../../../data/users/user_preferences.dart';
 import '../../../../data/users/users.dart';
@@ -8,6 +10,7 @@ import '../../../../di/locator.dart';
 import '../../../../presentation/view_model/attendance_detail_model.dart';
 import '../../../../presentation/view_model/attendance_model.dart';
 import '../../../routes/app_pages.dart';
+import '../../training_instructorcc/controllers/training_instructorcc_controller.dart';
 
 class TrainingccController extends GetxController {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -49,6 +52,7 @@ class TrainingccController extends GetxController {
         "id" : argumentid.value,
         "name" : argumentname.value
       });
+      Get.find<TrainingInstructorccController>().onInit();
     }
     // SEBAGAI PILOT
     else if( userPreferences.getRank().contains(UserModel.keyPositionCaptain) || userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)){
@@ -60,10 +64,10 @@ class TrainingccController extends GetxController {
         "id" : argumentid.value,
         "name" : argumentname.value
       });
+      Get.find<TrainingtypeccController>().onInit();
     }
     // SEBAGAI ALL STAR
     else{
-      print(userPreferences.getRank());
       return false;
     }
     return false;
@@ -114,34 +118,91 @@ class TrainingccController extends GetxController {
     }
   }
 
-  // cek class sudah join atau belum
-  Future<List<AttendanceModel>> checkClassStream(int idTrainingType) async {
+
+  // cek class ada yang buka atau belum
+  Future<List<AttendanceModel>> checkClassOpenStream(int idTrainingType) async {
     try {
-      userPreferences = getItLocator<UserPreferences>();
-      final attendancedetailQuery = await firestore.collection('attendance-detail').where("idpilot", isEqualTo: userPreferences.getIDNo()).get();
-      final attendanceQuery = await firestore.collection('attendance').where("status", isEqualTo: "pending").where("idTrainingType", isEqualTo: idTrainingType).get();
 
-      final attendancedetailData = attendancedetailQuery.docs.map((doc) => AttendanceDetailModel.fromJson(doc.data())).toList();
-      final attendanceData = attendanceQuery.docs.map((doc) => AttendanceModel.fromJson(doc.data())).toList();
+      final attendanceQuery = await firestore
+          .collection('attendance')
+          .where("status", isEqualTo: "pending")
+          .where("idTrainingType", isEqualTo: idTrainingType)
+          .get();
 
-      // Gabungkan data berdasarkan kondisi, misalnya instructor == ID NO
-      final combinedData = <AttendanceModel>[];
-      for (final attendance in attendanceData) {
-        for (final detail in attendancedetailData) {
-          if (attendance.id == detail.idattendance) {
-            combinedData.add(attendance);
-            break; // Keluar dari loop inner jika cocok ditemukan
-          }
-        }
-      }
+      final attendanceDocs = attendanceQuery.docs;
 
-      return combinedData;
-
+      final List<AttendanceModel> attendanceList = attendanceDocs
+          .map((doc) => AttendanceModel.fromJson(doc.data()))
+          .toList();
+      return attendanceList;
     } catch (e) {
       print('Error fetching combined data: $e');
       return [];
     }
   }
+
+
+  // cek class sudah join atau belum
+  Future<List<AttendanceModel>> checkClassStream(int idTrainingType) async {
+    try {
+      userPreferences = getItLocator<UserPreferences>();
+      final attendancedetailQuery = await firestore
+          .collection('attendance-detail')
+          .where("idpilot", isEqualTo: userPreferences.getIDNo())
+          .get();
+      final attendanceQuery = await firestore
+          .collection('attendance')
+          .where("status", isEqualTo: "pending")
+          .where("idTrainingType", isEqualTo: idTrainingType)
+          .get();
+      final attendancedetailData = attendancedetailQuery.docs
+          .map((doc) => AttendanceDetailModel.fromJson(doc.data()))
+          .toList();
+      final attendanceData = attendanceQuery.docs
+          .map((doc) => AttendanceModel.fromJson(doc.data()))
+          .toList();
+      final combinedData = <AttendanceModel>[];
+      for (final attendance in attendanceData) {
+        for (final detail in attendancedetailData) {
+          if (attendance.id == detail.idattendance) {
+            combinedData.add(attendance);
+            break;
+          }
+        }
+      }
+
+      return combinedData;
+    } catch (e) {
+      print('Error fetching combined data: $e');
+      return [];
+    }
+  }
+
+  Stream<List<Map<String, dynamic>>> getCombinedAttendanceStream(List<String> statuses) {
+    userPreferences = getItLocator<UserPreferences>();
+    return firestore.collection('attendance')
+        .where("idTrainingType", isEqualTo: argumentid.value)
+        .where("instructor", isEqualTo: userPreferences.getIDNo())
+        .where("status", whereIn: statuses)
+        .snapshots()
+        .asyncMap((attendanceQuery) async {
+      final usersQuery = await firestore.collection('users').where("ID NO", isEqualTo: userPreferences.getIDNo()).get();
+      final usersData = usersQuery.docs.map((doc) => doc.data()).toList();
+
+      final attendanceData = await Future.wait(
+        attendanceQuery.docs.map((doc) async {
+          final attendanceModel = AttendanceModel.fromJson(doc.data());
+          final user = usersData.firstWhere((user) => user['ID NO'] == attendanceModel.instructor, orElse: () => {});
+          attendanceModel.name = user['NAME'];
+          attendanceModel.photoURL = user['PHOTOURL'];
+          return attendanceModel.toJson();
+        }),
+      );
+
+      return attendanceData;
+    });
+  }
+
 
   @override
   void onInit() {
