@@ -33,10 +33,10 @@ class _NavOCCView extends State<NavOCCView> {
     if (_userPreferences.getPrivileges().contains(UserModel.keyPrivilegeOCC)) {
       _canManageDevice = true;
       _screens = [
-        const HomeOCCView(),
-        const ListDevice(),
-        const HomeOCCView(),
-        const ProfileccView(),
+        HomeOCCView(),
+        ListDevice(),
+        HomeOCCView(),
+        ProfileccView(),
       ];
     } else if (_userPreferences
         .getPrivileges()
@@ -155,10 +155,10 @@ class _NavOCCView extends State<NavOCCView> {
               text: 'Device',
             ),
             if (_canManageDevice)
-            GButton(
-              icon: Icons.history_toggle_off_outlined,
-              text: 'History',
-            ),
+              GButton(
+                icon: Icons.history_toggle_off_outlined,
+                text: 'History',
+              ),
             if (_canManageDevice)
               const GButton(
                 icon: Icons.analytics_outlined,

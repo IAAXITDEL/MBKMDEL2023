@@ -243,7 +243,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.LISTDEVICEOCC,
-      page: () => const ListDevice(),
+      page: () => ListDevice(),
       binding: DeviceBinding(),
     ),
 
