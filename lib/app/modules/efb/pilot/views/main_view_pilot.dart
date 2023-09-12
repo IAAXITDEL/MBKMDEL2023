@@ -210,10 +210,10 @@ class HomePilotView extends GetView<HomePilotController> {
                                     },
                                     style: ButtonStyle(
                                       padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                                        EdgeInsets.all(18.0),
+                                        const EdgeInsets.all(18.0),
                                       ),
                                       side: MaterialStateProperty.all<BorderSide>(
-                                        BorderSide(
+                                        const BorderSide(
                                           color: Colors.yellow, // Warna border line kuning
                                           width: 2.0,
                                         ),
@@ -238,16 +238,16 @@ class HomePilotView extends GetView<HomePilotController> {
                                           children: [
                                             Text(
                                               deviceName,
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 fontSize: 12.0,
                                                 fontWeight: FontWeight.bold,
                                                 color: Colors.black,
                                               ),
                                             ),
-                                            SizedBox(height: 5.0),
+                                            const SizedBox(height: 5.0),
                                             Text(
                                               'ID: $deviceId',
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 fontSize: 10.0,
                                                 color: Colors.black,
                                               ),

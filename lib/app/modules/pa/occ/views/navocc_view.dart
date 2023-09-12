@@ -35,7 +35,7 @@ class _NavOCCView extends State<NavOCCView> {
       _screens = [
         const HomeOCCView(),
         const ListDevice(),
-        const HomeccView(),
+        const HomeOCCView(),
         const ProfileccView(),
       ];
     } else if (_userPreferences
@@ -49,9 +49,9 @@ class _NavOCCView extends State<NavOCCView> {
       ];
     } else {
       _screens = [
-        const HomeFOView(),
-        const HomeFOView(),
-        const ProfileccView(),
+        HomeFOView(),
+        HomeFOView(),
+        HomePilotView(),
       ];
     }
 

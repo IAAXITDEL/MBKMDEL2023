@@ -49,11 +49,5 @@ class HomeOCCController extends GetxController {
 
 
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-
   void increment() => count.value++;
 }
