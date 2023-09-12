@@ -64,7 +64,7 @@ class AttendancePendingccView extends GetView<AttendancePendingccController> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const RedTitleText(text: "ATTENDANCE LIST"),
-                      const Text("REDUCED VERTICAL SEPARATION MINIMA (RVSM)"),
+                      // Text("REDUCED VERTICAL SEPARATION MINIMA (RVSM)"),
                       const SizedBox(
                         height: 20,
                       ),
@@ -135,9 +135,6 @@ class AttendancePendingccView extends GetView<AttendancePendingccController> {
                         height: 20,
                       ),
                       InkWell(
-                        onTap: (){Get.toNamed(Routes.LIST_ATTENDANCECC,arguments: {
-                          "id" : controller.argument.value,
-                        });},
                         child:  Container(
                           decoration: BoxDecoration(
                               border: Border.all(
@@ -164,9 +161,14 @@ class AttendancePendingccView extends GetView<AttendancePendingccController> {
                         height: 20,
                       ),
                       InkWell(
-                        onTap: (){Get.toNamed(Routes.LIST_ATTENDANCECC,arguments: {
-                          "id" : controller.argument.value,
-                        });},
+                        onTap: (){
+                          if(controller.jumlah.value > 0 ){
+                            Get.toNamed(Routes.LIST_ATTENDANCECC,arguments: {
+                              "id" : controller.argument.value,
+                              "status" : "done"
+                            });
+                          }
+                         },
                         child:  Container(
                           decoration: BoxDecoration(
                               border: Border.all(

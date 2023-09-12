@@ -12,9 +12,6 @@ class HomeccView extends GetView<HomeccController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const RedTitleText(text: "Hello, Noel", ),
-      ),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: controller.titleToGreet == 'Captain' ? const HomeInstructorccView() : const HomeAdminccView(),

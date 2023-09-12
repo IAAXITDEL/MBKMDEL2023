@@ -83,7 +83,8 @@ class ProfileccView extends GetView<ProfileccController> {
               height: 20,
             ),
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              margin: EdgeInsets.symmetric(horizontal: 20),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10.0),
                 color: TsOneColor.surface,
@@ -99,7 +100,9 @@ class ProfileccView extends GetView<ProfileccController> {
                       return ErrorScreen();
                     }
 
-                    var listAttendance = snapshot.data!;
+                    var listAttendance = snapshot.data!.docs;
+                    var documentData = listAttendance[0].data();
+
                     return Container(
                       padding:
                       EdgeInsets.symmetric(horizontal: 40, vertical: 20),
@@ -107,10 +110,20 @@ class ProfileccView extends GetView<ProfileccController> {
                         children: [
                           Row(
                             children: [
+                              Expanded(flex: 3, child: Text("RANK")),
+                              Expanded(flex: 1, child: Text(":")),
+                              Expanded(flex: 6, child: Text(documentData["RANK"] ?? "N/A")),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            children: [
                               Expanded(flex: 3, child: Text("Email")),
                               Expanded(flex: 1, child: Text(":")),
                               Expanded(
-                                  flex: 6, child: Text("noel@airasia.com")),
+                                  flex: 6, child: Text(documentData["EMAIL"] ?? "N/A")),
                             ],
                           ),
                           SizedBox(
@@ -118,20 +131,10 @@ class ProfileccView extends GetView<ProfileccController> {
                           ),
                           Row(
                             children: [
-                              Expanded(flex: 3, child: Text("ID NO")),
-                              Expanded(flex: 1, child: Text(":")),
-                              Expanded(flex: 6, child: Text("1007074")),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            children: [
-                              Expanded(flex: 3, child: Text("LOA NO")),
+                              Expanded(flex: 3, child: Text("LICENSE NO")),
                               Expanded(flex: 1, child: Text(":")),
                               Expanded(
-                                  flex: 6, child: Text("2345/KAPEL/VIII/2022")),
+                                  flex: 6, child: Text( documentData["LICENSE NO."] ?? "N/A")),
                             ],
                           )
                         ],

@@ -7,23 +7,34 @@ import '../../../../presentation/view_model/attendance_model.dart';
 
 class TrainingInstructorccController extends GetxController {
 
-  final RxInt argumentid = 0.obs;
-  final RxString argumentname = "".obs;
+  final RxInt argumentid = RxInt((Get.arguments as Map<String, dynamic>)["id"]);
+  final RxString argumentname = RxString((Get.arguments as Map<String, dynamic>)["name"]);
   late UserPreferences userPreferences;
+
+
   @override
   void onInit() {
     super.onInit();
-    final Map<String, dynamic> args = Get.arguments as Map<String, dynamic>;
-    final int id = args["id"] as int;
-    argumentid.value = id;
+    argumentid.value = (Get.arguments as Map<String, dynamic>)["id"] as int;
     final String name = (Get.arguments as Map<String, dynamic>)["name"];
     argumentname.value = name;
   }
 
+  @override
+  void onReady() {
+    super.onReady();
+  }
+
+
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  Stream<List<Map<String, dynamic>>> getCombinedAttendanceStream(int id, String status) {
+  Stream<List<Map<String, dynamic>>> getCombinedAttendanceStream(List<String> statuses) {
     userPreferences = getItLocator<UserPreferences>();
-    return _firestore.collection('attendance').where("idTrainingType", isEqualTo: id).where("instructor", isEqualTo: userPreferences.getIDNo()).where("status", isEqualTo: status).snapshots().asyncMap((attendanceQuery) async {
+    return _firestore.collection('attendance')
+        .where("idTrainingType", isEqualTo: argumentid.value)
+        .where("instructor", isEqualTo: userPreferences.getIDNo())
+        .where("status", whereIn: statuses)
+        .snapshots()
+        .asyncMap((attendanceQuery) async {
       final usersQuery = await _firestore.collection('users').where("ID NO", isEqualTo: userPreferences.getIDNo()).get();
       final usersData = usersQuery.docs.map((doc) => doc.data()).toList();
 
@@ -31,16 +42,16 @@ class TrainingInstructorccController extends GetxController {
         attendanceQuery.docs.map((doc) async {
           final attendanceModel = AttendanceModel.fromJson(doc.data());
           final user = usersData.firstWhere((user) => user['ID NO'] == attendanceModel.instructor, orElse: () => {});
-          attendanceModel.name = user['NAME']; // Set 'nama' di dalam model
+          attendanceModel.name = user['NAME'];
           attendanceModel.photoURL = user['PHOTOURL'];
           return attendanceModel.toJson();
         }),
       );
 
-      print(usersData);
       return attendanceData;
     });
   }
+
 
 
 

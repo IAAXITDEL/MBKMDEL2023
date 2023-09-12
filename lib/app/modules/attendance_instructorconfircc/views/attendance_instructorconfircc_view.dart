@@ -84,7 +84,7 @@ class AttendanceInstructorconfirccView
 
           // Navigasi ke halaman lain setelah menampilkan QuickAlert
           Get.offAllNamed(Routes.TRAINING_INSTRUCTORCC, arguments: {
-            "id": controller.argumentid.value,
+            "id": controller.argumentTrainingType.value,
             "name": controller.argumentname.value
           });
         });
@@ -131,6 +131,8 @@ class AttendanceInstructorconfirccView
                         dateC.text = listAttendance[0]["date"];
                         vanueC.text = listAttendance[0]["vanue"];
                         instructorC.text = listAttendance[0]["name"];
+
+                        controller.argumentname.value = listAttendance[0]["subject"];
                       } else {
                         // Handle the case where the list is empty or null
                         subjectC.text = "No Subject Data Available";
@@ -140,7 +142,7 @@ class AttendanceInstructorconfirccView
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           RedTitleText(text: "ATTENDANCE LIST"),
-                          Text("REDUCED VERTICAL SEPARATION MINIMA (RVSM)"),
+                          //Text("REDUCED VERTICAL SEPARATION MINIMA (RVSM)"),
                           SizedBox(
                             height: 20,
                           ),
@@ -222,10 +224,12 @@ class AttendanceInstructorconfirccView
                           ),
                           InkWell(
                             onTap: () {
-                              Get.toNamed(Routes.LIST_ATTENDANCECC, arguments: {
-                                "id": controller.argumentid.value,
-                                "status": "confirmation",
-                              });
+                              if(controller.jumlah.value > 0 ){
+                                Get.toNamed(Routes.LIST_ATTENDANCECC,arguments: {
+                                  "id" : controller.argumentid.value,
+                                  "status" : "confirmation"
+                                });
+                              }
                             },
                             child: Container(
                               decoration: BoxDecoration(
@@ -293,7 +297,7 @@ class AttendanceInstructorconfirccView
 
                           Text("Class Password"),
                           RedTitleText(
-                            text: listAttendance[0]["keyAttendance"],
+                            text: listAttendance[0]["keyAttendance"] ?? "N/A",
                             size: 16,
                           ),
 
@@ -318,12 +322,14 @@ class AttendanceInstructorconfirccView
                             return controller.showText.value
                                 ? Row(
                               children: [
-                                Text("Please add your sign here!", style: TextStyle(color: Colors.red)),
+                                Text("*Please add your sign here!*", style: TextStyle(color: Colors.red)),
                               ],
                             )
                                 : SizedBox();
                           }),
-
+                          SizedBox(
+                            height: 10,
+                          ),
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             mainAxisAlignment: MainAxisAlignment.end,

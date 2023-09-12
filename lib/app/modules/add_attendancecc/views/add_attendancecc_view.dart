@@ -63,7 +63,7 @@ class AddAttendanceccView extends GetView<AddAttendanceccController> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   RedTitleText(text: "ADD ATTENDANCE"),
-                  Text("REDUCED VERTICAL SEPARATION MINIMA (RVSM)"),
+                  //Text("REDUCED VERTICAL SEPARATION MINIMA (RVSM)"),
 
                   SizedBox(height: 20,),
 

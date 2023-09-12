@@ -8,11 +8,10 @@ import '../../../../util/empty_screen.dart';
 import '../../../../util/error_screen.dart';
 import '../../../../util/loading_screen.dart';
 import '../../../routes/app_pages.dart';
+import '../../pa/navinstructor/views/navinstructor_view.dart';
 import '../controllers/training_instructorcc_controller.dart';
 
 class TrainingInstructorccView extends StatefulWidget {
-  final int id = (Get.arguments as Map<String, dynamic>)["id"];
-  final String name = (Get.arguments as Map<String, dynamic>)["name"];
   TrainingInstructorccView({Key? key}) : super(key: key);
 
   @override
@@ -41,10 +40,13 @@ class _TrainingInstructorccViewState extends State<TrainingInstructorccView>
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Back', style: TextStyle(color: Colors.black)),
-        iconTheme: IconThemeData(color: Colors.black),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Get.to(()=>NavinstructorView(initialIndex: 1,));
+          },
+        ),
+        title: Text("Back"),
       ),
       body:  Padding(
         padding: EdgeInsets.symmetric(horizontal: 20),
@@ -75,7 +77,7 @@ class _TrainingInstructorccViewState extends State<TrainingInstructorccView>
                 controller: _tabController,
                 children: [
                   StreamBuilder<List<Map<String, dynamic>>>(
-                    stream: controller.getCombinedAttendanceStream(widget.id, "pending"),
+                    stream: controller.getCombinedAttendanceStream(["pending"]),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return LoadingScreen(); // Placeholder while loading
@@ -119,7 +121,7 @@ class _TrainingInstructorccViewState extends State<TrainingInstructorccView>
                     },
                   ),
                   StreamBuilder<List<Map<String, dynamic>>>(
-                    stream: controller.getCombinedAttendanceStream(widget.id, "confirmation"),
+                    stream: controller.getCombinedAttendanceStream(["confirmation", "done"]),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return LoadingScreen(); // Placeholder while loading
@@ -152,9 +154,9 @@ class _TrainingInstructorccViewState extends State<TrainingInstructorccView>
                               title: Text(listAttendance[index]["name"].toString()),
                               subtitle: Text(listAttendance[index]["date"]),
                               trailing: Icon(Icons.navigate_next),
-                              onTap: () {
-                                // Action when item is tapped
-                              },
+                              onTap: () => Get.toNamed(Routes.ATTENDANCE_CONFIRCC,  arguments: {
+                                "id" : listAttendance[index]["id"],
+                              }),
                             );
                           }
                       );

@@ -25,94 +25,101 @@ class TrainingccView extends GetView<TrainingccController> {
       String message = '';
 
       List<AttendanceModel> attendanceList = await controller.checkClassStream(controller.argumentid.value);
+      List<AttendanceModel> classList = await controller.checkClassOpenStream(controller.argumentid.value);
 
-      print("cek ${attendanceList.isNotEmpty}");
-      if (attendanceList.isNotEmpty) {
-        // Do something with the attendanceList
-        await QuickAlert.show(
-          context: context,
-          type: QuickAlertType.success,
-          text: 'You have been joined to the class!',
-        );
-        Get.toNamed(Routes.ATTENDANCE_PILOTCC, arguments: {
-          "id" : attendanceList[0].id,
-        });
-      } else {
-        // The list is empty
-        await QuickAlert.show(
-          context: context,
-          type: QuickAlertType.info,
-          barrierDismissible: true,
-          confirmBtnText: 'Submit',
-          title: 'Attendance Key',
-          widget: TextFormField(
-            decoration: const InputDecoration(
-              alignLabelWithHint: true,
-              hintText: '',
-              prefixIcon: Icon(
-                Icons.lock_outline,
+
+      if(classList.isNotEmpty){
+        if (attendanceList.isNotEmpty) {
+          // Do something with the attendanceList
+          await QuickAlert.show(
+            context: context,
+            type: QuickAlertType.success,
+            text: 'You have been joined to the class!',
+          );
+          Get.toNamed(Routes.ATTENDANCE_PILOTCC, arguments: {
+            "id" : attendanceList[0].id,
+          });
+        } else {
+          await QuickAlert.show(
+            context: context,
+            type: QuickAlertType.info,
+            barrierDismissible: true,
+            confirmBtnText: 'Submit',
+            title: 'Attendance Key',
+            widget: TextFormField(
+              decoration: const InputDecoration(
+                alignLabelWithHint: true,
+                hintText: '',
+                prefixIcon: Icon(
+                  Icons.lock_outline,
+                ),
               ),
+              textInputAction: TextInputAction.next,
+              onChanged: (value) => message = value,
             ),
-            textInputAction: TextInputAction.next,
-            onChanged: (value) => message = value,
-          ),
-          onConfirmBtnTap: () async {
-            if (message.length < 5) {
-              await QuickAlert.show(
-                context: context,
-                type: QuickAlertType.error,
-                text: 'Please input something',
-              );
-              return;
-            }
-
-            await showDialog(
-              context: context,
-              builder: (context) {
-                return StreamBuilder<List<Map<String, dynamic>>>(
-                  stream: controller.joinClassStream(message, training),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return LoadingScreen();
-                    }
-
-                    if (snapshot.hasError) {
-                      return ErrorScreen();
-                    }
-                    var listAttendance= snapshot.data!;
-                    if (snapshot.data!.isEmpty) {
-                      Future.delayed(Duration.zero, () {
-                        QuickAlert.show(
-                          context: context,
-                          type: QuickAlertType.error,
-                          text: "The class key is wrong, Please enter the key again!",
-                        );
-                      });
-                    } else {
-                      print(listAttendance[0]["id"]);
-                      Future.delayed(Duration.zero, () {
-                        QuickAlert.show(
-                          context: context,
-                          type: QuickAlertType.success,
-                          text: "You have been joined to the class!",
-                        );
-                      });
-
-                      // Get.toNamed(Routes.ATTENDANCE_PILOTCC, arguments: {
-                      //   "id" : listAttendance[0]["id"],
-                      // });
-                    }
-                    return SizedBox.shrink(); // Return an empty widget to avoid the error.
-                  },
+            onConfirmBtnTap: () async {
+              if (message.length < 5) {
+                await QuickAlert.show(
+                  context: context,
+                  type: QuickAlertType.error,
+                  text: 'Please input something',
                 );
-              },
-            );
+                return;
+              }
 
-            Navigator.of(context, rootNavigator: true).pop();
-          },
+              await showDialog(
+                context: context,
+                builder: (context) {
+                  return StreamBuilder<List<Map<String, dynamic>>>(
+                    stream: controller.joinClassStream(message, training),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return LoadingScreen();
+                      }
+
+                      if (snapshot.hasError) {
+                        return ErrorScreen();
+                      }
+                      var listAttendance= snapshot.data!;
+                      if (snapshot.data!.isEmpty) {
+                        Future.delayed(Duration.zero, () {
+                          QuickAlert.show(
+                            context: context,
+                            type: QuickAlertType.error,
+                            text: "The class key is wrong, Please enter the key again!",
+                          );
+                        });
+                      } else {
+                        Future.delayed(Duration.zero, () {
+                          QuickAlert.show(
+                            context: context,
+                            type: QuickAlertType.success,
+                            text: "You have been joined to the class!",
+                          );
+                        });
+
+                        // Get.toNamed(Routes.ATTENDANCE_PILOTCC, arguments: {
+                        //   "id" : listAttendance[0]["id"],
+                        // });
+                      }
+                      return SizedBox.shrink(); // Return an empty widget to avoid the error.
+                    },
+                  );
+                },
+              );
+
+              Navigator.of(context, rootNavigator: true).pop();
+            },
+          );
+        }
+      }else{
+        await QuickAlert.show(
+          context: context,
+          type: QuickAlertType.warning,
+          text: 'No class opened!',
         );
-
       }
+
 
     }
 
@@ -163,6 +170,7 @@ class TrainingccView extends GetView<TrainingccController> {
                             onTap: () {
                               controller.argumentid.value =  trainingData["id"];
                               controller.argumentname.value =  trainingData["training"];
+                              controller.update();
                               controller.cekRole();
                               if(controller.cekPilot.value  == true){
                                 add(controller.argumentid.value);
