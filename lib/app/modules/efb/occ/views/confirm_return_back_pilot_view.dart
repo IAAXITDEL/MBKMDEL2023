@@ -7,6 +7,9 @@ import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
 import 'package:path/path.dart' as Path;
+import 'package:ts_one/presentation/shared_components/TitleText.dart';
+
+import '../../../../../presentation/theme.dart';
 
 class ConfirmReturnBackPilotView extends GetView {
   final String dataId;
@@ -147,17 +150,16 @@ class ConfirmReturnBackPilotView extends GetView {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Card(
+                          Container(
                             margin: EdgeInsets.symmetric(
                                 horizontal: 20, vertical: 10),
                             child: Padding(
                               padding: EdgeInsets.all(10),
                               child: Column(
-                                crossAxisAlignment:
-                                CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   SizedBox(height: 5),
-                                  Text("CREW INFO"),
+                                  RedTitleText(text: "CREW INFO",),
                                   SizedBox(height: 5.0),
                                   Row(
                                     children: [
@@ -202,7 +204,9 @@ class ConfirmReturnBackPilotView extends GetView {
                                     ],
                                   ),
                                   SizedBox(height: 10.0),
-                                  Text("DEVICE INFO"),
+                                  Text("DEVICE INFO",
+                                    style: tsOneTextTheme.headlineLarge,
+                                  ),
                                   SizedBox(height: 5.0),
                                   Row(
                                     children: [
@@ -289,7 +293,9 @@ class ConfirmReturnBackPilotView extends GetView {
                                     ],
                                   ),
                                   SizedBox(height: 10.0),
-                                  Text("Confirmation"),
+                                  Text("CONFIRMATION",
+                                    style: tsOneTextTheme.headlineLarge,
+                                  ),
                                   SizedBox(height: 5.0),
                                   Row(
                                     children: [
@@ -313,7 +319,9 @@ class ConfirmReturnBackPilotView extends GetView {
 
                                   // Tambahkan widget SignaturePad di sini
                                   SizedBox(height: 20.0),
-                                  Text("Signature"),
+                                  Text("SIGNATURE",
+                                    style: tsOneTextTheme.headlineLarge,
+                                  ),
                                   SizedBox(height: 5.0),
                                   Container(
                                     width: double.infinity,
@@ -334,7 +342,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                 ],
                               ),
                             ),
-                          )
+                          ),
                         ],
                       ),
                     );

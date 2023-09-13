@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ts_one/app/modules/efb/pilot/views/pilotsignature_view.dart';
+import 'package:ts_one/presentation/shared_components/TitleText.dart';
+import 'package:ts_one/presentation/theme.dart';
 
 class PilotreturndeviceviewView extends StatefulWidget {
   final String deviceName;
@@ -84,44 +86,123 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                     : <String, dynamic>{};
                 final occOnDuty = pilotDeviceData['occ-on-duty'] as String? ?? 'N/A';
 
-                Widget buildInfoRow(String label, String value) {
-                  return Row(
-                    children: [
-                      Text(label),
-                      const SizedBox(width: 8), // Spasi antara label dan nilai
-                      const Text(':'),
-                      const SizedBox(width: 8), // Spasi antara ":" dan nilai
-                      Text(value),
-                    ],
-                  );
-                }
-
                 return Column(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      child: Card(
-                        color: Colors.grey[200], // Warna abu-abu
-                        child: ListTile(
-                          title: const Text('Device Info', style: TextStyle(fontWeight: FontWeight.bold)),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              buildInfoRow("Device Number", deviceno),
-                              buildInfoRow("iOS Version", iosver),
-                              buildInfoRow("FlySmart", flysmart),
-                              buildInfoRow("Lido Version", lidoversion),
-                              buildInfoRow("Docu Version", docuversion),
-                              buildInfoRow("Condition", condition),
-                              buildInfoRow("OCC On Duty", occOnDuty),
-                              // Display other f  ields as needed
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: const [
+                              RedTitleText(text: 'DEVICE INFO',)
                             ],
                           ),
-                        ),
+                          Row(
+                            children: [
+                              Expanded(
+                                  flex: 6,
+                                  child: Text("Device No")),
+                              Expanded(
+                                  flex: 1, child: Text(":")),
+                              Expanded(
+                                flex: 6,
+                                child: Text(deviceno),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 8,),
+                          Row(
+                            children: [
+                              Expanded(
+                                  flex: 6,
+                                  child: Text("iOS Version")),
+                              Expanded(
+                                  flex: 1, child: Text(":")),
+                              Expanded(
+                                flex: 6,
+                                child: Text(iosver),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 8,),
+                          Row(
+                            children: [
+                              Expanded(
+                                  flex: 6,
+                                  child: Text("Flysmart Ver")),
+                              Expanded(
+                                  flex: 1, child: Text(":")),
+                              Expanded(
+                                flex: 6,
+                                child: Text(flysmart),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 8,),
+                          Row(
+                            children: [
+                              Expanded(
+                                  flex: 6,
+                                  child: Text("Docu Version")),
+                              Expanded(
+                                  flex: 1, child: Text(":")),
+                              Expanded(
+                                flex: 6,
+                                child: Text(docuversion),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 8,),
+                          Row(
+                            children: [
+                              Expanded(
+                                  flex: 6,
+                                  child: Text("Lido Version")),
+                              Expanded(
+                                  flex: 1, child: Text(":")),
+                              Expanded(
+                                flex: 6,
+                                child: Text(lidoversion),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 8,),
+                          Row(
+                            children: [
+                              Expanded(
+                                  flex: 6,
+                                  child: Text("Condition")),
+                              Expanded(
+                                  flex: 1, child: Text(":")),
+                              Expanded(
+                                flex: 6,
+                                child: Text(condition),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 8,),
+                          Row(
+                            children: [
+                              Expanded(
+                                  flex: 6,
+                                  child: Text("OCC On Duty")),
+                              Expanded(
+                                  flex: 1, child: Text(":")),
+                              Expanded(
+                                flex: 6,
+                                child: Text(occOnDuty),
+                              ),
+                            ],
+                          ),
+                          // Display other fields as needed
+                        ],
                       ),
                     ),
                   ],
                 );
+
+
               }
             },
           ),
@@ -133,20 +214,13 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
               children: [
                 Row(
                   children: const [
-                    Text('Return Device',
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    )
+                    RedTitleText(text: 'RETURN DEVICE',)
                   ],
                 ),
                 Row(
-                  children: const [
+                  children: [
                     Text('Choose who you want to return it to',
-                      style: TextStyle(
-                        fontSize: 12,
-                      ),
+                      style: tsOneTextTheme.labelMedium,
                     )
                   ],
                 )
@@ -212,7 +286,11 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                 // ...
               }
             },
-            child: const Text('Next'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: TsOneColor.greenColor,
+              minimumSize: const Size(double.infinity, 50),
+            ),
+            child: const Text('Next', style: TextStyle(color: Colors.white),),
           ),
 
         ],

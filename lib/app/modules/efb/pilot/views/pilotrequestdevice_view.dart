@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:ts_one/app/modules/efb/pilot/controllers/requestdevice_controller.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:ts_one/presentation/theme.dart';
 
+import '../../../../../util/empty_screen_efb.dart';
 import '../../occ/model/device.dart';
 
 class PilotrequestdeviceView extends StatefulWidget {
@@ -190,10 +192,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
               ),
 
               if (isDeviceNotFound) // Show message if device is not found
-                const Text(
-                  'Device not found',
-                  style: TextStyle(color: Colors.red),
-                ),
+                 const EmptyScreenEFB(),
               if (deviceNoController.text.isNotEmpty)
                 Column(
                   children: getMatchingDevices(deviceNoController.text)
@@ -212,27 +211,103 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                 ),
               const SizedBox(height: 16.0),
               if (selectedDevice != null) // Show attributes if a device is selected
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Device No: ${selectedDevice!.deviceno}'),
-                    Text('iOS Version: ${selectedDevice!.iosver}'),
-                    Text('Fly Smart Version: ${selectedDevice!.flysmart}'),
-                    Text('Docu Version: ${selectedDevice!.docuversion}'),
-                    Text('Lido Version: ${selectedDevice!.lidoversion}'),
-                    Text('Condition: ${selectedDevice!.condition}'),
-                  ],
-                ),
-              const SizedBox(height: 16.0),
-              TextField(
-                controller: OccOnDutyController,
-                decoration: InputDecoration(
-                  labelText: 'OCC On Duty',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30.0),
+                Card(
+                  margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  color: Colors.white,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: 5),
+                        Text("DEVICE INFO",
+                          style: tsOneTextTheme.headlineLarge,
+                        ),
+                        SizedBox(height: 5.0),
+                        Row(
+                          children: [
+                            Expanded(
+                                flex: 6,
+                                child: Text("Device Number")),
+                            Expanded(
+                                flex: 1, child: Text(":")),
+                            Expanded(
+                              flex: 6,
+                              child: Text('${selectedDevice!.deviceno}'),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                                flex: 6,
+                                child: Text("iOS Version")),
+                            Expanded(
+                                flex: 1, child: Text(":")),
+                            Expanded(
+                              flex: 6,
+                              child:  Text('${selectedDevice!.iosver}'),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                                flex: 6,
+                                child: Text("Flysmart Version")),
+                            Expanded(
+                                flex: 1, child: Text(":")),
+                            Expanded(
+                              flex: 6,
+                              child:  Text('${selectedDevice!.flysmart}'),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                                flex: 6,
+                                child: Text("Flysmart Version")),
+                            Expanded(
+                                flex: 1, child: Text(":")),
+                            Expanded(
+                              flex: 6,
+                              child:  Text('${selectedDevice!.docuversion}'),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                                flex: 6,
+                                child: Text("Lido Version")),
+                            Expanded(
+                                flex: 1, child: Text(":")),
+                            Expanded(
+                              flex: 6,
+                              child:   Text('${selectedDevice!.lidoversion}'),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                                flex: 6,
+                                child: Text("Condition")),
+                            Expanded(
+                                flex: 1, child: Text(":")),
+                            Expanded(
+                              flex: 6,
+                              child:   Text('${selectedDevice!.condition}'),
+                            ),
+                          ],
+                        ),
+
+                      ],
+                    ),
                   ),
                 ),
-              ),
+
               const SizedBox(height: 16.0),
               ElevatedButton(
                 onPressed: () {
@@ -240,7 +315,11 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                     _showConfirmationDialog();
                   }
                 },
-                child: const Text('Confirmation'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: TsOneColor.greenColor,
+                  minimumSize: const Size(double.infinity, 50),
+                ),
+                child: const Text('Submit', style: TextStyle(color: Colors.white),),
               ),
             ],
           ),

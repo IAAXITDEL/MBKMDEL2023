@@ -96,11 +96,14 @@ class HomePilotView extends GetView<HomePilotController> {
                         children: [
                           // Display 'in-use-pilot' data
                           if (inUsePilotDocs.isNotEmpty) ...[
-                            Text(
-                              "In Use Pilot",
-                              style: tsOneTextTheme.headlineLarge,
-                              textAlign: TextAlign.left,
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "In Use Pilot",
+                                style: tsOneTextTheme.titleLarge,
+                              ),
                             ),
+                            SizedBox(height: 15,),
                             Column(
                               children: inUsePilotDocs.map((doc) {
                                 // Your existing code for displaying 'in-use-pilot' data
@@ -127,13 +130,6 @@ class HomePilotView extends GetView<HomePilotController> {
                                       MaterialStateProperty.all<
                                           EdgeInsetsGeometry>(
                                         EdgeInsets.all(18.0),
-                                      ),
-                                      side: MaterialStateProperty.all<
-                                          BorderSide>(
-                                        BorderSide(
-                                          color: Colors.yellow, // Warna border line kuning
-                                          width: 2.0,
-                                        ),
                                       ),
                                       backgroundColor:
                                       MaterialStateProperty.all<Color>(
@@ -164,19 +160,12 @@ class HomePilotView extends GetView<HomePilotController> {
                                           children: [
                                             Text(
                                               deviceName,
-                                              style: TextStyle(
-                                                fontSize: 12.0,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black,
-                                              ),
+                                              style: tsOneTextTheme.titleSmall,
                                             ),
                                             SizedBox(height: 5.0),
                                             Text(
                                               'ID: $deviceId',
-                                              style: TextStyle(
-                                                fontSize: 10.0,
-                                                color: Colors.black,
-                                              ),
+                                              style: tsOneTextTheme.labelMedium,
                                             ),
                                           ],
                                         ),
@@ -191,11 +180,14 @@ class HomePilotView extends GetView<HomePilotController> {
 
                           // Display 'waiting-confirmation-1' data
                           if (waitingConfirmationDocs.isNotEmpty) ...[
-                            Text(
-                              "Waiting Confirmation",
-                              style: tsOneTextTheme.headlineLarge,
-                              textAlign: TextAlign.left,
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "Waiting Confirmation",
+                                style: tsOneTextTheme.titleLarge,
+                              ),
                             ),
+                            SizedBox(height: 15),
                             Column(
                               children: waitingConfirmationDocs.map((doc) {
                                 String deviceName = doc['device_name'];
@@ -212,22 +204,16 @@ class HomePilotView extends GetView<HomePilotController> {
                                       padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
                                         const EdgeInsets.all(18.0),
                                       ),
-                                      side: MaterialStateProperty.all<BorderSide>(
-                                        const BorderSide(
-                                          color: Colors.yellow, // Warna border line kuning
-                                          width: 2.0,
-                                        ),
-                                      ),
-                                      backgroundColor: MaterialStateProperty.all<Color>(
-                                        Colors.white, // Warna latar belakang putih
-                                      ),
                                       overlayColor: MaterialStateProperty.all<Color>(
-                                        Colors.yellow.withOpacity(0.2), // Warna kuning dengan opacity saat ditekan
+                                        Colors.yellow.withOpacity(0.2), // Yellow with opacity when pressed
                                       ),
                                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                         RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(15.0),
                                         ),
+                                      ),
+                                      backgroundColor: MaterialStateProperty.all<Color>(
+                                        Colors.white, // Set the default background color to white
                                       ),
                                     ),
                                     child: Row(
@@ -238,19 +224,12 @@ class HomePilotView extends GetView<HomePilotController> {
                                           children: [
                                             Text(
                                               deviceName,
-                                              style: const TextStyle(
-                                                fontSize: 12.0,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black,
-                                              ),
+                                              style: tsOneTextTheme.titleSmall,
                                             ),
                                             const SizedBox(height: 5.0),
                                             Text(
                                               'ID: $deviceId',
-                                              style: const TextStyle(
-                                                fontSize: 10.0,
-                                                color: Colors.black,
-                                              ),
+                                              style: tsOneTextTheme.labelMedium,
                                             ),
                                           ],
                                         ),
@@ -265,11 +244,14 @@ class HomePilotView extends GetView<HomePilotController> {
 
 
                           if (needConfirmationOccDocs.isNotEmpty) ...[
-                            Text(
-                              "Waiting For OCC To Confirm",
-                              style: tsOneTextTheme.headlineLarge,
-                              textAlign: TextAlign.left,
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "Waiting OCC To Confirm",
+                                style: tsOneTextTheme.titleLarge,
+                              ),
                             ),
+                            SizedBox(height: 15,),
                             Column(
                               children: needConfirmationOccDocs.map((doc) {
                                 String deviceName = doc['device_name'];
@@ -286,12 +268,6 @@ class HomePilotView extends GetView<HomePilotController> {
                                       padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
                                         EdgeInsets.all(18.0),
                                       ),
-                                      side: MaterialStateProperty.all<BorderSide>(
-                                        BorderSide(
-                                          color: Colors.yellow, // Warna border line kuning
-                                          width: 2.0,
-                                        ),
-                                      ),
                                       backgroundColor: MaterialStateProperty.all<Color>(
                                         Colors.white, // Warna latar belakang putih
                                       ),
@@ -312,19 +288,12 @@ class HomePilotView extends GetView<HomePilotController> {
                                           children: [
                                             Text(
                                               deviceName,
-                                              style: TextStyle(
-                                                fontSize: 12.0,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black,
-                                              ),
+                                              style: tsOneTextTheme.titleSmall,
                                             ),
                                             SizedBox(height: 5.0),
                                             Text(
                                               'ID: $deviceId',
-                                              style: TextStyle(
-                                                fontSize: 10.0,
-                                                color: Colors.black,
-                                              ),
+                                              style: tsOneTextTheme.labelMedium,
                                             ),
                                           ],
                                         ),
@@ -361,6 +330,8 @@ class HomePilotView extends GetView<HomePilotController> {
                             // Your button style
                             // ...
                           ),
+
+                          SizedBox(height: 20.0,),
                           Text(
                             "Need Confirmation",
                             style: tsOneTextTheme.headlineLarge,
@@ -369,10 +340,15 @@ class HomePilotView extends GetView<HomePilotController> {
                           Text(
                             "There is no data that needs confirmation",
                           ),
+
+                          SizedBox(height: 20.0,),
                           Text(
                             "Device Used",
                             style: tsOneTextTheme.headlineLarge,
                             textAlign: TextAlign.left,
+                          ),
+                          Text(
+                            "There is no device you are using",
                           ),
                         ],
                       );

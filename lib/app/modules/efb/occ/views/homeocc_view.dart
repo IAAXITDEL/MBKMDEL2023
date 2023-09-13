@@ -81,16 +81,12 @@ class HomeOCCView extends GetView<HomeOCCController> {
                 ],
               ),
             ),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: TabBar(
-                isScrollable: true, // Set this to true to enable scrolling for tabs
-                tabs: [
-                  Tab(text: "Confirm To Use"),
-                  Tab(text: "In Use"),
-                  Tab(text: "Need Confirmation"),
-                ],
-              ),
+            TabBar(
+              tabs: [
+                Tab(text: "Confirm To Use"),
+                Tab(text: "In Use"),
+                Tab(text: "Need Confirmation"),
+              ],
             ),
             Expanded(
               child: TabBarView(
@@ -104,7 +100,8 @@ class HomeOCCView extends GetView<HomeOCCController> {
           ],
         ),
       ),
-    );
+
+          );
   }
 }
 
@@ -166,9 +163,10 @@ class FirebaseDataTab extends StatelessWidget {
                 final photoUrl = userData['PHOTOURL'] as String?; // Get the profile photo URL
                 final dataId = documents[index].id; // Mendapatkan ID dokumen
 
+
                 // Build the widget with the user's name and profile photo
                 return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 3.0),
+                  padding: const EdgeInsets.symmetric(vertical: 3.0,horizontal: 10.0),
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: ElevatedButton(
@@ -193,12 +191,6 @@ class FirebaseDataTab extends StatelessWidget {
                         padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
                           EdgeInsets.all(18.0),
                         ),
-                        side: MaterialStateProperty.all<BorderSide>(
-                          BorderSide(
-                            color: Colors.black,
-                            width: 2.0,
-                          ),
-                        ),
                         backgroundColor: MaterialStateProperty.all<Color>(
                           Colors.white,
                         ),
@@ -222,26 +214,23 @@ class FirebaseDataTab extends StatelessWidget {
                             radius: 20.0, // Adjust the radius as needed
                           ),
 
+
                           SizedBox(width: 14.0), // Add spacing between the image and text
                           Flexible(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  userName, // Use the user's name
-                                  style: TextStyle(
-                                    fontSize: 12.0,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
+                                Container(
+                                  width: double.infinity, // Set the width to expand to the available space
+                                  child: Text(
+                                    userName, // Use the user's name
+                                    style: tsOneTextTheme.displaySmall,
                                   ),
                                 ),
 
                                 Text(
                                   'Device Name: ${data['device_name'] ?? 'No Data'}',
-                                  style: TextStyle(
-                                    fontSize: 10.0,
-                                    color: Colors.black,
-                                  ),
+                                 style: tsOneTextTheme.labelSmall,
                                 ),
                               ],
                             ),
@@ -259,3 +248,5 @@ class FirebaseDataTab extends StatelessWidget {
     );
   }
 }
+
+

@@ -9,6 +9,8 @@ import 'dart:typed_data';
 
 import 'package:ts_one/app/modules/efb/pilot/views/main_view_pilot.dart';
 
+import '../../../../../presentation/theme.dart';
+
 class SignaturePadPage extends StatefulWidget {
   final String documentId;
   final GlobalKey<SfSignaturePadState> _signaturePadKey =
@@ -26,7 +28,7 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Signature Pad'),
+        title: const Text('Signature '),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -53,12 +55,17 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
                   },
                 ),
               ),
+              SizedBox(height: 15,),
               ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size(double.infinity, 50),
+                ),
                 onPressed: () {
                   widget._signaturePadKey.currentState?.clear();
                 },
                 child: const Text('Clear Signature'),
               ),
+              SizedBox(height: 15,),
               ElevatedButton(
                 onPressed: () async {
                   final signatureData = widget.signatureImage;
@@ -139,7 +146,11 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
                     );
                   }
                 },
-                child: const Text('Simpan Tanda Tangan'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: TsOneColor.greenColor,
+                  minimumSize: const Size(double.infinity, 50),
+                ),
+                child: const Text('Confirm', style: TextStyle(color: Colors.white),),
               ),
 
             ],

@@ -8,6 +8,7 @@ import 'package:ts_one/app/modules/efb/occ/views/listdevice/showdevice.dart';
 import 'package:ts_one/app/modules/efb/occ/controllers/device_controller.dart';
 
 import '../../../../../../presentation/theme.dart';
+import '../../../../../../util/empty_screen_efb.dart';
 import '../../../../../routes/app_pages.dart';
 
 class ListDevice extends StatefulWidget {
@@ -255,12 +256,7 @@ class _ListDeviceState extends State<ListDevice> {
                   }
 
                   if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                    return Center(
-                      child: Text(
-                        'No Device found',
-                        style: tsOneTextTheme.labelSmall,
-                      ),
-                    );
+                    return const EmptyScreenEFB();
                   }
 
                   final filteredData = snapshot.data!.docs
@@ -271,12 +267,7 @@ class _ListDeviceState extends State<ListDevice> {
                       .toList();
 
                   if (filteredData.isEmpty) {
-                    return Center(
-                      child: Text(
-                        'No Device found',
-                        style: tsOneTextTheme.labelSmall,
-                      ),
-                    );
+                    return const EmptyScreenEFB();
                   }
 
                   return ListView.builder(
