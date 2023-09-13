@@ -64,7 +64,7 @@ class _AddDevice extends State<AddDevice> {
           return 'Please Enter IOS Version';
         }
         if (!_versionRegex.hasMatch(value)) {
-          return 'Invalid format. Use numbers and optional decimal point (e.g., 1.0)';
+          return 'Invalid format. Use numbers and optional decimal point (e.g., 1.0)'; //hanya menampung angka
         }
         return null;
       },

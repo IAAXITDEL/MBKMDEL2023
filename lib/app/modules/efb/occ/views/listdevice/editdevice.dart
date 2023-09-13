@@ -1,5 +1,5 @@
-import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:ts_one/presentation/theme.dart';
@@ -13,7 +13,6 @@ class EditDevice extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return _EditDevice();
   }
 }
@@ -24,65 +23,66 @@ class _EditDevice extends State<EditDevice> {
   final _flysmartver = TextEditingController();
   final _lidoversion = TextEditingController();
   final _docuversion = TextEditingController();
-  final _condition = TextEditingController();
-  final _uid = TextEditingController();
-
+  String _selectedCondition = "Good";
+  RegExp _versionRegex = RegExp(r'^\d+(\.\d+)?$');
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
-    // TODO: implement initState
-    _uid.value = TextEditingValue(text: widget.device!.uid.toString());
-    _deviceno.value =
-        TextEditingValue(text: widget.device!.deviceno.toString());
-    _iosver.value =
-        TextEditingValue(text: widget.device!.lidoversion.toString());
-    _flysmartver.value =
-        TextEditingValue(text: widget.device!.flysmart.toString());
-    _lidoversion.value =
-        TextEditingValue(text: widget.device!.lidoversion.toString());
-    _docuversion.value =
-        TextEditingValue(text: widget.device!.docuversion.toString());
-    _condition.value =
-        TextEditingValue(text: widget.device!.condition.toString());
+    _deviceno.text = widget.device?.deviceno.toString() ?? '';
+    _iosver.text = widget.device?.iosver.toString() ?? '';
+    _flysmartver.text = widget.device?.flysmart.toString() ?? '';
+    _lidoversion.text = widget.device?.lidoversion.toString() ?? '';
+    _docuversion.text = widget.device?.docuversion.toString() ?? '';
+    _selectedCondition = widget.device?.condition ?? 'Good';
   }
 
   @override
   Widget build(BuildContext context) {
     final deviceNoField = TextFormField(
-        controller: _deviceno,
-        autofocus: false,
-        validator: (value) {
-          if (value == null || value.trim().isEmpty) {
-            return 'Please Enter Device Number';
-          }
-          return null;
-        },
-        decoration: const InputDecoration(
-          labelText: 'Device Number',
-          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          border: OutlineInputBorder(),
-        ));
+      controller: _deviceno,
+      autofocus: false,
+      validator: (value) {
+        if (value == null || value.trim().isEmpty) {
+          return 'Please Enter Device Number';
+        }
+        return null;
+      },
+      decoration: const InputDecoration(
+        labelText: 'Device Number',
+        contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        border: OutlineInputBorder(),
+      ),
+    );
+
     final IosVerField = TextFormField(
-        controller: _iosver,
-        autofocus: false,
-        validator: (value) {
-          if (value == null || value.trim().isEmpty) {
-            return 'Please Enter IOS Version';
-          }
-          return null;
-        },
-        decoration: const InputDecoration(
-          labelText: 'Ios Version',
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          border: OutlineInputBorder(),
-        ));
+      controller: _iosver,
+      autofocus: false,
+      validator: (value) {
+        if (value == null || value.trim().isEmpty) {
+          return 'Please Enter IOS Version';
+        }
+        if (!_versionRegex.hasMatch(value)) {
+          return 'Invalid format. Use numbers and optional decimal point (e.g., 1.0)';
+        }
+        return null;
+      },
+      decoration: const InputDecoration(
+        labelText: 'Ios Version',
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        border: OutlineInputBorder(),
+      ),
+    );
+
     final flysmarvertField = TextFormField(
       controller: _flysmartver,
       autofocus: false,
       validator: (value) {
         if (value == null || value.trim().isEmpty) {
           return 'Please Enter Fly Smart Version';
+        }
+        if (!_versionRegex.hasMatch(value)) {
+          return 'Invalid format. Use numbers and optional decimal point (e.g., 1.0)';
         }
         return null;
       },
@@ -92,12 +92,16 @@ class _EditDevice extends State<EditDevice> {
         border: OutlineInputBorder(),
       ),
     );
+
     final lidoField = TextFormField(
       controller: _lidoversion,
       autofocus: false,
       validator: (value) {
         if (value == null || value.trim().isEmpty) {
           return 'Please Enter Lido Version';
+        }
+        if (!_versionRegex.hasMatch(value)) {
+          return 'Invalid format. Use numbers and optional decimal point (e.g., 1.0)';
         }
         return null;
       },
@@ -107,12 +111,16 @@ class _EditDevice extends State<EditDevice> {
         border: OutlineInputBorder(),
       ),
     );
+
     final docuField = TextFormField(
       controller: _docuversion,
       autofocus: false,
       validator: (value) {
         if (value == null || value.trim().isEmpty) {
           return 'Please Enter Docu Version';
+        }
+        if (!_versionRegex.hasMatch(value)) {
+          return 'Invalid format. Use numbers and optional decimal point (e.g., 1.0)';
         }
         return null;
       },
@@ -122,21 +130,28 @@ class _EditDevice extends State<EditDevice> {
         border: OutlineInputBorder(),
       ),
     );
-    final conditionField = TextFormField(
-      controller: _condition,
-      autofocus: false,
-      validator: (value) {
-        if (value == null || value.trim().isEmpty) {
-          return 'Please Enter Device Condition';
-        }
-        return null;
+
+    final conditionDropdown = DropdownButtonFormField<String>(
+      value: _selectedCondition,
+      onChanged: (newValue) {
+        setState(() {
+          _selectedCondition = newValue!;
+        });
       },
+      items: <String>['Good', 'Not Good'].map((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
       decoration: const InputDecoration(
-        contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         labelText: 'Device Condition',
         border: OutlineInputBorder(),
       ),
     );
+
+    final conditionField = conditionDropdown;
 
     Future<void> _showQuickAlert(BuildContext context) async {
       await QuickAlert.show(
@@ -161,15 +176,20 @@ class _EditDevice extends State<EditDevice> {
               Container(
                 width: 115,
                 child: TextButton(
-                    style: TextButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                            side: BorderSide(color: TsOneColor.onSecondary))),
-                    onPressed: () {
-                      Navigator.of(context).pop(false);
-                    },
-                    child: Text('No',
-                        style: TextStyle(color: TsOneColor.onSecondary))),
+                  style: TextButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                      side: BorderSide(color: TsOneColor.onSecondary),
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop(false);
+                  },
+                  child: Text(
+                    'No',
+                    style: TextStyle(color: TsOneColor.onSecondary),
+                  ),
+                ),
               ),
               SizedBox(
                 width: 15,
@@ -177,16 +197,20 @@ class _EditDevice extends State<EditDevice> {
               Container(
                 width: 115,
                 child: TextButton(
-                    style: TextButton.styleFrom(
-                        backgroundColor: TsOneColor.greenColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        )),
-                    onPressed: () {
-                      Navigator.of(context).pop(true);
-                    },
-                    child: Text('Yes',
-                        style: TextStyle(color: TsOneColor.onPrimary))),
+                  style: TextButton.styleFrom(
+                    backgroundColor: TsOneColor.greenColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop(true);
+                  },
+                  child: Text(
+                    'Yes',
+                    style: TextStyle(color: TsOneColor.onPrimary),
+                  ),
+                ),
               ),
             ],
           );
@@ -194,11 +218,7 @@ class _EditDevice extends State<EditDevice> {
       );
 
       if (result == true) {
-        //Yes
         await _showQuickAlert(context);
-      } else {
-        //No
-        //Navigator.of(context).pop();
       }
     }
 
@@ -212,13 +232,14 @@ class _EditDevice extends State<EditDevice> {
         onPressed: () async {
           if (_formKey.currentState!.validate()) {
             var response = await DeviceController.updateDevice(
-                deviceno: _deviceno.text,
-                iosver: _iosver.text,
-                flysmart: _flysmartver.text,
-                lidoversion: _lidoversion.text,
-                docuversion: _docuversion.text,
-                condition: _condition.text,
-                uid: _uid.text);
+              deviceno: _deviceno.text,
+              iosver: _iosver.text,
+              flysmart: _flysmartver.text,
+              lidoversion: _lidoversion.text,
+              docuversion: _docuversion.text,
+              condition: _selectedCondition,
+              uid: widget.device?.uid.toString() ?? '',
+            );
 
             _showConfirmationDialog(context);
           }
