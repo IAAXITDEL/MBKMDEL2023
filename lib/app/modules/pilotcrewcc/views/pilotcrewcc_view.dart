@@ -1,14 +1,17 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import '../../../../presentation/shared_components/TitleText.dart';
+import '../../../../presentation/theme.dart';
+import '../../../../util/error_screen.dart';
+import '../../../../util/loading_screen.dart';
 import '../controllers/pilotcrewcc_controller.dart';
 
 class PilotcrewccView extends GetView<PilotcrewccController> {
   const PilotcrewccView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final currentPageData = controller.getCurrentPageData();
 
     return Scaffold(
       appBar: AppBar(
@@ -23,7 +26,7 @@ class PilotcrewccView extends GetView<PilotcrewccController> {
               children: [
                 TextFormField(
                   controller: controller.searchC,
-                  // onChanged: search,
+                  onChanged: (value) => controller.nameS.value = value,
                   decoration: InputDecoration(
                     hintText: "Search",
                     border: OutlineInputBorder(borderRadius: BorderRadius.circular(4.0)),
@@ -38,79 +41,90 @@ class PilotcrewccView extends GetView<PilotcrewccController> {
                 ),
                 const SizedBox(height: 20,),
 
-                Expanded(
-                  child: SingleChildScrollView(
-                    child:ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: currentPageData.length,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemBuilder: (context, index) {
-                        return InkWell(
-                          onTap: () {
-                            // Handle item tap
-                            // controller.toggleClick;
-                            // Get.toNamed(Routes.PILOT_CABIN_CREW_PROFILE);
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.all(5),
-                            margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.8),
-                                  spreadRadius: 2,
-                                  blurRadius: 3,
-                                  offset: const Offset(0, 2),
-                                ),
-                              ],
-                            ),
-                            child: ListTile(
-                              leading: Image.asset("assets/images/user.png"),
-                              title: Text(currentPageData[index]["NAME"]),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text('847598342385'),
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 10),
-                                    decoration: BoxDecoration(
-                                      color: Colors.green,
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: const Text(
-                                      "Ready",
-                                      style: TextStyle(fontSize: 10, color: Colors.white),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              trailing: const Icon(Icons.navigate_next),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-                // Wrap(
-                //   alignment: WrapAlignment.center,
-                //   children: List<Widget>.generate(
-                //     (controller.data.length / controller.itemsPerPage).ceil(),
-                //         (int index) {
-                //       final page = index + 1;
-                //       return ElevatedButton(
-                //
-                //         onPressed: () {
-                //          controller.goToPage(page);
-                //           print("$page");
-                //         },
-                //         child: Text('$page'),
-                //       );
-                //     },
-                //   ),
-                // ),
+               Obx(() =>  Expanded(
+                 child: SingleChildScrollView(
+                   controller: controller.scrollController,
+                   child:StreamBuilder<List<Map<String, dynamic>>>(
+                       stream: controller.pilotCrewStream(controller.nameS.value),
+                       builder: (context, snapshot) {
+                         if (snapshot.connectionState == ConnectionState.waiting) {
+                           return LoadingScreen(); // Placeholder while loading
+                         }
+
+                         if (snapshot.hasError) {
+                           return ErrorScreen();
+                         }
+
+                         var listAttendance = snapshot.data!;
+                         return Column(
+                           children: [
+                             ListView.builder(
+                               shrinkWrap: true,
+                               itemCount: listAttendance.length,
+                               physics: const NeverScrollableScrollPhysics(),
+                               itemBuilder: (context, index) {
+                                 return InkWell(
+                                   onTap: () {
+                                   },
+                                   child: Container(
+                                     padding: const EdgeInsets.all(5),
+                                     margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                                     decoration: BoxDecoration(
+                                       borderRadius: BorderRadius.circular(10),
+                                       color: Colors.white,
+                                       boxShadow: [
+                                         BoxShadow(
+                                           color: Colors.grey.withOpacity(0.3),
+                                           spreadRadius: 2,
+                                           blurRadius: 3,
+                                           offset: const Offset(0, 2),
+                                         ),
+                                       ],
+                                     ),
+                                     child: ListTile(
+                                       leading: CircleAvatar(
+                                         radius: 20,
+                                         backgroundColor: Colors.black26,
+                                         child: ClipRRect(
+                                           borderRadius: BorderRadius.circular(100),
+                                           child : listAttendance[index]["PHOTOURL"] == null ?  Image.asset(
+                                             "assets/images/placeholder_person.png",
+                                             fit: BoxFit.cover,
+                                           ) : Image.network("${listAttendance[index]["PHOTOURL"]}", fit: BoxFit.cover),),
+                                       ),
+                                       title: Text(listAttendance[index]["NAME"], maxLines: 1, style: tsOneTextTheme.labelSmall,),
+                                       subtitle: Column(
+                                         crossAxisAlignment: CrossAxisAlignment.start,
+                                         children: [
+                                           const Text('847598342385'),
+                                           Container(
+                                             padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 10),
+                                             decoration: BoxDecoration(
+                                               color: Colors.green.withOpacity(0.4),
+                                               borderRadius: BorderRadius.circular(10),
+                                             ),
+                                             child: const Text(
+                                               "Ready",
+                                               style: TextStyle(fontSize: 10, color: Colors.green),
+                                             ),
+                                           ),
+                                         ],
+                                       ),
+                                       trailing: const Icon(Icons.navigate_next),
+                                     ),
+                                   ),
+                                 );
+                               },
+                             ),
+                             controller.isLoading.value ? Center(
+                               child: CircularProgressIndicator(),
+                             ) : SizedBox()
+                           ],
+                         );
+                       }),
+                 ),
+               ),)
+
 
               ],
             )

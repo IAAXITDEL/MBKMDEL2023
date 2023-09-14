@@ -85,6 +85,8 @@ class _HomeScreenState extends State<HomeScreen> {
     if(_isPilotAdministrator) {
       assessmentResults = await viewModel.getAssessmentResultsLimited(5);
       // return;
+      print("ini ");
+      print(assessmentResults);
     }
     else {
       assessmentResults = await viewModel.getAssessmentResultsByCurrentUserNotConfirm();
