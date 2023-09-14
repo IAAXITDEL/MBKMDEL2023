@@ -83,9 +83,9 @@ class HomeOCCView extends GetView<HomeOCCController> {
             ),
             TabBar(
               tabs: [
-                Tab(text: "Confirm To Use"),
+                Tab(text: "Confirm"),
                 Tab(text: "In Use"),
-                Tab(text: "Need Confirmation"),
+                Tab(text: "Return"),
               ],
             ),
             Expanded(
@@ -100,8 +100,7 @@ class HomeOCCView extends GetView<HomeOCCController> {
           ],
         ),
       ),
-
-          );
+    );
   }
 }
 
@@ -158,15 +157,17 @@ class FirebaseDataTab extends StatelessWidget {
                   return Text("User data not found");
                 }
 
-                final userData = userSnapshot.data!.data() as Map<String, dynamic>;
+                final userData =
+                    userSnapshot.data!.data() as Map<String, dynamic>;
                 final userName = userData['NAME'] ?? 'No Name';
-                final photoUrl = userData['PHOTOURL'] as String?; // Get the profile photo URL
+                final photoUrl = userData['PHOTOURL']
+                    as String?; // Get the profile photo URL
                 final dataId = documents[index].id; // Mendapatkan ID dokumen
-
 
                 // Build the widget with the user's name and profile photo
                 return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 3.0,horizontal: 10.0),
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 3.0, horizontal: 10.0),
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: ElevatedButton(
@@ -175,14 +176,16 @@ class FirebaseDataTab extends StatelessWidget {
                           // Navigasi ke halaman ConfirmRequestPilotView dengan membawa ID data yang diperlukan
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => ConfirmRequestPilotView(dataId: dataId),
+                              builder: (context) =>
+                                  ConfirmRequestPilotView(dataId: dataId),
                             ),
                           );
                         } else if (status == "need-confirmation-occ") {
                           // Navigasi ke halaman ConfirmReturnBackPilotView dengan membawa ID data yang diperlukan
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => ConfirmReturnBackPilotView(dataId: dataId),
+                              builder: (context) =>
+                                  ConfirmReturnBackPilotView(dataId: dataId),
                             ),
                           );
                         }
@@ -197,7 +200,8 @@ class FirebaseDataTab extends StatelessWidget {
                         overlayColor: MaterialStateProperty.all<Color>(
                           Colors.red.withOpacity(0.2),
                         ),
-                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15.0),
                           ),
@@ -210,27 +214,29 @@ class FirebaseDataTab extends StatelessWidget {
                           CircleAvatar(
                             backgroundImage: photoUrl != null
                                 ? NetworkImage(photoUrl as String)
-                                : AssetImage('assets/default_profile_image.png') as ImageProvider, // You can provide a default image
+                                : AssetImage('assets/default_profile_image.png')
+                                    as ImageProvider, // You can provide a default image
                             radius: 20.0, // Adjust the radius as needed
                           ),
 
-
-                          SizedBox(width: 14.0), // Add spacing between the image and text
+                          SizedBox(
+                              width:
+                                  14.0), // Add spacing between the image and text
                           Flexible(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Container(
-                                  width: double.infinity, // Set the width to expand to the available space
+                                  width: double
+                                      .infinity, // Set the width to expand to the available space
                                   child: Text(
                                     userName, // Use the user's name
                                     style: tsOneTextTheme.displaySmall,
                                   ),
                                 ),
-
                                 Text(
                                   'Device Name: ${data['device_name'] ?? 'No Data'}',
-                                 style: tsOneTextTheme.labelSmall,
+                                  style: tsOneTextTheme.labelSmall,
                                 ),
                               ],
                             ),
@@ -248,5 +254,3 @@ class FirebaseDataTab extends StatelessWidget {
     );
   }
 }
-
-
