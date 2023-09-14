@@ -8,6 +8,7 @@ import '../../../../../data/users/user_preferences.dart';
 import '../../../../../data/users/users.dart';
 import '../../../../../di/locator.dart';
 import '../../../../../presentation/theme.dart';
+import '../../../efb/occ/views/history/history_all_device_view.dart';
 import '../../../efb/occ/views/listdevice/listdevice.dart';
 import '../../../efb/pilot/views/main_view_pilot.dart';
 import '../../../homecc/views/homecc_view.dart';
@@ -35,7 +36,7 @@ class _NavOCCView extends State<NavOCCView> {
       _screens = [
         HomeOCCView(),
         ListDevice(),
-        HomeOCCView(),
+        HistoryAllDeviceView(),
         ProfileccView(),
       ];
     } else if (_userPreferences

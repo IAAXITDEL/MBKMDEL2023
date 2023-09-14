@@ -54,7 +54,7 @@ class RequestdeviceController extends GetxController {
     QuerySnapshot snapshot = await _firestore
         .collection('pilot-device-1')
         .where('device_uid', isEqualTo: deviceUid)
-        .where('status-device-1', whereIn: ['in-use-pilot', 'waiting-confirmation-1', 'need-confirmation-occ'])
+        .where('status-device-1', whereIn: ['in-use-pilot', 'waiting-confirmation-1', 'need-confirmation-occ','waiting-confirmation-other-pilot'])
         .get();
 
     return snapshot.docs.isNotEmpty;
@@ -83,7 +83,7 @@ class RequestdeviceController extends GetxController {
         QuerySnapshot snapshot = await _firestore
             .collection('pilot-device-1')
             .where('user_uid', isEqualTo: userId)
-            .where('status-device-1', whereIn: ['in-use-pilot', 'waiting-confirmation-1','need-confirmation-occ'])
+            .where('status-device-1', whereIn: ['in-use-pilot', 'waiting-confirmation-1','need-confirmation-occ','waiting-confirmation-other-pilot'])
             .get();
 
         return snapshot; // Return the QuerySnapshot directly.

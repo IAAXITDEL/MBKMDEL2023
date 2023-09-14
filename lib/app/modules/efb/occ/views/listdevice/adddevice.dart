@@ -23,7 +23,7 @@ class _AddDevice extends State<AddDevice> {
   final _lidoversion = TextEditingController();
   final _docuversion = TextEditingController();
   final _condition = TextEditingController();
-
+  String _selectedCondition = 'Good'; // Default value
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final FocusNode _iosverFocus = FocusNode();
@@ -31,6 +31,7 @@ class _AddDevice extends State<AddDevice> {
   final FocusNode _lidoversionFocus = FocusNode();
   final FocusNode _docuversionFocus = FocusNode();
   final FocusNode _conditionFocus = FocusNode();
+  RegExp _versionRegex = RegExp(r'^\d+(\.\d+)?$');
 
   @override
   Widget build(BuildContext context) {
@@ -62,6 +63,9 @@ class _AddDevice extends State<AddDevice> {
         if (value == null || value.trim().isEmpty) {
           return 'Please Enter IOS Version';
         }
+        if (!_versionRegex.hasMatch(value)) {
+          return 'Invalid format. Use numbers and optional decimal point (e.g., 1.0)'; //hanya menampung angka
+        }
         return null;
       },
       decoration: InputDecoration(
@@ -82,6 +86,9 @@ class _AddDevice extends State<AddDevice> {
       validator: (value) {
         if (value == null || value.trim().isEmpty) {
           return 'Please Enter Fly Smart Version';
+        }
+        if (!_versionRegex.hasMatch(value)) {
+          return 'Invalid format. Use numbers and optional decimal point (e.g., 1.0)';
         }
         return null;
       },
@@ -104,6 +111,9 @@ class _AddDevice extends State<AddDevice> {
         if (value == null || value.trim().isEmpty) {
           return 'Please Enter Lido Version';
         }
+        if (!_versionRegex.hasMatch(value)) {
+          return 'Invalid format. Use numbers and optional decimal point (e.g., 1.0)';
+        }
         return null;
       },
       decoration: InputDecoration(
@@ -125,6 +135,9 @@ class _AddDevice extends State<AddDevice> {
         if (value == null || value.trim().isEmpty) {
           return 'Please Enter Docu Version';
         }
+        if (!_versionRegex.hasMatch(value)) {
+          return 'Invalid format. Use numbers and optional decimal point (e.g., 1.0)';
+        }
         return null;
       },
       decoration: InputDecoration(
@@ -135,9 +148,31 @@ class _AddDevice extends State<AddDevice> {
       ),
       onEditingComplete: () {
         FocusScope.of(context)
-            .requestFocus(_conditionFocus); // Pindah ke field berikutnya
+            .requestFocus(_lidoversionFocus); // Pindah ke field berikutnya
       },
     );
+
+    final conditionDropdown = DropdownButtonFormField<String>(
+      value: _selectedCondition,
+      onChanged: (newValue) {
+        setState(() {
+          _selectedCondition = newValue!;
+        });
+      },
+      items: <String>['Good', 'Not Good'].map((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
+      decoration: InputDecoration(
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        labelText: 'Device Condition',
+        labelStyle: tsOneTextTheme.labelMedium,
+        border: OutlineInputBorder(),
+      ),
+    );
+
     final conditionField = TextFormField(
       controller: _condition,
       focusNode: _conditionFocus,
@@ -165,7 +200,7 @@ class _AddDevice extends State<AddDevice> {
       Navigator.of(context).pop();
     }
 
-    final SaveButon = Material(
+    final SaveButton = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(4.0),
       color: TsOneColor.primary,
@@ -175,21 +210,24 @@ class _AddDevice extends State<AddDevice> {
         onPressed: () async {
           if (_formKey.currentState!.validate()) {
             var response = await DeviceController.addDevice(
-                deviceno: _deviceno.text,
-                iosver: _iosver.text,
-                flysmart: _flysmartver.text,
-                lidoversion: _lidoversion.text,
-                docuversion: _docuversion.text,
-                condition: _condition.text);
+              deviceno: _deviceno.text,
+              iosver: _iosver.text,
+              flysmart: _flysmartver.text,
+              lidoversion: _lidoversion.text,
+              docuversion: _docuversion.text,
+              condition:
+                  _selectedCondition, // Menggunakan nilai yang dipilih dari dropdown
+            );
             if (response.code == 200) {
               //Success
               _showQuickAlert(context);
             } else {
               //Not successful
               QuickAlert.show(
-                  context: context,
-                  type: QuickAlertType.error,
-                  text: 'Failed to add device: ${response.message}');
+                context: context,
+                type: QuickAlertType.error,
+                text: 'Failed to add device: ${response.message}',
+              );
             }
           }
         },
@@ -210,7 +248,6 @@ class _AddDevice extends State<AddDevice> {
         ),
       ),
       body: Padding(
-        //padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         padding: const EdgeInsets.only(top: 20, right: 20, left: 20),
         child: SingleChildScrollView(
           child: Column(
@@ -231,7 +268,7 @@ class _AddDevice extends State<AddDevice> {
                     const SizedBox(height: 15.0),
                     docuField,
                     const SizedBox(height: 15.0),
-                    conditionField,
+                    conditionDropdown,
                     const SizedBox(height: 15.0),
                   ],
                 ),
@@ -242,7 +279,7 @@ class _AddDevice extends State<AddDevice> {
       ),
       bottomNavigationBar: BottomAppBar(
         child: Container(
-          child: SaveButon,
+          child: SaveButton,
         ),
       ),
     );

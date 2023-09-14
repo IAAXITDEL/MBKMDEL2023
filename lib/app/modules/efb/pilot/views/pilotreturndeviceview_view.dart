@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ts_one/app/modules/efb/pilot/views/pilotsignature_view.dart';
+import 'package:ts_one/app/modules/efb/pilot/views/return_other_pilot_view.dart';
 import 'package:ts_one/presentation/shared_components/TitleText.dart';
 import 'package:ts_one/presentation/theme.dart';
 
 class PilotreturndeviceviewView extends StatefulWidget {
   final String deviceName;
   final String deviceId;
-  PilotreturndeviceviewView({required this.deviceName, required this.deviceId});
+  final String OccOnDuty;
+
+  PilotreturndeviceviewView({required this.deviceName, required this.deviceId, required this.OccOnDuty});
 
 
   @override
@@ -15,10 +18,10 @@ class PilotreturndeviceviewView extends StatefulWidget {
       _PilotreturndeviceviewViewState();
 }
 
-Future<String> getDocumentIdForDevice(String deviceName) async {
+Future<String> getDocumentIdForDevice(String deviceId) async {
   QuerySnapshot querySnapshot = await FirebaseFirestore.instance
       .collection('pilot-device-1')
-      .where('device_name', isEqualTo: deviceName)
+      .where('document_id', isEqualTo: deviceId)
       .get();
 
   if (querySnapshot.docs.isNotEmpty) {
@@ -29,6 +32,7 @@ Future<String> getDocumentIdForDevice(String deviceName) async {
     return 'N/A';
   }
 }
+
 
 
 class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
@@ -273,17 +277,34 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
               if (isReturnToOCC) {
                 //Navigate to a new page for "Return To OCC"
                 // Mendapatkan document_id dari koleksi pilot-device-1 yang sesuai
-                String documentId = await getDocumentIdForDevice(widget.deviceName);
+                // Mendapatkan document_id dari koleksi pilot-device-1 yang sesuai
+                String documentId = await getDocumentIdForDevice(widget.deviceId);
 
+
+                // Navigate to the SignaturePadPage and pass the documentId
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => SignaturePadPage(documentId: documentId),
+                    builder: (context) => SignaturePadPage(documentId: documentId,
+                      deviceId: widget.deviceId,
+                    ),
                   ),
                 );
               } else if (isReturnToOtherPilot) {
                 // Navigate to a new page for "Return To Other Pilot"
-                // ...
+                String documentId = await getDocumentIdForDevice(widget.deviceId);
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ReturnOtherPilotView(
+                      documentId: documentId,
+                      deviceId: widget.deviceId, // Teruskan deviceUid
+                      deviceName: widget.deviceName, // Teruskan deviceName
+                      OccOnDuty: widget.OccOnDuty,
+                    ),
+                  ),
+                );
               }
             },
             style: ElevatedButton.styleFrom(
