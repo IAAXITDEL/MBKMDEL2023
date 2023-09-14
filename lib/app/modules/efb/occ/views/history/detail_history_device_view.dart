@@ -1,73 +1,26 @@
-import 'dart:typed_data';
-import 'dart:ui';
-
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
-import 'package:path/path.dart' as Path;
 
-import '../../../../../presentation/theme.dart';
+import '../../../../../../presentation/theme.dart';
 
-class ConfirmReturnBackPilotView extends GetView {
+class DetailHistoryDeviceView extends GetView {
   final String dataId;
+  final String userName;
+  final String deviceno;
 
-  ConfirmReturnBackPilotView({Key? key, required this.dataId})
-      : super(key: key);
-
-  TextEditingController occAcceptedTheDeviceController =
-  TextEditingController();
-
-  GlobalKey<SfSignaturePadState> signatureKey = GlobalKey();
-
-  void confirmInUse(BuildContext context) async {
-    final String occAcceptedTheDevice =
-        occAcceptedTheDeviceController.text;
-
-    if (occAcceptedTheDevice.isNotEmpty) {
-      final signatureKey = this.signatureKey.currentState!;
-      final image = await signatureKey.toImage(pixelRatio: 3.0);
-      final ByteData? byteData = await image.toByteData(format: ImageByteFormat.png);
-      final Uint8List? uint8List = byteData?.buffer.asUint8List();
-
-      final Reference storageReference = FirebaseStorage.instance
-          .ref()
-          .child('signatures/${Path.basename(dataId)}.png');
-
-      final UploadTask uploadTask = storageReference.putData(uint8List!);
-
-      await uploadTask.whenComplete(() async {
-        String signatureURL = await storageReference.getDownloadURL();
-
-        DocumentReference pilotDeviceRef = FirebaseFirestore.instance
-            .collection("pilot-device-1")
-            .doc(dataId);
-
-        try {
-          await pilotDeviceRef.update({
-            'status-device-1': 'Done',
-            'occ-accepted-device': occAcceptedTheDevice,
-            'signature_url_occ': signatureURL,
-          });
-
-          print('Data updated successfully!');
-          Navigator.of(context).pop(); // Close the dialog
-          Navigator.of(context).pop();
-        } catch (error) {
-          print('Error updating data: $error');
-        }
-      });
-    }
-  }
-
-
+  const DetailHistoryDeviceView({
+    Key? key,
+    required this.dataId,
+    required this.userName,
+    required this.deviceno,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Need Confirm'),
+        title: Text('DETAIL'),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -94,6 +47,7 @@ class ConfirmReturnBackPilotView extends GetView {
 
             final userUid = data['user_uid'];
             final deviceUid = data['device_uid'];
+            final otherCrewid = data['handover-to-crew'];
 
             return FutureBuilder<DocumentSnapshot>(
               future: FirebaseFirestore.instance
@@ -144,6 +98,8 @@ class ConfirmReturnBackPilotView extends GetView {
                     final deviceData =
                     deviceSnapshot.data!.data()
                     as Map<String, dynamic>;
+
+
 
                     return Center(
                       child: Column(
@@ -210,7 +166,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                   Text("DEVICE INFO",
                                     style: tsOneTextTheme.headlineLarge,
                                   ),
-                                  SizedBox(height: 5.0),
+                                  SizedBox(height: 7.0),
                                   Row(
                                     children: [
                                       Expanded(
@@ -300,57 +256,50 @@ class ConfirmReturnBackPilotView extends GetView {
                                       ),
                                     ],
                                   ),
-                                  SizedBox(height: 10.0),
-                                  Text("CONFIRMATION",
+                                  SizedBox(height: 10,),
+                                  Text("OCC ON DUTY",
                                     style: tsOneTextTheme.headlineLarge,
+                                  ),
+                                  SizedBox(height: 7.0),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                          flex: 6,
+                                          child: Text("OCC That Gives")),
+                                      Expanded(
+                                          flex: 1, child: Text(":")),
+                                      Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                            '${data['occ-on-duty'] ?? 'No Data'}'),
+                                      ),
+                                    ],
                                   ),
                                   SizedBox(height: 5.0),
                                   Row(
                                     children: [
                                       Expanded(
                                           flex: 6,
-                                          child: Text("Occ on Duty")),
+                                          child: Text("OCC Who Received")),
                                       Expanded(
                                           flex: 1, child: Text(":")),
                                       Expanded(
                                         flex: 6,
-                                        child: TextField(
-                                          controller:
-                                          occAcceptedTheDeviceController,
-                                          decoration: InputDecoration(
-                                            hintText: 'Enter Occ on Duty',
-                                          ),
-                                        ),
+                                        child: Text(
+                                            '${data['occ-accepted-device'] ?? 'No Data'}'),
                                       ),
                                     ],
                                   ),
-
-                                  // Tambahkan widget SignaturePad di sini
-                                  SizedBox(height: 20.0),
-                                  Text("SIGNATURE",
-                                    style: tsOneTextTheme.headlineLarge,
-                                  ),
-                                  SizedBox(height: 5.0),
-                                  Container(
-                                    width: double.infinity,
-                                    height: 300.0,
-                                    child: SfSignaturePad(
-                                      key: signatureKey,
-                                      backgroundColor: Colors.white,
-
-                                    ),
-                                  ),
-
-                                  SizedBox(height: 20.0),
+                                  SizedBox(height: 70.0),
                                   ElevatedButton(
                                     onPressed: () {
-                                      confirmInUse(context); // Pass the context to the function
+                                      // confirmInUse(context);
                                     },
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: TsOneColor.greenColor,
                                       minimumSize: const Size(double.infinity, 50),
                                     ),
-                                    child: const Text('Submit', style: TextStyle(color: Colors.white),),
+                                    child: const Text('Download PDF', style: TextStyle(color: Colors.white),),
                                   ),
                                 ],
                               ),

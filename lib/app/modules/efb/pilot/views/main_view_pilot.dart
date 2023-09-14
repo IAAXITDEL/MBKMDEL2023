@@ -8,6 +8,7 @@ import '../../../../../util/util.dart';
 import '../../occ/model/device.dart';
 import '../controllers/homepilot_controller.dart';
 import '../controllers/requestdevice_controller.dart';
+import 'confirm_return_other_pilot_view.dart';
 
 class HomePilotView extends GetView<HomePilotController> {
   @override
@@ -92,6 +93,9 @@ class HomePilotView extends GetView<HomePilotController> {
                       final needConfirmationOccDocs = pilotDevicesSnapshot.docs
                           .where((doc) => doc['status-device-1'] == 'need-confirmation-occ')
                           .toList();
+                      final needConfirmationPilotDocs = pilotDevicesSnapshot.docs
+                          .where((doc) => doc['status-device-1'] == 'waiting-confirmation-other-pilot')
+                          .toList();
                       return Column(
                         children: [
                           // Display 'in-use-pilot' data
@@ -108,6 +112,7 @@ class HomePilotView extends GetView<HomePilotController> {
                               children: inUsePilotDocs.map((doc) {
                                 // Your existing code for displaying 'in-use-pilot' data
                                 String deviceName = doc['device_name'];
+                                String OccOnDuty = doc['occ-on-duty'];
                                 String deviceId = doc.id;
 
                                 return Align(
@@ -121,6 +126,7 @@ class HomePilotView extends GetView<HomePilotController> {
                                               PilotreturndeviceviewView(
                                                 deviceName: deviceName,
                                                 deviceId : deviceId,
+                                                OccOnDuty : OccOnDuty,
                                               ),
                                         ),
                                       );
@@ -197,8 +203,80 @@ class HomePilotView extends GetView<HomePilotController> {
                                   alignment: Alignment.centerLeft,
                                   child: ElevatedButton(
                                     onPressed: () {
-                                      // Handle the button click action for 'waiting-confirmation-1' data
-                                      // You can customize this action as needed.
+                                      //
+                                    },
+                                    style: ButtonStyle(
+                                      padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                                        const EdgeInsets.all(18.0),
+                                      ),
+                                      overlayColor: MaterialStateProperty.all<Color>(
+                                        Colors.yellow.withOpacity(0.2), // Yellow with opacity when pressed
+                                      ),
+                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(15.0),
+                                        ),
+                                      ),
+                                      backgroundColor: MaterialStateProperty.all<Color>(
+                                        Colors.white, // Set the default background color to white
+                                      ),
+                                    ),
+                                    child: Row(
+                                      crossAxisAlignment: CrossAxisAlignment.start, // Mengatur item rata kiri
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start, // Mengatur teks ke kiri
+                                          children: [
+                                            Text(
+                                              deviceName,
+                                              style: tsOneTextTheme.titleSmall,
+                                            ),
+                                            const SizedBox(height: 5.0),
+                                            Text(
+                                              'ID: $deviceId',
+                                              style: tsOneTextTheme.labelMedium,
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+                            SizedBox(height: 15),
+                          ],
+
+
+                          // Display 'waiting-confirmation-other-pilot' data
+                          if (needConfirmationPilotDocs.isNotEmpty) ...[
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "Need Your Confirmation",
+                                style: tsOneTextTheme.titleLarge,
+                              ),
+                            ),
+                            SizedBox(height: 15),
+                            Column(
+                              children: needConfirmationPilotDocs.map((doc) {
+                                String deviceName = doc['device_name'];
+                                String deviceId = doc.id;
+
+                                return Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              ConfirmReturnOtherPilotView(
+                                                deviceName: deviceName,
+                                                deviceId : deviceId,
+                                              ),
+                                        ),
+                                      );
                                     },
                                     style: ButtonStyle(
                                       padding: MaterialStateProperty.all<EdgeInsetsGeometry>(

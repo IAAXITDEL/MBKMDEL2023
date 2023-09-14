@@ -12,12 +12,12 @@ import 'package:ts_one/app/modules/efb/pilot/views/main_view_pilot.dart';
 import '../../../../../presentation/theme.dart';
 
 class SignaturePadPage extends StatefulWidget {
-  final String documentId;
   final GlobalKey<SfSignaturePadState> _signaturePadKey =
   GlobalKey<SfSignaturePadState>();
   Uint8List? signatureImage;
+  final String deviceId;
 
-  SignaturePadPage({super.key, required this.documentId});
+  SignaturePadPage({required String documentId, required this.deviceId});
 
   @override
   _SignaturePadPageState createState() => _SignaturePadPageState();
@@ -28,7 +28,7 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Signature '),
+        title: const Text('Signature'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -66,6 +66,11 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
                 child: const Text('Clear Signature'),
               ),
               SizedBox(height: 15,),
+              // Teks untuk menampilkan deviceId
+              Text(
+                'Device ID: ${widget.deviceId}',
+                style: TextStyle(fontSize: 18),
+              ),
               ElevatedButton(
                 onPressed: () async {
                   final signatureData = widget.signatureImage;
@@ -75,36 +80,36 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
                       context: context,
                       builder: (context) {
                         return AlertDialog(
-                          title: const Text('Konfirmasi'),
-                          content: const Text('Apakah Anda yakin ingin menyimpan tanda tangan ini?'),
+                          title: const Text('Confirmation'),
+                          content: const Text(
+                              'Are you sure you want to save this signature?'),
                           actions: [
                             ElevatedButton(
                               onPressed: () async {
-                                MaterialPageRoute(
-                                  builder: (context) => HomePilotView(),
-                                ); // Tutup dialog konfirmasi
+                                Navigator.pop(context); // Tutup dialog konfirmasi
 
                                 try {
                                   // Simpan tanda tangan ke koleksi pilot-device-1
+                                  final newDocumentId =
                                   await addToPilotDeviceCollection(
-                                      widget.documentId, signatureData);
+                                      signatureData, widget.deviceId,);
 
                                   // Tampilkan pesan sukses
                                   showDialog(
                                     context: context,
                                     builder: (context) {
                                       return AlertDialog(
-                                        title: const Text('Sukses'),
-                                        content: const Text('Tanda tangan berhasil disimpan.'),
+                                        title: const Text('Success'),
+                                        content: const Text(
+                                            'Signature successfully saved.'),
                                         actions: [
                                           ElevatedButton(
                                             onPressed: () {
-                                              Navigator.pop(context); // Tutup dialog sukses
-                                              Navigator.pop(context); // Kembali ke halaman sebelumnya (pilot)
-                                              Navigator.pop(context); // Kembali ke halaman sebelumnya (pilot)
-                                              Navigator.pop(context); // Kembali ke halaman sebelumnya (pilot)
+                                              Navigator.pop(
+                                                  context); // Tutup dialog sukses
                                             },
-                                            child: const Text('OK'),
+                                            child:
+                                            const Text('OK'),
                                           ),
                                         ],
                                       );
@@ -118,13 +123,15 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
                                       return AlertDialog(
                                         title: const Text('Error'),
                                         content: const Text(
-                                            'Terjadi kesalahan saat menyimpan tanda tangan.'),
+                                            'An error occurred while saving the signature.'),
                                         actions: [
                                           ElevatedButton(
                                             onPressed: () {
-                                              Navigator.pop(context); // Tutup dialog error
+                                              Navigator.pop(
+                                                  context); // Tutup dialog error
                                             },
-                                            child: const Text('OK'),
+                                            child:
+                                            const Text('OK'),
                                           ),
                                         ],
                                       );
@@ -132,13 +139,16 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
                                   );
                                 }
                               },
-                              child: const Text('Ya'), // Tombol konfirmasi "Ya"
+                              child: const Text(
+                                  'Yes'), // Tombol konfirmasi "Yes"
                             ),
                             ElevatedButton(
                               onPressed: () {
-                                Navigator.pop(context); // Tutup dialog konfirmasi
+                                Navigator.pop(
+                                    context); // Tutup dialog konfirmasi
                               },
-                              child: const Text('Tidak'), // Tombol konfirmasi "Tidak"
+                              child: const Text(
+                                  'No'), // Tombol konfirmasi "No"
                             ),
                           ],
                         );
@@ -150,9 +160,8 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
                   backgroundColor: TsOneColor.greenColor,
                   minimumSize: const Size(double.infinity, 50),
                 ),
-                child: const Text('Confirm', style: TextStyle(color: Colors.white),),
+                child: const Text('Confirm', style: TextStyle(color: Colors.white)),
               ),
-
             ],
           ),
         ),
@@ -161,7 +170,9 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
   }
 
   // Fungsi untuk menyimpan tanda tangan ke dokumen pilot-device-1
-  Future<void> addToPilotDeviceCollection(String documentId, Uint8List signatureData) async {
+  // Fungsi untuk menyimpan tanda tangan ke dokumen pilot-device-1
+  // Fungsi untuk menyimpan tanda tangan ke dokumen pilot-device-1
+  Future<void> addToPilotDeviceCollection(Uint8List signatureData, String deviceId) async {
     User? user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {
@@ -171,16 +182,27 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
       Map<String, dynamic> additionalData = {
         'signature_url': await uploadSignatureToFirestore(signatureData),
         'status-device-1': 'need-confirmation-occ', // Update the status here
+        'document_id': deviceId, // Associate the signature with the deviceId
         // Tambahkan field lain jika diperlukan
       };
 
-      // Mendapatkan referensi dokumen berdasarkan documentId
-      DocumentReference docRef =
-      FirebaseFirestore.instance.collection('pilot-device-1').doc(documentId);
+      try {
+        // Update dokumen yang ada di koleksi pilot-device-1 dengan field baru
+        await FirebaseFirestore.instance
+            .collection('pilot-device-1')
+            .doc(deviceId) // Gunakan deviceId untuk mengidentifikasi dokumen yang akan diperbarui
+            .update(additionalData);
 
-      // Melakukan update dokumen dengan data tambahan
-      await docRef.update(additionalData);
+        // Kembalikan tanpa perlu mengembalikan ID dokumen
+        return;
+      } catch (e) {
+        // Handle error jika diperlukan
+        print("Error updating document in Firestore: $e");
+        rethrow;
+      }
     }
+
+    throw Exception("User not authenticated");
   }
 
 

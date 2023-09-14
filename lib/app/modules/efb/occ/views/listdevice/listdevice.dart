@@ -228,7 +228,7 @@ class _ListDeviceState extends State<ListDevice> {
                   });
                 },
                 decoration: InputDecoration(
-                  hintText: "Search Device Number",
+                  hintText: "Search Device Name",
                   hintStyle: TextStyle(
                     color: TsOneColor.onSecondary,
                   ),
