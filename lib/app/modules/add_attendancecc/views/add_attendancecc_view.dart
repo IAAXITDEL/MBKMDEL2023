@@ -80,51 +80,6 @@ class AddAttendanceccView extends GetView<AddAttendanceccController> {
                   SizedBox(height: 10,),
 
                   //-------------------------INSTRUCTOR-----------------------
-                  // StreamBuilder<QuerySnapshot>(
-                  //   stream: controller.instructorStream(),
-                  //   builder: (context,snapshot){
-                  //     List<DropdownMenuItem> usersItem = [];
-                  //     if(!snapshot.hasData)
-                  //       {
-                  //          LoadingScreen();
-                  //       }else{
-                  //         final users = snapshot.data?.docs.reversed.toList();
-                  //         usersItem.add(DropdownMenuItem(
-                  //             value: "0",
-                  //             child: Text('INSTRUCTOR')));
-                  //
-                  //
-                  //
-                  //         for(var user in users!){
-                  //           usersItem.add(
-                  //             DropdownMenuItem(
-                  //                 value: user.id,
-                  //                 child: Text(user["NAME"]))
-                  //           );
-                  //         }
-                  //     }
-                  //     // return DropdownButton(items: usersItem, onChanged: (userValue){
-                  //     //   print(userValue);
-                  //     //   selectedUser = userValue;
-                  //     // },
-                  //     //   value: selectedUser,
-                  //     // isExpanded: false,
-                  //     // );
-                  //
-                  //     return DropdownSearch<String>(
-                  //       mode: Mode.MENU,
-                  //       showSelectedItems: true,
-                  //       dropdownSearchDecoration: InputDecoration(
-                  //         labelText: "INSTRUCTOR",
-                  //       ),
-                  //       showSearchBox: true,
-                  //       searchFieldProps: TextFieldProps(
-                  //         cursorColor: TsOneColor.primary
-                  //       ),
-                  //     );
-                  //
-                  //   },
-                  // ),
 
                   StreamBuilder<QuerySnapshot>(
                     stream: controller.instructorStream(),

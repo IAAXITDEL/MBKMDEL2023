@@ -47,7 +47,7 @@ class ListAttendanceccView extends GetView<ListAttendanceccController> {
                             ),
                           ],
                         ),
-                        child: Text("Attendance : ${controller.jumlah.value} person"),
+                        child:Obx(()=>  Text("Attendance : ${controller.jumlah.value.toString()} person")),
                       )
                   )
                 ],
@@ -104,6 +104,8 @@ class ListAttendanceccView extends GetView<ListAttendanceccController> {
                                Get.toNamed(Routes.LIST_ATTENDANCEDETAILCC,
                                    arguments: {
                                      "id": listAttendance[index]["idpilot"],
+                                     "status" : controller.argumentstatus.value,
+                                     "idattendance" : controller.argumentid.value
                                    });
                              },
                              child: Container(

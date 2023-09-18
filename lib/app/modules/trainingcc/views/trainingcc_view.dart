@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 import 'package:get/get.dart';
 import 'package:quickalert/models/quickalert_type.dart';
@@ -20,6 +21,14 @@ class TrainingccView extends GetView<TrainingccController> {
   const TrainingccView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    var passwordC = TextEditingController();
+
+    passwordC.text = controller.passwordKey.value;
+
+    ever(controller.passwordKey, (value) {
+      passwordC.text = value;
+    });
+
 
     Future<void> add(int training) async {
       String message = '';
@@ -39,6 +48,8 @@ class TrainingccView extends GetView<TrainingccController> {
           Get.toNamed(Routes.ATTENDANCE_PILOTCC, arguments: {
             "id" : attendanceList[0].id,
           });
+          return;
+
         } else {
           await QuickAlert.show(
             context: context,
@@ -46,19 +57,46 @@ class TrainingccView extends GetView<TrainingccController> {
             barrierDismissible: true,
             confirmBtnText: 'Submit',
             title: 'Attendance Key',
-            widget: TextFormField(
-              decoration: const InputDecoration(
-                alignLabelWithHint: true,
-                hintText: '',
-                prefixIcon: Icon(
-                  Icons.lock_outline,
+            widget: Column(
+              children: [
+                TextFormField(
+                  controller: passwordC,
+                  decoration: const InputDecoration(
+                    alignLabelWithHint: true,
+                    hintText: '',
+                    prefixIcon: Icon(
+                      Icons.lock_outline,
+                    ),
+                  ),
+                  textInputAction: TextInputAction.next,
                 ),
-              ),
-              textInputAction: TextInputAction.next,
-              onChanged: (value) => message = value,
+                SizedBox(height: 20,),
+                InkWell(
+                  onTap: (){
+                   controller.scanQRCode(context);
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                          color: TsOneColor.secondaryContainer,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(10)),
+                    child: ListTile(
+                      leading: Icon(Icons.qr_code, size: 25,),
+                      title: Text(
+                        "Using QR Code",
+                        style: tsOneTextTheme.headlineMedium,
+                      ),
+                      trailing: const Icon(Icons.navigate_next),
+                    ),
+                  ),
+                )
+              ],
             ),
             onConfirmBtnTap: () async {
-              if (message.length < 5) {
+              print("ini text nya ${passwordC.text}");
+              if (passwordC.text.length < 5) {
                 await QuickAlert.show(
                   context: context,
                   type: QuickAlertType.error,
@@ -71,7 +109,7 @@ class TrainingccView extends GetView<TrainingccController> {
                 context: context,
                 builder: (context) {
                   return StreamBuilder<List<Map<String, dynamic>>>(
-                    stream: controller.joinClassStream(message, training),
+                    stream: controller.joinClassStream(passwordC.text, training),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return LoadingScreen();
@@ -119,8 +157,6 @@ class TrainingccView extends GetView<TrainingccController> {
           text: 'No class opened!',
         );
       }
-
-
     }
 
 

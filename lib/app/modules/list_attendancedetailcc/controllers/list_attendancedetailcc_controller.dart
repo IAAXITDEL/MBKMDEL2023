@@ -1,26 +1,66 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 
+import '../../../../presentation/view_model/attendance_detail_model.dart';
+import '../../../../presentation/view_model/attendance_model.dart';
+
+
 class ListAttendancedetailccController extends GetxController {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   RxInt argumentid = 0.obs;
-
+  final RxString argumentstatus = "".obs;
+  final RxString argumentidattendance = "".obs;
+  RxBool checkAgree = false.obs;
+  final RxBool showText = false.obs;
+  RxString idattendancedetail = "".obs;
 
   @override
   void onInit() {
     super.onInit();
-    final int id = (Get.arguments as Map<String, dynamic>)["id"] as int;
-    argumentid.value = id;
-    print(argumentid.value);
+    argumentid.value = Get.arguments["id"];
+    argumentstatus.value = Get.arguments["status"];
+    argumentidattendance.value = Get.arguments["idattendance"];
   }
 
 
-
-  Stream<QuerySnapshot<Map<String, dynamic>>> profileList() {
+  // Search dan List data attendance List
+  Stream<List<Map<String, dynamic>>> profileList() {
     return firestore
-        .collection('users')
-        .where("ID NO", isEqualTo: argumentid.value)
-        .snapshots();
+        .collection('attendance-detail')
+        .where("idattendance", isEqualTo: argumentidattendance.value)
+        .where("idpilot", isEqualTo: argumentid.value)
+        .snapshots()
+        .asyncMap((attendanceQuery) async {
+      final usersQuery = await firestore.collection('users').get();
+      final usersData = usersQuery.docs.map((doc) => doc.data()).toList();
+      final attendanceData = await Future.wait(
+        attendanceQuery.docs.map((doc) async {
+          final attendanceModel = AttendanceDetailModel.fromJson(doc.data());
+          final user = usersData.firstWhere(
+                (user) => user['ID NO'] == attendanceModel.idpilot,
+            orElse: () => {},
+          );
+          attendanceModel.name = user['NAME'];
+          attendanceModel.photoURL = user['PHOTOURL'];
+          attendanceModel.email = user['EMAIL'];
+          attendanceModel.rank = user['RANK'];
+          attendanceModel.license = user['LICENSE NO.'];
+
+          return attendanceModel.toJson();
+        }),
+      );
+      return attendanceData;
+    });
+  }
+
+  Future<void> updateScoring(String score, String feedback) async {
+    CollectionReference attendance = firestore.collection('attendance-detail');
+    await attendance.doc(idattendancedetail.value).update({
+      "score" : score,
+      "feedback" : feedback,
+      "updatedTime": DateTime.now().toIso8601String(),
+      //signature icc url
+    });
   }
 
   @override

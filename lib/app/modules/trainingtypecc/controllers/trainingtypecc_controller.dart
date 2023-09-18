@@ -58,6 +58,7 @@ class TrainingtypeccController extends GetxController {
         }),
       );
 
+      print(attendanceData);
       return attendanceData;
     });
   }

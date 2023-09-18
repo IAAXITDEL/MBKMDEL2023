@@ -18,26 +18,18 @@ class ListAttendanceccController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    final Map<String, dynamic> args = Get.arguments as Map<String, dynamic>;
-    final String id = args["id"];
-    argumentid.value = id;
-
-    final Map<String, dynamic> sta = Get.arguments as Map<String, dynamic>;
-    final String status = sta["status"];
-    argumentstatus.value = status;
-
+    argumentid.value = Get.arguments["id"];
+    argumentstatus.value = Get.arguments["status"];
     searchC = TextEditingController();
     attendanceStream();
   }
 
 
-
+  // Search dan List data attendance List
   Stream<List<Map<String, dynamic>>> getCombinedAttendanceStream(String name) {
-    print(name);
     return _firestore
         .collection('attendance-detail')
         .where("idattendance", isEqualTo: argumentid.value)
-        .where("status", isEqualTo: argumentstatus.value)
         .snapshots()
         .asyncMap((attendanceQuery) async {
       final usersQuery = await _firestore.collection('users').get();
@@ -51,9 +43,6 @@ class ListAttendanceccController extends GetxController {
             orElse: () => {},
           );
           attendanceModel.name = user['NAME'];
-          attendanceModel.rank = user['RANK'];
-          attendanceModel.license = user['LICENSE NO.'];
-
           return attendanceModel.toJson();
         }),
       );

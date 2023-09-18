@@ -349,7 +349,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.LIST_ATTENDANCEDETAILCC,
-      page: () => const ListAttendancedetailccView(),
+      page: () => ListAttendancedetailccView(),
       binding: ListAttendancedetailccBinding(),
     ),
   ];
