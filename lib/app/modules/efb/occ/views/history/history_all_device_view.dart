@@ -9,7 +9,7 @@ class HistoryAllDeviceView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('HistoryAllDeviceView'),
+        title: const Text('All Device Used'),
         centerTitle: true,
       ),
       body: StreamBuilder<QuerySnapshot>(

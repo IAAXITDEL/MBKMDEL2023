@@ -23,7 +23,9 @@ class _EditDevice extends State<EditDevice> {
   final _flysmartver = TextEditingController();
   final _lidoversion = TextEditingController();
   final _docuversion = TextEditingController();
+  final _uid = TextEditingController();
   String _selectedCondition = "Good";
+  String _selectedHub = "CGK";
   RegExp _versionRegex = RegExp(r'^\d+(\.\d+)?$');
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -35,6 +37,7 @@ class _EditDevice extends State<EditDevice> {
     _lidoversion.text = widget.device?.lidoversion.toString() ?? '';
     _docuversion.text = widget.device?.docuversion.toString() ?? '';
     _selectedCondition = widget.device?.condition ?? 'Good';
+    _selectedHub = widget.device?.hub ?? 'CGK';
   }
 
   @override
@@ -62,9 +65,6 @@ class _EditDevice extends State<EditDevice> {
         if (value == null || value.trim().isEmpty) {
           return 'Please Enter IOS Version';
         }
-        if (!_versionRegex.hasMatch(value)) {
-          return 'Invalid format. Use numbers and optional decimal point (e.g., 1.0)';
-        }
         return null;
       },
       decoration: const InputDecoration(
@@ -80,9 +80,6 @@ class _EditDevice extends State<EditDevice> {
       validator: (value) {
         if (value == null || value.trim().isEmpty) {
           return 'Please Enter Fly Smart Version';
-        }
-        if (!_versionRegex.hasMatch(value)) {
-          return 'Invalid format. Use numbers and optional decimal point (e.g., 1.0)';
         }
         return null;
       },
@@ -100,9 +97,6 @@ class _EditDevice extends State<EditDevice> {
         if (value == null || value.trim().isEmpty) {
           return 'Please Enter Lido Version';
         }
-        if (!_versionRegex.hasMatch(value)) {
-          return 'Invalid format. Use numbers and optional decimal point (e.g., 1.0)';
-        }
         return null;
       },
       decoration: const InputDecoration(
@@ -119,14 +113,31 @@ class _EditDevice extends State<EditDevice> {
         if (value == null || value.trim().isEmpty) {
           return 'Please Enter Docu Version';
         }
-        if (!_versionRegex.hasMatch(value)) {
-          return 'Invalid format. Use numbers and optional decimal point (e.g., 1.0)';
-        }
         return null;
       },
       decoration: const InputDecoration(
         labelText: 'Docu Version',
         contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        border: OutlineInputBorder(),
+      ),
+    );
+
+    final hubDropdown = DropdownButtonFormField<String>(
+      value: _selectedHub,
+      onChanged: (newValue) {
+        setState(() {
+          _selectedHub = newValue!;
+        });
+      },
+      items: <String>['CGK', 'DPS', 'KNO', 'SUB'].map((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
+      decoration: const InputDecoration(
+        contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        labelText: 'Device Condition',
         border: OutlineInputBorder(),
       ),
     );
@@ -238,6 +249,7 @@ class _EditDevice extends State<EditDevice> {
               lidoversion: _lidoversion.text,
               docuversion: _docuversion.text,
               condition: _selectedCondition,
+              hub: _selectedHub,
               uid: widget.device?.uid.toString() ?? '',
             );
 
@@ -281,6 +293,8 @@ class _EditDevice extends State<EditDevice> {
                     lidoField,
                     const SizedBox(height: 15.0),
                     docuField,
+                    const SizedBox(height: 15.0),
+                    hubDropdown,
                     const SizedBox(height: 15.0),
                     conditionField,
                     const SizedBox(height: 15.0),

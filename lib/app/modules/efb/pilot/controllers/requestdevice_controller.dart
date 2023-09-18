@@ -44,6 +44,11 @@ class RequestdeviceController extends GetxController {
           'status-device-1': 'waiting-confirmation-1',
           'document_id': newDeviceId, // Menyimpan ID dokumen sebagai field
           'timestamp': FieldValue.serverTimestamp(),
+          'handover-from' : '-',
+          'handover-to-crew' : '-',
+          'remarks' : '',
+          'prove_image_url': '',
+          'occ-accepted-device': '-',
         });
       }
     }

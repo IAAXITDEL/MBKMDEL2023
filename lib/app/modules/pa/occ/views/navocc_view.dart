@@ -52,7 +52,7 @@ class _NavOCCView extends State<NavOCCView> {
       _screens = [
         HomeFOView(),
         HomeFOView(),
-        HomePilotView(),
+        ProfileccView(),
       ];
     }
 

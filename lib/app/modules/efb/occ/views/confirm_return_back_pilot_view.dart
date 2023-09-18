@@ -1,10 +1,13 @@
 import 'dart:typed_data';
 import 'dart:ui';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
 import 'package:path/path.dart' as Path;
 
@@ -12,23 +15,37 @@ import '../../../../../presentation/theme.dart';
 
 class ConfirmReturnBackPilotView extends GetView {
   final String dataId;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
 
   ConfirmReturnBackPilotView({Key? key, required this.dataId})
       : super(key: key);
 
-  TextEditingController occAcceptedTheDeviceController =
-  TextEditingController();
 
   GlobalKey<SfSignaturePadState> signatureKey = GlobalKey();
 
-  void confirmInUse(BuildContext context) async {
-    final String occAcceptedTheDevice =
-        occAcceptedTheDeviceController.text;
+  // Function to show a success message using QuickAlert
+  Future<void> _showQuickAlert(BuildContext context) async {
+    await QuickAlert.show(
+      context: context,
+      type: QuickAlertType.success,
+      text: 'Your data has been saved! Thank You',
+    );
+    Navigator.of(context).pop();
+  }
 
-    if (occAcceptedTheDevice.isNotEmpty) {
+  void confirmInUse(BuildContext context) async {
+    User? user = _auth.currentUser;
+
+    if (user != null) {
+      QuerySnapshot userQuery = await _firestore.collection('users').where('EMAIL', isEqualTo: user.email).get();
+      String userUid = userQuery.docs.first.id;
+
       final signatureKey = this.signatureKey.currentState!;
       final image = await signatureKey.toImage(pixelRatio: 3.0);
-      final ByteData? byteData = await image.toByteData(format: ImageByteFormat.png);
+      final ByteData? byteData =
+      await image.toByteData(format: ImageByteFormat.png);
       final Uint8List? uint8List = byteData?.buffer.asUint8List();
 
       final Reference storageReference = FirebaseStorage.instance
@@ -47,21 +64,46 @@ class ConfirmReturnBackPilotView extends GetView {
         try {
           await pilotDeviceRef.update({
             'status-device-1': 'Done',
-            'occ-accepted-device': occAcceptedTheDevice,
+            'occ-accepted-device': userUid,
             'signature_url_occ': signatureURL,
+
           });
 
           print('Data updated successfully!');
           Navigator.of(context).pop(); // Close the dialog
           Navigator.of(context).pop();
+
+          // Show a confirmation dialog
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text('Confirmation'),
+                content: SingleChildScrollView(
+                  child: ListBody(
+                    children: <Widget>[
+                      Text('Data has been successfully updated.'),
+                    ],
+                  ),
+                ),
+                actions: <Widget>[
+                  TextButton(
+                    child: Text('OK'),
+                    onPressed: () {
+                      Navigator.of(context).pop(); // Close the dialog
+                    },
+                  ),
+                ],
+              );
+            },
+          );
         } catch (error) {
           print('Error updating data: $error');
         }
       });
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -158,7 +200,8 @@ class ConfirmReturnBackPilotView extends GetView {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   SizedBox(height: 5),
-                                  Text("CREW INFO",
+                                  Text(
+                                    "CREW INFO",
                                     style: tsOneTextTheme.headlineLarge,
                                   ),
                                   SizedBox(height: 7.0),
@@ -207,7 +250,8 @@ class ConfirmReturnBackPilotView extends GetView {
                                     ],
                                   ),
                                   SizedBox(height: 10.0),
-                                  Text("DEVICE INFO",
+                                  Text(
+                                    "DEVICE INFO",
                                     style: tsOneTextTheme.headlineLarge,
                                   ),
                                   SizedBox(height: 5.0),
@@ -301,57 +345,109 @@ class ConfirmReturnBackPilotView extends GetView {
                                     ],
                                   ),
                                   SizedBox(height: 10.0),
-                                  Text("CONFIRMATION",
+                                  Text(
+                                    "CONFIRMATION",
                                     style: tsOneTextTheme.headlineLarge,
                                   ),
                                   SizedBox(height: 5.0),
-                                  Row(
+
+
+                                  // Tambahkan widget SignaturePad di sini
+                                  SizedBox(height: 20.0),
+                                  Text(
+                                    "SIGNATURE",
+                                    style: tsOneTextTheme.headlineLarge,
+                                  ),
+                                  SizedBox(height: 8.0),
+                                  Column(
                                     children: [
-                                      Expanded(
-                                          flex: 6,
-                                          child: Text("Occ on Duty")),
-                                      Expanded(
-                                          flex: 1, child: Text(":")),
-                                      Expanded(
-                                        flex: 6,
-                                        child: TextField(
-                                          controller:
-                                          occAcceptedTheDeviceController,
-                                          decoration: InputDecoration(
-                                            hintText: 'Enter Occ on Duty',
-                                          ),
+                                      Container(
+                                        width: double.infinity,
+                                        height: 400.0,
+                                        decoration: BoxDecoration(
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.grey
+                                                  .withOpacity(0.3), // Warna bayangan
+                                              spreadRadius:
+                                              5, // Radius penyebaran bayangan
+                                              blurRadius:
+                                              7, // Radius blur bayangan
+                                              offset: Offset(
+                                                  0, 3), // Offset bayangan (x, y)
+                                            ),
+                                          ],
                                         ),
+                                        child: SfSignaturePad(
+                                          key: signatureKey,
+                                          backgroundColor: Colors.white,
+                                        ),
+                                      ),
+                                      SizedBox(height: 10.0), // Spasi antara SignaturePad dan tombol
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          // Clear signature saat tombol ditekan
+                                          signatureKey.currentState?.clear();
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                          TsOneColor.primary, // Warna tombol
+                                          minimumSize: const Size(
+                                              double.infinity, 50),
+                                        ),
+                                        child: const Text('Clear Signature',
+                                            style:
+                                            TextStyle(color: Colors.white)),
                                       ),
                                     ],
                                   ),
 
-                                  // Tambahkan widget SignaturePad di sini
                                   SizedBox(height: 20.0),
-                                  Text("SIGNATURE",
-                                    style: tsOneTextTheme.headlineLarge,
-                                  ),
-                                  SizedBox(height: 5.0),
-                                  Container(
-                                    width: double.infinity,
-                                    height: 300.0,
-                                    child: SfSignaturePad(
-                                      key: signatureKey,
-                                      backgroundColor: Colors.white,
 
-                                    ),
-                                  ),
-
-                                  SizedBox(height: 20.0),
                                   ElevatedButton(
                                     onPressed: () {
-                                      confirmInUse(context); // Pass the context to the function
+                                      showDialog(
+                                        context: context,
+                                        barrierDismissible: false,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: Text('Confirmation'),
+                                            content: SingleChildScrollView(
+                                              child: ListBody(
+                                                children: <Widget>[
+                                                  Text('Are you sure you want to submit this data?'),
+                                                ],
+                                              ),
+                                            ),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                child: Text('Cancel'),
+                                                onPressed: () {
+                                                  Navigator.of(context).pop(); // Close the dialog
+                                                },
+                                              ),
+                                              TextButton(
+                                                child: Text('Submit'),
+                                                onPressed: () {
+                                                  Navigator.of(context).pop(); // Close the confirmation dialog
+                                                  Navigator.of(context).pop(); // Close the confirmation dialog
+                                                  Navigator.of(context).pop(); // Close the confirmation dialog
+                                                  confirmInUse(context);
+                                                  _showQuickAlert(context);// Call the function to submit data
+                                                },
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
                                     },
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: TsOneColor.greenColor,
                                       minimumSize: const Size(double.infinity, 50),
                                     ),
-                                    child: const Text('Submit', style: TextStyle(color: Colors.white),),
+                                    child: const Text('Submit', style: TextStyle(color: Colors.white)),
                                   ),
+
                                 ],
                               ),
                             ),

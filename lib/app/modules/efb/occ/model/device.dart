@@ -8,6 +8,7 @@ class Device {
   final String flysmart;
   final String lidoversion;
   final String docuversion;
+  final String hub;
   final String condition;
 
   Device({
@@ -17,6 +18,7 @@ class Device {
     required this.flysmart,
     required this.lidoversion,
     required this.docuversion,
+    required this.hub,
     required this.condition,
   });
 
@@ -29,6 +31,7 @@ class Device {
       flysmart: data['flysmart'] ?? '',
       lidoversion: data['lidoversion'] ?? '',
       docuversion: data['docuversion'] ?? '',
+      hub: data['hub'] ?? '',
       condition: data['condition'] ?? '',
     );
   }

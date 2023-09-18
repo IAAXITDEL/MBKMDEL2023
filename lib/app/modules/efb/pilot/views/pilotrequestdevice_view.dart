@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 
 import 'package:ts_one/app/modules/efb/pilot/controllers/requestdevice_controller.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -96,8 +98,9 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                   ),
                 ),
                 onPressed: () {
-                  Navigator.of(context).pop();
                   _saveBooking();
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
                 },
               ),
           ],
@@ -267,7 +270,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                           children: [
                             Expanded(
                                 flex: 6,
-                                child: Text("Flysmart Version")),
+                                child: Text("DoCu Version")),
                             Expanded(
                                 flex: 1, child: Text(":")),
                             Expanded(
@@ -286,6 +289,19 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                             Expanded(
                               flex: 6,
                               child:   Text('${selectedDevice!.lidoversion}'),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                                flex: 6,
+                                child: Text("HUB")),
+                            Expanded(
+                                flex: 1, child: Text(":")),
+                            Expanded(
+                              flex: 6,
+                              child:   Text('${selectedDevice!.hub}'),
                             ),
                           ],
                         ),
@@ -332,3 +348,5 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
 extension IterableExtension<E> on Iterable<E> {
   E? get firstOrNull => isEmpty ? null : first;
 }
+
+
