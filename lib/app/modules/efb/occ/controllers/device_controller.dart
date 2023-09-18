@@ -14,6 +14,7 @@ class DeviceController{
     required String lidoversion,
     required String docuversion,
     required String condition,
+    required String hub,
   }) async {
     Response response = Response();
     QuerySnapshot<Object?> existingDevices = await _Collection.where("deviceno", isEqualTo: deviceno).get();
@@ -25,6 +26,7 @@ class DeviceController{
         "flysmart": flysmart,
         "lidoversion": lidoversion,
         "docuversion": docuversion,
+        "hub": hub,
         "condition": condition,
       });
 
@@ -53,6 +55,7 @@ class DeviceController{
     required String flysmart,
     required String lidoversion,
     required String docuversion,
+    required String hub,
     required String condition,
     required String uid,
   })async {
@@ -65,6 +68,7 @@ class DeviceController{
       "flysmart": flysmart,
       "lidoversion": lidoversion,
       "docuversion": docuversion,
+      "hub": hub,
       "condition": condition
     };
     await documentReferencer

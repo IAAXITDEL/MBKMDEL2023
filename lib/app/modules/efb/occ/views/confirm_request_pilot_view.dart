@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,15 +8,14 @@ import '../../../../../presentation/theme.dart';
 
 class ConfirmRequestPilotView extends GetView {
   final String dataId;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   ConfirmRequestPilotView({Key? key, required this.dataId}) : super(key: key);
 
-  TextEditingController occOnDutyController = TextEditingController();
 
   void confirmInUse(BuildContext context) async {
-    final String occOnDuty = occOnDutyController.text;
 
-    if (occOnDuty.isNotEmpty) {
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -32,22 +32,30 @@ class ConfirmRequestPilotView extends GetView {
               TextButton(
                 child: Text('Confirm'),
                 onPressed: () async {
-                  DocumentReference pilotDeviceRef = FirebaseFirestore.instance
-                      .collection("pilot-device-1")
-                      .doc(dataId);
+                  User? user = _auth.currentUser;
 
-                  try {
-                    await pilotDeviceRef.update({
-                      'status-device-1': 'in-use-pilot',
-                      'occ-on-duty': occOnDuty,
-                    });
+                  if (user != null) {
+                    // Get the user's ID
+                    QuerySnapshot userQuery = await _firestore.collection('users').where('EMAIL', isEqualTo: user.email).get();
+                    String userUid = userQuery.docs.first.id;
 
-                    print('Data updated successfully!');
-                    Navigator.of(context).pop(); // Close the dialog
-                    Navigator.of(context).pop(); // Close the dialog
-                  } catch (error) {
-                    print('Error updating data: $error');
+                    DocumentReference pilotDeviceRef = FirebaseFirestore.instance
+                        .collection("pilot-device-1")
+                        .doc(dataId);
+
+                    try {
+                      await pilotDeviceRef.update({
+                        'status-device-1': 'in-use-pilot',
+                        'occ-on-duty': userUid, // Store the user's ID as occ-on-duty
+                      });
+
+                      print('Data updated successfully!');
+                    } catch (error) {
+                      print('Error updating data: $error');
+                    }
                   }
+
+                  Navigator.of(context).pop(); // Close the dialog
                 },
               ),
             ],
@@ -55,7 +63,7 @@ class ConfirmRequestPilotView extends GetView {
         },
       );
     }
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -271,6 +279,21 @@ class ConfirmRequestPilotView extends GetView {
                             Row(
                               children: [
                                 Expanded(
+                                    flex: 6, child: Text("HUB", style: tsOneTextTheme.labelMedium,)),
+                                Expanded(flex: 1, child: Text(":")),
+                                Expanded(
+                                  flex: 6,
+                                  child: Text(
+                                    '${deviceData['hub'] ?? 'No Data'}',
+                                    style: tsOneTextTheme.labelMedium,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 10.0),
+                            Row(
+                              children: [
+                                Expanded(
                                     flex: 6, child: Text("Condition", style: tsOneTextTheme.labelMedium,)),
                                 Expanded(flex: 1, child: Text(":")),
                                 Expanded(
@@ -289,21 +312,6 @@ class ConfirmRequestPilotView extends GetView {
                                 "CONFIRMATION",
                                 style: tsOneTextTheme.titleLarge,
                               ),
-                            ),
-                            Row(
-                              children: [
-                                Expanded(flex: 6, child: Text("Occ on Duty", style: tsOneTextTheme.labelMedium,)),
-                                Expanded(flex: 1, child: Text(":")),
-                                Expanded(
-                                  flex: 6,
-                                  child: TextField(
-                                    controller: occOnDutyController,
-                                    decoration: InputDecoration(
-                                      hintText: 'Enter Occ on Duty',
-                                    ),
-                                  ),
-                                ),
-                              ],
                             ),
                             SizedBox(height: 70.0),
                             ElevatedButton(

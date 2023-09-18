@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 
 import 'package:ts_one/app/modules/efb/pilot/controllers/requestdevice_controller.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -100,8 +102,9 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                   ),
                 ),
                 onPressed: () {
-                  Navigator.of(context).pop();
                   _saveBooking();
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
                 },
               ),
           ],
@@ -303,7 +306,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                         ),
                         Row(
                           children: [
-                            Expanded(flex: 7, child: Text("Docunet Version")),
+                            Expanded(flex: 6, child: Text("DoCu Version")),
                             Expanded(flex: 1, child: Text(":")),
                             Expanded(
                               flex: 6,
@@ -324,7 +327,27 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                         ),
                         Row(
                           children: [
-                            Expanded(flex: 7, child: Text("Condition")),
+                            Expanded(flex: 6, child: Text("HUB")),
+                            Expanded(flex: 1, child: Text(":")),
+                            Expanded(
+                              flex: 6,
+                              child: Text('${selectedDevice!.hub}'),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Expanded(flex: 6, child: Text("HUB")),
+                            Expanded(flex: 1, child: Text(":")),
+                            Expanded(
+                              flex: 6,
+                              child: Text('${selectedDevice!.hub}'),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Expanded(flex: 6, child: Text("Condition")),
                             Expanded(flex: 1, child: Text(":")),
                             Expanded(
                               flex: 6,

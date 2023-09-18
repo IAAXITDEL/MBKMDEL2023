@@ -1,6 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -87,34 +89,16 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
                             ElevatedButton(
                               onPressed: () async {
                                 Navigator.pop(context); // Tutup dialog konfirmasi
-
+                                _showQuickAlert(context);
+                                Navigator.pop(context);
+                                Navigator.pop(context);
+                                Navigator.pop(context);
                                 try {
                                   // Simpan tanda tangan ke koleksi pilot-device-1
                                   final newDocumentId =
                                   await addToPilotDeviceCollection(
                                       signatureData, widget.deviceId,);
-
                                   // Tampilkan pesan sukses
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return AlertDialog(
-                                        title: const Text('Success'),
-                                        content: const Text(
-                                            'Signature successfully saved.'),
-                                        actions: [
-                                          ElevatedButton(
-                                            onPressed: () {
-                                              Navigator.pop(
-                                                  context); // Tutup dialog sukses
-                                            },
-                                            child:
-                                            const Text('OK'),
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  );
                                 } catch (error) {
                                   // Handle error jika diperlukan
                                   showDialog(
@@ -127,8 +111,7 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
                                         actions: [
                                           ElevatedButton(
                                             onPressed: () {
-                                              Navigator.pop(
-                                                  context); // Tutup dialog error
+                                              Navigator.pop(context); // Tutup dialog error
                                             },
                                             child:
                                             const Text('OK'),
@@ -183,6 +166,7 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
         'signature_url': await uploadSignatureToFirestore(signatureData),
         'status-device-1': 'need-confirmation-occ', // Update the status here
         'document_id': deviceId, // Associate the signature with the deviceId
+        'handover-to-crew': '-', // Associate the signature with the deviceId
         // Tambahkan field lain jika diperlukan
       };
 
@@ -223,3 +207,13 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
     }
   }
 }
+
+Future<void> _showQuickAlert(BuildContext context) async {
+  await QuickAlert.show(
+    context: context,
+    type: QuickAlertType.success,
+    text: 'You have return to OCC! Please kindly wait after the OCC Confirm the Device okay?',
+  );
+  Navigator.of(context).pop();
+}
+
