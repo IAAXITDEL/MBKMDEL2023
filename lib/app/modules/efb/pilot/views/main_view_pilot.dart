@@ -444,7 +444,9 @@ class HomePilotView extends GetView<HomePilotController> {
                               children: [
                                 Icon(
                                   Icons.touch_app_rounded,
+                                  //Icons.qr_code_scanner_rounded,
                                   color: TsOneColor.onPrimary,
+                                  size: 30,
                                 ),
                                 SizedBox(width: 10),
                                 Text(
@@ -453,16 +455,16 @@ class HomePilotView extends GetView<HomePilotController> {
                                 ),
                               ],
                             ),
-                            // Your button style
-                            // ...
                           ),
                           SizedBox(
                             height: 20.0,
                           ),
-                          Text(
-                            "Need Confirmation",
-                            style: tsOneTextTheme.headlineLarge,
-                            textAlign: TextAlign.left,
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: BlackTitleText(text: "Need Confirmation"),
+                          ),
+                          SizedBox(
+                            height: 15.0,
                           ),
                           Text(
                             "There is no data that needs confirmation",
@@ -470,10 +472,11 @@ class HomePilotView extends GetView<HomePilotController> {
                           SizedBox(
                             height: 20.0,
                           ),
-                          Text(
-                            "Device Used",
-                            style: tsOneTextTheme.headlineLarge,
-                            textAlign: TextAlign.left,
+                          Align(
+                              alignment: Alignment.centerLeft,
+                              child: BlackTitleText(text: 'Device Used')),
+                          SizedBox(
+                            height: 15.0,
                           ),
                           Text(
                             "There is no device you are using",

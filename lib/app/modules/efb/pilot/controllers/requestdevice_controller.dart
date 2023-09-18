@@ -13,32 +13,37 @@ class RequestdeviceController extends GetxController {
   Device? selectedDevice;
   TextEditingController borrowerNameController = TextEditingController();
   TextEditingController deviceNoController = TextEditingController();
-  //TODO: Implement RequestdeviceController
 
   Future<List<Device>> getDevices() async {
     QuerySnapshot snapshot = await _firestore.collection("Device").get();
     return snapshot.docs.map((doc) => Device.fromFirestore(doc)).toList();
   }
 
-  void requestDevice(String deviceUid, String deviceName, String statusdevice1) async {
+  void requestDevice(
+      String deviceUid, String deviceName, String statusdevice1) async {
     User? user = _auth.currentUser;
 
     if (user != null) {
       // Query koleksi 'users' untuk mendapatkan dokumen pengguna berdasarkan emailnya
-      QuerySnapshot userQuery = await _firestore.collection('users').where('EMAIL', isEqualTo: user.email).get();
+      QuerySnapshot userQuery = await _firestore
+          .collection('users')
+          .where('EMAIL', isEqualTo: user.email)
+          .get();
 
       if (userQuery.docs.isNotEmpty) {
         // Mengambil ID dokumen pengguna dari hasil query
         String userUid = userQuery.docs.first.id;
 
         // Membuat referensi koleksi 'pilot-device-1' tanpa menambahkan dokumen
-        CollectionReference pilotDeviceCollection = _firestore.collection('pilot-device-1');
+        CollectionReference pilotDeviceCollection =
+            _firestore.collection('pilot-device-1');
 
         // Mendapatkan ID dokumen yang baru akan dibuat
         String newDeviceId = pilotDeviceCollection.doc().id;
 
         await pilotDeviceCollection.doc(newDeviceId).set({
-          'user_uid': userUid, // Menggunakan ID dokumen pengguna sebagai 'user_uid'
+          'user_uid':
+              userUid, // Menggunakan ID dokumen pengguna sebagai 'user_uid'
           'device_uid': deviceUid,
           'device_name': deviceName,
           'status-device-1': 'waiting-confirmation-1',
@@ -54,12 +59,15 @@ class RequestdeviceController extends GetxController {
     QuerySnapshot snapshot = await _firestore
         .collection('pilot-device-1')
         .where('device_uid', isEqualTo: deviceUid)
-        .where('status-device-1', whereIn: ['in-use-pilot', 'waiting-confirmation-1', 'need-confirmation-occ','waiting-confirmation-other-pilot'])
-        .get();
+        .where('status-device-1', whereIn: [
+      'in-use-pilot',
+      'waiting-confirmation-1',
+      'need-confirmation-occ',
+      'waiting-confirmation-other-pilot'
+    ]).get();
 
     return snapshot.docs.isNotEmpty;
   }
-
 
   Future<QuerySnapshot> getPilotDevices() async {
     User? user = _auth.currentUser;
@@ -83,24 +91,24 @@ class RequestdeviceController extends GetxController {
         QuerySnapshot snapshot = await _firestore
             .collection('pilot-device-1')
             .where('user_uid', isEqualTo: userId)
-            .where('status-device-1', whereIn: ['in-use-pilot', 'waiting-confirmation-1','need-confirmation-occ','waiting-confirmation-other-pilot'])
-            .get();
+            .where('status-device-1', whereIn: [
+          'in-use-pilot',
+          'waiting-confirmation-1',
+          'need-confirmation-occ',
+          'waiting-confirmation-other-pilot'
+        ]).get();
 
         return snapshot; // Return the QuerySnapshot directly.
       } else {
         throw Exception('User not found in the "users" collection');
       }
     } else {
-      throw Exception('User not logged in'); // You can handle this case as needed.
+      throw Exception(
+          'User not logged in'); // You can handle this case as needed.
     }
   }
 
-
   final count = 0.obs;
-
-
-
-
 
   void increment() => count.value++;
 }

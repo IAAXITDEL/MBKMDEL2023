@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 
 import '../../../../../data/users/user_preferences.dart';
 import '../../../../../di/locator.dart';
+import '../../../../../presentation/view_model/user_viewmodel.dart';
 
 class HomePilotController extends GetxController {
   //TODO: Implement HomeccController
@@ -12,12 +13,12 @@ class HomePilotController extends GetxController {
   late UserPreferences userPreferences;
   late String titleToGreet;
   late String timeToGreet;
+  late UserViewModel viewModel;
 
   final count = 0.obs;
   @override
   void onInit() {
     userPreferences = getItLocator<UserPreferences>();
-
 
     switch (userPreferences.getRank()) {
       case 'CAPT':
@@ -45,12 +46,8 @@ class HomePilotController extends GetxController {
       timeToGreet = "Evening";
     }
 
-
     super.onInit();
   }
-
-
-
 
   void increment() => count.value++;
 }
