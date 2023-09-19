@@ -32,6 +32,9 @@ class MainHomeController extends GetxController {
       case 'CAPT':
         titleToGreet = 'Captain';
         break;
+      case 'CPTS':
+        titleToGreet = 'Chief Pilot';
+        break;
       case 'FO':
         titleToGreet = 'First Officer';
         break;
@@ -78,7 +81,7 @@ class MainHomeController extends GetxController {
 
     // SEBAGAI CPTS
     if( userPreferences.getInstructor().contains(UserModel.keyCPTS) && userPreferences.getRank().contains(UserModel.keyPositionCaptain) || userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)){
-      print(userPreferences.getRank());
+      Get.toNamed(Routes.HOME_CPTSCC);
     }
     // SEBAGAI INSTRUCTOR
     else if( userPreferences.getInstructor().contains(UserModel.keySubPositionICC) && userPreferences.getRank().contains(UserModel.keyPositionCaptain) || userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)){

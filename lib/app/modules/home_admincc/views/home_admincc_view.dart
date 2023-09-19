@@ -136,7 +136,6 @@ class HomeAdminccView extends GetView<HomeAdminccController> {
             );
           },
         ),),
-
       ],
     );
   }

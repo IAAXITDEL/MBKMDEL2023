@@ -17,6 +17,7 @@ import 'package:ts_one/presentation/view_model/user_viewmodel.dart';
 import 'package:ts_one/firebase_options.dart';
 import 'package:get/get.dart';
 
+import 'app/modules/home_cptscc/views/home_cptscc_view.dart';
 import 'app/routes/app_pages.dart';
 
 void main() async {
@@ -25,6 +26,12 @@ void main() async {
 
   // register all the dependencies with GetIt
   setupLocator();
+
+  runApp(
+    MaterialApp(
+      home: HomeCptsccView(), // Halaman awal aplikasi
+    ),
+  );
 
   try {
     // initialize firebase
