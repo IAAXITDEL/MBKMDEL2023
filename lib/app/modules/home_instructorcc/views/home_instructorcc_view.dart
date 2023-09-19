@@ -7,6 +7,7 @@ import '../../../../presentation/theme.dart';
 import '../../../../util/empty_screen.dart';
 import '../../../../util/error_screen.dart';
 import '../../../../util/loading_screen.dart';
+import '../../../../util/util.dart';
 import '../../../routes/app_pages.dart';
 import '../controllers/home_instructorcc_controller.dart';
 
@@ -18,6 +19,51 @@ class HomeInstructorccView extends GetView<HomeInstructorccController> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            SizedBox(height: 20,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Hi, ${controller.titleToGreet}!",
+                  style: tsOneTextTheme.headlineLarge,
+                ),
+              ],
+            ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Good ${controller.timeToGreet}',
+                style: tsOneTextTheme.labelMedium,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              child: Row(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(right: 4.0),
+                    child: Icon(
+                      Icons.calendar_month_outlined,
+                      color: TsOneColor.onSecondary,
+                      size: 32,
+                    ),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        Util.convertDateTimeDisplay(DateTime.now().toString(), "EEEE"),
+                        style: tsOneTextTheme.labelSmall,
+                      ),
+                      Text(
+                        Util.convertDateTimeDisplay(DateTime.now().toString(), "dd MMMM yyyy"),
+                        style: tsOneTextTheme.labelSmall,
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
             const RedTitleText(text: 'TRAINING OVERVIEW', size: 14,),
             const SizedBox(height: 20,),
             Row(
@@ -35,7 +81,7 @@ class HomeInstructorccView extends GetView<HomeInstructorccController> {
               stream: controller.getCombinedAttendanceStream("pending"),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const LoadingScreen(); // Placeholder while loading
+                  return const LoadingScreen();
                 }
 
                 if (snapshot.hasError) {
@@ -87,8 +133,6 @@ class HomeInstructorccView extends GetView<HomeInstructorccController> {
                 );
               },
             ),)
-
-
           ],
     );
   }

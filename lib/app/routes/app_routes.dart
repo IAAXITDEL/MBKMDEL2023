@@ -73,6 +73,7 @@ abstract class Routes {
   static const NAVPILOT = _Paths.NAVPILOT;
   static const ATTENDANCE_PILOTCC = _Paths.ATTENDANCE_PILOTCC;
   static const LIST_ATTENDANCECC = _Paths.LIST_ATTENDANCECC;
+  static const LIST_ATTENDANCEDETAILCC = _Paths.LIST_ATTENDANCEDETAILCC;
 }
 
 abstract class _Paths {
@@ -146,4 +147,5 @@ abstract class _Paths {
   static const NAVPILOT = '/navpilot';
   static const ATTENDANCE_PILOTCC = '/attendance-pilotcc';
   static const LIST_ATTENDANCECC = '/list-attendancecc';
+  static const LIST_ATTENDANCEDETAILCC = '/list-attendancedetailcc';
 }

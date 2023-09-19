@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
@@ -132,7 +133,8 @@ class AttendanceInstructorconfirccView
                         vanueC.text = listAttendance[0]["vanue"];
                         instructorC.text = listAttendance[0]["name"];
 
-                        controller.argumentname.value = listAttendance[0]["subject"];
+                        controller.argumentname.value =
+                            listAttendance[0]["subject"];
                       } else {
                         // Handle the case where the list is empty or null
                         subjectC.text = "No Subject Data Available";
@@ -224,11 +226,12 @@ class AttendanceInstructorconfirccView
                           ),
                           InkWell(
                             onTap: () {
-                              if(controller.jumlah.value > 0 ){
-                                Get.toNamed(Routes.LIST_ATTENDANCECC,arguments: {
-                                  "id" : controller.argumentid.value,
-                                  "status" : "confirmation"
-                                });
+                              if (controller.jumlah.value > 0) {
+                                Get.toNamed(Routes.LIST_ATTENDANCECC,
+                                    arguments: {
+                                      "id": controller.argumentid.value,
+                                      "status": "pending"
+                                    });
                               }
                             },
                             child: Container(
@@ -296,11 +299,81 @@ class AttendanceInstructorconfirccView
                           ),
 
                           Text("Class Password"),
-                          RedTitleText(
-                            text: listAttendance[0]["keyAttendance"] ?? "N/A",
-                            size: 16,
-                          ),
 
+                          InkWell(
+                            onTap: (){
+                              showModalBottomSheet(context: context, builder: (context){
+                                return SingleChildScrollView(
+                                  child: Container(
+                                    width: Get.width,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(20.0),
+                                        topRight: Radius.circular(20.0),
+                                      ),
+                                      color: Theme.of(context).cardColor,
+                                    ),
+                                    padding: EdgeInsets.only(
+                                        top: 20,
+                                        left: 20,
+                                        right: 20),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        Text(
+                                          'QR Code',
+                                          style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                                        ),
+                                        Padding(padding: EdgeInsets.symmetric(horizontal: 30), child: Text(
+                                          'Provide training for those taking classes to take attendance',
+                                          style: tsOneTextTheme.labelMedium,
+                                        ),),
+                                        SizedBox(height: 20),
+                                        QrImageView(
+                                          data: listAttendance[0]["keyAttendance"],
+                                          version: QrVersions.auto,
+                                          size: 250,
+                                        ),
+                                        SizedBox(height: 20),
+                                        Text(
+                                          'Scan this QR code',
+                                          style: TextStyle(fontSize: 16.0),
+                                        ),
+                                        SizedBox(height: 50),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              });
+                            },
+                            child: Container(
+                              margin: EdgeInsets.symmetric(vertical: 5),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.0),
+                                color: Colors.white,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.3),
+                                    spreadRadius: 2,
+                                    blurRadius: 3,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ],
+                              ),
+                              child: ListTile(
+                                leading: Icon(Icons.qr_code, size: 25,),
+                                title: Text(
+                                  "Open QR Code",
+                                  style: tsOneTextTheme.headlineMedium,
+                                ),
+                                subtitle: RedTitleText(
+                                  text: listAttendance[0]["keyAttendance"] ?? "N/A",
+                                  size: 16,
+                                ),
+                                trailing: const Icon(Icons.navigate_next),
+                              ),
+                            ),
+                          ),
                           //--------------------------- ATTANDANCE --------------------
                           SizedBox(
                             height: 10,
@@ -321,10 +394,11 @@ class AttendanceInstructorconfirccView
                           Obx(() {
                             return controller.showText.value
                                 ? Row(
-                              children: [
-                                Text("*Please add your sign here!*", style: TextStyle(color: Colors.red)),
-                              ],
-                            )
+                                    children: [
+                                      Text("*Please add your sign here!*",
+                                          style: TextStyle(color: Colors.red)),
+                                    ],
+                                  )
                                 : SizedBox();
                           }),
                           SizedBox(
@@ -335,15 +409,20 @@ class AttendanceInstructorconfirccView
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               InkWell(
-                                onTap: (){_clearSignature();},
+                                onTap: () {
+                                  _clearSignature();
+                                },
                                 child: Container(
-                                  padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                                  decoration:
-                                  BoxDecoration(color: TsOneColor.primary,
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 5, horizontal: 10),
+                                  decoration: BoxDecoration(
+                                      color: TsOneColor.primary,
                                       borderRadius: BorderRadius.circular(5)),
                                   child: Row(
                                     children: [
-                                      Text("Clear", style: TextStyle(color: Colors.white)),
+                                      Text("Clear",
+                                          style:
+                                              TextStyle(color: Colors.white)),
                                       SizedBox(
                                         width: 5,
                                       ),
@@ -364,19 +443,19 @@ class AttendanceInstructorconfirccView
                             child: ElevatedButton(
                               onPressed: () {
                                 List<Path> paths =
-                                _signaturePadKey.currentState!.toPathList();
-                                if(paths.isNotEmpty){
+                                    _signaturePadKey.currentState!.toPathList();
+                                if (paths.isNotEmpty) {
                                   controller.ceksign.value = true;
                                   controller.showText.value = false;
                                   controller.update();
-                                }else{
+                                } else {
                                   controller.showText.value = true;
                                   controller.update();
                                 }
 
-
                                 if (_formKey.currentState != null &&
-                                    _formKey.currentState!.validate() && controller.ceksign.value == true) {
+                                    _formKey.currentState!.validate() &&
+                                    controller.ceksign.value == true) {
                                   showDialog(
                                       context: context,
                                       builder: (BuildContext context) {

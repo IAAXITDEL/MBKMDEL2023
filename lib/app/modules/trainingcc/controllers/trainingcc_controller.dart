@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:ts_one/app/modules/training_instructorcc/views/training_instructorcc_view.dart';
@@ -20,6 +22,8 @@ class TrainingccController extends GetxController {
   final RxString argumentname = "".obs;
 
   final RxBool cekPilot = false.obs;
+
+  final RxString passwordKey = "".obs;
 
   // List untuk training remark
   Stream<QuerySnapshot<Map<String, dynamic>>> trainingRemarkStream() {
@@ -203,6 +207,22 @@ class TrainingccController extends GetxController {
     });
   }
 
+
+  Future<void> scanQRCode(BuildContext context) async {
+    String barcodeScanResult = await FlutterBarcodeScanner.scanBarcode(
+      "#ff6666",
+      "Cancel",
+      true,
+      ScanMode.DEFAULT,
+    );
+
+    passwordKey.value = barcodeScanResult;
+
+
+    // Process the QR code result (barcodeScanResult)
+    print("Scanned QR code: $barcodeScanResult");
+    // Add your code to handle the scanned QR code result here
+  }
 
   @override
   void onInit() {
