@@ -137,7 +137,7 @@ class _EditDevice extends State<EditDevice> {
       }).toList(),
       decoration: const InputDecoration(
         contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        labelText: 'Device Condition',
+        labelText: 'Device Hub',
         border: OutlineInputBorder(),
       ),
     );
