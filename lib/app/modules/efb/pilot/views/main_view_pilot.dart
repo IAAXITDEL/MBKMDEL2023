@@ -84,17 +84,17 @@ class HomePilotView extends GetView<HomePilotController> {
                       // Filter the data for 'in-use-pilot' and 'waiting-confirmation-1'
                       final inUsePilotDocs = pilotDevicesSnapshot.docs
                           .where((doc) =>
-                      doc['status-device-1'] == 'in-use-pilot')
+                      doc['statusDevice'] == 'in-use-pilot')
                           .toList();
                       final waitingConfirmationDocs = pilotDevicesSnapshot.docs
                           .where((doc) =>
-                      doc['status-device-1'] == 'waiting-confirmation-1')
+                      doc['statusDevice'] == 'waiting-confirmation-1')
                           .toList();
                       final needConfirmationOccDocs = pilotDevicesSnapshot.docs
-                          .where((doc) => doc['status-device-1'] == 'need-confirmation-occ')
+                          .where((doc) => doc['statusDevice'] == 'need-confirmation-occ')
                           .toList();
                       final needConfirmationPilotDocs = pilotDevicesSnapshot.docs
-                          .where((doc) => doc['status-device-1'] == 'waiting-confirmation-other-pilot')
+                          .where((doc) => doc['statusDevice'] == 'waiting-confirmation-other-pilot')
                           .toList();
                       return Column(
                         children: [

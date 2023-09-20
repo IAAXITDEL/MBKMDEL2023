@@ -164,7 +164,7 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
       // Mendefinisikan data tambahan yang akan ditambahkan ke dokumen
       Map<String, dynamic> additionalData = {
         'signature_url': await uploadSignatureToFirestore(signatureData),
-        'status-device-1': 'need-confirmation-occ', // Update the status here
+        'statusDevice': 'need-confirmation-occ', // Update the status here
         'document_id': deviceId, // Associate the signature with the deviceId
         'handover-to-crew': '-', // Associate the signature with the deviceId
         // Tambahkan field lain jika diperlukan

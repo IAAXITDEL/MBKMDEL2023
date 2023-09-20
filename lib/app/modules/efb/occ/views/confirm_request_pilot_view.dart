@@ -45,7 +45,7 @@ class ConfirmRequestPilotView extends GetView {
 
                     try {
                       await pilotDeviceRef.update({
-                        'status-device-1': 'in-use-pilot',
+                        'statusDevice': 'in-use-pilot',
                         'occ-on-duty': userUid, // Store the user's ID as occ-on-duty
                       });
 

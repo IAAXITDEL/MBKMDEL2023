@@ -40,7 +40,7 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
 
     // Update Firestore
     await FirebaseFirestore.instance.collection('pilot-device-1').doc(widget.deviceId).update({
-      'status-device-1': 'in-use-pilot',
+      'statusDevice': 'in-use-pilot',
       'handover-to-crew': '-',
       'remarks': remarks,
       'prove_image_url': imageUrl,

@@ -117,7 +117,7 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
                       .collection('pilot-device-1')
                       .doc(widget.deviceId)
                       .update({
-                    'status-device-1': 'handover-to-other-crew',
+                    'statusDevice': 'handover-to-other-crew',
                     'handover-to-crew': idNumber,
                   });
 
@@ -128,7 +128,7 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
                     'device_name': deviceName,
                     'occ-on-duty': OccOnDuty,
                     'handover-from': userUid,
-                    'status-device-1': 'waiting-confirmation-other-pilot',
+                    'statusDevice': 'waiting-confirmation-other-pilot',
                     'timestamp': FieldValue.serverTimestamp(),
                     'remarks' : '',
                     'prove_image_url': '',

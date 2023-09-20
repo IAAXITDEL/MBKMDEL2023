@@ -115,7 +115,7 @@ class FirebaseDataTab extends StatelessWidget {
     return StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance
           .collection("pilot-device-1")
-          .where("status-device-1", isEqualTo: status)
+          .where("statusDevice", isEqualTo: status)
           .snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {

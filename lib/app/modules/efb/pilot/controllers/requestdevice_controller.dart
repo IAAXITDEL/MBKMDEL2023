@@ -41,7 +41,7 @@ class RequestdeviceController extends GetxController {
           'user_uid': userUid, // Menggunakan ID dokumen pengguna sebagai 'user_uid'
           'device_uid': deviceUid,
           'device_name': deviceName,
-          'status-device-1': 'waiting-confirmation-1',
+          'statusDevice': 'waiting-confirmation-1',
           'document_id': newDeviceId, // Menyimpan ID dokumen sebagai field
           'timestamp': FieldValue.serverTimestamp(),
           'handover-from' : '-',
@@ -59,7 +59,7 @@ class RequestdeviceController extends GetxController {
     QuerySnapshot snapshot = await _firestore
         .collection('pilot-device-1')
         .where('device_uid', isEqualTo: deviceUid)
-        .where('status-device-1', whereIn: ['in-use-pilot', 'waiting-confirmation-1', 'need-confirmation-occ','waiting-confirmation-other-pilot'])
+        .where('statusDevice', whereIn: ['in-use-pilot', 'waiting-confirmation-1', 'need-confirmation-occ','waiting-confirmation-other-pilot'])
         .get();
 
     return snapshot.docs.isNotEmpty;
@@ -88,7 +88,7 @@ class RequestdeviceController extends GetxController {
         QuerySnapshot snapshot = await _firestore
             .collection('pilot-device-1')
             .where('user_uid', isEqualTo: userId)
-            .where('status-device-1', whereIn: ['in-use-pilot', 'waiting-confirmation-1','need-confirmation-occ','waiting-confirmation-other-pilot'])
+            .where('statusDevice', whereIn: ['in-use-pilot', 'waiting-confirmation-1','need-confirmation-occ','waiting-confirmation-other-pilot'])
             .get();
 
         return snapshot; // Return the QuerySnapshot directly.
