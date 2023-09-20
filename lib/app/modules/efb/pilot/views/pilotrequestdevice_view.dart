@@ -1,9 +1,13 @@
+import 'dart:async';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 
 import 'package:ts_one/app/modules/efb/pilot/controllers/requestdevice_controller.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:ts_one/presentation/shared_components/TitleText.dart';
 import 'package:ts_one/presentation/theme.dart';
 
 import '../../../../../util/empty_screen_efb.dart';
@@ -37,7 +41,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
   List<Device> getMatchingDevices(String input) {
     return devices
         .where((device) =>
-        device.deviceno.toLowerCase().contains(input.toLowerCase()))
+            device.deviceno.toLowerCase().contains(input.toLowerCase()))
         .toList();
   }
 
@@ -111,12 +115,11 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
 
   Future<void> _saveBooking() async {
     if (selectedDevice != null) {
-
       // Create the booking entry with necessary information
       _bookingService.requestDevice(
         selectedDevice!.uid,
         selectedDevice!.deviceno,
-          'waiting-confirmation-1',
+        'waiting-confirmation-1',
       );
 
       setState(() {
@@ -128,28 +131,59 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
     }
   }
 
+  Future<Widget> getUserPhoto(String userUid) async {
+    final userSnapshot =
+        await FirebaseFirestore.instance.collection("users").doc(userUid).get();
 
+    if (userSnapshot.exists) {
+      final userData = userSnapshot.data() as Map<String, dynamic>;
+      final photoUrl = userData['PHOTOURL'] as String?;
+
+      if (photoUrl != null) {
+        return CircleAvatar(
+          backgroundImage: NetworkImage(photoUrl),
+          radius: 20.0,
+        );
+      }
+    }
+
+    return const CircleAvatar(
+      backgroundImage: AssetImage('assets/images/placeholder_person.png'),
+      radius: 20.0,
+    );
+  }
+
+  Future<String> getUserName(String userUid) async {
+    final userSnapshot =
+        await FirebaseFirestore.instance.collection("users").doc(userUid).get();
+
+    if (userSnapshot.exists) {
+      final userData = userSnapshot.data() as Map<String, dynamic>;
+      final userName = userData['NAME'] as String?;
+
+      if (userName != null) {
+        return userName;
+      }
+    }
+    return 'No Name';
+  }
 
   @override
   Widget build(BuildContext context) {
-    bool isDeviceNotFound =
-        deviceNoController.text.isNotEmpty &&
-            getMatchingDevices(deviceNoController.text).isEmpty;
+    bool isDeviceNotFound = deviceNoController.text.isNotEmpty &&
+        getMatchingDevices(deviceNoController.text).isEmpty;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'Request Device',
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'Poppins',
-          ),
+          style: tsOneTextTheme.headlineLarge,
         ),
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
           child: Column(
             children: [
               Row(
@@ -163,77 +197,87 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                         });
                       },
                       decoration: InputDecoration(
+                        contentPadding:
+                            const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                         labelText: 'Device No',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30.0),
-                        ),
+                        labelStyle: tsOneTextTheme.labelMedium,
+                        border: OutlineInputBorder(),
                       ),
                     ),
                   ),
-                  const SizedBox(width: 16.0),
-                  ElevatedButton(
-                    onPressed: () async {
-                      String qrCode =
-                      await FlutterBarcodeScanner.scanBarcode(
-                        '#ff6666', // Warna overlay saat pemindaian
-                        'Cancel', // Label tombol batal
-                        true, // Memungkinkan pemindaian di latar belakang
-                        ScanMode.QR, // Mode pemindaian QR code
-                      );
+                  const SizedBox(width: 10.0),
+                  Container(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: TsOneColor.primary,
+                        padding: const EdgeInsets.fromLTRB(1.0, 9.0, 1.0, 9.0),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4.0),
+                        ),
+                      ),
+                      onPressed: () async {
+                        String qrCode = await FlutterBarcodeScanner.scanBarcode(
+                          '0xFFE32526', // Warna overlay saat pemindaian
+                          'Cancel', // Label tombol batal
+                          true, // Memungkinkan pemindaian di latar belakang
+                          ScanMode.QR, // Mode pemindaian QR code
+                        );
 
-                      if (qrCode != '-1') {
-                        setState(() {
-                          deviceNoController.text = qrCode;
-                          selectedDevice =
-                              getMatchingDevices(qrCode).firstOrNull;
-                        });
-                      }
-                    },
-                    child: const Icon(Icons.qr_code_2),
+                        if (qrCode != '-1') {
+                          setState(() {
+                            deviceNoController.text = qrCode;
+                            selectedDevice =
+                                getMatchingDevices(qrCode).firstOrNull;
+                          });
+                        }
+                      },
+                      child: const Icon(
+                        Icons.qr_code_scanner_rounded,
+                        color: TsOneColor.onPrimary,
+                        size: 40,
+                      ),
+                    ),
                   ),
                 ],
               ),
-
               if (isDeviceNotFound) // Show message if device is not found
-                 const EmptyScreenEFB(),
+                const EmptyScreenEFB(),
               if (deviceNoController.text.isNotEmpty)
                 Column(
                   children: getMatchingDevices(deviceNoController.text)
                       .map(
                         (device) => ListTile(
-                      title: Text(device.deviceno),
-                      onTap: () {
-                        setState(() {
-                          selectedDevice = device;
-                          deviceNoController.text = device.deviceno;
-                        });
-                      },
-                    ),
-                  )
+                          title: Text(device.deviceno),
+                          onTap: () {
+                            setState(() {
+                              selectedDevice = device;
+                              deviceNoController.text = device.deviceno;
+                            });
+                          },
+                        ),
+                      )
                       .toList(),
                 ),
               const SizedBox(height: 16.0),
-              if (selectedDevice != null) // Show attributes if a device is selected
-                Card(
-                  margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                  color: Colors.white,
+              if (selectedDevice !=
+                  null) // Show attributes if a device is selected
+                Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4.0),
+                      border: Border.all(
+                        color: tsOneColorScheme.onSecondary,
+                      )),
                   child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(height: 5),
-                        Text("DEVICE INFO",
-                          style: tsOneTextTheme.headlineLarge,
-                        ),
+                        RedTitleText(text: 'Request Details'),
                         SizedBox(height: 5.0),
                         Row(
                           children: [
-                            Expanded(
-                                flex: 6,
-                                child: Text("Device Number")),
-                            Expanded(
-                                flex: 1, child: Text(":")),
+                            Expanded(flex: 7, child: Text("Device Number")),
+                            Expanded(flex: 1, child: Text(":")),
                             Expanded(
                               flex: 6,
                               child: Text('${selectedDevice!.deviceno}'),
@@ -242,102 +286,116 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                         ),
                         Row(
                           children: [
-                            Expanded(
-                                flex: 6,
-                                child: Text("iOS Version")),
-                            Expanded(
-                                flex: 1, child: Text(":")),
+                            Expanded(flex: 7, child: Text("IOS Version")),
+                            Expanded(flex: 1, child: Text(":")),
                             Expanded(
                               flex: 6,
-                              child:  Text('${selectedDevice!.iosver}'),
+                              child: Text('${selectedDevice!.iosver}'),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Expanded(flex: 7, child: Text("Flysmart Version")),
+                            Expanded(flex: 1, child: Text(":")),
+                            Expanded(
+                              flex: 6,
+                              child: Text('${selectedDevice!.flysmart}'),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Expanded(flex: 6, child: Text("DoCu Version")),
+                            Expanded(flex: 1, child: Text(":")),
+                            Expanded(
+                              flex: 6,
+                              child: Text('${selectedDevice!.docuversion}'),
                             ),
                           ],
                         ),
                         Row(
                           children: [
                             Expanded(
-                                flex: 6,
-                                child: Text("Flysmart Version")),
-                            Expanded(
-                                flex: 1, child: Text(":")),
+                                flex: 7, child: Text("Lido mPilot Version")),
+                            Expanded(flex: 1, child: Text(":")),
                             Expanded(
                               flex: 6,
-                              child:  Text('${selectedDevice!.flysmart}'),
+                              child: Text('${selectedDevice!.lidoversion}'),
                             ),
                           ],
                         ),
                         Row(
                           children: [
-                            Expanded(
-                                flex: 6,
-                                child: Text("DoCu Version")),
-                            Expanded(
-                                flex: 1, child: Text(":")),
+                            Expanded(flex: 6, child: Text("HUB")),
+                            Expanded(flex: 1, child: Text(":")),
                             Expanded(
                               flex: 6,
-                              child:  Text('${selectedDevice!.docuversion}'),
+                              child: Text('${selectedDevice!.hub}'),
                             ),
                           ],
                         ),
                         Row(
                           children: [
-                            Expanded(
-                                flex: 6,
-                                child: Text("Lido Version")),
-                            Expanded(
-                                flex: 1, child: Text(":")),
+                            Expanded(flex: 6, child: Text("HUB")),
+                            Expanded(flex: 1, child: Text(":")),
                             Expanded(
                               flex: 6,
-                              child:   Text('${selectedDevice!.lidoversion}'),
+                              child: Text('${selectedDevice!.hub}'),
                             ),
                           ],
                         ),
                         Row(
                           children: [
-                            Expanded(
-                                flex: 6,
-                                child: Text("HUB")),
-                            Expanded(
-                                flex: 1, child: Text(":")),
+                            Expanded(flex: 6, child: Text("Condition")),
+                            Expanded(flex: 1, child: Text(":")),
                             Expanded(
                               flex: 6,
-                              child:   Text('${selectedDevice!.hub}'),
+                              child: Text('${selectedDevice!.condition}'),
                             ),
                           ],
                         ),
-                        Row(
-                          children: [
-                            Expanded(
-                                flex: 6,
-                                child: Text("Condition")),
-                            Expanded(
-                                flex: 1, child: Text(":")),
-                            Expanded(
-                              flex: 6,
-                              child:   Text('${selectedDevice!.condition}'),
-                            ),
-                          ],
-                        ),
-
                       ],
                     ),
                   ),
                 ),
-
               const SizedBox(height: 16.0),
-              ElevatedButton(
-                onPressed: () {
-                  if (selectedDevice != null ) {
-                    _showConfirmationDialog();
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: TsOneColor.greenColor,
-                  minimumSize: const Size(double.infinity, 50),
-                ),
-                child: const Text('Submit', style: TextStyle(color: Colors.white),),
-              ),
+              // ElevatedButton(
+              //   onPressed: () {
+              //     if (selectedDevice != null) {
+              //       _showConfirmationDialog();
+              //     }
+              //   },
+              //   style: ElevatedButton.styleFrom(
+              //     backgroundColor: TsOneColor.greenColor,
+              //     minimumSize: const Size(double.infinity, 50),
+              //   ),
+              //   child: const Text(
+              //     'Submit',
+              //     style: TextStyle(color: Colors.white),
+              //   ),
+              // ),
             ],
+          ),
+        ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: Expanded(
+          child: ElevatedButton(
+            onPressed: () {
+              if (selectedDevice != null) {
+                _showConfirmationDialog();
+              }
+            },
+            style: ElevatedButton.styleFrom(
+                backgroundColor: TsOneColor.greenColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4.0),
+                )),
+            child: const Text(
+              'Submit',
+              style: TextStyle(color: Colors.white),
+            ),
           ),
         ),
       ),
@@ -348,5 +406,3 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
 extension IterableExtension<E> on Iterable<E> {
   E? get firstOrNull => isEmpty ? null : first;
 }
-
-

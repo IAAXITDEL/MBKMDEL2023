@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ts_one/app/modules/efb/pilot/views/pilotrequestdevice_view.dart';
 import 'package:ts_one/app/modules/efb/pilot/views/pilotreturndeviceview_view.dart';
+import 'package:ts_one/presentation/shared_components/TitleText.dart';
 import '../../../../../presentation/theme.dart';
 import '../../../../../util/util.dart';
 import '../../occ/model/device.dart';
@@ -83,6 +84,7 @@ class HomePilotView extends GetView<HomePilotController> {
                         pilotDevicesSnapshot.docs.isNotEmpty) {
                       // Filter the data for 'in-use-pilot' and 'waiting-confirmation-1'
                       final inUsePilotDocs = pilotDevicesSnapshot.docs
+<<<<<<< HEAD
                           .where((doc) =>
                       doc['statusDevice'] == 'in-use-pilot')
                           .toList();
@@ -95,19 +97,41 @@ class HomePilotView extends GetView<HomePilotController> {
                           .toList();
                       final needConfirmationPilotDocs = pilotDevicesSnapshot.docs
                           .where((doc) => doc['statusDevice'] == 'waiting-confirmation-other-pilot')
+=======
+                          .where(
+                              (doc) => doc['status-device-1'] == 'in-use-pilot')
+                          .toList();
+                      final waitingConfirmationDocs = pilotDevicesSnapshot.docs
+                          .where((doc) =>
+                              doc['status-device-1'] ==
+                              'waiting-confirmation-1')
+                          .toList();
+                      final needConfirmationOccDocs = pilotDevicesSnapshot.docs
+                          .where((doc) =>
+                              doc['status-device-1'] == 'need-confirmation-occ')
+                          .toList();
+                      final needConfirmationPilotDocs = pilotDevicesSnapshot
+                          .docs
+                          .where((doc) =>
+                              doc['status-device-1'] ==
+                              'waiting-confirmation-other-pilot')
+>>>>>>> f275900ac16921ec136809839c538165324bebc5
                           .toList();
                       return Column(
                         children: [
                           // Display 'in-use-pilot' data
                           if (inUsePilotDocs.isNotEmpty) ...[
                             Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                "In Use Pilot",
-                                style: tsOneTextTheme.titleLarge,
-                              ),
+                                alignment: Alignment.centerLeft,
+                                child: RedTitleText(text: "In Use Pilot")
+                                // Text(
+                                //   "In Use Pilot",
+                                //   style: tsOneTextTheme.titleLarge,
+                                // ),
+                                ),
+                            SizedBox(
+                              height: 10,
                             ),
-                            SizedBox(height: 15,),
                             Column(
                               children: inUsePilotDocs.map((doc) {
                                 // Your existing code for displaying 'in-use-pilot' data
@@ -124,45 +148,44 @@ class HomePilotView extends GetView<HomePilotController> {
                                         MaterialPageRoute(
                                           builder: (context) =>
                                               PilotreturndeviceviewView(
-                                                deviceName: deviceName,
-                                                deviceId : deviceId,
-                                                OccOnDuty : OccOnDuty,
-                                              ),
+                                            deviceName: deviceName,
+                                            deviceId: deviceId,
+                                            OccOnDuty: OccOnDuty,
+                                          ),
                                         ),
                                       );
                                     },
                                     style: ButtonStyle(
-                                      padding:
-                                      MaterialStateProperty.all<
+                                      padding: MaterialStateProperty.all<
                                           EdgeInsetsGeometry>(
                                         EdgeInsets.all(18.0),
                                       ),
                                       backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                        Colors.white, // Warna latar belakang putih
+                                          MaterialStateProperty.all<Color>(
+                                        Colors
+                                            .white, // Warna latar belakang putih
                                       ),
                                       overlayColor:
-                                      MaterialStateProperty.all<Color>(
+                                          MaterialStateProperty.all<Color>(
                                         Colors.yellow.withOpacity(
                                             0.2), // Warna kuning dengan opacity saat ditekan
                                       ),
-                                      shape:
-                                      MaterialStateProperty.all<
+                                      shape: MaterialStateProperty.all<
                                           RoundedRectangleBorder>(
                                         RoundedRectangleBorder(
                                           borderRadius:
-                                          BorderRadius.circular(15.0),
+                                              BorderRadius.circular(15.0),
                                         ),
                                       ),
                                     ),
                                     child: Row(
                                       // Menggunakan Row untuk mengatur item rata kiri
-                                      crossAxisAlignment:
-                                      CrossAxisAlignment.start, // Mengatur item rata kiri
+                                      crossAxisAlignment: CrossAxisAlignment
+                                          .start, // Mengatur item rata kiri
                                       children: [
                                         Column(
-                                          crossAxisAlignment:
-                                          CrossAxisAlignment.start, // Mengatur teks ke kiri
+                                          crossAxisAlignment: CrossAxisAlignment
+                                              .start, // Mengatur teks ke kiri
                                           children: [
                                             Text(
                                               deviceName,
@@ -181,7 +204,7 @@ class HomePilotView extends GetView<HomePilotController> {
                                 );
                               }).toList(),
                             ),
-                            SizedBox(height: 15),
+                            SizedBox(height: 10),
                           ],
 
                           // Display 'waiting-confirmation-1' data
@@ -193,7 +216,7 @@ class HomePilotView extends GetView<HomePilotController> {
                                 style: tsOneTextTheme.titleLarge,
                               ),
                             ),
-                            SizedBox(height: 15),
+                            SizedBox(height: 10),
                             Column(
                               children: waitingConfirmationDocs.map((doc) {
                                 String deviceName = doc['device_name'];
@@ -206,26 +229,35 @@ class HomePilotView extends GetView<HomePilotController> {
                                       //
                                     },
                                     style: ButtonStyle(
-                                      padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                                      padding: MaterialStateProperty.all<
+                                          EdgeInsetsGeometry>(
                                         const EdgeInsets.all(18.0),
                                       ),
-                                      overlayColor: MaterialStateProperty.all<Color>(
-                                        Colors.yellow.withOpacity(0.2), // Yellow with opacity when pressed
+                                      overlayColor:
+                                          MaterialStateProperty.all<Color>(
+                                        Colors.yellow.withOpacity(
+                                            0.2), // Yellow with opacity when pressed
                                       ),
-                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                      shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
                                         RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(15.0),
+                                          borderRadius:
+                                              BorderRadius.circular(15.0),
                                         ),
                                       ),
-                                      backgroundColor: MaterialStateProperty.all<Color>(
-                                        Colors.white, // Set the default background color to white
+                                      backgroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                        Colors
+                                            .white, // Set the default background color to white
                                       ),
                                     ),
                                     child: Row(
-                                      crossAxisAlignment: CrossAxisAlignment.start, // Mengatur item rata kiri
+                                      crossAxisAlignment: CrossAxisAlignment
+                                          .start, // Mengatur item rata kiri
                                       children: [
                                         Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start, // Mengatur teks ke kiri
+                                          crossAxisAlignment: CrossAxisAlignment
+                                              .start, // Mengatur teks ke kiri
                                           children: [
                                             Text(
                                               deviceName,
@@ -244,9 +276,8 @@ class HomePilotView extends GetView<HomePilotController> {
                                 );
                               }).toList(),
                             ),
-                            SizedBox(height: 15),
+                            SizedBox(height: 10),
                           ],
-
 
                           // Display 'waiting-confirmation-other-pilot' data
                           if (needConfirmationPilotDocs.isNotEmpty) ...[
@@ -272,33 +303,42 @@ class HomePilotView extends GetView<HomePilotController> {
                                         MaterialPageRoute(
                                           builder: (context) =>
                                               ConfirmReturnOtherPilotView(
-                                                deviceName: deviceName,
-                                                deviceId : deviceId,
-                                              ),
+                                            deviceName: deviceName,
+                                            deviceId: deviceId,
+                                          ),
                                         ),
                                       );
                                     },
                                     style: ButtonStyle(
-                                      padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                                      padding: MaterialStateProperty.all<
+                                          EdgeInsetsGeometry>(
                                         const EdgeInsets.all(18.0),
                                       ),
-                                      overlayColor: MaterialStateProperty.all<Color>(
-                                        Colors.yellow.withOpacity(0.2), // Yellow with opacity when pressed
+                                      overlayColor:
+                                          MaterialStateProperty.all<Color>(
+                                        Colors.yellow.withOpacity(
+                                            0.2), // Yellow with opacity when pressed
                                       ),
-                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                      shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
                                         RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(15.0),
+                                          borderRadius:
+                                              BorderRadius.circular(15.0),
                                         ),
                                       ),
-                                      backgroundColor: MaterialStateProperty.all<Color>(
-                                        Colors.white, // Set the default background color to white
+                                      backgroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                        Colors
+                                            .white, // Set the default background color to white
                                       ),
                                     ),
                                     child: Row(
-                                      crossAxisAlignment: CrossAxisAlignment.start, // Mengatur item rata kiri
+                                      crossAxisAlignment: CrossAxisAlignment
+                                          .start, // Mengatur item rata kiri
                                       children: [
                                         Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start, // Mengatur teks ke kiri
+                                          crossAxisAlignment: CrossAxisAlignment
+                                              .start, // Mengatur teks ke kiri
                                           children: [
                                             Text(
                                               deviceName,
@@ -317,9 +357,8 @@ class HomePilotView extends GetView<HomePilotController> {
                                 );
                               }).toList(),
                             ),
-                            SizedBox(height: 15),
+                            SizedBox(height: 10),
                           ],
-
 
                           if (needConfirmationOccDocs.isNotEmpty) ...[
                             Align(
@@ -329,7 +368,9 @@ class HomePilotView extends GetView<HomePilotController> {
                                 style: tsOneTextTheme.titleLarge,
                               ),
                             ),
-                            SizedBox(height: 15,),
+                            SizedBox(
+                              height: 10,
+                            ),
                             Column(
                               children: needConfirmationOccDocs.map((doc) {
                                 String deviceName = doc['device_name'];
@@ -343,26 +384,35 @@ class HomePilotView extends GetView<HomePilotController> {
                                       // You can customize this action as needed.
                                     },
                                     style: ButtonStyle(
-                                      padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                                      padding: MaterialStateProperty.all<
+                                          EdgeInsetsGeometry>(
                                         EdgeInsets.all(18.0),
                                       ),
-                                      backgroundColor: MaterialStateProperty.all<Color>(
-                                        Colors.white, // Warna latar belakang putih
+                                      backgroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                        Colors
+                                            .white, // Warna latar belakang putih
                                       ),
-                                      overlayColor: MaterialStateProperty.all<Color>(
-                                        Colors.yellow.withOpacity(0.2), // Warna kuning dengan opacity saat ditekan
+                                      overlayColor:
+                                          MaterialStateProperty.all<Color>(
+                                        Colors.yellow.withOpacity(
+                                            0.2), // Warna kuning dengan opacity saat ditekan
                                       ),
-                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                      shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
                                         RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(15.0),
+                                          borderRadius:
+                                              BorderRadius.circular(15.0),
                                         ),
                                       ),
                                     ),
                                     child: Row(
-                                      crossAxisAlignment: CrossAxisAlignment.start, // Mengatur item rata kiri
+                                      crossAxisAlignment: CrossAxisAlignment
+                                          .start, // Mengatur item rata kiri
                                       children: [
                                         Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start, // Mengatur teks ke kiri
+                                          crossAxisAlignment: CrossAxisAlignment
+                                              .start, // Mengatur teks ke kiri
                                           children: [
                                             Text(
                                               deviceName,
@@ -381,9 +431,7 @@ class HomePilotView extends GetView<HomePilotController> {
                                 );
                               }).toList(),
                             ),
-                            SizedBox(height: 15),
                           ],
-
                         ],
                       );
                     } else {
@@ -391,39 +439,59 @@ class HomePilotView extends GetView<HomePilotController> {
                       return Column(
                         children: [
                           ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: TsOneColor.primary,
+                                minimumSize: Size(double.infinity, 50),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15.0),
+                                )),
                             onPressed: () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => PilotrequestdeviceView(),
+                                  builder: (context) =>
+                                      PilotrequestdeviceView(),
                                 ),
                               );
                             },
-                            child: Text(
-                              "Request Device",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.touch_app_rounded,
+                                  //Icons.qr_code_scanner_rounded,
+                                  color: TsOneColor.onPrimary,
+                                  size: 30,
+                                ),
+                                SizedBox(width: 10),
+                                Text(
+                                  "Request Device",
+                                  style: TextStyle(color: TsOneColor.onPrimary),
+                                ),
+                              ],
                             ),
-                            // Your button style
-                            // ...
                           ),
-
-                          SizedBox(height: 20.0,),
-                          Text(
-                            "Need Confirmation",
-                            style: tsOneTextTheme.headlineLarge,
-                            textAlign: TextAlign.left,
+                          SizedBox(
+                            height: 20.0,
+                          ),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: BlackTitleText(text: "Need Confirmation"),
+                          ),
+                          SizedBox(
+                            height: 15.0,
                           ),
                           Text(
                             "There is no data that needs confirmation",
                           ),
-
-                          SizedBox(height: 20.0,),
-                          Text(
-                            "Device Used",
-                            style: tsOneTextTheme.headlineLarge,
-                            textAlign: TextAlign.left,
+                          SizedBox(
+                            height: 20.0,
+                          ),
+                          Align(
+                              alignment: Alignment.centerLeft,
+                              child: BlackTitleText(text: 'Device Used')),
+                          SizedBox(
+                            height: 15.0,
                           ),
                           Text(
                             "There is no device you are using",
