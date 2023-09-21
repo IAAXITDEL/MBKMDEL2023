@@ -72,12 +72,20 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
         .doc(id)
         .get();
 
-    setState(() {
-      selectedUser = documentSnapshot;
-    });
+    if (documentSnapshot.exists) {
+      setState(() {
+        selectedUser = documentSnapshot;
+      });
+    } else {
+      setState(() {
+        selectedUser = null;
+      });
+      // Show a snackbar with the "No Data In Database" message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('No Data In Database')),
+      );
+    }
   }
-
-  // Function to show the confirmation dialog
   Future<void> _showConfirmationDialog() async {
     return showDialog<void>(
       context: context,
@@ -121,6 +129,8 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
                     'handover-to-crew': idNumber,
                   });
 
+                  // Get the hub based on device_name
+                  String hubField = await getHubFromDeviceName(deviceName) ?? "Unknown Hub";
 
                   FirebaseFirestore.instance.collection('pilot-device-1').add({
                     'user_uid': idNumber,
@@ -133,6 +143,7 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
                     'remarks' : '',
                     'prove_image_url': '',
                     'handover-to-crew': '-',
+                    'field_hub': hubField, // Add 'hub' field
                   });
 
                   Navigator.pop(context); // Close the ReturnOtherPilotView
@@ -165,11 +176,14 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
                   Expanded(
                     child: TextField(
                       controller: _idController,
+                      enabled: selectedUser != null,  // Enable/disable based on user selection
+                      readOnly: true,  // Make the text field non-editable
                       decoration: InputDecoration(
                         labelText: 'Enter ID Number',
                       ),
                     ),
                   ),
+
                   ElevatedButton(
                     onPressed: () async {
                       // Trigger barcode scanning
@@ -181,13 +195,20 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
                         setState(() {
                           _idController.text = barcodeScanResult;
                         });
+                        // Fetch user data for the scanned ID
+                        await _fetchUserData(barcodeScanResult);
                       }
                     },
                     child: Icon(Icons.qr_code_2),
                   ),
                 ],
               ),
+
               SizedBox(height: 16.0),
+              if (usersStream == null && selectedUser == null)
+                Center(
+                  child: Text('Please select the user'),
+                ),
               if (usersStream != null)
                 StreamBuilder<QuerySnapshot>(
                   stream: usersStream,
@@ -263,3 +284,22 @@ Future<void> _showQuickAlert(BuildContext context) async {
   Navigator.of(context).pop();
 }
 
+Future<String> getHubFromDeviceName(String deviceName) async {
+  String hub = "Unknown Hub"; // Default value
+
+  try {
+    // Fetch the 'hub' field from the 'Device' collection based on deviceName
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('Device')
+        .where('deviceno', isEqualTo: deviceName)
+        .get();
+
+    if (querySnapshot.docs.isNotEmpty) {
+      hub = querySnapshot.docs.first['hub'];
+    }
+  } catch (e) {
+    print("Error getting hub from Device: $e");
+  }
+
+  return hub;
+}

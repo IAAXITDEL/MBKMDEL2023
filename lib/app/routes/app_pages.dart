@@ -257,7 +257,7 @@ class AppPages {
     //FO EFB
     GetPage(
       name: _Paths.HOMEFO,
-      page: () => const HomeFOView(),
+      page: () => HomeFOView(),
       binding: HomeFOBinding(),
     ),
     GetPage(

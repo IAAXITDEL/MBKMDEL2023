@@ -18,10 +18,68 @@ class ConfirmReturnBackPilotView extends GetView {
   final String dataId;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  bool isImageUploading = false;
 
   ConfirmReturnBackPilotView({Key? key, required this.dataId}) : super(key: key);
 
   GlobalKey<SfSignaturePadState> signatureKey = GlobalKey();
+
+  Future<void> _uploadImageAndShowDialog(XFile pickedFile, BuildContext context) async {
+    final ByteData byteData = await pickedFile
+        .readAsBytes()
+        .then((value) => ByteData.sublistView(Uint8List.fromList(value)));
+
+    final Reference storageReference =
+    FirebaseStorage.instance.ref().child('camera_images/${Path.basename(dataId)}.png');
+
+    try {
+      // Upload the image
+      await storageReference.putData(byteData.buffer.asUint8List());
+
+      // Get the download URL after upload completes
+      String cameraImageUrl = await storageReference.getDownloadURL();
+
+      // Show confirmation dialog only after getting the image URL
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Confirmation'),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Text('Are you sure you want to submit this data?'),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: Text('Cancel'),
+                onPressed: () {
+                  Navigator.of(context).pop(); // Close the dialog
+                  Navigator.of(context).pop(); // Close the dialog
+                  Navigator.of(context).pop(); // Close the dialog
+                },
+              ),
+              TextButton(
+                child: Text('Submit'),
+                onPressed: () {
+                  Navigator.of(context).pop(); // Close the confirmation dialog
+                  Navigator.of(context).pop(); // Close the confirmation dialog
+                  Navigator.of(context).pop(); // Close the confirmation dialog
+                  confirmInUse(context, cameraImageUrl);
+                  _showQuickAlert(context); // Call the function to submit data
+                },
+              ),
+            ],
+          );
+        },
+      );
+    } catch (error) {
+      print('Error uploading image: $error');
+    }
+  }
 
   Future<void> _showQuickAlert(BuildContext context) async {
     await QuickAlert.show(
@@ -45,8 +103,7 @@ class ConfirmReturnBackPilotView extends GetView {
       final ByteData? byteData = await image.toByteData(format: ImageByteFormat.png);
       final Uint8List? uint8List = byteData?.buffer.asUint8List();
 
-      final Reference storageReference =
-      FirebaseStorage.instance.ref().child('signatures/${Path.basename(dataId)}.png');
+      final Reference storageReference = FirebaseStorage.instance.ref().child('signatures/${Path.basename(dataId)}.png');
 
       final UploadTask uploadTask = storageReference.putData(uint8List!);
 
@@ -249,6 +306,14 @@ class ConfirmReturnBackPilotView extends GetView {
                                   SizedBox(height: 5.0),
                                   Row(
                                     children: [
+                                      Expanded(flex: 6, child: Text("HUB")),
+                                      Expanded(flex: 1, child: Text(":")),
+                                      Expanded(flex: 6, child: Text('${deviceData['hub'] ?? 'No Data'}')),
+                                    ],
+                                  ),
+                                  SizedBox(height: 5.0),
+                                  Row(
+                                    children: [
                                       Expanded(flex: 6, child: Text("Condition")),
                                       Expanded(flex: 1, child: Text(":")),
                                       Expanded(flex: 6, child: Text('${deviceData['condition'] ?? 'No Data'}')),
@@ -294,78 +359,49 @@ class ConfirmReturnBackPilotView extends GetView {
                                     ],
                                   ),
                                   SizedBox(height: 20.0),
-                                  ElevatedButton(
-                                    onPressed: () async {
-                                      final ImagePicker _picker = ImagePicker();
-                                      XFile? pickedFile = await _picker.pickImage(source: ImageSource.camera);
+                                ElevatedButton(
+                                  onPressed: () async {
+                                    final ImagePicker _picker = ImagePicker();
+                                    XFile? pickedFile = await _picker.pickImage(source: ImageSource.camera);
 
-
-                                      if (pickedFile != null) {
-                                        final ByteData byteData = await pickedFile
-                                            .readAsBytes()
-                                            .then((value) => ByteData.sublistView(Uint8List.fromList(value)));
-                                        final Reference storageReference =
-                                        FirebaseStorage.instance.ref().child('camera_images/${Path.basename(dataId)}.png');
-                                        final UploadTask uploadTask = storageReference.putData(byteData.buffer.asUint8List());
-
-                                        await uploadTask.whenComplete(() async {
-                                          String cameraImageUrl = await storageReference.getDownloadURL();
-                                          confirmInUse(context, cameraImageUrl);
-                                        });
-                                      } else {
-                                        print('No image selected.');
-                                      }
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: TsOneColor.primary,
-                                      minimumSize: const Size(double.infinity, 50),
-                                    ),
-                                    child: const Text('Take a Picture', style: TextStyle(color: Colors.white)),
-                                  ),
-                                  SizedBox(height: 20.0),
-                                  ElevatedButton(
-                                    onPressed: () {
+                                    if (pickedFile != null) {
                                       showDialog(
                                         context: context,
                                         barrierDismissible: false,
                                         builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            title: Text('Confirmation'),
-                                            content: SingleChildScrollView(
-                                              child: ListBody(
-                                                children: <Widget>[
-                                                  Text('Are you sure you want to submit this data?'),
-                                                ],
-                                              ),
-                                            ),
-                                            actions: <Widget>[
-                                              TextButton(
-                                                child: Text('Cancel'),
-                                                onPressed: () {
-                                                  Navigator.of(context).pop(); // Close the dialog
-                                                },
-                                              ),
-                                              TextButton(
-                                                child: Text('Submit'),
-                                                onPressed: () {
-                                                  Navigator.of(context).pop(); // Close the confirmation dialog
-                                                  Navigator.of(context).pop(); // Close the confirmation dialog
-                                                  Navigator.of(context).pop(); // Close the confirmation dialog
-                                                  confirmInUse(context, '');
-                                                  _showQuickAlert(context); // Call the function to submit data
-                                                },
-                                              ),
-                                            ],
+                                          return FutureBuilder<void>(
+                                            future: _uploadImageAndShowDialog(pickedFile, context),
+                                            builder: (context, snapshot) {
+                                              if (snapshot.connectionState == ConnectionState.waiting) {
+                                                return AlertDialog(
+                                                  content: Column(
+                                                    mainAxisSize: MainAxisSize.min,
+                                                    children: [
+                                                      CircularProgressIndicator(),
+                                                      SizedBox(height: 10.0),
+                                                      Text("This might take a second..."),
+                                                    ],
+                                                  ),
+                                                );
+                                              } else {
+                                                return Container(); // Placeholder, you can customize this based on your requirements
+                                              }
+                                            },
                                           );
                                         },
                                       );
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: TsOneColor.greenColor,
-                                      minimumSize: const Size(double.infinity, 50),
-                                    ),
-                                    child: const Text('Submit', style: TextStyle(color: Colors.white)),
+                                    } else {
+                                      print('No image selected.');
+                                    }
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: TsOneColor.primary,
+                                    minimumSize: const Size(double.infinity, 50),
                                   ),
+                                  child: const Text('Take Picture To Approve', style: TextStyle(color: Colors.white)),
+                                ),
+
+                                  SizedBox(height: 20.0),
                                 ],
                               ),
                             ),
@@ -383,3 +419,5 @@ class ConfirmReturnBackPilotView extends GetView {
     );
   }
 }
+
+

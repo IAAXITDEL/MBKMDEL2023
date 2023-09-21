@@ -19,8 +19,7 @@ class RequestdeviceController extends GetxController {
     return snapshot.docs.map((doc) => Device.fromFirestore(doc)).toList();
   }
 
-  void requestDevice(
-      String deviceUid, String deviceName, String statusdevice1) async {
+  void requestDevice(String deviceUid, String deviceName, String statusdevice1, String fieldHub) async {
     User? user = _auth.currentUser;
 
     if (user != null) {
@@ -28,6 +27,11 @@ class RequestdeviceController extends GetxController {
       QuerySnapshot userQuery = await _firestore
           .collection('users')
           .where('EMAIL', isEqualTo: user.email)
+          .get();
+
+      QuerySnapshot deviceQuery = await _firestore
+          .collection('Device')
+          .where('device_name', isEqualTo: deviceName)
           .get();
 
       if (userQuery.docs.isNotEmpty) {
@@ -54,6 +58,7 @@ class RequestdeviceController extends GetxController {
           'remarks' : '',
           'prove_image_url': '',
           'occ-accepted-device': '-',
+          'field_hub': fieldHub,  // Include the field hub in the data
         });
       }
     }
@@ -64,17 +69,8 @@ class RequestdeviceController extends GetxController {
     QuerySnapshot snapshot = await _firestore
         .collection('pilot-device-1')
         .where('device_uid', isEqualTo: deviceUid)
-<<<<<<< HEAD
         .where('statusDevice', whereIn: ['in-use-pilot', 'waiting-confirmation-1', 'need-confirmation-occ','waiting-confirmation-other-pilot'])
         .get();
-=======
-        .where('status-device-1', whereIn: [
-      'in-use-pilot',
-      'waiting-confirmation-1',
-      'need-confirmation-occ',
-      'waiting-confirmation-other-pilot'
-    ]).get();
->>>>>>> f275900ac16921ec136809839c538165324bebc5
 
     return snapshot.docs.isNotEmpty;
   }
@@ -101,17 +97,8 @@ class RequestdeviceController extends GetxController {
         QuerySnapshot snapshot = await _firestore
             .collection('pilot-device-1')
             .where('user_uid', isEqualTo: userId)
-<<<<<<< HEAD
             .where('statusDevice', whereIn: ['in-use-pilot', 'waiting-confirmation-1','need-confirmation-occ','waiting-confirmation-other-pilot'])
             .get();
-=======
-            .where('status-device-1', whereIn: [
-          'in-use-pilot',
-          'waiting-confirmation-1',
-          'need-confirmation-occ',
-          'waiting-confirmation-other-pilot'
-        ]).get();
->>>>>>> f275900ac16921ec136809839c538165324bebc5
 
         return snapshot; // Return the QuerySnapshot directly.
       } else {

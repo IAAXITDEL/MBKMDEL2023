@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ts_one/app/modules/efb/pilot/views/pilot_un_request_device_view.dart';
+import 'package:ts_one/app/modules/efb/pilot/views/pilot_un_return_device_view.dart';
 import 'package:ts_one/app/modules/efb/pilot/views/pilotrequestdevice_view.dart';
 import 'package:ts_one/app/modules/efb/pilot/views/pilotreturndeviceview_view.dart';
 import 'package:ts_one/presentation/shared_components/TitleText.dart';
@@ -84,7 +86,6 @@ class HomePilotView extends GetView<HomePilotController> {
                         pilotDevicesSnapshot.docs.isNotEmpty) {
                       // Filter the data for 'in-use-pilot' and 'waiting-confirmation-1'
                       final inUsePilotDocs = pilotDevicesSnapshot.docs
-<<<<<<< HEAD
                           .where((doc) =>
                       doc['statusDevice'] == 'in-use-pilot')
                           .toList();
@@ -97,25 +98,6 @@ class HomePilotView extends GetView<HomePilotController> {
                           .toList();
                       final needConfirmationPilotDocs = pilotDevicesSnapshot.docs
                           .where((doc) => doc['statusDevice'] == 'waiting-confirmation-other-pilot')
-=======
-                          .where(
-                              (doc) => doc['status-device-1'] == 'in-use-pilot')
-                          .toList();
-                      final waitingConfirmationDocs = pilotDevicesSnapshot.docs
-                          .where((doc) =>
-                              doc['status-device-1'] ==
-                              'waiting-confirmation-1')
-                          .toList();
-                      final needConfirmationOccDocs = pilotDevicesSnapshot.docs
-                          .where((doc) =>
-                              doc['status-device-1'] == 'need-confirmation-occ')
-                          .toList();
-                      final needConfirmationPilotDocs = pilotDevicesSnapshot
-                          .docs
-                          .where((doc) =>
-                              doc['status-device-1'] ==
-                              'waiting-confirmation-other-pilot')
->>>>>>> f275900ac16921ec136809839c538165324bebc5
                           .toList();
                       return Column(
                         children: [
@@ -226,7 +208,16 @@ class HomePilotView extends GetView<HomePilotController> {
                                   alignment: Alignment.centerLeft,
                                   child: ElevatedButton(
                                     onPressed: () {
-                                      //
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              PilotUnRequestDeviceView(
+                                                deviceName: deviceName,
+                                                deviceId: deviceId,
+                                              ),
+                                        ),
+                                      );
                                     },
                                     style: ButtonStyle(
                                       padding: MaterialStateProperty.all<
@@ -380,8 +371,16 @@ class HomePilotView extends GetView<HomePilotController> {
                                   alignment: Alignment.centerLeft,
                                   child: ElevatedButton(
                                     onPressed: () {
-                                      // Handle the button click action for 'waiting-confirmation-1' data
-                                      // You can customize this action as needed.
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              PilotUnReturnDeviceView(
+                                                deviceName: deviceName,
+                                                deviceId: deviceId,
+                                              ),
+                                        ),
+                                      );
                                     },
                                     style: ButtonStyle(
                                       padding: MaterialStateProperty.all<

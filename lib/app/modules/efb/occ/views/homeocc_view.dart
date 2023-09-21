@@ -13,11 +13,46 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class HomeOCCView extends GetView<HomeOCCController> {
   const HomeOCCView({Key? key}) : super(key: key);
 
+
+  void _showFilterDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Filter by Hub'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _buildFilterOption(context, "CGK"),
+              _buildFilterOption(context, "SUB"),
+              _buildFilterOption(context, "KNO"),
+              _buildFilterOption(context, "DPS"),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildFilterOption(BuildContext context, String hub) {
+    final controller = Get.find<HomeOCCController>();
+    return InkWell(
+      onTap: () {
+        controller.updateSelectedHub(hub);
+        Navigator.pop(context); // Close the dialog
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(hub),
+      ),
+    );
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(HomeOCCController());
-    bool isContainerClicked = false;
-
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -81,6 +116,120 @@ class HomeOCCView extends GetView<HomeOCCController> {
                 ],
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  // Menampilkan jumlah CGK dengan status in-use-pilot
+                  StreamBuilder<QuerySnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collection("pilot-device-1")
+                        .where("statusDevice", isEqualTo: "in-use-pilot")
+                        .where("field_hub", isEqualTo: "CGK")
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircularProgressIndicator();
+                      }
+
+                      if (snapshot.hasError) {
+                        return Text("Error: ${snapshot.error}");
+                      }
+
+                      final count = snapshot.data?.docs.length ?? 0;
+                      return Text('CGK: $count');
+                    },
+                  ),
+
+                  // Menampilkan jumlah SUB dengan status in-use-pilot
+                  StreamBuilder<QuerySnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collection("pilot-device-1")
+                        .where("statusDevice", isEqualTo: "in-use-pilot")
+                        .where("field_hub", isEqualTo: "SUB")
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircularProgressIndicator();
+                      }
+
+                      if (snapshot.hasError) {
+                        return Text("Error: ${snapshot.error}");
+                      }
+
+                      final count = snapshot.data?.docs.length ?? 0;
+                      return Text('SUB: $count');
+                    },
+                  ),
+
+                  // Menampilkan jumlah DPS dengan status in-use-pilot
+                  StreamBuilder<QuerySnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collection("pilot-device-1")
+                        .where("statusDevice", isEqualTo: "in-use-pilot")
+                        .where("field_hub", isEqualTo: "DPS")
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircularProgressIndicator();
+                      }
+
+                      if (snapshot.hasError) {
+                        return Text("Error: ${snapshot.error}");
+                      }
+
+                      final count = snapshot.data?.docs.length ?? 0;
+                      return Text('DPS: $count');
+                    },
+                  ),
+
+                  // Menampilkan jumlah KNO dengan status in-use-pilot
+                  StreamBuilder<QuerySnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collection("pilot-device-1")
+                        .where("statusDevice", isEqualTo: "in-use-pilot")
+                        .where("field_hub", isEqualTo: "KNO")
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircularProgressIndicator();
+                      }
+
+                      if (snapshot.hasError) {
+                        return Text("Error: ${snapshot.error}");
+                      }
+
+                      final count = snapshot.data?.docs.length ?? 0;
+                      return Text('KNO: $count');
+                    },
+                  ),
+                ],
+              ),
+            ),
+
+
+
+
+            Obx(() {
+              final selectedHubText =
+                  controller.selectedHub?.value ?? 'No hub selected';
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text('Selected Hub: $selectedHubText'),
+              );
+            }),
+
+
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: ElevatedButton(
+                onPressed: () {
+                  _showFilterDialog(context);
+                },
+                child: Text('Choose The Hub'),
+              ),
+            ),
             TabBar(
               tabs: [
                 Tab(text: "Confirm"),
@@ -111,10 +260,12 @@ class FirebaseDataTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.find<HomeOCCController>();
     return StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance
           .collection("pilot-device-1")
           .where("statusDevice", isEqualTo: status)
+          .where("field_hub", isEqualTo: controller.selectedHub?.value)
           .snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -134,10 +285,8 @@ class FirebaseDataTab extends StatelessWidget {
           itemCount: documents.length,
           itemBuilder: (context, index) {
             final data = documents[index].data() as Map<String, dynamic>;
-
             // Get the user_uid from the document
             final userUid = data['user_uid'];
-
             // Get the user's name using a FutureBuilder
             return FutureBuilder<DocumentSnapshot>(
               future: FirebaseFirestore.instance
@@ -157,12 +306,13 @@ class FirebaseDataTab extends StatelessWidget {
                   return Text("User data not found");
                 }
 
-                final userData =
-                    userSnapshot.data!.data() as Map<String, dynamic>;
+                final userData = userSnapshot.data!.data() as Map<String, dynamic>;
                 final userName = userData['NAME'] ?? 'No Name';
-                final photoUrl = userData['PHOTOURL']
-                    as String?; // Get the profile photo URL
+                final photoUrl = userData['PHOTOURL'] as String?; // Get the profile photo URL
                 final dataId = documents[index].id; // Mendapatkan ID dokumen
+                final deviceName = data['device_name'] ?? 'No Data';
+                final deviceName2 = data['device_name2'] ?? '';
+                final deviceName3 = data['device_name3'] ?? '';
 
                 // Build the widget with the user's name and profile photo
                 return Padding(
@@ -234,10 +384,18 @@ class FirebaseDataTab extends StatelessWidget {
                                     style: tsOneTextTheme.displaySmall,
                                   ),
                                 ),
-                                Text(
-                                  'Device Name: ${data['device_name'] ?? 'No Data'}',
-                                  style: tsOneTextTheme.labelSmall,
-                                ),
+                                if (deviceName.isNotEmpty)
+                                  Text(
+                                    'Device Name: $deviceName',
+                                    style: tsOneTextTheme.labelSmall,
+                                  ),
+                                // Display device_name2 if available
+                                if (deviceName2.isNotEmpty && deviceName3.isNotEmpty)
+                                  Text(
+                                    'Device Name 2: $deviceName2' +  'Device Name 3: $deviceName3',
+                                    style: tsOneTextTheme.labelSmall,
+                                  ),
+                                // Display device_name3 if available
                               ],
                             ),
                           ),

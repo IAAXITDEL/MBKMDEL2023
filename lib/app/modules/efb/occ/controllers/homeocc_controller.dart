@@ -46,12 +46,19 @@ class HomeOCCController extends GetxController {
     super.onInit();
   }
 
+  RxString selectedHub = RxString(''); // Initialize with an empty string
+
+  void updateSelectedHub(String hub) {
+    selectedHub.value = hub;
+  }
 
   final selectedIndex = 0.obs;
 
   void changeTabIndex(int index) {
     selectedIndex.value = index;
   }
+
+  String? selectedHubText;  // Define selectedHubText here
 
   void increment() => count.value++;
 }

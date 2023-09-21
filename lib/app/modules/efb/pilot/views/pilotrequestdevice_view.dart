@@ -115,11 +115,14 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
 
   Future<void> _saveBooking() async {
     if (selectedDevice != null) {
+      String fieldHub = selectedDevice!.hub;
       // Create the booking entry with necessary information
       _bookingService.requestDevice(
         selectedDevice!.uid,
         selectedDevice!.deviceno,
         'waiting-confirmation-1',
+        fieldHub,
+
       );
 
       setState(() {
@@ -205,19 +208,12 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 10.0),
-                  Container(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: TsOneColor.primary,
-                        padding: const EdgeInsets.fromLTRB(1.0, 9.0, 1.0, 9.0),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4.0),
-                        ),
-                      ),
+                    const SizedBox(width: 16.0),
+                    ElevatedButton(
                       onPressed: () async {
-                        String qrCode = await FlutterBarcodeScanner.scanBarcode(
-                          '0xFFE32526', // Warna overlay saat pemindaian
+                        String qrCode =
+                        await FlutterBarcodeScanner.scanBarcode(
+                          '#ff6666', // Warna overlay saat pemindaian
                           'Cancel', // Label tombol batal
                           true, // Memungkinkan pemindaian di latar belakang
                           ScanMode.QR, // Mode pemindaian QR code
@@ -231,12 +227,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                           });
                         }
                       },
-                      child: const Icon(
-                        Icons.qr_code_scanner_rounded,
-                        color: TsOneColor.onPrimary,
-                        size: 40,
-                      ),
-                    ),
+                      child: const Icon(Icons.qr_code_2),
                   ),
                 ],
               ),
@@ -306,7 +297,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                         ),
                         Row(
                           children: [
-                            Expanded(flex: 6, child: Text("DoCu Version")),
+                            Expanded(flex: 7, child: Text("DoCu Version")),
                             Expanded(flex: 1, child: Text(":")),
                             Expanded(
                               flex: 6,
@@ -327,7 +318,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                         ),
                         Row(
                           children: [
-                            Expanded(flex: 6, child: Text("HUB")),
+                            Expanded(flex: 7, child: Text("HUB")),
                             Expanded(flex: 1, child: Text(":")),
                             Expanded(
                               flex: 6,
@@ -337,17 +328,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                         ),
                         Row(
                           children: [
-                            Expanded(flex: 6, child: Text("HUB")),
-                            Expanded(flex: 1, child: Text(":")),
-                            Expanded(
-                              flex: 6,
-                              child: Text('${selectedDevice!.hub}'),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Expanded(flex: 6, child: Text("Condition")),
+                            Expanded(flex: 7, child: Text("Condition")),
                             Expanded(flex: 1, child: Text(":")),
                             Expanded(
                               flex: 6,
