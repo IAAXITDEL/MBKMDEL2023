@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 
 import '../../../../../presentation/theme.dart';
 
@@ -14,14 +16,25 @@ class PilotUnRequestDeviceView extends GetView {
   PilotUnRequestDeviceView({Key? key, required this.deviceId, required String deviceName}) : super(key: key);
 
 
-  void confirmInUse(BuildContext context) async {
+  Future<void> _showQuickAlert(BuildContext context) async {
+    await QuickAlert.show(
+      context: context,
+      type: QuickAlertType.success,
+      text: 'You have succesfully Rejected The Device',
+    );
+    Navigator.of(context).pop();
+    Navigator.of(context).pop();
+    Navigator.of(context).pop();
+  }
+
+  void confirmRejected(BuildContext context) {
 
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Confirmation'),
-          content: Text('Are you sure you want to confirm the usage?'),
+          content: Text('Are you sure you want to reject the usage?'),
           actions: <Widget>[
             TextButton(
               child: Text('Cancel'),
@@ -53,9 +66,9 @@ class PilotUnRequestDeviceView extends GetView {
                     print('Error updating data: $error');
                   }
                 }
-
-                Navigator.of(context).pop(); // Close the dialog
+                _showQuickAlert(context);
               },
+
             ),
           ],
         );
@@ -308,7 +321,7 @@ class PilotUnRequestDeviceView extends GetView {
                             SizedBox(height: 70.0),
                             ElevatedButton(
                               onPressed: () {
-                                confirmInUse(context); // Pass the context to the function
+                                confirmRejected(context); // Pass the context to the function
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: TsOneColor.greenColor,

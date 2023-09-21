@@ -45,6 +45,16 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
         .toList();
   }
 
+  Future<void> _showQuickAlert(BuildContext context) async {
+    await QuickAlert.show(
+      context: context,
+      type: QuickAlertType.success,
+      text: 'You have succesfully Requested The Device',
+    );
+    Navigator.of(context).pop();
+
+  }
+
   Future<void> _showConfirmationDialog() async {
     bool deviceInUse = await _bookingService.isDeviceInUse(selectedDevice!.uid);
 
@@ -105,6 +115,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                   _saveBooking();
                   Navigator.of(context).pop();
                   Navigator.of(context).pop();
+                  _showQuickAlert(context);
                 },
               ),
           ],
@@ -129,7 +140,6 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
         selectedDevice = null;
         deviceNoController.clear();
       });
-
       Navigator.pop(context); // Close the confirmation dialog
     }
   }

@@ -52,6 +52,8 @@ class HomeOCCController extends GetxController {
     selectedHub.value = hub;
   }
 
+  RxBool isHubSelected = false.obs;
+
   final selectedIndex = 0.obs;
 
   void changeTabIndex(int index) {

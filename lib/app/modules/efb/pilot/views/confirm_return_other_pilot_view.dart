@@ -399,6 +399,21 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                                 Row(
                                   children: [
                                     Expanded(
+                                        flex: 6, child: Text("HUB", style: tsOneTextTheme.labelMedium,)),
+                                    Expanded(flex: 1, child: Text(":")),
+                                    Expanded(
+                                      flex: 6,
+                                      child: Text(
+                                        '${deviceData['hub'] ?? 'No Data'}',
+                                        style: tsOneTextTheme.labelMedium,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 5.0),
+                                Row(
+                                  children: [
+                                    Expanded(
                                         flex: 6, child: Text("Condition", style: tsOneTextTheme.labelMedium,)),
                                     Expanded(flex: 1, child: Text(":")),
                                     Expanded(

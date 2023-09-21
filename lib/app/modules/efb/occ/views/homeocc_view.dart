@@ -39,6 +39,7 @@ class HomeOCCView extends GetView<HomeOCCController> {
     return InkWell(
       onTap: () {
         controller.updateSelectedHub(hub);
+        controller.isHubSelected.value = true; // Hub is selected
         Navigator.pop(context); // Close the dialog
       },
       child: Padding(
@@ -47,6 +48,7 @@ class HomeOCCView extends GetView<HomeOCCController> {
       ),
     );
   }
+
 
 
 
@@ -212,8 +214,7 @@ class HomeOCCView extends GetView<HomeOCCController> {
 
 
             Obx(() {
-              final selectedHubText =
-                  controller.selectedHub?.value ?? 'No hub selected';
+              final selectedHubText = controller.selectedHub?.value ?? 'No hub selected';
               return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text('Selected Hub: $selectedHubText'),
@@ -261,6 +262,19 @@ class FirebaseDataTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<HomeOCCController>();
+
+    if (!controller.isHubSelected.value) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Text(
+            'Please select the hub first.',
+            style: tsOneTextTheme.labelMedium,
+          ),
+        ),
+      );
+    }
+
     return StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance
           .collection("pilot-device-1")

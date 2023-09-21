@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:ts_one/presentation/shared_components/TitleText.dart';
 
 import '../../../../../presentation/theme.dart';
@@ -12,6 +14,16 @@ class ConfirmRequestPilotView extends GetView {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   ConfirmRequestPilotView({Key? key, required this.dataId}) : super(key: key);
+
+  Future<void> _showQuickAlert(BuildContext context) async {
+    await QuickAlert.show(
+      context: context,
+      type: QuickAlertType.success,
+      text: 'You have succesfully Confirm The Request',
+    );
+    Navigator.of(context).pop();
+
+  }
 
 
   void confirmInUse(BuildContext context) async {
@@ -49,12 +61,14 @@ class ConfirmRequestPilotView extends GetView {
                         'occ-on-duty': userUid, // Store the user's ID as occ-on-duty
                       });
 
-                      print('Data updated successfully!');
+                      _showQuickAlert(context);
                     } catch (error) {
                       print('Error updating data: $error');
                     }
                   }
-
+                  _showQuickAlert(context);
+                  Navigator.of(context).pop(); // Close the dialog
+                  Navigator.of(context).pop(); // Close the dialog
                   Navigator.of(context).pop(); // Close the dialog
                 },
               ),

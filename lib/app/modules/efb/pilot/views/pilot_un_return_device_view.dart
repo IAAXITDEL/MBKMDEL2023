@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 
 import '../../../../../presentation/theme.dart';
 
@@ -14,7 +16,18 @@ class PilotUnReturnDeviceView extends GetView {
   PilotUnReturnDeviceView({Key? key, required this.deviceId, required String deviceName}) : super(key: key);
 
 
-  void confirmInUse(BuildContext context) async {
+  Future<void> _showQuickAlert(BuildContext context) async {
+    await QuickAlert.show(
+      context: context,
+      type: QuickAlertType.success,
+      text: 'You have succesfully Rejected The Device',
+    );
+    Navigator.of(context).pop();
+    Navigator.of(context).pop();
+    Navigator.of(context).pop();
+  }
+
+  void rejectedReturn(BuildContext context) async {
 
     showDialog(
       context: context,
@@ -53,7 +66,7 @@ class PilotUnReturnDeviceView extends GetView {
                     print('Error updating data: $error');
                   }
                 }
-
+                _showQuickAlert(context);
                 Navigator.of(context).pop(); // Close the dialog
               },
             ),
@@ -308,7 +321,7 @@ class PilotUnReturnDeviceView extends GetView {
                             SizedBox(height: 70.0),
                             ElevatedButton(
                               onPressed: () {
-                                confirmInUse(context); // Pass the context to the function
+                                rejectedReturn(context); // Pass the context to the function
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: TsOneColor.greenColor,
