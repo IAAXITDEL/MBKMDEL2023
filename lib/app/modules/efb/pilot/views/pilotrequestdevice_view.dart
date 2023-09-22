@@ -52,7 +52,6 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
       text: 'You have succesfully Requested The Device',
     );
     Navigator.of(context).pop();
-
   }
 
   Future<void> _showConfirmationDialog() async {
@@ -133,7 +132,6 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
         selectedDevice!.deviceno,
         'waiting-confirmation-1',
         fieldHub,
-
       );
 
       setState(() {
@@ -218,26 +216,25 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                       ),
                     ),
                   ),
-                    const SizedBox(width: 16.0),
-                    ElevatedButton(
-                      onPressed: () async {
-                        String qrCode =
-                        await FlutterBarcodeScanner.scanBarcode(
-                          '#ff6666', // Warna overlay saat pemindaian
-                          'Cancel', // Label tombol batal
-                          true, // Memungkinkan pemindaian di latar belakang
-                          ScanMode.QR, // Mode pemindaian QR code
-                        );
+                  const SizedBox(width: 16.0),
+                  ElevatedButton(
+                    onPressed: () async {
+                      String qrCode = await FlutterBarcodeScanner.scanBarcode(
+                        '#ff6666', // Warna overlay saat pemindaian
+                        'Cancel', // Label tombol batal
+                        true, // Memungkinkan pemindaian di latar belakang
+                        ScanMode.QR, // Mode pemindaian QR code
+                      );
 
-                        if (qrCode != '-1') {
-                          setState(() {
-                            deviceNoController.text = qrCode;
-                            selectedDevice =
-                                getMatchingDevices(qrCode).firstOrNull;
-                          });
-                        }
-                      },
-                      child: const Icon(Icons.qr_code_2),
+                      if (qrCode != '-1') {
+                        setState(() {
+                          deviceNoController.text = qrCode;
+                          selectedDevice =
+                              getMatchingDevices(qrCode).firstOrNull;
+                        });
+                      }
+                    },
+                    child: const Icon(Icons.qr_code_2),
                   ),
                 ],
               ),
@@ -307,7 +304,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                         ),
                         Row(
                           children: [
-                            Expanded(flex: 7, child: Text("DoCu Version")),
+                            Expanded(flex: 7, child: Text("Docunet Version")),
                             Expanded(flex: 1, child: Text(":")),
                             Expanded(
                               flex: 6,
@@ -329,6 +326,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                         Row(
                           children: [
                             Expanded(flex: 7, child: Text("HUB")),
+                            Expanded(flex: 7, child: Text("HUB")),
                             Expanded(flex: 1, child: Text(":")),
                             Expanded(
                               flex: 6,
@@ -338,6 +336,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                         ),
                         Row(
                           children: [
+                            Expanded(flex: 7, child: Text("Condition")),
                             Expanded(flex: 7, child: Text("Condition")),
                             Expanded(flex: 1, child: Text(":")),
                             Expanded(

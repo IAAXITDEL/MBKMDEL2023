@@ -271,7 +271,8 @@ class _ListDeviceState extends State<ListDevice> {
                   }
 
                   return ListView.builder(
-                    itemCount: filteredData.length,
+                    itemCount:
+                        filteredData.length > 20 ? 20 : filteredData.length,
                     itemBuilder: (context, index) {
                       final e = filteredData[index];
                       return Padding(
@@ -304,20 +305,6 @@ class _ListDeviceState extends State<ListDevice> {
                               ],
                             ),
                           )),
-                          // child: Card(
-                          //   color: TsOneColor.surface,
-                          //   child: Column(
-                          //     children: [
-                          //       ListTile(
-                          //         title: Text(
-                          //           "${e["deviceno"]}",
-                          //           style: tsOneTextTheme.bodyMedium,
-                          //         ),
-                          //         trailing: _buildEditDeleteButton(e),
-                          //       ),
-                          //     ],
-                          //   ),
-                          // ),
                         ),
                       );
                     },

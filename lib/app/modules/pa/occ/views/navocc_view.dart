@@ -13,6 +13,7 @@ import '../../../efb/occ/views/listdevice/listdevice.dart';
 import '../../../efb/pilot/views/main_view_pilot.dart';
 import '../../../homecc/views/homecc_view.dart';
 import '../../../profilecc/views/profilecc_view.dart';
+import '../../../efb/analytics/views/analytics_view.dart';
 
 class NavOCCView extends StatefulWidget {
   const NavOCCView({super.key});
@@ -37,6 +38,7 @@ class _NavOCCView extends State<NavOCCView> {
         HomeOCCView(),
         ListDevice(),
         HistoryAllDeviceView(),
+        AnalyticsView(),
         ProfileccView(),
       ];
     } else if (_userPreferences

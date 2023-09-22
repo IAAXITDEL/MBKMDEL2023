@@ -96,6 +96,9 @@ dependencies:
   google_fonts: 5.1.0
   dropdown_search: ^3.0.1
   quickalert: ^1.0.1
+  number_paginator: ^0.3.2
+  firebase_database: ^10.2.6
+  animations: ^2.0.8
 
 dev_dependencies:
   flutter_launcher_icons: ^0.13.1

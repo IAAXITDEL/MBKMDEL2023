@@ -86,18 +86,21 @@ class HomePilotView extends GetView<HomePilotController> {
                         pilotDevicesSnapshot.docs.isNotEmpty) {
                       // Filter the data for 'in-use-pilot' and 'waiting-confirmation-1'
                       final inUsePilotDocs = pilotDevicesSnapshot.docs
-                          .where((doc) =>
-                      doc['statusDevice'] == 'in-use-pilot')
+                          .where((doc) => doc['statusDevice'] == 'in-use-pilot')
                           .toList();
                       final waitingConfirmationDocs = pilotDevicesSnapshot.docs
                           .where((doc) =>
-                      doc['statusDevice'] == 'waiting-confirmation-1')
+                              doc['statusDevice'] == 'waiting-confirmation-1')
                           .toList();
                       final needConfirmationOccDocs = pilotDevicesSnapshot.docs
-                          .where((doc) => doc['statusDevice'] == 'need-confirmation-occ')
+                          .where((doc) =>
+                              doc['statusDevice'] == 'need-confirmation-occ')
                           .toList();
-                      final needConfirmationPilotDocs = pilotDevicesSnapshot.docs
-                          .where((doc) => doc['statusDevice'] == 'waiting-confirmation-other-pilot')
+                      final needConfirmationPilotDocs = pilotDevicesSnapshot
+                          .docs
+                          .where((doc) =>
+                              doc['statusDevice'] ==
+                              'waiting-confirmation-other-pilot')
                           .toList();
                       return Column(
                         children: [
@@ -213,9 +216,9 @@ class HomePilotView extends GetView<HomePilotController> {
                                         MaterialPageRoute(
                                           builder: (context) =>
                                               PilotUnRequestDeviceView(
-                                                deviceName: deviceName,
-                                                deviceId: deviceId,
-                                              ),
+                                            deviceName: deviceName,
+                                            deviceId: deviceId,
+                                          ),
                                         ),
                                       );
                                     },
@@ -376,9 +379,9 @@ class HomePilotView extends GetView<HomePilotController> {
                                         MaterialPageRoute(
                                           builder: (context) =>
                                               PilotUnReturnDeviceView(
-                                                deviceName: deviceName,
-                                                deviceId: deviceId,
-                                              ),
+                                            deviceName: deviceName,
+                                            deviceId: deviceId,
+                                          ),
                                         ),
                                       );
                                     },
