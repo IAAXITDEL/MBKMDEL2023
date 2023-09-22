@@ -88,7 +88,7 @@ class HomeFOView extends GetView<HomeFOController> {
                           .toList();
                       final waitingConfirmationDocs = pilotDevicesSnapshot.docs
                           .where((doc) =>
-                      doc['statusDevice'] == 'waiting-confirmation-1')
+                      doc['statusDevice'] == 'waiting-confirmation-2')
                           .toList();
                       final needConfirmationOccDocs = pilotDevicesSnapshot.docs
                           .where((doc) => doc['statusDevice'] == 'need-confirmation-occ')

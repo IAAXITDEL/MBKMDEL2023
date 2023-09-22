@@ -8,12 +8,12 @@ import 'package:ts_one/presentation/shared_components/TitleText.dart';
 
 import '../../../../../presentation/theme.dart';
 
-class ConfirmRequestPilotView extends GetView {
+class ConfirmRequestFOView extends GetView {
   final String dataId;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  ConfirmRequestPilotView({Key? key, required this.dataId}) : super(key: key);
+  ConfirmRequestFOView({Key? key, required this.dataId}) : super(key: key);
 
   Future<void> _showQuickAlert(BuildContext context) async {
     await QuickAlert.show(
@@ -26,64 +26,61 @@ class ConfirmRequestPilotView extends GetView {
   }
 
 
-  void confirmInUseCrew(BuildContext context) async {
+  void confirmInUse(BuildContext context) async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirmation'),
+          content: Text('Are you sure you want to confirm the usage?'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Confirm'),
+              onPressed: () async {
+                User? user = _auth.currentUser;
 
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Confirmation'),
-            content: Text('Are you sure you want to confirm the usage?'),
-            actions: <Widget>[
-              TextButton(
-                child: Text('Cancel'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              TextButton(
-                child: Text('Confirm'),
-                onPressed: () async {
-                  User? user = _auth.currentUser;
+                if (user != null) {
+                  // Get the user's ID
+                  QuerySnapshot userQuery = await _firestore.collection('users').where('EMAIL', isEqualTo: user.email).get();
+                  String userUid = userQuery.docs.first.id;
 
-                  if (user != null) {
-                    // Get the user's ID
-                    QuerySnapshot userQuery = await _firestore.collection('users').where('EMAIL', isEqualTo: user.email).get();
-                    String userUid = userQuery.docs.first.id;
+                  DocumentReference pilotDeviceRef = FirebaseFirestore.instance
+                      .collection("pilot-device-1")
+                      .doc(dataId);
 
-                    DocumentReference pilotDeviceRef = FirebaseFirestore.instance
-                        .collection("pilot-device-1")
-                        .doc(dataId);
+                  try {
+                    await pilotDeviceRef.update({
+                      'statusDevice': 'in-use-fo',
+                      'occ-on-duty': userUid, // Store the user's ID as occ-on-duty
+                    });
 
-                    try {
-                      await pilotDeviceRef.update({
-                        'statusDevice': 'in-use-pilot',
-                        'occ-on-duty': userUid, // Store the user's ID as occ-on-duty
-                      });
-
-                      print('Data updated successfully!');
-                    } catch (error) {
-                      print('Error updating data: $error');
-                    }
+                    _showQuickAlert(context);
+                  } catch (error) {
+                    print('Error updating data: $error');
                   }
-                  _showQuickAlert(context);
-                  Navigator.of(context).pop(); // Close the dialog
-                },
-              ),
-            ],
-          );
-        },
-      );
-    }
+                }
+                _showQuickAlert(context);
+                Navigator.of(context).pop(); // Close the dialog
+                Navigator.of(context).pop(); // Close the dialog
+                Navigator.of(context).pop(); // Close the dialog
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Need Confirm'),
-        centerTitle: true,
-      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.0), // Adjust the padding here
@@ -108,7 +105,8 @@ class ConfirmRequestPilotView extends GetView {
               final data = snapshot.data!.data() as Map<String, dynamic>;
 
               final userUid = data['user_uid'];
-              final deviceUid = data['device_uid'];
+              final deviceUid2 = data['device_uid2'];
+              final deviceUid3 = data['device_uid3'];
 
               return FutureBuilder<DocumentSnapshot>(
                 future: FirebaseFirestore.instance
@@ -133,7 +131,7 @@ class ConfirmRequestPilotView extends GetView {
                   return FutureBuilder<DocumentSnapshot>(
                     future: FirebaseFirestore.instance
                         .collection("Device")
-                        .doc(deviceUid)
+                        .doc(deviceUid2)
                         .get(),
                     builder: (context, deviceSnapshot) {
                       if (deviceSnapshot.connectionState == ConnectionState.waiting) {
@@ -144,67 +142,45 @@ class ConfirmRequestPilotView extends GetView {
                         return Center(child: Text('Error: ${deviceSnapshot.error}'));
                       }
 
-                      //IF DEVICE_NAME NOT FOUND OR NULL VALUE
-                      if (!deviceSnapshot.hasData || !deviceSnapshot.data!.exists) {
-                        final deviceUid2 = data['device_uid2'];
-                        final deviceUid3 = data['device_uid3'];
-
-                    return FutureBuilder<DocumentSnapshot>(
-                    future: FirebaseFirestore.instance
-                        .collection("Device")
-                        .doc(deviceUid2)
-                        .get(),
-                    builder: (context, deviceSnapshot) {
-                      if (deviceSnapshot.connectionState ==
-                          ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator());
-                      }
-
-                      if (deviceSnapshot.hasError) {
-                        return Center(
-                            child: Text('Error: ${deviceSnapshot.error}'));
-                      }
-
                       if (!deviceSnapshot.hasData || !deviceSnapshot.data!.exists) {
                         return Center(child: Text('Device data 2 not found'));
                       }
 
-                      final deviceData2 = deviceSnapshot.data!.data() as Map<
-                          String,
-                          dynamic>;
+                      final deviceData2 =deviceSnapshot.data!.data() as Map<String, dynamic>;
 
-                          return FutureBuilder<DocumentSnapshot>(
-                          future: FirebaseFirestore.instance
-                              .collection("Device")
-                              .doc(deviceUid3)
-                              .get(),
-                          builder: (context, deviceSnapshot) {
-                          if (deviceSnapshot.connectionState ==
-                          ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator());
-                          }
+                        return FutureBuilder<DocumentSnapshot>(
+                        future: FirebaseFirestore.instance
+                            .collection("Device")
+                            .doc(deviceUid3)
+                            .get(),
+                        builder: (context, deviceUid3Snapshot) {
+                        if (deviceUid3Snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(child: CircularProgressIndicator());
+                        }
 
-                          if (deviceSnapshot.hasError) {
-                          return Center(
-                          child: Text('Error: ${deviceSnapshot.error}'));
-                          }
+                        if (deviceUid3Snapshot.hasError) {
+                        return Center(child: Text('Error: ${deviceUid3Snapshot.error}'));
+                        }
 
-                          if (!deviceSnapshot.hasData ||
-                          !deviceSnapshot.data!.exists) {
-                          return Center(child: Text('Device data 2 not found'));
-                          }
+                        if (!deviceUid3Snapshot.hasData || !deviceUid3Snapshot.data!.exists) {
+                        return Center(child: Text('Device data 3 not found'));
+                        }
 
-                          final deviceData3 = deviceSnapshot.data!.data() as Map<
-                          String,
-                          dynamic>;
+                        final deviceData3 =
+                        deviceUid3Snapshot.data!.data() as Map<String, dynamic>;
 
-                  return Center(
+
+                       return Center(
+
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 0.0),
+                          padding: const EdgeInsets.symmetric(vertical: 60.0),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              SizedBox(height: 10.0),
+                              Text("REQUEST INFO",
+                              style: tsOneTextTheme.titleLarge,
+                              ),
+                              SizedBox(height: 30.0),
                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
@@ -253,6 +229,8 @@ class ConfirmRequestPilotView extends GetView {
                                   ),
                                 ],
                               ),
+
+                              //DEVICE INFO 1
                               SizedBox(height: 10.0),
                               Align(
                                 alignment: Alignment.centerLeft,
@@ -336,7 +314,7 @@ class ConfirmRequestPilotView extends GetView {
                                   ),
                                 ],
                               ),
-                              SizedBox(height: 5.0),
+                              SizedBox(height: 10.0),
                               Row(
                                 children: [
                                   Expanded(
@@ -351,7 +329,7 @@ class ConfirmRequestPilotView extends GetView {
                                   ),
                                 ],
                               ),
-                              SizedBox(height: 5.0),
+                              SizedBox(height: 10.0),
                               Row(
                                 children: [
                                   Expanded(
@@ -369,7 +347,7 @@ class ConfirmRequestPilotView extends GetView {
 
 
                               //DEVICE INFO 2
-                              SizedBox(height: 10.0),
+                                SizedBox(height: 10.0),
                               SizedBox(height: 10.0),
                               Align(
                                 alignment: Alignment.centerLeft,
@@ -453,7 +431,7 @@ class ConfirmRequestPilotView extends GetView {
                                   ),
                                 ],
                               ),
-                              SizedBox(height: 5.0),
+                              SizedBox(height: 10.0),
                               Row(
                                 children: [
                                   Expanded(
@@ -468,7 +446,7 @@ class ConfirmRequestPilotView extends GetView {
                                   ),
                                 ],
                               ),
-                              SizedBox(height: 5.0),
+                              SizedBox(height: 10.0),
                               Row(
                                 children: [
                                   Expanded(
@@ -483,10 +461,22 @@ class ConfirmRequestPilotView extends GetView {
                                   ),
                                 ],
                               ),
+
+
+
+
+                              SizedBox(height: 18.0),
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  "CONFIRMATION",
+                                  style: tsOneTextTheme.titleLarge,
+                                ),
+                              ),
                               SizedBox(height: 70.0),
                               ElevatedButton(
                                 onPressed: () {
-                                  confirmInUseCrew(context); // Pass the context to the function
+                                  confirmInUse(context); // Pass the context to the function
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: TsOneColor.greenColor,
@@ -498,203 +488,8 @@ class ConfirmRequestPilotView extends GetView {
                           ),
                         ),
                       );
-                          },
-                          );
                     },
-                    );
-                      }
-
-                      final deviceData =
-                      deviceSnapshot.data!.data() as Map<String, dynamic>;
-
-                      return Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            SizedBox(height: 10.0),
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                "CREW INFO",
-                                style: tsOneTextTheme.titleLarge,
-                              ),
-                            ),
-                            SizedBox(height: 5.0),
-                            Row(
-                              children: [
-                                Expanded(flex: 6, child: Text("ID NO", style: tsOneTextTheme.labelMedium,)),
-                                Expanded(flex: 1, child: Text(":")),
-                                Expanded(
-                                  flex: 6,
-                                  child: Text(
-                                    '${userData['ID NO'] ?? 'No Data'}',
-                                    style: tsOneTextTheme.labelMedium,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Expanded(flex: 6, child: Text("Name", style: tsOneTextTheme.labelMedium,)),
-                                Expanded(flex: 1, child: Text(":")),
-                                Expanded(
-                                  flex: 6,
-                                  child: Text(
-                                    '${userData['NAME'] ?? 'No Data'}',
-                                    style: tsOneTextTheme.labelMedium,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 5.0),
-                            Row(
-                              children: [
-                                Expanded(flex: 6, child: Text("Rank", style: tsOneTextTheme.labelMedium,)),
-                                Expanded(flex: 1, child: Text(":")),
-                                Expanded(
-                                  flex: 6,
-                                  child: Text(
-                                    '${userData['RANK'] ?? 'No Data'}',
-                                    style: tsOneTextTheme.labelMedium,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 10.0),
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                "DEVICE INFO",
-                                style: tsOneTextTheme.titleLarge,
-                              ),
-                            ),
-                            SizedBox(height: 5.0),
-                            Row(
-                              children: [
-                                Expanded(
-                                    flex: 6, child: Text("Device ID", style: tsOneTextTheme.labelMedium,)),
-                                Expanded(flex: 1, child: Text(":")),
-                                Expanded(
-                                  flex: 6,
-                                  child: Text(
-                                    '${data['device_name'] ?? 'No Data'}',
-                                    style: tsOneTextTheme.labelMedium,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 5.0),
-                            Row(
-                              children: [
-                                Expanded(
-                                    flex: 6, child: Text("iOS Version", style: tsOneTextTheme.labelMedium,)),
-                                Expanded(flex: 1, child: Text(":")),
-                                Expanded(
-                                  flex: 6,
-                                  child: Text(
-                                    '${deviceData['iosver'] ?? 'No Data'}',
-                                    style: tsOneTextTheme.labelMedium,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 5.0),
-                            Row(
-                              children: [
-                                Expanded(
-                                    flex: 6, child: Text("FlySmart Version", style: tsOneTextTheme.labelMedium,)),
-                                Expanded(flex: 1, child: Text(":")),
-                                Expanded(
-                                  flex: 6,
-                                  child: Text(
-                                    '${deviceData['flysmart'] ?? 'No Data'}',
-                                    style: tsOneTextTheme.labelMedium,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 5.0),
-                            Row(
-                              children: [
-                                Expanded(
-                                    flex: 6, child: Text("Docu Version", style: tsOneTextTheme.labelMedium,)),
-                                Expanded(flex: 1, child: Text(":")),
-                                Expanded(
-                                  flex: 6,
-                                  child: Text(
-                                    '${deviceData['docuversion'] ?? 'No Data'}',
-                                    style: tsOneTextTheme.labelMedium,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 5.0),
-                            Row(
-                              children: [
-                                Expanded(
-                                    flex: 6, child: Text("Lido Version", style: tsOneTextTheme.labelMedium,)),
-                                Expanded(flex: 1, child: Text(":")),
-                                Expanded(
-                                  flex: 6,
-                                  child: Text(
-                                    '${deviceData['lidoversion'] ?? 'No Data'}',
-                                    style: tsOneTextTheme.labelMedium,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 10.0),
-                            Row(
-                              children: [
-                                Expanded(
-                                    flex: 6, child: Text("HUB", style: tsOneTextTheme.labelMedium,)),
-                                Expanded(flex: 1, child: Text(":")),
-                                Expanded(
-                                  flex: 6,
-                                  child: Text(
-                                    '${deviceData['hub'] ?? 'No Data'}',
-                                    style: tsOneTextTheme.labelMedium,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 10.0),
-                            Row(
-                              children: [
-                                Expanded(
-                                    flex: 6, child: Text("Condition", style: tsOneTextTheme.labelMedium,)),
-                                Expanded(flex: 1, child: Text(":")),
-                                Expanded(
-                                  flex: 6,
-                                  child: Text(
-                                    '${deviceData['condition'] ?? 'No Data'}',
-                                    style: tsOneTextTheme.labelMedium,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 18.0),
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                "CONFIRMATION",
-                                style: tsOneTextTheme.titleLarge,
-                              ),
-                            ),
-                            SizedBox(height: 70.0),
-                            ElevatedButton(
-                              onPressed: () {
-                                confirmInUseCrew(context); // Pass the context to the function
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: TsOneColor.greenColor,
-                                minimumSize: const Size(double.infinity, 50),
-                              ),
-                              child: const Text('Submit', style: TextStyle(color: Colors.white),),
-                            ),
-                          ],
-                        ),
-                      );
+                  );
                     },
                   );
                 },

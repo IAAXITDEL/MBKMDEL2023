@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ts_one/app/modules/efb/occ/views/confirm_request_FO_view.dart';
 import 'package:ts_one/app/modules/efb/occ/views/confirm_request_pilot_view.dart';
 import 'package:ts_one/app/modules/efb/occ/views/confirm_return_back_pilot_view.dart';
 import 'package:ts_one/util/error_screen.dart';
@@ -241,9 +242,14 @@ class HomeOCCView extends GetView<HomeOCCController> {
             Expanded(
               child: TabBarView(
                 children: [
-                  FirebaseDataTab(status: "waiting-confirmation-1"),
-                  FirebaseDataTab(status: "in-use-pilot"),
-                  FirebaseDataTab(status: "need-confirmation-occ"),
+                  TabBarView(
+                    children: [
+                      FirebaseDataTab(statuses: ["waiting-confirmation-1"]),
+                      FirebaseDataTab(statuses: ["in-use-pilot"]),
+                      FirebaseDataTab(statuses: ["need-confirmation-occ"]),
+                    ],
+                  ),
+
                 ],
               ),
             ),
@@ -255,9 +261,9 @@ class HomeOCCView extends GetView<HomeOCCController> {
 }
 
 class FirebaseDataTab extends StatelessWidget {
-  final String status;
+  final List<String> statuses;
 
-  FirebaseDataTab({required this.status});
+  FirebaseDataTab({required this.statuses});
 
   @override
   Widget build(BuildContext context) {
@@ -278,7 +284,7 @@ class FirebaseDataTab extends StatelessWidget {
     return StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance
           .collection("pilot-device-1")
-          .where("statusDevice", isEqualTo: status)
+          .where("statusDevice", whereIn: statuses)
           .where("field_hub", isEqualTo: controller.selectedHub?.value)
           .snapshots(),
       builder: (context, snapshot) {
@@ -336,24 +342,24 @@ class FirebaseDataTab extends StatelessWidget {
                     alignment: Alignment.centerLeft,
                     child: ElevatedButton(
                       onPressed: () {
-                        if (status == "waiting-confirmation-1") {
-                          // Navigasi ke halaman ConfirmRequestPilotView dengan membawa ID data yang diperlukan
+                        if (statuses.contains("waiting-confirmation-1")) {
+                          // Navigate to ConfirmRequestPilotView with the required data ID
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) =>
-                                  ConfirmRequestPilotView(dataId: dataId),
+                              builder: (context) => ConfirmRequestPilotView(dataId: dataId),
                             ),
                           );
-                        } else if (status == "need-confirmation-occ") {
-                          // Navigasi ke halaman ConfirmReturnBackPilotView dengan membawa ID data yang diperlukan
+                        }
+                        if (statuses.contains("need-confirmation-occ")) {
+                          // Navigate to ConfirmReturnBackPilotView with the required data ID
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) =>
-                                  ConfirmReturnBackPilotView(dataId: dataId),
+                              builder: (context) => ConfirmReturnBackPilotView(dataId: dataId),
                             ),
                           );
                         }
                       },
+
                       style: ButtonStyle(
                         padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
                           EdgeInsets.all(18.0),
@@ -365,7 +371,7 @@ class FirebaseDataTab extends StatelessWidget {
                           Colors.red.withOpacity(0.2),
                         ),
                         shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                        MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15.0),
                           ),
@@ -379,13 +385,13 @@ class FirebaseDataTab extends StatelessWidget {
                             backgroundImage: photoUrl != null
                                 ? NetworkImage(photoUrl as String)
                                 : AssetImage('assets/default_profile_image.png')
-                                    as ImageProvider, // You can provide a default image
+                            as ImageProvider, // You can provide a default image
                             radius: 20.0, // Adjust the radius as needed
                           ),
 
                           SizedBox(
                               width:
-                                  14.0), // Add spacing between the image and text
+                              14.0), // Add spacing between the image and text
                           Flexible(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -426,3 +432,4 @@ class FirebaseDataTab extends StatelessWidget {
     );
   }
 }
+

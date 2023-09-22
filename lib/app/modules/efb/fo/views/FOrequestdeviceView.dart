@@ -54,6 +54,14 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
     bool deviceInUse2 = await _bookingService.isDeviceInUse(selectedDevice2!.uid, selectedDevice3!.uid);
     bool deviceInUse3 = await _bookingService.isDeviceInUse(selectedDevice3!.uid, selectedDevice2!.uid);
 
+    if (selectedDevice2!.deviceno == selectedDevice3!.deviceno) {
+      // Show an error message or handle it accordingly
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Device numbers cannot be the same.')),
+      );
+      return;
+    }
+
     return showDialog<void>(
       context: context,
       barrierDismissible: false,
