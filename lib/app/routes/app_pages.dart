@@ -23,7 +23,15 @@ import '../../presentation/view/users/add_user.dart';
 import '../../presentation/view/users/all_users.dart';
 import '../../presentation/view/users/detail_user.dart';
 import '../../presentation/view/users/login.dart';
-
+import '../../presentation/view/users/update_user.dart';
+import '../modules/add_attendancecc/bindings/add_attendancecc_binding.dart';
+import '../modules/add_attendancecc/views/add_attendancecc_view.dart';
+import '../modules/attendance_confircc/bindings/attendance_confircc_binding.dart';
+import '../modules/attendance_confircc/views/attendance_confircc_view.dart';
+import '../modules/attendance_pendingcc/bindings/attendance_pendingcc_binding.dart';
+import '../modules/attendance_pendingcc/views/attendance_pendingcc_view.dart';
+import '../modules/efb/analytics/bindings/analytics_binding.dart';
+import '../modules/efb/analytics/views/analytics_view.dart';
 import '../modules/efb/fo/bindings/homefo_binding.dart';
 import '../modules/efb/fo/views/main_view_fo.dart';
 import '../modules/efb/occ/bindings/device_binding.dart';
@@ -32,15 +40,6 @@ import '../modules/efb/occ/views/homeocc_view.dart';
 import '../modules/efb/occ/views/listdevice/listdevice.dart';
 import '../modules/efb/pilot/bindings/homepilot_binding.dart';
 import '../modules/efb/pilot/views/main_view_pilot.dart';
-
-import '../../presentation/view/users/update_user.dart';
-import '../modules/add_attendancecc/bindings/add_attendancecc_binding.dart';
-import '../modules/add_attendancecc/views/add_attendancecc_view.dart';
-import '../modules/attendance_confircc/bindings/attendance_confircc_binding.dart';
-import '../modules/attendance_confircc/views/attendance_confircc_view.dart';
-
-import '../modules/attendance_pendingcc/bindings/attendance_pendingcc_binding.dart';
-import '../modules/attendance_pendingcc/views/attendance_pendingcc_view.dart';
 import '../modules/home_admincc/bindings/home_admincc_binding.dart';
 import '../modules/home_admincc/views/home_admincc_view.dart';
 import '../modules/home_instructorcc/bindings/home_instructorcc_binding.dart';
@@ -53,18 +52,14 @@ import '../modules/main_home/bindings/main_home_binding.dart';
 import '../modules/main_home/views/main_home_view.dart';
 import '../modules/pa/navadmin/bindings/navadmin_binding.dart';
 import '../modules/pa/navadmin/views/navadmin_view.dart';
-
 import '../modules/pa/navcaptain/bindings/navcaptain_binding.dart';
 import '../modules/pa/navcaptain/views/navcaptain_view.dart';
 import '../modules/pa/navinstructor/bindings/navinstructor_binding.dart';
 import '../modules/pa/navinstructor/views/navinstructor_view.dart';
-
 import '../modules/pa/occ/bindings/navocc_binding.dart';
 import '../modules/pa/occ/views/navocc_view.dart';
-
 import '../modules/pilotcrewcc/bindings/pilotcrewcc_binding.dart';
 import '../modules/pilotcrewcc/views/pilotcrewcc_view.dart';
-
 import '../modules/profilecc/bindings/profilecc_binding.dart';
 import '../modules/profilecc/views/profilecc_view.dart';
 import '../modules/training_instructorcc/bindings/training_instructorcc_binding.dart';
@@ -323,6 +318,11 @@ class AppPages {
       name: _Paths.ATTENDANCE_PENDINGCC,
       page: () => const AttendancePendingccView(),
       binding: AttendancePendingccBinding(),
+    ),
+    GetPage(
+      name: _Paths.ANALYTICS,
+      page: () => const AnalyticsView(),
+      binding: AnalyticsBinding(),
     ),
   ];
 }
