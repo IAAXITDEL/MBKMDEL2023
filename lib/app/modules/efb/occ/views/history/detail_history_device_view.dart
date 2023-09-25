@@ -24,6 +24,8 @@
       String formattedDateTime = '${dateTime.day}/${dateTime.month}/${dateTime.year}' ' ; ' '${dateTime.hour}:${dateTime.minute}';
       return formattedDateTime;
     }
+
+
   
     @override
     Widget build(BuildContext context) {
@@ -311,7 +313,7 @@
                                             ),
                                           ],
                                         ),
-  
+
                                         SizedBox(height: 5.0),
                                         Row(
                                           children: [
@@ -338,9 +340,9 @@
                                             ),
                                           ],
                                         ),
-  
-  
-  
+
+
+
                                         SizedBox(height: 10),
                                         // Conditionally display the fields based on the status
                                         if (status == 'Done')
@@ -378,31 +380,47 @@
 
                                         SizedBox(height: 5.0),
                                         if (status == 'Done')
-                                        Row(
-                                          children: [
-                                            Expanded(flex: 6, child: Text("Proof Back To Base")),
-                                            Expanded(flex: 1, child: Text(":")),
-                                            Expanded(
-                                              flex: 6,
-                                              child: Column(
-                                                children: [
-                                                  if (data['prove_back_to_base'] != null)
-                                                    Image.network(
-                                                      data['prove_back_to_base'],
-                                                      width: 100, // Adjust the width as needed
-                                                      height: 100, // Adjust the height as needed
+                                          Row(
+                                            children: [
+                                              Expanded(flex: 6, child: Text("Image Proof")),
+                                              Expanded(flex: 1, child: Text(":")),
+                                              Expanded(
+                                                flex: 6,
+                                                child: Column(
+                                                  children: [
+                                                    if (data['prove_back_to_base'] == null)
+                                                      Text(
+                                                        'There is no data',
+                                                        style: TextStyle(color: Colors.black),
+                                                      ),
+                                                    SizedBox(height: 5),
+                                                    ElevatedButton(
+                                                      onPressed: () {
+                                                        // Show the picture in a dialog when the button is pressed
+                                                        showDialog(
+                                                          context: context,
+                                                          builder: (BuildContext context) {
+                                                            return AlertDialog(
+                                                              content: Container(
+                                                                width: 400, // Adjust the width as needed
+                                                                height: 400, // Adjust the height as needed
+                                                                child: Image.network(
+                                                                  data['prove_back_to_base'] ?? '',
+                                                                  fit: BoxFit.cover,
+                                                                ),
+                                                              ),
+                                                            );
+                                                          },
+                                                        );
+                                                      },
+                                                      child: Text('See Picture'),
                                                     ),
-                                                  if (data['prove_back_to_base'] == null)
-                                                    Text(
-                                                      'There is no data',
-                                                      style: TextStyle(color: Colors.black), // Adjust the style as needed
-                                                    ),
-                                                  SizedBox(height: 5),  // Add some spacing between the image or text and the other content
-                                                ],
+                                                  ],
+                                                ),
                                               ),
-                                            ),
-                                          ],
-                                        ),
+                                            ],
+                                          ),
+
                                         // Conditionally display the fields based on the status
                                         if (status == 'handover-to-other-crew')
                                               Text(

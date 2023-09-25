@@ -43,7 +43,7 @@ class FORequestdeviceController extends GetxController {
         QuerySnapshot snapshot = await _firestore
             .collection('pilot-device-1')
             .where('user_uid', isEqualTo: userId)
-            .where('statusDevice', whereIn: ['in-use-pilot','in-use-fo', 'waiting-confirmation-2','need-confirmation-occ','waiting-confirmation-other-pilot'])
+            .where('statusDevice', whereIn: ['in-use-pilot','in-use-fo', 'waiting-confirmation-1','need-confirmation-occ','waiting-confirmation-other-pilot'])
             .get();
 
         return snapshot; // Return the QuerySnapshot directly.
@@ -105,13 +105,13 @@ class FORequestdeviceController extends GetxController {
         await pilotDeviceCollection.doc(newDeviceId).set({
           'user_uid':
           userUid, // Menggunakan ID dokumen pengguna sebagai 'user_uid'
-          'device_uid': '',
+          'device_uid': '-',
           'device_name': '',
           'device_uid2': deviceUid2,
           'device_name2': deviceName2,
           'device_uid3': deviceUid3,
           'device_name3': deviceName3,
-          'statusDevice': 'waiting-confirmation-2',
+          'statusDevice': 'waiting-confirmation-1',
           'document_id': newDeviceId, // Menyimpan ID dokumen sebagai field
           'timestamp': FieldValue.serverTimestamp(),
           'handover-from' : '-',

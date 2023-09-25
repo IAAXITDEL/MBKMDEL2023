@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:ts_one/app/modules/efb/fo/views/FOrequestdeviceView.dart';
+import 'package:ts_one/app/modules/efb/fo/views/confirm_return_other_fo_view.dart';
 import 'package:ts_one/app/modules/efb/fo/views/fo_return_device_view.dart';
 
 import '../../../../../presentation/shared_components/TitleText.dart';
@@ -89,7 +90,7 @@ class HomeFOView extends GetView<HomeFOController> {
                           .toList();
                       final waitingConfirmationDocs = pilotDevicesSnapshot.docs
                           .where((doc) =>
-                      doc['statusDevice'] == 'waiting-confirmation-2')
+                      doc['statusDevice'] == 'waiting-confirmation-1')
                           .toList();
                       final needConfirmationOccDocs = pilotDevicesSnapshot.docs
                           .where((doc) => doc['statusDevice'] == 'need-confirmation-occ')
@@ -264,6 +265,7 @@ class HomeFOView extends GetView<HomeFOController> {
 
                           // Display 'waiting-confirmation-other-pilot' data
                           if (needConfirmationPilotDocs.isNotEmpty) ...[
+
                             Align(
                               alignment: Alignment.centerLeft,
                               child: Text(
@@ -274,7 +276,8 @@ class HomeFOView extends GetView<HomeFOController> {
                             SizedBox(height: 15),
                             Column(
                               children: needConfirmationPilotDocs.map((doc) {
-                                String deviceName = doc['device_name'];
+                                String deviceName2 = doc['device_name2'];
+                                String deviceName3 = doc['device_name3'];
                                 String deviceId = doc.id;
 
                                 return Align(
@@ -282,16 +285,17 @@ class HomeFOView extends GetView<HomeFOController> {
                                   child: ElevatedButton(
                                     onPressed: () {
                                       //confirm other pilot
-                                      // Navigator.push(
-                                      //   context,
-                                      //   MaterialPageRoute(
-                                      //     builder: (context) =>
-                                      //         ConfirmReturnOtherPilotView(
-                                      //           deviceName: deviceName,
-                                      //           deviceId: deviceId,
-                                      //         ),
-                                      //   ),
-                                      // );
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              ConfirmReturnOtherFOView(
+                                                deviceName2: deviceName2,
+                                                deviceName3: deviceName3,
+                                                deviceId: deviceId,
+                                              ),
+                                        ),
+                                      );
                                     },
                                     style: ButtonStyle(
                                       padding: MaterialStateProperty.all<
@@ -325,7 +329,7 @@ class HomeFOView extends GetView<HomeFOController> {
                                               .start, // Mengatur teks ke kiri
                                           children: [
                                             Text(
-                                              deviceName,
+                                              deviceName2 + ' & ' + deviceName3,
                                               style: tsOneTextTheme.titleSmall,
                                             ),
                                             const SizedBox(height: 5.0),

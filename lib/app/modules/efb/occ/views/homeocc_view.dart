@@ -242,13 +242,9 @@ class HomeOCCView extends GetView<HomeOCCController> {
             Expanded(
               child: TabBarView(
                 children: [
-                  TabBarView(
-                    children: [
                       FirebaseDataTab(statuses: ["waiting-confirmation-1"]),
                       FirebaseDataTab(statuses: ["in-use-pilot"]),
                       FirebaseDataTab(statuses: ["need-confirmation-occ"]),
-                    ],
-                  ),
 
                 ],
               ),

@@ -226,6 +226,7 @@ class ConfirmRequestPilotView extends GetView {
                                   ),
                                 ],
                               ),
+                              SizedBox(height: 5.0),
                               Row(
                                 children: [
                                   Expanded(flex: 6, child: Text("Name", style: tsOneTextTheme.labelMedium,)),
