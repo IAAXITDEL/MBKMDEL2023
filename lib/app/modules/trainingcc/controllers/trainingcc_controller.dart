@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -42,59 +43,101 @@ class TrainingccController extends GetxController {
         .snapshots();
   }
 
-
   Future<bool> cekRole() async {
     userPreferences = getItLocator<UserPreferences>();
 
     // SEBAGAI CPTS
-    if( userPreferences.getInstructor().contains(UserModel.keyCPTS) && userPreferences.getRank().contains(UserModel.keyPositionCaptain) || userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)){
-
+    if (userPreferences.getInstructor().contains(UserModel.keyCPTS) &&
+            userPreferences.getRank().contains(UserModel.keyPositionCaptain) ||
+        userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)) {
     }
     // SEBAGAI INSTRUCTOR
-    else if( userPreferences.getInstructor().contains(UserModel.keySubPositionICC) && userPreferences.getRank().contains(UserModel.keyPositionCaptain) || userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)){
-      Get.toNamed(Routes.TRAINING_INSTRUCTORCC, arguments: {
-        "id" : argumentid.value,
-        "name" : argumentname.value
-      });
+    else if (userPreferences
+                .getInstructor()
+                .contains(UserModel.keySubPositionICC) &&
+            userPreferences.getRank().contains(UserModel.keyPositionCaptain) ||
+        userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)) {
+      Get.toNamed(Routes.TRAINING_INSTRUCTORCC,
+          arguments: {"id": argumentid.value, "name": argumentname.value});
       Get.find<TrainingInstructorccController>().onInit();
     }
     // SEBAGAI PILOT
-    else if( userPreferences.getRank().contains(UserModel.keyPositionCaptain) || userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)){
+    else if (userPreferences.getRank().contains(UserModel.keyPositionCaptain) ||
+        userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)) {
       cekPilot.value = true;
     }
     // SEBAGAI PILOT ADMINISTRATOR
-    else if( userPreferences.getRank().contains("Pilot Administrator")){
-      Get.toNamed(Routes.TRAININGTYPECC, arguments: {
-        "id" : argumentid.value,
-        "name" : argumentname.value
-      });
+    else if (userPreferences.getRank().contains("Pilot Administrator")) {
+      Get.toNamed(Routes.TRAININGTYPECC,
+          arguments: {"id": argumentid.value, "name": argumentname.value});
       Get.find<TrainingtypeccController>().onInit();
     }
     // SEBAGAI ALL STAR
-    else{
+    else {
       return false;
     }
     return false;
   }
 
 
+  // Add a new subject to Firestore
+  Future<void> addNewSubject(String newSubject, String newRemark, String newTrainingDescription) async {
+    try {
+
+      // Get the count of existing documents in both collections
+      QuerySnapshot trainingTypeSnapshot = await FirebaseFirestore.instance.collection('trainingType').get();
+      int trainingTypeCount = trainingTypeSnapshot.size;
+
+      QuerySnapshot trainingRemarkSnapshot = await FirebaseFirestore.instance.collection('trainingRemark').get();
+      int trainingRemarkCount = trainingRemarkSnapshot.size;
+
+
+      // Add a new document to the 'trainingType' collection
+      await FirebaseFirestore.instance.collection('trainingType').add({
+        'id': trainingTypeCount + 1,
+        'training': newSubject,
+      });
+
+      // Add a new document to the 'trainingRemark' collection
+      await FirebaseFirestore.instance.collection('trainingRemark').add({
+        'id': trainingRemarkCount + 1,
+        'remark': newRemark,
+        'training_code': newSubject,
+        'training_description' : newTrainingDescription,
+      });
+    } catch (e) {
+      print('Error adding subject: $e');
+    }
+  }
+
+
+
   // cek key sesuai dengan kelas yang sedang dibuka
-  Stream<List<Map<String, dynamic>>> joinClassStream( String key, int idtraining) {
-    return firestore.collection('attendance').where("keyAttendance", isEqualTo: key).where("idTrainingType", isEqualTo: idtraining).snapshots().asyncMap((attendanceQuery) async {
+  Stream<List<Map<String, dynamic>>> joinClassStream(
+      String key, int idtraining) {
+    return firestore
+        .collection('attendance')
+        .where("keyAttendance", isEqualTo: key)
+        .where("idTrainingType", isEqualTo: idtraining)
+        .snapshots()
+        .asyncMap((attendanceQuery) async {
       final usersQuery = await firestore.collection('users').get();
       final usersData = usersQuery.docs.map((doc) => doc.data()).toList();
 
       final attendanceData = await Future.wait(
         attendanceQuery.docs.map((doc) async {
           final attendanceModel = AttendanceModel.fromJson(doc.data());
-          final user = usersData.firstWhere((user) => user['ID NO'] == attendanceModel.instructor, orElse: () => {});
+          final user = usersData.firstWhere(
+              (user) => user['ID NO'] == attendanceModel.instructor,
+              orElse: () => {});
           return attendanceModel.toJson();
         }),
       );
 
-      if(attendanceData.isNotEmpty){
+      if (attendanceData.isNotEmpty) {
         // tambah data pilot kedalam attendance
-        await addAttendancePilotForm( attendanceData[0]["id"], attendanceData[0]["idTrainingType"]);
+        await addAttendancePilotForm(
+            attendanceData[0]["id"], attendanceData[0]["idTrainingType"]);
       }
 
       return attendanceData;
@@ -102,17 +145,21 @@ class TrainingccController extends GetxController {
   }
 
   //Membuat attendance untuk setiap  pilot
-  Future<void> addAttendancePilotForm( String idattendance , int idtraining) async {
+  Future<void> addAttendancePilotForm(
+      String idattendance, int idtraining) async {
     userPreferences = getItLocator<UserPreferences>();
     CollectionReference attendance = firestore.collection("attendance-detail");
 
     String formattedDate = DateFormat('ddMMyyyyHHmmss').format(DateTime.now());
     try {
-      await attendance.doc("${userPreferences.getIDNo()}-${idtraining}--${formattedDate}").set({
-        "id" : "attendance-${idtraining}-${userPreferences.getIDNo()}-${formattedDate}",
-        "idattendance" : idattendance,
-        "idpilot" : userPreferences.getIDNo(),
-        "status" : "join",
+      await attendance
+          .doc("${userPreferences.getIDNo()}-${idtraining}--${formattedDate}")
+          .set({
+        "id":
+            "attendance-${idtraining}-${userPreferences.getIDNo()}-${formattedDate}",
+        "idattendance": idattendance,
+        "idpilot": userPreferences.getIDNo(),
+        "status": "join",
         "creationTime": DateTime.now().toIso8601String(),
         "updatedTime": DateTime.now().toIso8601String(),
       });
@@ -122,11 +169,9 @@ class TrainingccController extends GetxController {
     }
   }
 
-
   // cek class ada yang buka atau belum
   Future<List<AttendanceModel>> checkClassOpenStream(int idTrainingType) async {
     try {
-
       final attendanceQuery = await firestore
           .collection('attendance')
           .where("status", isEqualTo: "pending")
@@ -144,7 +189,6 @@ class TrainingccController extends GetxController {
       return [];
     }
   }
-
 
   // cek class sudah join atau belum
   Future<List<AttendanceModel>> checkClassStream(int idTrainingType) async {
@@ -182,21 +226,28 @@ class TrainingccController extends GetxController {
     }
   }
 
-  Stream<List<Map<String, dynamic>>> getCombinedAttendanceStream(List<String> statuses) {
+  Stream<List<Map<String, dynamic>>> getCombinedAttendanceStream(
+      List<String> statuses) {
     userPreferences = getItLocator<UserPreferences>();
-    return firestore.collection('attendance')
+    return firestore
+        .collection('attendance')
         .where("idTrainingType", isEqualTo: argumentid.value)
         .where("instructor", isEqualTo: userPreferences.getIDNo())
         .where("status", whereIn: statuses)
         .snapshots()
         .asyncMap((attendanceQuery) async {
-      final usersQuery = await firestore.collection('users').where("ID NO", isEqualTo: userPreferences.getIDNo()).get();
+      final usersQuery = await firestore
+          .collection('users')
+          .where("ID NO", isEqualTo: userPreferences.getIDNo())
+          .get();
       final usersData = usersQuery.docs.map((doc) => doc.data()).toList();
 
       final attendanceData = await Future.wait(
         attendanceQuery.docs.map((doc) async {
           final attendanceModel = AttendanceModel.fromJson(doc.data());
-          final user = usersData.firstWhere((user) => user['ID NO'] == attendanceModel.instructor, orElse: () => {});
+          final user = usersData.firstWhere(
+              (user) => user['ID NO'] == attendanceModel.instructor,
+              orElse: () => {});
           attendanceModel.name = user['NAME'];
           attendanceModel.photoURL = user['PHOTOURL'];
           return attendanceModel.toJson();
@@ -207,7 +258,6 @@ class TrainingccController extends GetxController {
     });
   }
 
-
   Future<void> scanQRCode(BuildContext context) async {
     String barcodeScanResult = await FlutterBarcodeScanner.scanBarcode(
       "#ff6666",
@@ -217,7 +267,6 @@ class TrainingccController extends GetxController {
     );
 
     passwordKey.value = barcodeScanResult;
-
 
     // Process the QR code result (barcodeScanResult)
     print("Scanned QR code: $barcodeScanResult");
@@ -238,5 +287,4 @@ class TrainingccController extends GetxController {
   void onClose() {
     super.onClose();
   }
-
 }
