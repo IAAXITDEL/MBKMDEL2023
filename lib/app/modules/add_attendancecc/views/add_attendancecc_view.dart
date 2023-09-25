@@ -24,14 +24,14 @@ class AddAttendanceccView extends GetView<AddAttendanceccController> {
   @override
   Widget build(BuildContext context) {
     var subjectC = TextEditingController();
-    var vanueC = TextEditingController();
+    var venueC = TextEditingController();
     var dateC = TextEditingController();
 
     subjectC.text = controller.argumentname.value;
     int? instructorC = 0;
 
-    Future<void> add(String subject, String date, String vanue, int instructor, int idtrainingtype) async {
-      controller.addAttendanceForm(subject, date, vanue, instructor, idtrainingtype).then((status) async {
+    Future<void> add(String subject, String date, String venue, int instructor, int idtrainingtype) async {
+      controller.addAttendanceForm(subject, date, venue, instructor, idtrainingtype).then((status) async {
         await QuickAlert.show(
           context: context,
           type: QuickAlertType.success,
@@ -75,8 +75,8 @@ class AddAttendanceccView extends GetView<AddAttendanceccController> {
                   FormDateField(text: 'Date', textController: dateC,),
                   SizedBox(height: 10,),
 
-                  //-------------------------VANUE-----------------------
-                  FormTextField(text: "Vanue", textController: vanueC),
+                  //-------------------------VENUE-----------------------
+                  FormTextField(text: "Venue", textController: venueC),
                   SizedBox(height: 10,),
 
                   //-------------------------INSTRUCTOR-----------------------
@@ -148,7 +148,7 @@ class AddAttendanceccView extends GetView<AddAttendanceccController> {
                                   future: add(
                                     subjectC.text,
                                     dateC.text,
-                                    vanueC.text,
+                                    venueC.text,
                                     instructorC!,
                                     controller.argumentid.value,
                                   ),
