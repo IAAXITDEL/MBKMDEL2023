@@ -125,40 +125,42 @@ class ProfileccView extends GetView<ProfileccController> {
                 showModalBottomSheet(
                   context: context,
                   builder: (BuildContext context) {
-                    return Container(
-                      width: Get.width,
-                      padding: EdgeInsets.only(top: 20, right: 20, left: 20),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(20.0),
-                          topRight: Radius.circular(20.0),
+                    return SingleChildScrollView(
+                      child: Container(
+                        width: Get.width,
+                        padding: EdgeInsets.only(top: 20, right: 20, left: 20),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(20.0),
+                            topRight: Radius.circular(20.0),
+                          ),
+                          //color: Theme.of(context).cardColor,
                         ),
-                        //color: Theme.of(context).cardColor,
-                      ),
-                      child: Column(
-                        children: [
-                          Text("My QR", style: tsOneTextTheme.labelMedium),
-                          SizedBox(height: 5),
-                          RedTitleText(text: "SCAN ME"),
-                          SizedBox(height: 10),
-                          addAirAsiaLogoToQRCode(),
-                          SizedBox(height: 10),
-                          Text(
-                            "${controller.userPreferences.getName()}",
-                            style: tsOneTextTheme.bodyMedium,
-                          ),
-                          Text(
-                            "${controller.userPreferences.getIDNo()}",
-                            style: tsOneTextTheme.bodyMedium,
-                          ),
-                          SizedBox(height: 10),
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: Text("Close"),
-                          )
-                        ],
+                        child: Column(
+                          children: [
+                            Text("My QR", style: tsOneTextTheme.labelMedium),
+                            SizedBox(height: 5),
+                            RedTitleText(text: "SCAN ME"),
+                            SizedBox(height: 10),
+                            addAirAsiaLogoToQRCode(),
+                            SizedBox(height: 10),
+                            Text(
+                              "${controller.userPreferences.getName()}",
+                              style: tsOneTextTheme.bodyMedium,
+                            ),
+                            Text(
+                              "${controller.userPreferences.getIDNo()}",
+                              style: tsOneTextTheme.bodyMedium,
+                            ),
+                            SizedBox(height: 10),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Text("Close"),
+                            )
+                          ],
+                        ),
                       ),
                     );
                   },

@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:ts_one/app/modules/efb/occ/views/history/detail_history_device_view.dart';
 
+import 'detailhistorydeviceFo.dart';
+
 class HistoryAllDeviceView extends StatefulWidget {
   const HistoryAllDeviceView({Key? key}) : super(key: key);
 
@@ -141,11 +143,82 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
 
                               final deviceData = deviceSnapshot.data?.data() as Map<String, dynamic>?;
 
-                              if (deviceData == null) {
-                                return Text('Device data not found');
+                              if (!deviceSnapshot.hasData || !deviceSnapshot.data!.exists) {
+                                final deviceUid2 = data['device_uid2'];
+                                final deviceUid3 = data['device_uid3'];
+
+                                return FutureBuilder<DocumentSnapshot>(
+                                  future: FirebaseFirestore.instance
+                                      .collection('Device')
+                                      .doc(deviceUid2)
+                                      .get(),
+                                  builder: (context, deviceUid2Snapshot) {
+                                    if (deviceUid2Snapshot.connectionState == ConnectionState.waiting) {
+                                      return CircularProgressIndicator();
+                                    }
+
+                                    if (deviceUid2Snapshot.hasError) {
+                                      return Text('Error: ${deviceUid2Snapshot.error}');
+                                    }
+
+                                    final deviceData2 = deviceUid2Snapshot.data?.data() as Map<String, dynamic>?;
+
+                                    if (!deviceUid2Snapshot.hasData || !deviceUid2Snapshot.data!.exists) {
+                                      return Text('Device Not Found');
+                                    }
+
+                                    final deviceno2 = deviceData2?['deviceno'];
+
+                                        return FutureBuilder<DocumentSnapshot>(
+                                        future: FirebaseFirestore.instance
+                                            .collection('Device')
+                                            .doc(deviceUid3)
+                                            .get(),
+                                        builder: (context, deviceUid3Snapshot) {
+                                        if (deviceUid3Snapshot.connectionState == ConnectionState.waiting) {
+                                        return CircularProgressIndicator();
+                                        }
+
+                                        if (deviceUid3Snapshot.hasError) {
+                                        return Text('Error: ${deviceUid3Snapshot.error}');
+                                        }
+
+                                        final deviceData3 = deviceUid3Snapshot.data?.data() as Map<String, dynamic>?;
+
+                                        if (!deviceUid2Snapshot.hasData || !deviceUid3Snapshot.data!.exists) {
+                                        return Text('Device Not Found');
+                                        }
+
+                                        final deviceno3 = deviceData3?['deviceno'];
+
+
+                                    return ElevatedButton(
+                                      onPressed:  () {
+                                        Navigator.of(context).push(MaterialPageRoute(
+                                          builder: (context) => DetailHistoryDeviceFOView(
+                                            dataId: dataId,
+                                            userName: userName,
+                                            deviceno2: deviceno2,
+                                            deviceno3: deviceno3,
+                                          ),
+                                        ));
+                                      },
+                                      child: Column(
+                                        children: [
+                                          Text('Crew Name: $userName'),
+                                          Text('Device No 1: $deviceno2'),
+                                          Text('Device No 2: $deviceno3'),
+                                          Text('Loan Date: ${DateFormat('yyyy-MM-dd ; HH:mm').format(timestamp.toDate())}'),
+                                        ],
+                                      ),
+                                    );
+                                        },
+                                    );
+                                  },
+                                );
                               }
 
-                              final deviceno = deviceData['deviceno'];
+                              final deviceno = deviceData?['deviceno'];
 
 
                               return ElevatedButton(

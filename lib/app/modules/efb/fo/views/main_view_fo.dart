@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:ts_one/app/modules/efb/fo/views/FOrequestdeviceView.dart';
+import 'package:ts_one/app/modules/efb/fo/views/fo_return_device_view.dart';
 
 import '../../../../../presentation/shared_components/TitleText.dart';
 import '../../../../../presentation/theme.dart';
@@ -114,7 +115,8 @@ class HomeFOView extends GetView<HomeFOController> {
                             Column(
                               children: inUsePilotDocs.map((doc) {
                                 // Your existing code for displaying 'in-use-pilot' data
-                                String deviceName = doc['device_name'];
+                                String deviceName2 = doc['device_name2'];
+                                String deviceName3 = doc['device_name3'];
                                 String OccOnDuty = doc['occ-on-duty'];
                                 String deviceId = doc.id;
 
@@ -122,18 +124,18 @@ class HomeFOView extends GetView<HomeFOController> {
                                   alignment: Alignment.centerLeft,
                                   child: ElevatedButton(
                                     onPressed: () {
-                                      //return to
-                                      // Navigator.push(
-                                      //   context,
-                                      //   MaterialPageRoute(
-                                      //     builder: (context) =>
-                                      //         PilotreturndeviceviewView(
-                                      //           deviceName: deviceName,
-                                      //           deviceId: deviceId,
-                                      //           OccOnDuty: OccOnDuty,
-                                      //         ),
-                                      //   ),
-                                      // );
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              FOreturndeviceviewView(
+                                                deviceName2: deviceName2,
+                                                deviceName3: deviceName3,
+                                                deviceId: deviceId,
+                                                OccOnDuty: OccOnDuty,
+                                              ),
+                                        ),
+                                      );
                                     },
                                     style: ButtonStyle(
                                       padding: MaterialStateProperty.all<
@@ -168,7 +170,7 @@ class HomeFOView extends GetView<HomeFOController> {
                                               .start, // Mengatur teks ke kiri
                                           children: [
                                             Text(
-                                              deviceName,
+                                              deviceName2 + ' & ' + deviceName3,
                                               style: tsOneTextTheme.titleSmall,
                                             ),
                                             SizedBox(height: 5.0),
@@ -355,7 +357,8 @@ class HomeFOView extends GetView<HomeFOController> {
                             ),
                             Column(
                               children: needConfirmationOccDocs.map((doc) {
-                                String deviceName = doc['device_name'];
+                                String deviceName2 = doc['device_name2'];
+                                String deviceName3 = doc['device_name3'];
                                 String deviceId = doc.id;
 
                                 return Align(
@@ -406,7 +409,7 @@ class HomeFOView extends GetView<HomeFOController> {
                                               .start, // Mengatur teks ke kiri
                                           children: [
                                             Text(
-                                              deviceName,
+                                              deviceName2 + ' & ' + deviceName3,
                                               style: tsOneTextTheme.titleSmall,
                                             ),
                                             SizedBox(height: 5.0),
