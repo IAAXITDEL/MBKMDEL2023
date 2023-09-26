@@ -44,6 +44,8 @@ import '../modules/efb/pilot/bindings/homepilot_binding.dart';
 import '../modules/efb/pilot/views/main_view_pilot.dart';
 import '../modules/home_admincc/bindings/home_admincc_binding.dart';
 import '../modules/home_admincc/views/home_admincc_view.dart';
+import '../modules/home_cptscc/bindings/home_cptscc_binding.dart';
+import '../modules/home_cptscc/views/home_cptscc_view.dart';
 import '../modules/home_instructorcc/bindings/home_instructorcc_binding.dart';
 import '../modules/home_instructorcc/views/home_instructorcc_view.dart';
 import '../modules/home_pilotcc/bindings/home_pilotcc_binding.dart';
@@ -54,6 +56,8 @@ import '../modules/instructor_main_homecc/bindings/instructor_main_homecc_bindin
 import '../modules/instructor_main_homecc/views/instructor_main_homecc_view.dart';
 import '../modules/list_attendancecc/bindings/list_attendancecc_binding.dart';
 import '../modules/list_attendancecc/views/list_attendancecc_view.dart';
+import '../modules/list_pilotcptscc/bindings/list_pilotcptscc_binding.dart';
+import '../modules/list_pilotcptscc/views/list_pilotcptscc_view.dart';
 import '../modules/list_attendancedetailcc/bindings/list_attendancedetailcc_binding.dart';
 import '../modules/list_attendancedetailcc/views/list_attendancedetailcc_view.dart';
 import '../modules/main_home/bindings/main_home_binding.dart';
@@ -346,6 +350,16 @@ class AppPages {
       name: _Paths.LIST_ATTENDANCECC,
       page: () => const ListAttendanceccView(),
       binding: ListAttendanceccBinding(),
+    ),
+    GetPage(
+      name: _Paths.HOME_CPTSCC,
+      page: () => const HomeCptsccView(),
+      binding: HomeCptsccBinding(),
+    ),
+    GetPage(
+      name: _Paths.LIST_PILOTCPTSCC,
+      page: () => const ListPilotcptsccView(),
+      binding: ListPilotcptsccBinding(),
     ),
     GetPage(
       name: _Paths.LIST_ATTENDANCEDETAILCC,

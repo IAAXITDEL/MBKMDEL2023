@@ -99,6 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
       _isInstructor = true;
     }
     log("HomeScreen: $_isInstructor");
+    print(_isInstructor);
   }
 
   @override
