@@ -29,21 +29,20 @@ class TrainingccView extends GetView<TrainingccController> {
       passwordC.text = value;
     });
 
-
     Future<void> add(int training) async {
       String message = '';
 
-      List<AttendanceModel> attendanceList = await controller.checkClassStream(controller.argumentid.value);
-      List<AttendanceModel> classList = await controller.checkClassOpenStream(controller.argumentid.value);
+      List<AttendanceModel> attendanceList =
+          await controller.checkClassStream(controller.argumentid.value);
+      List<AttendanceModel> classList =
+          await controller.checkClassOpenStream(controller.argumentid.value);
 
-
-      if(classList.isNotEmpty){
+      if (classList.isNotEmpty) {
         if (attendanceList.isNotEmpty) {
           Get.toNamed(Routes.ATTENDANCE_PILOTCC, arguments: {
-            "id" : attendanceList[0].id,
+            "id": attendanceList[0].id,
           });
           return;
-
         } else {
           await QuickAlert.show(
             context: context,
@@ -64,10 +63,12 @@ class TrainingccView extends GetView<TrainingccController> {
                   ),
                   textInputAction: TextInputAction.next,
                 ),
-                SizedBox(height: 20,),
+                SizedBox(
+                  height: 20,
+                ),
                 InkWell(
-                  onTap: (){
-                   controller.scanQRCode(context);
+                  onTap: () {
+                    controller.scanQRCode(context);
                   },
                   child: Container(
                     decoration: BoxDecoration(
@@ -77,7 +78,10 @@ class TrainingccView extends GetView<TrainingccController> {
                         ),
                         borderRadius: BorderRadius.circular(10)),
                     child: ListTile(
-                      leading: Icon(Icons.qr_code, size: 25,),
+                      leading: Icon(
+                        Icons.qr_code,
+                        size: 25,
+                      ),
                       title: Text(
                         "Using QR Code",
                         style: tsOneTextTheme.headlineMedium,
@@ -102,7 +106,8 @@ class TrainingccView extends GetView<TrainingccController> {
                 context: context,
                 builder: (context) {
                   return StreamBuilder<List<Map<String, dynamic>>>(
-                    stream: controller.joinClassStream(passwordC.text, training),
+                    stream:
+                        controller.joinClassStream(passwordC.text, training),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return LoadingScreen();
@@ -111,13 +116,14 @@ class TrainingccView extends GetView<TrainingccController> {
                       if (snapshot.hasError) {
                         return ErrorScreen();
                       }
-                      var listAttendance= snapshot.data!;
+                      var listAttendance = snapshot.data!;
                       if (snapshot.data!.isEmpty) {
                         Future.delayed(Duration.zero, () {
                           QuickAlert.show(
                             context: context,
                             type: QuickAlertType.error,
-                            text: "The class key is wrong, Please enter the key again!",
+                            text:
+                                "The class key is wrong, Please enter the key again!",
                           );
                         });
                       } else {
@@ -133,7 +139,8 @@ class TrainingccView extends GetView<TrainingccController> {
                         //   "id" : listAttendance[0]["id"],
                         // });
                       }
-                      return SizedBox.shrink(); // Return an empty widget to avoid the error.
+                      return SizedBox
+                          .shrink(); // Return an empty widget to avoid the error.
                     },
                   );
                 },
@@ -143,7 +150,7 @@ class TrainingccView extends GetView<TrainingccController> {
             },
           );
         }
-      }else{
+      } else {
         await QuickAlert.show(
           context: context,
           type: QuickAlertType.warning,
@@ -152,11 +159,9 @@ class TrainingccView extends GetView<TrainingccController> {
       }
     }
 
-
-
     return Scaffold(
       appBar: AppBar(
-        title: RedTitleText(text :'TRAINING'),
+        title: RedTitleText(text: 'TRAINING'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -176,7 +181,7 @@ class TrainingccView extends GetView<TrainingccController> {
                       return ErrorScreen();
                     }
 
-                    var listTraining= snapshot.data!.docs;
+                    var listTraining = snapshot.data!.docs;
 
                     return GridView.builder(
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -197,19 +202,23 @@ class TrainingccView extends GetView<TrainingccController> {
                           elevation: 5,
                           child: InkWell(
                             onTap: () {
-                              controller.argumentid.value =  trainingData["id"];
-                              controller.argumentname.value =  trainingData["training"];
+                              controller.argumentid.value = trainingData["id"];
+                              controller.argumentname.value =
+                                  trainingData["training"];
                               controller.update();
                               controller.cekRole();
-                              if(controller.cekPilot.value  == true){
+                              if (controller.cekPilot.value == true) {
                                 add(controller.argumentid.value);
                               }
                             },
                             splashColor: TsOneColor.primary,
                             child: Center(
                               child: Container(
-                                padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 10),
-                                child: Text( trainingData["training"],),
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 1, horizontal: 10),
+                                child: Text(
+                                  trainingData["training"],
+                                ),
                               ),
                             ),
                           ),
@@ -219,7 +228,96 @@ class TrainingccView extends GetView<TrainingccController> {
                   },
                 ),
 
-                SizedBox(height: 20,),
+                SizedBox(
+                  height: 20,
+                ),
+
+
+                //ADD NEW SUBJECT
+                ElevatedButton(
+                  onPressed: () async {
+                    String newSubject = '';
+                    String newRemark = '';
+                    String newTrainingDescription = '';
+
+                    // Show a dialog to input the new subject, remark and description
+                    await showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text('Add New Subject'),
+                          content: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(bottom: 16),
+                                child: TextField(
+                                  onChanged: (value) {
+                                    newSubject = value; //
+                                  },
+                                  decoration: InputDecoration(
+                                    hintText: 'Enter the new subject',
+                                    border: OutlineInputBorder(),
+                                    labelText: 'Subject',
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(bottom: 16),
+                                child: TextField(
+                                  onChanged: (value) {
+                                    newRemark = value;
+                                  },
+                                  decoration: InputDecoration(
+                                    hintText: 'Enter the remark',
+                                    border: OutlineInputBorder(),
+                                    labelText: 'Remark',
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                child: TextField(
+                                  onChanged: (value) {
+                                    newTrainingDescription = value;
+                                  },
+                                  maxLines: null, // Allow multiple lines for long text
+                                  decoration: InputDecoration(
+                                    hintText: 'About training',
+                                    border: OutlineInputBorder(),
+                                    labelText: 'Training Description',
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Text('Cancel'),
+                            ),
+                            ElevatedButton( // Use ElevatedButton for the "Add" button
+                              onPressed: () async {
+                                if (newSubject.isNotEmpty && newRemark.isNotEmpty) {
+                                  await controller.addNewSubject(newSubject, newRemark, newTrainingDescription);
+                                  Navigator.of(context).pop();
+                                }
+                              },
+                              child: Text('Add'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                  child: Text('Add New Subject'),
+                  style: ElevatedButton.styleFrom(
+                  ),
+                ),
+
+
+
                 // ------------------------------------ TRAINING REMARK ----------------------------------
                 Row(
                   children: [
@@ -266,11 +364,11 @@ class TrainingccView extends GetView<TrainingccController> {
                     );
                   },
                 ),
-                SizedBox(height: 20,),
-
+                SizedBox(
+                  height: 20,
+                ),
               ],
-            )
-        ),
+            )),
       ),
     );
   }
