@@ -69,11 +69,18 @@ class _TrainingtypeccViewState extends State<TrainingtypeccView>
                     });
                   },
                   child: Container(
-                    padding: EdgeInsets.all(7),
-                    margin: EdgeInsets.symmetric(vertical: 20),
+                    padding: EdgeInsets.all(5),
                     decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
                       color: TsOneColor.greenColor,
-                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.3),
+                          spreadRadius: 2,
+                          blurRadius: 3,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
                     ),
                     child: Row(
                       children: [

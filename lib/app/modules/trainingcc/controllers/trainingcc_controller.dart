@@ -51,7 +51,7 @@ class TrainingccController extends GetxController {
 
     }
     // SEBAGAI INSTRUCTOR
-    else if( userPreferences.getInstructor().contains(UserModel.keySubPositionICC) && userPreferences.getRank().contains(UserModel.keyPositionCaptain) || userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)){
+    else if( userPreferences.getInstructor().contains(UserModel.keySubPositionCCP) || userPreferences.getInstructor().contains(UserModel.keySubPositionFIA) || userPreferences.getInstructor().contains(UserModel.keySubPositionFIS) || userPreferences.getInstructor().contains(UserModel.keySubPositionPGI) && userPreferences.getRank().contains(UserModel.keyPositionCaptain) || userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)){
       Get.toNamed(Routes.TRAINING_INSTRUCTORCC, arguments: {
         "id" : argumentid.value,
         "name" : argumentname.value
@@ -108,11 +108,11 @@ class TrainingccController extends GetxController {
 
     String formattedDate = DateFormat('ddMMyyyyHHmmss').format(DateTime.now());
     try {
-      await attendance.doc("${userPreferences.getIDNo()}-${idtraining}--${formattedDate}").set({
-        "id" : "attendance-${idtraining}-${userPreferences.getIDNo()}-${formattedDate}",
+      await attendance.doc("${userPreferences.getIDNo()}-${idtraining}-${formattedDate}").set({
+        "id" : "${userPreferences.getIDNo()}-${idtraining}-${formattedDate}",
         "idattendance" : idattendance,
-        "idpilot" : userPreferences.getIDNo(),
-        "status" : "join",
+        "idtraining" : userPreferences.getIDNo(),
+        "status" : "confirmation",
         "creationTime": DateTime.now().toIso8601String(),
         "updatedTime": DateTime.now().toIso8601String(),
       });
@@ -152,7 +152,7 @@ class TrainingccController extends GetxController {
       userPreferences = getItLocator<UserPreferences>();
       final attendancedetailQuery = await firestore
           .collection('attendance-detail')
-          .where("idpilot", isEqualTo: userPreferences.getIDNo())
+          .where("idtraining", isEqualTo: userPreferences.getIDNo())
           .get();
       final attendanceQuery = await firestore
           .collection('attendance')

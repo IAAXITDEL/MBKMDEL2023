@@ -39,12 +39,6 @@ class TrainingccView extends GetView<TrainingccController> {
 
       if(classList.isNotEmpty){
         if (attendanceList.isNotEmpty) {
-          // Do something with the attendanceList
-          await QuickAlert.show(
-            context: context,
-            type: QuickAlertType.success,
-            text: 'You have been joined to the class!',
-          );
           Get.toNamed(Routes.ATTENDANCE_PILOTCC, arguments: {
             "id" : attendanceList[0].id,
           });
@@ -95,7 +89,6 @@ class TrainingccView extends GetView<TrainingccController> {
               ],
             ),
             onConfirmBtnTap: () async {
-              print("ini text nya ${passwordC.text}");
               if (passwordC.text.length < 5) {
                 await QuickAlert.show(
                   context: context,
@@ -135,7 +128,7 @@ class TrainingccView extends GetView<TrainingccController> {
                             text: "You have been joined to the class!",
                           );
                         });
-
+                          Get.back();
                         // Get.toNamed(Routes.ATTENDANCE_PILOTCC, arguments: {
                         //   "id" : listAttendance[0]["id"],
                         // });

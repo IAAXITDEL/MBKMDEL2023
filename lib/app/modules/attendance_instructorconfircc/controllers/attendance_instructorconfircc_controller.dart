@@ -22,6 +22,8 @@ class AttendanceInstructorconfirccController extends GetxController {
 
   final RxBool ceksign = false.obs;
   final RxBool showText = false.obs;
+
+  final RxBool cekScoring = false.obs;
   @override
   void onInit() {
     super.onInit();
@@ -60,7 +62,7 @@ class AttendanceInstructorconfirccController extends GetxController {
     userPreferences = getItLocator<UserPreferences>();
 
     // SEBAGAI INSTRUCTOR
-    if( userPreferences.getInstructor().contains(UserModel.keySubPositionICC) && userPreferences.getRank().contains(UserModel.keyPositionCaptain) || userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)){
+    if(userPreferences.getInstructor().contains(UserModel.keySubPositionCCP) || userPreferences.getInstructor().contains(UserModel.keySubPositionFIA) || userPreferences.getInstructor().contains(UserModel.keySubPositionFIS) || userPreferences.getInstructor().contains(UserModel.keySubPositionPGI) && userPreferences.getRank().contains(UserModel.keyPositionCaptain) || userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)){
       role.value = "ICC";
     }
     // SEBAGAI PILOT ADMINISTRATOR
@@ -86,7 +88,6 @@ class AttendanceInstructorconfirccController extends GetxController {
     });
 
 
-    // Ubah status pilot yang mengikuti kelas menjadi done
     QuerySnapshot querySnapshot = await attendancedetail
         .where("idattendance", isEqualTo: argumentid.value.toString())
         .get();
@@ -94,7 +95,6 @@ class AttendanceInstructorconfirccController extends GetxController {
 
     querySnapshot.docs.forEach((doc) async {
       await doc.reference.update({
-        "status" : "done",
         "updatedTime": DateTime.now().toIso8601String(),
       });
     });
@@ -102,16 +102,29 @@ class AttendanceInstructorconfirccController extends GetxController {
 
 
   //mendapatkan panjang list attendance
-  Future<int> attendanceStream() async {
-    final attendanceQuery = await _firestore
+  Stream<int> attendanceStream() {
+    return _firestore
         .collection('attendance-detail')
         .where("idattendance", isEqualTo: argumentid.value)
-        .where("status", isEqualTo: "confirmation")
-        .get();
+        .where("status", whereIn: ["done", "donescoring"])
+        .snapshots()
+        .map((attendanceQuery) {
+      jumlah.value = attendanceQuery.docs.length;
 
-    jumlah.value = attendanceQuery.docs.length;
-    print(attendanceQuery.docs.length);
-    return attendanceQuery.docs.length;
+      return attendanceQuery.docs.length;
+    });
+  }
+
+  //mendapatkan panjang list attendance
+  Stream<int> cekScoringStream() {
+    return _firestore
+        .collection('attendance-detail')
+        .where("idattendance", isEqualTo: argumentid.value)
+        .where("status", isEqualTo: "done")
+        .snapshots()
+        .map((attendanceQuery) {
+      return attendanceQuery.docs.length;
+    });
   }
 
   @override

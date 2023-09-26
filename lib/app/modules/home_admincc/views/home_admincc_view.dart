@@ -103,7 +103,6 @@ class HomeAdminccView extends GetView<HomeAdminccController> {
                       Get.toNamed(Routes.ATTENDANCE_CONFIRCC,  arguments: {
                         "id" : listAttendance[index]["id"],
                       });
-                      print("ini");
                     },
                     child: Container(
                       margin: EdgeInsets.symmetric(vertical: 5),

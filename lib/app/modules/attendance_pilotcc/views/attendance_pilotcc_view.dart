@@ -27,22 +27,26 @@ class AttendancePilotccView extends GetView<AttendancePilotccController> {
       _signaturePadKey.currentState?.clear();
     }
 
-    void saveSignature( _signaturePadKey) {
-      controller.saveSignature( _signaturePadKey).then((status) async {
+    void saveSignature(_signaturePadKey) {
+      controller.saveSignature(_signaturePadKey).then((status) async {
+        // Handle success
         await QuickAlert.show(
           context: context,
           type: QuickAlertType.success,
           text: 'Attendance Completed Successfully!',
         );
-
-        // Get.offAllNamed(Routes.TRAININGTYPECC, arguments: {
-        //   "id" : controller.argumentid.value,
-        //   "name" : controller.argumentname.value
-        // });
-
         Get.back();
+      }).catchError((error) async {
+        // Handle error
+        print('Error in saveSignature: $error');
+        await QuickAlert.show(
+          context: context,
+          type: QuickAlertType.error,
+          text: 'Attendance Error!',
+        );
       });
     }
+
 
 
     return Scaffold(

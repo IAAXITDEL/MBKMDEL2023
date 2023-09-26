@@ -136,7 +136,15 @@ class ProfileccView extends GetView<ProfileccController> {
                               Expanded(
                                   flex: 6, child: Text( documentData["LICENSE NO."] ?? "N/A")),
                             ],
-                          )
+                          ),
+                          Row(
+                            children: [
+                              Expanded(flex: 3, child: Text("HUB")),
+                              Expanded(flex: 1, child: Text(":")),
+                              Expanded(
+                                  flex: 6, child: Text( documentData["HUB"] ?? "N/A")),
+                            ],
+                          ),
                         ],
                       ),
                     );

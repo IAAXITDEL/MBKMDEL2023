@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,6 +14,7 @@ import '../../../../presentation/shared_components/TitleText.dart';
 import '../../../../presentation/shared_components/formdatefield.dart';
 import '../../../../presentation/shared_components/formtextfield.dart';
 import '../../../../presentation/theme.dart';
+import '../../../../util/empty_screen.dart';
 import '../../../../util/error_screen.dart';
 import '../../../../util/loading_screen.dart';
 import '../../../routes/app_pages.dart';
@@ -24,11 +26,12 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
   AttendanceConfirccView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-
     var subjectC = TextEditingController();
     var vanueC = TextEditingController();
     var dateC = TextEditingController();
     var instructorC = TextEditingController();
+
+    int? trainingC = 0;
 
     var departmentC = TextEditingController();
     var trainingtypeC = TextEditingController();
@@ -39,15 +42,18 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
     void _clearSignature() {
       _signaturePadKey.currentState?.clear();
     }
-    ;
 
+    ;
 
     Future<void> confir() async {
       try {
         controller.confirattendance().then((status) async {
           // Menunggu hingga saveSignature selesai
-          Uint8List? signatureData = await _signaturePadKey.currentState!.toImage().then((image) async {
-            ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+          Uint8List? signatureData = await _signaturePadKey.currentState!
+              .toImage()
+              .then((image) async {
+            ByteData? byteData =
+                await image.toByteData(format: ui.ImageByteFormat.png);
             return byteData?.buffer.asUint8List();
           });
 
@@ -63,8 +69,8 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
 
             // Navigasi ke halaman lain setelah menampilkan QuickAlert
             Get.offAllNamed(Routes.TRAININGTYPECC, arguments: {
-              "id" : controller.argumentTrainingType.value,
-              "name" : controller.argumentname.value
+              "id": controller.argumentTrainingType.value,
+              "name": controller.argumentname.value
             });
           } else {
             // Handle jika signatureData null
@@ -101,8 +107,7 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: StreamBuilder<List<Map<String, dynamic>>>(
-                stream: controller
-                    .getCombinedAttendanceStream(controller.argumentid.value.toString()),
+                stream: controller.getCombinedAttendanceStream(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return LoadingScreen(); // Placeholder while loading
@@ -119,9 +124,10 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                     dateC.text = listAttendance[0]["date"] ?? "N/A";
                     departmentC.text = listAttendance[0]["department"] ?? "N/A";
                     vanueC.text = listAttendance[0]["vanue"] ?? "N/A";
-                    trainingtypeC.text = listAttendance[0]["trainingType"] ?? "N/A";
+                    trainingtypeC.text =
+                        listAttendance[0]["trainingType"] ?? "N/A";
                     roomC.text = listAttendance[0]["room"] ?? "N/A";
-                    instructorC.text = listAttendance[0]["name"]  ?? "N/A";
+                    instructorC.text = listAttendance[0]["name"] ?? "N/A";
                   } else {
                     // Handle the case where the list is empty or null
                     subjectC.text = "No Subject Data Available";
@@ -131,8 +137,72 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      RedTitleText(text: "ATTENDANCE LIST"),
-                     // Text("REDUCED VERTICAL SEPARATION MINIMA (RVSM)"),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          RedTitleText(text: "ATTENDANCE LIST"),
+
+                          // import pdf jika status sudah done
+                          listAttendance[0]["status"] == "done"
+                              ? StreamBuilder<int>(
+                                  stream: controller.attendanceStream(),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return CircularProgressIndicator();
+                                    } else if (snapshot.hasError) {
+                                      return Text('Error: ${snapshot.error}');
+                                    } else {
+                                      int attendanceCount = snapshot.data ?? 0;
+                                      return InkWell(
+                                        onTap: () async {
+                                          try {
+                                            await controller.attendancelist();
+                                          } catch (e) {
+                                            print('Error: $e');
+                                          }
+                                        },
+                                        child: Container(
+                                          padding: EdgeInsets.all(5),
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(10.0),
+                                            color: Colors.blue,
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.grey.withOpacity(0.3),
+                                                spreadRadius: 2,
+                                                blurRadius: 3,
+                                                offset: const Offset(0, 2),
+                                              ),
+                                            ],
+                                          ),
+                                          child: Row(
+                                            children: [
+                                              Icon(
+                                                Icons.picture_as_pdf,
+                                                size: 16,
+                                                color: Colors.white,
+                                              ),
+                                              SizedBox(
+                                                width: 5,
+                                              ),
+                                              Text(
+                                                "Save PDF",
+                                                style: TextStyle(color: Colors.white),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                  },
+                                )
+                              : SizedBox()
+                        ],
+                      ),
                       SizedBox(
                         height: 20,
                       ),
@@ -166,8 +236,7 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                             child: FormTextField(
                                 text: "Department",
                                 textController: departmentC,
-                                readOnly: true
-                            ),
+                                readOnly: true),
                           ),
                           SizedBox(
                             width: 10,
@@ -198,7 +267,8 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                           Expanded(
                             child: FormTextField(
                               text: "Room",
-                              textController: roomC,),
+                              textController: roomC,
+                            ),
                           )
                         ],
                       ),
@@ -206,21 +276,14 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                         height: 20,
                       ),
                       InkWell(
-                        onTap: (){
-                          if(controller.jumlah.value > 0 ){
-                            Get.toNamed(Routes.LIST_ATTENDANCECC,arguments: {
-                              "id" : controller.argumentid.value,
-                              "status" : "done"
-                            });
-                          }},
-                        child:  Container(
+                        onTap: () {},
+                        child: Container(
                           decoration: BoxDecoration(
                               border: Border.all(
                                 color: TsOneColor.secondaryContainer,
                                 width: 1,
                               ),
-                              borderRadius: BorderRadius.circular(10)
-                          ),
+                              borderRadius: BorderRadius.circular(10)),
                           child: ListTile(
                             title: Text(
                               "Chair Person/ Instructor",
@@ -232,42 +295,53 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                             ),
                             trailing: Icon(Icons.navigate_next),
                           ),
-
                         ),
                       ),
                       SizedBox(
                         height: 20,
                       ),
-                      InkWell(
-                        onTap: (){
-                          if(controller.jumlah.value > 0 ){
-                            Get.toNamed(Routes.LIST_ATTENDANCECC,arguments: {
-                              "id" : controller.argumentid.value,
-                              "status" : "done"
-                            });
+                      StreamBuilder<int>(
+                        stream: controller.attendanceStream(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return CircularProgressIndicator();
+                          } else if (snapshot.hasError) {
+                            return Text('Error: ${snapshot.error}');
+                          } else {
+                            int attendanceCount = snapshot.data ?? 0;
+                            return InkWell(
+                              onTap: () {
+                                if (controller.jumlah.value > 0) {
+                                  Get.toNamed(Routes.LIST_ATTENDANCECC,
+                                      arguments: {
+                                        "id": controller.argumentid.value,
+                                        "status": "confirmation"
+                                      });
+                                }
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: TsOneColor.secondaryContainer,
+                                      width: 1,
+                                    ),
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: ListTile(
+                                  title: Text(
+                                    "Attendance",
+                                    style: tsOneTextTheme.labelSmall,
+                                  ),
+                                  subtitle: Text(
+                                    "${attendanceCount} person",
+                                    style: tsOneTextTheme.headlineMedium,
+                                  ),
+                                  trailing: Icon(Icons.navigate_next),
+                                ),
+                              ),
+                            );
                           }
                         },
-                        child:  Container(
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                color: TsOneColor.secondaryContainer,
-                                width: 1,
-                              ),
-                              borderRadius: BorderRadius.circular(10)
-                          ),
-                          child: ListTile(
-                            title: Text(
-                              "Attendance",
-                              style: tsOneTextTheme.labelSmall,
-                            ),
-                            subtitle: Text(
-                              "${controller.jumlah.value.toString()} person",
-                              style: tsOneTextTheme.headlineMedium,
-                            ),
-                            trailing: Icon(Icons.navigate_next),
-                          ),
-
-                        ),
                       ),
                       SizedBox(
                         height: 20,
@@ -281,7 +355,7 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                                 width: 10,
                               ),
                               Obx(
-                                    () => Radio<String>(
+                                () => Radio<String>(
                                   value: listAttendance[0]["attendanceType"],
                                   groupValue: controller.selectedMeeting.value,
                                   onChanged: (String? newValue) {
@@ -295,108 +369,271 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                               ),
                             ],
                           )
-
                         ],
                       ),
                       SizedBox(
-                        height: 20,
+                        height: 10,
                       ),
-                      Text("Class Password"),
-                      RedTitleText(
-                        text: listAttendance[0]["keyAttendance"] ?? "N/A",
-                        size: 16,
-                      ),
-
 
                       // Jika status masih konfirmasi
-                      ((listAttendance[0]["status"] == "confirmation") && (controller.role.value == "Pilot Administrator")) ?
-                      Column(
-                        children: [
-                          //--------------------------- ATTANDANCE --------------------
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Row(children: [
-                            Text("Signature"),
-                          ],),
-                          Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: TsOneColor.secondaryContainer,
-                                width: 1,
-                              ),
-                            ),
-                            child: SfSignaturePad(
-                              key: _signaturePadKey,
-                              backgroundColor: Colors.grey.withOpacity(0.1),
-                            ),
-                          ),
-                          Obx(() {
-                            return controller.showText.value
-                                ? Row(
+                      ((listAttendance[0]["status"] == "confirmation") &&
+                              (controller.role.value == "Pilot Administrator"))
+                          ? Column(
                               children: [
-                                Text("*Please add your sign here!*", style: TextStyle(color: Colors.red)),
-                              ],
-                            )
-                                : SizedBox();
-                          }),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              InkWell(
-                                onTap: (){_clearSignature();},
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                                  decoration:
-                                  BoxDecoration(color: TsOneColor.primary,
-                                      borderRadius: BorderRadius.circular(5)),
-                                  child: Row(
-                                    children: [
-                                      Text("Clear", style: TextStyle(color: Colors.white)),
-                                      SizedBox(
-                                        width: 5,
+                                //-------------------------ABSENT-----------------------
+                                Row(
+                                  children: [
+                                    Text("Absent"),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 10),
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: TsOneColor.secondaryContainer,
+                                        width: 1,
                                       ),
-                                      Icon(
-                                        Icons.clear_outlined,
-                                        color: Colors.white,
-                                        size: 15,
-                                      ),
-                                    ],
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: StreamBuilder<QuerySnapshot>(
+                                    stream: controller.trainingStream(),
+                                    builder: (context, snapshot) {
+                                      List<String> userNames = [];
+
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return CircularProgressIndicator();
+                                      }
+
+                                      if (snapshot.hasError) {
+                                        return Text('Error: ${snapshot.error}');
+                                      }
+
+                                      final users = snapshot.data?.docs.reversed
+                                              .toList() ??
+                                          [];
+
+                                      userNames.addAll(users.map(
+                                          (user) => user['NAME'] as String));
+
+                                      int selectedUserId =
+                                          0; // Default selected user ID
+
+                                      return DropdownSearch<String>(
+                                        mode: Mode.MENU,
+                                        showSelectedItems: true,
+                                        dropdownSearchDecoration:
+                                            InputDecoration(
+                                          labelText: "Training",
+                                          border: InputBorder.none,
+                                        ),
+                                        showSearchBox: true,
+                                        searchFieldProps: TextFieldProps(
+                                          cursorColor: TsOneColor.primary,
+                                        ),
+                                        items: userNames,
+                                        onChanged: (selectedName) {
+                                          // Find the corresponding user ID based on the selected name
+                                          final selectedUser = users.firstWhere(
+                                              (user) =>
+                                                  user['NAME'] == selectedName);
+
+                                          if (selectedUser != null) {
+                                            final selectedUserIdValue =
+                                                selectedUser['ID NO'] as int;
+                                            selectedUserId =
+                                                selectedUserIdValue;
+
+                                            controller
+                                                .addAbsentForm(selectedUserId);
+                                          } else {
+                                            selectedUserId = 0;
+                                          }
+
+                                          trainingC = selectedUserId;
+                                          // Handle user selection here, including the selectedUserId
+                                          print(
+                                              'Selected name: $selectedName, Selected ID: $selectedUserId');
+                                        },
+                                      );
+                                    },
                                   ),
                                 ),
-                              )
-                            ],
-                          ),
-                          //-------------------------SUBMIT-----------------------
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 16.0),
-                            child: ElevatedButton(
-                              onPressed: () {
-                                List<Path> paths =
-                                _signaturePadKey.currentState!.toPathList();
-                                if(paths.isNotEmpty){
-                                  controller.showText.value = false;
-                                  controller.update();
-                                  confir();
-                                }else{
-                                  controller.showText.value = true;
-                                  controller.update();
-                                }
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                StreamBuilder<List<Map<String, dynamic>>>(
+                                  stream: controller.absentStream(),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return LoadingScreen();
+                                    }
 
-                              },
-                              style: ElevatedButton.styleFrom(
-                                primary: TsOneColor.greenColor,
-                                minimumSize: Size(double.infinity, 50),
-                              ),
-                              child: Text('Submit', style: TextStyle(color: Colors.white),),
-                            ),
-                          ),
-                        ],
-                      ) : Container()
+                                    if (snapshot.hasError) {
+                                      return ErrorScreen();
+                                    }
+
+                                    var listAttendance = snapshot.data!;
+                                    if (listAttendance.isEmpty) {
+                                      return SizedBox();
+                                    }
+
+                                    return ListView.builder(
+                                        itemCount: listAttendance.length,
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        shrinkWrap: true,
+                                        itemBuilder: (context, index) {
+                                          return Container(
+                                            margin: EdgeInsets.symmetric(
+                                                vertical: 5),
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10.0),
+                                              color: Colors.white,
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Colors.grey
+                                                      .withOpacity(0.3),
+                                                  spreadRadius: 2,
+                                                  blurRadius: 3,
+                                                  offset: const Offset(0, 2),
+                                                ),
+                                              ],
+                                            ),
+                                            child: ListTile(
+                                                title: Text(
+                                                  listAttendance[index]["name"],
+                                                  style: tsOneTextTheme
+                                                      .headlineMedium,
+                                                ),
+                                                // subtitle: Text(
+                                                //   listAttendance[index]["name"],
+                                                //   style: tsOneTextTheme.headlineMedium,
+                                                // ),
+                                                trailing: InkWell(
+                                                  onTap: () {
+                                                    controller.deleteAbsent(
+                                                        listAttendance[index]
+                                                            ["id"]);
+                                                  },
+                                                  child: Icon(
+                                                    Icons.clear_sharp,
+                                                    color: tsOneColorScheme
+                                                        .primary,
+                                                    size: 20,
+                                                  ),
+                                                )),
+                                          );
+                                        });
+                                  },
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Row(
+                                  children: [
+                                    Text("Signature"),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: TsOneColor.secondaryContainer,
+                                      width: 1,
+                                    ),
+                                  ),
+                                  child: SfSignaturePad(
+                                    key: _signaturePadKey,
+                                    backgroundColor:
+                                        Colors.grey.withOpacity(0.1),
+                                  ),
+                                ),
+                                Obx(() {
+                                  return controller.showText.value
+                                      ? Row(
+                                          children: [
+                                            Text("*Please add your sign here!*",
+                                                style: TextStyle(
+                                                    color: Colors.red)),
+                                          ],
+                                        )
+                                      : SizedBox();
+                                }),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    InkWell(
+                                      onTap: () {
+                                        _clearSignature();
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 5, horizontal: 10),
+                                        decoration: BoxDecoration(
+                                            color: TsOneColor.primary,
+                                            borderRadius:
+                                                BorderRadius.circular(5)),
+                                        child: Row(
+                                          children: [
+                                            Text("Clear",
+                                                style: TextStyle(
+                                                    color: Colors.white)),
+                                            SizedBox(
+                                              width: 5,
+                                            ),
+                                            Icon(
+                                              Icons.clear_outlined,
+                                              color: Colors.white,
+                                              size: 15,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                //-------------------------SUBMIT-----------------------
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 16.0),
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      List<Path> paths = _signaturePadKey
+                                          .currentState!
+                                          .toPathList();
+                                      if (paths.isNotEmpty) {
+                                        controller.showText.value = false;
+                                        controller.update();
+                                        confir();
+                                      } else {
+                                        controller.showText.value = true;
+                                        controller.update();
+                                      }
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      primary: TsOneColor.greenColor,
+                                      minimumSize: Size(double.infinity, 50),
+                                    ),
+                                    child: Text(
+                                      'Submit',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                          : Container()
                     ],
                   );
                 }),

@@ -2,10 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import '../../../../presentation/shared_components/TitleText.dart';
-import '../../../../presentation/theme.dart';
-import '../../../../util/error_screen.dart';
-import '../../../../util/loading_screen.dart';
+import '../../../../../presentation/shared_components/TitleText.dart';
+import '../../../../../presentation/theme.dart';
+import '../../../../../util/error_screen.dart';
+import '../../../../../util/loading_screen.dart';
 import '../controllers/pilotcrewcc_controller.dart';
 
 class PilotcrewccView extends GetView<PilotcrewccController> {

@@ -23,12 +23,11 @@ class ListAttendancedetailccController extends GetxController {
   }
 
 
-  // Search dan List data attendance List
   Stream<List<Map<String, dynamic>>> profileList() {
     return firestore
         .collection('attendance-detail')
         .where("idattendance", isEqualTo: argumentidattendance.value)
-        .where("idpilot", isEqualTo: argumentid.value)
+        .where("idtraining", isEqualTo: argumentid.value)
         .snapshots()
         .asyncMap((attendanceQuery) async {
       final usersQuery = await firestore.collection('users').get();
@@ -37,7 +36,7 @@ class ListAttendancedetailccController extends GetxController {
         attendanceQuery.docs.map((doc) async {
           final attendanceModel = AttendanceDetailModel.fromJson(doc.data());
           final user = usersData.firstWhere(
-                (user) => user['ID NO'] == attendanceModel.idpilot,
+                (user) => user['ID NO'] == attendanceModel.idtraining,
             orElse: () => {},
           );
           attendanceModel.name = user['NAME'];
@@ -53,13 +52,14 @@ class ListAttendancedetailccController extends GetxController {
     });
   }
 
+  // Update score dan feedback dilakukan oleh instructor
   Future<void> updateScoring(String score, String feedback) async {
     CollectionReference attendance = firestore.collection('attendance-detail');
     await attendance.doc(idattendancedetail.value).update({
       "score" : score,
       "feedback" : feedback,
+      "status" : "donescoring",
       "updatedTime": DateTime.now().toIso8601String(),
-      //signature icc url
     });
   }
 

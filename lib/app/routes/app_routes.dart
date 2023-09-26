@@ -74,6 +74,8 @@ abstract class Routes {
   static const ATTENDANCE_PILOTCC = _Paths.ATTENDANCE_PILOTCC;
   static const LIST_ATTENDANCECC = _Paths.LIST_ATTENDANCECC;
   static const LIST_ATTENDANCEDETAILCC = _Paths.LIST_ATTENDANCEDETAILCC;
+  static const EDIT_ATTENDANCECC = _Paths.EDIT_ATTENDANCECC;
+  static const LIST_ATTENDANCEINSTRUCTORCC = _Paths.LIST_ATTENDANCEINSTRUCTORCC;
 }
 
 abstract class _Paths {
@@ -148,4 +150,6 @@ abstract class _Paths {
   static const ATTENDANCE_PILOTCC = '/attendance-pilotcc';
   static const LIST_ATTENDANCECC = '/list-attendancecc';
   static const LIST_ATTENDANCEDETAILCC = '/list-attendancedetailcc';
+  static const EDIT_ATTENDANCECC = '/edit-attendancecc';
+  static const LIST_ATTENDANCEINSTRUCTORCC = '/list-attendanceinstructorcc';
 }
