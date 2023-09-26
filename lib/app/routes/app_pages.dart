@@ -58,6 +58,8 @@ import '../modules/list_attendancecc/bindings/list_attendancecc_binding.dart';
 import '../modules/list_attendancecc/views/list_attendancecc_view.dart';
 import '../modules/list_pilotcptscc/bindings/list_pilotcptscc_binding.dart';
 import '../modules/list_pilotcptscc/views/list_pilotcptscc_view.dart';
+import '../modules/list_attendancedetailcc/bindings/list_attendancedetailcc_binding.dart';
+import '../modules/list_attendancedetailcc/views/list_attendancedetailcc_view.dart';
 import '../modules/main_home/bindings/main_home_binding.dart';
 import '../modules/main_home/views/main_home_view.dart';
 import '../modules/pa/navadmin/bindings/navadmin_binding.dart';
@@ -358,6 +360,11 @@ class AppPages {
       name: _Paths.LIST_PILOTCPTSCC,
       page: () => const ListPilotcptsccView(),
       binding: ListPilotcptsccBinding(),
+    ),
+    GetPage(
+      name: _Paths.LIST_ATTENDANCEDETAILCC,
+      page: () => ListAttendancedetailccView(),
+      binding: ListAttendancedetailccBinding(),
     ),
   ];
 }

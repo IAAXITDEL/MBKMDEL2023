@@ -7,6 +7,12 @@ class PilotcrewccController extends GetxController {
   late TextEditingController searchC;
   DocumentSnapshot? lastDocument;
   var isClicked = false.obs;
+  RxBool isLoading = false.obs;
+
+  final ScrollController scrollController = ScrollController();
+
+  RxString nameS = "".obs;
+  final Rx<List<Map<String, dynamic>>> streamData = Rx<List<Map<String, dynamic>>>([]);
 
   void toggleClick() {
     isClicked.toggle();
@@ -19,42 +25,75 @@ class PilotcrewccController extends GetxController {
   @override
   void onInit() {
     searchC = TextEditingController();
-    pilotCrewStream().listen((QuerySnapshot<Map<String, dynamic>> snapshot) {
-      // Gunakan .assignAll untuk memperbarui RxList
-      data.assignAll(snapshot.docs);
-    });
+    scrollController.addListener(_scrollListener);
     super.onInit();
   }
 
-  Stream<QuerySnapshot<Map<String, dynamic>>> pilotCrewStream() {
-    return FirebaseFirestore.instance
+
+  // Search dan tampilkan data
+  Stream<List<Map<String, dynamic>>> pilotCrewStream(String name) {
+    final query = FirebaseFirestore.instance
+        .collection('users')
+        .where("RANK", whereIn: ["CAPT", "FO"]);
+
+    if (name.isNotEmpty) {
+      return query.snapshots().map((snapshot) {
+        final filteredData = snapshot.docs
+            .where((doc) =>
+            doc['NAME']
+                .toString()
+                .toLowerCase()
+                .startsWith(name.toLowerCase()))
+            .map((doc) => doc.data())
+            .toList();
+        streamData.value = filteredData;
+        return filteredData;
+      });
+    }
+
+    return query.snapshots().map((snapshot) {
+      final dataList = snapshot.docs.map((doc) => doc.data()).toList();
+      return dataList;
+    });
+  }
+
+
+  void _scrollListener() {
+    print("ccc");
+    if (scrollController.offset >=
+        scrollController.position.maxScrollExtent &&
+        !scrollController.position.outOfRange) {
+      print("ddd");
+      if (!isLoading.value) {
+          isLoading.value = true;
+        _loadMoreData();
+      }
+    }
+  }
+
+  Future<void> _loadMoreData() async {
+    final lastDocument = _getLastDocument();
+    final additionalData = await FirebaseFirestore.instance
         .collection('users')
         .where("RANK", whereIn: ["CAPT", "FO"])
-        .snapshots();
+        .startAfterDocument(lastDocument!)
+        .limit(20)
+        .get();
+
+    isLoading.value = false;
   }
 
-  List<DocumentSnapshot> getCurrentPageData() {
-    final startIndex = (currentPage - 1) * itemsPerPage;
-    final endIndex = startIndex + itemsPerPage;
 
-    // Pastikan endIndex tidak melebihi panjang data
-    if (endIndex > data.length) {
-      return data.sublist(startIndex); // Ambil sampai akhir dari data
-    }
-
-    return data.sublist(startIndex, endIndex);
-  }
-
-  void goToPage(int page) {
-    if (page >= 1 && page <= (data.length / itemsPerPage).ceil()) {
-      currentPage = page;
-    }
+  DocumentSnapshot? _getLastDocument() {
+    return null;
   }
 
 
   @override
   void onClose() {
     searchC.dispose();
+    scrollController.removeListener(_scrollListener);
+    scrollController.dispose();
     super.onClose();
   }
 
