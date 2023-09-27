@@ -4,22 +4,18 @@ import 'package:get/get.dart';
 
 import '../../../../../../presentation/theme.dart';
 
-class DetailHistoryDeviceFOView extends GetView {
+class DetailHistoryPilotView extends GetView {
   final String dataId;
   final String userName;
-  final String deviceno2;
-  final String deviceno3;
+  final String deviceno;
 
-  const DetailHistoryDeviceFOView({
+  const DetailHistoryPilotView({
     Key? key,
     required this.dataId,
     required this.userName,
-    required this.deviceno2,
-    required this.deviceno3   ,
+    required this.deviceno,
   }) : super(key: key);
 
-
-  @override
   String _formatTimestamp(Timestamp? timestamp) {
     if (timestamp == null) return 'No Data';
 
@@ -28,6 +24,8 @@ class DetailHistoryDeviceFOView extends GetView {
     String formattedDateTime = '${dateTime.day}/${dateTime.month}/${dateTime.year}' ' at ' '${dateTime.hour}:${dateTime.minute}';
     return formattedDateTime;
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -58,8 +56,7 @@ class DetailHistoryDeviceFOView extends GetView {
             final data = snapshot.data!.data() as Map<String, dynamic>;
 
             final userUid = data['user_uid'];
-            final deviceUid2 = data['device_uid2'];
-            final deviceUid3 = data['device_uid3'];
+            final deviceUid = data['device_uid'];
             final status = data['statusDevice'];
             final handoverTo = data['handover-to-crew'];
             final occOnDuty = data['occ-on-duty'];
@@ -100,38 +97,21 @@ class DetailHistoryDeviceFOView extends GetView {
                     handoverToSnapshot.data?.data() as Map<String, dynamic>?;
 
                     return FutureBuilder<DocumentSnapshot>(
-                      future: FirebaseFirestore.instance.collection("Device").doc(deviceUid2).get(),
-                      builder: (context, deviceUid2Snapshot) {
-                        if (deviceUid2Snapshot.connectionState == ConnectionState.waiting) {
+                      future: FirebaseFirestore.instance.collection("Device").doc(deviceUid).get(),
+                      builder: (context, deviceSnapshot) {
+                        if (deviceSnapshot.connectionState == ConnectionState.waiting) {
                           return Center(child: CircularProgressIndicator());
                         }
 
-                        if (deviceUid2Snapshot.hasError) {
-                          return Center(child: Text('Error: ${deviceUid2Snapshot.error}'));
+                        if (deviceSnapshot.hasError) {
+                          return Center(child: Text('Error: ${deviceSnapshot.error}'));
                         }
 
-                        if (!deviceUid2Snapshot.hasData || !deviceUid2Snapshot.data!.exists) {
+                        if (!deviceSnapshot.hasData || !deviceSnapshot.data!.exists) {
                           return Center(child: Text('Device data not found'));
                         }
 
-                        final deviceData2 = deviceUid2Snapshot.data!.data() as Map<String, dynamic>;
-
-                            return FutureBuilder<DocumentSnapshot>(
-                            future: FirebaseFirestore.instance.collection("Device").doc(deviceUid3).get(),
-                            builder: (context, deviceUid3Snapshot) {
-                            if (deviceUid3Snapshot.connectionState == ConnectionState.waiting) {
-                            return Center(child: CircularProgressIndicator());
-                            }
-
-                            if (deviceUid3Snapshot.hasError) {
-                            return Center(child: Text('Error: ${deviceUid3Snapshot.error}'));
-                            }
-
-                            if (!deviceUid3Snapshot.hasData || !deviceUid3Snapshot.data!.exists) {
-                            return Center(child: Text('Device data 3 not found'));
-                            }
-
-                            final deviceData3 = deviceUid3Snapshot.data!.data() as Map<String, dynamic>;
+                        final deviceData = deviceSnapshot.data!.data() as Map<String, dynamic>;
 
 
 
@@ -231,7 +211,7 @@ class DetailHistoryDeviceFOView extends GetView {
                                               ),
                                               SizedBox(height: 10.0),
                                               Text(
-                                                "DEVICE INFO 1",
+                                                "DEVICE INFO",
                                                 style: tsOneTextTheme.headlineLarge,
                                               ),
                                               SizedBox(height: 7.0),
@@ -241,7 +221,7 @@ class DetailHistoryDeviceFOView extends GetView {
                                                   Expanded(flex: 1, child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
-                                                    child: Text('${data['device_nam2'] ?? 'No Data'}'),
+                                                    child: Text('${data['device_name'] ?? 'No Data'}'),
                                                   ),
                                                 ],
                                               ),
@@ -252,7 +232,7 @@ class DetailHistoryDeviceFOView extends GetView {
                                                   Expanded(flex: 1, child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
-                                                    child: Text('${deviceData2['iosver'] ?? 'No Data'}'),
+                                                    child: Text('${deviceData['iosver'] ?? 'No Data'}'),
                                                   ),
                                                 ],
                                               ),
@@ -263,7 +243,7 @@ class DetailHistoryDeviceFOView extends GetView {
                                                   Expanded(flex: 1, child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
-                                                    child: Text('${deviceData2['flysmart'] ?? 'No Data'}'),
+                                                    child: Text('${deviceData['flysmart'] ?? 'No Data'}'),
                                                   ),
                                                 ],
                                               ),
@@ -274,7 +254,7 @@ class DetailHistoryDeviceFOView extends GetView {
                                                   Expanded(flex: 1, child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
-                                                    child: Text('${deviceData2['docuversion'] ?? 'No Data'}'),
+                                                    child: Text('${deviceData['docuversion'] ?? 'No Data'}'),
                                                   ),
                                                 ],
                                               ),
@@ -285,7 +265,7 @@ class DetailHistoryDeviceFOView extends GetView {
                                                   Expanded(flex: 1, child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
-                                                    child: Text('${deviceData2['lidoversion'] ?? 'No Data'}'),
+                                                    child: Text('${deviceData['lidoversion'] ?? 'No Data'}'),
                                                   ),
                                                 ],
                                               ),
@@ -296,7 +276,7 @@ class DetailHistoryDeviceFOView extends GetView {
                                                   Expanded(flex: 1, child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
-                                                    child: Text('${deviceData2['hub'] ?? 'No Data'}'),
+                                                    child: Text('${deviceData['hub'] ?? 'No Data'}'),
                                                   ),
                                                 ],
                                               ),
@@ -307,94 +287,10 @@ class DetailHistoryDeviceFOView extends GetView {
                                                   Expanded(flex: 1, child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
-                                                    child: Text('${deviceData2['condition'] ?? 'No Data'}'),
+                                                    child: Text('${deviceData['condition'] ?? 'No Data'}'),
                                                   ),
                                                 ],
                                               ),
-
-
-                                              Text(
-                                                "DEVICE INFO 2",
-                                                style: tsOneTextTheme.headlineLarge,
-                                              ),
-                                              SizedBox(height: 7.0),
-                                              Row(
-                                                children: [
-                                                  Expanded(flex: 6, child: Text("Device ID")),
-                                                  Expanded(flex: 1, child: Text(":")),
-                                                  Expanded(
-                                                    flex: 6,
-                                                    child: Text('${data['device_name3'] ?? 'No Data'}'),
-                                                  ),
-                                                ],
-                                              ),
-                                              SizedBox(height: 5.0),
-                                              Row(
-                                                children: [
-                                                  Expanded(flex: 6, child: Text("iOS Version")),
-                                                  Expanded(flex: 1, child: Text(":")),
-                                                  Expanded(
-                                                    flex: 6,
-                                                    child: Text('${deviceData3['iosver'] ?? 'No Data'}'),
-                                                  ),
-                                                ],
-                                              ),
-                                              SizedBox(height: 5.0),
-                                              Row(
-                                                children: [
-                                                  Expanded(flex: 6, child: Text("FlySmart Version")),
-                                                  Expanded(flex: 1, child: Text(":")),
-                                                  Expanded(
-                                                    flex: 6,
-                                                    child: Text('${deviceData3['flysmart'] ?? 'No Data'}'),
-                                                  ),
-                                                ],
-                                              ),
-                                              SizedBox(height: 5.0),
-                                              Row(
-                                                children: [
-                                                  Expanded(flex: 6, child: Text("Docu Version")),
-                                                  Expanded(flex: 1, child: Text(":")),
-                                                  Expanded(
-                                                    flex: 6,
-                                                    child: Text('${deviceData3['docuversion'] ?? 'No Data'}'),
-                                                  ),
-                                                ],
-                                              ),
-                                              SizedBox(height: 5.0),
-                                              Row(
-                                                children: [
-                                                  Expanded(flex: 6, child: Text("Lido Version")),
-                                                  Expanded(flex: 1, child: Text(":")),
-                                                  Expanded(
-                                                    flex: 6,
-                                                    child: Text('${deviceData3['lidoversion'] ?? 'No Data'}'),
-                                                  ),
-                                                ],
-                                              ),
-                                              SizedBox(height: 5.0),
-                                              Row(
-                                                children: [
-                                                  Expanded(flex: 6, child: Text("HUB")),
-                                                  Expanded(flex: 1, child: Text(":")),
-                                                  Expanded(
-                                                    flex: 6,
-                                                    child: Text('${deviceData3['hub'] ?? 'No Data'}'),
-                                                  ),
-                                                ],
-                                              ),
-                                              SizedBox(height: 5.0),
-                                              Row(
-                                                children: [
-                                                  Expanded(flex: 6, child: Text("Condition")),
-                                                  Expanded(flex: 1, child: Text(":")),
-                                                  Expanded(
-                                                    flex: 6,
-                                                    child: Text('${deviceData3['condition'] ?? 'No Data'}'),
-                                                  ),
-                                                ],
-                                              ),
-
 
                                               SizedBox(height: 10.0),
                                               Text(
@@ -444,7 +340,6 @@ class DetailHistoryDeviceFOView extends GetView {
                                                   ),
                                                 ],
                                               ),
-
 
 
 
@@ -525,6 +420,7 @@ class DetailHistoryDeviceFOView extends GetView {
                                                     ),
                                                   ],
                                                 ),
+
                                               // Conditionally display the fields based on the status
                                               if (status == 'handover-to-other-crew')
                                                 Text(
@@ -598,8 +494,6 @@ class DetailHistoryDeviceFOView extends GetView {
                               },
                             );
                           },
-                        );
-                            },
                         );
                       },
                     );

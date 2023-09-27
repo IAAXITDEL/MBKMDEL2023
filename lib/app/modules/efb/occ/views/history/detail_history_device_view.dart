@@ -21,7 +21,7 @@
 
       DateTime dateTime = timestamp.toDate();
       // Format the date and time as desired, e.g., 'dd/MM/yyyy HH:mm:ss'
-      String formattedDateTime = '${dateTime.day}/${dateTime.month}/${dateTime.year}' ' ; ' '${dateTime.hour}:${dateTime.minute}';
+      String formattedDateTime = '${dateTime.day}/${dateTime.month}/${dateTime.year}' ' at ' '${dateTime.hour}:${dateTime.minute}';
       return formattedDateTime;
     }
 

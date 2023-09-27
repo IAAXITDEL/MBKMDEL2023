@@ -8,12 +8,12 @@ import 'package:quickalert/widgets/quickalert_dialog.dart';
 
 import '../../../../../presentation/theme.dart';
 
-class FOUnRequestDeviceView extends GetView {
+class FOUnReturnDeviceView extends GetView {
   final String deviceId;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  FOUnRequestDeviceView({Key? key, required this.deviceId, required String deviceName}) : super(key: key);
+  FOUnReturnDeviceView({Key? key, required this.deviceId}) : super(key: key);
 
 
   Future<void> _showQuickAlert(BuildContext context) async {

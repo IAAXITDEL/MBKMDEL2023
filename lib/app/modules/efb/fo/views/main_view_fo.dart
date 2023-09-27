@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:ts_one/app/modules/efb/fo/views/FOrequestdeviceView.dart';
 import 'package:ts_one/app/modules/efb/fo/views/confirm_return_other_fo_view.dart';
 import 'package:ts_one/app/modules/efb/fo/views/fo_return_device_view.dart';
+import 'package:ts_one/app/modules/efb/fo/views/fo_unrequest_device.dart';
+import 'package:ts_one/app/modules/efb/fo/views/fo_unreturn_device.dart';
 
 import '../../../../../presentation/shared_components/TitleText.dart';
 import '../../../../../presentation/theme.dart';
@@ -210,7 +212,16 @@ class HomeFOView extends GetView<HomeFOController> {
                                   alignment: Alignment.centerLeft,
                                   child: ElevatedButton(
                                     onPressed: () {
-                                     //unrequest
+                                      //confirm other pilot
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              FOUnRequestDeviceView(
+                                                deviceId: deviceId, deviceName: '',
+                                              ),
+                                        ),
+                                      );
                                     },
                                     style: ButtonStyle(
                                       padding: MaterialStateProperty.all<
@@ -370,16 +381,15 @@ class HomeFOView extends GetView<HomeFOController> {
                                   child: ElevatedButton(
                                     onPressed: () {
                                       //un return device
-                                      // Navigator.push(
-                                      //   context,
-                                      //   MaterialPageRoute(
-                                      //     builder: (context) =>
-                                      //         PilotUnReturnDeviceView(
-                                      //           deviceName: deviceName,
-                                      //           deviceId: deviceId,
-                                      //         ),
-                                      //   ),
-                                      // );
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              FOUnReturnDeviceView(
+                                                deviceId: deviceId,
+                                              ),
+                                        ),
+                                      );
                                     },
                                     style: ButtonStyle(
                                       padding: MaterialStateProperty.all<

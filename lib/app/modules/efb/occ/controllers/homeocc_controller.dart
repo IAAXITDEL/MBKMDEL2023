@@ -24,6 +24,9 @@ class HomeOCCController extends GetxController {
       case 'FO':
         titleToGreet = 'First Officer';
         break;
+      case 'OCC':
+        titleToGreet = 'OCC';
+        break;
       case 'Pilot Administrator':
         titleToGreet = 'Pilot Administrator';
         break;

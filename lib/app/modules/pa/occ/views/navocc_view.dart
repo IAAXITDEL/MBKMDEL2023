@@ -8,6 +8,7 @@ import '../../../../../data/users/user_preferences.dart';
 import '../../../../../data/users/users.dart';
 import '../../../../../di/locator.dart';
 import '../../../../../presentation/theme.dart';
+import '../../../efb/history_crew/for_crew_history.dart';
 import '../../../efb/occ/views/history/history_all_device_view.dart';
 import '../../../efb/occ/views/listdevice/listdevice.dart';
 import '../../../efb/pilot/views/main_view_pilot.dart';
@@ -47,13 +48,13 @@ class _NavOCCView extends State<NavOCCView> {
       _pilotRequestDevice = true;
       _screens = [
         HomePilotView(),
-        HomePilotView(),
+        HistoryEachCrewView(),
         ProfileccView(),
       ];
     } else {
       _screens = [
         HomeFOView(),
-        HomeFOView(),
+        HistoryEachCrewView(),
         ProfileccView(),
       ];
     }

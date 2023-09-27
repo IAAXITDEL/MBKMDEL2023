@@ -1,23 +1,28 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:ts_one/app/modules/efb/occ/views/history/detail_history_device_view.dart';
-import 'package:ts_one/presentation/theme.dart';
 
-import 'detailhistorydeviceFo.dart';
+import '../../../../presentation/theme.dart';
+import '../occ/views/history/detailhistorydeviceFo.dart';
 
-class HistoryAllDeviceView extends StatefulWidget {
-  const HistoryAllDeviceView({Key? key}) : super(key: key);
+
+class HistoryEachCrewView extends StatefulWidget {
+  const HistoryEachCrewView({Key? key}) : super(key: key);
+
 
   @override
-  _HistoryAllDeviceViewState createState() => _HistoryAllDeviceViewState();
+  _HistoryEachCrewViewState createState() => _HistoryEachCrewViewState();
 }
 
-class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
+class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
   final TextEditingController _searchController = TextEditingController();
   DateTime? _startDate;
   DateTime? _endDate;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   void _showFilterBottomSheet() {
     showModalBottomSheet(
@@ -33,6 +38,41 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
         );
       },
     );
+  }
+
+  Future<QuerySnapshot> getFODevices() async {
+    User? user = _auth.currentUser;
+
+    if (user != null) {
+      // Get the user's email
+      String userEmail = user.email ?? "";
+
+      // Query the 'users' collection to find the document with the matching email
+      QuerySnapshot userSnapshot = await _firestore
+          .collection('users')
+          .where('EMAIL', isEqualTo: userEmail)
+          .get();
+
+      if (userSnapshot.docs.isNotEmpty) {
+        // Get the user's document ID (user_id)
+        String userId = userSnapshot.docs.first.id;
+
+        // Query the 'pilot-device-1' collection based on the 'user_id'
+        QuerySnapshot snapshot = await _firestore
+            .collection('pilot-device-1')
+            .where('user_uid', isEqualTo: userId)
+            .where('statusDevice', whereIn: ['Done', 'handover-to-other-crew'])
+            .where('timestamp', isGreaterThanOrEqualTo: _startDate, isLessThanOrEqualTo: _endDate) // Add this line
+            .get();
+
+        return snapshot; // Return the QuerySnapshot directly.
+      } else {
+        throw Exception('User not found in the "users" collection');
+      }
+    } else {
+      throw Exception(
+          'User not logged in'); // You can handle this case as needed.
+    }
   }
 
   @override
@@ -63,12 +103,8 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
             ),
           ),
           Expanded(
-            child: StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance
-                  .collection("pilot-device-1")
-                  .where('statusDevice', whereIn: ['Done', 'handover-to-other-crew'])
-                  .where('timestamp', isGreaterThanOrEqualTo: _startDate, isLessThanOrEqualTo: _endDate) // Add this line
-                  .snapshots(),
+            child: FutureBuilder<QuerySnapshot>(
+                  future: getFODevices(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());
@@ -90,10 +126,10 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                   final userName = data['NAME'].toString().toLowerCase();
                   final deviceName = data['device_name'].toString().toLowerCase();
                   final deviceName2 = data['device_name2'].toString().toLowerCase();
-                  final deviceName3 = data['device_name3'].toString().toLowerCase();
+                  final deviceName3 = data['device_nam3'].toString().toLowerCase();
                   final searchTerm = _searchController.text.toLowerCase();
 
-                  return userName.contains(searchTerm) || deviceName.contains(searchTerm) || deviceName2.contains(searchTerm) || deviceName3.contains(searchTerm) ;
+                  return userName.contains(searchTerm) || deviceName.contains(searchTerm) || deviceName2.contains(searchTerm) || deviceName3.contains(searchTerm);
                 }).toList();
 
                 return ListView.builder(
@@ -107,7 +143,7 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                     final timestamp = data['timestamp'];
 
                     return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 4.0),
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
                       child: FutureBuilder<DocumentSnapshot>(
                         future: FirebaseFirestore.instance
                             .collection('users')
@@ -130,7 +166,6 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
 
                           final userName = userData['NAME'];
                           final userRank = userData['RANK'];
-                          final photoUrl = userData['PHOTOURL'] as String?; // Get the profile photo URL
 
                           return FutureBuilder<DocumentSnapshot>(
                             future: FirebaseFirestore.instance
@@ -174,24 +209,24 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
 
                                     final deviceno2 = deviceData2?['deviceno'];
 
-                                        return FutureBuilder<DocumentSnapshot>(
-                                        future: FirebaseFirestore.instance
-                                            .collection('Device')
-                                            .doc(deviceUid3)
-                                            .get(),
-                                        builder: (context, deviceUid3Snapshot) {
+                                    return FutureBuilder<DocumentSnapshot>(
+                                      future: FirebaseFirestore.instance
+                                          .collection('Device')
+                                          .doc(deviceUid3)
+                                          .get(),
+                                      builder: (context, deviceUid3Snapshot) {
                                         if (deviceUid3Snapshot.connectionState == ConnectionState.waiting) {
-                                        return CircularProgressIndicator();
+                                          return CircularProgressIndicator();
                                         }
 
                                         if (deviceUid3Snapshot.hasError) {
-                                        return Text('Error: ${deviceUid3Snapshot.error}');
+                                          return Text('Error: ${deviceUid3Snapshot.error}');
                                         }
 
                                         final deviceData3 = deviceUid3Snapshot.data?.data() as Map<String, dynamic>?;
 
                                         if (!deviceUid2Snapshot.hasData || !deviceUid3Snapshot.data!.exists) {
-                                        return Text('Device Not Found');
+                                          return Text('Device Not Found');
                                         }
 
                                         final deviceno3 = deviceData3?['deviceno'];
@@ -229,57 +264,36 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                                                       ),
                                                     ),
                                                   ),
-                                                  child: Padding(
-                                                    padding: const EdgeInsets.symmetric(vertical: 10),
-                                                    child: Row(
-                                                      mainAxisAlignment: MainAxisAlignment.center,  // Center the children horizontally
-                                                      crossAxisAlignment: CrossAxisAlignment.center,  // Center the children vertically
-                                                      children: [
-                                                        // Display the profile image
-                                                        CircleAvatar(
-                                                          backgroundImage: photoUrl != null
-                                                              ? NetworkImage(photoUrl as String)
-                                                              : AssetImage('assets/default_profile_image.png')
-                                                          as ImageProvider, // You can provide a default image
-                                                          radius: 25.0, // Adjust the radius as needed
-                                                        ),
-
-                                                        SizedBox(
-                                                            width:
-                                                            12.0), // Add spacing between the image and text
-                                                        Flexible(
-                                                          child: Column(
-                                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                                            children: [
-                                                              Container(
-                                                                width: double
-                                                                    .infinity, // Set the width to expand to the available space
-                                                                child:  Text(
-                                                                  '$userRank'+ ' '+ '$userName',
-                                                                  style: tsOneTextTheme.titleMedium,
-                                                                ),
-                                                              ),
-                                                              Text(
-                                                                '$deviceno2' + ' & ' + '$deviceno3',
-                                                                style: tsOneTextTheme.labelMedium,
-                                                              ),
-                                                              Text(
-                                                                '${DateFormat('yyyy-MM-dd HH:mm a').format(timestamp.toDate())}',
-                                                                style: tsOneTextTheme.labelSmall,
-                                                              ),
-                                                              // Display device_name3 if available
-                                                            ],
+                                                  child: Align(
+                                                    alignment: Alignment.centerLeft,  // Align text to the left
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.all(10.0),
+                                                      child: Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,  // Align text to the left
+                                                        children: [
+                                                          Text(
+                                                            '$userRank'+ ' '+ '$userName',
+                                                            style: tsOneTextTheme.titleMedium,
                                                           ),
-                                                        ),
-                                                      ],
+                                                          Text(
+                                                            '$deviceno2' + ' & ' + '$deviceno3',
+                                                            style: tsOneTextTheme.labelMedium,
+                                                          ),
+                                                          Text(
+                                                            '${DateFormat('yyyy-MM-dd at HH:mm').format(timestamp.toDate())}',
+                                                            style: tsOneTextTheme.labelSmall,
+                                                          ),
+                                                        ],
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
+
                                               ),
                                             ),
                                           ),
                                         );
-                                        },
+                                      },
                                     );
                                   },
                                 );
@@ -319,49 +333,27 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                                             ),
                                           ),
                                         ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(vertical: 10),
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.center,  // Center the children horizontally
-                                            crossAxisAlignment: CrossAxisAlignment.center,  // Center the children vertically
-                                            children: [
-                                              // Display the profile image
-                                              CircleAvatar(
-                                                backgroundImage: photoUrl != null
-                                                    ? NetworkImage(photoUrl as String)
-                                                    : AssetImage('assets/default_profile_image.png')
-                                                as ImageProvider, // You can provide a default image
-                                                radius: 25.0, // Adjust the radius as needed
-                                              ),
-
-                                              SizedBox(
-                                                  width:
-                                                  12.0), // Add spacing between the image and text
-                                              Flexible(
-                                                child: Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    Container(
-                                                      width: double
-                                                          .infinity, // Set the width to expand to the available space
-                                                      child:  Text(
-                                                        '$userRank'+ ' '+ '$userName',
-                                                        style: tsOneTextTheme.titleMedium,
-                                                      ),
-                                                    ),
-                                                    Text(
-                                                      '$deviceno',
-                                                      style: tsOneTextTheme.labelMedium,
-                                                    ),
-                                                    Text(
-                                                      '${DateFormat('yyyy-MM-dd HH:mm a').format(timestamp.toDate())}',
-                                                      style: tsOneTextTheme.labelSmall,
-                                                    ),
-                                                    // Display device_name3 if available
-                                                  ],
+                                        child: Align(
+                                          alignment: Alignment.centerLeft,  // Align text to the left
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(10.0),
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,  // Align text to the left
+                                              children: [
+                                                Text(
+                                                  '$userRank'+ ' '+ '$userName',
+                                                  style: tsOneTextTheme.titleMedium,
                                                 ),
-                                              ),
-                                            ],
+                                                Text(
+                                                  '$deviceno',
+                                                  style: tsOneTextTheme.labelMedium,
+                                                ),
+                                                Text(
+                                                  '${DateFormat('yyyy-MM-dd at HH:mm').format(timestamp.toDate())}',
+                                                  style: tsOneTextTheme.labelSmall,
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -370,8 +362,6 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                                   ),
                                 ),
                               );
-
-
                             },
                           );
                         },
