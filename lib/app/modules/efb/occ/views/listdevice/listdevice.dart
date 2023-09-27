@@ -180,7 +180,6 @@ class _ListDeviceState extends State<ListDevice> {
         ),
       ),
       body: Padding(
-        //padding: EdgeInsets.symmetric(horizontal: 20, vertical: 50),
         padding: const EdgeInsets.only(top: 10, right: 20, left: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -242,6 +241,34 @@ class _ListDeviceState extends State<ListDevice> {
               ),
             ),
             SizedBox(height: 10),
+            Container(
+              alignment: Alignment.centerRight,
+              padding: const EdgeInsets.only(right: 10),
+              child: StreamBuilder<QuerySnapshot>(
+                stream: collectionReference,
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator();
+                  }
+
+                  if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  }
+
+                  final deviceCount =
+                      snapshot.hasData ? snapshot.data!.docs.length : 0;
+
+                  return Text(
+                    'Total Devices: $deviceCount',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  );
+                },
+              ),
+            ),
             Expanded(
               child: StreamBuilder(
                 stream: collectionReference,
@@ -271,8 +298,7 @@ class _ListDeviceState extends State<ListDevice> {
                   }
 
                   return ListView.builder(
-                    itemCount:
-                        filteredData.length > 20 ? 20 : filteredData.length,
+                    itemCount: filteredData.length,
                     itemBuilder: (context, index) {
                       final e = filteredData[index];
                       return Padding(
@@ -305,6 +331,20 @@ class _ListDeviceState extends State<ListDevice> {
                               ],
                             ),
                           )),
+                          // child: Card(
+                          //   color: TsOneColor.surface,
+                          //   child: Column(
+                          //     children: [
+                          //       ListTile(
+                          //         title: Text(
+                          //           "${e["deviceno"]}",
+                          //           style: tsOneTextTheme.bodyMedium,
+                          //         ),
+                          //         trailing: _buildEditDeleteButton(e),
+                          //       ),
+                          //     ],
+                          //   ),
+                          // ),
                         ),
                       );
                     },

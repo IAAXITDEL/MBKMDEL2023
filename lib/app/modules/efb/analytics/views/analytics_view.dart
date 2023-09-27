@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:ts_one/presentation/shared_components/TitleText.dart';
-
 import '../../../../../presentation/theme.dart';
 import '../controllers/analytics_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -49,12 +47,7 @@ class AnalyticsView extends GetView<AnalyticsController> {
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           child: Column(
-            children: [
-              RedTitleText(text: "HUB"),
-              //SizedBox(height: 10),
-              //count(),
-              AnalyticsHub()
-            ],
+            children: [RedTitleText(text: "HUB"), AnalyticsHub()],
           ),
         ),
       ),
@@ -63,7 +56,7 @@ class AnalyticsView extends GetView<AnalyticsController> {
 }
 
 class AnalyticsHub extends StatefulWidget {
-  const AnalyticsHub({super.key});
+  const AnalyticsHub({Key? key}) : super(key: key);
 
   @override
   State<AnalyticsHub> createState() => _AnalyticsHubState();
@@ -110,19 +103,20 @@ class _AnalyticsHubState extends State<AnalyticsHub>
           Container(
             height: MediaQuery.of(context).size.height * 0.6,
             child: Flexible(
-              child: TabBarView(
-                controller: tabController,
-                children: tabs.map((Tab tab) {
-                  return Column(
-                    children: [
-                      count(tab.text),
-                      SizedBox(height: 10),
-                      //PieChartWidget(totalDeviceCounts),
-                    ],
-                  ); // Mengirimkan label tab ke fungsi count
-                }).toList(),
-              ),
-            ),
+                child: TabBarView(
+              controller: tabController,
+              children: tabs.map((Tab tab) {
+                return Column(
+                  children: [
+                    count(tab.text), // Menampilkan jumlah total perangkat
+                    SizedBox(height: 10),
+                    countDevicesInUse(tab
+                        .text), // Menampilkan jumlah perangkat yang sedang digunakan
+                    SizedBox(height: 10),
+                  ],
+                );
+              }).toList(),
+            )),
           ),
         ],
       ),
@@ -169,7 +163,6 @@ class _AnalyticsHubState extends State<AnalyticsHub>
                       ],
                     ),
                   ),
-                  //Spacer(),
                   Flexible(
                     flex: 10,
                     child: Column(
@@ -202,6 +195,137 @@ class _AnalyticsHubState extends State<AnalyticsHub>
     }
   }
 
+  Widget countDevicesInUse(String? hub) {
+    if (hub != null) {
+      return FutureBuilder(
+        future: countDevicesHub_InUse_AllHubs(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return CircularProgressIndicator();
+          } else if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          } else {
+            final deviceCounts_InUse_AllHubs = snapshot.data as int;
+            return Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: Row(
+                children: [
+                  Flexible(
+                    flex: 10,
+                    child: Column(
+                      children: [
+                        Text("IAA", style: tsOneTextTheme.bodySmall),
+                        Container(
+                          margin: EdgeInsets.all(16.0),
+                          padding: EdgeInsets.all(16.0),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(4.0),
+                              border: Border.all(
+                                color: tsOneColorScheme.primary,
+                                width: 1.0,
+                              )),
+                          child: Center(child: BlackTitleText(text: "Overall")),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Flexible(
+                    flex: 10,
+                    child: Column(
+                      children: [
+                        Text("Acknowledgment", style: tsOneTextTheme.bodySmall),
+                        Container(
+                          margin: EdgeInsets.all(16.0),
+                          padding: EdgeInsets.all(16.0),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(4.0),
+                              border: Border.all(
+                                color: tsOneColorScheme.primary,
+                                width: 1.0,
+                              )),
+                          child: Center(
+                              child: BlackTitleText(
+                                  text: "${deviceCounts_InUse_AllHubs}")),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Flexible(
+                    flex: 10,
+                    child: Column(
+                      children: [
+                        Text("Return", style: tsOneTextTheme.bodySmall),
+                        FutureBuilder(
+                          future: countDevicesDone(
+                              tabs[currentTabIndex]?.text ?? ''),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return CircularProgressIndicator();
+                            } else if (snapshot.hasError) {
+                              return Text('Error: ${snapshot.error}');
+                            } else {
+                              return Container(
+                                margin: EdgeInsets.all(16.0),
+                                padding: EdgeInsets.all(16.0),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(4.0),
+                                  border: Border.all(
+                                    color: tsOneColorScheme.primary,
+                                    width: 1.0,
+                                  ),
+                                ),
+                                child: Center(
+                                  child:
+                                      BlackTitleText(text: "${snapshot.data}"),
+                                ),
+                              );
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+        },
+      );
+    } else {
+      return Text('Tab tidak valid');
+    }
+  }
+
+  Future<double> calculatePercentage() async {
+    final firestore = FirebaseFirestore.instance;
+    final QuerySnapshot querySnapshot = await firestore
+        .collection('pilot-device-1')
+        .where('statusDevice', isEqualTo: 'in-use-pilot')
+        .get();
+
+    final List<DocumentSnapshot> documents = querySnapshot.docs;
+
+    int totalRecords = documents.length;
+    int recordsWithValues = 0;
+
+    for (final doc in documents) {
+      final data = doc.data() as Map<String, dynamic>;
+      if (data['device-name'] != null &&
+          data['device-name'] != '-' &&
+          (data['device_name2'] != null && data['device_name2'] != '-') &&
+          (data['device_name3'] != null && data['device_name3'] != '-')) {
+        recordsWithValues++;
+      }
+    }
+
+    if (totalRecords > 0) {
+      return (recordsWithValues / totalRecords) * 100;
+    } else {
+      return 0.0; // Return 0 jika tidak ada data yang sesuai.
+    }
+  }
+
   Future<Map<String, int>> countDevicesHub(String hub) async {
     final firestore = FirebaseFirestore.instance;
     final QuerySnapshot querySnapshot =
@@ -213,7 +337,6 @@ class _AnalyticsHubState extends State<AnalyticsHub>
       'DPS': 0,
       'SUB': 0,
     };
-
     querySnapshot.docs.forEach((doc) {
       final hubValue = doc['hub'] as String;
       if (deviceCountByHub.containsKey(hubValue)) {
@@ -241,6 +364,31 @@ class _AnalyticsHubState extends State<AnalyticsHub>
     return deviceCountByHub_InUse;
   }
 
+  Future<int> countDevicesHub_InUse_AllHubs() async {
+    final firestore = FirebaseFirestore.instance;
+    final QuerySnapshot querySnapshot = await firestore
+        .collection('pilot-device-1')
+        .where('statusDevice', isEqualTo: 'in-use-pilot')
+        .get();
+
+    final int deviceCount_InUse_AllHubs = querySnapshot.docs.length;
+
+    return deviceCount_InUse_AllHubs;
+  }
+
+  Future<int> countDevicesDone(String hub) async {
+    final firestore = FirebaseFirestore.instance;
+    final QuerySnapshot querySnapshot = await firestore
+        .collection('pilot-device-1')
+        .where('statusDevice', isEqualTo: 'Done')
+        .where('field_hub', isEqualTo: hub)
+        .get();
+
+    final int deviceCountDone = querySnapshot.docs.length;
+
+    return deviceCountDone;
+  }
+
   void _handleTabChange(int newIndex) {
     setState(() {
       currentTabIndex = newIndex;
@@ -248,7 +396,7 @@ class _AnalyticsHubState extends State<AnalyticsHub>
   }
 }
 
-//Pie Chart
+// Pie Chart
 class PieChartWidget extends StatefulWidget {
   final Map<String, int> deviceCounts;
   final int currentTabIndex;
@@ -342,28 +490,5 @@ class _PieChartWidgetState extends State<PieChartWidget> {
         ),
       );
     });
-  }
-
-  double _getRadius(int index) {
-    // Determine whether to explode the slice
-    if (widget.currentTabIndex == index && touchedIndex == index) {
-      return 110; // Explode the selected slice
-    } else {
-      return 100; // Keep other slices unexploded
-    }
-  }
-
-  Color _getColorForHub(String hub) {
-    if (hub == 'CGK') {
-      return Colors.blue;
-    } else if (hub == 'KNO') {
-      return Colors.green;
-    } else if (hub == 'DPS') {
-      return Colors.orange;
-    } else if (hub == 'SUB') {
-      return Colors.red;
-    } else {
-      return Colors.grey;
-    }
   }
 }

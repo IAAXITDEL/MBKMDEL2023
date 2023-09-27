@@ -43,8 +43,13 @@ class FORequestdeviceController extends GetxController {
         QuerySnapshot snapshot = await _firestore
             .collection('pilot-device-1')
             .where('user_uid', isEqualTo: userId)
-            .where('statusDevice', whereIn: ['in-use-pilot','in-use-fo', 'waiting-confirmation-2','need-confirmation-occ','waiting-confirmation-other-pilot'])
-            .get();
+            .where('statusDevice', whereIn: [
+          'in-use-pilot',
+          'in-use-fo',
+          'waiting-confirmation-2',
+          'need-confirmation-occ',
+          'waiting-confirmation-other-pilot'
+        ]).get();
 
         return snapshot; // Return the QuerySnapshot directly.
       } else {
@@ -56,27 +61,40 @@ class FORequestdeviceController extends GetxController {
     }
   }
 
-  Future<bool> isDeviceInUse(String deviceUid2,String deviceUid3 ) async {
+  Future<bool> isDeviceInUse(String deviceUid2, String deviceUid3) async {
     // Check if deviceUid is in 'device_uid'
     QuerySnapshot snapshot1 = await _firestore
         .collection('pilot-device-1')
         .where('device_uid2', isEqualTo: deviceUid2)
-        .where('statusDevice', whereIn: ['in-use-pilot', 'waiting-confirmation-1', 'need-confirmation-occ', 'waiting-confirmation-other-pilot'])
-        .get();
+        .where('statusDevice', whereIn: [
+      'in-use-pilot',
+      'waiting-confirmation-1',
+      'need-confirmation-occ',
+      'waiting-confirmation-other-pilot'
+    ]).get();
 
     // Check if deviceUid is in 'device_uid2'
     QuerySnapshot snapshot2 = await _firestore
         .collection('pilot-device-1')
         .where('device_uid3', isEqualTo: deviceUid3)
-        .where('statusDevice', whereIn: ['in-use-pilot', 'waiting-confirmation-1', 'need-confirmation-occ', 'waiting-confirmation-other-pilot'])
-        .get();
+        .where('statusDevice', whereIn: [
+      'in-use-pilot',
+      'waiting-confirmation-1',
+      'need-confirmation-occ',
+      'waiting-confirmation-other-pilot'
+    ]).get();
 
     return snapshot1.docs.isNotEmpty || snapshot2.docs.isNotEmpty;
   }
 
-
-
-  void requestDevice(String deviceUid2, String deviceName2,String deviceUid3, String deviceName3, String statusdevice1, String fieldHub2, String fieldHub3) async {
+  void requestDevice(
+      String deviceUid2,
+      String deviceName2,
+      String deviceUid3,
+      String deviceName3,
+      String statusdevice1,
+      String fieldHub2,
+      String fieldHub3) async {
     User? user = _auth.currentUser;
 
     if (user != null) {
@@ -88,8 +106,7 @@ class FORequestdeviceController extends GetxController {
 
       QuerySnapshot deviceQuery = await _firestore
           .collection('Device')
-          .where('device_name', whereIn: [deviceName2, deviceName3])
-          .get();
+          .where('device_name', whereIn: [deviceName2, deviceName3]).get();
 
       if (userQuery.docs.isNotEmpty) {
         // Mengambil ID dokumen pengguna dari hasil query
@@ -97,14 +114,14 @@ class FORequestdeviceController extends GetxController {
 
         // Membuat referensi koleksi 'pilot-device-1' tanpa menambahkan dokumen
         CollectionReference pilotDeviceCollection =
-        _firestore.collection('pilot-device-1');
+            _firestore.collection('pilot-device-1');
 
         // Mendapatkan ID dokumen yang baru akan dibuat
         String newDeviceId = pilotDeviceCollection.doc().id;
 
         await pilotDeviceCollection.doc(newDeviceId).set({
           'user_uid':
-          userUid, // Menggunakan ID dokumen pengguna sebagai 'user_uid'
+              userUid, // Menggunakan ID dokumen pengguna sebagai 'user_uid'
           'device_uid': '',
           'device_name': '',
           'device_uid2': deviceUid2,
@@ -114,19 +131,17 @@ class FORequestdeviceController extends GetxController {
           'statusDevice': 'waiting-confirmation-2',
           'document_id': newDeviceId, // Menyimpan ID dokumen sebagai field
           'timestamp': FieldValue.serverTimestamp(),
-          'handover-from' : '-',
-          'handover-to-crew' : '-',
-          'remarks' : '',
+          'handover-from': '-',
+          'handover-to-crew': '-',
+          'remarks': '',
           'prove_image_url': '',
           'occ-accepted-device': '-',
-          'field_hub2': fieldHub2,  // Include the field hub in the data
-          'field_hub3': fieldHub3,  // Include the field hub in the data
+          'field_hub2': fieldHub2, // Include the field hub in the data
+          'field_hub3': fieldHub3, // Include the field hub in the data
         });
       }
     }
   }
-
-
 
   final count = 0.obs;
   @override
