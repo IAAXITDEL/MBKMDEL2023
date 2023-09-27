@@ -166,6 +166,7 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
 
                           final userName = userData['NAME'];
                           final userRank = userData['RANK'];
+                          final photoUrl = userData['PHOTOURL'] as String?; // Get the profile photo URL
 
                           return FutureBuilder<DocumentSnapshot>(
                             future: FirebaseFirestore.instance
@@ -264,27 +265,49 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
                                                       ),
                                                     ),
                                                   ),
-                                                  child: Align(
-                                                    alignment: Alignment.centerLeft,  // Align text to the left
-                                                    child: Padding(
-                                                      padding: const EdgeInsets.all(10.0),
-                                                      child: Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.start,  // Align text to the left
-                                                        children: [
-                                                          Text(
-                                                            '$userRank'+ ' '+ '$userName',
-                                                            style: tsOneTextTheme.titleMedium,
+                                                  child: Padding(
+                                                    padding: const EdgeInsets.symmetric(vertical: 10),
+                                                    child: Row(
+                                                      mainAxisAlignment: MainAxisAlignment.center,  // Center the children horizontally
+                                                      crossAxisAlignment: CrossAxisAlignment.center,  // Center the children vertically
+                                                      children: [
+                                                        // Display the profile image
+                                                        CircleAvatar(
+                                                          backgroundImage: photoUrl != null
+                                                              ? NetworkImage(photoUrl as String)
+                                                              : AssetImage('assets/default_profile_image.png')
+                                                          as ImageProvider, // You can provide a default image
+                                                          radius: 25.0, // Adjust the radius as needed
+                                                        ),
+
+                                                        SizedBox(
+                                                            width:
+                                                            12.0), // Add spacing between the image and text
+                                                        Flexible(
+                                                          child: Column(
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                            children: [
+                                                              Container(
+                                                                width: double
+                                                                    .infinity, // Set the width to expand to the available space
+                                                                child:  Text(
+                                                                  '$userRank'+ ' '+ '$userName',
+                                                                  style: tsOneTextTheme.titleMedium,
+                                                                ),
+                                                              ),
+                                                              Text(
+                                                                '$deviceno2' + ' & ' + '$deviceno3',
+                                                                style: tsOneTextTheme.labelMedium,
+                                                              ),
+                                                              Text(
+                                                                '${DateFormat('yyyy-MM-dd HH:mm a').format(timestamp.toDate())}',
+                                                                style: tsOneTextTheme.labelSmall,
+                                                              ),
+                                                              // Display device_name3 if available
+                                                            ],
                                                           ),
-                                                          Text(
-                                                            '$deviceno2' + ' & ' + '$deviceno3',
-                                                            style: tsOneTextTheme.labelMedium,
-                                                          ),
-                                                          Text(
-                                                            '${DateFormat('yyyy-MM-dd at HH:mm').format(timestamp.toDate())}',
-                                                            style: tsOneTextTheme.labelSmall,
-                                                          ),
-                                                        ],
-                                                      ),
+                                                        ),
+                                                      ],
                                                     ),
                                                   ),
                                                 ),
@@ -333,27 +356,49 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
                                             ),
                                           ),
                                         ),
-                                        child: Align(
-                                          alignment: Alignment.centerLeft,  // Align text to the left
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(10.0),
-                                            child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,  // Align text to the left
-                                              children: [
-                                                Text(
-                                                  '$userRank'+ ' '+ '$userName',
-                                                  style: tsOneTextTheme.titleMedium,
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(vertical: 10),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,  // Center the children horizontally
+                                            crossAxisAlignment: CrossAxisAlignment.center,  // Center the children vertically
+                                            children: [
+                                              // Display the profile image
+                                              CircleAvatar(
+                                                backgroundImage: photoUrl != null
+                                                    ? NetworkImage(photoUrl as String)
+                                                    : AssetImage('assets/default_profile_image.png')
+                                                as ImageProvider, // You can provide a default image
+                                                radius: 25.0, // Adjust the radius as needed
+                                              ),
+
+                                              SizedBox(
+                                                  width:
+                                                  12.0), // Add spacing between the image and text
+                                              Flexible(
+                                                child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Container(
+                                                      width: double
+                                                          .infinity, // Set the width to expand to the available space
+                                                      child:  Text(
+                                                        '$userRank'+ ' '+ '$userName',
+                                                        style: tsOneTextTheme.titleMedium,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      '$deviceno',
+                                                      style: tsOneTextTheme.labelMedium,
+                                                    ),
+                                                    Text(
+                                                      '${DateFormat('yyyy-MM-dd HH:mm a').format(timestamp.toDate())}',
+                                                      style: tsOneTextTheme.labelSmall,
+                                                    ),
+                                                    // Display device_name3 if available
+                                                  ],
                                                 ),
-                                                Text(
-                                                  '$deviceno',
-                                                  style: tsOneTextTheme.labelMedium,
-                                                ),
-                                                Text(
-                                                  '${DateFormat('yyyy-MM-dd at HH:mm').format(timestamp.toDate())}',
-                                                  style: tsOneTextTheme.labelSmall,
-                                                ),
-                                              ],
-                                            ),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ),

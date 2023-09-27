@@ -326,7 +326,6 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                         Row(
                           children: [
                             Expanded(flex: 7, child: Text("HUB")),
-                            Expanded(flex: 7, child: Text("HUB")),
                             Expanded(flex: 1, child: Text(":")),
                             Expanded(
                               flex: 6,
@@ -336,7 +335,6 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                         ),
                         Row(
                           children: [
-                            Expanded(flex: 7, child: Text("Condition")),
                             Expanded(flex: 7, child: Text("Condition")),
                             Expanded(flex: 1, child: Text(":")),
                             Expanded(
