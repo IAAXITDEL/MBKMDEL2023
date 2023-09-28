@@ -1,14 +1,43 @@
 import 'dart:io';
+import 'dart:async';
+import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:open_file/open_file.dart';
 import '../../../occ/views/history/detail_history_device_view.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
-Future<void> generateLogPdfDevice1() async {
+String _formatTimestamp(Timestamp? timestamp) {
+  if (timestamp == null) return 'No Data';
+
+  DateTime dateTime = timestamp.toDate();
+  // Format the date and time as desired, e.g., 'dd/MM/yyyy HH:mm:ss'
+  String formattedDateTime =
+      '${dateTime.day}/${dateTime.month}/${dateTime.year}'
+      ' at '
+      '${dateTime.hour}:${dateTime.minute}';
+  return formattedDateTime;
+}
+
+Future<void> generateLogPdfDevice1({
+  String? userName,
+  String? userRank,
+  String? occAccept,
+  String? occGiven,
+  String? deviceNo,
+  String? iosVer,
+  String? flySmart,
+  String? lido,
+  String? docunet,
+  String? deviceCondition,
+  String? ttdUser,
+  Timestamp? loan,
+}) async {
   final pdf = pw.Document();
 
   final output = await getTemporaryDirectory();
@@ -20,6 +49,8 @@ Future<void> generateLogPdfDevice1() async {
 
   final font = await rootBundle.load("assets/fonts/Poppins-Regular.ttf");
   final ttf = pw.Font.ttf(font);
+
+  final Uint8List imagettdUser = await fetchImage('$ttdUser');
 
   final footer = pw.Container(
     padding: pw.EdgeInsets.all(5.0),
@@ -74,7 +105,7 @@ Future<void> generateLogPdfDevice1() async {
           pw.Align(
             alignment: pw.Alignment.centerRight,
             child: pw.Text(
-              'xxxxxx',
+              _formatTimestamp(loan),
               style: pw.TextStyle(
                 fontSize: 12,
               ),
@@ -114,7 +145,7 @@ Future<void> generateLogPdfDevice1() async {
                   ),
                   pw.Container(
                     height: 20.0,
-                    child: _buildHeaderCellRight('xxxx', context),
+                    child: _buildHeaderCellRight('$deviceNo', context),
                   ),
                 ],
               ),
@@ -138,7 +169,7 @@ Future<void> generateLogPdfDevice1() async {
                   ),
                   pw.Container(
                     height: 20.0,
-                    child: _buildHeaderCellRight('xxxx', context),
+                    child: _buildHeaderCellRight('$iosVer', context),
                   ),
                 ],
               ),
@@ -177,7 +208,7 @@ Future<void> generateLogPdfDevice1() async {
                   ),
                   pw.Container(
                     height: 20.0,
-                    child: _buildHeaderCellRight('xxxx', context),
+                    child: _buildHeaderCellRight('$flySmart', context),
                   ),
                 ],
               ),
@@ -189,7 +220,7 @@ Future<void> generateLogPdfDevice1() async {
                   ),
                   pw.Container(
                     height: 20.0,
-                    child: _buildHeaderCellRight('xxxx', context),
+                    child: _buildHeaderCellRight('$lido', context),
                   ),
                 ],
               ),
@@ -201,7 +232,7 @@ Future<void> generateLogPdfDevice1() async {
                   ),
                   pw.Container(
                     height: 20.0,
-                    child: _buildHeaderCellRight('xxxx', context),
+                    child: _buildHeaderCellRight('$docunet', context),
                   ),
                 ],
               ),
@@ -213,7 +244,7 @@ Future<void> generateLogPdfDevice1() async {
                   ),
                   pw.Container(
                     height: 20.0,
-                    child: _buildHeaderCellRight('xxxx', context),
+                    child: _buildHeaderCellRight('$deviceCondition', context),
                   ),
                 ],
               ),
@@ -251,9 +282,20 @@ Future<void> generateLogPdfDevice1() async {
                 flex: 5,
                 child: pw.Column(
                   children: [
-                    pw.Text('OCC ON DUTY'),
+                    pw.Text('OCC Given Device'),
                     pw.SizedBox(height: 10.0),
-                    pw.Text('xxxx'),
+                    pw.Text('$occGiven'),
+                  ],
+                ),
+              ),
+              pw.Spacer(flex: 1),
+              pw.Expanded(
+                flex: 5,
+                child: pw.Column(
+                  children: [
+                    pw.Text('OCC Accepted Device'),
+                    pw.SizedBox(height: 10.0),
+                    pw.Text('$occAccept'),
                   ],
                 ),
               ),
@@ -264,7 +306,9 @@ Future<void> generateLogPdfDevice1() async {
                   children: [
                     pw.Text('Receive Device 1 By'),
                     pw.SizedBox(height: 10.0),
-                    pw.Text('xxxx'),
+                    //pw.Image(),
+                    pw.SizedBox(height: 5.0),
+                    pw.Text('$userRank'),
                   ],
                 ),
               ),
@@ -333,4 +377,13 @@ pw.Widget _buildHeaderCellRight(String text, pw.Context context) {
       ),
     ),
   );
+}
+
+Future<Uint8List> fetchImage(String imageUrl) async {
+  final response = await http.get(Uri.parse(imageUrl));
+  if (response.statusCode == 200) {
+    return response.bodyBytes;
+  } else {
+    throw Exception('Failed to load image');
+  }
 }

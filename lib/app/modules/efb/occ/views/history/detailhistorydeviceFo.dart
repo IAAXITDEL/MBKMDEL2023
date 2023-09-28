@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../../../presentation/theme.dart';
+import '../../../occ/views/history/handover_attachment23.dart';
 
 class DetailHistoryDeviceFOView extends GetView {
   final String dataId;
@@ -783,7 +784,7 @@ class DetailHistoryDeviceFOView extends GetView {
                                                   SizedBox(height: 70.0),
                                                   ElevatedButton(
                                                     onPressed: () {
-                                                      // confirmInUse(context);
+                                                      generateLogPdfDevice23();
                                                     },
                                                     style: ElevatedButton
                                                         .styleFrom(

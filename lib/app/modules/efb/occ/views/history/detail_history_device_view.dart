@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:ts_one/app/modules/efb/occ/views/history/history_all_device_view.dart';
 
 import '../../../../../../presentation/theme.dart';
-import '../../../occ/views/history/handover_attachment.dart';
+import '../../../occ/views/history/handover_attachment1.dart';
 
 class DetailHistoryDeviceView extends GetView {
   final String dataId;
@@ -21,11 +21,14 @@ class DetailHistoryDeviceView extends GetView {
   String _formatTimestamp(Timestamp? timestamp) {
     if (timestamp == null) return 'No Data';
 
-      DateTime dateTime = timestamp.toDate();
-      // Format the date and time as desired, e.g., 'dd/MM/yyyy HH:mm:ss'
-      String formattedDateTime = '${dateTime.day}/${dateTime.month}/${dateTime.year}' ' at ' '${dateTime.hour}:${dateTime.minute}';
-      return formattedDateTime;
-    }
+    DateTime dateTime = timestamp.toDate();
+    // Format the date and time as desired, e.g., 'dd/MM/yyyy HH:mm:ss'
+    String formattedDateTime =
+        '${dateTime.day}/${dateTime.month}/${dateTime.year}'
+        ' at '
+        '${dateTime.hour}:${dateTime.minute}';
+    return formattedDateTime;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -176,6 +179,21 @@ class DetailHistoryDeviceView extends GetView {
                                 final occAccepteduserData =
                                     occAcceptedSnapshot.data?.data()
                                         as Map<String, dynamic>?;
+
+                                generateLogPdfDevice1(
+                                  userName: userData['NAME'],
+                                  userRank: userData['RANK'],
+                                  occAccept: occAccepteduserData?['NAME'],
+                                  occGiven: occOnDutyuserData?['NAME'],
+                                  deviceNo: data['device_name'],
+                                  iosVer: deviceData['iosver'],
+                                  flySmart: deviceData['flysmart'],
+                                  lido: deviceData['lidoversion'],
+                                  docunet: deviceData['docuversion'],
+                                  deviceCondition: deviceData['condition'],
+                                  ttdUser: data['signature_url'],
+                                  loan: data['timestamp'],
+                                );
 
                                 return Center(
                                   child: Column(

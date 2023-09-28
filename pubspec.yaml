@@ -99,6 +99,7 @@ dependencies:
   number_paginator: ^0.3.2
   firebase_database: ^10.2.6
   animations: ^2.0.8
+  cached_network_image: ^3.3.0
 
 dev_dependencies:
   flutter_launcher_icons: ^0.13.1
