@@ -183,6 +183,7 @@ class DetailHistoryDeviceView extends GetView {
                                 generateLogPdfDevice1(
                                   userName: userData['NAME'],
                                   userRank: userData['RANK'],
+                                  userID: userData['ID NO'].toString(),
                                   occAccept: occAccepteduserData?['NAME'],
                                   occGiven: occOnDutyuserData?['NAME'],
                                   deviceNo: data['device_name'],
@@ -193,6 +194,13 @@ class DetailHistoryDeviceView extends GetView {
                                   deviceCondition: deviceData['condition'],
                                   ttdUser: data['signature_url'],
                                   loan: data['timestamp'],
+                                  statusdevice: data['statusDevice'],
+                                  handoverName: handoverTouserData != null
+                                      ? handoverTouserData['NAME']
+                                      : 'Not Found',
+                                  handoverID: handoverTouserData != null
+                                      ? handoverTouserData['ID NO']
+                                      : 'Not Found',
                                 );
 
                                 return Center(

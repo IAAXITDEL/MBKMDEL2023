@@ -27,6 +27,7 @@ String _formatTimestamp(Timestamp? timestamp) {
 Future<void> generateLogPdfDevice1({
   String? userName,
   String? userRank,
+  String? userID,
   String? occAccept,
   String? occGiven,
   String? deviceNo,
@@ -37,6 +38,9 @@ Future<void> generateLogPdfDevice1({
   String? deviceCondition,
   String? ttdUser,
   Timestamp? loan,
+  String? statusdevice,
+  String? handoverName,
+  String? handoverID,
 }) async {
   final pdf = pw.Document();
 
@@ -50,7 +54,7 @@ Future<void> generateLogPdfDevice1({
   final font = await rootBundle.load("assets/fonts/Poppins-Regular.ttf");
   final ttf = pw.Font.ttf(font);
 
-  final Uint8List imagettdUser = await fetchImage('$ttdUser');
+  //final Uint8List imagettdUser = await fetchImage('$ttdUser');
 
   final footer = pw.Container(
     padding: pw.EdgeInsets.all(5.0),
@@ -102,14 +106,27 @@ Future<void> generateLogPdfDevice1({
             ],
           ),
           pw.SizedBox(height: 10),
-          pw.Align(
-            alignment: pw.Alignment.centerRight,
-            child: pw.Text(
-              _formatTimestamp(loan),
-              style: pw.TextStyle(
-                fontSize: 12,
+          pw.Row(
+            mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+            children: [
+              pw.Align(
+                child: pw.Text(
+                  '1st Device',
+                  style: pw.TextStyle(
+                    fontSize: 12,
+                    fontWeight: pw.FontWeight.bold,
+                  ),
+                ),
               ),
-            ),
+              pw.Align(
+                child: pw.Text(
+                  _formatTimestamp(loan),
+                  style: pw.TextStyle(
+                    fontSize: 12,
+                  ),
+                ),
+              ),
+            ],
           ),
           pw.SizedBox(height: 10),
           pw.Table(
@@ -275,49 +292,230 @@ Future<void> generateLogPdfDevice1({
               ),
             ],
           ),
+
+          //Handover to other crew
+          if ('$statusdevice' == 'handover-to-other-crew')
+            pw.SizedBox(height: 10.0),
+          if ('$statusdevice' == 'handover-to-other-crew')
+            pw.Table(
+              tableWidth: pw.TableWidth.min,
+              border: pw.TableBorder.all(),
+              columnWidths: {
+                0: pw.FlexColumnWidth(4),
+                1: pw.FlexColumnWidth(4),
+                2: pw.FlexColumnWidth(4),
+              },
+              children: [
+                pw.TableRow(
+                  children: [
+                    pw.Container(
+                      height: 20.0,
+                      child: _buildHeaderCell('Handover Details', context),
+                    ),
+                    pw.Container(
+                      height: 20.0,
+                      child: _buildHeaderCell('Name', context),
+                    ),
+                    pw.Container(
+                      height: 20.0,
+                      child: _buildHeaderCell('ID', context),
+                    ),
+                  ],
+                ),
+                pw.TableRow(
+                  children: [
+                    pw.Container(
+                      height: 20.0,
+                      child: _buildHeaderCellRight('Handover From', context),
+                    ),
+                    pw.Container(
+                      height: 20.0,
+                      child: _buildHeaderCellRight('$userName', context),
+                    ),
+                    pw.Container(
+                      height: 20.0,
+                      child: _buildHeaderCellRight('$userID', context),
+                    ),
+                  ],
+                ),
+                pw.TableRow(
+                  children: [
+                    pw.Container(
+                      height: 20.0,
+                      child: _buildHeaderCellLeft('Handover To', context),
+                    ),
+                    pw.Container(
+                      height: 20.0,
+                      child: _buildHeaderCellLeft('$handoverName', context),
+                    ),
+                    pw.Container(
+                      height: 20.0,
+                      child: _buildHeaderCellLeft('$handoverID', context),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+
           pw.SizedBox(height: 40),
-          pw.Row(
-            children: [
-              pw.Expanded(
-                flex: 5,
-                child: pw.Column(
-                  children: [
-                    pw.Text('OCC Given Device'),
-                    pw.SizedBox(height: 10.0),
-                    pw.Text('$occGiven'),
-                  ],
+
+          //handover to other crew
+          if ('$statusdevice' == 'handover-to-other-crew')
+            // pw.Table(
+            //   tableWidth: pw.TableWidth.min,
+            //   columnWidths: {
+            //     0: pw.FlexColumnWidth(5),
+            //     1: pw.FlexColumnWidth(5),
+            //   },
+            //   children: [
+            //     pw.TableRow(
+            //       children: [
+            //         pw.Container(
+            //           height: 20.0,
+            //           child: _buildHeaderCellLeft('1st Crew on Duty', context),
+            //         ),
+            //         pw.Container(
+            //           height: 20.0,
+            //           child: _buildHeaderCellLeft('2nd Crew on Duty', context),
+            //         ),
+            //       ],
+            //     ),
+            //     pw.TableRow(
+            //       children: [
+            //         pw.Container(
+            //           height: 20.0,
+            //           child: _buildHeaderCellLeft('Device No 1 Sign', context),
+            //         ),
+            //         pw.Container(
+            //           height: 20.0,
+            //           child: _buildHeaderCellLeft('Device No 2 Sign', context),
+            //         ),
+            //       ],
+            //     ),
+            //     pw.TableRow(
+            //       children: [
+            //         pw.Container(
+            //           height: 50.0,
+            //           child: _buildHeaderCellLeft('image', context),
+            //         ),
+            //         pw.Container(
+            //           height: 50.0,
+            //           child: _buildHeaderCellLeft('image', context),
+            //         ),
+            //       ],
+            //     ),
+            //     pw.TableRow(
+            //       children: [
+            //         pw.Container(
+            //           height: 20.0,
+            //           child: _buildHeaderCellRight('$userName', context),
+            //         ),
+            //         pw.Container(
+            //           height: 20.0,
+            //           child: _buildHeaderCellRight('$handoverName', context),
+            //         ),
+            //       ],
+            //     ),
+            //   ],
+            // ),
+            pw.Row(
+              children: [
+                pw.Expanded(
+                  flex: 5,
+                  child: pw.Column(
+                    children: [
+                      pw.Text('1st Crew on Duty'),
+                      pw.SizedBox(height: 5.0),
+                      pw.Text('Device No 1 Sign'),
+                      pw.SizedBox(height: 5.0),
+                      pw.Text('ttd image'),
+                      pw.SizedBox(height: 5.0),
+                      pw.Text(
+                        '$userName',
+                        style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              pw.Spacer(flex: 1),
-              pw.Expanded(
-                flex: 5,
-                child: pw.Column(
-                  children: [
-                    pw.Text('OCC Accepted Device'),
-                    pw.SizedBox(height: 10.0),
-                    pw.Text('$occAccept'),
-                  ],
+                pw.Spacer(flex: 1),
+                pw.Expanded(
+                  flex: 5,
+                  child: pw.Column(
+                    children: [
+                      pw.Text('2st Crew on Duty'),
+                      pw.SizedBox(height: 5.0),
+                      pw.Text('Device No 2 Sign'),
+                      pw.SizedBox(height: 5.0),
+                      pw.Text('ttd image'),
+                      pw.SizedBox(height: 5.0),
+                      pw.Text(
+                        '$handoverName',
+                        style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              pw.Spacer(flex: 1),
-              pw.Expanded(
-                flex: 5,
-                child: pw.Column(
-                  children: [
-                    pw.Text('Receive Device 1 By'),
-                    pw.SizedBox(height: 10.0),
-                    //pw.Image(),
-                    pw.SizedBox(height: 5.0),
-                    pw.Text('$userRank'),
-                  ],
+              ],
+            ),
+
+          if ('$statusdevice' == 'Done')
+            pw.Row(
+              children: [
+                pw.Expanded(
+                  flex: 5,
+                  child: pw.Column(
+                    children: [
+                      pw.Text('OCC Given Device'),
+                      pw.SizedBox(height: 5.0),
+                      pw.Text('ttd image'),
+                      pw.SizedBox(height: 5.0),
+                      pw.Text('$occGiven'),
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ),
-          pw.SizedBox(height: 180),
-          pw.Column(
-            children: [footer],
-          ),
+                pw.Spacer(flex: 1),
+                pw.Expanded(
+                  flex: 5,
+                  child: pw.Column(
+                    children: [
+                      pw.Text('OCC Accepted Device'),
+                      pw.SizedBox(height: 5.0),
+                      pw.Text('ttd image'),
+                      pw.SizedBox(height: 5.0),
+                      pw.Text('$occAccept'),
+                    ],
+                  ),
+                ),
+                pw.Spacer(flex: 1),
+                pw.Expanded(
+                  flex: 5,
+                  child: pw.Column(
+                    children: [
+                      pw.Text('Receive Device 1 By'),
+                      pw.SizedBox(height: 10.0),
+                      //pw.Image(),
+                      pw.SizedBox(height: 5.0),
+                      pw.Text('$userName'),
+                      pw.SizedBox(height: 2.0),
+                      pw.Text('$userRank'),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+
+          if ('$statusdevice' == 'handover-to-other-crew')
+            pw.SizedBox(height: 70),
+          if ('$statusdevice' == 'handover-to-other-crew')
+            pw.Column(
+              children: [footer],
+            ),
+
+          if ('$statusdevice' == 'Done') pw.SizedBox(height: 170),
+          if ('$statusdevice' == 'Done')
+            pw.Column(
+              children: [footer],
+            ),
         ]);
       },
     ),
@@ -379,11 +577,11 @@ pw.Widget _buildHeaderCellRight(String text, pw.Context context) {
   );
 }
 
-Future<Uint8List> fetchImage(String imageUrl) async {
-  final response = await http.get(Uri.parse(imageUrl));
-  if (response.statusCode == 200) {
-    return response.bodyBytes;
-  } else {
-    throw Exception('Failed to load image');
-  }
-}
+// Future<Uint8List> fetchImage(String imageUrl) async {
+//   final response = await http.get(Uri.parse(imageUrl));
+//   if (response.statusCode == 200) {
+//     return response.bodyBytes;
+//   } else {
+//     throw Exception('Failed to load image');
+//   }
+// }
