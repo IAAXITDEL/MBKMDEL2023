@@ -33,19 +33,8 @@ class ListAttendanceccView extends GetView<ListAttendanceccController> {
                         padding: EdgeInsets.all(8),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5.0),
-                          border: Border.all(
-                            color: TsOneColor.surface,
-                            width: 1,
-                          ),
+
                           color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.2),
-                              spreadRadius: 1,
-                              blurRadius: 2,
-                              offset: const Offset(0, 2),
-                            ),
-                          ],
                         ),
                         child:Obx(()=>  Text("Attendance : ${controller.jumlah.value.toString()} person")),
                       )
@@ -78,7 +67,8 @@ class ListAttendanceccView extends GetView<ListAttendanceccController> {
               ),
 
              Obx(() =>  Expanded(
-                 child: SingleChildScrollView(child: StreamBuilder<List<Map<String, dynamic>>>(
+                 child: SingleChildScrollView(child:
+                 StreamBuilder<List<Map<String, dynamic>>>(
                    stream: controller.getCombinedAttendanceStream(controller.nameS.value),
                    builder: (context, snapshot) {
                      if (snapshot.connectionState == ConnectionState.waiting) {
@@ -103,7 +93,7 @@ class ListAttendanceccView extends GetView<ListAttendanceccController> {
                              onTap: () {
                                Get.toNamed(Routes.LIST_ATTENDANCEDETAILCC,
                                    arguments: {
-                                     "id": listAttendance[index]["idpilot"],
+                                     "id": listAttendance[index]["idtraining"],
                                      "status" : controller.argumentstatus.value,
                                      "idattendance" : controller.argumentid.value
                                    });
@@ -127,19 +117,19 @@ class ListAttendanceccView extends GetView<ListAttendanceccController> {
                                    listAttendance[index]["name"],
                                    style: tsOneTextTheme.headlineMedium,
                                  ),
-                                 subtitle: Row(
+                                 subtitle: listAttendance[index]["score"] == null ? SizedBox() : Row(
                                    children: [
                                      Container(
                                        padding: EdgeInsets.symmetric(
                                            vertical: 3, horizontal: 10),
                                        decoration: BoxDecoration(
-                                         color: Colors.green.withOpacity(0.4),
+                                         color: listAttendance[index]["score"] == "SUCCESS" ? Colors.green.withOpacity(0.4) : Colors.red.withOpacity(0.4),
                                          borderRadius: BorderRadius.circular(10),
                                        ),
-                                       child: const Text(
-                                         "Pass",
+                                       child: Text(
+                                         listAttendance[index]["score"] ?? "",
                                          style: TextStyle(
-                                             fontSize: 10, color: Colors.green),
+                                           fontSize: 10, color: listAttendance[index]["score"] == "SUCCESS" ? Colors.green : Colors.red,),
                                        ),
                                      ),
                                    ],

@@ -10,6 +10,7 @@ class UserModel with ChangeNotifier {
     this.rank = "",
     this.licenseNo = "",
     this.attribute = "",
+    this.hub =""
   });
 
   String email = "";
@@ -21,6 +22,7 @@ class UserModel with ChangeNotifier {
   String attribute = "";
   DateTime licenseExpiry = DateTime.now();
   List<String> privileges = [];
+  String hub = "";
 
   // this is the collection name in firebase
   static String firebaseCollection = "users";
@@ -35,6 +37,7 @@ class UserModel with ChangeNotifier {
   static String keyInstructor = "INSTRUCTOR";
   static String keyIDNo = "ID NO";
   static String keyPrivileges = "PRIVILEGES";
+  static String keyHub= "HUB";
 
   /// ALL PRIVILEGES
   static String keyPrivilegeCreateAssessment =
@@ -78,7 +81,6 @@ class UserModel with ChangeNotifier {
   static String keySubPositionTRG = "TRG"; // trainee pilot
   static String keySubPositionUT = "UT"; // under training pilot
 
-  static String keySubPositionICC = "ICC"; //Instructor Control Card
 
   UserModel.fromFirebaseUser(Map<String, dynamic> map) {
     email = map[keyEmail]; // if null, return empty string
@@ -97,6 +99,7 @@ class UserModel with ChangeNotifier {
           .map((item) => item.toString())
           .toList();
     }
+    hub = map[keyHub];
   }
 
   Map<String, dynamic> toFirebase() {
@@ -110,6 +113,7 @@ class UserModel with ChangeNotifier {
       keyLicenseNo: licenseNo,
       keyLicenseExpiry: licenseExpiry,
       keyPrivileges: privileges,
+      keyHub: hub,
     };
   }
 
