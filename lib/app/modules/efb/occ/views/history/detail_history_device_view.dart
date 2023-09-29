@@ -180,28 +180,28 @@ class DetailHistoryDeviceView extends GetView {
                                     occAcceptedSnapshot.data?.data()
                                         as Map<String, dynamic>?;
 
-                                generateLogPdfDevice1(
-                                  userName: userData['NAME'],
-                                  userRank: userData['RANK'],
-                                  userID: userData['ID NO'].toString(),
-                                  occAccept: occAccepteduserData?['NAME'],
-                                  occGiven: occOnDutyuserData?['NAME'],
-                                  deviceNo: data['device_name'],
-                                  iosVer: deviceData['iosver'],
-                                  flySmart: deviceData['flysmart'],
-                                  lido: deviceData['lidoversion'],
-                                  docunet: deviceData['docuversion'],
-                                  deviceCondition: deviceData['condition'],
-                                  ttdUser: data['signature_url'],
-                                  loan: data['timestamp'],
-                                  statusdevice: data['statusDevice'],
-                                  handoverName: handoverTouserData != null
-                                      ? handoverTouserData['NAME']
-                                      : 'Not Found',
-                                  handoverID: handoverTouserData != null
-                                      ? handoverTouserData['ID NO']
-                                      : 'Not Found',
-                                );
+                                // generateLogPdfDevice1(
+                                //   userName: userData['NAME'],
+                                //   userRank: userData['RANK'],
+                                //   userID: userData['ID NO'].toString(),
+                                //   occAccept: occAccepteduserData?['NAME'],
+                                //   occGiven: occOnDutyuserData?['NAME'],
+                                //   deviceNo: data['device_name'],
+                                //   iosVer: deviceData['iosver'],
+                                //   flySmart: deviceData['flysmart'],
+                                //   lido: deviceData['lidoversion'],
+                                //   docunet: deviceData['docuversion'],
+                                //   deviceCondition: deviceData['condition'],
+                                //   ttdUser: data['signature_url'],
+                                //   loan: data['timestamp'],
+                                //   statusdevice: data['statusDevice'],
+                                //   handoverName: handoverTouserData != null
+                                //       ? handoverTouserData['NAME']
+                                //       : 'Not Found',
+                                //   handoverID: handoverTouserData != null
+                                //       ? handoverTouserData['ID NO']
+                                //       : 'Not Found',
+                                // );
 
                                 return Center(
                                   child: Column(
@@ -644,7 +644,49 @@ class DetailHistoryDeviceView extends GetView {
                                               SizedBox(height: 70.0),
                                               ElevatedButton(
                                                 onPressed: () {
-                                                  generateLogPdfDevice1();
+                                                  generateLogPdfDevice1(
+                                                    userName: userData['NAME'],
+                                                    userRank: userData['RANK'],
+                                                    userID: userData['ID NO']
+                                                        .toString(),
+                                                    occAccept:
+                                                        occAccepteduserData?[
+                                                            'NAME'],
+                                                    occGiven:
+                                                        occOnDutyuserData?[
+                                                            'NAME'],
+                                                    deviceNo:
+                                                        data['device_name'],
+                                                    iosVer:
+                                                        deviceData['iosver'],
+                                                    flySmart:
+                                                        deviceData['flysmart'],
+                                                    lido: deviceData[
+                                                        'lidoversion'],
+                                                    docunet: deviceData[
+                                                        'docuversion'],
+                                                    deviceCondition:
+                                                        deviceData['condition'],
+                                                    ttdUser:
+                                                        data['signature_url'],
+                                                    loan: data['timestamp'],
+                                                    statusdevice:
+                                                        data['statusDevice'],
+                                                    handoverName:
+                                                        handoverTouserData !=
+                                                                null
+                                                            ? handoverTouserData[
+                                                                'NAME']
+                                                            : 'Not Found',
+                                                    handoverID:
+                                                        handoverTouserData !=
+                                                                null
+                                                            ? handoverTouserData[
+                                                                'ID NO']
+                                                            : 'Not Found',
+                                                  );
+
+                                                  //generateLogPdfDevice1();
                                                 },
                                                 style: ElevatedButton.styleFrom(
                                                   backgroundColor:
