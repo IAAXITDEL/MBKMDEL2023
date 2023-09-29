@@ -71,7 +71,7 @@ class TrainingtypeccController extends GetxController {
 
     for (QueryDocumentSnapshot document in querySnapshot.docs) {
       await document.reference.update({
-        "is_delete": 1, // 1 indicates it has been deleted
+        "is_delete": 1,
       });
     }
 
