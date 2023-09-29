@@ -55,7 +55,36 @@ class _TrainingtypeccViewState extends State<TrainingtypeccView>
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            RedTitleText(text: controller.argumentname.value),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                RedTitleText(text: controller.argumentname.value),
+                PopupMenuButton(
+                  itemBuilder: (BuildContext context) {
+                    return [
+                      PopupMenuItem(
+                        child: TextButton(
+                          onPressed: () {
+                            controller.deleteTraining();
+                          },
+                          child: Text( 'Delete'),
+                        ),
+                      ),
+                    ];
+                  },
+                  offset: Offset(0, 30),
+                  child: GestureDetector(
+                    child: Container(
+                      child: Icon(Icons.more_vert_outlined),
+                    ),
+                  ),
+                ),
+
+              ],
+            ),
+            SizedBox(
+              height: 10,
+            ),
            // Text("REDUCED VERTICAL SEPARATION MINIMA"),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,

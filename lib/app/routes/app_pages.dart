@@ -70,6 +70,10 @@ import '../modules/pa/occ/bindings/navocc_binding.dart';
 import '../modules/pa/occ/views/navocc_view.dart';
 import '../modules/pilotadministrator/pilotcrewcc/bindings/pilotcrewcc_binding.dart';
 import '../modules/pilotadministrator/pilotcrewcc/views/pilotcrewcc_view.dart';
+import '../modules/pilotadministrator/pilotcrewdetailcc/bindings/pilotcrewdetailcc_binding.dart';
+import '../modules/pilotadministrator/pilotcrewdetailcc/views/pilotcrewdetailcc_view.dart';
+import '../modules/pilottraininghistorycc/bindings/pilottraininghistorycc_binding.dart';
+import '../modules/pilottraininghistorycc/views/pilottraininghistorycc_view.dart';
 import '../modules/profilecc/bindings/profilecc_binding.dart';
 import '../modules/profilecc/views/profilecc_view.dart';
 import '../modules/training_instructorcc/bindings/training_instructorcc_binding.dart';
@@ -358,6 +362,16 @@ class AppPages {
       name: _Paths.EDIT_ATTENDANCECC,
       page: () => EditAttendanceccView(),
       binding: EditAttendanceccBinding(),
+    ),
+    GetPage(
+      name: _Paths.PILOTCREWDETAILCC,
+      page: () => const PilotcrewdetailccView(),
+      binding: PilotcrewdetailccBinding(),
+    ),
+    GetPage(
+      name: _Paths.PILOTTRAININGHISTORYCC,
+      page: () => const PilottraininghistoryccView(),
+      binding: PilottraininghistoryccBinding(),
     ),
   ];
 }
