@@ -492,8 +492,8 @@ Future<void> generateLogPdfDevice1({
                   child: pw.Column(
                     children: [
                       pw.Text('Receive Device 1 By'),
-                      pw.SizedBox(height: 10.0),
-                      //pw.Image(),
+                      pw.SizedBox(height: 5.0),
+                      pw.Text('ttd image'),
                       pw.SizedBox(height: 5.0),
                       pw.Text('$userName'),
                       pw.SizedBox(height: 2.0),

@@ -8,11 +8,46 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:open_file/open_file.dart';
 import '../../../occ/views/history/detail_history_device_view.dart';
 
-Future<void> generateLogPdfDevice23() async {
+String _formatTimestamp(Timestamp? timestamp) {
+  if (timestamp == null) return 'No Data';
+
+  DateTime dateTime = timestamp.toDate();
+  // Format the date and time as desired, e.g., 'dd/MM/yyyy HH:mm:ss'
+  String formattedDateTime =
+      '${dateTime.day}/${dateTime.month}/${dateTime.year}'
+      ' at '
+      '${dateTime.hour}:${dateTime.minute}';
+  return formattedDateTime;
+}
+
+Future<void> generateLogPdfDevice23({
+  String? userName,
+  String? userRank,
+  String? userID,
+  String? occAccept,
+  String? occGiven,
+  String? deviceNo2,
+  String? iosVer2,
+  String? flySmart2,
+  String? lido2,
+  String? docunet2,
+  String? deviceCondition2,
+  String? deviceNo3,
+  String? iosVer3,
+  String? flySmart3,
+  String? lido3,
+  String? docunet3,
+  String? deviceCondition3,
+  String? ttdUser,
+  Timestamp? loan,
+  String? statusdevice,
+  String? handoverName,
+  String? handoverID,
+}) async {
   final pdf = pw.Document();
 
   final output = await getTemporaryDirectory();
-  final file = File("${output.path}/log_device1.pdf");
+  final file = File("${output.path}/log_device2&3.pdf");
 
   final ByteData logo =
       await rootBundle.load('assets/images/airasia_logo_circle.png');
@@ -71,14 +106,27 @@ Future<void> generateLogPdfDevice23() async {
             ],
           ),
           pw.SizedBox(height: 10),
-          pw.Align(
-            alignment: pw.Alignment.centerRight,
-            child: pw.Text(
-              'xxxxxx',
-              style: pw.TextStyle(
-                fontSize: 12,
+          pw.Row(
+            mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+            children: [
+              pw.Align(
+                child: pw.Text(
+                  '2nd & 3rd Device',
+                  style: pw.TextStyle(
+                    fontSize: 12,
+                    fontWeight: pw.FontWeight.bold,
+                  ),
+                ),
               ),
-            ),
+              pw.Align(
+                child: pw.Text(
+                  _formatTimestamp(loan),
+                  style: pw.TextStyle(
+                    fontSize: 12,
+                  ),
+                ),
+              ),
+            ],
           ),
           pw.SizedBox(height: 10),
           pw.Table(
@@ -112,19 +160,19 @@ Future<void> generateLogPdfDevice23() async {
                 children: [
                   pw.Container(
                     height: 20.0,
-                    child: _buildHeaderCellLeft('Device No 1', context),
-                  ),
-                  pw.Container(
-                    height: 20.0,
-                    child: _buildHeaderCellRight('xxxx', context),
-                  ),
-                  pw.Container(
-                    height: 20.0,
                     child: _buildHeaderCellLeft('Device No 2', context),
                   ),
                   pw.Container(
                     height: 20.0,
-                    child: _buildHeaderCellRight('xxxx', context),
+                    child: _buildHeaderCellRight('$deviceNo2', context),
+                  ),
+                  pw.Container(
+                    height: 20.0,
+                    child: _buildHeaderCellLeft('Device No 3', context),
+                  ),
+                  pw.Container(
+                    height: 20.0,
+                    child: _buildHeaderCellRight('$deviceNo3', context),
                   ),
                 ],
               ),
@@ -156,7 +204,7 @@ Future<void> generateLogPdfDevice23() async {
                   ),
                   pw.Container(
                     height: 20.0,
-                    child: _buildHeaderCellRight('xxxx', context),
+                    child: _buildHeaderCellRight('$iosVer2', context),
                   ),
                   pw.Container(
                     height: 20.0,
@@ -164,7 +212,7 @@ Future<void> generateLogPdfDevice23() async {
                   ),
                   pw.Container(
                     height: 20.0,
-                    child: _buildHeaderCellRight('xxxx', context),
+                    child: _buildHeaderCellRight('$iosVer3', context),
                   ),
                 ],
               ),
@@ -205,7 +253,7 @@ Future<void> generateLogPdfDevice23() async {
                   ),
                   pw.Container(
                     height: 20.0,
-                    child: _buildHeaderCellRight('xxxx', context),
+                    child: _buildHeaderCellRight('$flySmart2', context),
                   ),
                   pw.Container(
                     height: 20.0,
@@ -213,7 +261,7 @@ Future<void> generateLogPdfDevice23() async {
                   ),
                   pw.Container(
                     height: 20.0,
-                    child: _buildHeaderCellRight('xxxx', context),
+                    child: _buildHeaderCellRight('$flySmart3', context),
                   ),
                 ],
               ),
@@ -225,7 +273,7 @@ Future<void> generateLogPdfDevice23() async {
                   ),
                   pw.Container(
                     height: 20.0,
-                    child: _buildHeaderCellRight('xxxx', context),
+                    child: _buildHeaderCellRight('$lido2', context),
                   ),
                   pw.Container(
                     height: 20.0,
@@ -233,7 +281,7 @@ Future<void> generateLogPdfDevice23() async {
                   ),
                   pw.Container(
                     height: 20.0,
-                    child: _buildHeaderCellRight('xxxx', context),
+                    child: _buildHeaderCellRight('$lido3', context),
                   ),
                 ],
               ),
@@ -245,7 +293,7 @@ Future<void> generateLogPdfDevice23() async {
                   ),
                   pw.Container(
                     height: 20.0,
-                    child: _buildHeaderCellRight('xxxx', context),
+                    child: _buildHeaderCellRight('$docunet2', context),
                   ),
                   pw.Container(
                     height: 20.0,
@@ -253,7 +301,7 @@ Future<void> generateLogPdfDevice23() async {
                   ),
                   pw.Container(
                     height: 20.0,
-                    child: _buildHeaderCellRight('xxxx', context),
+                    child: _buildHeaderCellRight('$docunet3', context),
                   ),
                 ],
               ),
@@ -265,7 +313,7 @@ Future<void> generateLogPdfDevice23() async {
                   ),
                   pw.Container(
                     height: 20.0,
-                    child: _buildHeaderCellRight('xxxx', context),
+                    child: _buildHeaderCellRight('$deviceCondition2', context),
                   ),
                   pw.Container(
                     height: 20.0,
@@ -273,7 +321,7 @@ Future<void> generateLogPdfDevice23() async {
                   ),
                   pw.Container(
                     height: 20.0,
-                    child: _buildHeaderCellRight('xxxx', context),
+                    child: _buildHeaderCellRight('$deviceCondition3', context),
                   ),
                 ],
               ),
@@ -304,47 +352,173 @@ Future<void> generateLogPdfDevice23() async {
               ),
             ],
           ),
+
+          //Handover to other crew
+          if ('$statusdevice' == 'handover-to-other-crew')
+            pw.SizedBox(height: 10.0),
+          if ('$statusdevice' == 'handover-to-other-crew')
+            pw.Table(
+              tableWidth: pw.TableWidth.min,
+              border: pw.TableBorder.all(),
+              columnWidths: {
+                0: pw.FlexColumnWidth(4),
+                1: pw.FlexColumnWidth(4),
+                2: pw.FlexColumnWidth(4),
+              },
+              children: [
+                pw.TableRow(
+                  children: [
+                    pw.Container(
+                      height: 20.0,
+                      child: _buildHeaderCell('Handover Details', context),
+                    ),
+                    pw.Container(
+                      height: 20.0,
+                      child: _buildHeaderCell('Name', context),
+                    ),
+                    pw.Container(
+                      height: 20.0,
+                      child: _buildHeaderCell('ID', context),
+                    ),
+                  ],
+                ),
+                pw.TableRow(
+                  children: [
+                    pw.Container(
+                      height: 20.0,
+                      child: _buildHeaderCellRight('Handover From', context),
+                    ),
+                    pw.Container(
+                      height: 20.0,
+                      child: _buildHeaderCellRight('$userName', context),
+                    ),
+                    pw.Container(
+                      height: 20.0,
+                      child: _buildHeaderCellRight('$userID', context),
+                    ),
+                  ],
+                ),
+                pw.TableRow(
+                  children: [
+                    pw.Container(
+                      height: 20.0,
+                      child: _buildHeaderCellLeft('Handover To', context),
+                    ),
+                    pw.Container(
+                      height: 20.0,
+                      child: _buildHeaderCellLeft('$handoverName', context),
+                    ),
+                    pw.Container(
+                      height: 20.0,
+                      child: _buildHeaderCellLeft('$handoverID', context),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+
           pw.SizedBox(height: 40),
-          pw.Row(
-            children: [
-              pw.Expanded(
-                flex: 5,
-                child: pw.Column(
-                  children: [
-                    pw.Text('OCC Given Device'),
-                    pw.SizedBox(height: 10.0),
-                    pw.Text('xxxx'),
-                  ],
+
+          //handover to other crew
+          if ('$statusdevice' == 'handover-to-other-crew')
+            pw.Row(
+              children: [
+                pw.Expanded(
+                  flex: 5,
+                  child: pw.Column(
+                    children: [
+                      pw.Text('1st Crew on Duty'),
+                      pw.SizedBox(height: 5.0),
+                      pw.Text('Device No 1 Sign'),
+                      pw.SizedBox(height: 5.0),
+                      pw.Text('ttd image'),
+                      pw.SizedBox(height: 5.0),
+                      pw.Text(
+                        '$userName',
+                        style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              pw.Spacer(flex: 1),
-              pw.Expanded(
-                flex: 5,
-                child: pw.Column(
-                  children: [
-                    pw.Text('OCC Accepted Device'),
-                    pw.SizedBox(height: 10.0),
-                    pw.Text('xxxx'),
-                  ],
+                pw.Spacer(flex: 1),
+                pw.Expanded(
+                  flex: 5,
+                  child: pw.Column(
+                    children: [
+                      pw.Text('2st Crew on Duty'),
+                      pw.SizedBox(height: 5.0),
+                      pw.Text('Device No 2 Sign'),
+                      pw.SizedBox(height: 5.0),
+                      pw.Text('ttd image'),
+                      pw.SizedBox(height: 5.0),
+                      pw.Text(
+                        '$handoverName',
+                        style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              pw.Spacer(flex: 1),
-              pw.Expanded(
-                flex: 5,
-                child: pw.Column(
-                  children: [
-                    pw.Text('Receive Device 2 & 3 By'),
-                    pw.SizedBox(height: 10.0),
-                    pw.Text('xxxx'),
-                  ],
+              ],
+            ),
+
+          if ('$statusdevice' == 'Done')
+            pw.Row(
+              children: [
+                pw.Expanded(
+                  flex: 5,
+                  child: pw.Column(
+                    children: [
+                      pw.Text('OCC Given Device'),
+                      pw.SizedBox(height: 5.0),
+                      pw.Text('ttd image'),
+                      pw.SizedBox(height: 5.0),
+                      pw.Text('$occGiven'),
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ),
-          pw.SizedBox(height: 180),
-          pw.Column(
-            children: [footer],
-          ),
+                pw.Spacer(flex: 1),
+                pw.Expanded(
+                  flex: 5,
+                  child: pw.Column(
+                    children: [
+                      pw.Text('OCC Accepted Device'),
+                      pw.SizedBox(height: 5.0),
+                      pw.Text('ttd image'),
+                      pw.SizedBox(height: 5.0),
+                      pw.Text('$occAccept'),
+                    ],
+                  ),
+                ),
+                pw.Spacer(flex: 1),
+                pw.Expanded(
+                  flex: 5,
+                  child: pw.Column(
+                    children: [
+                      pw.Text('Receive Device 2 & 3 By'),
+                      pw.SizedBox(height: 5.0),
+                      pw.Text('ttd image'),
+                      pw.SizedBox(height: 5.0),
+                      pw.Text('$userName'),
+                      pw.SizedBox(height: 2.0),
+                      pw.Text('$userRank'),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+
+          if ('$statusdevice' == 'handover-to-other-crew')
+            pw.SizedBox(height: 70),
+          if ('$statusdevice' == 'handover-to-other-crew')
+            pw.Column(
+              children: [footer],
+            ),
+
+          if ('$statusdevice' == 'Done') pw.SizedBox(height: 170),
+          if ('$statusdevice' == 'Done')
+            pw.Column(
+              children: [footer],
+            ),
         ]);
       },
     ),
