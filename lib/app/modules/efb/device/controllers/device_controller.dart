@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 
-class AnalyticsController extends GetxController {
+class DeviceController extends GetxController {
+  //TODO: Implement AnalyticsController
+
   final count = 0.obs;
   @override
   void onInit() {

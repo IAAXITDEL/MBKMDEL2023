@@ -107,9 +107,9 @@ class ProfileccView extends GetView<ProfileccController> {
                 ),
               ),
             ),
-            BlackTitleText(
-              text: controller.userPreferences.getName(),
-            ),
+            // BlackTitleText(
+            //   text: controller.userPreferences.getName(),
+            // ),
             Text(
               controller.userPreferences.getIDNo().toString(),
               style: TextStyle(color: tsOneColorScheme.secondaryContainer),

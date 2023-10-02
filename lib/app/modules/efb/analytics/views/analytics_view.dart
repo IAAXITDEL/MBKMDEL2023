@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:googleapis/firestore/v1.dart';
 import 'package:ts_one/presentation/shared_components/TitleText.dart';
 import '../../../../../presentation/theme.dart';
 import '../controllers/analytics_controller.dart';
@@ -70,7 +71,7 @@ class _AnalyticsHubState extends State<AnalyticsHub>
     Tab(text: "DPS"),
     Tab(text: "SUB"),
   ];
-
+  late int deviceCounts_InUse_AllHubs;
   late TabController tabController;
   late Map<String, int> totalDeviceCounts = {};
   int currentTabIndex = 0;
@@ -82,6 +83,8 @@ class _AnalyticsHubState extends State<AnalyticsHub>
     countDevicesHub('CGK').then((result) {
       setState(() {
         totalDeviceCounts = result;
+        // Initialize deviceCounts_InUse_AllHubs with the initial count
+        deviceCounts_InUse_AllHubs = result['CGK'] ?? 0;
       });
     });
   }
@@ -106,11 +109,13 @@ class _AnalyticsHubState extends State<AnalyticsHub>
                 child: TabBarView(
               controller: tabController,
               children: tabs.map((Tab tab) {
-                return Column(
+                return ListView(
                   children: [
                     count(tab.text), // Menampilkan jumlah total perangkat
                     SizedBox(height: 10),
-                    countDevicesInUse(tab
+                    countDevicesInUse(tab.text),
+                    percentageDevicesInUse(tab.text),
+                    percentageDevices23InUse(tab
                         .text), // Menampilkan jumlah perangkat yang sedang digunakan
                     SizedBox(height: 10),
                   ],
@@ -286,6 +291,82 @@ class _AnalyticsHubState extends State<AnalyticsHub>
                       ],
                     ),
                   ),
+                  // Flexible(
+                  //   flex: 10,
+                  //   child: Column(
+                  //     children: [
+                  //       Text("Persentase device name",
+                  //           style: tsOneTextTheme.bodySmall),
+                  //       FutureBuilder(
+                  //         future: calculatePercentageDeviceName(),
+                  //         builder: (context, snapshot) {
+                  //           if (snapshot.connectionState ==
+                  //               ConnectionState.waiting) {
+                  //             return CircularProgressIndicator();
+                  //           } else if (snapshot.hasError) {
+                  //             return Text('Error: ${snapshot.error}');
+                  //           } else {
+                  //             final double percentage = snapshot.data as double;
+                  //             return Container(
+                  //               margin: EdgeInsets.all(16.0),
+                  //               padding: EdgeInsets.all(16.0),
+                  //               decoration: BoxDecoration(
+                  //                 borderRadius: BorderRadius.circular(4.0),
+                  //                 border: Border.all(
+                  //                   color: tsOneColorScheme.primary,
+                  //                   width: 1.0,
+                  //                 ),
+                  //               ),
+                  //               child: Center(
+                  //                 child: BlackTitleText(
+                  //                   text: "${percentage.toStringAsFixed(2)}%",
+                  //                 ),
+                  //               ),
+                  //             );
+                  //           }
+                  //         },
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
+                  // Flexible(
+                  //   flex: 10,
+                  //   child: Column(
+                  //     children: [
+                  //       Text("Persentase device name2 dan 3",
+                  //           style: tsOneTextTheme.bodySmall),
+                  //       FutureBuilder(
+                  //         future: calculatePercentageDeviceName2and3(),
+                  //         builder: (context, snapshot) {
+                  //           if (snapshot.connectionState ==
+                  //               ConnectionState.waiting) {
+                  //             return CircularProgressIndicator();
+                  //           } else if (snapshot.hasError) {
+                  //             return Text('Error: ${snapshot.error}');
+                  //           } else {
+                  //             final double percentage = snapshot.data as double;
+                  //             return Container(
+                  //               margin: EdgeInsets.all(16.0),
+                  //               padding: EdgeInsets.all(16.0),
+                  //               decoration: BoxDecoration(
+                  //                 borderRadius: BorderRadius.circular(4.0),
+                  //                 border: Border.all(
+                  //                   color: tsOneColorScheme.primary,
+                  //                   width: 1.0,
+                  //                 ),
+                  //               ),
+                  //               child: Center(
+                  //                 child: BlackTitleText(
+                  //                   text: "${percentage.toStringAsFixed(2)}%",
+                  //                 ),
+                  //               ),
+                  //             );
+                  //           }
+                  //         },
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
                 ],
               ),
             );
@@ -297,32 +378,267 @@ class _AnalyticsHubState extends State<AnalyticsHub>
     }
   }
 
-  Future<double> calculatePercentage() async {
-    final firestore = FirebaseFirestore.instance;
-    final QuerySnapshot querySnapshot = await firestore
-        .collection('pilot-device-1')
-        .where('statusDevice', isEqualTo: 'in-use-pilot')
-        .get();
-
-    final List<DocumentSnapshot> documents = querySnapshot.docs;
-
-    int totalRecords = documents.length;
-    int recordsWithValues = 0;
-
-    for (final doc in documents) {
-      final data = doc.data() as Map<String, dynamic>;
-      if (data['device-name'] != null &&
-          data['device-name'] != '-' &&
-          (data['device_name2'] != null && data['device_name2'] != '-') &&
-          (data['device_name3'] != null && data['device_name3'] != '-')) {
-        recordsWithValues++;
-      }
-    }
-
-    if (totalRecords > 0) {
-      return (recordsWithValues / totalRecords) * 100;
+  Widget percentageDevicesInUse(String? hub) {
+    if (hub != null) {
+      return FutureBuilder(
+        future: countDevicesHub_InUse_AllHubs(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return CircularProgressIndicator();
+          } else if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          } else {
+            // final deviceCounts_InUse_AllHubs = snapshot.data as int;
+            return Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: Row(
+                children: [
+                  Flexible(
+                    flex: 10,
+                    child: Column(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.all(16.0),
+                          padding: EdgeInsets.all(16.0),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(4.0),
+                              border: Border.all(
+                                color: tsOneColorScheme.primary,
+                                width: 1.0,
+                              )),
+                          child:
+                              Center(child: BlackTitleText(text: "Device 1")),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Flexible(
+                    flex: 10,
+                    child: Column(
+                      children: [
+                        FutureBuilder(
+                          future: Future.wait([
+                            calculatePercentageDeviceName(),
+                            countDeviceName(),
+                          ]),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return CircularProgressIndicator();
+                            } else if (snapshot.hasError) {
+                              return Text('Error: ${snapshot.error}');
+                            } else {
+                              final double percentage =
+                                  snapshot.data?[0] as double;
+                              final int deviceNameCount =
+                                  snapshot.data?[1] as int;
+                              return Container(
+                                margin: EdgeInsets.all(16.0),
+                                padding: EdgeInsets.all(16.0),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(4.0),
+                                  border: Border.all(
+                                    color: tsOneColorScheme.primary,
+                                    width: 1.0,
+                                  ),
+                                ),
+                                child: Center(
+                                  child: BlackTitleText(
+                                    text:
+                                        "${percentage.toStringAsFixed(2)}% ($deviceNameCount)",
+                                  ),
+                                ),
+                              );
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  Flexible(
+                    flex: 10,
+                    child: Column(
+                      children: [
+                        // Text("Persentase device name2 dan 3",
+                        //     style: tsOneTextTheme.bodySmall),
+                        FutureBuilder(
+                          future: Future.wait([
+                            calculatePercentageDeviceNameDone(),
+                            countDeviceNameDone()
+                          ]),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return CircularProgressIndicator();
+                            } else if (snapshot.hasError) {
+                              return Text('Error: ${snapshot.error}');
+                            } else {
+                              final double percentage =
+                                  snapshot.data?[0] as double;
+                              final int deviceNameCountDone =
+                                  snapshot.data?[1] as int;
+                              return Container(
+                                margin: EdgeInsets.all(16.0),
+                                padding: EdgeInsets.all(16.0),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(4.0),
+                                  border: Border.all(
+                                    color: tsOneColorScheme.primary,
+                                    width: 1.0,
+                                  ),
+                                ),
+                                child: Center(
+                                  child: BlackTitleText(
+                                    text:
+                                        "${percentage.toStringAsFixed(2)}% ($deviceNameCountDone)",
+                                  ),
+                                ),
+                              );
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+        },
+      );
     } else {
-      return 0.0; // Return 0 jika tidak ada data yang sesuai.
+      return Text('Tab tidak valid');
+    }
+  }
+
+  Widget percentageDevices23InUse(String? hub) {
+    if (hub != null) {
+      return FutureBuilder(
+        future: countDevicesHub_InUse_AllHubs(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return CircularProgressIndicator();
+          } else if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          } else {
+            // final deviceCounts_InUse_AllHubs = snapshot.data as int;
+            return Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: Row(
+                children: [
+                  Flexible(
+                    flex: 10,
+                    child: Column(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.all(16.0),
+                          padding: EdgeInsets.all(16.0),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(4.0),
+                              border: Border.all(
+                                color: tsOneColorScheme.primary,
+                                width: 1.0,
+                              )),
+                          child:
+                              Center(child: BlackTitleText(text: "Device 2&3")),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Flexible(
+                    flex: 10,
+                    child: Column(
+                      children: [
+                        FutureBuilder(
+                          future: Future.wait([
+                            calculatePercentageDeviceName2and3(),
+                            countDeviceName2and3()
+                          ]),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return CircularProgressIndicator();
+                            } else if (snapshot.hasError) {
+                              return Text('Error: ${snapshot.error}');
+                            } else {
+                              final double percentage =
+                                  snapshot.data?[0] as double;
+                              final int deviceNameCount23 =
+                                  snapshot.data?[1] as int;
+                              return Container(
+                                margin: EdgeInsets.all(16.0),
+                                padding: EdgeInsets.all(16.0),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(4.0),
+                                  border: Border.all(
+                                    color: tsOneColorScheme.primary,
+                                    width: 1.0,
+                                  ),
+                                ),
+                                child: Center(
+                                  child: BlackTitleText(
+                                    text:
+                                        "${percentage.toStringAsFixed(2)}% ($deviceNameCount23)",
+                                  ),
+                                ),
+                              );
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  Flexible(
+                    flex: 10,
+                    child: Column(
+                      children: [
+                        FutureBuilder(
+                          future: Future.wait([
+                            calculatePercentageDeviceName2and3Done(),
+                            countDeviceName2and3Done()
+                          ]),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return CircularProgressIndicator();
+                            } else if (snapshot.hasError) {
+                              return Text('Error: ${snapshot.error}');
+                            } else {
+                              final double percentages =
+                                  snapshot.data?[0] as double;
+                              final int deviceNameCount2and3 =
+                                  snapshot.data?[1] as int;
+                              return Container(
+                                margin: EdgeInsets.all(16.0),
+                                padding: EdgeInsets.all(16.0),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(4.0),
+                                  border: Border.all(
+                                    color: tsOneColorScheme.primary,
+                                    width: 1.0,
+                                  ),
+                                ),
+                                child: Center(
+                                  child: BlackTitleText(
+                                    text:
+                                        "${percentages.toStringAsFixed(2)}% ($deviceNameCount2and3) ",
+                                  ),
+                                ),
+                              );
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+        },
+      );
+    } else {
+      return Text('Tab tidak valid');
     }
   }
 
@@ -347,6 +663,225 @@ class _AnalyticsHubState extends State<AnalyticsHub>
     return deviceCountByHub;
   }
 
+//--------Kalkulasi Persentase Device 1----------
+  Future<double> calculatePercentageDeviceName() async {
+    final firestore = FirebaseFirestore.instance;
+    final QuerySnapshot querySnapshot = await firestore
+        .collection('pilot-device-1')
+        // .where('statusDevice', isEqualTo: 'in-use-pilot')
+        .where('statusDevice',
+            whereIn: ['Done', 'in-use-pilot', 'handover-to-other-crew']).get();
+
+    final List<DocumentSnapshot> documents = querySnapshot.docs;
+    int totalRecords = documents.length;
+    int totalDeviceName = 0;
+
+    for (final doc in documents) {
+      final data = doc.data() as Map<String, dynamic>;
+      // Periksa apakah field 'device_name' tidak null dan tidak '-'.
+      if (data['device_name'] != null && data['device_name'] != '') {
+        totalDeviceName++;
+      }
+    }
+    if (totalRecords > 0) {
+      // Hitung persentase 'DeviceName' berdasarkan jumlahnya terhadap total in-use-pilot.
+      double percentageDeviceName = (totalDeviceName / totalRecords) * 100;
+
+      // Mengembalikan persentase 'DeviceName' sebagai hasil.
+      return percentageDeviceName;
+    } else {
+      return 0.0; // Jika tidak ada data, persentasenya adalah 0.
+    }
+  }
+
+  Future<int> countDeviceName() async {
+    final firestore = FirebaseFirestore.instance;
+    final QuerySnapshot querySnapshot = await firestore
+        .collection('pilot-device-1')
+        .where('statusDevice',
+            whereIn: ['Done', 'in-use-pilot', 'handover-to-other-crew']).get();
+
+    final List<DocumentSnapshot> documents = querySnapshot.docs;
+    int totalDeviceName = 0;
+
+    for (final doc in documents) {
+      final data = doc.data() as Map<String, dynamic>;
+      // Periksa apakah field 'device_name' tidak null dan tidak '-'.
+      if (data['device_name'] != null && data['device_name'] != '') {
+        totalDeviceName++;
+      }
+    }
+
+    // Mengembalikan jumlah perangkat dengan nama 'device_name'.
+    return totalDeviceName;
+  }
+
+//-----------Kalkulasi pesentase device 2 dan device 3
+  Future<double> calculatePercentageDeviceName2and3() async {
+    final firestore = FirebaseFirestore.instance;
+    final QuerySnapshot querySnapshot = await firestore
+        .collection('pilot-device-1')
+        // .where('statusDevice', isEqualTo: 'in-use-pilot')
+        .where('statusDevice',
+            whereIn: ['Done', 'in-use-pilot', 'handover-to-other-crew']).get();
+
+    final List<DocumentSnapshot> documents = querySnapshot.docs;
+    int totalRecords = documents.length;
+    int totalDeviceName2and3 = 0;
+
+    for (final doc in documents) {
+      final data = doc.data() as Map<String, dynamic>;
+      // Periksa apakah field 'device_name2' atau 'device_name3' tidak null dan tidak '-'.
+      if ((data['device_name2'] != null && data['device_name2'] != '-') ||
+          (data['device_name3'] != null && data['device_name3'] != '-')) {
+        totalDeviceName2and3++;
+      }
+    }
+
+    if (totalRecords > 0) {
+      // Hitung persentase 'DeviceName2and3' berdasarkan jumlahnya terhadap total in-use-pilot.
+      double percentageDeviceName2and3 =
+          (totalDeviceName2and3 / totalRecords) * 100;
+
+      // Mengembalikan persentase 'DeviceName2and3' sebagai hasil.
+      return percentageDeviceName2and3;
+    } else {
+      return 0.0; // Jika tidak ada data, persentasenya adalah 0.
+    }
+  }
+
+  Future<int> countDeviceName2and3() async {
+    final firestore = FirebaseFirestore.instance;
+    final QuerySnapshot querySnapshot = await firestore
+        .collection('pilot-device-1')
+        .where('statusDevice',
+            whereIn: ['Done', 'in-use-pilot', 'handover-to-other-crew']).get();
+
+    final List<DocumentSnapshot> documents = querySnapshot.docs;
+    int totalDeviceName2and3 = 0;
+
+    for (final doc in documents) {
+      final data = doc.data() as Map<String, dynamic>;
+      // Periksa apakah field 'device_name' tidak null dan tidak '-'.
+      if ((data['device_name2'] != null && data['device_name2'] != '-') ||
+          (data['device_name3'] != null && data['device_name3'] != '-')) {
+        totalDeviceName2and3++;
+      }
+    }
+
+    // Mengembalikan jumlah perangkat dengan nama 'device_name'.
+    return totalDeviceName2and3;
+  }
+
+//--------Kalkulasi persentase device 1 yang kembali---------
+  Future<double> calculatePercentageDeviceNameDone() async {
+    final firestore = FirebaseFirestore.instance;
+    final QuerySnapshot querySnapshot = await firestore
+        .collection('pilot-device-1')
+        .where('statusDevice',
+            whereIn: ['Done', 'handover-to-other-crew']).get();
+
+    final List<DocumentSnapshot> documents = querySnapshot.docs;
+    int totalRecords = documents.length;
+    int totalDeviceName = 0;
+
+    for (final doc in documents) {
+      final data = doc.data() as Map<String, dynamic>;
+      // Periksa apakah field 'device_name' tidak null dan tidak '-'.
+      if (data['device_name'] != null && data['device_name'] != '') {
+        totalDeviceName++;
+      }
+    }
+
+    if (totalRecords > 0) {
+      // Hitung persentase 'DeviceName' berdasarkan jumlahnya terhadap total in-use-pilot.
+      double percentageDeviceName = (totalDeviceName / totalRecords) * 100;
+
+      // Mengembalikan persentase 'DeviceName' sebagai hasil.
+      return percentageDeviceName;
+    } else {
+      return 0.0; // Jika tidak ada data, persentasenya adalah 0.
+    }
+  }
+
+  Future<int> countDeviceNameDone() async {
+    final firestore = FirebaseFirestore.instance;
+    final QuerySnapshot querySnapshot = await firestore
+        .collection('pilot-device-1')
+        .where('statusDevice',
+            whereIn: ['Done', 'handover-to-other-crew']).get();
+
+    final List<DocumentSnapshot> documents = querySnapshot.docs;
+    int totalDeviceName = 0;
+
+    for (final doc in documents) {
+      final data = doc.data() as Map<String, dynamic>;
+      // Periksa apakah field 'device_name' tidak null dan tidak '-'.
+      if (data['device_name'] != null && data['device_name'] != '') {
+        totalDeviceName++;
+      }
+    }
+
+    // Mengembalikan jumlah perangkat dengan nama 'device_name'.
+    return totalDeviceName;
+  }
+
+//--------Kalkulasi persentase device 2 dan device 3   yang kembali---------
+  Future<double> calculatePercentageDeviceName2and3Done() async {
+    final firestore = FirebaseFirestore.instance;
+    final QuerySnapshot querySnapshot = await firestore
+        .collection('pilot-device-1')
+        .where('statusDevice',
+            whereIn: ['Done', 'handover-to-other-crew']).get();
+
+    final List<DocumentSnapshot> documents = querySnapshot.docs;
+    int totalRecords = documents.length;
+    int totalDeviceName2and3 = 0;
+
+    for (final doc in documents) {
+      final data = doc.data() as Map<String, dynamic>;
+      // Periksa apakah field 'device_name2' atau 'device_name3' tidak null dan tidak '-'.
+      if ((data['device_name2'] != null && data['device_name2'] != '-') ||
+          (data['device_name3'] != null && data['device_name3'] != '-')) {
+        totalDeviceName2and3++;
+      }
+    }
+
+    if (totalRecords > 0) {
+      // Hitung persentase 'DeviceName2and3' berdasarkan jumlahnya terhadap total in-use-pilot.
+      double percentageDeviceName2and3 =
+          (totalDeviceName2and3 / totalRecords) * 100;
+
+      // Mengembalikan persentase 'DeviceName2and3' sebagai hasil.
+      return percentageDeviceName2and3;
+    } else {
+      return 0.0; // Jika tidak ada data, persentasenya adalah 0.
+    }
+  }
+
+  Future<int> countDeviceName2and3Done() async {
+    final firestore = FirebaseFirestore.instance;
+    final QuerySnapshot querySnapshot = await firestore
+        .collection('pilot-device-1')
+        .where('statusDevice',
+            whereIn: ['Done', 'handover-to-other-crew']).get();
+
+    final List<DocumentSnapshot> documents = querySnapshot.docs;
+    int totalDeviceName2and3 = 0;
+
+    for (final doc in documents) {
+      final data = doc.data() as Map<String, dynamic>;
+      // Periksa apakah field 'device_name' tidak null dan tidak '-'.
+      if ((data['device_name2'] != null && data['device_name2'] != '-') ||
+          (data['device_name3'] != null && data['device_name3'] != '-')) {
+        totalDeviceName2and3++;
+      }
+    }
+
+    // Mengembalikan jumlah perangkat dengan nama 'device_name'.
+    return totalDeviceName2and3;
+  }
+
   Future<Map<String, int>> countDevicesHub_InUse(String hub) async {
     final firestore = FirebaseFirestore.instance;
     final QuerySnapshot querySnapshot = await firestore
@@ -368,8 +903,8 @@ class _AnalyticsHubState extends State<AnalyticsHub>
     final firestore = FirebaseFirestore.instance;
     final QuerySnapshot querySnapshot = await firestore
         .collection('pilot-device-1')
-        .where('statusDevice', isEqualTo: 'in-use-pilot')
-        .get();
+        .where('statusDevice',
+            whereIn: ['in-use-pilot', 'Done', 'handover-to-other-crew']).get();
 
     final int deviceCount_InUse_AllHubs = querySnapshot.docs.length;
 
@@ -378,14 +913,28 @@ class _AnalyticsHubState extends State<AnalyticsHub>
 
   Future<int> countDevicesDone(String hub) async {
     final firestore = FirebaseFirestore.instance;
-    final QuerySnapshot querySnapshot = await firestore
+
+    // Query for devices with 'Done' status
+    final QuerySnapshot doneSnapshot = await firestore
         .collection('pilot-device-1')
-        .where('statusDevice', isEqualTo: 'Done')
+        .where('statusDevice', whereIn: ['Done', 'handover-to-other-crew'])
+        // .where('field_hub', isEqualTo: hub)
+        .get();
+
+    final int deviceCountDone = doneSnapshot.docs.length;
+
+    // Query for devices with 'in-use-pilot' status
+    final QuerySnapshot inUseSnapshot = await firestore
+        .collection('pilot-device-1')
+        .where('statusDevice', isEqualTo: 'in-use-pilot')
         .where('field_hub', isEqualTo: hub)
         .get();
 
-    final int deviceCountDone = querySnapshot.docs.length;
-
+    final int inUseCount = inUseSnapshot.docs.length;
+    // Check if there's a decrease in 'in-use-pilot' devices count
+    if (inUseCount < deviceCounts_InUse_AllHubs) {
+      deviceCounts_InUse_AllHubs = inUseCount;
+    }
     return deviceCountDone;
   }
 

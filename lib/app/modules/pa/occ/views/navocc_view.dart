@@ -8,12 +8,14 @@ import '../../../../../data/users/user_preferences.dart';
 import '../../../../../data/users/users.dart';
 import '../../../../../di/locator.dart';
 import '../../../../../presentation/theme.dart';
+import '../../../efb/history_crew/for_crew_history.dart';
 import '../../../efb/occ/views/history/history_all_device_view.dart';
 import '../../../efb/occ/views/listdevice/listdevice.dart';
 import '../../../efb/pilot/views/main_view_pilot.dart';
 import '../../../homecc/views/homecc_view.dart';
 import '../../../profilecc/views/profilecc_view.dart';
 import '../../../efb/analytics/views/analytics_view.dart';
+// import '../../../efb/device/views/device_view.dart';
 
 class NavOCCView extends StatefulWidget {
   const NavOCCView({super.key});
@@ -37,6 +39,7 @@ class _NavOCCView extends State<NavOCCView> {
       _screens = [
         HomeOCCView(),
         ListDevice(),
+        // DevicesView(),
         HistoryAllDeviceView(),
         AnalyticsView(),
         ProfileccView(),
@@ -47,13 +50,13 @@ class _NavOCCView extends State<NavOCCView> {
       _pilotRequestDevice = true;
       _screens = [
         HomePilotView(),
-        HomePilotView(),
+        HistoryEachCrewView(),
         ProfileccView(),
       ];
     } else {
       _screens = [
         HomeFOView(),
-        HomeFOView(),
+        HistoryEachCrewView(),
         ProfileccView(),
       ];
     }
@@ -159,6 +162,10 @@ class _NavOCCView extends State<NavOCCView> {
               icon: Icons.home_filled,
               text: 'Home',
             ),
+            // const GButton(
+            //   icon: Icons.list_alt_rounded,
+            //   text: 'Device',
+            // ),
             const GButton(
               icon: Icons.list_alt_rounded,
               text: 'Device',

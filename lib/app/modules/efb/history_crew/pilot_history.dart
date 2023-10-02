@@ -1,17 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ts_one/app/modules/efb/occ/views/history/history_all_device_view.dart';
 
 import '../../../../../../presentation/theme.dart';
-import '../../../occ/views/history/handover_attachment.dart';
 
-class DetailHistoryDeviceView extends GetView {
+class DetailHistoryPilotView extends GetView {
   final String dataId;
   final String userName;
   final String deviceno;
 
-  const DetailHistoryDeviceView({
+  const DetailHistoryPilotView({
     Key? key,
     required this.dataId,
     required this.userName,
@@ -21,11 +19,14 @@ class DetailHistoryDeviceView extends GetView {
   String _formatTimestamp(Timestamp? timestamp) {
     if (timestamp == null) return 'No Data';
 
-      DateTime dateTime = timestamp.toDate();
-      // Format the date and time as desired, e.g., 'dd/MM/yyyy HH:mm:ss'
-      String formattedDateTime = '${dateTime.day}/${dateTime.month}/${dateTime.year}' ' at ' '${dateTime.hour}:${dateTime.minute}';
-      return formattedDateTime;
-    }
+    DateTime dateTime = timestamp.toDate();
+    // Format the date and time as desired, e.g., 'dd/MM/yyyy HH:mm:ss'
+    String formattedDateTime =
+        '${dateTime.day}/${dateTime.month}/${dateTime.year}'
+        ' at '
+        '${dateTime.hour}:${dateTime.minute}';
+    return formattedDateTime;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -410,31 +411,47 @@ class DetailHistoryDeviceView extends GetView {
                                               ),
 
                                               SizedBox(height: 5.0),
-                                              // Row(
-                                              //   children: [
-                                              //     Expanded(flex: 6, child: Text("Image Proof")),
-                                              //     Expanded(flex: 1, child: Text(":")),
-                                              //     Expanded(
-                                              //       flex: 6,
-                                              //       child: Column(
-                                              //         children: [
-                                              //           if (data['prove_image_url'] != null)
-                                              //             Image.network(
-                                              //               data['prove_image_url'],
-                                              //               width: 100, // Adjust the width as needed
-                                              //               height: 100, // Adjust the height as needed
-                                              //             ),
-                                              //           if (data['prove_image_url'] == null)
-                                              //             Text(
-                                              //               'There is no data',
-                                              //               style: TextStyle(color: Colors.black), // Adjust the style as needed
-                                              //             ),
-                                              //           SizedBox(height: 5),  // Add some spacing between the image or text and the other content
-                                              //         ],
-                                              //       ),
-                                              //     ),
-                                              //   ],
-                                              // ),
+                                              Row(
+                                                children: [
+                                                  Expanded(
+                                                      flex: 6,
+                                                      child:
+                                                          Text("Image Proof")),
+                                                  Expanded(
+                                                      flex: 1,
+                                                      child: Text(":")),
+                                                  Expanded(
+                                                    flex: 6,
+                                                    child: Column(
+                                                      children: [
+                                                        if (data[
+                                                                'prove_image_url'] !=
+                                                            null)
+                                                          Image.network(
+                                                            data[
+                                                                'prove_image_url'],
+                                                            width:
+                                                                100, // Adjust the width as needed
+                                                            height:
+                                                                100, // Adjust the height as needed
+                                                          ),
+                                                        if (data[
+                                                                'prove_image_url'] ==
+                                                            null)
+                                                          Text(
+                                                            'There is no data',
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .black), // Adjust the style as needed
+                                                          ),
+                                                        SizedBox(
+                                                            height:
+                                                                5), // Add some spacing between the image or text and the other content
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
 
                                               SizedBox(height: 10),
                                               // Conditionally display the fields based on the status
@@ -618,7 +635,7 @@ class DetailHistoryDeviceView extends GetView {
                                               SizedBox(height: 70.0),
                                               ElevatedButton(
                                                 onPressed: () {
-                                                  generateLogPdfDevice1();
+                                                  // confirmInUse(context);
                                                 },
                                                 style: ElevatedButton.styleFrom(
                                                   backgroundColor:

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ts_one/app/modules/efb/fo/views/returnotherFOview.dart';
 import 'package:ts_one/app/modules/efb/pilot/views/pilotsignature_view.dart';
 import 'package:ts_one/app/modules/efb/pilot/views/return_other_pilot_view.dart';
 import 'package:ts_one/presentation/shared_components/TitleText.dart';
@@ -57,16 +58,8 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                     .where('deviceno', isEqualTo: widget.deviceName2)
                     .get(),
                 FirebaseFirestore.instance
-                    .collection('pilot-device-1')
-                    .where('device_name', isEqualTo: widget.deviceName2)
-                    .get(),
-                FirebaseFirestore.instance
                     .collection('Device')
                     .where('deviceno', isEqualTo: widget.deviceName3)
-                    .get(),
-                FirebaseFirestore.instance
-                    .collection('pilot-device-1')
-                    .where('device_name', isEqualTo: widget.deviceName3)
                     .get(),
 
               ]),
@@ -78,10 +71,16 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                     child: Text('Error: ${snapshotList.error.toString()}'),
                   );
                 } else {
-                  final deviceSnapshot = snapshotList.data![0];
+                  final deviceSnapshot2 = snapshotList.data![0];  // Use index 0 for deviceSnapshot2
+                  final deviceSnapshot3 = snapshotList.data![1];  // Use index 1 for deviceSnapshot3
                   final pilotDeviceSnapshot = snapshotList.data![1];
-                  final deviceData2 = deviceSnapshot.docs.isNotEmpty ? deviceSnapshot.docs.first.data() : <String, dynamic>{};
-                  final deviceData3 = deviceSnapshot.docs.isNotEmpty ? deviceSnapshot.docs.first.data() : <String, dynamic>{};
+                  final deviceData2 = deviceSnapshot2.docs.isNotEmpty ? deviceSnapshot2.docs.first.data() : <String, dynamic>{};
+                  final deviceData3 = deviceSnapshot3.docs.isNotEmpty ? deviceSnapshot3.docs.first.data() : <String, dynamic>{};
+
+
+                  print(deviceData2);
+
+                  print(deviceData3);
 
                   // Handle null values gracefully
                   final deviceno2 =
@@ -113,8 +112,7 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
 
                   // Handle data from 'pilot-device-1' collection
                   final pilotDeviceData = pilotDeviceSnapshot.docs.isNotEmpty ? pilotDeviceSnapshot.docs.first.data() : <String, dynamic>{};
-                  final occOnDuty =
-                      pilotDeviceData['occ-on-duty'] as String? ?? 'N/A';
+                  final occOnDuty = pilotDeviceData['occ-on-duty'] as String? ?? 'N/A';
 
                   return Column(
                     children: [
@@ -419,18 +417,19 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                   } else if (isReturnToOtherPilot) {
                     // Navigate to a new page for "Return To Other Pilot"
                     String documentId = await getDocumentIdForDevice(widget.deviceId);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ReturnOtherFOView(
+                          documentId: documentId,
+                          deviceId: widget.deviceId, // Teruskan deviceUid
+                          OccOnDuty: widget.OccOnDuty,
+                          deviceName2: widget.deviceName2, // Teruskan deviceName
+                          deviceName3: widget.deviceName3, // Teruskan deviceName
 
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) => ReturnOtherPilotView(
-                    //       documentId: documentId,
-                    //       deviceId: widget.deviceId, // Teruskan deviceUid
-                    //       deviceName: widget.deviceName, // Teruskan deviceName
-                    //       OccOnDuty: widget.OccOnDuty,
-                    //     ),
-                    //   ),
-                    // );
+                        ),
+                      ),
+                    );
                   }
                 },
                 style: ElevatedButton.styleFrom(

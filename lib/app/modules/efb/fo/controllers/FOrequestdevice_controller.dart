@@ -128,7 +128,7 @@ class FORequestdeviceController extends GetxController {
           'device_name2': deviceName2,
           'device_uid3': deviceUid3,
           'device_name3': deviceName3,
-          'statusDevice': 'waiting-confirmation-2',
+          'statusDevice': 'waiting-confirmation-1',
           'document_id': newDeviceId, // Menyimpan ID dokumen sebagai field
           'timestamp': FieldValue.serverTimestamp(),
           'handover-from': '-',

@@ -242,13 +242,9 @@ class HomeOCCView extends GetView<HomeOCCController> {
             Expanded(
               child: TabBarView(
                 children: [
-                  TabBarView(
-                    children: [
                       FirebaseDataTab(statuses: ["waiting-confirmation-1"]),
                       FirebaseDataTab(statuses: ["in-use-pilot"]),
                       FirebaseDataTab(statuses: ["need-confirmation-occ"]),
-                    ],
-                  ),
 
                 ],
               ),
@@ -328,6 +324,7 @@ class FirebaseDataTab extends StatelessWidget {
 
                 final userData = userSnapshot.data!.data() as Map<String, dynamic>;
                 final userName = userData['NAME'] ?? 'No Name';
+                final userRank = userData['RANK'] ?? 'No Rank';
                 final photoUrl = userData['PHOTOURL'] as String?; // Get the profile photo URL
                 final dataId = documents[index].id; // Mendapatkan ID dokumen
                 final deviceName = data['device_name'] ?? 'No Data';
@@ -406,15 +403,20 @@ class FirebaseDataTab extends StatelessWidget {
                                 ),
                                 if (deviceName.isNotEmpty)
                                   Text(
-                                    'Device Name: $deviceName',
-                                    style: tsOneTextTheme.labelSmall,
+                                    '$deviceName',
+                                    style: tsOneTextTheme.labelMedium,
                                   ),
                                 // Display device_name2 if available
                                 if (deviceName2.isNotEmpty && deviceName3.isNotEmpty)
                                   Text(
-                                    'Device Name 2: $deviceName2' +  'Device Name 3: $deviceName3',
-                                    style: tsOneTextTheme.labelSmall,
+                                    '$deviceName2' + ' & ' +  '$deviceName3',
+                                    style: tsOneTextTheme.labelMedium,
                                   ),
+
+                                Text(
+                                  userRank, // Use the user's name
+                                  style: tsOneTextTheme.labelSmall,
+                                ),
                                 // Display device_name3 if available
                               ],
                             ),

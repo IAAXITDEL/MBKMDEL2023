@@ -1,6 +1,11 @@
+import 'dart:io';
+
+import 'package:excel/excel.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:ts_one/app/modules/efb/occ/model/device.dart';
 import 'package:ts_one/app/modules/efb/occ/views/listdevice/editdevice.dart';
@@ -18,6 +23,8 @@ class ListDevice extends StatefulWidget {
     return _ListDeviceState();
   }
 }
+
+
 
 class _ListDeviceState extends State<ListDevice> {
   final Stream<QuerySnapshot> collectionReference =
@@ -110,6 +117,51 @@ class _ListDeviceState extends State<ListDevice> {
     );
   }
 
+  Future<void> exportToExcel(List<Map<String, dynamic>> data) async {
+    final CollectionReference deviceCollection = FirebaseFirestore.instance.collection('Device');
+    QuerySnapshot deviceSnapshot = await deviceCollection.get();
+    List<Map<String, dynamic>> data = deviceSnapshot.docs
+        .map((DocumentSnapshot document) => document.data() as Map<String, dynamic>)
+        .toList();
+    // Create an Excel workbook
+    final excel = Excel.createExcel();
+
+    // Create a worksheet
+    final sheet = excel['Main Data'];
+
+    // Add headers
+    sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: 0)).value = 'Device No';
+    sheet.cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: 0)).value = 'iOS Version';
+    sheet.cell(CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: 0)).value = 'Lido Version';
+    sheet.cell(CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: 0)).value = 'Flysmart';
+    sheet.cell(CellIndex.indexByColumnRow(columnIndex: 4, rowIndex: 0)).value = 'Docu Version';
+    sheet.cell(CellIndex.indexByColumnRow(columnIndex: 5, rowIndex: 0)).value = 'Hub';
+    sheet.cell(CellIndex.indexByColumnRow(columnIndex: 6, rowIndex: 0)).value = 'Condition';
+
+    // Add data to the worksheet
+    for (var i = 0; i < data.length; i++) {
+      final device = data[i];
+      sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: i + 1)).value = device['deviceno'];
+      sheet.cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: i + 1)).value = device['iosver'];
+      sheet.cell(CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: i + 1)).value = device['lidoversion'];
+      sheet.cell(CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: i + 1)).value = device['flysmart'];
+      sheet.cell(CellIndex.indexByColumnRow(columnIndex: 4, rowIndex: i + 1)).value = device['docuversion'];
+      sheet.cell(CellIndex.indexByColumnRow(columnIndex: 5, rowIndex: i + 1)).value = device['hub'];
+      sheet.cell(CellIndex.indexByColumnRow(columnIndex: 6, rowIndex: i + 1)).value = device['condition'];
+    }
+
+    // Save the Excel file
+    final excelBytes = excel.encode();
+    final output = await getTemporaryDirectory();
+    final excelFile = File('${output.path}/device-data.xlsx');
+    await excelFile.writeAsBytes(excelBytes!);
+
+    // Open the Excel file using a platform-specific API
+    // In this example, we'll use the OpenFile package to open the file
+    await OpenFile.open(excelFile.path, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+  }
+
+
   Future<void> _showDeleteConfirmationDialog(String deviceId) async {
     return showDialog<void>(
       context: context,
@@ -169,15 +221,38 @@ class _ListDeviceState extends State<ListDevice> {
     );
   }
 
+  Future<List<Map<String, dynamic>>> fetchDataFromFirebase() async {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('your_collection').get();
+
+    List<Map<String, dynamic>> data = [];
+    querySnapshot.docs.forEach((doc) {
+      data.add(doc.data() as Map<String, dynamic>);
+    });
+
+    return data;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text(
-          'List of Device',
+          'List Device',
           style: tsOneTextTheme.headlineLarge,
         ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.download_outlined),
+            onPressed: () async {
+              // Retrieve data from Firebase
+              List<Map<String, dynamic>> data = await fetchDataFromFirebase();
+
+              // Export data to Excel
+              await exportToExcel(data);
+            },
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 10, right: 20, left: 20),

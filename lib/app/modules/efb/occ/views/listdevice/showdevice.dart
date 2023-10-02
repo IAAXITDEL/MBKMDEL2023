@@ -1,4 +1,8 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:pdf/pdf.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:ts_one/app/modules/efb/occ/model/device.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -14,54 +18,85 @@ class ShowDevice extends StatelessWidget {
 
   const ShowDevice({super.key, required this.device});
 
-  Future<void> _createQR() async {
-    final pdf = pw.Document();
-    pdf.addPage(
-      pw.Page(
-        build: (context) {
-          return pw.Center(
-            child: pw.Padding(
-              padding: const pw.EdgeInsets.symmetric(
-                  vertical: 20), // Add vertical padding
-              child: pw.Row(
-                mainAxisAlignment: pw.MainAxisAlignment.center,
-                crossAxisAlignment: pw.CrossAxisAlignment.center,
-                children: [
-                  pw.BarcodeWidget(
-                    barcode: pw.Barcode.qrCode(), // Create a QR code barcode
-                    data: device.deviceno, // Use deviceno as QR code data
-                    width: 150,
-                    height: 150,
-                  ),
-                  pw.SizedBox(width: 50), // Add horizontal spacing
-                  pw.Column(
-                    mainAxisAlignment: pw.MainAxisAlignment.center,
-                    crossAxisAlignment: pw.CrossAxisAlignment.center,
-                    children: [
-                      pw.Text(
-                        device.deviceno,
-                        style: const pw.TextStyle(
-                          fontSize: 50,
+    Future<void> _createQR() async {
+      final pdf = pw.Document();
+
+      // Load the background image
+      final Uint8List image = (await rootBundle.load('assets/images/template_EFB_Device_No.jpg')).buffer.asUint8List();
+
+      // Define the page dimensions
+      const PdfPageFormat pageFormat = PdfPageFormat(612.0, 792.0); // 8.5 x 11 inches
+
+      pdf.addPage(
+        pw.MultiPage(
+          pageFormat: pageFormat,
+          build: (context) {
+            return [
+              pw.Container(
+                width: pageFormat.width,
+                height: pageFormat.height,
+                child: pw.Stack(
+                  children: [
+                    pw.Image(
+                      pw.MemoryImage(image),  // Set background image
+                      width: pageFormat.width,
+                      height: pageFormat.height,
+                      fit: pw.BoxFit.fill,
+                    ),
+                    pw.Center(
+                      child: pw.Padding(
+                        padding: const pw.EdgeInsets.symmetric(vertical: 20),
+                        child: pw.Row(
+                          mainAxisAlignment: pw.MainAxisAlignment.center,
+                          crossAxisAlignment: pw.CrossAxisAlignment.center,
+                          children: [
+                            pw.BarcodeWidget(
+                              barcode: pw.Barcode.qrCode(),
+                              data: device.deviceno,
+                              width: 150,
+                              height: 150,
+                            ),
+                            pw.SizedBox(width: 50),
+                            pw.Column(
+                              mainAxisAlignment: pw.MainAxisAlignment.center,
+                              crossAxisAlignment: pw.CrossAxisAlignment.center,
+                              children: [
+                                pw.Text(
+                                  device.deviceno,
+                                  style: const pw.TextStyle(
+                                    fontSize: 50,
+                                    color: PdfColors.white,  // Set text color
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
-                ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-          );
-        },
-      ),
-    );
+            ];
+          },
+        ),
+      );
 
-    final pdfBytes = await pdf.save();
+      final pdfBytes = await pdf.save();
 
-    final output = await getTemporaryDirectory();
-    final file = File("${output.path}/device_info.pdf");
-    await file.writeAsBytes(pdfBytes.toList());
+      final output = await getTemporaryDirectory();
+      final file = File("${output.path}/device_info.pdf");
+      await file.writeAsBytes(pdfBytes);
 
-    OpenFile.open(file.path);
-  }
+      OpenFile.open(file.path);
+    }
+
+
+
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
