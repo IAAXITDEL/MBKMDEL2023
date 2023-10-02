@@ -637,6 +637,23 @@ class DetailHistoryDeviceFOView extends GetView {
                                                   SizedBox(height: 70.0),
                                                   ElevatedButton(
                                                     onPressed: () {
+                                                      showDialog(
+                                                        context: context,
+                                                        barrierDismissible: false,
+                                                        builder: (context) {
+                                                          return AlertDialog(
+                                                            content: Column(
+                                                              mainAxisSize: MainAxisSize.min,
+                                                              children: [
+                                                                CircularProgressIndicator(),
+                                                                SizedBox(height: 20),
+                                                                Text('Please Wait...'),
+                                                              ],
+                                                            ),
+                                                          );
+                                                        },
+                                                      );
+
                                                       generateLogPdfDevice23(
                                                         userName: userData['NAME'],
                                                         userRank: userData['RANK'],
@@ -656,14 +673,15 @@ class DetailHistoryDeviceFOView extends GetView {
                                                         docunet3: deviceData3['docuversion'],
                                                         deviceCondition3:deviceData3['condition'],
                                                         ttdUser: data['signature_url'],
+                                                        ttdOCC: data['signature_url_occ'],
                                                         loan: data['timestamp'],
                                                         statusdevice: data['statusDevice'],
                                                         handoverName: handoverTouserData != null
-                                                          ? handoverTouserData['NAME']
-                                                          : 'Not Found',
+                                                            ? handoverTouserData['NAME']
+                                                            : 'Not Found',
                                                         handoverID: handoverTouserData != null
-                                                          ? handoverTouserData['ID NO'].toString()
-                                                          : 'Not Found',
+                                                            ? handoverTouserData['ID NO'].toString()
+                                                            : 'Not Found',
                                                       );
                                                       //generateLogPdfDevice23();
                                                     },

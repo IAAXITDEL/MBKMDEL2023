@@ -40,6 +40,7 @@ Future<void> generateLogPdfDevice1({
   String? docunet,
   String? deviceCondition,
   String? ttdUser,
+  String? ttdOCC,
   Timestamp? loan,
   String? statusdevice,
   String? handoverName,
@@ -99,6 +100,34 @@ Future<void> generateLogPdfDevice1({
       ],
     ),
   );
+
+  pw.Widget signatureImageWidget;
+  if (ttdUser != null) {
+    try {
+      final imageBytes = await fetchImage(ttdUser);
+      final image = pw.MemoryImage(imageBytes);
+      signatureImageWidget = pw.Image(image);
+    } catch (e) {
+      print('Failed to load signature image: $e');
+      signatureImageWidget = pw.Text('Failed to load signature image');
+    }
+  } else {
+    signatureImageWidget = pw.Text('No signature available');
+  }
+
+  pw.Widget signatureImageOCCWidget;
+  if (ttdOCC != null) {
+    try {
+      final imageBytes = await fetchImage(ttdOCC);
+      final image = pw.MemoryImage(imageBytes);
+      signatureImageOCCWidget = pw.Image(image);
+    } catch (e) {
+      print('Failed to load signature image: $e');
+      signatureImageOCCWidget = pw.Text('Failed to load signature image');
+    }
+  } else {
+    signatureImageOCCWidget = pw.Text('No signature available');
+  }
 
   pdf.addPage(
     pw.Page(
@@ -485,28 +514,12 @@ Future<void> generateLogPdfDevice1({
           if ('$statusdevice' == 'Done')
             pw.Row(
               children: [
-                pw.Expanded(
-                  flex: 5,
-                  child: pw.Column(
-                    children: [
-                      pw.Text('OCC Given Device'),
-                      pw.SizedBox(height: 5.0),
-                      pw.Text('ttd image'),
-                      pw.SizedBox(height: 5.0),
-                      pw.Text('$occGiven'),
-                    ],
-                  ),
-                ),
                 pw.Spacer(flex: 1),
                 pw.Expanded(
                   flex: 5,
                   child: pw.Column(
                     children: [
                       pw.Text('OCC Accepted Device'),
-                      pw.SizedBox(height: 5.0),
-                      pw.Text('ttd image'),
-                      pw.SizedBox(height: 5.0),
-                      pw.Text('$occAccept'),
                     ],
                   ),
                 ),
@@ -516,25 +529,52 @@ Future<void> generateLogPdfDevice1({
                   child: pw.Column(
                     children: [
                       pw.Text('Receive Device 1 By'),
-                      pw.SizedBox(height: 5.0),
-                      //pw.Text('ttd image'),
-                      // pw.Image(
-                      //   PdfImage.fromImageProvider(
-                      //     pdf.document,
-                      //     image: _loadImageFromFirebase(), // Menggunakan _loadImageFromFirebase yang mengembalikan ImageProvider
-                      //   ),
-                      //   width: 20,
-                      //   height: 20,
-                      // ),
-                      pw.SizedBox(height: 5.0),
-                      pw.Text('$userName'),
-                      pw.SizedBox(height: 2.0),
-                      pw.Text('$userRank'),
+
                     ],
                   ),
                 ),
               ],
             ),
+          pw.Row(
+            children: [
+              pw.Spacer(flex: 1),
+              pw.Expanded(
+                flex: 5,
+                child: pw.Column(
+                  children: [
+                    pw.SizedBox(height: 5.0),
+                    pw.Container(
+                      child: signatureImageOCCWidget,
+                      width: 200,  // Adjust width as needed
+                      height: 100, // Adjust height as needed
+                    ),
+                    pw.SizedBox(height: 5.0),
+                    pw.Text('$occAccept'),
+                  ],
+                ),
+              ),
+              pw.Spacer(flex: 1),
+              pw.Expanded(
+                flex: 5,
+                child: pw.Column(
+                  children: [
+                    pw.SizedBox(height: 5.0),
+                    // Menampilkan gambar tanda tangan
+                    pw.Container(
+                      child: signatureImageWidget,
+                      width: 200,  // Adjust width as needed
+                      height: 100, // Adjust height as needed
+                    ),
+                    pw.SizedBox(height: 5.0),
+                    pw.Text('$userName'),
+                    pw.SizedBox(height: 2.0),
+                    pw.Text('$userRank'),
+                  ],
+                ),
+              ),
+            ],
+          ),
+
 
           if ('$statusdevice' == 'handover-to-other-crew') pw.SizedBox(height: 70),
           if ('$statusdevice' == 'handover-to-other-crew')

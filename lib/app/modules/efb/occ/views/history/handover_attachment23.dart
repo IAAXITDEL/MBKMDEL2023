@@ -39,6 +39,7 @@ Future<void> generateLogPdfDevice23({
   String? docunet3,
   String? deviceCondition3,
   String? ttdUser,
+  String? ttdOCC,
   Timestamp? loan,
   String? statusdevice,
   String? handoverName,
@@ -55,6 +56,34 @@ Future<void> generateLogPdfDevice23({
 
   final font = await rootBundle.load("assets/fonts/Poppins-Regular.ttf");
   final ttf = pw.Font.ttf(font);
+
+  pw.Widget signatureImageWidget;
+  if (ttdUser != null) {
+    try {
+      final imageBytes = await fetchImage(ttdUser);
+      final image = pw.MemoryImage(imageBytes);
+      signatureImageWidget = pw.Image(image);
+    } catch (e) {
+      print('Failed to load signature image: $e');
+      signatureImageWidget = pw.Text('Failed to load signature image');
+    }
+  } else {
+    signatureImageWidget = pw.Text('No signature available');
+  }
+
+  pw.Widget signatureImageOCCWidget;
+  if (ttdOCC != null) {
+    try {
+      final imageBytes = await fetchImage(ttdOCC);
+      final image = pw.MemoryImage(imageBytes);
+      signatureImageOCCWidget = pw.Image(image);
+    } catch (e) {
+      print('Failed to load signature image: $e');
+      signatureImageOCCWidget = pw.Text('Failed to load signature image');
+    }
+  } else {
+    signatureImageOCCWidget = pw.Text('No signature available');
+  }
 
   final footer = pw.Container(
     padding: pw.EdgeInsets.all(5.0),
@@ -74,6 +103,7 @@ Future<void> generateLogPdfDevice23({
       ],
     ),
   );
+  
 
   pdf.addPage(
     pw.Page(
@@ -464,28 +494,12 @@ Future<void> generateLogPdfDevice23({
           if ('$statusdevice' == 'Done')
             pw.Row(
               children: [
-                pw.Expanded(
-                  flex: 5,
-                  child: pw.Column(
-                    children: [
-                      pw.Text('OCC Given Device'),
-                      pw.SizedBox(height: 5.0),
-                      pw.Text('ttd image'),
-                      pw.SizedBox(height: 5.0),
-                      pw.Text('$occGiven'),
-                    ],
-                  ),
-                ),
                 pw.Spacer(flex: 1),
                 pw.Expanded(
                   flex: 5,
                   child: pw.Column(
                     children: [
                       pw.Text('OCC Accepted Device'),
-                      pw.SizedBox(height: 5.0),
-                      pw.Text('ttd image'),
-                      pw.SizedBox(height: 5.0),
-                      pw.Text('$occAccept'),
                     ],
                   ),
                 ),
@@ -494,18 +508,52 @@ Future<void> generateLogPdfDevice23({
                   flex: 5,
                   child: pw.Column(
                     children: [
-                      pw.Text('Receive Device 2 & 3 By'),
-                      pw.SizedBox(height: 5.0),
-                      pw.Text('ttd image'),
-                      pw.SizedBox(height: 5.0),
-                      pw.Text('$userName'),
-                      pw.SizedBox(height: 2.0),
-                      pw.Text('$userRank'),
+                      pw.Text('Receive Device 1 By'),
+
                     ],
                   ),
                 ),
               ],
             ),
+          pw.Row(
+            children: [
+              pw.Spacer(flex: 1),
+              pw.Expanded(
+                flex: 5,
+                child: pw.Column(
+                  children: [
+                    pw.SizedBox(height: 5.0),
+                    pw.Container(
+                      child: signatureImageOCCWidget,
+                      width: 200,  // Adjust width as needed
+                      height: 100, // Adjust height as needed
+                    ),
+                    pw.SizedBox(height: 5.0),
+                    pw.Text('$occAccept'),
+                  ],
+                ),
+              ),
+              pw.Spacer(flex: 1),
+              pw.Expanded(
+                flex: 5,
+                child: pw.Column(
+                  children: [
+                    pw.SizedBox(height: 5.0),
+                    // Menampilkan gambar tanda tangan
+                    pw.Container(
+                      child: signatureImageWidget,
+                      width: 200,  // Adjust width as needed
+                      height: 100, // Adjust height as needed
+                    ),
+                    pw.SizedBox(height: 5.0),
+                    pw.Text('$userName'),
+                    pw.SizedBox(height: 2.0),
+                    pw.Text('$userRank'),
+                  ],
+                ),
+              ),
+            ],
+          ),
 
           if ('$statusdevice' == 'handover-to-other-crew')
             pw.SizedBox(height: 70),
@@ -578,4 +626,14 @@ pw.Widget _buildHeaderCellRight(String text, pw.Context context) {
       ),
     ),
   );
+}
+
+Future<Uint8List> fetchImage(String imageUrl) async {
+  var http;
+  final response = await http.get(Uri.parse(imageUrl));
+  if (response.statusCode == 200) {
+    return response.bodyBytes;
+  } else {
+    throw Exception('Failed to load image');
+  }
 }

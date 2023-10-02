@@ -180,29 +180,6 @@ class DetailHistoryDeviceView extends GetView {
                                     occAcceptedSnapshot.data?.data()
                                         as Map<String, dynamic>?;
 
-                                // generateLogPdfDevice1(
-                                //   userName: userData['NAME'],
-                                //   userRank: userData['RANK'],
-                                //   userID: userData['ID NO'].toString(),
-                                //   occAccept: occAccepteduserData?['NAME'],
-                                //   occGiven: occOnDutyuserData?['NAME'],
-                                //   deviceNo: data['device_name'],
-                                //   iosVer: deviceData['iosver'],
-                                //   flySmart: deviceData['flysmart'],
-                                //   lido: deviceData['lidoversion'],
-                                //   docunet: deviceData['docuversion'],
-                                //   deviceCondition: deviceData['condition'],
-                                //   ttdUser: data['signature_url'],
-                                //   loan: data['timestamp'],
-                                //   statusdevice: data['statusDevice'],
-                                //   handoverName: handoverTouserData != null
-                                //       ? handoverTouserData['NAME']
-                                //       : 'Not Found',
-                                //   handoverID: handoverTouserData != null
-                                //       ? handoverTouserData['ID NO']
-                                //       : 'Not Found',
-                                // );
-
                                 return Center(
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
@@ -537,6 +514,23 @@ class DetailHistoryDeviceView extends GetView {
                                               SizedBox(height: 70.0),
                                               ElevatedButton(
                                                 onPressed: () {
+                                                  showDialog(
+                                                    context: context,
+                                                    barrierDismissible: false,
+                                                    builder: (context) {
+                                                      return AlertDialog(
+                                                        content: Column(
+                                                          mainAxisSize: MainAxisSize.min,
+                                                          children: [
+                                                            CircularProgressIndicator(),
+                                                            SizedBox(height: 20),
+                                                            Text('Please Wait...'),
+                                                          ],
+                                                        ),
+                                                      );
+                                                    },
+                                                  );
+
                                                   generateLogPdfDevice1(
                                                     userName: userData['NAME'],
                                                     userRank: userData['RANK'],
@@ -550,16 +544,23 @@ class DetailHistoryDeviceView extends GetView {
                                                     docunet: deviceData['docuversion'],
                                                     deviceCondition: deviceData['condition'],
                                                     ttdUser: data['signature_url'],
+                                                    ttdOCC: data['signature_url_occ'],
                                                     loan: data['timestamp'],
                                                     statusdevice: data['statusDevice'],
                                                     handoverName: handoverTouserData != null
-                                                      ? handoverTouserData['NAME']
-                                                      : 'Not Found',
+                                                        ? handoverTouserData['NAME']
+                                                        : 'Not Found',
                                                     handoverID: handoverTouserData != null
-                                                      ? handoverTouserData['ID NO']
-                                                      : 'Not Found',
-                                                  );
-
+                                                        ? handoverTouserData['ID NO']
+                                                        : 'Not Found',
+                                                  ).then((_) {
+                                                    // Close the dialog when PDF generation is complete
+                                                    Navigator.pop(context);
+                                                  }).catchError((error) {
+                                                    // Handle any errors during PDF generation
+                                                    print('Error generating PDF: $error');
+                                                    Navigator.pop(context); // Close the dialog on error
+                                                  });
                                                   //generateLogPdfDevice1();
                                                 },
                                                 style: ElevatedButton.styleFrom(
