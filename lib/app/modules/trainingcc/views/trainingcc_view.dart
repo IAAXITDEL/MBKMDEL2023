@@ -39,12 +39,6 @@ class TrainingccView extends GetView<TrainingccController> {
 
       if (classList.isNotEmpty) {
         if (attendanceList.isNotEmpty) {
-          // Do something with the attendanceList
-          await QuickAlert.show(
-            context: context,
-            type: QuickAlertType.success,
-            text: 'You have been joined to the class!',
-          );
           Get.toNamed(Routes.ATTENDANCE_PILOTCC, arguments: {
             "id": attendanceList[0].id,
           });
@@ -99,7 +93,6 @@ class TrainingccView extends GetView<TrainingccController> {
               ],
             ),
             onConfirmBtnTap: () async {
-              print("ini text nya ${passwordC.text}");
               if (passwordC.text.length < 5) {
                 await QuickAlert.show(
                   context: context,
@@ -141,7 +134,7 @@ class TrainingccView extends GetView<TrainingccController> {
                             text: "You have been joined to the class!",
                           );
                         });
-
+                          Get.back();
                         // Get.toNamed(Routes.ATTENDANCE_PILOTCC, arguments: {
                         //   "id" : listAttendance[0]["id"],
                         // });
@@ -168,7 +161,94 @@ class TrainingccView extends GetView<TrainingccController> {
 
     return Scaffold(
       appBar: AppBar(
-        title: RedTitleText(text: 'TRAINING'),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            RedTitleText(text: 'TRAINING'),
+            controller.isAdministrator.value == true ?    //ADD NEW SUBJECT
+            ElevatedButton(
+              onPressed: () async {
+                String newSubject = '';
+                String newRemark = '';
+                String newTrainingDescription = '';
+
+                // Show a dialog to input the new subject, remark and description
+                await showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: Text('Add New Subject'),
+                      content: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(bottom: 16),
+                            child: TextField(
+                              onChanged: (value) {
+                                newSubject = value; //
+                              },
+                              decoration: InputDecoration(
+                                hintText: 'Enter the new subject',
+                                border: OutlineInputBorder(),
+                                labelText: 'Subject',
+                              ),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(bottom: 16),
+                            child: TextField(
+                              onChanged: (value) {
+                                newRemark = value;
+                              },
+                              decoration: InputDecoration(
+                                hintText: 'Enter the remark',
+                                border: OutlineInputBorder(),
+                                labelText: 'Remark',
+                              ),
+                            ),
+                          ),
+                          Container(
+                            child: TextField(
+                              onChanged: (value) {
+                                newTrainingDescription = value;
+                              },
+                              maxLines: null, // Allow multiple lines for long text
+                              decoration: InputDecoration(
+                                hintText: 'About training',
+                                border: OutlineInputBorder(),
+                                labelText: 'Training Description',
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Text('Cancel'),
+                        ),
+                        ElevatedButton( // Use ElevatedButton for the "Add" button
+                          onPressed: () async {
+                            if (newSubject.isNotEmpty && newRemark.isNotEmpty) {
+                              await controller.addNewSubject(newSubject, newRemark, newTrainingDescription);
+                              Navigator.of(context).pop();
+                            }
+                          },
+                          child: Text('Add'),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+              child: Text('Add New Subject'),
+              style: ElevatedButton.styleFrom(
+              ),
+            ) : SizedBox()
+          ],
+        )
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -234,6 +314,7 @@ class TrainingccView extends GetView<TrainingccController> {
                   );
                 },
               ),
+
 
               SizedBox(
                 height: 20,
@@ -345,6 +426,7 @@ class TrainingccView extends GetView<TrainingccController> {
                   RedTitleText(text: "TRAINING REMARK"),
                 ],
               ),
+
 
               StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
                 stream: controller.trainingRemarkStream(),

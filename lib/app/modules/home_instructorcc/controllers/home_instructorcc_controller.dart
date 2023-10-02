@@ -65,7 +65,6 @@ class HomeInstructorccController extends GetxController {
         }),
       );
 
-      print(usersData);
       return attendanceData;
     });
   }

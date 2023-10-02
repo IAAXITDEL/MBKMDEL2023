@@ -23,7 +23,7 @@ class TrainingccController extends GetxController {
   final RxString argumentname = "".obs;
 
   final RxBool cekPilot = false.obs;
-
+   RxBool isAdministrator = false.obs;
   final RxString passwordKey = "".obs;
 
   // List untuk training remark
@@ -39,7 +39,7 @@ class TrainingccController extends GetxController {
   Stream<QuerySnapshot<Map<String, dynamic>>> trainingStream() {
     return firestore
         .collection('trainingType')
-        .orderBy("id", descending: false)
+        .where("is_delete", isEqualTo : 0)
         .snapshots();
   }
 
@@ -52,13 +52,11 @@ class TrainingccController extends GetxController {
         userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)) {
     }
     // SEBAGAI INSTRUCTOR
-    else if (userPreferences
-                .getInstructor()
-                .contains(UserModel.keySubPositionICC) &&
-            userPreferences.getRank().contains(UserModel.keyPositionCaptain) ||
-        userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)) {
-      Get.toNamed(Routes.TRAINING_INSTRUCTORCC,
-          arguments: {"id": argumentid.value, "name": argumentname.value});
+    else if( userPreferences.getInstructor().contains(UserModel.keySubPositionCCP) || userPreferences.getInstructor().contains(UserModel.keySubPositionFIA) || userPreferences.getInstructor().contains(UserModel.keySubPositionFIS) || userPreferences.getInstructor().contains(UserModel.keySubPositionPGI) && userPreferences.getRank().contains(UserModel.keyPositionCaptain) || userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)){
+      Get.toNamed(Routes.TRAINING_INSTRUCTORCC, arguments: {
+        "id" : argumentid.value,
+        "name" : argumentname.value
+      });
       Get.find<TrainingInstructorccController>().onInit();
     }
     // SEBAGAI PILOT
@@ -71,6 +69,20 @@ class TrainingccController extends GetxController {
       Get.toNamed(Routes.TRAININGTYPECC,
           arguments: {"id": argumentid.value, "name": argumentname.value});
       Get.find<TrainingtypeccController>().onInit();
+    }
+    // SEBAGAI ALL STAR
+    else {
+      return false;
+    }
+    return false;
+  }
+
+  Future<bool> cekAdministrator() async {
+    userPreferences = getItLocator<UserPreferences>();
+
+     if (userPreferences.getRank().contains("Pilot Administrator")) {
+       isAdministrator.value = true;
+      return true;
     }
     // SEBAGAI ALL STAR
     else {
@@ -138,7 +150,6 @@ class TrainingccController extends GetxController {
         await addAttendancePilotForm(
             attendanceData[0]["id"], attendanceData[0]["idTrainingType"]);
       }
-
       return attendanceData;
     });
   }
@@ -151,14 +162,11 @@ class TrainingccController extends GetxController {
 
     String formattedDate = DateFormat('ddMMyyyyHHmmss').format(DateTime.now());
     try {
-      await attendance
-          .doc("${userPreferences.getIDNo()}-${idtraining}--${formattedDate}")
-          .set({
-        "id":
-            "attendance-${idtraining}-${userPreferences.getIDNo()}-${formattedDate}",
-        "idattendance": idattendance,
-        "idpilot": userPreferences.getIDNo(),
-        "status": "join",
+      await attendance.doc("${userPreferences.getIDNo()}-${idtraining}-${formattedDate}").set({
+        "id" : "${userPreferences.getIDNo()}-${idtraining}-${formattedDate}",
+        "idattendance" : idattendance,
+        "idtraining" : userPreferences.getIDNo(),
+        "status" : "confirmation",
         "creationTime": DateTime.now().toIso8601String(),
         "updatedTime": DateTime.now().toIso8601String(),
       });
@@ -195,7 +203,7 @@ class TrainingccController extends GetxController {
       userPreferences = getItLocator<UserPreferences>();
       final attendancedetailQuery = await firestore
           .collection('attendance-detail')
-          .where("idpilot", isEqualTo: userPreferences.getIDNo())
+          .where("idtraining", isEqualTo: userPreferences.getIDNo())
           .get();
       final attendanceQuery = await firestore
           .collection('attendance')
@@ -275,6 +283,7 @@ class TrainingccController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    cekAdministrator();
   }
 
   @override

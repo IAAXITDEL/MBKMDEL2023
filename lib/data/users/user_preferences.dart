@@ -21,6 +21,7 @@ class UserPreferences extends ChangeNotifier {
   static String keyLicenseLastPassed = "LICENSE_LAST_PASSED";
   static String keyLicenseExpiry = "LICENSE_EXPIRY";
   static String keyPrivileges = "PRIVILEGES";
+  static String keyHub = "HUB";
 
   void saveUser(UserAuth userAuth) {
     preferences.setBool(UserPreferences.keyIsLogin, true);
@@ -41,6 +42,7 @@ class UserPreferences extends ChangeNotifier {
     preferences.setString(UserModel.keyLicenseNo, userAuth.userModel!.licenseNo);
     preferences.setString(UserModel.keyLicenseExpiry, userAuth.userModel!.licenseExpiry.toString());
     preferences.setStringList(UserModel.keyPrivileges, userAuth.userModel!.privileges);
+    preferences.setString(UserModel.keyHub, userAuth.userModel!.hub);
     notifyListeners();
   }
 
@@ -57,6 +59,7 @@ class UserPreferences extends ChangeNotifier {
     preferences.setString(UserModel.keyLicenseNo, "");
     preferences.setString(UserModel.keyLicenseExpiry, "");
     preferences.setStringList(UserModel.keyPrivileges, []);
+    preferences.setString(UserModel.keyHub, "");
     notifyListeners();
   }
 
@@ -124,6 +127,10 @@ class UserPreferences extends ChangeNotifier {
       }
     }
     return privileges;
+  }
+
+  String getHub() {
+    return preferences.getString(UserModel.keyHub) ?? "";
   }
 
   bool isPrivilege(String privilege) {

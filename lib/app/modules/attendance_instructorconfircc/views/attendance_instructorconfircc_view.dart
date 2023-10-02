@@ -64,7 +64,7 @@ class AttendanceInstructorconfirccView
       await FirebaseFirestore.instance
           .collection('attendance')
           .doc(controller.argumentid.value.toString())
-          .update({'signature-icc-url': imageUrl});
+          .update({'signatureIccUrl': imageUrl});
     }
 
     Future<void> confir(
@@ -224,35 +224,76 @@ class AttendanceInstructorconfirccView
                           SizedBox(
                             height: 20,
                           ),
-                          InkWell(
-                            onTap: () {
-                              if (controller.jumlah.value > 0) {
-                                Get.toNamed(Routes.LIST_ATTENDANCECC,
-                                    arguments: {
-                                      "id": controller.argumentid.value,
-                                      "status": "pending"
-                                    });
+                          StreamBuilder<int>(
+                            stream: controller.attendanceStream(),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return CircularProgressIndicator(); // Tampilkan indikator loading jika masih dalam proses pengambilan data
+                              } else if (snapshot.hasError) {
+                                return Text('Error: ${snapshot.error}');
+                              } else {
+                                int attendanceCount = snapshot.data ?? 0;
+                                // Lakukan sesuatu dengan nilai attendanceCount, misalnya tampilkan di UI
+                                return   InkWell(
+                                  onTap: () {
+                                    if (controller.jumlah.value > 0) {
+                                      Get.toNamed(Routes.LIST_ATTENDANCECC,
+                                          arguments: {
+                                            "id": controller.argumentid.value,
+                                            "status": "pending"
+                                          });
+                                    }
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                          color: TsOneColor.secondaryContainer,
+                                          width: 1,
+                                        ),
+                                        borderRadius: BorderRadius.circular(10)),
+                                    child: ListTile(
+                                      title: Text(
+                                        "Attendance",
+                                        style: tsOneTextTheme.labelSmall,
+                                      ),
+                                      subtitle: Text(
+                                        "${attendanceCount} person",
+                                        style: tsOneTextTheme.headlineMedium,
+                                      ),
+                                      trailing: Icon(Icons.navigate_next),
+                                    ),
+                                  ),
+                                );
                               }
                             },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: TsOneColor.secondaryContainer,
-                                    width: 1,
-                                  ),
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: ListTile(
-                                title: Text(
-                                  "Attendance",
-                                  style: tsOneTextTheme.labelSmall,
-                                ),
-                                subtitle: Text(
-                                  "${controller.jumlah.value.toString()} person",
-                                  style: tsOneTextTheme.headlineMedium,
-                                ),
-                                trailing: Icon(Icons.navigate_next),
-                              ),
-                            ),
+                          ),
+                          StreamBuilder<int>(
+                            stream: controller.cekScoringStream(),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return CircularProgressIndicator();
+                              } else if (snapshot.hasError) {
+                                return Text('Error: ${snapshot.error}');
+                              } else {
+                                int attendanceCount = snapshot.data ?? 0;
+                                if(attendanceCount > 0){
+                                  controller.cekScoring.value = true;
+                                  controller.update();
+                                }else{
+                                  controller.cekScoring.value = false;
+                                  controller.update();
+                                }
+                                return attendanceCount > 0 ? Row(
+                                  children: [
+                                    Text("*Please doing Scoring!*",
+                                        style: TextStyle(color: Colors.red, fontSize: 12)),
+                                  ],
+                                )
+                                    : SizedBox();
+                              }
+                            },
                           ),
                           SizedBox(
                             height: 20,
@@ -301,50 +342,58 @@ class AttendanceInstructorconfirccView
                           Text("Class Password"),
 
                           InkWell(
-                            onTap: (){
-                              showModalBottomSheet(context: context, builder: (context){
-                                return SingleChildScrollView(
-                                  child: Container(
-                                    width: Get.width,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(20.0),
-                                        topRight: Radius.circular(20.0),
+                            onTap: () {
+                              showModalBottomSheet(
+                                  context: context,
+                                  builder: (context) {
+                                    return SingleChildScrollView(
+                                      child: Container(
+                                        width: Get.width,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(20.0),
+                                            topRight: Radius.circular(20.0),
+                                          ),
+                                          color: Theme.of(context).cardColor,
+                                        ),
+                                        padding: EdgeInsets.only(
+                                            top: 20, left: 20, right: 20),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: <Widget>[
+                                            Text(
+                                              'QR Code',
+                                              style: TextStyle(
+                                                  fontSize: 20.0,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 30),
+                                              child: Text(
+                                                'Provide training for those taking classes to take attendance',
+                                                style:
+                                                    tsOneTextTheme.labelMedium,
+                                              ),
+                                            ),
+                                            SizedBox(height: 20),
+                                            QrImageView(
+                                              data: listAttendance[0]
+                                                  ["keyAttendance"],
+                                              version: QrVersions.auto,
+                                              size: 250,
+                                            ),
+                                            SizedBox(height: 20),
+                                            Text(
+                                              'Scan this QR code',
+                                              style: TextStyle(fontSize: 16.0),
+                                            ),
+                                            SizedBox(height: 50),
+                                          ],
+                                        ),
                                       ),
-                                      color: Theme.of(context).cardColor,
-                                    ),
-                                    padding: EdgeInsets.only(
-                                        top: 20,
-                                        left: 20,
-                                        right: 20),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: <Widget>[
-                                        Text(
-                                          'QR Code',
-                                          style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-                                        ),
-                                        Padding(padding: EdgeInsets.symmetric(horizontal: 30), child: Text(
-                                          'Provide training for those taking classes to take attendance',
-                                          style: tsOneTextTheme.labelMedium,
-                                        ),),
-                                        SizedBox(height: 20),
-                                        QrImageView(
-                                          data: listAttendance[0]["keyAttendance"],
-                                          version: QrVersions.auto,
-                                          size: 250,
-                                        ),
-                                        SizedBox(height: 20),
-                                        Text(
-                                          'Scan this QR code',
-                                          style: TextStyle(fontSize: 16.0),
-                                        ),
-                                        SizedBox(height: 50),
-                                      ],
-                                    ),
-                                  ),
-                                );
-                              });
+                                    );
+                                  });
                             },
                             child: Container(
                               margin: EdgeInsets.symmetric(vertical: 5),
@@ -361,13 +410,17 @@ class AttendanceInstructorconfirccView
                                 ],
                               ),
                               child: ListTile(
-                                leading: Icon(Icons.qr_code, size: 25,),
+                                leading: Icon(
+                                  Icons.qr_code,
+                                  size: 25,
+                                ),
                                 title: Text(
                                   "Open QR Code",
                                   style: tsOneTextTheme.headlineMedium,
                                 ),
                                 subtitle: RedTitleText(
-                                  text: listAttendance[0]["keyAttendance"] ?? "N/A",
+                                  text: listAttendance[0]["keyAttendance"] ??
+                                      "N/A",
                                   size: 16,
                                 ),
                                 trailing: const Icon(Icons.navigate_next),
@@ -455,7 +508,8 @@ class AttendanceInstructorconfirccView
 
                                 if (_formKey.currentState != null &&
                                     _formKey.currentState!.validate() &&
-                                    controller.ceksign.value == true) {
+                                    controller.ceksign.value == true &&
+                                    controller.cekScoring.value == false) {
                                   showDialog(
                                       context: context,
                                       builder: (BuildContext context) {

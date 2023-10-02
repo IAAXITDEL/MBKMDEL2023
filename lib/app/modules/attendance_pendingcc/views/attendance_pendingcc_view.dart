@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../../../presentation/shared_components/TitleText.dart';
 import '../../../../presentation/shared_components/formdatefield.dart';
@@ -35,7 +36,7 @@ class AttendancePendingccView extends GetView<AttendancePendingccController> {
         ),
         body: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: StreamBuilder<List<Map<String, dynamic>>>(
                 stream: controller
                     .getCombinedAttendanceStream(controller.argument.value),
@@ -49,7 +50,6 @@ class AttendancePendingccView extends GetView<AttendancePendingccController> {
                   }
 
                   var listAttendance = snapshot.data!;
-                  print(listAttendance);
                   if (listAttendance.isNotEmpty) {
                     subjectC.text = listAttendance[0]["subject"];
                     dateC.text = listAttendance[0]["date"];
@@ -63,7 +63,41 @@ class AttendancePendingccView extends GetView<AttendancePendingccController> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const RedTitleText(text: "ATTENDANCE LIST"),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          RedTitleText(text: "ATTENDANCE LIST"),
+                          InkWell(
+                            onTap: (){
+                              Get.toNamed(Routes.EDIT_ATTENDANCECC, arguments: {
+                                "id" : controller.argument.value,
+                              });
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(5),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.0),
+                                color: Colors.blue,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.3),
+                                    spreadRadius: 2,
+                                    blurRadius: 3,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ],
+                              ),
+                              child: Row(
+                                children: [
+                                  Icon(Icons.edit, size: 16, color: Colors.white,),
+                                  SizedBox(width: 5,),
+                                  Text("Edit", style: TextStyle(color: Colors.white),)
+                                ],
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                       // Text("REDUCED VERTICAL SEPARATION MINIMA (RVSM)"),
                       const SizedBox(
                         height: 20,
@@ -96,38 +130,9 @@ class AttendancePendingccView extends GetView<AttendancePendingccController> {
                         children: [
                           Expanded(
                             child: FormTextField(
-                              text: "Departement",
-                              textController: departementC,),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Expanded(
-                            child: FormTextField(
                                 text: "Vanue",
                                 textController: vanueC,
                                 readOnly: true),
-                          )
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Expanded(
-                            child: FormTextField(
-                                text: "Training Type",
-                                textController: trainingtypeC),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Expanded(
-                            child: FormTextField(
-                              text: "Room",
-                              textController: roomC,),
                           )
                         ],
                       ),
@@ -191,10 +196,83 @@ class AttendancePendingccView extends GetView<AttendancePendingccController> {
 
                         ),
                       ),
+                      SizedBox(
+                        height: 20,
+                      ),
                       const Text("Class Password"),
-                      RedTitleText(
-                        text: listAttendance[0]["keyAttendance"],
-                        size: 16,
+                      InkWell(
+                        onTap: (){
+                          showModalBottomSheet(context: context, builder: (context){
+                            return SingleChildScrollView(
+                              child: Container(
+                                width: Get.width,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(20.0),
+                                    topRight: Radius.circular(20.0),
+                                  ),
+                                  color: Theme.of(context).cardColor,
+                                ),
+                                padding: EdgeInsets.only(
+                                    top: 20,
+                                    left: 20,
+                                    right: 20),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    Text(
+                                      'QR Code',
+                                      style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                                    ),
+                                    Padding(padding: EdgeInsets.symmetric(horizontal: 30), child: Text(
+                                      'Provide training for those taking classes to take attendance',
+                                      style: tsOneTextTheme.labelMedium,
+                                    ),),
+                                    SizedBox(height: 20),
+                                    QrImageView(
+                                      data: listAttendance[0]["keyAttendance"],
+                                      version: QrVersions.auto,
+                                      size: 250,
+                                    ),
+                                    SizedBox(height: 20),
+                                    Text(
+                                      'Scan this QR code',
+                                      style: TextStyle(fontSize: 16.0),
+                                    ),
+                                    SizedBox(height: 50),
+                                  ],
+                                ),
+                              ),
+                            );
+                          });
+                        },
+                        child: Container(
+                          margin: EdgeInsets.symmetric(vertical: 5),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.0),
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.3),
+                                spreadRadius: 2,
+                                blurRadius: 3,
+                                offset: const Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                          child: ListTile(
+                            leading: Icon(Icons.qr_code, size: 25,),
+                            title: Text(
+                              "Open QR Code",
+                              style: tsOneTextTheme.headlineMedium,
+                            ),
+                            subtitle: RedTitleText(
+                              text: listAttendance[0]["keyAttendance"] ?? "N/A",
+                              size: 16,
+                            ),
+                            trailing: const Icon(Icons.navigate_next),
+                          ),
+                        ),
                       ),
 
                     ],

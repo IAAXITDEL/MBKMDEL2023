@@ -34,6 +34,8 @@ import '../modules/attendance_pendingcc/bindings/attendance_pendingcc_binding.da
 import '../modules/attendance_pendingcc/views/attendance_pendingcc_view.dart';
 import '../modules/attendance_pilotcc/bindings/attendance_pilotcc_binding.dart';
 import '../modules/attendance_pilotcc/views/attendance_pilotcc_view.dart';
+import '../modules/edit_attendancecc/bindings/edit_attendancecc_binding.dart';
+import '../modules/edit_attendancecc/views/edit_attendancecc_view.dart';
 import '../modules/efb/fo/bindings/homefo_binding.dart';
 import '../modules/efb/fo/views/main_view_fo.dart';
 import '../modules/efb/occ/bindings/device_binding.dart';
@@ -44,6 +46,8 @@ import '../modules/efb/pilot/bindings/homepilot_binding.dart';
 import '../modules/efb/pilot/views/main_view_pilot.dart';
 import '../modules/home_admincc/bindings/home_admincc_binding.dart';
 import '../modules/home_admincc/views/home_admincc_view.dart';
+import '../modules/home_cptscc/bindings/home_cptscc_binding.dart';
+import '../modules/home_cptscc/views/home_cptscc_view.dart';
 import '../modules/home_instructorcc/bindings/home_instructorcc_binding.dart';
 import '../modules/home_instructorcc/views/home_instructorcc_view.dart';
 import '../modules/home_pilotcc/bindings/home_pilotcc_binding.dart';
@@ -54,6 +58,8 @@ import '../modules/instructor_main_homecc/bindings/instructor_main_homecc_bindin
 import '../modules/instructor_main_homecc/views/instructor_main_homecc_view.dart';
 import '../modules/list_attendancecc/bindings/list_attendancecc_binding.dart';
 import '../modules/list_attendancecc/views/list_attendancecc_view.dart';
+import '../modules/list_pilotcptscc/bindings/list_pilotcptscc_binding.dart';
+import '../modules/list_pilotcptscc/views/list_pilotcptscc_view.dart';
 import '../modules/list_attendancedetailcc/bindings/list_attendancedetailcc_binding.dart';
 import '../modules/list_attendancedetailcc/views/list_attendancedetailcc_view.dart';
 import '../modules/main_home/bindings/main_home_binding.dart';
@@ -66,8 +72,12 @@ import '../modules/pa/navpilot/bindings/navpilot_binding.dart';
 import '../modules/pa/navpilot/views/navpilot_view.dart';
 import '../modules/pa/occ/bindings/navocc_binding.dart';
 import '../modules/pa/occ/views/navocc_view.dart';
-import '../modules/pilotcrewcc/bindings/pilotcrewcc_binding.dart';
-import '../modules/pilotcrewcc/views/pilotcrewcc_view.dart';
+import '../modules/pilotadministrator/pilotcrewcc/bindings/pilotcrewcc_binding.dart';
+import '../modules/pilotadministrator/pilotcrewcc/views/pilotcrewcc_view.dart';
+import '../modules/pilotadministrator/pilotcrewdetailcc/bindings/pilotcrewdetailcc_binding.dart';
+import '../modules/pilotadministrator/pilotcrewdetailcc/views/pilotcrewdetailcc_view.dart';
+import '../modules/pilottraininghistorycc/bindings/pilottraininghistorycc_binding.dart';
+import '../modules/pilottraininghistorycc/views/pilottraininghistorycc_view.dart';
 import '../modules/profilecc/bindings/profilecc_binding.dart';
 import '../modules/profilecc/views/profilecc_view.dart';
 import '../modules/training_instructorcc/bindings/training_instructorcc_binding.dart';
@@ -348,9 +358,34 @@ class AppPages {
       binding: ListAttendanceccBinding(),
     ),
     GetPage(
+      name: _Paths.HOME_CPTSCC,
+      page: () => const HomeCptsccView(),
+      binding: HomeCptsccBinding(),
+    ),
+    GetPage(
+      name: _Paths.LIST_PILOTCPTSCC,
+      page: () => const ListPilotcptsccView(),
+      binding: ListPilotcptsccBinding(),
+    ),
+    GetPage(
       name: _Paths.LIST_ATTENDANCEDETAILCC,
       page: () => ListAttendancedetailccView(),
       binding: ListAttendancedetailccBinding(),
+    ),
+    GetPage(
+      name: _Paths.EDIT_ATTENDANCECC,
+      page: () => EditAttendanceccView(),
+      binding: EditAttendanceccBinding(),
+    ),
+    GetPage(
+      name: _Paths.PILOTCREWDETAILCC,
+      page: () => const PilotcrewdetailccView(),
+      binding: PilotcrewdetailccBinding(),
+    ),
+    GetPage(
+      name: _Paths.PILOTTRAININGHISTORYCC,
+      page: () => const PilottraininghistoryccView(),
+      binding: PilottraininghistoryccBinding(),
     ),
   ];
 }

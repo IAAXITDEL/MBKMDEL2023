@@ -22,8 +22,7 @@ class ListAttendancedetailccView
   Widget build(BuildContext context) {
     var scoreC = TextEditingController();
     var feedbackC = TextEditingController();
-    List<String> list = <String>['SUCCESS', 'FAIL'];
-    final RxString dropdownValue = RxString(list.first);
+
 
 
     Future<void> updateScoring(String score, String feedback) async {
@@ -31,9 +30,10 @@ class ListAttendancedetailccView
         await QuickAlert.show(
           context: context,
           type: QuickAlertType.success,
-          text: 'Add Attendance Completed Successfully!',
+          text: 'Add Score and Feedback Completed Successfully!',
         );
 
+        Get.back();
         Get.back();
       });
     }
@@ -66,6 +66,11 @@ class ListAttendancedetailccView
                       }
                       var documentData = listAttendance[0];
                       controller.idattendancedetail.value = documentData["id"];
+                      feedbackC.text = documentData["feedback"] ?? "";
+
+                      List<String> list = ['SUCCESS', 'FAIL'];
+                      RxString dropdownValue = RxString(documentData["score"] ?? list.first);
+
                       return Container(
                         child: Column(
                           children: [
@@ -95,12 +100,12 @@ class ListAttendancedetailccView
                                     Container(
                                       padding: EdgeInsets.symmetric(vertical: 3, horizontal: 10),
                                       decoration: BoxDecoration(
-                                        color: Colors.green.withOpacity(0.4),
+                                        color: documentData["score"] == "SUCCESS" ? Colors.green.withOpacity(0.4) : Colors.red.withOpacity(0.4),
                                         borderRadius: BorderRadius.circular(10),
                                       ),
-                                      child: const Text(
-                                        "Pass",
-                                        style: TextStyle(fontSize: 10, color: Colors.green),
+                                      child: Text(
+                                        documentData["score"] ,
+                                        style: TextStyle(fontSize: 10, color: documentData["score"] == "SUCCESS" ? Colors.green : Colors.red),
                                       ),
                                     ),
                                   ],
@@ -165,22 +170,24 @@ class ListAttendancedetailccView
                                         Expanded(flex: 6, child: Row(
                                           children: [
                                             Obx(() => Container(
-                                              padding: EdgeInsets.symmetric(vertical: 3, horizontal: 5),
+                                              height: 30.0,
+                                              padding: EdgeInsets.symmetric(horizontal: 8),
                                               decoration: BoxDecoration(
-                                                color: Colors.green.withOpacity(0.4),
+                                                color: scoreC.text == "SUCCESS" ?  Colors.green.withOpacity(0.4) : Colors.red.withOpacity(0.4),
                                                 borderRadius: BorderRadius.circular(10),
                                               ),
                                               child: DropdownButton<String>(
+                                                underline: Container(),
+                                                focusColor : tsOneColorScheme.onSecondaryContainer,
                                                 value: dropdownValue.value,
                                                 onChanged: (String? newValue) {
-                                                  // Update the dropdown value when a new value is selected
                                                   dropdownValue.value = newValue!;
                                                   scoreC.text = dropdownValue.value;
                                                 },
                                                 items: list.map((String value) {
                                                   return DropdownMenuItem<String>(
                                                     value: value,
-                                                    child: Text(value),
+                                                    child: Text(value, style: TextStyle(fontSize: 14),),
                                                   );
                                                 }).toList(),
                                               ),
@@ -219,7 +226,7 @@ class ListAttendancedetailccView
                                         keyboardType: TextInputType.multiline,
                                         validator: (value) {
                                           if (value == null || value.isEmpty) {   // Validation Logic
-                                            return 'Please review the legal agreement and check this box to proceed';
+                                            return 'Please enter the Feedback';
                                           }
                                           return null;
                                         },
@@ -234,13 +241,14 @@ class ListAttendancedetailccView
                                         controller.checkAgree.value = newValue!;
                                       },
                                       controlAffinity: ListTileControlAffinity.leading,
+                                      activeColor: Colors.green
                                     )),
 
                                     Obx(() {
                                       return controller.showText.value
                                           ? Container(
                                         padding: EdgeInsets.symmetric(horizontal: 5),
-                                        child:  Text("Please review the legal agreement and check this box to proceed", style: TextStyle(color: Colors.red)),
+                                        child:  Text("Please review the legal agreement and check this box to proceed", style: TextStyle(color: Colors.red, fontSize: 12)),
                                       )
                                           : SizedBox();
                                     }),

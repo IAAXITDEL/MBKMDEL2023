@@ -38,8 +38,8 @@ class HomeccController extends GetxController {
     _isCPTS = false;
     _isInstructor = false;
 
-    if( userPreferences.getInstructor().contains(UserModel.keySubPositionICC)){
-      print("ya bener ini ICC");
+    if( userPreferences.getInstructor().contains(UserModel.keySubPositionCCP) || userPreferences.getInstructor().contains(UserModel.keySubPositionFIA) || userPreferences.getInstructor().contains(UserModel.keySubPositionFIS) || userPreferences.getInstructor().contains(UserModel.keySubPositionPGI)){
+
     }
     super.onInit();
   }

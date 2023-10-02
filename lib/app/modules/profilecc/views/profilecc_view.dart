@@ -137,16 +137,50 @@ class ProfileccView extends GetView<ProfileccController> {
                   var listAttendance = snapshot.data!.docs;
                   var documentData = listAttendance[0].data();
 
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ProfileInfoRow("RANK", documentData["RANK"] ?? "N/A"),
-                      ProfileInfoRow("Email", documentData["EMAIL"] ?? "N/A"),
-                      ProfileInfoRow(
-                        "LICENSE NO",
-                        documentData["LICENSE NO."] ?? "N/A",
+                    return Container(
+                      padding:
+                      EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(flex: 3, child: Text("RANK")),
+                              Expanded(flex: 1, child: Text(":")),
+                              Expanded(flex: 6, child: Text(documentData["RANK"] ?? "N/A")),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            children: [
+                              Expanded(flex: 3, child: Text("Email")),
+                              Expanded(flex: 1, child: Text(":")),
+                              Expanded(
+                                  flex: 6, child: Text(documentData["EMAIL"] ?? "N/A")),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            children: [
+                              Expanded(flex: 3, child: Text("LICENSE NO")),
+                              Expanded(flex: 1, child: Text(":")),
+                              Expanded(
+                                  flex: 6, child: Text( documentData["LICENSE NO."] ?? "N/A")),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Expanded(flex: 3, child: Text("HUB")),
+                              Expanded(flex: 1, child: Text(":")),
+                              Expanded(
+                                  flex: 6, child: Text( documentData["HUB"] ?? "N/A")),
+                            ],
+                          ),
+                        ],
                       ),
-                    ],
                   );
                 },
               ),
