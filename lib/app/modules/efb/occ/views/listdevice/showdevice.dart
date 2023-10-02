@@ -91,13 +91,6 @@ class ShowDevice extends StatelessWidget {
       OpenFile.open(file.path);
     }
 
-
-
-
-
-
-
-
   @override
   Widget build(BuildContext context) {
     final String deviceNo = device.deviceno;

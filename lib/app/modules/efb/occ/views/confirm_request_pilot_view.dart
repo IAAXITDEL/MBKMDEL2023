@@ -32,17 +32,17 @@ class ConfirmRequestPilotView extends GetView {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Confirmation'),
-            content: Text('Are you sure you want to confirm the usage?'),
+            title: const Text('Confirmation'),
+            content: const Text('Are you sure you want to confirm the usage?'),
             actions: <Widget>[
               TextButton(
-                child: Text('Cancel'),
+                child: const Text('Cancel'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
               TextButton(
-                child: Text('Confirm'),
+                child: const Text('Confirm'),
                 onPressed: () async {
                   User? user = _auth.currentUser;
 
@@ -191,7 +191,7 @@ class ConfirmRequestPilotView extends GetView {
 
                           if (!deviceSnapshot.hasData ||
                           !deviceSnapshot.data!.exists) {
-                          return Center(child: Text('Device data 2 not found'));
+                          return const Center(child: Text('Device data 2 not found'));
                           }
 
                           final deviceData3 = deviceSnapshot.data!.data() as Map<
@@ -204,7 +204,7 @@ class ConfirmRequestPilotView extends GetView {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              SizedBox(height: 10.0),
+                              const SizedBox(height: 10.0),
                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
@@ -212,7 +212,7 @@ class ConfirmRequestPilotView extends GetView {
                                   style: tsOneTextTheme.titleLarge,
                                 ),
                               ),
-                              SizedBox(height: 5.0),
+                              const SizedBox(height: 5.0),
                               Row(
                                 children: [
                                   Expanded(flex: 6, child: Text("ID NO", style: tsOneTextTheme.labelMedium,)),
@@ -505,8 +505,7 @@ class ConfirmRequestPilotView extends GetView {
                     );
                       }
 
-                      final deviceData =
-                      deviceSnapshot.data!.data() as Map<String, dynamic>;
+                      final deviceData = deviceSnapshot.data!.data() as Map<String, dynamic>;
 
                       return Center(
                         child: Column(

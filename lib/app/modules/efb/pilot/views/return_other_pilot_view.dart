@@ -57,7 +57,8 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
         usersStream = FirebaseFirestore.instance
             .collection('users')
             .where(FieldPath.documentId, isGreaterThanOrEqualTo: searchText)
-            .where(FieldPath.documentId, isLessThanOrEqualTo: searchText + '\uf8ff')
+            .where(FieldPath.documentId,
+                isLessThanOrEqualTo: searchText + '\uf8ff')
             .snapshots();
       } else {
         usersStream = null;
@@ -67,10 +68,8 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
   }
 
   Future<void> _fetchUserData(String id) async {
-    final documentSnapshot = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(id)
-        .get();
+    final documentSnapshot =
+        await FirebaseFirestore.instance.collection('users').doc(id).get();
 
     if (documentSnapshot.exists) {
       setState(() {
@@ -86,6 +85,7 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
       );
     }
   }
+
   Future<void> _showConfirmationDialog() async {
     return showDialog<void>(
       context: context,
@@ -116,7 +116,10 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
                 final idNumber = _idController.text.trim();
                 if (idNumber.isNotEmpty) {
                   User? user = _auth.currentUser;
-                  QuerySnapshot userQuery = await _firestore.collection('users').where('EMAIL', isEqualTo: user?.email).get();
+                  QuerySnapshot userQuery = await _firestore
+                      .collection('users')
+                      .where('EMAIL', isEqualTo: user?.email)
+                      .get();
                   String userUid = userQuery.docs.first.id;
 
                   await _fetchUserData(idNumber);
@@ -130,7 +133,8 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
                   });
 
                   // Get the hub based on device_name
-                  String hubField = await getHubFromDeviceName(deviceName) ?? "Unknown Hub";
+                  String hubField =
+                      await getHubFromDeviceName(deviceName) ?? "Unknown Hub";
 
                   FirebaseFirestore.instance.collection('pilot-device-1').add({
                     'user_uid': idNumber,
@@ -140,7 +144,7 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
                     'handover-from': userUid,
                     'statusDevice': 'waiting-confirmation-other-pilot',
                     'timestamp': FieldValue.serverTimestamp(),
-                    'remarks' : '',
+                    'remarks': '',
                     'prove_image_url': '',
                     'handover-to-crew': '-',
                     'field_hub': hubField, // Add 'hub' field
@@ -176,19 +180,19 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
                   Expanded(
                     child: TextField(
                       controller: _idController,
-                      enabled: selectedUser != null,  // Enable/disable based on user selection
-                      readOnly: true,  // Make the text field non-editable
+                      enabled: true,
+                      //readOnly: true,  // Make the text field non-editable
                       decoration: InputDecoration(
                         labelText: 'Enter ID Number',
                       ),
                     ),
                   ),
-
                   ElevatedButton(
                     onPressed: () async {
                       // Trigger barcode scanning
-                      String barcodeScanResult = await FlutterBarcodeScanner.scanBarcode(
-                          '#FF0000', 'Cancel', true, ScanMode.BARCODE);
+                      String barcodeScanResult =
+                          await FlutterBarcodeScanner.scanBarcode(
+                              '#FF0000', 'Cancel', true, ScanMode.BARCODE);
 
                       if (barcodeScanResult != '-1') {
                         // Update the text field with the scanned result
@@ -203,7 +207,6 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
                   ),
                 ],
               ),
-
               SizedBox(height: 16.0),
               if (usersStream == null && selectedUser == null)
                 Center(
