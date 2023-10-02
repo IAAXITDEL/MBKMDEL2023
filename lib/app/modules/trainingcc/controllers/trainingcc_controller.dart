@@ -79,18 +79,18 @@ class TrainingccController extends GetxController {
     return false;
   }
 
-
   // Add a new subject to Firestore
-  Future<void> addNewSubject(String newSubject, String newRemark, String newTrainingDescription) async {
+  Future<void> addNewSubject(String newSubject, String newRemark, int newExpiryDate,
+      String newTrainingDescription) async {
     try {
-
       // Get the count of existing documents in both collections
-      QuerySnapshot trainingTypeSnapshot = await FirebaseFirestore.instance.collection('trainingType').get();
+      QuerySnapshot trainingTypeSnapshot =
+          await FirebaseFirestore.instance.collection('trainingType').get();
       int trainingTypeCount = trainingTypeSnapshot.size;
 
-      QuerySnapshot trainingRemarkSnapshot = await FirebaseFirestore.instance.collection('trainingRemark').get();
+      QuerySnapshot trainingRemarkSnapshot =
+          await FirebaseFirestore.instance.collection('trainingRemark').get();
       int trainingRemarkCount = trainingRemarkSnapshot.size;
-
 
       // Add a new document to the 'trainingType' collection
       await FirebaseFirestore.instance.collection('trainingType').add({
@@ -103,14 +103,13 @@ class TrainingccController extends GetxController {
         'id': trainingRemarkCount + 1,
         'remark': newRemark,
         'training_code': newSubject,
-        'training_description' : newTrainingDescription,
+        'expiry_date' : newExpiryDate,
+        'training_description': newTrainingDescription,
       });
     } catch (e) {
       print('Error adding subject: $e');
     }
   }
-
-
 
   // cek key sesuai dengan kelas yang sedang dibuka
   Stream<List<Map<String, dynamic>>> joinClassStream(
