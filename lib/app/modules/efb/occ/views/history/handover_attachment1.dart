@@ -1,12 +1,16 @@
 import 'dart:io';
 import 'dart:async';
 import 'dart:typed_data';
+import 'package:image/image.dart' as img;
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:open_file/open_file.dart';
 import '../../../occ/views/history/detail_history_device_view.dart';
@@ -17,8 +21,7 @@ String _formatTimestamp(Timestamp? timestamp) {
 
   DateTime dateTime = timestamp.toDate();
   // Format the date and time as desired, e.g., 'dd/MM/yyyy HH:mm:ss'
-  String formattedDateTime =
-      '${dateTime.day}/${dateTime.month}/${dateTime.year}'
+  String formattedDateTime = '${dateTime.day}/${dateTime.month}/${dateTime.year}'
       ' at '
       '${dateTime.hour}:${dateTime.minute}';
   return formattedDateTime;
@@ -47,14 +50,36 @@ Future<void> generateLogPdfDevice1({
   final output = await getTemporaryDirectory();
   final file = File("${output.path}/log_device1.pdf");
 
-  final ByteData logo =
-      await rootBundle.load('assets/images/airasia_logo_circle.png');
+  final ByteData logo = await rootBundle.load('assets/images/airasia_logo_circle.png');
   final Uint8List uint8list = logo.buffer.asUint8List();
 
   final font = await rootBundle.load("assets/fonts/Poppins-Regular.ttf");
   final ttf = pw.Font.ttf(font);
 
   //final Uint8List imagettdUser = await fetchImage('$ttdUser');
+
+  // Future<Uint8List> _loadImageFromFirebase() async {
+  //   // Gantilah dengan kode untuk mengambil gambar dari Firebase
+  //   final url = '$ttdUser'; // Gantilah dengan URL gambar dari Firebase
+
+  //   final image = NetworkImage(url);
+  //   final Completer<Uint8List> completer = Completer<Uint8List>();
+
+  //   image.resolve(ImageConfiguration()).addListener(ImageStreamListener((ImageInfo info, bool _) async {
+  //     final byteData = await info.image.toByteData(format: ImageByteFormat.png);
+  //     final buffer = byteData!.buffer.asUint8List();
+  //     completer.complete(buffer);
+  //   }));
+
+  //   return completer.future;
+  // }
+
+  // Kemudian di dalam kode Anda yang membuat PDF:
+  // final Uint8List imageData = await _loadImageFromFirebase();
+  // final PdfImage pdfImage = PdfImage.file(
+  //   pdf.document,
+  //   bytes: imageData,
+  // );
 
   final footer = pw.Container(
     padding: pw.EdgeInsets.all(5.0),
@@ -294,8 +319,7 @@ Future<void> generateLogPdfDevice1({
           ),
 
           //Handover to other crew
-          if ('$statusdevice' == 'handover-to-other-crew')
-            pw.SizedBox(height: 10.0),
+          if ('$statusdevice' == 'handover-to-other-crew') pw.SizedBox(height: 10.0),
           if ('$statusdevice' == 'handover-to-other-crew')
             pw.Table(
               tableWidth: pw.TableWidth.min,
@@ -493,7 +517,15 @@ Future<void> generateLogPdfDevice1({
                     children: [
                       pw.Text('Receive Device 1 By'),
                       pw.SizedBox(height: 5.0),
-                      pw.Text('ttd image'),
+                      //pw.Text('ttd image'),
+                      // pw.Image(
+                      //   PdfImage.fromImageProvider(
+                      //     pdf.document,
+                      //     image: _loadImageFromFirebase(), // Menggunakan _loadImageFromFirebase yang mengembalikan ImageProvider
+                      //   ),
+                      //   width: 20,
+                      //   height: 20,
+                      // ),
                       pw.SizedBox(height: 5.0),
                       pw.Text('$userName'),
                       pw.SizedBox(height: 2.0),
@@ -504,8 +536,7 @@ Future<void> generateLogPdfDevice1({
               ],
             ),
 
-          if ('$statusdevice' == 'handover-to-other-crew')
-            pw.SizedBox(height: 70),
+          if ('$statusdevice' == 'handover-to-other-crew') pw.SizedBox(height: 70),
           if ('$statusdevice' == 'handover-to-other-crew')
             pw.Column(
               children: [footer],
@@ -577,11 +608,11 @@ pw.Widget _buildHeaderCellRight(String text, pw.Context context) {
   );
 }
 
-// Future<Uint8List> fetchImage(String imageUrl) async {
-//   final response = await http.get(Uri.parse(imageUrl));
-//   if (response.statusCode == 200) {
-//     return response.bodyBytes;
-//   } else {
-//     throw Exception('Failed to load image');
-//   }
-// }
+Future<Uint8List> fetchImage(String imageUrl) async {
+  final response = await http.get(Uri.parse(imageUrl));
+  if (response.statusCode == 200) {
+    return response.bodyBytes;
+  } else {
+    throw Exception('Failed to load image');
+  }
+}
