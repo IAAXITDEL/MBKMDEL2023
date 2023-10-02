@@ -76,10 +76,12 @@ abstract class Routes {
   static const HOME_CPTSCC = _Paths.HOME_CPTSCC;
   static const LIST_PILOTCPTSCC = _Paths.LIST_PILOTCPTSCC;
   static const LIST_ATTENDANCEDETAILCC = _Paths.LIST_ATTENDANCEDETAILCC;
+  static const NAVCPTS = _Paths.NAVCPTS;
   static const EDIT_ATTENDANCECC = _Paths.EDIT_ATTENDANCECC;
   static const LIST_ATTENDANCEINSTRUCTORCC = _Paths.LIST_ATTENDANCEINSTRUCTORCC;
   static const PILOTCREWDETAILCC = _Paths.PILOTCREWDETAILCC;
   static const PILOTTRAININGHISTORYCC = _Paths.PILOTTRAININGHISTORYCC;
+
 }
 
 abstract class _Paths {
@@ -156,8 +158,12 @@ abstract class _Paths {
   static const HOME_CPTSCC = '/home-cptscc';
   static const LIST_PILOTCPTSCC = '/list-pilotcptscc';
   static const LIST_ATTENDANCEDETAILCC = '/list-attendancedetailcc';
+
+  static const NAVCPTS = '/navcpts';
+
   static const EDIT_ATTENDANCECC = '/edit-attendancecc';
   static const LIST_ATTENDANCEINSTRUCTORCC = '/list-attendanceinstructorcc';
   static const PILOTCREWDETAILCC = '/pilotcrewdetailcc';
   static const PILOTTRAININGHISTORYCC = '/pilottraininghistorycc';
+
 }

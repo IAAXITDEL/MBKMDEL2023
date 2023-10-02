@@ -58,12 +58,14 @@ import '../modules/instructor_main_homecc/bindings/instructor_main_homecc_bindin
 import '../modules/instructor_main_homecc/views/instructor_main_homecc_view.dart';
 import '../modules/list_attendancecc/bindings/list_attendancecc_binding.dart';
 import '../modules/list_attendancecc/views/list_attendancecc_view.dart';
-import '../modules/list_pilotcptscc/bindings/list_pilotcptscc_binding.dart';
-import '../modules/list_pilotcptscc/views/list_pilotcptscc_view.dart';
 import '../modules/list_attendancedetailcc/bindings/list_attendancedetailcc_binding.dart';
 import '../modules/list_attendancedetailcc/views/list_attendancedetailcc_view.dart';
+import '../modules/list_pilotcptscc/bindings/list_pilotcptscc_binding.dart';
+import '../modules/list_pilotcptscc/views/list_pilotcptscc_view.dart';
 import '../modules/main_home/bindings/main_home_binding.dart';
 import '../modules/main_home/views/main_home_view.dart';
+import '../modules/pa/navcpts/bindings/navcpts_binding.dart';
+import '../modules/pa/navcpts/views/navcpts_view.dart';
 import '../modules/pa/navadmin/bindings/navadmin_binding.dart';
 import '../modules/pa/navadmin/views/navadmin_view.dart';
 import '../modules/pa/navinstructor/bindings/navinstructor_binding.dart';
@@ -373,6 +375,12 @@ class AppPages {
       binding: ListAttendancedetailccBinding(),
     ),
     GetPage(
+      name: _Paths.NAVCPTS,
+      page: () => NavcptsView(
+        initialIndex: 0,
+      ),
+      binding: NavcptsBinding(),
+
       name: _Paths.EDIT_ATTENDANCECC,
       page: () => EditAttendanceccView(),
       binding: EditAttendanceccBinding(),
