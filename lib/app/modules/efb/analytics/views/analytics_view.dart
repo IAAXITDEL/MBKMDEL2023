@@ -48,7 +48,10 @@ class AnalyticsView extends GetView<AnalyticsController> {
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           child: Column(
-            children: [RedTitleText(text: "HUB"), AnalyticsHub()],
+            children: [
+              RedTitleText(text: "EFB Handover Monthly Report"),
+              AnalyticsHub()
+            ],
           ),
         ),
       ),
@@ -101,27 +104,30 @@ class _AnalyticsHubState extends State<AnalyticsHub>
       length: tabs.length,
       child: Column(
         children: [
-          PieChartWidget(totalDeviceCounts, currentTabIndex, tabController),
-          TabBar(tabs: tabs, controller: tabController),
+          countDevicesInUse(tabs[currentTabIndex].text),
+          percentageDevicesInUse(tabs[currentTabIndex].text),
+          percentageDevices23InUse(tabs[currentTabIndex].text),
           Container(
             height: MediaQuery.of(context).size.height * 0.6,
             child: Flexible(
-                child: TabBarView(
-              controller: tabController,
-              children: tabs.map((Tab tab) {
-                return ListView(
-                  children: [
-                    count(tab.text), // Menampilkan jumlah total perangkat
-                    SizedBox(height: 10),
-                    countDevicesInUse(tab.text),
-                    percentageDevicesInUse(tab.text),
-                    percentageDevices23InUse(tab
-                        .text), // Menampilkan jumlah perangkat yang sedang digunakan
-                    SizedBox(height: 10),
-                  ],
-                );
-              }).toList(),
-            )),
+              child: TabBarView(
+                controller: tabController,
+                children: tabs.map((Tab tab) {
+                  return ListView(
+                    children: [
+                      // Menampilkan jumlah total perangkat
+                      SizedBox(height: 10),
+                      PieChartWidget(
+                          totalDeviceCounts, currentTabIndex, tabController),
+                      TabBar(tabs: tabs, controller: tabController),
+                      count(tabs[currentTabIndex]
+                          .text), // Menampilkan jumlah perangkat yang sedang digunakan
+                      SizedBox(height: 10),
+                    ],
+                  );
+                }).toList(),
+              ),
+            ),
           ),
         ],
       ),
@@ -291,82 +297,6 @@ class _AnalyticsHubState extends State<AnalyticsHub>
                       ],
                     ),
                   ),
-                  // Flexible(
-                  //   flex: 10,
-                  //   child: Column(
-                  //     children: [
-                  //       Text("Persentase device name",
-                  //           style: tsOneTextTheme.bodySmall),
-                  //       FutureBuilder(
-                  //         future: calculatePercentageDeviceName(),
-                  //         builder: (context, snapshot) {
-                  //           if (snapshot.connectionState ==
-                  //               ConnectionState.waiting) {
-                  //             return CircularProgressIndicator();
-                  //           } else if (snapshot.hasError) {
-                  //             return Text('Error: ${snapshot.error}');
-                  //           } else {
-                  //             final double percentage = snapshot.data as double;
-                  //             return Container(
-                  //               margin: EdgeInsets.all(16.0),
-                  //               padding: EdgeInsets.all(16.0),
-                  //               decoration: BoxDecoration(
-                  //                 borderRadius: BorderRadius.circular(4.0),
-                  //                 border: Border.all(
-                  //                   color: tsOneColorScheme.primary,
-                  //                   width: 1.0,
-                  //                 ),
-                  //               ),
-                  //               child: Center(
-                  //                 child: BlackTitleText(
-                  //                   text: "${percentage.toStringAsFixed(2)}%",
-                  //                 ),
-                  //               ),
-                  //             );
-                  //           }
-                  //         },
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
-                  // Flexible(
-                  //   flex: 10,
-                  //   child: Column(
-                  //     children: [
-                  //       Text("Persentase device name2 dan 3",
-                  //           style: tsOneTextTheme.bodySmall),
-                  //       FutureBuilder(
-                  //         future: calculatePercentageDeviceName2and3(),
-                  //         builder: (context, snapshot) {
-                  //           if (snapshot.connectionState ==
-                  //               ConnectionState.waiting) {
-                  //             return CircularProgressIndicator();
-                  //           } else if (snapshot.hasError) {
-                  //             return Text('Error: ${snapshot.error}');
-                  //           } else {
-                  //             final double percentage = snapshot.data as double;
-                  //             return Container(
-                  //               margin: EdgeInsets.all(16.0),
-                  //               padding: EdgeInsets.all(16.0),
-                  //               decoration: BoxDecoration(
-                  //                 borderRadius: BorderRadius.circular(4.0),
-                  //                 border: Border.all(
-                  //                   color: tsOneColorScheme.primary,
-                  //                   width: 1.0,
-                  //                 ),
-                  //               ),
-                  //               child: Center(
-                  //                 child: BlackTitleText(
-                  //                   text: "${percentage.toStringAsFixed(2)}%",
-                  //                 ),
-                  //               ),
-                  //             );
-                  //           }
-                  //         },
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
                 ],
               ),
             );
