@@ -84,7 +84,7 @@ class MainHomeController extends GetxController {
       Get.toNamed(Routes.NAVCPTS);
     }
     // SEBAGAI INSTRUCTOR
-    else if( userPreferences.getInstructor().contains(UserModel.keySubPositionICC) && userPreferences.getRank().contains(UserModel.keyPositionCaptain) || userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)){
+    else if( userPreferences.getInstructor().contains(UserModel.keySubPositionCCP) || userPreferences.getInstructor().contains(UserModel.keySubPositionFIA) || userPreferences.getInstructor().contains(UserModel.keySubPositionFIS) || userPreferences.getInstructor().contains(UserModel.keySubPositionPGI)&& userPreferences.getRank().contains(UserModel.keyPositionCaptain) || userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)){
       Get.toNamed(Routes.INSTRUCTOR_MAIN_HOMECC);
     }
     // SEBAGAI PILOT

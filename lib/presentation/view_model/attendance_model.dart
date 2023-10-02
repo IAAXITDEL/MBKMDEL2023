@@ -2,10 +2,12 @@ class AttendanceModel {
   String? id;
   int? idTrainingType;
   int? instructor;
+  int? idPilotAdministrator;
   String? attendanceType;
   String? keyAttendance;
   String? room;
   String? signatureIccUrl;
+  String? signaturePilotAdministratorUrl;
   String? status;
   String? subject;
   String? trainingType;
@@ -21,10 +23,12 @@ class AttendanceModel {
     this.id,
     this.idTrainingType,
     this.instructor,
+    this.idPilotAdministrator,
     this.attendanceType,
     this.keyAttendance,
     this.room,
     this.signatureIccUrl,
+    this.signaturePilotAdministratorUrl,
     this.status,
     this.subject,
     this.trainingType,
@@ -42,10 +46,12 @@ class AttendanceModel {
         id: json['id'],
         idTrainingType: json['idTrainingType'],
         instructor: json['instructor'],
+        idPilotAdministrator : json['idPilotAdministrator'],
         attendanceType: json['attendanceType'],
         keyAttendance: json['keyAttendance'],
         room: json['room'],
-        signatureIccUrl: json['signature-icc-url'],
+        signatureIccUrl: json['signatureIccUrl'],
+        signaturePilotAdministratorUrl: json['signaturePilotAdministratorUrl'],
         status: json['status'],
         subject: json['subject'],
         trainingType: json['trainingType'],
@@ -64,10 +70,12 @@ class AttendanceModel {
     data['id'] = this.id;
     data['idTrainingType'] = this.idTrainingType;
     data['instructor'] = this.instructor;
+    data['idPilotAdministrator'] = this.idPilotAdministrator;
     data['attendanceType'] = this.attendanceType;
     data['keyAttendance'] = this.keyAttendance;
     data['room'] = this.room;
     data['signatureIccUrl'] = this.signatureIccUrl;
+    data['signaturePilotAdministratorUrl'] = this.signaturePilotAdministratorUrl;
     data['status'] = this.status;
     data['subject'] = this.subject;
     data['trainingType'] = this.trainingType;

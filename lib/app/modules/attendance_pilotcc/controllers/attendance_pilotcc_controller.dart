@@ -54,8 +54,7 @@ class AttendancePilotccController extends GetxController {
 
       if (attendancedet.docs.isNotEmpty) {
         final status = attendancedet.docs[0]["status"];
-        print("Status: $status");
-        if(status == "join"){
+        if(status == "confirmation"){
           cekstatus.value = true;
         }
 
@@ -92,18 +91,20 @@ class AttendancePilotccController extends GetxController {
 
       // Menyimpan URL gambar di database Firestore
       final CollectionReference attendanceDetailCollection = FirebaseFirestore.instance.collection('attendance-detail');
-      final Query query = attendanceDetailCollection.where("idattendance", isEqualTo: idattendance.value).where("idpilot", isEqualTo: userPreferences.getIDNo());
+      final Query query = attendanceDetailCollection.where("idattendance", isEqualTo: idattendance.value).where("idtraining", isEqualTo: userPreferences.getIDNo());
 
       // Get the documents that match the query
       final QuerySnapshot querySnapshot = await query.get();
 
       if (querySnapshot.docs.isNotEmpty) {
+        print("disini");
         // Assuming there's only one document that matches the query, you can update it like this:
         final DocumentReference documentReference = querySnapshot.docs[0].reference;
         await documentReference.update({
           'signature_url': imageUrl,
-          "status" : "confirmation"
+          "status" : "done"
         });
+
       } else {
         // Handle the case where no documents match the query
       }

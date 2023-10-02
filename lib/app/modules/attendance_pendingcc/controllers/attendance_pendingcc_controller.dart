@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 
+import '../../../../presentation/view_model/attendance_detail_model.dart';
 import '../../../../presentation/view_model/attendance_model.dart';
 
 class AttendancePendingccController extends GetxController {
@@ -27,25 +28,41 @@ class AttendancePendingccController extends GetxController {
           return attendanceModel.toJson();
         }),
       );
-
-      print(attendanceData);
       return attendanceData;
     });
   }
 
   //mendapatkan panjang list attendance
-  Future<int> attendanceStream() async {
+  // Future<int> attendanceStream() async {
+  //   final attendanceQuery = await _firestore
+  //       .collection('attendance-detail')
+  //       .where("idattendance", isEqualTo: argument.value)
+  //       .where("status", isEqualTo: "done")
+  //       .get();
+  //
+  //   jumlah.value = attendanceQuery.docs.length;
+  //   return attendanceQuery.docs.length;
+  // }
+
+  Future<List<AttendanceDetailModel>> attendanceStream() async {
     final attendanceQuery = await _firestore
         .collection('attendance-detail')
         .where("idattendance", isEqualTo: argument.value)
         .where("status", isEqualTo: "done")
         .get();
 
-    jumlah.value = attendanceQuery.docs.length;
-    return attendanceQuery.docs.length;
+    List<AttendanceDetailModel> attendanceList = [];
+    attendanceQuery.docs.forEach((attendanceDoc) {
+      AttendanceDetailModel attendance = AttendanceDetailModel(
+        idattendance: attendanceDoc['idattendance'] as String,
+        status: attendanceDoc['status'] as String,
+      );
+      attendanceList.add(attendance);
+    });
+
+    jumlah.value = attendanceList.length;
+
+    return attendanceList;
   }
-
-
-
 
 }
