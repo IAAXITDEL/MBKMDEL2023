@@ -14,7 +14,7 @@ import 'package:ts_one/presentation/view/splash_screen.dart';
 import 'package:ts_one/presentation/view_model/assessment_results_viewmodel.dart';
 import 'package:ts_one/presentation/view_model/assessment_viewmodel.dart';
 import 'package:ts_one/presentation/view_model/user_viewmodel.dart';
-import 'package:ts_one/firebase_options.dart';
+import 'firebase_options.dart';
 import 'package:get/get.dart';
 
 import 'app/modules/home_cptscc/views/home_cptscc_view.dart';
