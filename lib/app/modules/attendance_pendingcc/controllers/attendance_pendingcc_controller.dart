@@ -65,4 +65,14 @@ class AttendancePendingccController extends GetxController {
     return attendanceList;
   }
 
+  //delete attendance
+  Future<void> deleteAttendance() async {
+    CollectionReference attendance = _firestore.collection('attendance');
+    await attendance.doc(argument.value).update({
+      "is_delete": 1
+    });
+
+    Get.back();
+  }
+
 }

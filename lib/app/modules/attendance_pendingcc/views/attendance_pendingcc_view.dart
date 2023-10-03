@@ -67,35 +67,48 @@ class AttendancePendingccView extends GetView<AttendancePendingccController> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           RedTitleText(text: "ATTENDANCE LIST"),
-                          InkWell(
-                            onTap: (){
-                              Get.toNamed(Routes.EDIT_ATTENDANCECC, arguments: {
-                                "id" : controller.argument.value,
-                              });
-                            },
-                            child: Container(
-                              padding: EdgeInsets.all(5),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.0),
-                                color: Colors.blue,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.3),
-                                    spreadRadius: 2,
-                                    blurRadius: 3,
-                                    offset: const Offset(0, 2),
+                          PopupMenuButton(
+                            itemBuilder: (BuildContext context) {
+                              return [
+                                PopupMenuItem(
+                                  child: TextButton(
+                                    onPressed: () {
+                                      Get.toNamed(Routes.EDIT_ATTENDANCECC, arguments: {
+                                        "id" : controller.argument.value,
+                                      });
+                                    },
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.edit, size: 16),
+                                        SizedBox(width: 5,),
+                                        Text("Edit",)
+                                      ],
+                                    ),
                                   ),
-                                ],
-                              ),
-                              child: Row(
-                                children: [
-                                  Icon(Icons.edit, size: 16, color: Colors.white,),
-                                  SizedBox(width: 5,),
-                                  Text("Edit", style: TextStyle(color: Colors.white),)
-                                ],
+                                ),
+                                PopupMenuItem(
+                                  child: TextButton(
+                                    onPressed: () {
+                                      controller.deleteAttendance();
+                                    },
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.delete, size: 16),
+                                        SizedBox(width: 5,),
+                                        Text("Delete",)
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ];
+                            },
+                            offset: Offset(0, 30),
+                            child: GestureDetector(
+                              child: Container(
+                                child: Icon(Icons.more_vert_outlined),
                               ),
                             ),
-                          )
+                          ),
                         ],
                       ),
                       // Text("REDUCED VERTICAL SEPARATION MINIMA (RVSM)"),

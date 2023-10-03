@@ -26,7 +26,7 @@ class PilotcrewdetailccController extends GetxController {
   Stream<QuerySnapshot<Map<String, dynamic>>> trainingStream() {
     return firestore
         .collection('trainingType')
-        .orderBy("id", descending: false)
+        .where("is_delete", isEqualTo : 0)
         .snapshots();
   }
 

@@ -15,6 +15,7 @@ class TrainingtypeccController extends GetxController {
     return firestore
         .collection('attendance')
         .where("idTrainingType", isEqualTo: id)
+        .where("is_delete", isEqualTo: 0)
         .where("status", isEqualTo: status)
         .snapshots();
   }
@@ -36,7 +37,6 @@ class TrainingtypeccController extends GetxController {
         attendance.name = user['NAME']; // Set 'nama' di dalam model
         attendance.photoURL = user['PHOTOURL'];
       }
-      print(attendanceData[0].photoURL);
       return attendanceData;
     } catch (e) {
       print('Error fetching combined data: $e');
@@ -45,7 +45,7 @@ class TrainingtypeccController extends GetxController {
   }
 
   Stream<List<Map<String, dynamic>>> getCombinedAttendanceStream(int id, String status) {
-    return _firestore.collection('attendance').where("idTrainingType", isEqualTo: id).where("status", isEqualTo: status).snapshots().asyncMap((attendanceQuery) async {
+    return _firestore.collection('attendance').where("idTrainingType", isEqualTo: id).where("status", isEqualTo: status).where("is_delete", isEqualTo: 0).snapshots().asyncMap((attendanceQuery) async {
       final usersQuery = await _firestore.collection('users').get();
       final usersData = usersQuery.docs.map((doc) => doc.data()).toList();
 
@@ -59,7 +59,6 @@ class TrainingtypeccController extends GetxController {
         }),
       );
 
-      print(attendanceData);
       return attendanceData;
     });
   }
@@ -77,31 +76,6 @@ class TrainingtypeccController extends GetxController {
 
     Get.toNamed(Routes.TRAININGCC);
   }
-
-
-
-
-
-  // Stream<List<Map<String, dynamic>>> getCombinedAttendanceStream(int id, String status) {
-  //   Stream<QuerySnapshot<Object?>> attendanceStream = _firestore.collection('attendance').snapshots();
-  //   Stream<QuerySnapshot<Object?>> usersStream = _firestore.collection('users').snapshots();
-  //
-  //   return attendanceStream.asyncMap((attendanceQuery) async {
-  //     final attendanceData = attendanceQuery.docs.map((doc) => AttendanceModel.fromJson(doc.data())).toList();
-  //
-  //     // Ambil data pengguna dalam satu pengambilan
-  //     final usersQuery = await usersStream.first;
-  //     final usersData = usersQuery.docs.map((doc) => doc.data()).toList();
-  //
-  //     // Gabungkan data berdasarkan kondisi, misalnya instructor == ID NO
-  //     for (final attendance in attendanceData) {
-  //       final user = usersData.firstWhere((user) => user['ID NO'] == attendance.instructor, orElse: () => {});
-  //       attendance.name = user['NAME']; // Set 'nama' di dalam model
-  //     }
-  //
-  //     return attendanceData;
-  //   });
-  // }
 
   @override
   void onInit() {

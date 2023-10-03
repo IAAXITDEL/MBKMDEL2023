@@ -52,7 +52,7 @@ class HomeAdminccController extends GetxController {
   // LIST NEED CONFIRMATION
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   Stream<List<Map<String, dynamic>>> getCombinedAttendanceStream() {
-    return firestore.collection('attendance').where("status", isEqualTo: "confirmation").snapshots().asyncMap((attendanceQuery) async {
+    return firestore.collection('attendance').where("status", isEqualTo: "confirmation").where("is_delete", isEqualTo: 0).snapshots().asyncMap((attendanceQuery) async {
       final usersQuery = await firestore.collection('users').get();
       final usersData = usersQuery.docs.map((doc) => doc.data()).toList();
 

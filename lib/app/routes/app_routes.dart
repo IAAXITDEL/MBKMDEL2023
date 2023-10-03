@@ -80,6 +80,9 @@ abstract class Routes {
   static const LIST_ATTENDANCEINSTRUCTORCC = _Paths.LIST_ATTENDANCEINSTRUCTORCC;
   static const PILOTCREWDETAILCC = _Paths.PILOTCREWDETAILCC;
   static const PILOTTRAININGHISTORYCC = _Paths.PILOTTRAININGHISTORYCC;
+  static const PILOTTRAININGHISTORYDETAILCC =
+      _Paths.PILOTTRAININGHISTORYDETAILCC;
+  static const PILOTFEEDBACKFORMCC = _Paths.PILOTFEEDBACKFORMCC;
 }
 
 abstract class _Paths {
@@ -160,4 +163,6 @@ abstract class _Paths {
   static const LIST_ATTENDANCEINSTRUCTORCC = '/list-attendanceinstructorcc';
   static const PILOTCREWDETAILCC = '/pilotcrewdetailcc';
   static const PILOTTRAININGHISTORYCC = '/pilottraininghistorycc';
+  static const PILOTTRAININGHISTORYDETAILCC = '/pilottraininghistorydetailcc';
+  static const PILOTFEEDBACKFORMCC = '/pilotfeedbackformcc';
 }

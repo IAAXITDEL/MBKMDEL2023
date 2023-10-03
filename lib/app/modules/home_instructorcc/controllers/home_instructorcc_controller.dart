@@ -51,7 +51,7 @@ class HomeInstructorccController extends GetxController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   Stream<List<Map<String, dynamic>>> getCombinedAttendanceStream(String status) {
     userPreferences = getItLocator<UserPreferences>();
-    return _firestore.collection('attendance').where("instructor", isEqualTo: userPreferences.getIDNo()).where("status", isEqualTo: status).snapshots().asyncMap((attendanceQuery) async {
+    return _firestore.collection('attendance').where("instructor", isEqualTo: userPreferences.getIDNo()).where("status", isEqualTo: status).where("is_delete", isEqualTo: 0).snapshots().asyncMap((attendanceQuery) async {
       final usersQuery = await _firestore.collection('users').where("ID NO", isEqualTo: userPreferences.getIDNo()).get();
       final usersData = usersQuery.docs.map((doc) => doc.data()).toList();
 

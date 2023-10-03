@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 
 import '../../../../data/users/user_preferences.dart';
 import '../../../../di/locator.dart';
+import '../../../../presentation/view_model/attendance_model.dart';
 
 class HomePilotccController extends GetxController {
   late UserPreferences userPreferences;
@@ -45,6 +47,29 @@ class HomePilotccController extends GetxController {
     super.onInit();
   }
 
+
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+
+  Stream<List<Map<String, dynamic>>> getCombinedAttendanceStream() {
+    userPreferences = getItLocator<UserPreferences>();
+    return firestore.collection('attendance').snapshots().asyncMap((attendanceQuery) async {
+      final attendanceDetailQuery = await firestore.collection('attendance-detail').where("idtraining", isEqualTo: userPreferences.getIDNo()).where("status", isEqualTo: "pending").get();
+      final attendanceDetailData = attendanceDetailQuery.docs.map((doc) => doc.data()).toList();
+      if (attendanceDetailData.isEmpty) {
+        return [];
+      }
+
+      final attendanceData = await Future.wait(
+        attendanceQuery.docs.map((doc) async {
+          final attendanceModel = AttendanceModel.fromJson(doc.data());
+          final attendanceDetail = attendanceDetailData.firstWhere((attendanceDetail) => attendanceDetail['idattendance'] == attendanceModel.id, orElse: () => {});
+          return attendanceModel.toJson();
+        }),
+      );
+      return attendanceData;
+    });
+  }
 
   @override
   void onReady() {

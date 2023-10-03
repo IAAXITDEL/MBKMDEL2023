@@ -58,10 +58,10 @@ import '../modules/instructor_main_homecc/bindings/instructor_main_homecc_bindin
 import '../modules/instructor_main_homecc/views/instructor_main_homecc_view.dart';
 import '../modules/list_attendancecc/bindings/list_attendancecc_binding.dart';
 import '../modules/list_attendancecc/views/list_attendancecc_view.dart';
-import '../modules/list_pilotcptscc/bindings/list_pilotcptscc_binding.dart';
-import '../modules/list_pilotcptscc/views/list_pilotcptscc_view.dart';
 import '../modules/list_attendancedetailcc/bindings/list_attendancedetailcc_binding.dart';
 import '../modules/list_attendancedetailcc/views/list_attendancedetailcc_view.dart';
+import '../modules/list_pilotcptscc/bindings/list_pilotcptscc_binding.dart';
+import '../modules/list_pilotcptscc/views/list_pilotcptscc_view.dart';
 import '../modules/main_home/bindings/main_home_binding.dart';
 import '../modules/main_home/views/main_home_view.dart';
 import '../modules/pa/navadmin/bindings/navadmin_binding.dart';
@@ -76,8 +76,12 @@ import '../modules/pilotadministrator/pilotcrewcc/bindings/pilotcrewcc_binding.d
 import '../modules/pilotadministrator/pilotcrewcc/views/pilotcrewcc_view.dart';
 import '../modules/pilotadministrator/pilotcrewdetailcc/bindings/pilotcrewdetailcc_binding.dart';
 import '../modules/pilotadministrator/pilotcrewdetailcc/views/pilotcrewdetailcc_view.dart';
+import '../modules/pilotfeedbackformcc/bindings/pilotfeedbackformcc_binding.dart';
+import '../modules/pilotfeedbackformcc/views/pilotfeedbackformcc_view.dart';
 import '../modules/pilottraininghistorycc/bindings/pilottraininghistorycc_binding.dart';
 import '../modules/pilottraininghistorycc/views/pilottraininghistorycc_view.dart';
+import '../modules/pilottraininghistorydetailcc/bindings/pilottraininghistorydetailcc_binding.dart';
+import '../modules/pilottraininghistorydetailcc/views/pilottraininghistorydetailcc_view.dart';
 import '../modules/profilecc/bindings/profilecc_binding.dart';
 import '../modules/profilecc/views/profilecc_view.dart';
 import '../modules/training_instructorcc/bindings/training_instructorcc_binding.dart';
@@ -386,6 +390,16 @@ class AppPages {
       name: _Paths.PILOTTRAININGHISTORYCC,
       page: () => const PilottraininghistoryccView(),
       binding: PilottraininghistoryccBinding(),
+    ),
+    GetPage(
+      name: _Paths.PILOTTRAININGHISTORYDETAILCC,
+      page: () => const PilottraininghistorydetailccView(),
+      binding: PilottraininghistorydetailccBinding(),
+    ),
+    GetPage(
+      name: _Paths.PILOTFEEDBACKFORMCC,
+      page: () => PilotfeedbackformccView(),
+      binding: PilotfeedbackformccBinding(),
     ),
   ];
 }
