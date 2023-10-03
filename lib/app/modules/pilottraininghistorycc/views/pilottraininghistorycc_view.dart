@@ -9,6 +9,7 @@ import '../../../../presentation/theme.dart';
 import '../../../../util/empty_screen.dart';
 import '../../../../util/error_screen.dart';
 import '../../../../util/loading_screen.dart';
+import '../../../routes/app_pages.dart';
 import '../controllers/pilottraininghistorycc_controller.dart';
 
 class PilottraininghistoryccView
@@ -80,7 +81,12 @@ class PilottraininghistoryccView
 
                           String formattedDate = DateFormat('dd MMMM yyyy').format(date);
                           return InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              Get.toNamed(Routes.PILOTTRAININGHISTORYDETAILCC, arguments: {
+                                "idTrainingType" : controller.idTrainingType.value,
+                                "idAttendance" : listAttendance[index]["id"]
+                              });
+                            },
                             child: Container(
                               margin: EdgeInsets.symmetric(vertical: 5),
                               decoration: BoxDecoration(
@@ -100,7 +106,7 @@ class PilottraininghistoryccView
                                   ListTile(
                                     leading: CircleAvatar(
                                       radius: 15,
-                                      child: Text("1"),
+                                      child: Text("${index+1}"),
                                     ),
                                     title: Row(
                                       children: [

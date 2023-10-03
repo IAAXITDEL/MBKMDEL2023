@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 class AttendanceDetailModel {
   String? id;
   String? idattendance;
@@ -14,6 +16,8 @@ class AttendanceDetailModel {
   String? rank;
   String? license;
   String? hub;
+  double? rating;
+  String? feedbackforinstructor;
 
 
   AttendanceDetailModel({
@@ -31,7 +35,9 @@ class AttendanceDetailModel {
     this.photoURL,
     this.rank,
     this.license,
-    this.hub
+    this.hub,
+    this.rating,
+    this.feedbackforinstructor,
   });
 
   factory AttendanceDetailModel.fromJson(Map<String, dynamic> json) {
@@ -50,7 +56,9 @@ class AttendanceDetailModel {
         photoURL: json['photoURL'],
         rank: json['rank'],
         license: json['license'],
-        hub: json['hub']
+        hub: json['hub'],
+        rating: json['rating'],
+        feedbackforinstructor: json['feedbackforinstructor']
     );
   }
 
@@ -71,6 +79,8 @@ class AttendanceDetailModel {
     data['rank'] = this.rank;
     data['license'] = this.license;
     data['hub'] = this.hub;
+    data['rating'] = this.rating;
+    data['feedbackforinstructor'] = this.feedbackforinstructor;
     return data;
   }
 }

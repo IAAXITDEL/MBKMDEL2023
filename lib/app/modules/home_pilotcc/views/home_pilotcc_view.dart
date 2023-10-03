@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../presentation/theme.dart';
+import '../../../../util/empty_screen.dart';
+import '../../../../util/error_screen.dart';
+import '../../../../util/loading_screen.dart';
 import '../../../../util/util.dart';
 import '../controllers/home_pilotcc_controller.dart';
 
@@ -59,6 +62,79 @@ class HomePilotccView extends GetView<HomePilotccController> {
                       )
                     ],
                   ),
+                ),
+                const SizedBox(height: 10,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Today",
+                      style: tsOneTextTheme.labelLarge,
+                    ),
+                    InkWell(
+                      child: Text(
+                        "See All",
+                        style: tsOneTextTheme.labelMedium,
+                      ),
+                    )
+                  ],
+                ),
+                const SizedBox(height: 10,),
+                StreamBuilder<List<Map<String, dynamic>>>(
+                  stream: controller.getCombinedAttendanceStream(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return LoadingScreen(); // Placeholder while loading
+                    }
+
+                    if (snapshot.hasError) {
+                      return ErrorScreen();
+                    }
+
+                    var listAttendance= snapshot.data!;
+                    if(listAttendance.isEmpty){
+                      return EmptyScreen();
+                    }
+
+                    return ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: listAttendance.length,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          return InkWell(
+                            onTap: () {
+
+                            },
+                            child: Container(
+                              margin: EdgeInsets.symmetric(vertical: 5),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.0),
+                                color: Colors.white,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.3),
+                                    spreadRadius: 2,
+                                    blurRadius: 3,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ],
+                              ),
+                              child: ListTile(
+                                title: Text(
+                                  listAttendance[index]["subject"],
+                                  style: tsOneTextTheme.headlineMedium,
+                                ),
+                                subtitle: Text(
+                                  listAttendance[index]["name"],
+                                  style: tsOneTextTheme.labelSmall,
+                                ),
+                                trailing: const Icon(Icons.navigate_next),
+                              ) ,
+                            ),
+                          );
+                        }
+                    );
+                  },
                 ),
               ],
             ),

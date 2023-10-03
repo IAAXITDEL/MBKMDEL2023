@@ -65,9 +65,32 @@ class _TrainingtypeccViewState extends State<TrainingtypeccView>
                       PopupMenuItem(
                         child: TextButton(
                           onPressed: () {
+                            Get.toNamed(Routes.ADD_ATTENDANCECC, arguments: {
+                              "id" : controller.argumentid.value,
+                              "name" : controller.argumentname.value
+                            });
+                          },
+                          child: Row(
+                            children: [
+                              Icon(Icons.add, size: 16),
+                              SizedBox(width: 5,),
+                              Text("Add Attendance",)
+                            ],
+                          ),
+                        )
+                      ),
+                      PopupMenuItem(
+                        child: TextButton(
+                          onPressed: () {
                             controller.deleteTraining();
                           },
-                          child: Text( 'Delete'),
+                          child: Row(
+                            children: [
+                              Icon(Icons.delete, size: 16),
+                              SizedBox(width: 5,),
+                              Text("Delete",)
+                            ],
+                          ),
                         ),
                       ),
                     ];
@@ -86,50 +109,50 @@ class _TrainingtypeccViewState extends State<TrainingtypeccView>
               height: 10,
             ),
            // Text("REDUCED VERTICAL SEPARATION MINIMA"),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                InkWell(
-                  onTap: () {
-                    Get.toNamed(Routes.ADD_ATTENDANCECC, arguments: {
-                      "id" : controller.argumentid.value,
-                      "name" : controller.argumentname.value
-                    });
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.0),
-                      color: TsOneColor.greenColor,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.3),
-                          spreadRadius: 2,
-                          blurRadius: 3,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.add_box_outlined,
-                          color: Colors.white,
-                        ),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        Text(
-                          "Add Attendance",
-                          style: TextStyle(color: Colors.white),
-                        )
-                      ],
-                    ),
-                  ),
-                )
-              ],
-            ),
+           //  Row(
+           //    mainAxisAlignment: MainAxisAlignment.end,
+           //    crossAxisAlignment: CrossAxisAlignment.end,
+           //    children: [
+           //      InkWell(
+           //        onTap: () {
+           //          Get.toNamed(Routes.ADD_ATTENDANCECC, arguments: {
+           //            "id" : controller.argumentid.value,
+           //            "name" : controller.argumentname.value
+           //          });
+           //        },
+           //        child: Container(
+           //          padding: EdgeInsets.all(5),
+           //          decoration: BoxDecoration(
+           //            borderRadius: BorderRadius.circular(10.0),
+           //            color: TsOneColor.greenColor,
+           //            boxShadow: [
+           //              BoxShadow(
+           //                color: Colors.grey.withOpacity(0.3),
+           //                spreadRadius: 2,
+           //                blurRadius: 3,
+           //                offset: const Offset(0, 2),
+           //              ),
+           //            ],
+           //          ),
+           //          child: Row(
+           //            children: [
+           //              Icon(
+           //                Icons.add_box_outlined,
+           //                color: Colors.white,
+           //              ),
+           //              SizedBox(
+           //                width: 5,
+           //              ),
+           //              Text(
+           //                "Add Attendance",
+           //                style: TextStyle(color: Colors.white),
+           //              )
+           //            ],
+           //          ),
+           //        ),
+           //      )
+           //    ],
+           //  ),
 
             //-------------------- TAB BAR ------------------------
             Container(
@@ -163,6 +186,7 @@ class _TrainingtypeccViewState extends State<TrainingtypeccView>
                       }
 
                       var listAttendance= snapshot.data!;
+                      print(listAttendance);
 
                       if(listAttendance.isEmpty){
                         return EmptyScreen();
