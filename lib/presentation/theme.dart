@@ -27,7 +27,7 @@ ColorScheme tsOneColorScheme = const ColorScheme(
 );
 
 class TsOneColor {
-  static const Color primary = Color(0xFFE32526);  // accordion header expanded
+  static const Color primary = Color(0xFFE32526); // accordion header expanded
   static const Color primaryContainer = Color(0xFFBB1F1F);
   static const Color primaryFaded = Color(0xFFFBDEDE); // accordion border not expanded
   static const Color secondary = Color(0xFFFFFFFF); // accordion header not expanded

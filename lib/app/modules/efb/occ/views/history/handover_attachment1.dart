@@ -14,7 +14,6 @@ import 'package:flutter/widgets.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:open_file/open_file.dart';
 import '../../../occ/views/history/detail_history_device_view.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 String _formatTimestamp(Timestamp? timestamp) {
   if (timestamp == null) return 'No Data';
@@ -529,7 +528,6 @@ Future<void> generateLogPdfDevice1({
                   child: pw.Column(
                     children: [
                       pw.Text('Receive Device 1 By'),
-
                     ],
                   ),
                 ),
@@ -545,7 +543,7 @@ Future<void> generateLogPdfDevice1({
                     pw.SizedBox(height: 5.0),
                     pw.Container(
                       child: signatureImageOCCWidget,
-                      width: 200,  // Adjust width as needed
+                      width: 200, // Adjust width as needed
                       height: 100, // Adjust height as needed
                     ),
                     pw.SizedBox(height: 5.0),
@@ -562,7 +560,7 @@ Future<void> generateLogPdfDevice1({
                     // Menampilkan gambar tanda tangan
                     pw.Container(
                       child: signatureImageWidget,
-                      width: 200,  // Adjust width as needed
+                      width: 200, // Adjust width as needed
                       height: 100, // Adjust height as needed
                     ),
                     pw.SizedBox(height: 5.0),
@@ -574,7 +572,6 @@ Future<void> generateLogPdfDevice1({
               ),
             ],
           ),
-
 
           if ('$statusdevice' == 'handover-to-other-crew') pw.SizedBox(height: 70),
           if ('$statusdevice' == 'handover-to-other-crew')
