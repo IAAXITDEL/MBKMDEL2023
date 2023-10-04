@@ -380,7 +380,8 @@ class AppPages {
         initialIndex: 0,
       ),
       binding: NavcptsBinding(),
-
+    ),
+    GetPage(
       name: _Paths.EDIT_ATTENDANCECC,
       page: () => EditAttendanceccView(),
       binding: EditAttendanceccBinding(),
