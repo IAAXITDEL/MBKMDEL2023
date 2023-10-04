@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-import '../../../training_instructorcc/controllers/training_instructorcc_controller.dart';
+import '../../../cc/instructor/training_instructorcc/controllers/training_instructorcc_controller.dart';
 import '../controllers/navinstructor_controller.dart';
 
 class NavinstructorBinding extends Bindings {
