@@ -1,5 +1,13 @@
 import 'package:get/get.dart';
 
+import '../../home_admincc/controllers/home_admincc_controller.dart';
+import '../../home_cptscc/controllers/home_cptscc_controller.dart';
+import '../../home_instructorcc/controllers/home_instructorcc_controller.dart';
+import '../../homecc/controllers/homecc_controller.dart';
+import '../../pilotadministrator/pilotcrewcc/controllers/pilotcrewcc_controller.dart';
+import '../../profilecc/controllers/profilecc_controller.dart';
+import '../../training_instructorcc/controllers/training_instructorcc_controller.dart';
+import '../../trainingcc/controllers/trainingcc_controller.dart';
 import '../../cc/instructor/home_instructorcc/controllers/home_instructorcc_controller.dart';
 import '../../cc/instructor/training_instructorcc/controllers/training_instructorcc_controller.dart';
 import '../../cc/pilotadministrator/home_admincc/controllers/home_admincc_controller.dart';
@@ -35,6 +43,9 @@ class MainHomeBinding extends Bindings {
     );
     Get.lazyPut<TrainingInstructorccController>(
           () => TrainingInstructorccController(),
+    );
+    Get.lazyPut<HomeCptsccController>(
+          () => HomeCptsccController(),
     );
   }
 }
