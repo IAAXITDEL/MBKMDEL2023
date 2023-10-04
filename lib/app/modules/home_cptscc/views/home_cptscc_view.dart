@@ -27,15 +27,6 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20,),
 
-          child: ElevatedButton(
-            onPressed: () {
-              // Navigasi ke halaman kedua saat tombol ditekan
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => ListPilotcptsccView()),
-              );
-            },
-            child: Text('Go to Second Page'),
-          ),
 
           // child: Column(
           //   mainAxisAlignment: MainAxisAlignment.start,

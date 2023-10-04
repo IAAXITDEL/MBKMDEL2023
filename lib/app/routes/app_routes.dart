@@ -3,6 +3,7 @@ part of 'app_pages.dart';
 
 abstract class Routes {
   Routes._();
+
   static const MAIN_HOME = _Paths.MAIN_HOME;
   static const main = _Paths.main;
   static const login = _Paths.login;
@@ -56,6 +57,7 @@ abstract class Routes {
   static const PILOTCREWCC = _Paths.PILOTCREWCC;
   static const TRAININGTYPECC = _Paths.TRAININGTYPECC;
   static const ADD_ATTENDANCECC = _Paths.ADD_ATTENDANCECC;
+
   // static String ATTENDANCE_CONFIRCC(String attendanceId) {
   //   return _Paths.ATTENDANCE_CONFIRCC(attendanceId);
   // }
@@ -76,13 +78,17 @@ abstract class Routes {
   static const HOME_CPTSCC = _Paths.HOME_CPTSCC;
   static const LIST_PILOTCPTSCC = _Paths.LIST_PILOTCPTSCC;
   static const LIST_ATTENDANCEDETAILCC = _Paths.LIST_ATTENDANCEDETAILCC;
+  static const NAVCPTS = _Paths.NAVCPTS;
   static const EDIT_ATTENDANCECC = _Paths.EDIT_ATTENDANCECC;
   static const LIST_ATTENDANCEINSTRUCTORCC = _Paths.LIST_ATTENDANCEINSTRUCTORCC;
   static const PILOTCREWDETAILCC = _Paths.PILOTCREWDETAILCC;
   static const PILOTTRAININGHISTORYCC = _Paths.PILOTTRAININGHISTORYCC;
-}
+  static const PILOTTRAININGHISTORYDETAILCC =
+      _Paths.PILOTTRAININGHISTORYDETAILCC;
+  static const PILOTFEEDBACKFORMCC = _Paths.PILOTFEEDBACKFORMCC;
 
-abstract class _Paths {
+}
+  abstract class _Paths {
   _Paths._();
   static const MAIN_HOME = '/main-home';
 
@@ -101,9 +107,9 @@ abstract class _Paths {
   static const newAssessmentVariables = '/newAssessmentVariables';
   static const newAssessmentVariablesSecond = '/newAssessmentVariablesSecond';
   static const newAssessmentHumanFactorVariables =
-      '/newAssessmentHumanFactorVariables';
+  '/newAssessmentHumanFactorVariables';
   static const newAssessmentOverallPerformance =
-      '/newAssessmentOverallPerformance';
+  '/newAssessmentOverallPerformance';
   static const newAssessmentDeclaration = '/newAssessmentDeclaration';
   static const newAssessmentSuccess = '/newAssessmentSuccess';
   static const newAssessmentInstructorNotes = '/newAssessmentInstructorNotes';
@@ -156,8 +162,13 @@ abstract class _Paths {
   static const HOME_CPTSCC = '/home-cptscc';
   static const LIST_PILOTCPTSCC = '/list-pilotcptscc';
   static const LIST_ATTENDANCEDETAILCC = '/list-attendancedetailcc';
+
+  static const NAVCPTS = '/navcpts';
+
   static const EDIT_ATTENDANCECC = '/edit-attendancecc';
   static const LIST_ATTENDANCEINSTRUCTORCC = '/list-attendanceinstructorcc';
   static const PILOTCREWDETAILCC = '/pilotcrewdetailcc';
   static const PILOTTRAININGHISTORYCC = '/pilottraininghistorycc';
-}
+  static const PILOTTRAININGHISTORYDETAILCC = '/pilottraininghistorydetailcc';
+  static const PILOTFEEDBACKFORMCC = '/pilotfeedbackformcc';
+  }
