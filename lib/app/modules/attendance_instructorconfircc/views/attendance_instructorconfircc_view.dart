@@ -30,6 +30,7 @@ class AttendanceInstructorconfirccView
     var vanueC = TextEditingController();
     var dateC = TextEditingController();
     var instructorC = TextEditingController();
+    var loaNoC = TextEditingController();
 
     var departmentC = TextEditingController();
     var trainingtypeC = TextEditingController();
@@ -68,10 +69,10 @@ class AttendanceInstructorconfirccView
     }
 
     Future<void> confir(
-        String department, String trainingType, String room) async {
+        String department, String trainingType, String room, String loano) async {
       try {
         controller
-            .confirattendance(department, trainingType, room)
+            .confirattendance(department, trainingType, room, loano)
             .then((status) async {
           // Menunggu hingga saveSignature selesai
           await saveSignature();
@@ -132,7 +133,7 @@ class AttendanceInstructorconfirccView
                         dateC.text = listAttendance[0]["date"];
                         vanueC.text = listAttendance[0]["vanue"];
                         instructorC.text = listAttendance[0]["name"];
-
+                        loaNoC.text = listAttendance[0]["loano"] ?? "" ;
                         controller.argumentname.value =
                             listAttendance[0]["subject"];
                       } else {
@@ -218,9 +219,32 @@ class AttendanceInstructorconfirccView
                             height: 20,
                           ),
                           FormTextField(
-                              text: "Chair Person/ Instructor ",
-                              textController: instructorC,
-                              readOnly: true),
+                              text: "LOA NO.",
+                              textController: loaNoC),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          InkWell(
+                            onTap: () {},
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: TsOneColor.secondaryContainer,
+                                    width: 1,
+                                  ),
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: ListTile(
+                                title: Text(
+                                  "Chair Person/ Instructor",
+                                  style: tsOneTextTheme.labelSmall,
+                                ),
+                                subtitle: Text(
+                                  instructorC.text,
+                                  style: tsOneTextTheme.headlineMedium,
+                                ),
+                              ),
+                            ),
+                          ),
                           SizedBox(
                             height: 20,
                           ),
@@ -515,7 +539,7 @@ class AttendanceInstructorconfirccView
                                       builder: (BuildContext context) {
                                         return FutureBuilder<void>(
                                           future: confir(departmentC.text,
-                                              trainingtypeC.text, roomC.text),
+                                              trainingtypeC.text, roomC.text, loaNoC.text),
                                           builder: (BuildContext context,
                                               AsyncSnapshot<void> snapshot) {
                                             if (snapshot.connectionState ==

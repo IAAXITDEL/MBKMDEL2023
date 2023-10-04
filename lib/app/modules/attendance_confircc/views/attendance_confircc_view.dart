@@ -30,6 +30,7 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
     var vanueC = TextEditingController();
     var dateC = TextEditingController();
     var instructorC = TextEditingController();
+    var loaNoC = TextEditingController();
 
     int? trainingC = 0;
 
@@ -41,9 +42,7 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
     _signaturePadKey = GlobalKey();
     void _clearSignature() {
       _signaturePadKey.currentState?.clear();
-    }
-
-    ;
+    };
 
     Future<void> confir() async {
       try {
@@ -128,6 +127,7 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                         listAttendance[0]["trainingType"] ?? "N/A";
                     roomC.text = listAttendance[0]["room"] ?? "N/A";
                     instructorC.text = listAttendance[0]["name"] ?? "N/A";
+                    loaNoC.text = listAttendance[0]["loano"] ?? "" ;
                   } else {
                     // Handle the case where the list is empty or null
                     subjectC.text = "No Subject Data Available";
@@ -275,6 +275,12 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                       SizedBox(
                         height: 20,
                       ),
+                      FormTextField(
+                          text: "LOA NO.",
+                          textController: loaNoC),
+                      SizedBox(
+                        height: 20,
+                      ),
                       InkWell(
                         onTap: () {},
                         child: Container(
@@ -293,7 +299,6 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                               listAttendance[0]["name"],
                               style: tsOneTextTheme.headlineMedium,
                             ),
-                            trailing: Icon(Icons.navigate_next),
                           ),
                         ),
                       ),

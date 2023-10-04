@@ -48,6 +48,7 @@ class AttendanceInstructorconfirccController extends GetxController {
           final attendanceModel = AttendanceModel.fromJson(doc.data());
           final user = usersData.firstWhere((user) => user['ID NO'] == attendanceModel.instructor, orElse: () => {});
           attendanceModel.name = user['NAME'];
+          attendanceModel.loano = user['LOA NO'];
           return attendanceModel.toJson();
         }),
       );
@@ -73,7 +74,7 @@ class AttendanceInstructorconfirccController extends GetxController {
   }
 
   //confir attendance oleh instructor
-  Future<void> confirattendance(String department, String trainingType, String room) async {
+  Future<void> confirattendance(String department, String trainingType, String room, String loano) async {
     CollectionReference attendance = _firestore.collection('attendance');
     CollectionReference attendancedetail = _firestore.collection('attendance-detail');
     await attendance.doc(argumentid.value.toString()).update({
@@ -97,6 +98,13 @@ class AttendanceInstructorconfirccController extends GetxController {
       await doc.reference.update({
         "updatedTime": DateTime.now().toIso8601String(),
       });
+    });
+
+    // update LOA NO pada instructor
+    userPreferences = getItLocator<UserPreferences>();
+    CollectionReference users = _firestore.collection("users");
+    await users.doc(userPreferences.getIDNo().toString()).update({
+      "LOA NO": loano,
     });
   }
 

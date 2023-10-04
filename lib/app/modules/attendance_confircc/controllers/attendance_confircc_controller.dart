@@ -86,6 +86,7 @@ class AttendanceConfirccController extends GetxController {
               (user) => user['ID NO'] == attendanceModel.instructor,
               orElse: () => {});
           attendanceModel.name = user['NAME'];
+          attendanceModel.loano = user['LOA NO'];
           idInstructor.value = attendanceModel.instructor!;
           return attendanceModel.toJson();
         }),

@@ -91,9 +91,21 @@ class ProfileccController extends GetxController {
     // SEBAGAI ALL STAR
     else{
     }
-
   }
 
+  //add LOA NO.
+  Future<void> addLoaNo(String loaNo) async {
+    userPreferences = getItLocator<UserPreferences>();
+    CollectionReference users = firestore.collection("users");
+    try {
+      await users.doc(userPreferences.getIDNo().toString()).update({
+        "LOA NO": loaNo,
+      });
+    } catch (e) {
+      // Handle any exceptions that may occur during the operation.
+      print("Error updating LOA NO.: $e");
+    }
+  }
 
   @override
   void onReady() {
