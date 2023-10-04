@@ -23,7 +23,7 @@ class TrainingccController extends GetxController {
   final RxString argumentname = "".obs;
 
   final RxBool cekPilot = false.obs;
-
+  RxBool isAdministrator = false.obs;
   final RxString passwordKey = "".obs;
 
   // List untuk training remark
@@ -39,7 +39,7 @@ class TrainingccController extends GetxController {
   Stream<QuerySnapshot<Map<String, dynamic>>> trainingStream() {
     return firestore
         .collection('trainingType')
-        .orderBy("id", descending: false)
+        .where("is_delete", isEqualTo: 0)
         .snapshots();
   }
 
@@ -53,8 +53,11 @@ class TrainingccController extends GetxController {
     }
     // SEBAGAI INSTRUCTOR
     else if (userPreferences
-                .getInstructor()
-                .contains(UserModel.keySubPositionICC) &&
+            .getInstructor()
+            .contains(UserModel.keySubPositionCCP) ||
+        userPreferences.getInstructor().contains(UserModel.keySubPositionFIA) ||
+        userPreferences.getInstructor().contains(UserModel.keySubPositionFIS) ||
+        userPreferences.getInstructor().contains(UserModel.keySubPositionPGI) &&
             userPreferences.getRank().contains(UserModel.keyPositionCaptain) ||
         userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)) {
       Get.toNamed(Routes.TRAINING_INSTRUCTORCC,
@@ -79,18 +82,32 @@ class TrainingccController extends GetxController {
     return false;
   }
 
+  Future<bool> cekAdministrator() async {
+    userPreferences = getItLocator<UserPreferences>();
+
+    if (userPreferences.getRank().contains("Pilot Administrator")) {
+      isAdministrator.value = true;
+      return true;
+    }
+    // SEBAGAI ALL STAR
+    else {
+      return false;
+    }
+    return false;
+  }
 
   // Add a new subject to Firestore
-  Future<void> addNewSubject(String newSubject, String newRemark, String newTrainingDescription) async {
+  Future<void> addNewSubject(String newSubject, String newRemark,
+      int newExpiryDate, String newTrainingDescription) async {
     try {
-
       // Get the count of existing documents in both collections
-      QuerySnapshot trainingTypeSnapshot = await FirebaseFirestore.instance.collection('trainingType').get();
+      QuerySnapshot trainingTypeSnapshot =
+          await FirebaseFirestore.instance.collection('trainingType').get();
       int trainingTypeCount = trainingTypeSnapshot.size;
 
-      QuerySnapshot trainingRemarkSnapshot = await FirebaseFirestore.instance.collection('trainingRemark').get();
+      QuerySnapshot trainingRemarkSnapshot =
+          await FirebaseFirestore.instance.collection('trainingRemark').get();
       int trainingRemarkCount = trainingRemarkSnapshot.size;
-
 
       // Add a new document to the 'trainingType' collection
       await FirebaseFirestore.instance.collection('trainingType').add({
@@ -103,14 +120,13 @@ class TrainingccController extends GetxController {
         'id': trainingRemarkCount + 1,
         'remark': newRemark,
         'training_code': newSubject,
-        'training_description' : newTrainingDescription,
+        'expiry_date': newExpiryDate,
+        'training_description': newTrainingDescription,
       });
     } catch (e) {
       print('Error adding subject: $e');
     }
   }
-
-
 
   // cek key sesuai dengan kelas yang sedang dibuka
   Stream<List<Map<String, dynamic>>> joinClassStream(
@@ -139,7 +155,6 @@ class TrainingccController extends GetxController {
         await addAttendancePilotForm(
             attendanceData[0]["id"], attendanceData[0]["idTrainingType"]);
       }
-
       return attendanceData;
     });
   }
@@ -153,13 +168,12 @@ class TrainingccController extends GetxController {
     String formattedDate = DateFormat('ddMMyyyyHHmmss').format(DateTime.now());
     try {
       await attendance
-          .doc("${userPreferences.getIDNo()}-${idtraining}--${formattedDate}")
+          .doc("${userPreferences.getIDNo()}-${idtraining}-${formattedDate}")
           .set({
-        "id":
-            "attendance-${idtraining}-${userPreferences.getIDNo()}-${formattedDate}",
+        "id": "${userPreferences.getIDNo()}-${idtraining}-${formattedDate}",
         "idattendance": idattendance,
-        "idpilot": userPreferences.getIDNo(),
-        "status": "join",
+        "idtraining": userPreferences.getIDNo(),
+        "status": "confirmation",
         "creationTime": DateTime.now().toIso8601String(),
         "updatedTime": DateTime.now().toIso8601String(),
       });
@@ -196,7 +210,7 @@ class TrainingccController extends GetxController {
       userPreferences = getItLocator<UserPreferences>();
       final attendancedetailQuery = await firestore
           .collection('attendance-detail')
-          .where("idpilot", isEqualTo: userPreferences.getIDNo())
+          .where("idtraining", isEqualTo: userPreferences.getIDNo())
           .get();
       final attendanceQuery = await firestore
           .collection('attendance')
@@ -276,6 +290,7 @@ class TrainingccController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    cekAdministrator();
   }
 
   @override

@@ -59,11 +59,9 @@ class PilotcrewccController extends GetxController {
 
 
   void _scrollListener() {
-    print("ccc");
     if (scrollController.offset >=
         scrollController.position.maxScrollExtent &&
         !scrollController.position.outOfRange) {
-      print("ddd");
       if (!isLoading.value) {
           isLoading.value = true;
         _loadMoreData();

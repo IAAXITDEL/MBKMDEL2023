@@ -2,10 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import '../../../../presentation/shared_components/TitleText.dart';
-import '../../../../presentation/theme.dart';
-import '../../../../util/error_screen.dart';
-import '../../../../util/loading_screen.dart';
+import '../../../../../presentation/shared_components/TitleText.dart';
+import '../../../../../presentation/theme.dart';
+import '../../../../../util/error_screen.dart';
+import '../../../../../util/loading_screen.dart';
+import '../../../../routes/app_pages.dart';
 import '../controllers/pilotcrewcc_controller.dart';
 
 class PilotcrewccView extends GetView<PilotcrewccController> {
@@ -34,6 +35,7 @@ class PilotcrewccView extends GetView<PilotcrewccController> {
                     prefixIcon: const Icon(Icons.search),
                     suffixIcon: IconButton(
                       icon: const Icon(Icons.clear), onPressed: () {
+                      controller.pilotCrewStream("");
                       controller.searchC.clear();
                     },
                     ),
@@ -65,6 +67,9 @@ class PilotcrewccView extends GetView<PilotcrewccController> {
                                itemBuilder: (context, index) {
                                  return InkWell(
                                    onTap: () {
+                                     Get.toNamed(Routes.PILOTCREWDETAILCC, arguments: {
+                                       "id": listAttendance[index]["ID NO"],
+                                     });
                                    },
                                    child: Container(
                                      padding: const EdgeInsets.all(5),
@@ -92,11 +97,11 @@ class PilotcrewccView extends GetView<PilotcrewccController> {
                                              fit: BoxFit.cover,
                                            ) : Image.network("${listAttendance[index]["PHOTOURL"]}", fit: BoxFit.cover),),
                                        ),
-                                       title: Text(listAttendance[index]["NAME"], maxLines: 1, style: tsOneTextTheme.labelSmall,),
+                                       title: Text(listAttendance[index]["NAME"], maxLines: 1, style: tsOneTextTheme.labelMedium,),
                                        subtitle: Column(
                                          crossAxisAlignment: CrossAxisAlignment.start,
                                          children: [
-                                           const Text('847598342385'),
+                                           Text(listAttendance[index]["ID NO"].toString() ?? "", style: tsOneTextTheme.labelSmall,),
                                            Container(
                                              padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 10),
                                              decoration: BoxDecoration(

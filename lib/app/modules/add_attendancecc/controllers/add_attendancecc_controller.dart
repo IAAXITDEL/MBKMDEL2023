@@ -46,8 +46,6 @@ class AddAttendanceccController extends GetxController {
           "status": "pending",
           "keyAttendance": getRandomString(6),
           "idTrainingType": idtrainingtype,
-          "departement" : null,
-          "room" : null,
           "creationTime": DateTime.now().toIso8601String(),
           "updatedTime": DateTime.now().toIso8601String(),
         });
@@ -63,14 +61,10 @@ class AddAttendanceccController extends GetxController {
 
   // List untuk asign Instructor
   Stream<QuerySnapshot<Map<String, dynamic>>> instructorStream() {
-    return firestore
+    return FirebaseFirestore.instance
         .collection('users')
-        .where("INSTRUCTOR", arrayContains: "ICC")
+        .where("INSTRUCTOR", arrayContainsAny: ["FIS", "FIA", "GI", "CCP"])
         .snapshots();
   }
-
-
-
-
 
 }

@@ -55,7 +55,36 @@ class _TrainingtypeccViewState extends State<TrainingtypeccView>
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            RedTitleText(text: controller.argumentname.value),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                RedTitleText(text: controller.argumentname.value),
+                PopupMenuButton(
+                  itemBuilder: (BuildContext context) {
+                    return [
+                      PopupMenuItem(
+                        child: TextButton(
+                          onPressed: () {
+                            controller.deleteTraining();
+                          },
+                          child: Text( 'Delete'),
+                        ),
+                      ),
+                    ];
+                  },
+                  offset: Offset(0, 30),
+                  child: GestureDetector(
+                    child: Container(
+                      child: Icon(Icons.more_vert_outlined),
+                    ),
+                  ),
+                ),
+
+              ],
+            ),
+            SizedBox(
+              height: 10,
+            ),
            // Text("REDUCED VERTICAL SEPARATION MINIMA"),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -69,11 +98,18 @@ class _TrainingtypeccViewState extends State<TrainingtypeccView>
                     });
                   },
                   child: Container(
-                    padding: EdgeInsets.all(7),
-                    margin: EdgeInsets.symmetric(vertical: 20),
+                    padding: EdgeInsets.all(5),
                     decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
                       color: TsOneColor.greenColor,
-                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.3),
+                          spreadRadius: 2,
+                          blurRadius: 3,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
                     ),
                     child: Row(
                       children: [

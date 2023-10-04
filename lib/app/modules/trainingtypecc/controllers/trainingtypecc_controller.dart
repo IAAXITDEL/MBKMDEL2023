@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:ts_one/app/routes/app_pages.dart';
 
 import '../../../../presentation/view_model/attendance_model.dart';
 
@@ -62,6 +63,24 @@ class TrainingtypeccController extends GetxController {
       return attendanceData;
     });
   }
+
+  //delete Trainining
+  Future<void> deleteTraining() async {
+    CollectionReference training = _firestore.collection('trainingType');
+    QuerySnapshot querySnapshot = await training.where("id", isEqualTo: argumentid.value).get();
+
+    for (QueryDocumentSnapshot document in querySnapshot.docs) {
+      await document.reference.update({
+        "is_delete": 1,
+      });
+    }
+
+    Get.toNamed(Routes.TRAININGCC);
+  }
+
+
+
+
 
   // Stream<List<Map<String, dynamic>>> getCombinedAttendanceStream(int id, String status) {
   //   Stream<QuerySnapshot<Object?>> attendanceStream = _firestore.collection('attendance').snapshots();

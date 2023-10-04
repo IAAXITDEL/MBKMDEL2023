@@ -172,7 +172,6 @@ class _LoginViewState extends State<LoginView> {
                           if (!mounted) return;
                           if (userAuth.userCredential != null &&
                               userAuth.userModel != null) {
-                            print("dapatkan menu");
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(
