@@ -54,31 +54,6 @@ class ListPilotcptsccView extends GetView<ListPilotcptsccController> {
                     },
                     child: const Text('Pilots'),
                   ),
-
-                  ElevatedButton(
-                    onPressed: () {
-                      // Set the filter type to 'none' and fetch filtered users
-                      controller.setFilterType(FilterType.none);
-                    },
-                    child: const Text('All'),
-                  ),
-                  const SizedBox(width: 10),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Set the filter type to 'instructor' and fetch filtered users
-                      controller.setFilterType(FilterType.instructor);
-                    },
-                    child: const Text('Instructors'),
-                  ),
-                  const SizedBox(width: 10),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Set the filter type to 'pilot' and fetch filtered users
-                      controller.setFilterType(FilterType.pilot);
-                    },
-                    child: const Text('Pilots'),
-                  ),
-
                 ],
               ),
 
