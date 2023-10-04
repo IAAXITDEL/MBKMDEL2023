@@ -10,6 +10,9 @@ import 'package:ts_one/app/modules/profilecc/views/profilecc_view.dart';
 import 'package:ts_one/app/modules/trainingcc/views/trainingcc_view.dart';
 import 'package:ts_one/presentation/theme.dart';
 
+import '../../../cc/pilotadministrator/pilotcrewcc/views/pilotcrewcc_view.dart';
+import '../../../cc/profilecc/views/profilecc_view.dart';
+import '../../../cc/trainingcc/views/trainingcc_view.dart';
 import '../controllers/navcpts_controller.dart';
 
 class NavcptsView extends StatefulWidget {

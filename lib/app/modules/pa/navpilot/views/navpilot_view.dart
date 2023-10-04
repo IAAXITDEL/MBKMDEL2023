@@ -5,10 +5,9 @@ import 'package:get/get.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import '../../../../../presentation/theme.dart';
-import '../../../home_pilotcc/views/home_pilotcc_view.dart';
-import '../../../homecc/views/homecc_view.dart';
-import '../../../profilecc/views/profilecc_view.dart';
-import '../../../trainingcc/views/trainingcc_view.dart';
+import '../../../cc/profilecc/views/profilecc_view.dart';
+import '../../../cc/training/home_pilotcc/views/home_pilotcc_view.dart';
+import '../../../cc/trainingcc/views/trainingcc_view.dart';
 import '../controllers/navpilot_controller.dart';
 
 class NavpilotView extends StatefulWidget {

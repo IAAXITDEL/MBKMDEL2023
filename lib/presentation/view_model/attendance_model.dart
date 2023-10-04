@@ -18,6 +18,7 @@ class AttendanceModel {
   String? updatedTime;
   String? name;
   String? photoURL;
+  String? loano;
 
   AttendanceModel({
     this.id,
@@ -38,7 +39,8 @@ class AttendanceModel {
     this.creationTime,
     this.updatedTime,
     this.name,
-    this.photoURL
+    this.photoURL,
+    this.loano
   });
 
   factory AttendanceModel.fromJson(Map<String, dynamic> json) {
@@ -61,7 +63,8 @@ class AttendanceModel {
         creationTime: json['creationTime'],
         updatedTime: json['updatedTime'],
         name: json['name'],
-        photoURL: json['photoURL']
+        photoURL: json['photoURL'],
+        loano: json['loano']
     );
   }
 
@@ -86,6 +89,7 @@ class AttendanceModel {
     data['updatedTime'] =  this.updatedTime;
     data['name'] = this.name;
     data['photoURL'] = this.photoURL;
+    data['loano'] = this.loano;
     return data;
   }
 }
