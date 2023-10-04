@@ -8,6 +8,13 @@ import '../../pilotadministrator/pilotcrewcc/controllers/pilotcrewcc_controller.
 import '../../profilecc/controllers/profilecc_controller.dart';
 import '../../training_instructorcc/controllers/training_instructorcc_controller.dart';
 import '../../trainingcc/controllers/trainingcc_controller.dart';
+import '../../cc/instructor/home_instructorcc/controllers/home_instructorcc_controller.dart';
+import '../../cc/instructor/training_instructorcc/controllers/training_instructorcc_controller.dart';
+import '../../cc/pilotadministrator/home_admincc/controllers/home_admincc_controller.dart';
+import '../../cc/pilotadministrator/homecc/controllers/homecc_controller.dart';
+import '../../cc/pilotadministrator/pilotcrewcc/controllers/pilotcrewcc_controller.dart';
+import '../../cc/profilecc/controllers/profilecc_controller.dart';
+import '../../cc/trainingcc/controllers/trainingcc_controller.dart';
 import '../controllers/main_home_controller.dart';
 
 class MainHomeBinding extends Bindings {

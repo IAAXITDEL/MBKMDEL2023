@@ -8,10 +8,10 @@ import '../../../../../data/users/user_preferences.dart';
 import '../../../../../data/users/users.dart';
 import '../../../../../di/locator.dart';
 import '../../../../../presentation/theme.dart';
+import '../../../cc/pilotadministrator/homecc/views/homecc_view.dart';
+import '../../../cc/profilecc/views/profilecc_view.dart';
 import '../../../efb/occ/views/listdevice/listdevice.dart';
 import '../../../efb/pilot/views/main_view_pilot.dart';
-import '../../../homecc/views/homecc_view.dart';
-import '../../../profilecc/views/profilecc_view.dart';
 
 class NavOCCView extends StatefulWidget {
   const NavOCCView({super.key});
