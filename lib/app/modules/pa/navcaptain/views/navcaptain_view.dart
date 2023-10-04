@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import '../../../../../presentation/theme.dart';
-import '../../../homecc/views/homecc_view.dart';
-import '../../../profilecc/views/profilecc_view.dart';
-import '../../../trainingcc/views/trainingcc_view.dart';
+import '../../../cc/pilotadministrator/homecc/views/homecc_view.dart';
+import '../../../cc/profilecc/views/profilecc_view.dart';
+import '../../../cc/trainingcc/views/trainingcc_view.dart';
 
 class NavcaptainView extends StatefulWidget {
   final int initialIndex;
