@@ -28,34 +28,42 @@ class ListPilotcptsccView extends GetView<ListPilotcptsccController> {
             children: [
               Row(
                 children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      // Initially, fetch all users
-                      controller.setFilterType(FilterType.none);
-                      controller.getFilteredStream();
+                  DropdownButton<FilterType>(
+                    value: controller.filterType,
+                    onChanged: (FilterType? newValue) {
+                      if (newValue != null) {
+                        controller.setFilterType(newValue);
+                      }
                     },
-                    child: const Text('All'),
-                  ),
-                  const SizedBox(width: 10),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Set the filter type to 'instructor' and fetch filtered users
-                      controller.setFilterType(FilterType.instructor);
-                      controller.getFilteredStream();
-                    },
-                    child: const Text('Instructors'),
-                  ),
-                  const SizedBox(width: 10),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Set the filter type to 'pilot' and fetch filtered users
-                      controller.setFilterType(FilterType.pilot);
-                      controller.getFilteredStream();
-                    },
-                    child: const Text('Pilots'),
+                    items: FilterType.values.map((FilterType type) {
+                      String label;
+                      switch (type) {
+                        case FilterType.none:
+                          label = 'All';
+                          break;
+                        case FilterType.instructor:
+                          label = 'Instructors';
+                          break;
+                        case FilterType.pilot:
+                          label = 'Pilots';
+                          break;
+                      }
+
+                      return DropdownMenuItem<FilterType>(
+                        value: type,
+                        child: Text(
+                          label,
+                          style: TextStyle(
+                            color: Colors.black, // Text color
+                          ),
+                        ),
+                      );
+                    }).toList(),
                   ),
                 ],
               ),
+
+              SizedBox(height: 10,),
 
               TextFormField(
                 controller: controller.searchC,
@@ -83,7 +91,7 @@ class ListPilotcptsccView extends GetView<ListPilotcptsccController> {
                 height: 20,
               ),
               Obx(
-                () => Expanded(
+                    () => Expanded(
                   child: SingleChildScrollView(
                     controller: controller.scrollController,
                     child: StreamBuilder<List<Map<String, dynamic>>>(
@@ -134,17 +142,17 @@ class ListPilotcptsccView extends GetView<ListPilotcptsccController> {
                                         backgroundColor: Colors.black26,
                                         child: ClipRRect(
                                           borderRadius:
-                                              BorderRadius.circular(100),
+                                          BorderRadius.circular(100),
                                           child: listAttendance[index]
-                                                      ["PHOTOURL"] ==
-                                                  null
+                                          ["PHOTOURL"] ==
+                                              null
                                               ? Image.asset(
-                                                  "assets/images/placeholder_person.png",
-                                                  fit: BoxFit.cover,
-                                                )
+                                            "assets/images/placeholder_person.png",
+                                            fit: BoxFit.cover,
+                                          )
                                               : Image.network(
-                                                  "${listAttendance[index]["PHOTOURL"]}",
-                                                  fit: BoxFit.cover),
+                                              "${listAttendance[index]["PHOTOURL"]}",
+                                              fit: BoxFit.cover),
                                         ),
                                       ),
                                       title: Text(
@@ -154,11 +162,11 @@ class ListPilotcptsccView extends GetView<ListPilotcptsccController> {
                                       ),
                                       subtitle: Column(
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             listAttendance[index]["ID NO"]
-                                                    .toString() ??
+                                                .toString() ??
                                                 "",
                                             style: tsOneTextTheme.labelSmall,
                                           ),
@@ -167,15 +175,16 @@ class ListPilotcptsccView extends GetView<ListPilotcptsccController> {
                                                 vertical: 3, horizontal: 10),
                                             decoration: BoxDecoration(
                                               color:
-                                                  Colors.green.withOpacity(0.4),
+                                              Colors.green.withOpacity(0.4),
                                               borderRadius:
-                                                  BorderRadius.circular(10),
+                                              BorderRadius.circular(10),
                                             ),
                                             child: const Text(
                                               "Ready",
                                               style: TextStyle(
-                                                  fontSize: 10,
-                                                  color: Colors.green),
+                                                fontSize: 10,
+                                                color: Colors.green,
+                                              ),
                                             ),
                                           ),
                                         ],
@@ -188,9 +197,9 @@ class ListPilotcptsccView extends GetView<ListPilotcptsccController> {
                             ),
                             controller.isLoading.value
                                 ? Center(
-                                    child: CircularProgressIndicator(),
-                                  )
-                                : SizedBox()
+                              child: CircularProgressIndicator(),
+                            )
+                                : SizedBox(),
                           ],
                         );
                       },
