@@ -36,6 +36,7 @@ class ListPilotcptsccController extends GetxController {
   void setFilterType(FilterType type) {
     filterType = type;
     _loadData();
+    getFilteredStream();
   }
 
   Stream<List<Map<String, dynamic>>> getFilteredStream() {
@@ -52,9 +53,10 @@ class ListPilotcptsccController extends GetxController {
     }
 
     if (nameS.isNotEmpty) {
-      query = query
-          .where("NAME", isGreaterThanOrEqualTo: nameS.value)
-          .where("NAME", isLessThan: nameS.value + "z");
+      query = query.where("NAME", isGreaterThanOrEqualTo: nameS.value).where(
+          "NAME",
+          isLessThan:
+              nameS.value + String.fromCharCode(nameS.value.runes.last + 1));
     }
 
     return query.snapshots().map((snapshot) {
@@ -91,7 +93,7 @@ class ListPilotcptsccController extends GetxController {
 
   void _loadData() {
     currentPage = 1;
-    update(); // Trigger a UI update when changing the filter type.
+    update();
   }
 
   @override
