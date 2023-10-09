@@ -65,10 +65,10 @@ Future<void> generateLogPdfDevice23({
       signatureImageWidget = pw.Image(image);
     } catch (e) {
       print('Failed to load signature image: $e');
-      signatureImageWidget = pw.Text('Failed to load signature image');
+      signatureImageWidget = pw.Center(child: pw.Text('Failed to load signature image', style: pw.TextStyle(fontSize: 8)));
     }
   } else {
-    signatureImageWidget = pw.Text('No signature available');
+    signatureImageWidget = pw.Center(child: pw.Text('No signature available', style: pw.TextStyle(fontSize: 8)));
   }
 
   pw.Widget signatureImageOCCWidget;
@@ -79,10 +79,10 @@ Future<void> generateLogPdfDevice23({
       signatureImageOCCWidget = pw.Image(image);
     } catch (e) {
       print('Failed to load signature image: $e');
-      signatureImageOCCWidget = pw.Text('Failed to load signature image');
+      signatureImageOCCWidget = pw.Center(child: pw.Text('Failed to load signature image', style: pw.TextStyle(fontSize: 8)));
     }
   } else {
-    signatureImageOCCWidget = pw.Text('No signature available');
+    signatureImageOCCWidget = pw.Center(child: pw.Text('No signature available', style: pw.TextStyle(fontSize: 8)));
   }
 
   final footer = pw.Container(
@@ -470,7 +470,6 @@ Future<void> generateLogPdfDevice23({
                     ],
                   ),
                 ),
-                pw.Spacer(flex: 1),
                 pw.Expanded(
                   flex: 5,
                   child: pw.Column(
@@ -494,7 +493,6 @@ Future<void> generateLogPdfDevice23({
           if ('$statusdevice' == 'Done')
             pw.Row(
               children: [
-                pw.Spacer(flex: 1),
                 pw.Expanded(
                   flex: 5,
                   child: pw.Column(
@@ -503,7 +501,6 @@ Future<void> generateLogPdfDevice23({
                     ],
                   ),
                 ),
-                pw.Spacer(flex: 1),
                 pw.Expanded(
                   flex: 5,
                   child: pw.Column(
@@ -515,9 +512,9 @@ Future<void> generateLogPdfDevice23({
                 ),
               ],
             ),
+          if ('$statusdevice' == 'Done')
           pw.Row(
             children: [
-              pw.Spacer(flex: 1),
               pw.Expanded(
                 flex: 5,
                 child: pw.Column(
@@ -525,25 +522,23 @@ Future<void> generateLogPdfDevice23({
                     pw.SizedBox(height: 5.0),
                     pw.Container(
                       child: signatureImageOCCWidget,
-                      width: 200,  // Adjust width as needed
-                      height: 100, // Adjust height as needed
+                      width: 150,
+                      height: 90,
                     ),
                     pw.SizedBox(height: 5.0),
                     pw.Text('$occAccept'),
                   ],
                 ),
               ),
-              pw.Spacer(flex: 1),
               pw.Expanded(
                 flex: 5,
                 child: pw.Column(
                   children: [
                     pw.SizedBox(height: 5.0),
-                    // Menampilkan gambar tanda tangan
                     pw.Container(
                       child: signatureImageWidget,
-                      width: 200,  // Adjust width as needed
-                      height: 100, // Adjust height as needed
+                      width: 150,
+                      height: 90,
                     ),
                     pw.SizedBox(height: 5.0),
                     pw.Text('$userName'),
@@ -556,13 +551,13 @@ Future<void> generateLogPdfDevice23({
           ),
 
           if ('$statusdevice' == 'handover-to-other-crew')
-            pw.SizedBox(height: 70),
+            pw.SizedBox(height: 50),
           if ('$statusdevice' == 'handover-to-other-crew')
             pw.Column(
               children: [footer],
             ),
 
-          if ('$statusdevice' == 'Done') pw.SizedBox(height: 170),
+          if ('$statusdevice' == 'Done') pw.SizedBox(height: 120),
           if ('$statusdevice' == 'Done')
             pw.Column(
               children: [footer],

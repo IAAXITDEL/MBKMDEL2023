@@ -14,7 +14,6 @@ import 'package:flutter/widgets.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:open_file/open_file.dart';
 import '../../../occ/views/history/detail_history_device_view.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 String _formatTimestamp(Timestamp? timestamp) {
   if (timestamp == null) return 'No Data';
@@ -56,31 +55,6 @@ Future<void> generateLogPdfDevice1({
 
   final font = await rootBundle.load("assets/fonts/Poppins-Regular.ttf");
   final ttf = pw.Font.ttf(font);
-
-  //final Uint8List imagettdUser = await fetchImage('$ttdUser');
-
-  // Future<Uint8List> _loadImageFromFirebase() async {
-  //   // Gantilah dengan kode untuk mengambil gambar dari Firebase
-  //   final url = '$ttdUser'; // Gantilah dengan URL gambar dari Firebase
-
-  //   final image = NetworkImage(url);
-  //   final Completer<Uint8List> completer = Completer<Uint8List>();
-
-  //   image.resolve(ImageConfiguration()).addListener(ImageStreamListener((ImageInfo info, bool _) async {
-  //     final byteData = await info.image.toByteData(format: ImageByteFormat.png);
-  //     final buffer = byteData!.buffer.asUint8List();
-  //     completer.complete(buffer);
-  //   }));
-
-  //   return completer.future;
-  // }
-
-  // Kemudian di dalam kode Anda yang membuat PDF:
-  // final Uint8List imageData = await _loadImageFromFirebase();
-  // final PdfImage pdfImage = PdfImage.file(
-  //   pdf.document,
-  //   bytes: imageData,
-  // );
 
   final footer = pw.Container(
     padding: pw.EdgeInsets.all(5.0),
@@ -490,7 +464,6 @@ Future<void> generateLogPdfDevice1({
                     ],
                   ),
                 ),
-                pw.Spacer(flex: 1),
                 pw.Expanded(
                   flex: 5,
                   child: pw.Column(
@@ -514,7 +487,6 @@ Future<void> generateLogPdfDevice1({
           if ('$statusdevice' == 'Done')
             pw.Row(
               children: [
-                pw.Spacer(flex: 1),
                 pw.Expanded(
                   flex: 5,
                   child: pw.Column(
@@ -523,21 +495,19 @@ Future<void> generateLogPdfDevice1({
                     ],
                   ),
                 ),
-                pw.Spacer(flex: 1),
                 pw.Expanded(
                   flex: 5,
                   child: pw.Column(
                     children: [
                       pw.Text('Receive Device 1 By'),
-
                     ],
                   ),
                 ),
               ],
             ),
+          if ('$statusdevice' == 'Done')
           pw.Row(
             children: [
-              pw.Spacer(flex: 1),
               pw.Expanded(
                 flex: 5,
                 child: pw.Column(
@@ -545,25 +515,23 @@ Future<void> generateLogPdfDevice1({
                     pw.SizedBox(height: 5.0),
                     pw.Container(
                       child: signatureImageOCCWidget,
-                      width: 200,  // Adjust width as needed
-                      height: 100, // Adjust height as needed
+                      width: 150,
+                      height: 90,
                     ),
                     pw.SizedBox(height: 5.0),
                     pw.Text('$occAccept'),
                   ],
                 ),
               ),
-              pw.Spacer(flex: 1),
               pw.Expanded(
                 flex: 5,
                 child: pw.Column(
                   children: [
                     pw.SizedBox(height: 5.0),
-                    // Menampilkan gambar tanda tangan
                     pw.Container(
                       child: signatureImageWidget,
-                      width: 200,  // Adjust width as needed
-                      height: 100, // Adjust height as needed
+                      width: 150,
+                      height: 90,
                     ),
                     pw.SizedBox(height: 5.0),
                     pw.Text('$userName'),
@@ -575,14 +543,13 @@ Future<void> generateLogPdfDevice1({
             ],
           ),
 
-
-          if ('$statusdevice' == 'handover-to-other-crew') pw.SizedBox(height: 70),
+          if ('$statusdevice' == 'handover-to-other-crew') pw.SizedBox(height: 50),
           if ('$statusdevice' == 'handover-to-other-crew')
             pw.Column(
               children: [footer],
             ),
 
-          if ('$statusdevice' == 'Done') pw.SizedBox(height: 170),
+          if ('$statusdevice' == 'Done') pw.SizedBox(height: 120),
           if ('$statusdevice' == 'Done')
             pw.Column(
               children: [footer],

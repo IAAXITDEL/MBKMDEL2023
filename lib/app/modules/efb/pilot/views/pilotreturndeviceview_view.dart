@@ -10,25 +10,18 @@ class PilotreturndeviceviewView extends StatefulWidget {
   final String deviceId;
   final String OccOnDuty;
 
-  PilotreturndeviceviewView(
-      {required this.deviceName, required this.deviceId, required this.OccOnDuty});
+  PilotreturndeviceviewView({required this.deviceName, required this.deviceId, required this.OccOnDuty});
 
   @override
-  _PilotreturndeviceviewViewState createState() =>
-      _PilotreturndeviceviewViewState();
+  _PilotreturndeviceviewViewState createState() => _PilotreturndeviceviewViewState();
 }
 
 Future<String> getDocumentIdForDevice(String deviceId) async {
-  QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-      .collection('pilot-device-1')
-      .where('document_id', isEqualTo: deviceId)
-      .get();
+  QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('pilot-device-1').where('document_id', isEqualTo: deviceId).get();
 
   if (querySnapshot.docs.isNotEmpty) {
-    // Mengambil document_id dari dokumen pertama yang sesuai
     return querySnapshot.docs[0].id;
   } else {
-    // Mengembalikan nilai default jika tidak ditemukan data yang sesuai
     return 'N/A';
   }
 }
@@ -40,365 +33,316 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text('Device Used'),
-        centerTitle: true,
+        title: Text(
+          'Device Used',
+          style: tsOneTextTheme.headlineLarge,
+        ),
       ),
-      body: Column(
-        children: [
-          Column(
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+          child: Column(
             children: [
-              SingleChildScrollView(
+              Row(
+                children: const [
+                  RedTitleText(
+                    text: 'DEVICE INFO',
+                  )
+                ],
+              ),
+              FutureBuilder(
+                future: Future.wait([
+                  FirebaseFirestore.instance.collection('Device').where('deviceno', isEqualTo: widget.deviceName).get(),
+                  FirebaseFirestore.instance.collection('pilot-device-1').where('device_name', isEqualTo: widget.deviceName).get(),
+                ]),
+                builder: (context, snapshotList) {
+                  if (snapshotList.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
+                  } else if (snapshotList.hasError) {
+                    return Center(
+                      child: Text('Error: ${snapshotList.error.toString()}'),
+                    );
+                  } else {
+                    final deviceSnapshot = snapshotList.data![0];
+                    final pilotDeviceSnapshot = snapshotList.data![1];
+                    final deviceData = deviceSnapshot.docs.isNotEmpty ? deviceSnapshot.docs.first.data() : <String, dynamic>{};
+
+                    // Handle null values gracefully
+                    final deviceno = deviceData['deviceno'] as String? ?? 'N/A';
+                    final iosver = deviceData['iosver'] as String? ?? 'N/A';
+                    final flysmart = deviceData['flysmart'] as String? ?? 'N/A';
+                    final lidoversion = deviceData['lidoversion'] as String? ?? 'N/A';
+                    final docuversion = deviceData['docuversion'] as String? ?? 'N/A';
+                    final condition = deviceData['condition'] as String? ?? 'N/A';
+                    final hub = deviceData['hub'] as String? ?? 'N/A';
+
+                    // Handle data from 'pilot-device-1' collection
+                    final pilotDeviceData = pilotDeviceSnapshot.docs.isNotEmpty ? pilotDeviceSnapshot.docs.first.data() : <String, dynamic>{};
+                    final occOnDuty = pilotDeviceData['occ-on-duty'] as String? ?? 'N/A';
+
+                    return Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Expanded(flex: 5, child: Text("Device No")),
+                                  Expanded(flex: 1, child: Text(":")),
+                                  Expanded(flex: 5, child: Text(deviceno)),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 8,
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(flex: 5, child: Text("iOS Version")),
+                                  Expanded(flex: 1, child: Text(":")),
+                                  Expanded(flex: 5, child: Text(iosver)),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 8,
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(flex: 5, child: Text("Flysmart Ver")),
+                                  Expanded(flex: 1, child: Text(":")),
+                                  Expanded(flex: 5, child: Text(flysmart)),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 8,
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(flex: 5, child: Text("Docu Version")),
+                                  Expanded(flex: 1, child: Text(":")),
+                                  Expanded(flex: 5, child: Text(docuversion)),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 8,
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(flex: 5, child: Text("Lido Version")),
+                                  Expanded(flex: 1, child: Text(":")),
+                                  Expanded(flex: 5, child: Text(lidoversion)),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 8,
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(flex: 5, child: Text("HUB")),
+                                  Expanded(flex: 1, child: Text(":")),
+                                  Expanded(flex: 5, child: Text(hub)),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 8,
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(flex: 5, child: Text("Condition")),
+                                  Expanded(flex: 1, child: Text(":")),
+                                  Expanded(flex: 5, child: Text(condition)),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 8,
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(flex: 5, child: Text("OCC On Duty")),
+                                  Expanded(flex: 1, child: Text(":")),
+                                  Expanded(flex: 5, child: Text(occOnDuty)),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    );
+                  }
+                },
+              ),
+              Container(
+                width: double.infinity,
+                height: 0.5,
+                color: Colors.black,
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              Row(
+                children: const [
+                  RedTitleText(
+                    text: 'RETURN DEVICE',
+                  )
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 10, right: 10, left: 10),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    FutureBuilder(
-                      future: Future.wait([
-                        FirebaseFirestore.instance
-                            .collection('Device')
-                            .where('deviceno', isEqualTo: widget.deviceName)
-                            .get(),
-                        FirebaseFirestore.instance
-                            .collection('pilot-device-1')
-                            .where('device_name', isEqualTo: widget.deviceName)
-                            .get(),
-                      ]),
-                      builder: (context, snapshotList) {
-                        if (snapshotList.connectionState == ConnectionState.waiting) {
-                          return const CircularProgressIndicator();
-                        } else if (snapshotList.hasError) {
-                          return Center(
-                            child: Text('Error: ${snapshotList.error.toString()}'),
-                          );
-                        } else {
-                          final deviceSnapshot = snapshotList.data![0];
-                          final pilotDeviceSnapshot = snapshotList.data![1];
-                          final deviceData = deviceSnapshot.docs.isNotEmpty
-                              ? deviceSnapshot.docs.first.data()
-                              : <String, dynamic>{};
-
-                          // Handle null values gracefully
-                          final deviceno =
-                              deviceData['deviceno'] as String? ?? 'N/A';
-                          final iosver = deviceData['iosver'] as String? ?? 'N/A';
-                          final flysmart = deviceData['flysmart'] as String? ?? 'N/A';
-                          final lidoversion =
-                              deviceData['lidoversion'] as String? ?? 'N/A';
-                          final docuversion =
-                              deviceData['docuversion'] as String? ?? 'N/A';
-                          final condition =
-                              deviceData['condition'] as String? ?? 'N/A';
-                          final hub =
-                              deviceData['hub'] as String? ?? 'N/A';
-
-                          // Handle data from 'pilot-device-1' collection
-                          final pilotDeviceData = pilotDeviceSnapshot.docs.isNotEmpty
-                              ? pilotDeviceSnapshot.docs.first.data()
-                              : <String, dynamic>{};
-                          final occOnDuty =
-                              pilotDeviceData['occ-on-duty'] as String? ?? 'N/A';
-
-                          return Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 20),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        "DEVICE INFO",
-                                        style: tsOneTextTheme.titleLarge,
-                                      ),
-                                    ),
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                            flex: 6,
-                                            child: Text("Device No",
-                                              style: tsOneTextTheme.bodySmall,
-                                            )),
-                                        Expanded(
-                                            flex: 1, child: Text(":",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
-                                        Expanded(
-                                          flex: 6,
-                                          child: Text(deviceno,
-                                            style: tsOneTextTheme.bodySmall,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(height: 4,),
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                            flex: 6,
-                                            child: Text("iOS Version",
-                                              style: tsOneTextTheme.bodySmall,
-                                            )),
-                                        Expanded(
-                                            flex: 1, child: Text(":",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
-                                        Expanded(
-                                          flex: 6,
-                                          child: Text(iosver,
-                                            style: tsOneTextTheme.bodySmall,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(height: 4,),
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                            flex: 6,
-                                            child: Text("Flysmart Ver",
-                                              style: tsOneTextTheme.bodySmall,
-                                            )),
-                                        Expanded(
-                                            flex: 1, child: Text(":",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
-                                        Expanded(
-                                          flex: 6,
-                                          child: Text(flysmart,
-                                            style: tsOneTextTheme.bodySmall,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(height: 4,),
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                            flex: 6,
-                                            child: Text("Docu Version",
-                                              style: tsOneTextTheme.bodySmall,
-                                            )),
-                                        Expanded(
-                                            flex: 1, child: Text(":",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
-                                        Expanded(
-                                          flex: 6,
-                                          child: Text(docuversion,
-                                            style: tsOneTextTheme.bodySmall,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(height: 4,),
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                            flex: 6,
-                                            child: Text("Lido Version",
-                                              style: tsOneTextTheme.bodySmall,
-                                            )),
-                                        Expanded(
-                                            flex: 1, child: Text(":",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
-                                        Expanded(
-                                          flex: 6,
-                                          child: Text(lidoversion,
-                                            style: tsOneTextTheme.bodySmall,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(height: 4,),
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                            flex: 6,
-                                            child: Text("HUB",
-                                              style: tsOneTextTheme.bodySmall,
-                                            )),
-                                        Expanded(
-                                            flex: 1, child: Text(":",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
-                                        Expanded(
-                                          flex: 6,
-                                          child: Text(hub,
-                                            style: tsOneTextTheme.bodySmall,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(height: 4,),
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                            flex: 6,
-                                            child: Text("Condition",
-                                              style: tsOneTextTheme.bodySmall,
-                                            )),
-                                        Expanded(
-                                            flex: 1, child: Text(":",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
-                                        Expanded(
-                                          flex: 6,
-                                          child: Text(condition,
-                                            style: tsOneTextTheme.bodySmall,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(height: 4,),
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                            flex: 6,
-                                            child: Text("OCC On Duty",
-                                              style: tsOneTextTheme.bodySmall,
-                                            )),
-                                        Expanded(
-                                            flex: 1, child: Text(":",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
-                                        Expanded(
-                                          flex: 6,
-                                          child: Text(occOnDuty,
-                                            style: tsOneTextTheme.bodySmall,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    // Display other fields as needed
-                                  ],
-                                ),
-                              ),
-                            ],
-                          );
-                        }
-                      },
+                    Row(
+                      children: [
+                        Text(
+                          'Choose who you want to return it to :',
+                          style: tsOneTextTheme.labelMedium,
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ),
+              const SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Radio(
+                          value: true,
+                          groupValue: isReturnToOCC,
+                          onChanged: (value) {
+                            setState(() {
+                              isReturnToOCC = value!;
+                              isReturnToOtherPilot = !value;
+                            });
+                          },
+                        ),
+                        const Text('Return To OCC'),
+                      ],
                     ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 7,horizontal: 20),
-                      child: Divider(
-                        color: TsOneColor.secondaryContainer,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              "RETURN DEVICE",
-                              style: tsOneTextTheme.titleLarge,
-                            ),
-                          ),
-                          Row(
-                            children: [
-                              Text('Choose who you want to return it to',
-                                style: tsOneTextTheme.labelMedium,
-                              )
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal:20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Radio(
-                                value: true,
-                                groupValue: isReturnToOCC,
-                                onChanged: (value) {
-                                  setState(() {
-                                    isReturnToOCC = value!;
-                                    isReturnToOtherPilot = !value;
-                                  });
-                                },
-                              ),
-                              const Text('Return To OCC',
-
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Radio(
-                                value: true,
-                                groupValue: isReturnToOtherPilot,
-                                onChanged: (value) {
-                                  setState(() {
-                                    isReturnToOtherPilot = value!;
-                                    isReturnToOCC = !value;
-                                  });
-                                },
-                              ),
-                              const Text('Return To Other Pilot'),
-                            ],
-                          ),
-                        ],
-                      ),
+                    Row(
+                      children: [
+                        Radio(
+                          value: true,
+                          groupValue: isReturnToOtherPilot,
+                          onChanged: (value) {
+                            setState(() {
+                              isReturnToOtherPilot = value!;
+                              isReturnToOCC = !value;
+                            });
+                          },
+                        ),
+                        const Text('Return To Other Pilot'),
+                      ],
                     ),
                   ],
                 ),
               ),
+              const SizedBox(height: 10),
+              // ElevatedButton(
+              //   onPressed: () async {
+              //     if (isReturnToOCC) {
+              //       String documentId = await getDocumentIdForDevice(widget.deviceId);
+
+              //       Navigator.push(
+              //         context,
+              //         MaterialPageRoute(
+              //           builder: (context) => SignaturePadPage(
+              //             documentId: documentId,
+              //             deviceId: widget.deviceId,
+              //           ),
+              //         ),
+              //       );
+              //     } else if (isReturnToOtherPilot) {
+              //       String documentId = await getDocumentIdForDevice(widget.deviceId);
+
+              //       Navigator.push(
+              //         context,
+              //         MaterialPageRoute(
+              //           builder: (context) => ReturnOtherPilotView(
+              //             documentId: documentId,
+              //             deviceId: widget.deviceId,
+              //             deviceName: widget.deviceName,
+              //             OccOnDuty: widget.OccOnDuty,
+              //           ),
+              //         ),
+              //       );
+              //     }
+              //   },
+              //   style: ElevatedButton.styleFrom(
+              //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+              //     backgroundColor: TsOneColor.greenColor,
+              //   ),
+              //   child: SizedBox(
+              //     width: MediaQuery.of(context).size.width,
+              //     height: 48,
+              //     child: const Align(
+              //       alignment: Alignment.center,
+              //       child: Text(
+              //         "Next",
+              //         style: TextStyle(color: TsOneColor.secondary),
+              //       ),
+              //     ),
+              //   ),
+              // ),
             ],
           ),
-        ],
+        ),
       ),
       bottomNavigationBar: BottomAppBar(
-        surfaceTintColor: tsOneColorScheme.secondary,
-        child: Expanded(
-          child: ElevatedButton(
-            onPressed: () async {
-              // Handle the next button click based on radio button selection
-              if (isReturnToOCC) {
-                //Navigate to a new page for "Return To OCC"
-                // Mendapatkan document_id dari koleksi pilot-device-1 yang sesuai
-                String documentId = await getDocumentIdForDevice(widget.deviceId);
+        child: ElevatedButton(
+          onPressed: () async {
+            if (isReturnToOCC) {
+              String documentId = await getDocumentIdForDevice(widget.deviceId);
 
-                // Navigate to the SignaturePadPage and pass the documentId
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => SignaturePadPage(documentId: documentId,
-                      deviceId: widget.deviceId,
-                    ),
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SignaturePadPage(
+                    documentId: documentId,
+                    deviceId: widget.deviceId,
                   ),
-                );
-              } else if (isReturnToOtherPilot) {
-                // Navigate to a new page for "Return To Other Pilot"
-                String documentId = await getDocumentIdForDevice(widget.deviceId);
+                ),
+              );
+            } else if (isReturnToOtherPilot) {
+              String documentId = await getDocumentIdForDevice(widget.deviceId);
 
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ReturnOtherPilotView(
-                      documentId: documentId,
-                      deviceId: widget.deviceId, // Teruskan deviceUid
-                      deviceName: widget.deviceName, // Teruskan deviceName
-                      OccOnDuty: widget.OccOnDuty,
-                    ),
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ReturnOtherPilotView(
+                    documentId: documentId,
+                    deviceId: widget.deviceId,
+                    deviceName: widget.deviceName,
+                    OccOnDuty: widget.OccOnDuty,
                   ),
-                );
-              }
-            },
-            style: ElevatedButton.styleFrom(
-                backgroundColor: TsOneColor.greenColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(4.0),
-                )
+                ),
+              );
+            }
+          },
+          style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+            backgroundColor: TsOneColor.greenColor,
+          ),
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: 48,
+            child: const Align(
+              alignment: Alignment.center,
+              child: Text(
+                "Next",
+                style: TextStyle(color: TsOneColor.secondary),
+              ),
             ),
-            child: const Text('Next', style: TextStyle(color: Colors.white)),
           ),
         ),
       ),
