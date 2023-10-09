@@ -121,124 +121,130 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Row(
-                              children: const [
-                                RedTitleText(text: 'DEVICE INFO 1',)
-                              ],
+                            SizedBox(height: 20),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "DEVICE INFO 1",
+                                style: tsOneTextTheme.titleLarge,
+                              ),
                             ),
+                            SizedBox(height: 10),
                             Row(
                               children: [
                                 Expanded(
                                     flex: 6,
-                                    child: Text("Device No")),
+                                    child: Text("Device No",style: tsOneTextTheme.bodySmall,)),
                                 Expanded(
-                                    flex: 1, child: Text(":")),
+                                    flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
                                 Expanded(
                                   flex: 6,
-                                  child: Text(deviceno2),
+                                  child: Text(deviceno2,style: tsOneTextTheme.bodySmall,),
                                 ),
                               ],
                             ),
-                            SizedBox(height: 8,),
+                            SizedBox(height: 5,),
                             Row(
                               children: [
                                 Expanded(
                                     flex: 6,
-                                    child: Text("iOS Version")),
+                                    child: Text("iOS Version",style: tsOneTextTheme.bodySmall,)),
                                 Expanded(
-                                    flex: 1, child: Text(":")),
+                                    flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
                                 Expanded(
                                   flex: 6,
-                                  child: Text(iosver2),
+                                  child: Text(iosver2,style: tsOneTextTheme.bodySmall,),
                                 ),
                               ],
                             ),
-                            SizedBox(height: 8,),
+                            SizedBox(height: 5,),
                             Row(
                               children: [
                                 Expanded(
                                     flex: 6,
-                                    child: Text("Flysmart Ver")),
+                                    child: Text("Flysmart Ver",style: tsOneTextTheme.bodySmall,)),
                                 Expanded(
-                                    flex: 1, child: Text(":")),
+                                    flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
                                 Expanded(
                                   flex: 6,
-                                  child: Text(flysmart2),
+                                  child: Text(flysmart2,style: tsOneTextTheme.bodySmall,),
                                 ),
                               ],
                             ),
-                            SizedBox(height: 8,),
+                            SizedBox(height: 5,),
                             Row(
                               children: [
                                 Expanded(
                                     flex: 6,
-                                    child: Text("Docu Version")),
+                                    child: Text("Docu Version",style: tsOneTextTheme.bodySmall,)),
                                 Expanded(
-                                    flex: 1, child: Text(":")),
+                                    flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
                                 Expanded(
                                   flex: 6,
-                                  child: Text(docuversion2),
+                                  child: Text(docuversion2,style: tsOneTextTheme.bodySmall,),
                                 ),
                               ],
                             ),
-                            SizedBox(height: 8,),
+                            SizedBox(height: 5,),
                             Row(
                               children: [
                                 Expanded(
                                     flex: 6,
-                                    child: Text("Lido Version")),
+                                    child: Text("Lido Version",style: tsOneTextTheme.bodySmall,)),
                                 Expanded(
-                                    flex: 1, child: Text(":")),
+                                    flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
                                 Expanded(
                                   flex: 6,
-                                  child: Text(lidoversion2),
+                                  child: Text(lidoversion2,style: tsOneTextTheme.bodySmall,),
                                 ),
                               ],
                             ),
-                            SizedBox(height: 8,),
+                            SizedBox(height: 5,),
                             Row(
                               children: [
                                 Expanded(
                                     flex: 6,
-                                    child: Text("HUB")),
+                                    child: Text("Hub",style: tsOneTextTheme.bodySmall,)),
                                 Expanded(
-                                    flex: 1, child: Text(":")),
+                                    flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
                                 Expanded(
                                   flex: 6,
-                                  child: Text(hub2),
+                                  child: Text(hub2,style: tsOneTextTheme.bodySmall,),
                                 ),
                               ],
                             ),
-                            SizedBox(height: 8,),
+                            SizedBox(height: 5,),
                             Row(
                               children: [
                                 Expanded(
                                     flex: 6,
-                                    child: Text("Condition")),
+                                    child: Text("Condition",style: tsOneTextTheme.bodySmall,)),
                                 Expanded(
-                                    flex: 1, child: Text(":")),
+                                    flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
                                 Expanded(
                                   flex: 6,
-                                  child: Text(condition2),
+                                  child: Text(condition2,style: tsOneTextTheme.bodySmall,),
                                 ),
                               ],
                             ),
                             SizedBox(height: 10.0,),
-                            Row(
-                              children: const [
-                                RedTitleText(text: 'DEVICE INFO 2',)
-                              ],
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "DEVICE INFO 2",
+                                style: tsOneTextTheme.titleLarge,
+                              ),
                             ),
                             Row(
                               children: [
                                 Expanded(
                                     flex: 6,
-                                    child: Text("Device No")),
+                                    child: Text("Device No",style: tsOneTextTheme.bodySmall,)),
                                 Expanded(
-                                    flex: 1, child: Text(":")),
+                                    flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
                                 Expanded(
                                   flex: 6,
-                                  child: Text(deviceno3),
+                                  child: Text(deviceno3,style: tsOneTextTheme.bodySmall,),
                                 ),
                               ],
                             ),
@@ -247,12 +253,12 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                               children: [
                                 Expanded(
                                     flex: 6,
-                                    child: Text("iOS Version")),
+                                    child: Text("iOS Version",style: tsOneTextTheme.bodySmall,)),
                                 Expanded(
-                                    flex: 1, child: Text(":")),
+                                    flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
                                 Expanded(
                                   flex: 6,
-                                  child: Text(iosver3),
+                                  child: Text(iosver3,style: tsOneTextTheme.bodySmall,),
                                 ),
                               ],
                             ),
@@ -261,12 +267,12 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                               children: [
                                 Expanded(
                                     flex: 6,
-                                    child: Text("Flysmart Ver")),
+                                    child: Text("Flysmart Ver",style: tsOneTextTheme.bodySmall,)),
                                 Expanded(
-                                    flex: 1, child: Text(":")),
+                                    flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
                                 Expanded(
                                   flex: 6,
-                                  child: Text(flysmart3),
+                                  child: Text(flysmart3,style: tsOneTextTheme.bodySmall,),
                                 ),
                               ],
                             ),
@@ -275,9 +281,9 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                               children: [
                                 Expanded(
                                     flex: 6,
-                                    child: Text("Docu Version")),
+                                    child: Text("Docu Version",style: tsOneTextTheme.bodySmall,)),
                                 Expanded(
-                                    flex: 1, child: Text(":")),
+                                    flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
                                 Expanded(
                                   flex: 6,
                                   child: Text(docuversion3),
@@ -289,12 +295,12 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                               children: [
                                 Expanded(
                                     flex: 6,
-                                    child: Text("Lido Version")),
+                                    child: Text("Lido Version",style: tsOneTextTheme.bodySmall,)),
                                 Expanded(
-                                    flex: 1, child: Text(":")),
+                                    flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
                                 Expanded(
                                   flex: 6,
-                                  child: Text(lidoversion3),
+                                  child: Text(lidoversion3,style: tsOneTextTheme.bodySmall,),
                                 ),
                               ],
                             ),
@@ -303,12 +309,12 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                               children: [
                                 Expanded(
                                     flex: 6,
-                                    child: Text("HUB")),
+                                    child: Text("HUB",style: tsOneTextTheme.bodySmall,)),
                                 Expanded(
-                                    flex: 1, child: Text(":")),
+                                    flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
                                 Expanded(
                                   flex: 6,
-                                  child: Text(hub3),
+                                  child: Text(hub3,style: tsOneTextTheme.bodySmall,),
                                 ),
                               ],
                             ),
@@ -317,33 +323,42 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                               children: [
                                 Expanded(
                                     flex: 6,
-                                    child: Text("Condition")),
+                                    child: Text("Condition",style: tsOneTextTheme.bodySmall,)),
                                 Expanded(
-                                    flex: 1, child: Text(":")),
+                                    flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
                                 Expanded(
                                   flex: 6,
-                                  child: Text(condition3),
+                                  child: Text(condition3,style: tsOneTextTheme.bodySmall,),
                                 ),
                               ],
                             ),
                           ],
                         ),
+
                       ),
                     ],
                   );
                 }
               },
             ),
-            const SizedBox(height: 15,),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+              child: Divider(
+                color: TsOneColor.secondaryContainer,
+              ),
+            ),
+
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: const [
-                      RedTitleText(text: 'RETURN DEVICE',)
-                    ],
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "Return Device",
+                      style: tsOneTextTheme.titleLarge,
+                    ),
                   ),
                   Row(
                     children: [
@@ -394,53 +409,55 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                 ],
               ),
             ),
-            const SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 15.0),
-              child: ElevatedButton(
-                onPressed: () async {
-                  // Handle the next button click based on radio button selection
-                  if (isReturnToOCC) {
-                    //Navigate to a new page for "Return To OCC"
-                    // Mendapatkan document_id dari koleksi pilot-device-1 yang sesuai
-                    String documentId = await getDocumentIdForDevice(widget.deviceId);
-
-                    // Navigate to the SignaturePadPage and pass the documentId
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => FOSignaturePadPage(documentId: documentId,
-                          deviceId: widget.deviceId,
-                        ),
-                      ),
-                    );
-                  } else if (isReturnToOtherPilot) {
-                    // Navigate to a new page for "Return To Other Pilot"
-                    String documentId = await getDocumentIdForDevice(widget.deviceId);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ReturnOtherFOView(
-                          documentId: documentId,
-                          deviceId: widget.deviceId, // Teruskan deviceUid
-                          OccOnDuty: widget.OccOnDuty,
-                          deviceName2: widget.deviceName2, // Teruskan deviceName
-                          deviceName3: widget.deviceName3, // Teruskan deviceName
-
-                        ),
-                      ),
-                    );
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: TsOneColor.greenColor,
-                  minimumSize: const Size(double.infinity, 50),
-                ),
-                child: const Text('Next', style: TextStyle(color: Colors.white),),
-              ),
-            ),
-
           ],
+        ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        surfaceTintColor: tsOneColorScheme.secondary,
+        child: Expanded(
+          child: ElevatedButton(
+            onPressed: () async {
+              // Handle the next button click based on radio button selection
+              if (isReturnToOCC) {
+                //Navigate to a new page for "Return To OCC"
+                // Mendapatkan document_id dari koleksi pilot-device-1 yang sesuai
+                String documentId = await getDocumentIdForDevice(widget.deviceId);
+
+                // Navigate to the SignaturePadPage and pass the documentId
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => FOSignaturePadPage(documentId: documentId,
+                      deviceId: widget.deviceId,
+                    ),
+                  ),
+                );
+              } else if (isReturnToOtherPilot) {
+                // Navigate to a new page for "Return To Other Pilot"
+                String documentId = await getDocumentIdForDevice(widget.deviceId);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ReturnOtherFOView(
+                      documentId: documentId,
+                      deviceId: widget.deviceId, // Teruskan deviceUid
+                      OccOnDuty: widget.OccOnDuty,
+                      deviceName2: widget.deviceName2, // Teruskan deviceName
+                      deviceName3: widget.deviceName3, // Teruskan deviceName
+
+                    ),
+                  ),
+                );
+              }
+            },
+            style: ElevatedButton.styleFrom(
+                backgroundColor: TsOneColor.greenColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4.0),
+                )
+            ),
+            child: const Text('Next', style: TextStyle(color: Colors.white)),
+          ),
         ),
       ),
     );

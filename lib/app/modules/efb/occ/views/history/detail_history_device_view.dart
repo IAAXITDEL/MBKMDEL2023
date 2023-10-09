@@ -18,17 +18,26 @@ class DetailHistoryDeviceView extends GetView {
     required this.deviceno,
   }) : super(key: key);
 
+  String getMonthText(int month) {
+    const List<String> months = [
+      'Januar7', 'Februar7', 'March', 'April',
+      'May', 'June', 'July', 'August',
+      'September', 'October', 'November', 'Desember'
+    ];
+    return months[month - 1];  // Index 0-11 for Januari-Desember
+  }
+
   String _formatTimestamp(Timestamp? timestamp) {
     if (timestamp == null) return 'No Data';
 
     DateTime dateTime = timestamp.toDate();
-    // Format the date and time as desired, e.g., 'dd/MM/yyyy HH:mm:ss'
     String formattedDateTime =
-        '${dateTime.day}/${dateTime.month}/${dateTime.year}'
-        ' at '
+        '${dateTime.day} ${getMonthText(dateTime.month)} ${dateTime.year}'
+        ' ; '
         '${dateTime.hour}:${dateTime.minute}';
     return formattedDateTime;
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -198,7 +207,7 @@ class DetailHistoryDeviceView extends GetView {
                                                 children: [
                                                   Expanded(
                                                     flex: 6,
-                                                    child: Text("Loan Date")),
+                                                    child: Text("")),
                                                   Expanded(
                                                     flex: 1,
                                                     child: Text(":")),
@@ -258,7 +267,12 @@ class DetailHistoryDeviceView extends GetView {
                                                   ),
                                                 ],
                                               ),
-                                              SizedBox(height: 10.0),
+                                              Padding(
+                                                padding: EdgeInsets.symmetric(vertical: 20),
+                                                child: Divider(
+                                                  color: TsOneColor.secondaryContainer,
+                                                ),
+                                              ),
                                               Text(
                                                 "DEVICE INFO",
                                                 style: tsOneTextTheme.headlineLarge,
@@ -341,7 +355,13 @@ class DetailHistoryDeviceView extends GetView {
                                                 ],
                                               ),
 
-                                              SizedBox(height: 10.0),
+                                              Padding(
+                                                padding: EdgeInsets.symmetric(vertical: 20),
+                                                child: Divider(
+                                                  color: TsOneColor.secondaryContainer,
+                                                ),
+                                              ),
+
                                               Text(
                                                 "PROOF INFO",
                                                 style: tsOneTextTheme.headlineLarge,
@@ -389,6 +409,13 @@ class DetailHistoryDeviceView extends GetView {
                                               //     ),
                                               //   ],
                                               // ),
+
+                                              Padding(
+                                                padding: EdgeInsets.symmetric(vertical: 20),
+                                                child: Divider(
+                                                  color: TsOneColor.secondaryContainer,
+                                                ),
+                                              ),
 
                                               SizedBox(height: 10),
                                               // Conditionally display the fields based on the status

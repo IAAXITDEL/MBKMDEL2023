@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -35,6 +36,37 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
     );
   }
 
+  String? userHub;  // Add this variable
+
+  Future<void> _fetchUserHub() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
+
+    final userEmail = user.email;
+    if (userEmail == null) return;
+
+    final userSnapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .where('EMAIL', isEqualTo: userEmail)
+        .get();
+
+    if (userSnapshot.docs.isNotEmpty) {
+      final userDoc = userSnapshot.docs.first;
+      setState(() {
+        userHub = userDoc['HUB'];
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserHub(); // Fetch the userHub when the widget is initialized
+  }
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,341 +80,320 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: _searchController,
-              decoration: InputDecoration(
-                hintText: 'Search by Device No',
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                controller: _searchController,
+                decoration: InputDecoration(
+                  hintText: 'Search by Device No',
+                ),
+                onChanged: (value) {
+                  setState(() {});
+                },
               ),
-              onChanged: (value) {
-                setState(() {});
-              },
             ),
-          ),
-          Expanded(
-            child: StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance
-                  .collection("pilot-device-1")
-                  .where('statusDevice', whereIn: ['Done', 'handover-to-other-crew'])
-                  .where('timestamp', isGreaterThanOrEqualTo: _startDate, isLessThanOrEqualTo: _endDate) // Add this line
-                  .snapshots(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
-                }
+            Expanded(
+              child: StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection("pilot-device-1")
+                    .where('statusDevice', whereIn: ['Done', 'handover-to-other-crew'])
+                    .where('timestamp', isGreaterThanOrEqualTo: _startDate, isLessThanOrEqualTo: _endDate) // Add this line
+                    .where('field_hub', isEqualTo: userHub)
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  }
 
-                if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
-                }
+                  print(userHub);
 
-                final documents = snapshot.data?.docs;
+                  if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  }
 
-                if (documents == null || documents.isEmpty) {
-                  return Center(child: Text('No data available.'));
-                }
+                  final documents = snapshot.data?.docs;
 
-                // Filter documents based on search
-                final filteredDocuments = documents.where((document) {
-                  final data = document.data() as Map<String, dynamic>;
-                  final userName = data['NAME'].toString().toLowerCase();
-                  final deviceName = data['device_name'].toString().toLowerCase();
-                  final deviceName2 = data['device_name2'].toString().toLowerCase();
-                  final deviceName3 = data['device_name3'].toString().toLowerCase();
-                  final searchTerm = _searchController.text.toLowerCase();
+                  if (documents == null || documents.isEmpty) {
+                    return Center(child: Text('No data available.'));
+                  }
 
-                  return userName.contains(searchTerm) || deviceName.contains(searchTerm) || deviceName2.contains(searchTerm) || deviceName3.contains(searchTerm) ;
-                }).toList();
-
-                return ListView.builder(
-                  itemCount: filteredDocuments.length,
-                  itemBuilder: (context, index) {
-                    final document = filteredDocuments[index];
+                  // Filter documents based on search
+                  final filteredDocuments = documents.where((document) {
                     final data = document.data() as Map<String, dynamic>;
-                    final dataId = document.id;
-                    final userUid = data['user_uid'];
-                    final deviceUid = data['device_uid'];
-                    final timestamp = data['timestamp'];
+                    final userName = data['NAME'].toString().toLowerCase();
+                    final deviceName = data['device_name'].toString().toLowerCase();
+                    final deviceName2 = data['device_name2'].toString().toLowerCase();
+                    final deviceName3 = data['device_name3'].toString().toLowerCase();
+                    final searchTerm = _searchController.text.toLowerCase();
 
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 4.0),
-                      child: FutureBuilder<DocumentSnapshot>(
-                        future: FirebaseFirestore.instance
-                            .collection('users')
-                            .doc(userUid)
-                            .get(),
-                        builder: (context, userSnapshot) {
-                          if (userSnapshot.connectionState == ConnectionState.waiting) {
-                            return CircularProgressIndicator();
-                          }
+                    return userName.contains(searchTerm) || deviceName.contains(searchTerm) || deviceName2.contains(searchTerm) || deviceName3.contains(searchTerm) ;
+                  }).toList();
 
-                          if (userSnapshot.hasError) {
-                            return Text('Error: ${userSnapshot.error}');
-                          }
 
-                          final userData = userSnapshot.data?.data() as Map<String, dynamic>?;
+                  return ListView.builder(
+                    itemCount: filteredDocuments.length,
+                    itemBuilder: (context, index) {
+                      final document = filteredDocuments[index];
+                      final data = document.data() as Map<String, dynamic>;
+                      final dataId = document.id;
+                      final userUid = data['user_uid'];
+                      final deviceUid = data['device_uid'];
+                      final timestamp = data['timestamp'];
 
-                          if (userData == null) {
-                            return Text('User data not found');
-                          }
 
-                          final userName = userData['NAME'];
-                          final userRank = userData['RANK'];
-                          final photoUrl = userData['PHOTOURL'] as String?; // Get the profile photo URL
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 0.0),
+                        child: FutureBuilder<DocumentSnapshot>(
+                          future: FirebaseFirestore.instance
+                              .collection('users')
+                              .doc(userUid)
+                              .get(),
+                          builder: (context, userSnapshot) {
+                            if (userSnapshot.connectionState == ConnectionState.waiting) {
+                              return CircularProgressIndicator();
+                            }
 
-                          return FutureBuilder<DocumentSnapshot>(
-                            future: FirebaseFirestore.instance
-                                .collection('Device')
-                                .doc(deviceUid)
-                                .get(),
-                            builder: (context, deviceSnapshot) {
-                              if (deviceSnapshot.connectionState == ConnectionState.waiting) {
-                                return CircularProgressIndicator();
-                              }
+                            if (userSnapshot.hasError) {
+                              return Text('Error: ${userSnapshot.error}');
+                            }
 
-                              if (deviceSnapshot.hasError) {
-                                return Text('Error: ${deviceSnapshot.error}');
-                              }
+                            final userData = userSnapshot.data?.data() as Map<String, dynamic>?;
 
-                              final deviceData = deviceSnapshot.data?.data() as Map<String, dynamic>?;
+                            if (userData == null) {
+                              return Text('User data not found');
+                            }
 
-                              if (!deviceSnapshot.hasData || !deviceSnapshot.data!.exists) {
-                                final deviceUid2 = data['device_uid2'];
-                                final deviceUid3 = data['device_uid3'];
+                            final userName = userData['NAME'];
+                            final userRank = userData['RANK'];
+                            final photoUrl = userData['PHOTOURL'] as String?; // Get the profile photo URL
 
-                                return FutureBuilder<DocumentSnapshot>(
-                                  future: FirebaseFirestore.instance
-                                      .collection('Device')
-                                      .doc(deviceUid2)
-                                      .get(),
-                                  builder: (context, deviceUid2Snapshot) {
-                                    if (deviceUid2Snapshot.connectionState == ConnectionState.waiting) {
-                                      return CircularProgressIndicator();
-                                    }
+                            return FutureBuilder<DocumentSnapshot>(
+                              future: FirebaseFirestore.instance
+                                  .collection('Device')
+                                  .doc(deviceUid)
+                                  .get(),
+                              builder: (context, deviceSnapshot) {
+                                if (deviceSnapshot.connectionState == ConnectionState.waiting) {
+                                  return CircularProgressIndicator();
+                                }
 
-                                    if (deviceUid2Snapshot.hasError) {
-                                      return Text('Error: ${deviceUid2Snapshot.error}');
-                                    }
+                                if (deviceSnapshot.hasError) {
+                                  return Text('Error: ${deviceSnapshot.error}');
+                                }
 
-                                    final deviceData2 = deviceUid2Snapshot.data?.data() as Map<String, dynamic>?;
+                                final deviceData = deviceSnapshot.data?.data() as Map<String, dynamic>?;
 
-                                    if (!deviceUid2Snapshot.hasData || !deviceUid2Snapshot.data!.exists) {
-                                      return Text('Device Not Found');
-                                    }
+                                if (!deviceSnapshot.hasData || !deviceSnapshot.data!.exists) {
+                                  final deviceUid2 = data['device_uid2'];
+                                  final deviceUid3 = data['device_uid3'];
 
-                                    final deviceno2 = deviceData2?['deviceno'];
-
-                                        return FutureBuilder<DocumentSnapshot>(
-                                        future: FirebaseFirestore.instance
-                                            .collection('Device')
-                                            .doc(deviceUid3)
-                                            .get(),
-                                        builder: (context, deviceUid3Snapshot) {
-                                        if (deviceUid3Snapshot.connectionState == ConnectionState.waiting) {
+                                  return FutureBuilder<DocumentSnapshot>(
+                                    future: FirebaseFirestore.instance
+                                        .collection('Device')
+                                        .doc(deviceUid2)
+                                        .get(),
+                                    builder: (context, deviceUid2Snapshot) {
+                                      if (deviceUid2Snapshot.connectionState == ConnectionState.waiting) {
                                         return CircularProgressIndicator();
-                                        }
+                                      }
 
-                                        if (deviceUid3Snapshot.hasError) {
-                                        return Text('Error: ${deviceUid3Snapshot.error}');
-                                        }
+                                      if (deviceUid2Snapshot.hasError) {
+                                        return Text('Error: ${deviceUid2Snapshot.error}');
+                                      }
 
-                                        final deviceData3 = deviceUid3Snapshot.data?.data() as Map<String, dynamic>?;
+                                      final deviceData2 = deviceUid2Snapshot.data?.data() as Map<String, dynamic>?;
 
-                                        if (!deviceUid2Snapshot.hasData || !deviceUid3Snapshot.data!.exists) {
+                                      if (!deviceUid2Snapshot.hasData || !deviceUid2Snapshot.data!.exists) {
                                         return Text('Device Not Found');
-                                        }
+                                      }
 
-                                        final deviceno3 = deviceData3?['deviceno'];
+                                      final deviceno2 = deviceData2?['deviceno'];
+
+                                          return FutureBuilder<DocumentSnapshot>(
+                                          future: FirebaseFirestore.instance
+                                              .collection('Device')
+                                              .doc(deviceUid3)
+                                              .get(),
+                                          builder: (context, deviceUid3Snapshot) {
+                                          if (deviceUid3Snapshot.connectionState == ConnectionState.waiting) {
+                                          return CircularProgressIndicator();
+                                          }
+
+                                          if (deviceUid3Snapshot.hasError) {
+                                          return Text('Error: ${deviceUid3Snapshot.error}');
+                                          }
+
+                                          final deviceData3 = deviceUid3Snapshot.data?.data() as Map<String, dynamic>?;
+
+                                          if (!deviceUid2Snapshot.hasData || !deviceUid3Snapshot.data!.exists) {
+                                          return Text('Device Not Found');
+                                          }
+
+                                          final deviceno3 = deviceData3?['deviceno'];
 
 
-                                        return Padding(
-                                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                                          child: SizedBox(
-                                            width: MediaQuery.of(context).size.width,  // Set width to screen width
-                                            child: Align(
-                                              alignment: Alignment.centerLeft,
-                                              child: Container(
-                                                width: MediaQuery.of(context).size.width,  // Set width to screen width
-                                                child: ElevatedButton(
-                                                  onPressed: () {
-                                                    Navigator.of(context).push(MaterialPageRoute(
-                                                      builder: (context) => DetailHistoryDeviceFOView(
-                                                        dataId: dataId,
-                                                        userName: userName,
-                                                        deviceno2: deviceno2,
-                                                        deviceno3: deviceno3,
-                                                      ),
-                                                    ));
-                                                  },
-                                                  style: ButtonStyle(
-                                                    backgroundColor: MaterialStateProperty.all<Color>(
-                                                      Colors.white,
-                                                    ),
-                                                    overlayColor: MaterialStateProperty.all<Color>(
-                                                      Colors.red.withOpacity(0.2),
-                                                    ),
-                                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                                      RoundedRectangleBorder(
-                                                        borderRadius: BorderRadius.circular(15.0),
-                                                      ),
-                                                    ),
+                                          return Padding(
+                                            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                                            child: SizedBox(
+                                              width: MediaQuery.of(context).size.width,
+                                              child: Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: Card(
+                                                  surfaceTintColor: TsOneColor.surface,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.circular(15),
                                                   ),
-                                                  child: Padding(
-                                                    padding: const EdgeInsets.symmetric(vertical: 10),
-                                                    child: Row(
-                                                      mainAxisAlignment: MainAxisAlignment.center,  // Center the children horizontally
-                                                      crossAxisAlignment: CrossAxisAlignment.center,  // Center the children vertically
-                                                      children: [
-                                                        // Display the profile image
-                                                        CircleAvatar(
-                                                          backgroundImage: photoUrl != null
-                                                              ? NetworkImage(photoUrl as String)
-                                                              : AssetImage('assets/default_profile_image.png')
-                                                          as ImageProvider, // You can provide a default image
-                                                          radius: 25.0, // Adjust the radius as needed
+                                                  elevation: 2, // You can adjust the elevation as needed
+                                                  child: InkWell(
+                                                    onTap: () {
+                                                      Navigator.of(context).push(MaterialPageRoute(
+                                                        builder: (context) => DetailHistoryDeviceFOView(
+                                                          dataId: dataId,
+                                                          userName: userName,
+                                                          deviceno2: deviceno2,
+                                                          deviceno3: deviceno3,
                                                         ),
-
-                                                        SizedBox(
-                                                            width:
-                                                            12.0), // Add spacing between the image and text
-                                                        Flexible(
-                                                          child: Column(
-                                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                                            children: [
-                                                              Container(
-                                                                width: double
-                                                                    .infinity, // Set the width to expand to the available space
-                                                                child:  Text(
-                                                                  '$userRank'+ ' '+ '$userName',
-                                                                  style: tsOneTextTheme.titleMedium,
-                                                                ),
-                                                              ),
-                                                              Text(
-                                                                '$deviceno2' + ' & ' + '$deviceno3',
-                                                                style: tsOneTextTheme.labelMedium,
-                                                              ),
-                                                              Text(
-                                                                '${DateFormat('yyyy-MM-dd HH:mm a').format(timestamp.toDate())}',
-                                                                style: tsOneTextTheme.labelSmall,
-                                                              ),
-                                                              // Display device_name3 if available
-                                                            ],
+                                                      ));
+                                                    },
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.all(10.0),
+                                                      child: Row(
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        children: [
+                                                          CircleAvatar(
+                                                            backgroundImage: photoUrl != null
+                                                                ? NetworkImage(photoUrl as String)
+                                                                : AssetImage('assets/default_profile_image.png') as ImageProvider,
+                                                            radius: 25.0,
                                                           ),
-                                                        ),
-                                                      ],
+                                                          SizedBox(width: 12.0),
+                                                          Flexible(
+                                                            child: Column(
+                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                              children: [
+                                                                Container(
+                                                                  width: double.infinity,
+                                                                  child: Text(
+                                                                    '$userRank' + ' ' + '$userName',
+                                                                    style: tsOneTextTheme.titleMedium,
+                                                                  ),
+                                                                ),
+                                                                Text(
+                                                                  '$deviceno2' + ' & ' + '$deviceno3',
+                                                                  style: tsOneTextTheme.labelSmall,
+                                                                ),
+                                                                Text(
+                                                                  '${DateFormat('yyyy-MM-dd HH:mm a').format(timestamp.toDate())}',
+                                                                  style: tsOneTextTheme.labelSmall,
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          const Icon(
+                                                            Icons.chevron_right,
+                                                            color: TsOneColor.secondaryContainer,
+                                                            size: 30,
+                                                          )
+                                                        ],
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
                                               ),
                                             ),
+                                          );
+
+                                          },
+                                      );
+                                    },
+                                  );
+                                }
+
+                                final deviceno = deviceData?['deviceno'];
+
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                                  child: Card(
+                                    surfaceTintColor: TsOneColor.surface,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    elevation: 2, // You can adjust the elevation as needed
+                                    child: InkWell(
+                                      borderRadius: BorderRadius.circular(15.0),
+                                      onTap: () {
+                                        Navigator.of(context).push(MaterialPageRoute(
+                                          builder: (context) => DetailHistoryDeviceView(
+                                            dataId: dataId,
+                                            userName: userName,
+                                            deviceno: deviceno,
                                           ),
-                                        );
-                                        },
-                                    );
-                                  },
-                                );
-                              }
-
-                              final deviceno = deviceData?['deviceno'];
-
-
-                              return Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                                child: SizedBox(
-                                  width: MediaQuery.of(context).size.width,  // Set width to screen width
-                                  child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Container(
-                                      width: MediaQuery.of(context).size.width,  // Set width to screen width
-                                      child: ElevatedButton(
-                                        onPressed: () {
-                                          Navigator.of(context).push(MaterialPageRoute(
-                                            builder: (context) => DetailHistoryDeviceView(
-                                              dataId: dataId,
-                                              userName: userName,
-                                              deviceno: deviceno,
+                                        ));
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(10.0), // Adjust padding as needed
+                                        child: Row(
+                                          children: [
+                                            CircleAvatar(
+                                              backgroundImage: photoUrl != null
+                                                  ? NetworkImage(photoUrl as String)
+                                                  : AssetImage('assets/default_profile_image.png') as ImageProvider,
+                                              radius: 25.0,
                                             ),
-                                          ));
-                                        },
-                                        style: ButtonStyle(
-                                          backgroundColor: MaterialStateProperty.all<Color>(
-                                            Colors.white,
-                                          ),
-                                          overlayColor: MaterialStateProperty.all<Color>(
-                                            Colors.red.withOpacity(0.2),
-                                          ),
-                                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                            RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(15.0),
+                                            SizedBox(width: 12.0),
+                                            Expanded(
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Container(
+                                                    width: double.infinity,
+                                                    child: Text(
+                                                      '$userRank' + ' ' + '$userName',
+                                                      style: tsOneTextTheme.titleMedium,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    '$deviceno',
+                                                    style: tsOneTextTheme.labelSmall,
+                                                  ),
+                                                  Text(
+                                                    '${DateFormat('yyyy-MM-dd HH:mm a').format(timestamp.toDate())}',
+                                                    style: tsOneTextTheme.labelSmall,
+                                                  ),
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(vertical: 10),
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.center,  // Center the children horizontally
-                                            crossAxisAlignment: CrossAxisAlignment.center,  // Center the children vertically
-                                            children: [
-                                              // Display the profile image
-                                              CircleAvatar(
-                                                backgroundImage: photoUrl != null
-                                                    ? NetworkImage(photoUrl as String)
-                                                    : AssetImage('assets/default_profile_image.png')
-                                                as ImageProvider, // You can provide a default image
-                                                radius: 25.0, // Adjust the radius as needed
-                                              ),
-
-                                              SizedBox(
-                                                  width:
-                                                  12.0), // Add spacing between the image and text
-                                              Flexible(
-                                                child: Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    Container(
-                                                      width: double
-                                                          .infinity, // Set the width to expand to the available space
-                                                      child:  Text(
-                                                        '$userRank'+ ' '+ '$userName',
-                                                        style: tsOneTextTheme.titleMedium,
-                                                      ),
-                                                    ),
-                                                    Text(
-                                                      '$deviceno',
-                                                      style: tsOneTextTheme.labelMedium,
-                                                    ),
-                                                    Text(
-                                                      '${DateFormat('yyyy-MM-dd HH:mm a').format(timestamp.toDate())}',
-                                                      style: tsOneTextTheme.labelSmall,
-                                                    ),
-                                                    // Display device_name3 if available
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
+                                            const Icon(
+                                              Icons.chevron_right,
+                                              color: TsOneColor.secondaryContainer,
+                                              size: 30,
+                                            )
+                                          ],
                                         ),
                                       ),
-
                                     ),
                                   ),
-                                ),
-                              );
+                                );
 
 
-                            },
-                          );
-                        },
-                      ),
-                    );
-                  },
-                );
-              },
+
+                              },
+                            );
+                          },
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

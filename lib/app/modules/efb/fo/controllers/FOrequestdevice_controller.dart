@@ -46,7 +46,7 @@ class FORequestdeviceController extends GetxController {
             .where('statusDevice', whereIn: [
           'in-use-pilot',
           'in-use-fo',
-          'waiting-confirmation-2',
+          'waiting-confirmation-1',
           'need-confirmation-occ',
           'waiting-confirmation-other-pilot'
         ]).get();
@@ -122,7 +122,7 @@ class FORequestdeviceController extends GetxController {
         await pilotDeviceCollection.doc(newDeviceId).set({
           'user_uid':
               userUid, // Menggunakan ID dokumen pengguna sebagai 'user_uid'
-          'device_uid': '',
+          'device_uid': '-',
           'device_name': '',
           'device_uid2': deviceUid2,
           'device_name2': deviceName2,
@@ -136,6 +136,7 @@ class FORequestdeviceController extends GetxController {
           'remarks': '',
           'prove_image_url': '',
           'occ-accepted-device': '-',
+          'field_hub': fieldHub2, // Include the field hub in the data
           'field_hub2': fieldHub2, // Include the field hub in the data
           'field_hub3': fieldHub3, // Include the field hub in the data
         });

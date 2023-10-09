@@ -482,7 +482,7 @@ class ConfirmRequestFOView extends GetView {
                                   backgroundColor: TsOneColor.greenColor,
                                   minimumSize: const Size(double.infinity, 50),
                                 ),
-                                child: const Text('Submit', style: TextStyle(color: Colors.white),),
+                                child: const Text('Confirm', style: TextStyle(color: Colors.white),),
                               ),
                             ],
                           ),

@@ -233,7 +233,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.HOMEOCC,
-      page: () => const HomeOCCView(),
+      page: () => HomeOCCView(),
       binding: HomeOCCBinding(),
     ),
     GetPage(

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
@@ -210,6 +211,12 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
             children: [
               Row(
                 children: [
+                  Text("1'st Device :", style: tsOneTextTheme.displaySmall,)
+                ],
+              ),
+              SizedBox(height: 7,),
+              Row(
+                children: [
                   Expanded(
                     child: TextField(
                       controller: deviceNoController2,
@@ -358,21 +365,12 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                   ),
                 ),
               const SizedBox(height: 16.0),
-              // ElevatedButton(
-              //   onPressed: () {
-              //     if (selectedDevice != null) {
-              //       _showConfirmationDialog();
-              //     }
-              //   },
-              //   style: ElevatedButton.styleFrom(
-              //     backgroundColor: TsOneColor.greenColor,
-              //     minimumSize: const Size(double.infinity, 50),
-              //   ),
-              //   child: const Text(
-              //     'Submit',
-              //     style: TextStyle(color: Colors.white),
-              //   ),
-              // ),
+              Row(
+                children: [
+                  Text("2'nd Device :", style: tsOneTextTheme.displaySmall,)
+                ],
+              ),
+              SizedBox(height: 7,),
               Row(
                 children: [
                   Expanded(
@@ -543,6 +541,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
+        surfaceTintColor: CupertinoColors.tertiarySystemBackground,
         child: Expanded(
           child: ElevatedButton(
             onPressed: () {
@@ -554,7 +553,8 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                 backgroundColor: TsOneColor.greenColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(4.0),
-                )),
+                )
+            ),
             child: const Text(
               'Submit',
               style: TextStyle(color: Colors.white),

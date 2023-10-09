@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -175,7 +176,7 @@ class FOUnRequestDeviceView extends GetView {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            SizedBox(height: 10.0),
+                            SizedBox(height: 20.0),
                             Align(
                               alignment: Alignment.centerLeft,
                               child: Text(
@@ -183,29 +184,15 @@ class FOUnRequestDeviceView extends GetView {
                                 style: tsOneTextTheme.titleLarge,
                               ),
                             ),
-                            SizedBox(height: 5.0),
                             Row(
                               children: [
-                                Expanded(flex: 6, child: Text("ID NO", style: tsOneTextTheme.labelMedium,)),
-                                Expanded(flex: 1, child: Text(":")),
+                                Expanded(flex: 6, child: Text("ID NO", style: tsOneTextTheme.bodySmall,)),
+                                Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
                                     '${userData['ID NO'] ?? 'No Data'}',
-                                    style: tsOneTextTheme.labelMedium,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Expanded(flex: 6, child: Text("Name", style: tsOneTextTheme.labelMedium,)),
-                                Expanded(flex: 1, child: Text(":")),
-                                Expanded(
-                                  flex: 6,
-                                  child: Text(
-                                    '${userData['NAME'] ?? 'No Data'}',
-                                    style: tsOneTextTheme.labelMedium,
+                                    style: tsOneTextTheme.bodySmall,
                                   ),
                                 ),
                               ],
@@ -213,18 +200,37 @@ class FOUnRequestDeviceView extends GetView {
                             SizedBox(height: 5.0),
                             Row(
                               children: [
-                                Expanded(flex: 6, child: Text("Rank", style: tsOneTextTheme.labelMedium,)),
-                                Expanded(flex: 1, child: Text(":")),
+                                Expanded(flex: 6, child: Text("Name", style: tsOneTextTheme.bodySmall,)),
+                                Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
-                                    '${userData['RANK'] ?? 'No Data'}',
-                                    style: tsOneTextTheme.labelMedium,
+                                    '${userData['NAME'] ?? 'No Data'}',
+                                    style: tsOneTextTheme.bodySmall,
                                   ),
                                 ),
                               ],
                             ),
-                            SizedBox(height: 10.0),
+                            SizedBox(height: 5.0),
+                            Row(
+                              children: [
+                                Expanded(flex: 6, child: Text("Rank", style: tsOneTextTheme.bodySmall,)),
+                                Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
+                                Expanded(
+                                  flex: 6,
+                                  child: Text(
+                                    '${userData['RANK'] ?? 'No Data'}',
+                                    style: tsOneTextTheme.bodySmall,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(vertical: 7),
+                              child: Divider(
+                                color: TsOneColor.secondaryContainer,
+                              ),
+                            ),
                             Align(
                               alignment: Alignment.centerLeft,
                               child: Text(
@@ -236,13 +242,13 @@ class FOUnRequestDeviceView extends GetView {
                             Row(
                               children: [
                                 Expanded(
-                                    flex: 6, child: Text("Device ID", style: tsOneTextTheme.labelMedium,)),
-                                Expanded(flex: 1, child: Text(":")),
+                                    flex: 6, child: Text("Device ID", style: tsOneTextTheme.bodySmall,)),
+                                Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
                                     '${data['device_name2'] ?? 'No Data'}',
-                                    style: tsOneTextTheme.labelMedium,
+                                    style: tsOneTextTheme.bodySmall,
                                   ),
                                 ),
                               ],
@@ -251,13 +257,13 @@ class FOUnRequestDeviceView extends GetView {
                             Row(
                               children: [
                                 Expanded(
-                                    flex: 6, child: Text("iOS Version", style: tsOneTextTheme.labelMedium,)),
-                                Expanded(flex: 1, child: Text(":")),
+                                    flex: 6, child: Text("iOS Version", style: tsOneTextTheme.bodySmall,)),
+                                Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
                                     '${deviceData2['iosver'] ?? 'No Data'}',
-                                    style: tsOneTextTheme.labelMedium,
+                                    style: tsOneTextTheme.bodySmall,
                                   ),
                                 ),
                               ],
@@ -266,13 +272,13 @@ class FOUnRequestDeviceView extends GetView {
                             Row(
                               children: [
                                 Expanded(
-                                    flex: 6, child: Text("FlySmart Version", style: tsOneTextTheme.labelMedium,)),
-                                Expanded(flex: 1, child: Text(":")),
+                                    flex: 6, child: Text("FlySmart Version", style: tsOneTextTheme.bodySmall,)),
+                                Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
                                     '${deviceData2['flysmart'] ?? 'No Data'}',
-                                    style: tsOneTextTheme.labelMedium,
+                                    style: tsOneTextTheme.bodySmall,
                                   ),
                                 ),
                               ],
@@ -281,13 +287,13 @@ class FOUnRequestDeviceView extends GetView {
                             Row(
                               children: [
                                 Expanded(
-                                    flex: 6, child: Text("Docu Version", style: tsOneTextTheme.labelMedium,)),
-                                Expanded(flex: 1, child: Text(":")),
+                                    flex: 6, child: Text("Docu Version", style: tsOneTextTheme.bodySmall,)),
+                                Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
                                     '${deviceData2['docuversion'] ?? 'No Data'}',
-                                    style: tsOneTextTheme.labelMedium,
+                                    style: tsOneTextTheme.bodySmall,
                                   ),
                                 ),
                               ],
@@ -296,43 +302,43 @@ class FOUnRequestDeviceView extends GetView {
                             Row(
                               children: [
                                 Expanded(
-                                    flex: 6, child: Text("Lido Version", style: tsOneTextTheme.labelMedium,)),
-                                Expanded(flex: 1, child: Text(":")),
+                                    flex: 6, child: Text("Lido Version", style: tsOneTextTheme.bodySmall,)),
+                                Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
                                     '${deviceData2['lidoversion'] ?? 'No Data'}',
-                                    style: tsOneTextTheme.labelMedium,
+                                    style: tsOneTextTheme.bodySmall,
                                   ),
                                 ),
                               ],
                             ),
-                            SizedBox(height: 10.0),
+                            SizedBox(height: 5.0),
                             Row(
                               children: [
                                 Expanded(
-                                    flex: 6, child: Text("HUB", style: tsOneTextTheme.labelMedium,)),
-                                Expanded(flex: 1, child: Text(":")),
+                                    flex: 6, child: Text("HUB", style: tsOneTextTheme.bodySmall,)),
+                                Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
                                     '${deviceData2['hub'] ?? 'No Data'}',
-                                    style: tsOneTextTheme.labelMedium,
+                                    style: tsOneTextTheme.bodySmall,
                                   ),
                                 ),
                               ],
                             ),
-                            SizedBox(height: 10.0),
+                            SizedBox(height: 5.0),
                             Row(
                               children: [
                                 Expanded(
-                                    flex: 6, child: Text("Condition", style: tsOneTextTheme.labelMedium,)),
-                                Expanded(flex: 1, child: Text(":")),
+                                    flex: 6, child: Text("Condition", style: tsOneTextTheme.bodySmall,)),
+                                Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
                                     '${deviceData2['condition'] ?? 'No Data'}',
-                                    style: tsOneTextTheme.labelMedium,
+                                    style: tsOneTextTheme.bodySmall,
                                   ),
                                 ),
                               ],
@@ -350,13 +356,13 @@ class FOUnRequestDeviceView extends GetView {
                             Row(
                               children: [
                                 Expanded(
-                                    flex: 6, child: Text("Device ID", style: tsOneTextTheme.labelMedium,)),
-                                Expanded(flex: 1, child: Text(":")),
+                                    flex: 6, child: Text("Device ID",style: tsOneTextTheme.bodySmall,)),
+                                Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
                                     '${data['device_name3'] ?? 'No Data'}',
-                                    style: tsOneTextTheme.labelMedium,
+                                    style: tsOneTextTheme.bodySmall,
                                   ),
                                 ),
                               ],
@@ -365,13 +371,13 @@ class FOUnRequestDeviceView extends GetView {
                             Row(
                               children: [
                                 Expanded(
-                                    flex: 6, child: Text("iOS Version", style: tsOneTextTheme.labelMedium,)),
-                                Expanded(flex: 1, child: Text(":")),
+                                    flex: 6, child: Text("iOS Version", style: tsOneTextTheme.bodySmall,)),
+                                Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
                                     '${deviceData3['iosver'] ?? 'No Data'}',
-                                    style: tsOneTextTheme.labelMedium,
+                                    style: tsOneTextTheme.bodySmall,
                                   ),
                                 ),
                               ],
@@ -380,13 +386,13 @@ class FOUnRequestDeviceView extends GetView {
                             Row(
                               children: [
                                 Expanded(
-                                    flex: 6, child: Text("FlySmart Version", style: tsOneTextTheme.labelMedium,)),
-                                Expanded(flex: 1, child: Text(":")),
+                                    flex: 6, child: Text("FlySmart Version", style: tsOneTextTheme.bodySmall,)),
+                                Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
                                     '${deviceData3['flysmart'] ?? 'No Data'}',
-                                    style: tsOneTextTheme.labelMedium,
+                                    style: tsOneTextTheme.bodySmall,
                                   ),
                                 ),
                               ],
@@ -395,13 +401,13 @@ class FOUnRequestDeviceView extends GetView {
                             Row(
                               children: [
                                 Expanded(
-                                    flex: 6, child: Text("Docu Version", style: tsOneTextTheme.labelMedium,)),
-                                Expanded(flex: 1, child: Text(":")),
+                                    flex: 6, child: Text("Docu Version", style: tsOneTextTheme.bodySmall,)),
+                                Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
                                     '${deviceData3['docuversion'] ?? 'No Data'}',
-                                    style: tsOneTextTheme.labelMedium,
+                                    style: tsOneTextTheme.bodySmall,
                                   ),
                                 ),
                               ],
@@ -410,57 +416,46 @@ class FOUnRequestDeviceView extends GetView {
                             Row(
                               children: [
                                 Expanded(
-                                    flex: 6, child: Text("Lido Version", style: tsOneTextTheme.labelMedium,)),
-                                Expanded(flex: 1, child: Text(":")),
+                                    flex: 6, child: Text("Lido Version", style: tsOneTextTheme.bodySmall,)),
+                                Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
                                     '${deviceData3['lidoversion'] ?? 'No Data'}',
-                                    style: tsOneTextTheme.labelMedium,
+                                    style: tsOneTextTheme.bodySmall,
                                   ),
                                 ),
                               ],
                             ),
-                            SizedBox(height: 10.0),
+                            SizedBox(height: 5.0),
                             Row(
                               children: [
                                 Expanded(
-                                    flex: 6, child: Text("HUB", style: tsOneTextTheme.labelMedium,)),
-                                Expanded(flex: 1, child: Text(":")),
+                                    flex: 6, child: Text("HUB", style: tsOneTextTheme.bodySmall,)),
+                                Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
                                     '${deviceData3['hub'] ?? 'No Data'}',
-                                    style: tsOneTextTheme.labelMedium,
+                                    style: tsOneTextTheme.bodySmall,
                                   ),
                                 ),
                               ],
                             ),
-                            SizedBox(height: 10.0),
+                            SizedBox(height: 5.0),
                             Row(
                               children: [
                                 Expanded(
-                                    flex: 6, child: Text("Condition", style: tsOneTextTheme.labelMedium,)),
-                                Expanded(flex: 1, child: Text(":")),
+                                    flex: 6, child: Text("Condition", style: tsOneTextTheme.bodySmall,)),
+                                Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
                                     '${deviceData3['condition'] ?? 'No Data'}',
-                                    style: tsOneTextTheme.labelMedium,
+                                    style: tsOneTextTheme.bodySmall,
                                   ),
                                 ),
                               ],
-                            ),
-                            SizedBox(height: 70.0),
-                            ElevatedButton(
-                              onPressed: () {
-                                confirmRejected(context); // Pass the context to the function
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: TsOneColor.greenColor,
-                                minimumSize: const Size(double.infinity, 50),
-                              ),
-                              child: const Text('Reject', style: TextStyle(color: Colors.white),),
                             ),
                           ],
                         ),
@@ -472,6 +467,23 @@ class FOUnRequestDeviceView extends GetView {
                 },
               );
             },
+          ),
+        ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        surfaceTintColor: tsOneColorScheme.secondary,
+        child: Expanded(
+          child: ElevatedButton(
+            onPressed: () {
+              confirmRejected(context);
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: TsOneColor.primary,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4.0),
+                )
+            ),
+            child: const Text('Reject', style: TextStyle(color: Colors.white)),
           ),
         ),
       ),

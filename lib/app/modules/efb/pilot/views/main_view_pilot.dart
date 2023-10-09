@@ -19,6 +19,24 @@ class HomePilotView extends GetView<HomePilotController> {
     final controller = Get.put(HomePilotController());
     final requestDeviceController = RequestdeviceController();
 
+    String getMonthText(int month) {
+      const List<String> months = [
+        'January', 'February', 'March', 'April',
+        'May', 'June', 'July', 'August',
+        'September', 'October', 'November', 'Desember'
+      ];
+      return months[month - 1];  // Index 0-11 for Januari-Desember
+    }
+
+    String _formatTimestamp(Timestamp? timestamp) {
+      if (timestamp == null) return 'No Data';
+
+      DateTime dateTime = timestamp.toDate();
+      String formattedDateTime =
+          '${dateTime.day} ${getMonthText(dateTime.month)} ${dateTime.year}';
+      return formattedDateTime;
+    }
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -105,14 +123,36 @@ class HomePilotView extends GetView<HomePilotController> {
                       return Column(
                         children: [
                           // Display 'in-use-pilot' data
-                          if (inUsePilotDocs.isNotEmpty) ...[
+                          if (inUsePilotDocs.isNotEmpty ) ...[
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: BlackTitleText(text: "Waiting Confirmation"),
+                            ),
+                            SizedBox(
+                              height: 15.0,
+                            ),
+                            Text(
+                              "There is no data that wait for confirmation",
+                            ),
+                            SizedBox(
+                              height: 20.0,
+                            ),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: BlackTitleText(text: "Need Your Confirmation"),
+                            ),
+                            SizedBox(
+                              height: 15.0,
+                            ),
+                            Text(
+                              "There is no data that needs confirmation",
+                            ),
+                            SizedBox(
+                              height: 20.0,
+                            ),
                             Align(
                                 alignment: Alignment.centerLeft,
-                                child: RedTitleText(text: "In Use Pilot")
-                                // Text(
-                                //   "In Use Pilot",
-                                //   style: tsOneTextTheme.titleLarge,
-                                // ),
+                                child: BlackTitleText(text: "In Use Pilot")
                                 ),
                             SizedBox(
                               height: 10,
@@ -122,68 +162,83 @@ class HomePilotView extends GetView<HomePilotController> {
                                 // Your existing code for displaying 'in-use-pilot' data
                                 String deviceName = doc['device_name'];
                                 String OccOnDuty = doc['occ-on-duty'];
+                                String userId = doc['user_uid'];
                                 String deviceId = doc.id;
 
                                 return Align(
                                   alignment: Alignment.centerLeft,
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              PilotreturndeviceviewView(
-                                            deviceName: deviceName,
-                                            deviceId: deviceId,
-                                            OccOnDuty: OccOnDuty,
+                                  child: Container(
+                                    width: double.infinity, // Set lebar kartu ke seluruh lebar tampilan
+                                    child: Card(
+                                      color: tsOneColorScheme.primary,  // Mengatur warna latar belakang kartu menjadi merah
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(15),
+                                      ),
+                                      child: InkWell(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  PilotreturndeviceviewView(
+                                                deviceName: deviceName,
+                                                deviceId: deviceId,
+                                                OccOnDuty: OccOnDuty,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(16.0),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  const Text ('1st Device', style: TextStyle(color: TsOneColor.secondary),),
+                                                  const Text ('FO ID', style: TextStyle(color: TsOneColor.secondary),),
+                                                  const Text ('Date', style: TextStyle(color: TsOneColor.secondary),),
+                                                ],
+                                              ),
+                                              const SizedBox(
+                                                width: 5,
+                                              ),
+                                              Column(
+                                                children: [
+                                                  const Text(':',style: TextStyle(color: TsOneColor.secondary),),
+                                                  const Text(':',style: TextStyle(color: TsOneColor.secondary),),
+                                                  const Text(':',style: TextStyle(color: TsOneColor.secondary),),
+                                                ],
+                                              ),
+                                              const SizedBox(
+                                                width: 5,
+                                              ),
+                                              Expanded(
+                                                  child: Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Text(
+                                                          deviceName,style: TextStyle(color: TsOneColor.secondary)
+                                                      ),
+                                                      Text(
+                                                          userId,style: TextStyle(color: TsOneColor.secondary)
+                                                      ),
+                                                      Text(
+                                                          _formatTimestamp(doc['timestamp']),style: TextStyle(color: TsOneColor.secondary)
+                                                      ),
+                                                    ],
+                                                  )
+                                              ),
+                                              const Icon(
+                                                Icons.chevron_right,
+                                                color: TsOneColor.secondary,
+                                                size: 48,
+                                              )
+                                            ],
                                           ),
                                         ),
-                                      );
-                                    },
-                                    style: ButtonStyle(
-                                      padding: MaterialStateProperty.all<
-                                          EdgeInsetsGeometry>(
-                                        EdgeInsets.all(18.0),
                                       ),
-                                      backgroundColor:
-                                          MaterialStateProperty.all<Color>(
-                                        Colors
-                                            .white, // Warna latar belakang putih
-                                      ),
-                                      overlayColor:
-                                          MaterialStateProperty.all<Color>(
-                                        Colors.yellow.withOpacity(
-                                            0.2), // Warna kuning dengan opacity saat ditekan
-                                      ),
-                                      shape: MaterialStateProperty.all<
-                                          RoundedRectangleBorder>(
-                                        RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(15.0),
-                                        ),
-                                      ),
-                                    ),
-                                    child: Row(
-                                      // Menggunakan Row untuk mengatur item rata kiri
-                                      crossAxisAlignment: CrossAxisAlignment
-                                          .start, // Mengatur item rata kiri
-                                      children: [
-                                        Column(
-                                          crossAxisAlignment: CrossAxisAlignment
-                                              .start, // Mengatur teks ke kiri
-                                          children: [
-                                            Text(
-                                              deviceName,
-                                              style: tsOneTextTheme.titleSmall,
-                                            ),
-                                            SizedBox(height: 5.0),
-                                            Text(
-                                              'ID: $deviceId',
-                                              style: tsOneTextTheme.labelMedium,
-                                            ),
-                                          ],
-                                        ),
-                                      ],
                                     ),
                                   ),
                                 );
@@ -195,161 +250,244 @@ class HomePilotView extends GetView<HomePilotController> {
                           // Display 'waiting-confirmation-1' data
                           if (waitingConfirmationDocs.isNotEmpty) ...[
                             Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                "Waiting Confirmation",
-                                style: tsOneTextTheme.titleLarge,
-                              ),
+                                alignment: Alignment.centerLeft,
+                                child: BlackTitleText(text: "Waiting OCC To Confirm")
                             ),
                             SizedBox(height: 10),
                             Column(
                               children: waitingConfirmationDocs.map((doc) {
                                 String deviceName = doc['device_name'];
+                                String userId = doc['user_uid'];
                                 String deviceId = doc.id;
 
                                 return Align(
                                   alignment: Alignment.centerLeft,
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              PilotUnRequestDeviceView(
-                                            deviceName: deviceName,
-                                            deviceId: deviceId,
+                                  child: Container(
+                                    width: double.infinity, // Set lebar kartu ke seluruh lebar tampilan
+                                    child: Card(
+                                      color: tsOneColorScheme.primary,  // Mengatur warna latar belakang kartu menjadi merah
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(15),
+                                      ),
+                                      child: InkWell(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  PilotUnRequestDeviceView(
+                                                deviceName: deviceName,
+                                                deviceId: deviceId,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(16.0),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  const Text ('1st Device', style: TextStyle(color: TsOneColor.secondary),),
+                                                  const Text ('FO ID', style: TextStyle(color: TsOneColor.secondary),),
+                                                  const Text ('Date', style: TextStyle(color: TsOneColor.secondary),),
+                                                ],
+                                              ),
+                                              const SizedBox(
+                                                width: 5,
+                                              ),
+                                              Column(
+                                                children: [
+                                                  const Text(':',style: TextStyle(color: TsOneColor.secondary),),
+                                                  const Text(':',style: TextStyle(color: TsOneColor.secondary),),
+                                                  const Text(':',style: TextStyle(color: TsOneColor.secondary),),
+                                                ],
+                                              ),
+                                              const SizedBox(
+                                                width: 5,
+                                              ),
+                                              Expanded(
+                                                  child: Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Text(
+                                                          deviceName,style: TextStyle(color: TsOneColor.secondary)
+                                                      ),
+                                                      Text(
+                                                          userId,style: TextStyle(color: TsOneColor.secondary)
+                                                      ),
+                                                      Text(
+                                                          _formatTimestamp(doc['timestamp']),style: TextStyle(color: TsOneColor.secondary)
+                                                      ),
+                                                    ],
+                                                  )
+                                              ),
+                                              const Icon(
+                                                Icons.chevron_right,
+                                                color: TsOneColor.secondary,
+                                                size: 48,
+                                              )
+                                            ],
                                           ),
                                         ),
-                                      );
-                                    },
-                                    style: ButtonStyle(
-                                      padding: MaterialStateProperty.all<
-                                          EdgeInsetsGeometry>(
-                                        const EdgeInsets.all(18.0),
                                       ),
-                                      overlayColor:
-                                          MaterialStateProperty.all<Color>(
-                                        Colors.yellow.withOpacity(
-                                            0.2), // Yellow with opacity when pressed
-                                      ),
-                                      shape: MaterialStateProperty.all<
-                                          RoundedRectangleBorder>(
-                                        RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(15.0),
-                                        ),
-                                      ),
-                                      backgroundColor:
-                                          MaterialStateProperty.all<Color>(
-                                        Colors
-                                            .white, // Set the default background color to white
-                                      ),
-                                    ),
-                                    child: Row(
-                                      crossAxisAlignment: CrossAxisAlignment
-                                          .start, // Mengatur item rata kiri
-                                      children: [
-                                        Column(
-                                          crossAxisAlignment: CrossAxisAlignment
-                                              .start, // Mengatur teks ke kiri
-                                          children: [
-                                            Text(
-                                              deviceName,
-                                              style: tsOneTextTheme.titleSmall,
-                                            ),
-                                            const SizedBox(height: 5.0),
-                                            Text(
-                                              'ID: $deviceId',
-                                              style: tsOneTextTheme.labelMedium,
-                                            ),
-                                          ],
-                                        ),
-                                      ],
                                     ),
                                   ),
                                 );
                               }).toList(),
                             ),
-                            SizedBox(height: 10),
+                            SizedBox(
+                              height: 20.0,
+                            ),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: BlackTitleText(text: "Need Your Confirmation"),
+                            ),
+                            SizedBox(
+                              height: 15.0,
+                            ),
+                            Text(
+                              "There is no data that needs confirmation",
+                            ),
+                            SizedBox(
+                              height: 20.0,
+                            ),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: BlackTitleText(text: "In Use"),
+                            ),
+                            SizedBox(
+                              height: 15.0,
+                            ),
+                            Text(
+                              "There is no data that In Use",
+                            ),
+                            SizedBox(
+                              height: 20.0,
+                            ),
                           ],
 
                           // Display 'waiting-confirmation-other-pilot' data
                           if (needConfirmationPilotDocs.isNotEmpty) ...[
                             Align(
                               alignment: Alignment.centerLeft,
-                              child: Text(
-                                "Need Your Confirmation",
-                                style: tsOneTextTheme.titleLarge,
-                              ),
+                              child: BlackTitleText(text: "Waiting Confirmation"),
+                            ),
+                            SizedBox(
+                              height: 15.0,
+                            ),
+                            Text(
+                              "There is no data that wait for confirmation",
+                            ),
+                            SizedBox(
+                              height: 20.0,
+                            ),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: BlackTitleText(text: "Need Your Confirmation!"),
                             ),
                             SizedBox(height: 15),
                             Column(
                               children: needConfirmationPilotDocs.map((doc) {
                                 String deviceName = doc['device_name'];
+                                String userId = doc['user_uid'];
                                 String deviceId = doc.id;
 
                                 return Align(
                                   alignment: Alignment.centerLeft,
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              ConfirmReturnOtherPilotView(
-                                            deviceName: deviceName,
-                                            deviceId: deviceId,
+                                  child: Container(
+                                    width: double.infinity, // Set lebar kartu ke seluruh lebar tampilan
+                                    child: Card(
+                                      color: tsOneColorScheme.primary,  // Mengatur warna latar belakang kartu menjadi merah
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(15),
+                                      ),
+                                      child: InkWell(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ConfirmReturnOtherPilotView(
+                                                deviceName: deviceName,
+                                                deviceId: deviceId,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(16.0),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  const Text ('1st Device', style: TextStyle(color: TsOneColor.secondary),),
+                                                  const Text ('FO ID', style: TextStyle(color: TsOneColor.secondary),),
+                                                  const Text ('Date', style: TextStyle(color: TsOneColor.secondary),),
+                                                ],
+                                              ),
+                                              const SizedBox(
+                                                width: 5,
+                                              ),
+                                              Column(
+                                                children: [
+                                                  const Text(':',style: TextStyle(color: TsOneColor.secondary),),
+                                                  const Text(':',style: TextStyle(color: TsOneColor.secondary),),
+                                                  const Text(':',style: TextStyle(color: TsOneColor.secondary),),
+                                                ],
+                                              ),
+                                              const SizedBox(
+                                                width: 5,
+                                              ),
+                                              Expanded(
+                                                  child: Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Text(
+                                                          deviceName,style: TextStyle(color: TsOneColor.secondary)
+                                                      ),
+                                                      Text(
+                                                          userId,style: TextStyle(color: TsOneColor.secondary)
+                                                      ),
+                                                      Text(
+                                                          _formatTimestamp(doc['timestamp']),style: TextStyle(color: TsOneColor.secondary)
+                                                      ),
+                                                    ],
+                                                  )
+                                              ),
+                                              const Icon(
+                                                Icons.chevron_right,
+                                                color: TsOneColor.secondary,
+                                                size: 48,
+                                              )
+                                            ],
                                           ),
                                         ),
-                                      );
-                                    },
-                                    style: ButtonStyle(
-                                      padding: MaterialStateProperty.all<
-                                          EdgeInsetsGeometry>(
-                                        const EdgeInsets.all(18.0),
                                       ),
-                                      overlayColor:
-                                          MaterialStateProperty.all<Color>(
-                                        Colors.yellow.withOpacity(
-                                            0.2), // Yellow with opacity when pressed
-                                      ),
-                                      shape: MaterialStateProperty.all<
-                                          RoundedRectangleBorder>(
-                                        RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(15.0),
-                                        ),
-                                      ),
-                                      backgroundColor:
-                                          MaterialStateProperty.all<Color>(
-                                        Colors
-                                            .white, // Set the default background color to white
-                                      ),
-                                    ),
-                                    child: Row(
-                                      crossAxisAlignment: CrossAxisAlignment
-                                          .start, // Mengatur item rata kiri
-                                      children: [
-                                        Column(
-                                          crossAxisAlignment: CrossAxisAlignment
-                                              .start, // Mengatur teks ke kiri
-                                          children: [
-                                            Text(
-                                              deviceName,
-                                              style: tsOneTextTheme.titleSmall,
-                                            ),
-                                            const SizedBox(height: 5.0),
-                                            Text(
-                                              'ID: $deviceId',
-                                              style: tsOneTextTheme.labelMedium,
-                                            ),
-                                          ],
-                                        ),
-                                      ],
                                     ),
                                   ),
                                 );
                               }).toList(),
+                            ),
+                            SizedBox(
+                              height: 20.0,
+                            ),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: BlackTitleText(text: "In Use"),
+                            ),
+                            SizedBox(
+                              height: 15.0,
+                            ),
+                            Text(
+                              "There is no data In Use",
+                            ),
+                            SizedBox(
+                              height: 20.0,
                             ),
                             SizedBox(height: 10),
                           ],
@@ -357,10 +495,7 @@ class HomePilotView extends GetView<HomePilotController> {
                           if (needConfirmationOccDocs.isNotEmpty) ...[
                             Align(
                               alignment: Alignment.centerLeft,
-                              child: Text(
-                                "Waiting OCC To Confirm",
-                                style: tsOneTextTheme.titleLarge,
-                              ),
+                              child: BlackTitleText(text: "Waiting For OCC To Confirm"),
                             ),
                             SizedBox(
                               height: 10,
@@ -368,70 +503,115 @@ class HomePilotView extends GetView<HomePilotController> {
                             Column(
                               children: needConfirmationOccDocs.map((doc) {
                                 String deviceName = doc['device_name'];
+                                String userId = doc['user_uid'];
                                 String deviceId = doc.id;
 
                                 return Align(
                                   alignment: Alignment.centerLeft,
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              PilotUnReturnDeviceView(
-                                            deviceName: deviceName,
-                                            deviceId: deviceId,
+                                  child: Container(
+                                    width: double.infinity, // Set lebar kartu ke seluruh lebar tampilan
+                                    child: Card(
+                                      color: tsOneColorScheme.primary,  // Mengatur warna latar belakang kartu menjadi merah
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(15),
+                                      ),
+                                      child: InkWell(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  PilotUnReturnDeviceView(
+                                                deviceName: deviceName,
+                                                deviceId: deviceId,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(16.0),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  const Text ('1st Device', style: TextStyle(color: TsOneColor.secondary),),
+                                                  const Text ('FO ID', style: TextStyle(color: TsOneColor.secondary),),
+                                                  const Text ('Date', style: TextStyle(color: TsOneColor.secondary),),
+                                                ],
+                                              ),
+                                              const SizedBox(
+                                                width: 5,
+                                              ),
+                                              Column(
+                                                children: [
+                                                  const Text(':',style: TextStyle(color: TsOneColor.secondary),),
+                                                  const Text(':',style: TextStyle(color: TsOneColor.secondary),),
+                                                  const Text(':',style: TextStyle(color: TsOneColor.secondary),),
+                                                ],
+                                              ),
+                                              const SizedBox(
+                                                width: 5,
+                                              ),
+                                              Expanded(
+                                                  child: Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Text(
+                                                          deviceName,style: TextStyle(color: TsOneColor.secondary)
+                                                      ),
+                                                      Text(
+                                                          userId,style: TextStyle(color: TsOneColor.secondary)
+                                                      ),
+                                                      Text(
+                                                          _formatTimestamp(doc['timestamp']),style: TextStyle(color: TsOneColor.secondary)
+                                                      ),
+                                                    ],
+                                                  )
+                                              ),
+                                              const Icon(
+                                                Icons.chevron_right,
+                                                color: TsOneColor.secondary,
+                                                size: 48,
+                                              )
+                                            ],
                                           ),
                                         ),
-                                      );
-                                    },
-                                    style: ButtonStyle(
-                                      padding: MaterialStateProperty.all<
-                                          EdgeInsetsGeometry>(
-                                        EdgeInsets.all(18.0),
                                       ),
-                                      backgroundColor:
-                                          MaterialStateProperty.all<Color>(
-                                        Colors
-                                            .white, // Warna latar belakang putih
-                                      ),
-                                      overlayColor:
-                                          MaterialStateProperty.all<Color>(
-                                        Colors.yellow.withOpacity(
-                                            0.2), // Warna kuning dengan opacity saat ditekan
-                                      ),
-                                      shape: MaterialStateProperty.all<
-                                          RoundedRectangleBorder>(
-                                        RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(15.0),
-                                        ),
-                                      ),
-                                    ),
-                                    child: Row(
-                                      crossAxisAlignment: CrossAxisAlignment
-                                          .start, // Mengatur item rata kiri
-                                      children: [
-                                        Column(
-                                          crossAxisAlignment: CrossAxisAlignment
-                                              .start, // Mengatur teks ke kiri
-                                          children: [
-                                            Text(
-                                              deviceName,
-                                              style: tsOneTextTheme.titleSmall,
-                                            ),
-                                            SizedBox(height: 5.0),
-                                            Text(
-                                              'ID: $deviceId',
-                                              style: tsOneTextTheme.labelMedium,
-                                            ),
-                                          ],
-                                        ),
-                                      ],
                                     ),
                                   ),
                                 );
                               }).toList(),
+                            ),
+                            SizedBox(
+                              height: 20.0,
+                            ),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: BlackTitleText(text: "Need Your Confirmation"),
+                            ),
+                            SizedBox(
+                              height: 15.0,
+                            ),
+                            Text(
+                              "There is no data that needs confirmation",
+                            ),
+                            SizedBox(
+                              height: 20.0,
+                            ),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: BlackTitleText(text: "In Use"),
+                            ),
+                            SizedBox(
+                              height: 15.0,
+                            ),
+                            Text(
+                              "There is no data that In Use",
+                            ),
+                            SizedBox(
+                              height: 20.0,
                             ),
                           ],
                         ],
@@ -478,6 +658,19 @@ class HomePilotView extends GetView<HomePilotController> {
                           ),
                           Align(
                             alignment: Alignment.centerLeft,
+                            child: BlackTitleText(text: "Waiting Confirmation"),
+                          ),
+                          SizedBox(
+                            height: 15.0,
+                          ),
+                          Text(
+                            "There is no data that needs confirmation",
+                          ),
+                          SizedBox(
+                            height: 20.0,
+                          ),
+                          Align(
+                            alignment: Alignment.centerLeft,
                             child: BlackTitleText(text: "Need Confirmation"),
                           ),
                           SizedBox(
@@ -491,12 +684,12 @@ class HomePilotView extends GetView<HomePilotController> {
                           ),
                           Align(
                               alignment: Alignment.centerLeft,
-                              child: BlackTitleText(text: 'Device Used')),
+                              child: BlackTitleText(text: 'In Use')),
                           SizedBox(
                             height: 15.0,
                           ),
                           Text(
-                            "There is no device you are using",
+                            "There is no device you are using, ",
                           ),
                         ],
                       );

@@ -683,7 +683,7 @@ class DetailHistoryDeviceFOView extends GetView {
                                                             ? handoverTouserData['ID NO'].toString()
                                                             : 'Not Found',
                                                       );
-                                                      //generateLogPdfDevice23();
+                                                      generateLogPdfDevice23();
                                                     },
                                                     style: ElevatedButton.styleFrom(
                                                       backgroundColor:TsOneColor.greenColor,

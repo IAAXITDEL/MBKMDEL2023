@@ -216,13 +216,13 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                                 Row(
                                   children: [
                                     Expanded(
-                                        flex: 6, child: Text("ID NO", style: tsOneTextTheme.labelMedium,)),
-                                    Expanded(flex: 1, child: Text(":")),
+                                        flex: 6, child: Text("ID NO", style: tsOneTextTheme.bodySmall,)),
+                                    Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
                                     Expanded(
                                       flex: 6,
                                       child: Text(
                                         '${otheruserData['ID NO'] ?? 'No Data'}',
-                                        style: tsOneTextTheme.labelMedium,
+                                        style: tsOneTextTheme.bodySmall,
                                       ),
                                     ),
                                   ],
@@ -233,13 +233,13 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                                 Row(
                                   children: [
                                     Expanded(
-                                        flex: 6, child: Text("Name", style: tsOneTextTheme.labelMedium,)),
-                                    Expanded(flex: 1, child: Text(":")),
+                                        flex: 6, child: Text("Name", style: tsOneTextTheme.bodySmall,)),
+                                    Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
                                     Expanded(
                                       flex: 6,
                                       child: Text(
                                         '${otheruserData['NAME'] ?? 'No Data'}',
-                                        style: tsOneTextTheme.labelMedium,
+                                        style: tsOneTextTheme.bodySmall,
                                       ),
                                     ),
                                   ],
@@ -249,20 +249,25 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                                 Row(
                                   children: [
                                     Expanded(
-                                        flex: 6, child: Text("RANK", style: tsOneTextTheme.labelMedium,)),
-                                    Expanded(flex: 1, child: Text(":")),
+                                        flex: 6, child: Text("RANK", style: tsOneTextTheme.bodySmall,)),
+                                    Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
                                     Expanded(
                                       flex: 6,
                                       child: Text(
                                         '${otheruserData['RANK'] ?? 'No Data'}',
-                                        style: tsOneTextTheme.labelMedium,
+                                        style: tsOneTextTheme.bodySmall,
                                       ),
                                     ),
                                   ],
                                 ),
 
 
-                                SizedBox(height: 20.0),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 10),
+                                  child: Divider(
+                                    color: TsOneColor.secondaryContainer,
+                                  ),
+                                ),
                                 Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
@@ -273,13 +278,13 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                                 SizedBox(height: 5.0),
                                 Row(
                                   children: [
-                                    Expanded(flex: 6, child: Text("ID NO", style: tsOneTextTheme.labelMedium,)),
-                                    Expanded(flex: 1, child: Text(":")),
+                                    Expanded(flex: 6, child: Text("ID NO", style: tsOneTextTheme.bodySmall,)),
+                                    Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
                                     Expanded(
                                       flex: 6,
                                       child: Text(
                                         '${userData['ID NO'] ?? 'No Data'}',
-                                        style: tsOneTextTheme.labelMedium,
+                                        style: tsOneTextTheme.bodySmall,
                                       ),
                                     ),
                                   ],
@@ -287,13 +292,13 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                                 SizedBox(height: 5.0),
                                 Row(
                                   children: [
-                                    Expanded(flex: 6, child: Text("Name", style: tsOneTextTheme.labelMedium,)),
-                                    Expanded(flex: 1, child: Text(":")),
+                                    Expanded(flex: 6, child: Text("Name", style: tsOneTextTheme.bodySmall,)),
+                                    Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
                                     Expanded(
                                       flex: 6,
                                       child: Text(
                                         '${userData['NAME'] ?? 'No Data'}',
-                                        style: tsOneTextTheme.labelMedium,
+                                        style: tsOneTextTheme.bodySmall,
                                       ),
                                     ),
                                   ],
@@ -301,18 +306,24 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                                 SizedBox(height: 5.0),
                                 Row(
                                   children: [
-                                    Expanded(flex: 6, child: Text("Rank", style: tsOneTextTheme.labelMedium,)),
-                                    Expanded(flex: 1, child: Text(":")),
+                                    Expanded(flex: 6, child: Text("Rank", style: tsOneTextTheme.bodySmall,)),
+                                    Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
                                     Expanded(
                                       flex: 6,
                                       child: Text(
                                         '${userData['RANK'] ?? 'No Data'}',
-                                        style: tsOneTextTheme.labelMedium,
+                                        style: tsOneTextTheme.bodySmall,
                                       ),
                                     ),
                                   ],
                                 ),
-                                SizedBox(height: 20.0),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 10),
+                                  child: Divider(
+                                    color: TsOneColor.secondaryContainer,
+                                  ),
+                                ),
+
                                 Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
@@ -324,13 +335,13 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                                 Row(
                                   children: [
                                     Expanded(
-                                        flex: 6, child: Text("Device ID", style: tsOneTextTheme.labelMedium,)),
-                                    Expanded(flex: 1, child: Text(":")),
+                                        flex: 6, child: Text("Device ID", style: tsOneTextTheme.bodySmall,)),
+                                    Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
                                     Expanded(
                                       flex: 6,
                                       child: Text(
                                         '${data['device_name'] ?? 'No Data'}',
-                                        style: tsOneTextTheme.labelMedium,
+                                        style: tsOneTextTheme.bodySmall,
                                       ),
                                     ),
                                   ],
@@ -339,13 +350,13 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                                 Row(
                                   children: [
                                     Expanded(
-                                        flex: 6, child: Text("iOS Version", style: tsOneTextTheme.labelMedium,)),
-                                    Expanded(flex: 1, child: Text(":")),
+                                        flex: 6, child: Text("iOS Version", style: tsOneTextTheme.bodySmall,)),
+                                    Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
                                     Expanded(
                                       flex: 6,
                                       child: Text(
                                         '${deviceData['iosver'] ?? 'No Data'}',
-                                        style: tsOneTextTheme.labelMedium,
+                                        style: tsOneTextTheme.bodySmall,
                                       ),
                                     ),
                                   ],
@@ -354,13 +365,13 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                                 Row(
                                   children: [
                                     Expanded(
-                                        flex: 6, child: Text("FlySmart Version", style: tsOneTextTheme.labelMedium,)),
-                                    Expanded(flex: 1, child: Text(":")),
+                                        flex: 6, child: Text("FlySmart Version", style: tsOneTextTheme.bodySmall,)),
+                                    Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
                                     Expanded(
                                       flex: 6,
                                       child: Text(
                                         '${deviceData['flysmart'] ?? 'No Data'}',
-                                        style: tsOneTextTheme.labelMedium,
+                                        style: tsOneTextTheme.bodySmall,
                                       ),
                                     ),
                                   ],
@@ -369,13 +380,13 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                                 Row(
                                   children: [
                                     Expanded(
-                                        flex: 6, child: Text("Docu Version", style: tsOneTextTheme.labelMedium,)),
-                                    Expanded(flex: 1, child: Text(":")),
+                                        flex: 6, child: Text("Docu Version", style: tsOneTextTheme.bodySmall,)),
+                                    Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
                                     Expanded(
                                       flex: 6,
                                       child: Text(
                                         '${deviceData['docuversion'] ?? 'No Data'}',
-                                        style: tsOneTextTheme.labelMedium,
+                                        style: tsOneTextTheme.bodySmall,
                                       ),
                                     ),
                                   ],
@@ -384,13 +395,13 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                                 Row(
                                   children: [
                                     Expanded(
-                                        flex: 6, child: Text("Lido Version", style: tsOneTextTheme.labelMedium,)),
-                                    Expanded(flex: 1, child: Text(":")),
+                                        flex: 6, child: Text("Lido Version", style: tsOneTextTheme.bodySmall,)),
+                                    Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
                                     Expanded(
                                       flex: 6,
                                       child: Text(
                                         '${deviceData['lidoversion'] ?? 'No Data'}',
-                                        style: tsOneTextTheme.labelMedium,
+                                        style: tsOneTextTheme.bodySmall,
                                       ),
                                     ),
                                   ],
@@ -399,13 +410,13 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                                 Row(
                                   children: [
                                     Expanded(
-                                        flex: 6, child: Text("HUB", style: tsOneTextTheme.labelMedium,)),
-                                    Expanded(flex: 1, child: Text(":")),
+                                        flex: 6, child: Text("HUB", style: tsOneTextTheme.bodySmall,)),
+                                    Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
                                     Expanded(
                                       flex: 6,
                                       child: Text(
                                         '${deviceData['hub'] ?? 'No Data'}',
-                                        style: tsOneTextTheme.labelMedium,
+                                        style: tsOneTextTheme.bodySmall,
                                       ),
                                     ),
                                   ],
@@ -414,18 +425,23 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                                 Row(
                                   children: [
                                     Expanded(
-                                        flex: 6, child: Text("Condition", style: tsOneTextTheme.labelMedium,)),
-                                    Expanded(flex: 1, child: Text(":")),
+                                        flex: 6, child: Text("Condition", style: tsOneTextTheme.bodySmall,)),
+                                    Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
                                     Expanded(
                                       flex: 6,
                                       child: Text(
                                         '${deviceData['condition'] ?? 'No Data'}',
-                                        style: tsOneTextTheme.labelMedium,
+                                        style: tsOneTextTheme.bodySmall,
                                       ),
                                     ),
                                   ],
                                 ),
-                                SizedBox(height: 20.0),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 10),
+                                  child: Divider(
+                                    color: TsOneColor.secondaryContainer,
+                                  ),
+                                ),
                                 Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(

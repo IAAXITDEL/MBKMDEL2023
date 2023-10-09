@@ -37,9 +37,28 @@ class _FOSignaturePadPageState extends State<FOSignaturePadPage> {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              const Text('Borrower Signature'),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10,),
+                child: Text(
+                  'Please sign in the section provided.',
+                  style: TextStyle(
+                    color: Colors.red,  // Mengatur warna teks menjadi merah
+                    fontStyle: FontStyle.italic,  // Mengatur teks menjadi italic
+                  ),
+                ),
+              ),
               Container(
-                decoration: BoxDecoration(border: Border.all(width: 1)),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10.0), // Menambahkan lengkungan pada ujung box
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: Offset(0, 3), // Mengatur offset bayangan
+                    ),
+                  ],
+                ),
                 child: SfSignaturePad(
                   key: widget._signaturePadKey,
                   backgroundColor: Colors.white,
@@ -67,85 +86,87 @@ class _FOSignaturePadPageState extends State<FOSignaturePadPage> {
                 },
                 child: const Text('Clear Signature'),
               ),
-              SizedBox(height: 15,),
               // Teks untuk menampilkan deviceId
-              Text(
-                'Device ID: ${widget.deviceId}',
-                style: TextStyle(fontSize: 18),
-              ),
-              ElevatedButton(
-                onPressed: () async {
-                  final signatureData = widget.signatureImage;
-                  if (signatureData != null) {
-                    // Tampilkan dialog konfirmasi
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          title: const Text('Confirmation'),
-                          content: const Text(
-                              'Are you sure you want to save this signature?'),
-                          actions: [
-                            ElevatedButton(
-                              onPressed: () async {
-                                Navigator.pop(context); // Tutup dialog konfirmasi
-                                _showQuickAlert(context);
-                                Navigator.pop(context);
-                                Navigator.pop(context);
-                                Navigator.pop(context);
-                                try {
-                                  // Simpan tanda tangan ke koleksi pilot-device-1
-                                  final newDocumentId =
-                                  await addToPilotDeviceCollection(
-                                    signatureData, widget.deviceId,);
-                                  // Tampilkan pesan sukses
-                                } catch (error) {
-                                  // Handle error jika diperlukan
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return AlertDialog(
-                                        title: const Text('Error'),
-                                        content: const Text(
-                                            'An error occurred while saving the signature.'),
-                                        actions: [
-                                          ElevatedButton(
-                                            onPressed: () {
-                                              Navigator.pop(context); // Tutup dialog error
-                                            },
-                                            child:
-                                            const Text('OK'),
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  );
-                                }
-                              },
-                              child: const Text(
-                                  'Yes'), // Tombol konfirmasi "Yes"
-                            ),
-                            ElevatedButton(
-                              onPressed: () {
-                                Navigator.pop(
-                                    context); // Tutup dialog konfirmasi
-                              },
-                              child: const Text(
-                                  'No'), // Tombol konfirmasi "No"
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: TsOneColor.greenColor,
-                  minimumSize: const Size(double.infinity, 50),
-                ),
-                child: const Text('Confirm', style: TextStyle(color: Colors.white)),
-              ),
             ],
+          ),
+        ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        surfaceTintColor: tsOneColorScheme.secondary,
+        child: Expanded(
+          child: ElevatedButton(
+            onPressed: () async {
+              final signatureData = widget.signatureImage;
+              if (signatureData != null) {
+                // Tampilkan dialog konfirmasi
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: const Text('Confirmation'),
+                      content: const Text(
+                          'Are you sure you want to save this signature?'),
+                      actions: [
+                        ElevatedButton(
+                          onPressed: () async {
+                            Navigator.pop(context); // Tutup dialog konfirmasi
+                            _showQuickAlert(context);
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                            try {
+                              // Simpan tanda tangan ke koleksi pilot-device-1
+                              final newDocumentId =
+                              await addToPilotDeviceCollection(
+                                signatureData, widget.deviceId,);
+                              // Tampilkan pesan sukses
+                            } catch (error) {
+                              // Handle error jika diperlukan
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: const Text('Error'),
+                                    content: const Text(
+                                        'An error occurred while saving the signature.'),
+                                    actions: [
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.pop(context); // Tutup dialog error
+                                        },
+                                        child:
+                                        const Text('OK'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            }
+                          },
+                          child: const Text(
+                              'Yes'), // Tombol konfirmasi "Yes"
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.pop(
+                                context); // Tutup dialog konfirmasi
+                          },
+                          child: const Text(
+                              'No'), // Tombol konfirmasi "No"
+                        ),
+                      ],
+                    );
+                  },
+                );
+              }
+            },
+            style: ElevatedButton.styleFrom(
+                backgroundColor: TsOneColor.greenColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4.0),
+                )
+            ),
+            child: const Text('Confirm', style: TextStyle(color: Colors.white)),
           ),
         ),
       ),
