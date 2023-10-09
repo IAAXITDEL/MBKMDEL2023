@@ -23,8 +23,7 @@ class DetailHistoryDeviceView extends GetView {
 
     DateTime dateTime = timestamp.toDate();
     // Format the date and time as desired, e.g., 'dd/MM/yyyy HH:mm:ss'
-    String formattedDateTime =
-        '${dateTime.day}/${dateTime.month}/${dateTime.year}'
+    String formattedDateTime = '${dateTime.day}/${dateTime.month}/${dateTime.year}'
         ' at '
         '${dateTime.hour}:${dateTime.minute}';
     return formattedDateTime;
@@ -33,16 +32,16 @@ class DetailHistoryDeviceView extends GetView {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text('DETAIL'),
-        centerTitle: true,
+        title: Text(
+          'Device Usage History',
+          style: tsOneTextTheme.headlineLarge,
+        ),
       ),
       body: SingleChildScrollView(
         child: FutureBuilder<DocumentSnapshot>(
-          future: FirebaseFirestore.instance
-              .collection("pilot-device-1")
-              .doc(dataId)
-              .get(),
+          future: FirebaseFirestore.instance.collection("pilot-device-1").doc(dataId).get(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(child: CircularProgressIndicator());
@@ -66,10 +65,7 @@ class DetailHistoryDeviceView extends GetView {
             final occAccepted = data['occ-accepted-device'];
 
             return FutureBuilder<DocumentSnapshot>(
-              future: FirebaseFirestore.instance
-                  .collection("users")
-                  .doc(userUid)
-                  .get(),
+              future: FirebaseFirestore.instance.collection("users").doc(userUid).get(),
               builder: (context, userSnapshot) {
                 if (userSnapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());
@@ -83,145 +79,94 @@ class DetailHistoryDeviceView extends GetView {
                   return Center(child: Text('User data not found'));
                 }
 
-                final userData =
-                    userSnapshot.data!.data() as Map<String, dynamic>;
+                final userData = userSnapshot.data!.data() as Map<String, dynamic>;
 
                 //handover from
                 return FutureBuilder<DocumentSnapshot>(
-                  future: handoverTo != null
-                      ? FirebaseFirestore.instance
-                          .collection("users")
-                          .doc(handoverTo)
-                          .get()
-                      : Future.value(null),
+                  future: handoverTo != null ? FirebaseFirestore.instance.collection("users").doc(handoverTo).get() : Future.value(null),
                   builder: (context, handoverToSnapshot) {
-                    if (handoverToSnapshot.connectionState ==
-                        ConnectionState.waiting) {
+                    if (handoverToSnapshot.connectionState == ConnectionState.waiting) {
                       return Center(child: CircularProgressIndicator());
                     }
 
                     if (handoverToSnapshot.hasError) {
-                      return Center(
-                          child: Text('Error: ${handoverToSnapshot.error}'));
+                      return Center(child: Text('Error: ${handoverToSnapshot.error}'));
                     }
 
-                    final handoverTouserData = handoverToSnapshot.data?.data()
-                        as Map<String, dynamic>?;
+                    final handoverTouserData = handoverToSnapshot.data?.data() as Map<String, dynamic>?;
 
                     return FutureBuilder<DocumentSnapshot>(
-                      future: FirebaseFirestore.instance
-                          .collection("Device")
-                          .doc(deviceUid)
-                          .get(),
+                      future: FirebaseFirestore.instance.collection("Device").doc(deviceUid).get(),
                       builder: (context, deviceSnapshot) {
-                        if (deviceSnapshot.connectionState ==
-                            ConnectionState.waiting) {
+                        if (deviceSnapshot.connectionState == ConnectionState.waiting) {
                           return Center(child: CircularProgressIndicator());
                         }
 
                         if (deviceSnapshot.hasError) {
-                          return Center(
-                              child: Text('Error: ${deviceSnapshot.error}'));
+                          return Center(child: Text('Error: ${deviceSnapshot.error}'));
                         }
 
-                        if (!deviceSnapshot.hasData ||
-                            !deviceSnapshot.data!.exists) {
+                        if (!deviceSnapshot.hasData || !deviceSnapshot.data!.exists) {
                           return Center(child: Text('Device data not found'));
                         }
 
-                        final deviceData =
-                            deviceSnapshot.data!.data() as Map<String, dynamic>;
+                        final deviceData = deviceSnapshot.data!.data() as Map<String, dynamic>;
 
                         //occ on duty from
                         return FutureBuilder<DocumentSnapshot>(
-                          future: occOnDuty != null
-                              ? FirebaseFirestore.instance
-                                  .collection("users")
-                                  .doc(occOnDuty)
-                                  .get()
-                              : Future.value(null),
+                          future: occOnDuty != null ? FirebaseFirestore.instance.collection("users").doc(occOnDuty).get() : Future.value(null),
                           builder: (context, occOnDutySnapshot) {
-                            if (occOnDutySnapshot.connectionState ==
-                                ConnectionState.waiting) {
+                            if (occOnDutySnapshot.connectionState == ConnectionState.waiting) {
                               return Center(child: CircularProgressIndicator());
                             }
 
                             if (occOnDutySnapshot.hasError) {
-                              return Center(
-                                  child: Text(
-                                      'Error: ${occOnDutySnapshot.error}'));
+                              return Center(child: Text('Error: ${occOnDutySnapshot.error}'));
                             }
 
-                            final occOnDutyuserData = occOnDutySnapshot.data
-                                ?.data() as Map<String, dynamic>?;
+                            final occOnDutyuserData = occOnDutySnapshot.data?.data() as Map<String, dynamic>?;
 
                             //occ accepted from
                             return FutureBuilder<DocumentSnapshot>(
-                              future: occAccepted != null
-                                  ? FirebaseFirestore.instance
-                                      .collection("users")
-                                      .doc(occAccepted)
-                                      .get()
-                                  : Future.value(null),
+                              future:
+                                  occAccepted != null ? FirebaseFirestore.instance.collection("users").doc(occAccepted).get() : Future.value(null),
                               builder: (context, occAcceptedSnapshot) {
-                                if (occAcceptedSnapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return Center(
-                                      child: CircularProgressIndicator());
+                                if (occAcceptedSnapshot.connectionState == ConnectionState.waiting) {
+                                  return Center(child: CircularProgressIndicator());
                                 }
 
                                 if (occAcceptedSnapshot.hasError) {
-                                  return Center(
-                                      child: Text(
-                                          'Error: ${occAcceptedSnapshot.error}'));
+                                  return Center(child: Text('Error: ${occAcceptedSnapshot.error}'));
                                 }
 
-                                final occAccepteduserData =
-                                    occAcceptedSnapshot.data?.data()
-                                        as Map<String, dynamic>?;
+                                final occAccepteduserData = occAcceptedSnapshot.data?.data() as Map<String, dynamic>?;
 
-                                return Center(
+                                return SingleChildScrollView(
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Container(
-                                        margin: EdgeInsets.symmetric(
-                                            horizontal: 20, vertical: 10),
                                         child: Padding(
-                                          padding: EdgeInsets.all(10),
+                                          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                                           child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
-                                              SizedBox(height: 7),
+                                              //show date
+                                              Align(
+                                                alignment: Alignment.centerRight,
+                                                child: Text(_formatTimestamp(data['timestamp']), style: tsOneTextTheme.labelSmall),
+                                              ),
+                                              SizedBox(height: 15.0),
+
+                                              //show crew info
+                                              // Text(
+                                              //   "CREW INFO",
+                                              //   style: tsOneTextTheme.headlineLarge,
+                                              // ),
                                               Row(
                                                 children: [
-                                                  Expanded(
-                                                    flex: 6,
-                                                    child: Text("Loan Date")),
-                                                  Expanded(
-                                                    flex: 1,
-                                                    child: Text(":")),
-                                                  Expanded(
-                                                    flex: 6,
-                                                    child: Text(_formatTimestamp(data['timestamp'])),
-                                                  ),
-                                                ],
-                                              ),
-                                              SizedBox(height: 10.0),
-                                              Text(
-                                                "CREW INFO",
-                                                style: tsOneTextTheme.headlineLarge,
-                                              ),
-                                              SizedBox(height: 7.0),
-                                              Row(
-                                                children: [
-                                                  Expanded(
-                                                    flex: 6,
-                                                    child: Text("ID NO")),
-                                                  Expanded(
-                                                    flex: 1,
-                                                    child: Text(":")),
+                                                  Expanded(flex: 6, child: Text("ID NO")),
+                                                  Expanded(flex: 1, child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
                                                     child: Text('${userData['ID NO'] ?? 'No Data'}'),
@@ -231,12 +176,8 @@ class DetailHistoryDeviceView extends GetView {
                                               SizedBox(height: 5.0),
                                               Row(
                                                 children: [
-                                                  Expanded(
-                                                    flex: 6,
-                                                    child: Text("Name")),
-                                                  Expanded(
-                                                    flex: 1,
-                                                    child: Text(":")),
+                                                  Expanded(flex: 6, child: Text("Name")),
+                                                  Expanded(flex: 1, child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
                                                     child: Text('${userData['NAME'] ?? 'No Data'}'),
@@ -246,22 +187,25 @@ class DetailHistoryDeviceView extends GetView {
                                               SizedBox(height: 5.0),
                                               Row(
                                                 children: [
-                                                  Expanded(
-                                                    flex: 6,
-                                                    child: Text("Rank")),
-                                                  Expanded(
-                                                    flex: 1,
-                                                    child: Text(":")),
+                                                  Expanded(flex: 6, child: Text("Rank")),
+                                                  Expanded(flex: 1, child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
                                                     child: Text('${userData['RANK'] ?? 'No Data'}'),
                                                   ),
                                                 ],
                                               ),
-                                              SizedBox(height: 10.0),
+                                              SizedBox(height: 15.0),
+
+                                              //device info
                                               Text(
-                                                "DEVICE INFO",
-                                                style: tsOneTextTheme.headlineLarge,
+                                                "Device Info",
+                                                style: TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: tsOneColorScheme.onBackground,
+                                                  fontFamily: 'Poppins',
+                                                ),
                                               ),
                                               SizedBox(height: 7.0),
                                               Row(
@@ -277,7 +221,7 @@ class DetailHistoryDeviceView extends GetView {
                                               SizedBox(height: 5.0),
                                               Row(
                                                 children: [
-                                                  Expanded(flex: 6, child:Text("iOS Version")),
+                                                  Expanded(flex: 6, child: Text("iOS Version")),
                                                   Expanded(flex: 1, child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
@@ -299,7 +243,7 @@ class DetailHistoryDeviceView extends GetView {
                                               SizedBox(height: 5.0),
                                               Row(
                                                 children: [
-                                                  Expanded(flex: 6, child:Text("Docu Version")),
+                                                  Expanded(flex: 6, child: Text("Docu Version")),
                                                   Expanded(flex: 1, child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
@@ -341,86 +285,29 @@ class DetailHistoryDeviceView extends GetView {
                                                 ],
                                               ),
 
-                                              SizedBox(height: 10.0),
-                                              Text(
-                                                "PROOF INFO",
-                                                style: tsOneTextTheme.headlineLarge,
-                                              ),
-                                              SizedBox(height: 7.0),
-                                              Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                              SizedBox(height: 15),
+                                              if (status == 'Done')
+                                                Text(
+                                                  "Return Documentation",
+                                                  style: TextStyle(
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: tsOneColorScheme.onBackground,
+                                                    fontFamily: 'Poppins',
+                                                  ),
+                                                ),
+                                              if (status == 'Done') SizedBox(height: 7.0),
+                                              if (status == 'Done')
+                                              Row(
                                                 children: [
-                                                  Text("Remarks :"),
-                                                  SizedBox(height: 5),
-                                                  Row(
-                                                    children: [
-                                                      Expanded(
-                                                        flex: 6,
-                                                        child: Text('${data['remarks'] ?? '-'}'),
-                                                      ),
-                                                    ],
+                                                  Expanded(flex: 6, child: Text("Remarks")),
+                                                  Expanded(flex: 1, child: Text(":")),
+                                                  Expanded(
+                                                    flex: 6,
+                                                    child: Text('${data['remarks'] ?? '-'}'),
                                                   ),
                                                 ],
                                               ),
-
-                                              SizedBox(height: 5.0),
-                                              // Row(
-                                              //   children: [
-                                              //     Expanded(flex: 6, child: Text("Image Proof")),
-                                              //     Expanded(flex: 1, child: Text(":")),
-                                              //     Expanded(
-                                              //       flex: 6,
-                                              //       child: Column(
-                                              //         children: [
-                                              //           if (data['prove_image_url'] != null)
-                                              //             Image.network(
-                                              //               data['prove_image_url'],
-                                              //               width: 100, // Adjust the width as needed
-                                              //               height: 100, // Adjust the height as needed
-                                              //             ),
-                                              //           if (data['prove_image_url'] == null)
-                                              //             Text(
-                                              //               'There is no data',
-                                              //               style: TextStyle(color: Colors.black), // Adjust the style as needed
-                                              //             ),
-                                              //           SizedBox(height: 5),  // Add some spacing between the image or text and the other content
-                                              //         ],
-                                              //       ),
-                                              //     ),
-                                              //   ],
-                                              // ),
-
-                                              SizedBox(height: 10),
-                                              // Conditionally display the fields based on the status
-                                              if (status == 'Done')
-                                                Text(
-                                                  "OCC ON DUTY",
-                                                  style: tsOneTextTheme.headlineLarge,
-                                                ),
-                                              SizedBox(height: 7.0),
-                                              if (status == 'Done')
-                                                Row(
-                                                  children: [
-                                                    Expanded(flex: 6, child: Text("OCC That Gives")),
-                                                    Expanded(flex: 1, child: Text(":")),
-                                                    Expanded(
-                                                      flex: 6,
-                                                      child: Text('${occOnDutyuserData?['NAME'] ?? 'No Data'}'),
-                                                    ),
-                                                  ],
-                                                ),
-                                              SizedBox(height: 5.0),
-                                              if (status == 'Done')
-                                                Row(
-                                                  children: [
-                                                    Expanded(flex: 6, child: Text("OCC Who Received")),
-                                                    Expanded(flex: 1, child: Text(":")),
-                                                    Expanded(
-                                                      flex: 6,
-                                                      child: Text('${occAccepteduserData?['NAME'] ?? 'No Data'}'),
-                                                    ),
-                                                  ],
-                                                ),
 
                                               SizedBox(height: 5.0),
                                               if (status == 'Done')
@@ -432,31 +319,43 @@ class DetailHistoryDeviceView extends GetView {
                                                       flex: 6,
                                                       child: Column(
                                                         children: [
-                                                          if (data['prove_back_to_base'] == null)
+                                                          if (status == 'Done' && data['prove_back_to_base'] == null || data['prove_back_to_base'].isEmpty)
                                                             Text(
-                                                              'There is no data',
+                                                              'There is no image',
                                                               style: TextStyle(color: Colors.black),
                                                             ),
-                                                          SizedBox(height: 5),
-                                                          ElevatedButton(
-                                                            onPressed: () {
-                                                              showDialog(
-                                                                context: context,
-                                                                builder: (BuildContext context) {
-                                                                  return AlertDialog(
-                                                                    content: Container(
-                                                                      width: 400, 
-                                                                      height: 400, 
-                                                                      child: Image.network( data['prove_back_to_base'] ?? '',
-                                                                      fit: BoxFit.cover,
+                                                          if (data['prove_back_to_base'] != null && data['prove_back_to_base'].isNotEmpty)
+                                                            GestureDetector(
+                                                              onTap: () {
+                                                                showDialog(
+                                                                  context: context,
+                                                                  builder: (BuildContext context) {
+                                                                    return AlertDialog(
+                                                                      content: Container(
+                                                                        width: 400,
+                                                                        height: 400,
+                                                                        child: Image.network(
+                                                                          data['prove_back_to_base']!,
+                                                                          fit: BoxFit.cover,
+                                                                        ),
                                                                       ),
-                                                                    ),
-                                                                  );
-                                                                },
-                                                              );
-                                                            },
-                                                            child: Text('See Picture'),
-                                                          ),
+                                                                    );
+                                                                  },
+                                                                );
+                                                              },
+                                                              child: Align(
+                                                                alignment: Alignment.centerLeft,
+                                                                child: Text(
+                                                                  'See Picture',
+                                                                  style: TextStyle(
+                                                                    color: TsOneColor.primary,
+                                                                    fontWeight: FontWeight.bold,
+                                                                    decoration: TextDecoration.underline,
+                                                                    decorationColor: TsOneColor.primary,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
                                                         ],
                                                       ),
                                                     ),
@@ -465,8 +364,13 @@ class DetailHistoryDeviceView extends GetView {
 
                                               if (status == 'handover-to-other-crew')
                                                 Text(
-                                                  "GIVEN TO",
-                                                  style: tsOneTextTheme.headlineLarge,
+                                                  "Given To",
+                                                  style: TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: tsOneColorScheme.onBackground,
+                                                    fontFamily: 'Poppins',
+                                                  ),
                                                 ),
                                               SizedBox(height: 7.0),
                                               if (status == 'handover-to-other-crew')
@@ -477,8 +381,8 @@ class DetailHistoryDeviceView extends GetView {
                                                     Expanded(
                                                       flex: 6,
                                                       child: handoverTouserData != null
-                                                        ? Text('${handoverTouserData['ID NO'] ?? 'Not Found'}')
-                                                        : Text('Not Found'),
+                                                          ? Text('${handoverTouserData['ID NO'] ?? 'Not Found'}')
+                                                          : Text('Not Found'),
                                                     ),
                                                   ],
                                                 ),
@@ -491,8 +395,8 @@ class DetailHistoryDeviceView extends GetView {
                                                     Expanded(
                                                       flex: 6,
                                                       child: handoverTouserData != null
-                                                        ? Text('${handoverTouserData['NAME'] ?? 'Not Found'}')
-                                                        : Text('Not Found'),
+                                                          ? Text('${handoverTouserData['NAME'] ?? 'Not Found'}')
+                                                          : Text('Not Found'),
                                                     ),
                                                   ],
                                                 ),
@@ -505,72 +409,116 @@ class DetailHistoryDeviceView extends GetView {
                                                     Expanded(
                                                       flex: 6,
                                                       child: handoverTouserData != null
-                                                        ? Text('${handoverTouserData['RANK'] ?? 'Not Found'}')
-                                                        : Text('Not Found'),
+                                                          ? Text('${handoverTouserData['RANK'] ?? 'Not Found'}')
+                                                          : Text('Not Found'),
                                                     ),
                                                   ],
                                                 ),
 
-                                              SizedBox(height: 70.0),
-                                              ElevatedButton(
-                                                onPressed: () {
-                                                  showDialog(
-                                                    context: context,
-                                                    barrierDismissible: false,
-                                                    builder: (context) {
-                                                      return AlertDialog(
-                                                        content: Column(
-                                                          mainAxisSize: MainAxisSize.min,
-                                                          children: [
-                                                            CircularProgressIndicator(),
-                                                            SizedBox(height: 20),
-                                                            Text('Please Wait...'),
-                                                          ],
-                                                        ),
-                                                      );
-                                                    },
-                                                  );
+                                              SizedBox(height: 10),
+                                              if (status == 'Done')
+                                                Text(
+                                                  "OCC On Duty",
+                                                  style: TextStyle(
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: tsOneColorScheme.onBackground,
+                                                    fontFamily: 'Poppins',
+                                                  ),
+                                                ),
+                                              SizedBox(height: 7.0),
+                                              if (status == 'Done')
+                                                Row(
+                                                  children: [
+                                                    Expanded(flex: 6, child: Text("OCC (Given)")),
+                                                    Expanded(flex: 1, child: Text(":")),
+                                                    Expanded(
+                                                      flex: 6,
+                                                      child: Text('${occOnDutyuserData?['NAME'] ?? 'No Data'}'),
+                                                    ),
+                                                  ],
+                                                ),
+                                              SizedBox(height: 5.0),
+                                              if (status == 'Done')
+                                                Row(
+                                                  children: [
+                                                    Expanded(flex: 6, child: Text("OCC (Received)")),
+                                                    Expanded(flex: 1, child: Text(":")),
+                                                    Expanded(
+                                                      flex: 6,
+                                                      child: Text('${occAccepteduserData?['NAME'] ?? 'No Data'}'),
+                                                    ),
+                                                  ],
+                                                ),
 
-                                                  generateLogPdfDevice1(
-                                                    userName: userData['NAME'],
-                                                    userRank: userData['RANK'],
-                                                    userID: userData['ID NO'].toString(),
-                                                    occAccept: occAccepteduserData?['NAME'],
-                                                    occGiven: occOnDutyuserData?['NAME'],
-                                                    deviceNo: data['device_name'],
-                                                    iosVer: deviceData['iosver'],
-                                                    flySmart: deviceData['flysmart'],
-                                                    lido: deviceData['lidoversion'],
-                                                    docunet: deviceData['docuversion'],
-                                                    deviceCondition: deviceData['condition'],
-                                                    ttdUser: data['signature_url'],
-                                                    ttdOCC: data['signature_url_occ'],
-                                                    loan: data['timestamp'],
-                                                    statusdevice: data['statusDevice'],
-                                                    handoverName: handoverTouserData != null
-                                                        ? handoverTouserData['NAME']
-                                                        : 'Not Found',
-                                                    handoverID: handoverTouserData != null
-                                                        ? handoverTouserData['ID NO']
-                                                        : 'Not Found',
-                                                  ).then((_) {
-                                                    // Close the dialog when PDF generation is complete
-                                                    Navigator.pop(context);
-                                                  }).catchError((error) {
-                                                    // Handle any errors during PDF generation
-                                                    print('Error generating PDF: $error');
-                                                    Navigator.pop(context); // Close the dialog on error
-                                                  });
-                                                  //generateLogPdfDevice1();
-                                                },
-                                                style: ElevatedButton.styleFrom(
-                                                  backgroundColor:TsOneColor.greenColor,
-                                                  minimumSize: const Size(double.infinity, 50),
-                                                ),
-                                                child: const Text(
-                                                  'Download PDF',
-                                                  style: TextStyle(color: Colors.white),
-                                                ),
+                                              SizedBox(height: 80.0),
+                                              if (status == 'handover-to-other-crew') SizedBox(height: 55.0),
+
+                                              Row(
+                                                children: [
+                                                  Expanded(
+                                                    child: ElevatedButton(
+                                                      onPressed: () {
+                                                        showDialog(
+                                                          context: context,
+                                                          barrierDismissible: false,
+                                                          builder: (context) {
+                                                            return AlertDialog(
+                                                              content: Column(
+                                                                mainAxisSize: MainAxisSize.min,
+                                                                children: [
+                                                                  CircularProgressIndicator(),
+                                                                  SizedBox(height: 20),
+                                                                  Text('Please Wait...'),
+                                                                ],
+                                                              ),
+                                                            );
+                                                          },
+                                                        );
+
+                                                        generateLogPdfDevice1(
+                                                          userName: userData['NAME'],
+                                                          userRank: userData['RANK'],
+                                                          userID: userData['ID NO'].toString(),
+                                                          occAccept: occAccepteduserData?['NAME'],
+                                                          occGiven: occOnDutyuserData?['NAME'],
+                                                          deviceNo: data['device_name'],
+                                                          iosVer: deviceData['iosver'],
+                                                          flySmart: deviceData['flysmart'],
+                                                          lido: deviceData['lidoversion'],
+                                                          docunet: deviceData['docuversion'],
+                                                          deviceCondition: deviceData['condition'],
+                                                          ttdUser: data['signature_url'],
+                                                          ttdOCC: data['signature_url_occ'],
+                                                          loan: data['timestamp'],
+                                                          statusdevice: data['statusDevice'],
+                                                          handoverName: handoverTouserData != null ? handoverTouserData['NAME'] : 'Not Found',
+                                                          handoverID: handoverTouserData != null ? handoverTouserData['ID NO'] : 'Not Found',
+                                                        ).then((_) {
+                                                          Navigator.pop(context);
+                                                        }).catchError((error) {
+                                                          print('Error generating PDF: $error');
+                                                          Navigator.pop(context);
+                                                        });
+                                                        //generateLogPdfDevice1();
+                                                      },
+                                                      style: ElevatedButton.styleFrom(
+                                                        backgroundColor: TsOneColor.greenColor,
+                                                        shape: RoundedRectangleBorder(
+                                                          borderRadius: BorderRadius.circular(4.0),
+                                                        ),
+                                                      ),
+                                                      child:
+                                                      Padding(
+                                                        padding: EdgeInsets.all(15),
+                                                        child: Text(
+                                                          'Download History',
+                                                          style: TextStyle(color: Colors.white),
+                                                        ),
+                                                      )
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
                                             ],
                                           ),
