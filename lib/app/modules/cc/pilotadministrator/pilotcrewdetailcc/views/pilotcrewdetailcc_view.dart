@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import '../../../../../../presentation/shared_components/TitleText.dart';
 import '../../../../../../presentation/theme.dart';
 import '../../../../../../util/error_screen.dart';
@@ -114,7 +115,9 @@ class PilotcrewdetailccView extends GetView<PilotcrewdetailccController> {
                                   Expanded(flex: 3, child: Text("LICENSE NO")),
                                   Expanded(flex: 1, child: Text(":")),
                                   Expanded(
-                                      flex: 6, child: Text( documentData["LICENSE NO."] ?? "N/A")),
+                                      flex: 6, child: Text( documentData["LICENSE NO."] is Timestamp
+                                      ? DateFormat('dd MMM yyyy').format((documentData["LICENSE NO."] as Timestamp).toDate())
+                                      : documentData["LICENSE NO."] ?? "N/A")),
                                 ],
                               ),
                               SizedBox(

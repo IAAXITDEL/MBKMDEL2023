@@ -50,18 +50,18 @@ class TrainingccController extends GetxController {
         userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)) {
     }
     // SEBAGAI INSTRUCTOR
-    else if (userPreferences
-            .getInstructor()
-            .contains(UserModel.keySubPositionCCP) ||
-        userPreferences.getInstructor().contains(UserModel.keySubPositionFIA) ||
-        userPreferences.getInstructor().contains(UserModel.keySubPositionFIS) ||
-        userPreferences.getInstructor().contains(UserModel.keySubPositionPGI) &&
-            userPreferences.getRank().contains(UserModel.keyPositionCaptain) ||
-        userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)) {
-      Get.toNamed(Routes.TRAINING_INSTRUCTORCC,
-          arguments: {"id": argumentid.value, "name": argumentname.value});
-      Get.find<TrainingInstructorccController>().onInit();
-    }
+    // else if (userPreferences
+    //         .getInstructor()
+    //         .contains(UserModel.keySubPositionCCP) ||
+    //     userPreferences.getInstructor().contains(UserModel.keySubPositionFIA) ||
+    //     userPreferences.getInstructor().contains(UserModel.keySubPositionFIS) ||
+    //     userPreferences.getInstructor().contains(UserModel.keySubPositionPGI) &&
+    //         userPreferences.getRank().contains(UserModel.keyPositionCaptain) ||
+    //     userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)) {
+    //   Get.toNamed(Routes.TRAINING_INSTRUCTORCC,
+    //       arguments: {"id": argumentid.value, "name": argumentname.value});
+    //   Get.find<TrainingInstructorccController>().onInit();
+    // }
     // SEBAGAI PILOT
     else if (userPreferences.getRank().contains(UserModel.keyPositionCaptain) ||
         userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)) {
@@ -71,6 +71,9 @@ class TrainingccController extends GetxController {
     else if (userPreferences.getRank().contains("Pilot Administrator")) {
       Get.toNamed(Routes.TRAININGTYPECC,
           arguments: {"id": argumentid.value, "name": argumentname.value});
+      Get.lazyPut<TrainingtypeccController>(
+            () => TrainingtypeccController(),
+      );
       Get.find<TrainingtypeccController>().onInit();
     }
     // SEBAGAI ALL STAR

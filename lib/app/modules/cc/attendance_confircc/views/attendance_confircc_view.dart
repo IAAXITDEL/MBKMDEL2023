@@ -20,7 +20,6 @@ import '../../../../routes/app_pages.dart';
 import '../controllers/attendance_confircc_controller.dart';
 import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
 import 'dart:ui' as ui;
-
 class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
   AttendanceConfirccView({Key? key}) : super(key: key);
   @override
@@ -45,7 +44,6 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
 
     Future<void> confir() async {
       try {
-        controller.confirattendance().then((status) async {
           // Menunggu hingga saveSignature selesai
           Uint8List? signatureData = await _signaturePadKey.currentState!
               .toImage()
@@ -57,19 +55,21 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
 
           if (signatureData != null) {
             await controller.saveSignature(signatureData);
+            controller.confirattendance().then((status) async {
+              // Menampilkan QuickAlert setelah saveSignature berhasil
+              await QuickAlert.show(
+                context: context,
+                type: QuickAlertType.success,
+                text: 'Confirmation Attendance Completed Successfully!',
+              );
 
-            // Menampilkan QuickAlert setelah saveSignature berhasil
-            await QuickAlert.show(
-              context: context,
-              type: QuickAlertType.success,
-              text: 'Confirmation Attendance Completed Successfully!',
-            );
-
-            // Navigasi ke halaman lain setelah menampilkan QuickAlert
-            Get.offAllNamed(Routes.TRAININGTYPECC, arguments: {
-              "id": controller.argumentTrainingType.value,
-              "name": controller.argumentname.value
+              // Navigasi ke halaman lain setelah menampilkan QuickAlert
+              Get.offAllNamed(Routes.TRAININGTYPECC, arguments: {
+                "id": controller.argumentTrainingType.value,
+                "name": controller.argumentname.value
+              });
             });
+
           } else {
             // Handle jika signatureData null
             print('Error: Signature data is null');
@@ -80,7 +80,6 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
               text: 'An error occurred while saving the signature.',
             );
           }
-        });
       } catch (error) {
         // Penanganan kesalahan jika saveSignature gagal
         print('Error in saveSignature: $error');
@@ -93,6 +92,7 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
         );
       }
     }
+
 
     return Scaffold(
         appBar: AppBar(
@@ -127,6 +127,7 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                     roomC.text = listAttendance[0]["room"] ?? "N/A";
                     instructorC.text = listAttendance[0]["name"] ?? "N/A";
                     loaNoC.text = listAttendance[0]["loano"] ?? "" ;
+
                   } else {
                     // Handle the case where the list is empty or null
                     subjectC.text = "No Subject Data Available";
@@ -645,3 +646,5 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
         ));
   }
 }
+
+

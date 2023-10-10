@@ -1,5 +1,4 @@
-
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
@@ -8,9 +7,11 @@ import '../../../../data/users/user_preferences.dart';
 import '../../../../data/users/users.dart';
 import '../../../../di/locator.dart';
 import '../../../../presentation/view_model/assessment_results_viewmodel.dart';
+import '../../../../presentation/view_model/attendance_model.dart';
 import '../../../routes/app_pages.dart';
 
 class MainHomeController extends GetxController {
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
   late UserPreferences userPreferences;
   late String titleToGreet;
   late String timeToGreet;
@@ -20,7 +21,6 @@ class MainHomeController extends GetxController {
   late bool _isCPTS;
   late bool _isInstructor;
   late bool _isPilotAdministrator;
-
 
 
   @override
@@ -73,9 +73,6 @@ class MainHomeController extends GetxController {
     }
   }
 
-
-
-
   Future<void> cekRole() async {
     userPreferences = getItLocator<UserPreferences>();
 
@@ -100,6 +97,46 @@ class MainHomeController extends GetxController {
     }
 
   }
+
+  // List Training History
+  Stream<List<Map<String, dynamic>>> historyStream() {
+    final now = DateTime.now();
+    return firestore.collection('attendance')
+        .where("status", isEqualTo: "done")
+        .snapshots()
+        .asyncMap((attendanceQuery) async {
+      final attendanceData = await Future.wait(
+        attendanceQuery.docs.map((doc) async {
+          final attendanceModel = AttendanceModel.fromJson(doc.data());
+          final target = attendanceModel.valid_to?.toDate();
+
+          if (target != null) {
+            if (now.isBefore(target)) {
+              final oneMonthBeforeTarget = target.subtract(Duration(days: 30));
+              if (now.isAfter(oneMonthBeforeTarget)) {
+                await firestore.collection('attendance').doc(attendanceModel.id).update({
+                  "expiry": "EARLY WARNING",
+                });
+                print("Attendance with ID ${attendanceModel.id} is in EARLY WARNING.");
+              } else {
+                print("Attendance with ID ${attendanceModel.id} is still valid.");
+              }
+            } else {
+              await firestore.collection('attendance').doc(attendanceModel.id).update({
+                "expiry": "NOT VALID",
+              });
+              print("Attendance with ID ${attendanceModel.id} has expired. Updated to NOT VALID.");
+            }
+          }
+          return attendanceModel.toJson();
+        }),
+      );
+
+      return attendanceData;
+    });
+  }
+
+
 
 
 }

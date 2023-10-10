@@ -41,6 +41,15 @@ class PilottraininghistoryccController extends GetxController {
           return attendanceModel.toJson();
         }),
       );
+      // Sort attendanceData based on valid_to in descending order
+      attendanceData.sort((a, b) {
+        Timestamp timestampA = Timestamp.fromMillisecondsSinceEpoch(a['valid_to'].millisecondsSinceEpoch);
+        Timestamp timestampB = Timestamp.fromMillisecondsSinceEpoch(b['valid_to'].millisecondsSinceEpoch);
+        return timestampB.compareTo(timestampA);
+      });
+
+
+      print(attendanceData);
       return attendanceData;
     });
   }

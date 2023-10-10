@@ -75,11 +75,19 @@ class PilottraininghistoryccView
                         itemCount: listAttendance.length,
                         physics: const NeverScrollableScrollPhysics(),
                         itemBuilder: (context, index) {
-                          String dateString = listAttendance[index]["date"];
+                          var dateFormat = DateFormat('dd-MM-yyyy');
 
-                          DateTime date = DateFormat('dd-MM-yyyy').parse(dateString);
+                          var dates = dateFormat.parse(listAttendance[index]["date"]);
+                          String dateC = DateFormat('dd MMMM yyyy').format(dates);
 
-                          String formattedDate = DateFormat('dd MMMM yyyy').format(date);
+                          // var valids = dateFormat.parse(listAttendance[index]["valid_to"]);
+                          // String validC = DateFormat('dd MMMM yyyy').format(valids);
+
+
+                          Timestamp? timestamp = listAttendance[index]["valid_to"];
+                          DateTime? dateTime = timestamp?.toDate();
+                          String validC = DateFormat('dd MMMM yyyy').format(dateTime!);
+                          print(validC);
                           return InkWell(
                             onTap: () {
                               Get.toNamed(Routes.PILOTTRAININGHISTORYDETAILCC, arguments: {
@@ -125,7 +133,7 @@ class PilottraininghistoryccView
                                         Expanded(
                                             flex: 8,
                                             child: Text(
-                                              formattedDate,
+                                              dateC,
                                               style: tsOneTextTheme.labelMedium,
                                             )),
                                       ],
@@ -147,7 +155,7 @@ class PilottraininghistoryccView
                                         Expanded(
                                             flex: 8,
                                             child: Text(
-                                              "31 September 2023",
+                                              validC,
                                               style: tsOneTextTheme.labelMedium,
                                             )),
                                       ],

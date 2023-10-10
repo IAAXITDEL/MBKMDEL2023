@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class AttendanceModel {
   String? id;
   int? idTrainingType;
@@ -12,6 +14,7 @@ class AttendanceModel {
   String? subject;
   String? trainingType;
   String? date;
+  Timestamp? valid_to;
   String? department;
   String? vanue;
   String? creationTime;
@@ -19,6 +22,7 @@ class AttendanceModel {
   String? name;
   String? photoURL;
   String? loano;
+  String? expiry;
 
   AttendanceModel({
     this.id,
@@ -34,13 +38,15 @@ class AttendanceModel {
     this.subject,
     this.trainingType,
     this.date,
+    this.valid_to,
     this.department,
     this.vanue,
     this.creationTime,
     this.updatedTime,
     this.name,
     this.photoURL,
-    this.loano
+    this.loano,
+    this.expiry
   });
 
   factory AttendanceModel.fromJson(Map<String, dynamic> json) {
@@ -58,13 +64,15 @@ class AttendanceModel {
         subject: json['subject'],
         trainingType: json['trainingType'],
         date: json['date'],
+        valid_to: json['valid_to'],
         department: json['department'],
         vanue: json['vanue'],
         creationTime: json['creationTime'],
         updatedTime: json['updatedTime'],
         name: json['name'],
         photoURL: json['photoURL'],
-        loano: json['loano']
+        loano: json['loano'],
+        expiry: json['expiry'],
     );
   }
 
@@ -83,6 +91,7 @@ class AttendanceModel {
     data['subject'] = this.subject;
     data['trainingType'] = this.trainingType;
     data['date'] = this.date;
+    data['valid_to'] = this.valid_to;
     data['department'] = this.department;
     data['vanue'] = this.vanue;
     data['creationTime'] = this.creationTime;
@@ -90,6 +99,7 @@ class AttendanceModel {
     data['name'] = this.name;
     data['photoURL'] = this.photoURL;
     data['loano'] = this.loano;
+    data['expiry'] = this.expiry;
     return data;
   }
 }

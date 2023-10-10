@@ -86,9 +86,11 @@ abstract class Routes {
   static const PILOTTRAININGHISTORYDETAILCC =
       _Paths.PILOTTRAININGHISTORYDETAILCC;
   static const PILOTFEEDBACKFORMCC = _Paths.PILOTFEEDBACKFORMCC;
-
+  static const TRAINING_TYPEINSTRUCTORCC = '/training-typeinstructorcc';
+  static const ADD_TRAININGCC = _Paths.ADD_TRAININGCC;
 }
-  abstract class _Paths {
+
+abstract class _Paths {
   _Paths._();
   static const MAIN_HOME = '/main-home';
 
@@ -107,9 +109,9 @@ abstract class Routes {
   static const newAssessmentVariables = '/newAssessmentVariables';
   static const newAssessmentVariablesSecond = '/newAssessmentVariablesSecond';
   static const newAssessmentHumanFactorVariables =
-  '/newAssessmentHumanFactorVariables';
+      '/newAssessmentHumanFactorVariables';
   static const newAssessmentOverallPerformance =
-  '/newAssessmentOverallPerformance';
+      '/newAssessmentOverallPerformance';
   static const newAssessmentDeclaration = '/newAssessmentDeclaration';
   static const newAssessmentSuccess = '/newAssessmentSuccess';
   static const newAssessmentInstructorNotes = '/newAssessmentInstructorNotes';
@@ -171,4 +173,5 @@ abstract class Routes {
   static const PILOTTRAININGHISTORYCC = '/pilottraininghistorycc';
   static const PILOTTRAININGHISTORYDETAILCC = '/pilottraininghistorydetailcc';
   static const PILOTFEEDBACKFORMCC = '/pilotfeedbackformcc';
-  }
+  static const ADD_TRAININGCC = '/add-trainingcc';
+}

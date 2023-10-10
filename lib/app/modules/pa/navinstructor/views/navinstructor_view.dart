@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:ts_one/app/modules/cc/instructor/training_typeinstructorcc/views/training_typeinstructorcc_view.dart';
 
 import '../../../../../presentation/theme.dart';
 import '../../../cc/pilotadministrator/homecc/views/homecc_view.dart';
@@ -28,6 +29,7 @@ class _NavinstructorState extends State<NavinstructorView> {
   List<Widget> _buildScreens() {
     return [
       const HomeccView(),
+      const TrainingTypeinstructorccView(),
       const TrainingccView(),
       const ProfileccView(),
     ];
@@ -37,6 +39,11 @@ class _NavinstructorState extends State<NavinstructorView> {
     return [
       PersistentBottomNavBarItem(
         icon: const Icon(CupertinoIcons.house_alt),
+        activeColorPrimary: tsOneColorScheme.primary,
+        inactiveColorPrimary: CupertinoColors.systemGrey,
+      ),
+      PersistentBottomNavBarItem(
+        icon: const Icon(CupertinoIcons.square_favorites_fill),
         activeColorPrimary: tsOneColorScheme.primary,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
