@@ -35,77 +35,6 @@ class _ShowDeviceState extends State<ShowDevice> {
     loadImage();
   }
 
-  // Function Show QR Code in page
-  // Future<void> _createQR() async {
-  //   final pdf = pw.Document();
-
-  //   final Uint8List image = (await rootBundle.load('assets/images/template_EFB_Device_No.jpg')).buffer.asUint8List();
-  //   const PdfPageFormat pageFormat = PdfPageFormat(1280, 720);
-
-  //   pdf.addPage(
-  //     pw.Page(
-  //       pageFormat: pageFormat,
-  //       build: (context) {
-  //         return pw.Container(
-  //           width: pageFormat.width,
-  //           height: pageFormat.height,
-  //           child: pw.Stack(
-  //             children: [
-  //               pw.Image(
-  //                 pw.MemoryImage(image),
-  //                 width: pageFormat.width,
-  //                 height: pageFormat.height,
-  //                 fit: pw.BoxFit.fill,
-  //               ),
-  //               pw.Center(
-  //                 child: pw.Padding(
-  //                   padding: const pw.EdgeInsets.symmetric(vertical: 20),
-  //                   child: pw.Column(
-  //                     mainAxisAlignment: pw.MainAxisAlignment.center,
-  //                     crossAxisAlignment: pw.CrossAxisAlignment.center,
-  //                     children: [
-  //                       pw.Text(
-  //                         "EFB - IPAD",
-  //                         style: pw.TextStyle(
-  //                           color: PdfColors.white,
-  //                           fontSize: 36,
-  //                           fontWeight: pw.FontWeight.bold,
-  //                         ),
-  //                       ),
-  //                       pw.SizedBox(width: 25),
-  //                       pw.Text(
-  //                         widget.device.deviceno,
-  //                         style: const pw.TextStyle(
-  //                           fontSize: 50,
-  //                           color: PdfColors.white, // Set text color
-  //                         ),
-  //                       ),
-  //                       pw.BarcodeWidget(
-  //                         barcode: pw.Barcode.qrCode(),
-  //                         data: widget.device.deviceno,
-  //                         width: 150,
-  //                         height: 150,
-  //                       ),
-  //                       pw.SizedBox(width: 25),
-  //                     ],
-  //                   ),
-  //                 ),
-  //               ),
-  //             ],
-  //           ),
-  //         );
-  //       },
-  //     ),
-  //   );
-
-  //   final pdfBytes = await pdf.save();
-
-  //   final output = await getTemporaryDirectory();
-  //   final file = File("${output.path}/walpaper_device_${widget.device.deviceno}.pdf");
-  //   await file.writeAsBytes(pdfBytes);
-
-  //   OpenFile.open(file.path);
-  // }
 
   Future<void> loadImage() async {
     final ByteData data = await rootBundle.load('assets/images/Wallpaper_EFB_Device.png');
@@ -260,53 +189,6 @@ class _ShowDeviceState extends State<ShowDevice> {
                       const SizedBox(
                         height: 15,
                       ),
-
-                      // Qr Code without background image
-                      // Container(
-                      //   child: Expanded(
-                      //     child: DecoratedBox(
-                      //       decoration: BoxDecoration(color: TsOneColor.surface, borderRadius: BorderRadius.circular(4.0), boxShadow: const [
-                      //         BoxShadow(
-                      //             color: TsOneColor.secondaryContainer,
-                      //             blurRadius: 10,
-                      //             spreadRadius: -5,
-                      //             offset: Offset(1, 1),
-                      //             blurStyle: BlurStyle.normal)
-                      //       ]),
-                      //       child: Column(
-                      //           //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      //           children: [
-                      //             // Align(
-                      //             //   alignment: Alignment.centerLeft,
-                      //             //   child: RedTitleText(text: 'Show QR Code'),
-                      //             // ),
-                      //             SizedBox(height: 30),
-                      //             Center(
-                      //               child: QrImageView(
-                      //                 data: deviceNo,
-                      //                 version: QrVersions.auto,
-                      //                 size: 250.0,
-                      //               ),
-                      //             ),
-                      //             SizedBox(height: 30),
-                      //             Padding(
-                      //               padding: const EdgeInsets.symmetric(horizontal: 20),
-                      //               child: ElevatedButton(
-                      //                 onPressed: _createQR,
-                      //                 child: const Text('Eksport QR Code'),
-                      //                 style: ElevatedButton.styleFrom(
-                      //                   padding: EdgeInsets.all(15),
-                      //                   backgroundColor: tsOneColorScheme.primary,
-                      //                   foregroundColor: Colors.white,
-                      //                   surfaceTintColor: tsOneColorScheme.onPrimary,
-                      //                   minimumSize: const Size.fromHeight(40),
-                      //                 ),
-                      //               ),
-                      //             ),
-                      //           ]),
-                      //     ),
-                      //   ),
-                      // ),
                     ],
                   ),
                 ),
@@ -373,14 +255,25 @@ class _ShowDeviceState extends State<ShowDevice> {
                   ),
                 ),
               ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  _captureAndSave();
-                },
-                child: Text('Capture Wallpaper'),
-              ),
             ],
+          ),
+        ),
+      ),
+
+      bottomNavigationBar: BottomAppBar(
+        surfaceTintColor: tsOneColorScheme.secondary,
+        child: Expanded(
+          child: ElevatedButton(
+            onPressed: () {
+              _captureAndSave();
+            },
+            style: ElevatedButton.styleFrom(
+                backgroundColor: TsOneColor.greenColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4.0),
+                )
+            ),
+            child: const Text('Download Image', style: TextStyle(color: Colors.white)),
           ),
         ),
       ),

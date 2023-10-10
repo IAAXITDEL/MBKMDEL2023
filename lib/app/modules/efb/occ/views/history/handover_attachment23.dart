@@ -7,6 +7,8 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:open_file/open_file.dart';
 import '../../../occ/views/history/detail_history_device_view.dart';
+import 'package:http/http.dart' as http;
+
 
 String _formatTimestamp(Timestamp? timestamp) {
   if (timestamp == null) return 'No Data';
@@ -490,6 +492,7 @@ Future<void> generateLogPdfDevice23({
               ],
             ),
 
+
           if ('$statusdevice' == 'Done')
             pw.Row(
               children: [
@@ -621,10 +624,10 @@ pw.Widget _buildHeaderCellRight(String text, pw.Context context) {
       ),
     ),
   );
+
 }
 
 Future<Uint8List> fetchImage(String imageUrl) async {
-  var http;
   final response = await http.get(Uri.parse(imageUrl));
   if (response.statusCode == 200) {
     return response.bodyBytes;
@@ -632,3 +635,6 @@ Future<Uint8List> fetchImage(String imageUrl) async {
     throw Exception('Failed to load image');
   }
 }
+
+
+

@@ -69,6 +69,7 @@ abstract class Routes {
   static const NAVINSTRUCTOR = _Paths.NAVINSTRUCTOR;
   static const ATTENDANCE_PENDINGCC = _Paths.ATTENDANCE_PENDINGCC;
   // static const ANALYTICS = _Paths.EFB + _Paths.ANALYTICS;
+  static const PROFILE = _Paths.PROFILE;
 }
 
 abstract class _Paths {
@@ -138,4 +139,5 @@ abstract class _Paths {
   static const INSTRUCTOR_MAIN_HOMECC = '/instructor-main-homecc';
   static const NAVINSTRUCTOR = '/navinstructor';
   static const ATTENDANCE_PENDINGCC = '/attendance-pendingcc';
+  static const PROFILE = '/profile';
 }

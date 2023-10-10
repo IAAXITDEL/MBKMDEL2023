@@ -40,6 +40,8 @@ import '../modules/efb/occ/views/homeocc_view.dart';
 import '../modules/efb/occ/views/listdevice/listdevice.dart';
 import '../modules/efb/pilot/bindings/homepilot_binding.dart';
 import '../modules/efb/pilot/views/main_view_pilot.dart';
+import '../modules/efb/profile/bindings/profile_binding.dart';
+import '../modules/efb/profile/views/profile_view.dart';
 import '../modules/home_admincc/bindings/home_admincc_binding.dart';
 import '../modules/home_admincc/views/home_admincc_view.dart';
 import '../modules/home_instructorcc/bindings/home_instructorcc_binding.dart';
@@ -323,6 +325,11 @@ class AppPages {
       name: _Paths.ANALYTICS,
       page: () => const AnalyticsView(),
       binding: AnalyticsBinding(),
+    ),
+    GetPage(
+      name: _Paths.PROFILE,
+      page: () => ProfileView(),
+      binding: ProfileBinding(),
     ),
   ];
 }

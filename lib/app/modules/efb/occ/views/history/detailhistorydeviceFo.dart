@@ -656,74 +656,74 @@ class DetailHistoryDeviceFOView extends GetView {
                                                     children: [
                                                       Expanded(
                                                         child: ElevatedButton(
-                                                          onPressed: () {
-                                                            showDialog(
-                                                              context: context,
-                                                              barrierDismissible: false,
-                                                              builder: (context) {
-                                                                return AlertDialog(
-                                                                  content: Column(
-                                                                    mainAxisSize: MainAxisSize.min,
-                                                                    children: [
-                                                                      CircularProgressIndicator(),
-                                                                      SizedBox(height: 20),
-                                                                      Text('Please Wait...'),
-                                                                    ],
-                                                                  ),
-                                                                );
-                                                              },
-                                                            );
+                                                            onPressed: () {
+                                                              showDialog(
+                                                                context: context,
+                                                                barrierDismissible: false,
+                                                                builder: (context) {
+                                                                  return AlertDialog(
+                                                                    content: Column(
+                                                                      mainAxisSize: MainAxisSize.min,
+                                                                      children: [
+                                                                        CircularProgressIndicator(),
+                                                                        SizedBox(height: 20),
+                                                                        Text('Please Wait...'),
+                                                                      ],
+                                                                    ),
+                                                                  );
+                                                                },
+                                                              );
 
-                                                            generateLogPdfDevice23(
-                                                              userName: userData['NAME'],
-                                                              userRank: userData['RANK'],
-                                                              userID: userData['ID NO'].toString(),
-                                                              occAccept: occAccepteduserData?['NAME'],
-                                                              occGiven: occOnDutyuserData?['NAME'],
-                                                              deviceNo2: data['device_name2'],
-                                                              iosVer2: deviceData2['iosver'],
-                                                              flySmart2: deviceData2['flysmart'],
-                                                              lido2: deviceData2['lidoversion'],
-                                                              docunet2: deviceData2['docuversion'],
-                                                              deviceCondition2: deviceData2['condition'],
-                                                              deviceNo3: data['device_name3'],
-                                                              iosVer3: deviceData3['iosver'],
-                                                              flySmart3: deviceData3['flysmart'],
-                                                              lido3: deviceData3['lidoversion'],
-                                                              docunet3: deviceData3['docuversion'],
-                                                              deviceCondition3:deviceData3['condition'],
-                                                              ttdUser: data['signature_url'],
-                                                              ttdOCC: data['signature_url_occ'],
-                                                              loan: data['timestamp'],
-                                                              statusdevice: data['statusDevice'],
-                                                              handoverName: handoverTouserData != null
-                                                                  ? handoverTouserData['NAME']
-                                                                  : 'Not Found',
-                                                              handoverID: handoverTouserData != null
-                                                                  ? handoverTouserData['ID NO'].toString()
-                                                                  : 'Not Found',
-                                                            ).then((_) {
-                                                              Navigator.pop(context);
-                                                            }).catchError((error) {
-                                                              print('Error generating PDF: $error');
-                                                              Navigator.pop(context);
-                                                            });
-                                                            //generateLogPdfDevice23();
-                                                          },
-                                                          style: ElevatedButton.styleFrom(
-                                                            backgroundColor:TsOneColor.greenColor,
-                                                            shape: RoundedRectangleBorder(
-                                                              borderRadius: BorderRadius.circular(4.0),
+                                                              generateLogPdfDevice23(
+                                                                userName: userData['NAME'],
+                                                                userRank: userData['RANK'],
+                                                                userID: userData['ID NO'].toString(),
+                                                                occAccept: occAccepteduserData?['NAME'],
+                                                                occGiven: occOnDutyuserData?['NAME'],
+                                                                deviceNo2: data['device_name2'],
+                                                                iosVer2: deviceData2['iosver'],
+                                                                flySmart2: deviceData2['flysmart'],
+                                                                lido2: deviceData2['lidoversion'],
+                                                                docunet2: deviceData2['docuversion'],
+                                                                deviceCondition2: deviceData2['condition'],
+                                                                deviceNo3: data['device_name3'],
+                                                                iosVer3: deviceData3['iosver'],
+                                                                flySmart3: deviceData3['flysmart'],
+                                                                lido3: deviceData3['lidoversion'],
+                                                                docunet3: deviceData3['docuversion'],
+                                                                deviceCondition3:deviceData3['condition'],
+                                                                ttdUser: data['signature_url'],
+                                                                ttdOCC: data['signature_url_occ'],
+                                                                loan: data['timestamp'],
+                                                                statusdevice: data['statusDevice'],
+                                                                handoverName: handoverTouserData != null
+                                                                    ? handoverTouserData['NAME']
+                                                                    : 'Not Found',
+                                                                handoverID: handoverTouserData != null
+                                                                    ? handoverTouserData['ID NO'].toString()
+                                                                    : 'Not Found',
+                                                              ).then((_) {
+                                                                Navigator.pop(context);
+                                                              }).catchError((error) {
+                                                                print('Error generating PDF: $error');
+                                                                Navigator.pop(context);
+                                                              });
+                                                              //generateLogPdfDevice1();
+                                                            },
+                                                            style: ElevatedButton.styleFrom(
+                                                              backgroundColor: TsOneColor.greenColor,
+                                                              shape: RoundedRectangleBorder(
+                                                                borderRadius: BorderRadius.circular(4.0),
+                                                              ),
                                                             ),
-                                                          ),
-                                                          child:
-                                                          Padding(
-                                                            padding: EdgeInsets.all(15),
-                                                            child: Text(
-                                                              'Download History',
-                                                              style: TextStyle(color: Colors.white),
-                                                            ),
-                                                          ),
+                                                            child:
+                                                            Padding(
+                                                              padding: EdgeInsets.all(15),
+                                                              child: Text(
+                                                                'Download History',
+                                                                style: TextStyle(color: Colors.white),
+                                                              ),
+                                                            )
                                                         ),
                                                       ),
                                                     ],

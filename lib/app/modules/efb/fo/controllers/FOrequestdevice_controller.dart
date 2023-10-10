@@ -123,7 +123,7 @@ class FORequestdeviceController extends GetxController {
           'user_uid':
               userUid, // Menggunakan ID dokumen pengguna sebagai 'user_uid'
           'device_uid': '-',
-          'device_name': '',
+          'device_name': '-',
           'device_uid2': deviceUid2,
           'device_name2': deviceName2,
           'device_uid3': deviceUid3,

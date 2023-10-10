@@ -31,201 +31,204 @@ class HomeOCCView extends GetView<HomeOCCController> {
         return DefaultTabController(
           length: 3,
           child: Scaffold(
-            body: Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(top: 40, bottom: 10, left: 20,right: 20),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Hi, ${controller.titleToGreet!}",
-                            style: tsOneTextTheme.headlineLarge,
-                          ),
-                          Spacer(),
-                          Icon(
-                            Icons.notifications_active_outlined,
-                            color: tsOneColorScheme.onSecondary,
-                          )
-                        ],
-                      ),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Good ${controller.timeToGreet}',
-                          style: tsOneTextTheme.labelMedium,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 20),
-                        child: Row(
+            body: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: 40, bottom: 10, left: 20,right: 20),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Padding(
-                              padding: EdgeInsets.only(right: 4.0),
-                              child: Icon(
-                                Icons.calendar_month_outlined,
-                                color: TsOneColor.onSecondary,
-                                size: 32,
-                              ),
+                            Text(
+                              "Hi, ${controller.titleToGreet!}",
+                              style: tsOneTextTheme.headlineLarge,
                             ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  Util.convertDateTimeDisplay(
-                                      DateTime.now().toString(), "EEEE"),
-                                  style: tsOneTextTheme.labelSmall,
+                            Spacer(),
+                            Icon(
+                              Icons.notifications_active_outlined,
+                              color: tsOneColorScheme.onSecondary,
+                            )
+                          ],
+                        ),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'Good ${controller.timeToGreet}',
+                            style: tsOneTextTheme.labelMedium,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 20),
+                          child: Row(
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.only(right: 4.0),
+                                child: Icon(
+                                  Icons.calendar_month_outlined,
+                                  color: TsOneColor.onSecondary,
+                                  size: 32,
                                 ),
-                                Text(
-                                  Util.convertDateTimeDisplay(
-                                      DateTime.now().toString(), "dd MMMM yyyy"),
-                                  style: tsOneTextTheme.labelSmall,
-                                ),
-                              ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    Util.convertDateTimeDisplay(
+                                        DateTime.now().toString(), "EEEE"),
+                                    style: tsOneTextTheme.labelSmall,
+                                  ),
+                                  Text(
+                                    Util.convertDateTimeDisplay(
+                                        DateTime.now().toString(), "dd MMMM yyyy"),
+                                    style: tsOneTextTheme.labelSmall,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 20),
+                              child: RedTitleText(text: "HUB : " + userHub!),
                             ),
                           ],
                         ),
-                      ),
+
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        // Menampilkan jumlah CGK dengan status in-use-pilot
+                        StreamBuilder<QuerySnapshot>(
+                          stream: FirebaseFirestore.instance
+                              .collection("pilot-device-1")
+                              .where("statusDevice", isEqualTo: "in-use-pilot")
+                              .where("field_hub", isEqualTo: "CGK")
+                              .snapshots(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return CircularProgressIndicator();
+                            }
+
+                            if (snapshot.hasError) {
+                              return Text("Error: ${snapshot.error}");
+                            }
+
+                            final count = snapshot.data?.docs.length ?? 0;
+                            return Text('CGK: $count');
+                          },
+                        ),
+
+                        // Menampilkan jumlah SUB dengan status in-use-pilot
+                        StreamBuilder<QuerySnapshot>(
+                          stream: FirebaseFirestore.instance
+                              .collection("pilot-device-1")
+                              .where("statusDevice", isEqualTo: "in-use-pilot")
+                              .where("field_hub", isEqualTo: "SUB")
+                              .snapshots(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return CircularProgressIndicator();
+                            }
+
+                            if (snapshot.hasError) {
+                              return Text("Error: ${snapshot.error}");
+                            }
+
+                            final count = snapshot.data?.docs.length ?? 0;
+                            return Text('SUB: $count');
+                          },
+                        ),
+
+                        // Menampilkan jumlah DPS dengan status in-use-pilot
+                        StreamBuilder<QuerySnapshot>(
+                          stream: FirebaseFirestore.instance
+                              .collection("pilot-device-1")
+                              .where("statusDevice", isEqualTo: "in-use-pilot")
+                              .where("field_hub", isEqualTo: "DPS")
+                              .snapshots(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return CircularProgressIndicator();
+                            }
+
+                            if (snapshot.hasError) {
+                              return Text("Error: ${snapshot.error}");
+                            }
+
+                            final count = snapshot.data?.docs.length ?? 0;
+                            return Text('DPS: $count');
+                          },
+                        ),
+
+                        // Menampilkan jumlah KNO dengan status in-use-pilot
+                        StreamBuilder<QuerySnapshot>(
+                          stream: FirebaseFirestore.instance
+                              .collection("pilot-device-1")
+                              .where("statusDevice", isEqualTo: "in-use-pilot")
+                              .where("field_hub", isEqualTo: "KNO")
+                              .snapshots(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return CircularProgressIndicator();
+                            }
+
+                            if (snapshot.hasError) {
+                              return Text("Error: ${snapshot.error}");
+                            }
+
+                            final count = snapshot.data?.docs.length ?? 0;
+                            return Text('KNO: $count');
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  TabBar(
+                    tabs: [
+                      Tab(text: "Confirm"),
+                      Tab(text: "In Use"),
+                      Tab(text: "Return"),
                     ],
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: RedTitleText(text: "HUB : " + userHub!),
-                          ),
-                        ],
-                      ),
-
-                    ],
+                  Container(
+                    height: MediaQuery.of(context).size.height - kToolbarHeight - 40, // Adjust height as needed
+                    child: TabBarView(
+                      children: [
+                        FirebaseDataTab(
+                          statuses: ["waiting-confirmation-1"],
+                          userHub: userHub ?? '',
+                        ),
+                        FirebaseDataTab(
+                          statuses: ["in-use-pilot"],
+                          userHub: userHub ?? '',
+                        ),
+                        FirebaseDataTab(
+                          statuses: ["need-confirmation-occ"],
+                          userHub: userHub ?? '',
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      // Menampilkan jumlah CGK dengan status in-use-pilot
-                      StreamBuilder<QuerySnapshot>(
-                        stream: FirebaseFirestore.instance
-                            .collection("pilot-device-1")
-                            .where("statusDevice", isEqualTo: "in-use-pilot")
-                            .where("field_hub", isEqualTo: "CGK")
-                            .snapshots(),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState == ConnectionState.waiting) {
-                            return CircularProgressIndicator();
-                          }
-
-                          if (snapshot.hasError) {
-                            return Text("Error: ${snapshot.error}");
-                          }
-
-                          final count = snapshot.data?.docs.length ?? 0;
-                          return Text('CGK: $count');
-                        },
-                      ),
-
-                      // Menampilkan jumlah SUB dengan status in-use-pilot
-                      StreamBuilder<QuerySnapshot>(
-                        stream: FirebaseFirestore.instance
-                            .collection("pilot-device-1")
-                            .where("statusDevice", isEqualTo: "in-use-pilot")
-                            .where("field_hub", isEqualTo: "SUB")
-                            .snapshots(),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState == ConnectionState.waiting) {
-                            return CircularProgressIndicator();
-                          }
-
-                          if (snapshot.hasError) {
-                            return Text("Error: ${snapshot.error}");
-                          }
-
-                          final count = snapshot.data?.docs.length ?? 0;
-                          return Text('SUB: $count');
-                        },
-                      ),
-
-                      // Menampilkan jumlah DPS dengan status in-use-pilot
-                      StreamBuilder<QuerySnapshot>(
-                        stream: FirebaseFirestore.instance
-                            .collection("pilot-device-1")
-                            .where("statusDevice", isEqualTo: "in-use-pilot")
-                            .where("field_hub", isEqualTo: "DPS")
-                            .snapshots(),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState == ConnectionState.waiting) {
-                            return CircularProgressIndicator();
-                          }
-
-                          if (snapshot.hasError) {
-                            return Text("Error: ${snapshot.error}");
-                          }
-
-                          final count = snapshot.data?.docs.length ?? 0;
-                          return Text('DPS: $count');
-                        },
-                      ),
-
-                      // Menampilkan jumlah KNO dengan status in-use-pilot
-                      StreamBuilder<QuerySnapshot>(
-                        stream: FirebaseFirestore.instance
-                            .collection("pilot-device-1")
-                            .where("statusDevice", isEqualTo: "in-use-pilot")
-                            .where("field_hub", isEqualTo: "KNO")
-                            .snapshots(),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState == ConnectionState.waiting) {
-                            return CircularProgressIndicator();
-                          }
-
-                          if (snapshot.hasError) {
-                            return Text("Error: ${snapshot.error}");
-                          }
-
-                          final count = snapshot.data?.docs.length ?? 0;
-                          return Text('KNO: $count');
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-
-                TabBar(
-                  tabs: [
-                    Tab(text: "Confirm"),
-                    Tab(text: "In Use"),
-                    Tab(text: "Return"),
-                  ],
-                ),
-                Expanded(
-                  child: TabBarView(
-                    children: [
-                      FirebaseDataTab(
-                        statuses: ["waiting-confirmation-1"],
-                        userHub: userHub ?? '',
-                      ),
-                      FirebaseDataTab(
-                        statuses: ["in-use-pilot"],
-                        userHub: userHub ?? '',
-                      ),
-                      FirebaseDataTab(
-                        statuses: ["need-confirmation-occ"],
-                        userHub: userHub ?? '',
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         );

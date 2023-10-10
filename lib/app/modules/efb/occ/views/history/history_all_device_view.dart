@@ -379,9 +379,6 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                                     ),
                                   ),
                                 );
-
-
-
                               },
                             );
                           },

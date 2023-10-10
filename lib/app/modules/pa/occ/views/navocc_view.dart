@@ -12,6 +12,7 @@ import '../../../efb/history_crew/for_crew_history.dart';
 import '../../../efb/occ/views/history/history_all_device_view.dart';
 import '../../../efb/occ/views/listdevice/listdevice.dart';
 import '../../../efb/pilot/views/main_view_pilot.dart';
+import '../../../efb/profile/views/profile_view.dart';
 import '../../../homecc/views/homecc_view.dart';
 import '../../../profilecc/views/profilecc_view.dart';
 import '../../../efb/analytics/views/analytics_view.dart';
@@ -42,7 +43,7 @@ class _NavOCCView extends State<NavOCCView> {
         // DevicesView(),
         HistoryAllDeviceView(),
         AnalyticsView(),
-        ProfileccView(),
+        ProfileView(),
       ];
     } else if (_userPreferences
         .getPrivileges()
@@ -51,13 +52,13 @@ class _NavOCCView extends State<NavOCCView> {
       _screens = [
         HomePilotView(),
         HistoryEachCrewView(),
-        ProfileccView(),
+        ProfileView(),
       ];
     } else {
       _screens = [
         HomeFOView(),
         HistoryEachCrewView(),
-        ProfileccView(),
+        ProfileView(),
       ];
     }
 

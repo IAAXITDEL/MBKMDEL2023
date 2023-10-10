@@ -323,7 +323,6 @@ Future<void> generateLogPdfDevice1({
 
           //Handover to other crew
           if ('$statusdevice' == 'handover-to-other-crew') pw.SizedBox(height: 10.0),
-          if ('$statusdevice' == 'handover-to-other-crew')
             pw.Table(
               tableWidth: pw.TableWidth.min,
               border: pw.TableBorder.all(),

@@ -462,8 +462,6 @@ class DetailHistoryDeviceView extends GetView {
                                                 ),
 
                                               SizedBox(height: 80.0),
-                                              if (status == 'handover-to-other-crew') SizedBox(height: 55.0),
-
                                               Row(
                                                 children: [
                                                   Expanded(
@@ -495,7 +493,7 @@ class DetailHistoryDeviceView extends GetView {
                                                           deviceNo: data['device_name'],
                                                           iosVer: deviceData['iosver'],
                                                           flySmart: deviceData['flysmart'],
-                                                          lido: deviceData['lidoversion'],
+                                                          lido: deviceData[' lidoversion'],
                                                           docunet: deviceData['docuversion'],
                                                           deviceCondition: deviceData['condition'],
                                                           ttdUser: data['signature_url'],
@@ -503,7 +501,7 @@ class DetailHistoryDeviceView extends GetView {
                                                           loan: data['timestamp'],
                                                           statusdevice: data['statusDevice'],
                                                           handoverName: handoverTouserData != null ? handoverTouserData['NAME'] : 'Not Found',
-                                                          handoverID: handoverTouserData != null ? handoverTouserData['ID NO'] : 'Not Found',
+                                                          handoverID: data['handover-to-crew'],
                                                         ).then((_) {
                                                           Navigator.pop(context);
                                                         }).catchError((error) {
