@@ -23,7 +23,7 @@ class FOrequestdeviceView extends StatefulWidget {
 }
 
 class _FOrequestdeviceView extends State<FOrequestdeviceView> {
-  final FORequestdeviceController _bookingService = FORequestdeviceController() ;
+  final FORequestdeviceController _bookingService = FORequestdeviceController();
   late List<Device> devices = [];
   Device? selectedDevice2;
   Device? selectedDevice3;
@@ -43,13 +43,8 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
   }
 
   List<Device> getMatchingDevices(String input) {
-    return devices
-        .where((device) =>
-        device.deviceno.toLowerCase().contains(input.toLowerCase()))
-        .toList();
+    return devices.where((device) => device.deviceno.toLowerCase().contains(input.toLowerCase())).toList();
   }
-
-
 
   Future<void> _showConfirmationDialog() async {
     bool deviceInUse2 = await _bookingService.isDeviceInUse(selectedDevice2!.uid, selectedDevice3!.uid);
@@ -155,8 +150,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
   }
 
   Future<Widget> getUserPhoto(String userUid) async {
-    final userSnapshot =
-    await FirebaseFirestore.instance.collection("users").doc(userUid).get();
+    final userSnapshot = await FirebaseFirestore.instance.collection("users").doc(userUid).get();
 
     if (userSnapshot.exists) {
       final userData = userSnapshot.data() as Map<String, dynamic>;
@@ -177,8 +171,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
   }
 
   Future<String> getUserName(String userUid) async {
-    final userSnapshot =
-    await FirebaseFirestore.instance.collection("users").doc(userUid).get();
+    final userSnapshot = await FirebaseFirestore.instance.collection("users").doc(userUid).get();
 
     if (userSnapshot.exists) {
       final userData = userSnapshot.data() as Map<String, dynamic>;
@@ -193,11 +186,12 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
 
   @override
   Widget build(BuildContext context) {
-    bool isDeviceNotFound = deviceNoController2.text.isNotEmpty && getMatchingDevices(deviceNoController2.text).isEmpty
-        && deviceNoController3.text.isNotEmpty && getMatchingDevices(deviceNoController3.text).isEmpty;
+    bool isDeviceNotFound = deviceNoController2.text.isNotEmpty &&
+        getMatchingDevices(deviceNoController2.text).isEmpty &&
+        deviceNoController3.text.isNotEmpty &&
+        getMatchingDevices(deviceNoController3.text).isEmpty;
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text(
           'Request Device',
@@ -211,10 +205,15 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
             children: [
               Row(
                 children: [
-                  Text("1'st Device :", style: tsOneTextTheme.displaySmall,)
+                  Text(
+                    "1'st Device :",
+                    style: tsOneTextTheme.displaySmall,
+                  )
                 ],
               ),
-              SizedBox(height: 7,),
+              SizedBox(
+                height: 7,
+              ),
               Row(
                 children: [
                   Expanded(
@@ -226,8 +225,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                         });
                       },
                       decoration: InputDecoration(
-                        contentPadding:
-                        const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                        contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                         labelText: 'Device No',
                         labelStyle: tsOneTextTheme.labelMedium,
                         border: OutlineInputBorder(),
@@ -237,8 +235,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                   const SizedBox(width: 16.0),
                   ElevatedButton(
                     onPressed: () async {
-                      String qrCode =
-                      await FlutterBarcodeScanner.scanBarcode(
+                      String qrCode = await FlutterBarcodeScanner.scanBarcode(
                         '#ff6666', // Warna overlay saat pemindaian
                         'Cancel', // Label tombol batal
                         true, // Memungkinkan pemindaian di latar belakang
@@ -263,15 +260,15 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                   children: getMatchingDevices(deviceNoController2.text)
                       .map(
                         (device) => ListTile(
-                      title: Text(device.deviceno),
-                      onTap: () {
-                        setState(() {
-                          selectedDevice2 = device;
-                          deviceNoController2.text = device.deviceno;
-                        });
-                      },
-                    ),
-                  )
+                          title: Text(device.deviceno),
+                          onTap: () {
+                            setState(() {
+                              selectedDevice2 = device;
+                              deviceNoController2.text = device.deviceno;
+                            });
+                          },
+                        ),
+                      )
                       .toList(),
                 ),
               const SizedBox(height: 16.0),
@@ -331,8 +328,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                         ),
                         Row(
                           children: [
-                            Expanded(
-                                flex: 7, child: Text("Lido mPilot Version")),
+                            Expanded(flex: 7, child: Text("Lido mPilot Version")),
                             Expanded(flex: 1, child: Text(":")),
                             Expanded(
                               flex: 6,
@@ -367,10 +363,15 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
               const SizedBox(height: 16.0),
               Row(
                 children: [
-                  Text("2'nd Device :", style: tsOneTextTheme.displaySmall,)
+                  Text(
+                    "2'nd Device :",
+                    style: tsOneTextTheme.displaySmall,
+                  )
                 ],
               ),
-              SizedBox(height: 7,),
+              SizedBox(
+                height: 7,
+              ),
               Row(
                 children: [
                   Expanded(
@@ -382,8 +383,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                         });
                       },
                       decoration: InputDecoration(
-                        contentPadding:
-                        const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                        contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                         labelText: 'Device No',
                         labelStyle: tsOneTextTheme.labelMedium,
                         border: OutlineInputBorder(),
@@ -393,8 +393,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                   const SizedBox(width: 16.0),
                   ElevatedButton(
                     onPressed: () async {
-                      String qrCode =
-                      await FlutterBarcodeScanner.scanBarcode(
+                      String qrCode = await FlutterBarcodeScanner.scanBarcode(
                         '#ff6666', // Warna overlay saat pemindaian
                         'Cancel', // Label tombol batal
                         true, // Memungkinkan pemindaian di latar belakang
@@ -419,15 +418,15 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                   children: getMatchingDevices(deviceNoController3.text)
                       .map(
                         (device) => ListTile(
-                      title: Text(device.deviceno),
-                      onTap: () {
-                        setState(() {
-                          selectedDevice3 = device;
-                          deviceNoController3.text = device.deviceno;
-                        });
-                      },
-                    ),
-                  )
+                          title: Text(device.deviceno),
+                          onTap: () {
+                            setState(() {
+                              selectedDevice3 = device;
+                              deviceNoController3.text = device.deviceno;
+                            });
+                          },
+                        ),
+                      )
                       .toList(),
                 ),
               const SizedBox(height: 16.0),
@@ -487,8 +486,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                         ),
                         Row(
                           children: [
-                            Expanded(
-                                flex: 7, child: Text("Lido mPilot Version")),
+                            Expanded(flex: 7, child: Text("Lido mPilot Version")),
                             Expanded(flex: 1, child: Text(":")),
                             Expanded(
                               flex: 6,
@@ -553,8 +551,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                 backgroundColor: TsOneColor.greenColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(4.0),
-                )
-            ),
+                )),
             child: const Text(
               'Submit',
               style: TextStyle(color: Colors.white),

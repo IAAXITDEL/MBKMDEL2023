@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
+import 'package:ts_one/presentation/theme.dart';
 
 class ReturnOtherPilotView extends StatefulWidget {
   final String documentId;
@@ -92,69 +93,86 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Confirmation'),
+          title: Text('Confirmation', style: tsOneTextTheme.headlineLarge),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('Are you sure you want to confirm this action?'),
+                Text('Are you sure you want to return to other crew?'),
               ],
             ),
           ),
           actions: <Widget>[
-            TextButton(
-              child: Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-              },
-            ),
-            TextButton(
-              child: Text('Confirm'),
-              onPressed: () async {
-                _showQuickAlert(context);
-                Navigator.of(context).pop(); // Close the dialog
+            Row(
+              children: [
+                Expanded(
+                  flex: 5,
+                  child: TextButton(
+                    child: Text('No', style: TextStyle(color: TsOneColor.secondaryContainer)),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ),
+                Spacer(flex: 1),
+                Expanded(
+                  flex: 5,
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      backgroundColor: TsOneColor.greenColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                    ),
+                    child: Text('Yes', style: TextStyle(color: TsOneColor.onPrimary)),
+                    onPressed: () async {
+                      _showQuickAlert(context);
+                      Navigator.of(context).pop(); // Close the dialog
 
-                final idNumber = _idController.text.trim();
-                if (idNumber.isNotEmpty) {
-                  User? user = _auth.currentUser;
-                  QuerySnapshot userQuery = await _firestore
-                      .collection('users')
-                      .where('EMAIL', isEqualTo: user?.email)
-                      .get();
-                  String userUid = userQuery.docs.first.id;
+                      final idNumber = _idController.text.trim();
+                      if (idNumber.isNotEmpty) {
+                        User? user = _auth.currentUser;
+                        QuerySnapshot userQuery = await _firestore
+                            .collection('users')
+                            .where('EMAIL', isEqualTo: user?.email)
+                            .get();
+                        String userUid = userQuery.docs.first.id;
 
-                  await _fetchUserData(idNumber);
+                        await _fetchUserData(idNumber);
 
-                  FirebaseFirestore.instance
-                      .collection('pilot-device-1')
-                      .doc(widget.deviceId)
-                      .update({
-                    'statusDevice': 'handover-to-other-crew',
-                    'handover-to-crew': idNumber,
-                  });
+                        FirebaseFirestore.instance
+                            .collection('pilot-device-1')
+                            .doc(widget.deviceId)
+                            .update({
+                          'statusDevice': 'handover-to-other-crew',
+                          'handover-to-crew': idNumber,
+                        });
 
-                  // Get the hub based on device_name
-                  String hubField =
-                      await getHubFromDeviceName(deviceName) ?? "Unknown Hub";
+                        // Get the hub based on device_name
+                        String hubField =
+                            await getHubFromDeviceName(deviceName) ?? "Unknown Hub";
 
-                  FirebaseFirestore.instance.collection('pilot-device-1').add({
-                    'user_uid': idNumber,
-                    'device_uid': deviceId,
-                    'device_name': deviceName,
-                    'occ-on-duty': OccOnDuty,
-                    'handover-from': userUid,
-                    'statusDevice': 'waiting-confirmation-other-pilot',
-                    'timestamp': FieldValue.serverTimestamp(),
-                    'remarks': '',
-                    'prove_image_url': '',
-                    'handover-to-crew': '-',
-                    'field_hub': hubField, // Add 'hub' field
-                  });
+                        FirebaseFirestore.instance.collection('pilot-device-1').add({
+                          'user_uid': idNumber,
+                          'device_uid': deviceId,
+                          'device_name': deviceName,
+                          'occ-on-duty': OccOnDuty,
+                          'handover-from': userUid,
+                          'statusDevice': 'waiting-confirmation-other-pilot',
+                          'timestamp': FieldValue.serverTimestamp(),
+                          'remarks': '',
+                          'prove_image_url': '',
+                          'handover-to-crew': '-',
+                          'field_hub': hubField, // Add 'hub' field
+                        });
 
-                  Navigator.pop(context); // Close the ReturnOtherPilotView
-                } else {
-                  // Handle invalid input, show a message, or prevent submission
-                }
-              },
+                        Navigator.pop(context); // Close the ReturnOtherPilotView
+                      } else {
+                        // Handle invalid input, show a message, or prevent submission
+                      }
+                    },
+                  ),
+                ),
+              ],
             ),
           ],
         );
@@ -166,8 +184,10 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Return Other Pilot'),
-        centerTitle: true,
+        title: Text(
+          'Return',
+          style: tsOneTextTheme.headlineLarge,
+        ),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -256,15 +276,23 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
                     Text('Rank: ${selectedUser!['RANK']}'),
                   ],
                 ),
-              ElevatedButton(
-                onPressed: () async {
-                  // Show the confirmation dialog when the Confirm button is pressed
-                  await _showConfirmationDialog();
-                },
-                child: Text('Confirm'),
-              ),
-              SizedBox(height: 16.0),
             ],
+          ),
+        ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        surfaceTintColor: tsOneColorScheme.secondary,
+        child: Expanded(
+          child: ElevatedButton(
+            onPressed: () async {
+              await _showConfirmationDialog();
+            },
+            style: ElevatedButton.styleFrom(
+                backgroundColor: TsOneColor.primary,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25.0),
+                )),
+            child: const Text('Submit', style: TextStyle(color: Colors.white)),
           ),
         ),
       ),

@@ -243,7 +243,7 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                                               child: Align(
                                                 alignment: Alignment.centerLeft,
                                                 child: Card(
-                                                  surfaceTintColor: TsOneColor.surface,
+                                                  surfaceTintColor: Colors.white,
                                                   shape: RoundedRectangleBorder(
                                                     borderRadius: BorderRadius.circular(15),
                                                   ),
@@ -296,7 +296,7 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                                                           ),
                                                           const Icon(
                                                             Icons.chevron_right,
-                                                            color: TsOneColor.secondaryContainer,
+                                                            color: Colors.black,
                                                             size: 30,
                                                           )
                                                         ],
@@ -319,7 +319,7 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                                 return Padding(
                                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                                   child: Card(
-                                    surfaceTintColor: TsOneColor.surface,
+                                    surfaceTintColor: Colors.white,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(15),
                                     ),
@@ -370,7 +370,7 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                                             ),
                                             const Icon(
                                               Icons.chevron_right,
-                                              color: TsOneColor.secondaryContainer,
+                                              color: Colors.black,
                                               size: 30,
                                             )
                                           ],

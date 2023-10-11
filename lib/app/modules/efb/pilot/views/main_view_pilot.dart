@@ -14,6 +14,7 @@ import '../controllers/requestdevice_controller.dart';
 import 'confirm_return_other_pilot_view.dart';
 
 class HomePilotView extends GetView<HomePilotController> {
+
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(HomePilotController());
@@ -183,7 +184,7 @@ class HomePilotView extends GetView<HomePilotController> {
                                                   PilotreturndeviceviewView(
                                                 deviceName: deviceName,
                                                 deviceId: deviceId,
-                                                OccOnDuty: OccOnDuty,
+                                                OccOnDuty: OccOnDuty, documentId: '',
                                               ),
                                             ),
                                           );

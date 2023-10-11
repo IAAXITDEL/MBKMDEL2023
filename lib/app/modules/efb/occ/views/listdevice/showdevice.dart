@@ -98,7 +98,6 @@ class _ShowDeviceState extends State<ShowDevice> {
     final String deviceNo = widget.device.deviceno;
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text(
           'Detail Device',

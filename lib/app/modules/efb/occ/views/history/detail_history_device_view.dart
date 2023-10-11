@@ -20,29 +20,35 @@ class DetailHistoryDeviceView extends GetView {
 
   String getMonthText(int month) {
     const List<String> months = [
-      'Januar7', 'Februar7', 'March', 'April',
-      'May', 'June', 'July', 'August',
-      'September', 'October', 'November', 'Desember'
+      'Januar7',
+      'Februar7',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'Desember'
     ];
-    return months[month - 1];  // Index 0-11 for Januari-Desember
+    return months[month - 1]; // Index 0-11 for Januari-Desember
   }
 
   String _formatTimestamp(Timestamp? timestamp) {
     if (timestamp == null) return 'No Data';
 
     DateTime dateTime = timestamp.toDate();
-    String formattedDateTime =
-        '${dateTime.day} ${getMonthText(dateTime.month)} ${dateTime.year}'
+    String formattedDateTime = '${dateTime.day} ${getMonthText(dateTime.month)} ${dateTime.year}'
         ' ; '
         '${dateTime.hour}:${dateTime.minute}';
     return formattedDateTime;
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text(
           'Device Usage History',
@@ -308,16 +314,16 @@ class DetailHistoryDeviceView extends GetView {
                                                 ),
                                               if (status == 'Done') SizedBox(height: 7.0),
                                               if (status == 'Done')
-                                              Row(
-                                                children: [
-                                                  Expanded(flex: 6, child: Text("Remarks")),
-                                                  Expanded(flex: 1, child: Text(":")),
-                                                  Expanded(
-                                                    flex: 6,
-                                                    child: Text('${data['remarks'] ?? '-'}'),
-                                                  ),
-                                                ],
-                                              ),
+                                                Row(
+                                                  children: [
+                                                    Expanded(flex: 6, child: Text("Remarks")),
+                                                    Expanded(flex: 1, child: Text(":")),
+                                                    Expanded(
+                                                      flex: 6,
+                                                      child: Text('${data['remarks'] ?? '-'}'),
+                                                    ),
+                                                  ],
+                                                ),
 
                                               SizedBox(height: 5.0),
                                               if (status == 'Done')
@@ -329,7 +335,8 @@ class DetailHistoryDeviceView extends GetView {
                                                       flex: 6,
                                                       child: Column(
                                                         children: [
-                                                          if (status == 'Done' && data['prove_back_to_base'] == null || data['prove_back_to_base'].isEmpty)
+                                                          if (status == 'Done' && data['prove_back_to_base'] == null ||
+                                                              data['prove_back_to_base'].isEmpty)
                                                             Text(
                                                               'There is no image',
                                                               style: TextStyle(color: Colors.black),
@@ -466,65 +473,63 @@ class DetailHistoryDeviceView extends GetView {
                                                 children: [
                                                   Expanded(
                                                     child: ElevatedButton(
-                                                      onPressed: () {
-                                                        showDialog(
-                                                          context: context,
-                                                          barrierDismissible: false,
-                                                          builder: (context) {
-                                                            return AlertDialog(
-                                                              content: Column(
-                                                                mainAxisSize: MainAxisSize.min,
-                                                                children: [
-                                                                  CircularProgressIndicator(),
-                                                                  SizedBox(height: 20),
-                                                                  Text('Please Wait...'),
-                                                                ],
-                                                              ),
-                                                            );
-                                                          },
-                                                        );
+                                                        onPressed: () {
+                                                          showDialog(
+                                                            context: context,
+                                                            barrierDismissible: false,
+                                                            builder: (context) {
+                                                              return AlertDialog(
+                                                                content: Column(
+                                                                  mainAxisSize: MainAxisSize.min,
+                                                                  children: [
+                                                                    CircularProgressIndicator(),
+                                                                    SizedBox(height: 20),
+                                                                    Text('Please Wait...'),
+                                                                  ],
+                                                                ),
+                                                              );
+                                                            },
+                                                          );
 
-                                                        generateLogPdfDevice1(
-                                                          userName: userData['NAME'],
-                                                          userRank: userData['RANK'],
-                                                          userID: userData['ID NO'].toString(),
-                                                          occAccept: occAccepteduserData?['NAME'],
-                                                          occGiven: occOnDutyuserData?['NAME'],
-                                                          deviceNo: data['device_name'],
-                                                          iosVer: deviceData['iosver'],
-                                                          flySmart: deviceData['flysmart'],
-                                                          lido: deviceData[' lidoversion'],
-                                                          docunet: deviceData['docuversion'],
-                                                          deviceCondition: deviceData['condition'],
-                                                          ttdUser: data['signature_url'],
-                                                          ttdOCC: data['signature_url_occ'],
-                                                          loan: data['timestamp'],
-                                                          statusdevice: data['statusDevice'],
-                                                          handoverName: handoverTouserData != null ? handoverTouserData['NAME'] : 'Not Found',
-                                                          handoverID: data['handover-to-crew'],
-                                                        ).then((_) {
-                                                          Navigator.pop(context);
-                                                        }).catchError((error) {
-                                                          print('Error generating PDF: $error');
-                                                          Navigator.pop(context);
-                                                        });
-                                                        //generateLogPdfDevice1();
-                                                      },
-                                                      style: ElevatedButton.styleFrom(
-                                                        backgroundColor: TsOneColor.greenColor,
-                                                        shape: RoundedRectangleBorder(
-                                                          borderRadius: BorderRadius.circular(4.0),
+                                                          generateLogPdfDevice1(
+                                                            userName: userData['NAME'],
+                                                            userRank: userData['RANK'],
+                                                            userID: userData['ID NO'].toString(),
+                                                            occAccept: occAccepteduserData?['NAME'],
+                                                            occGiven: occOnDutyuserData?['NAME'],
+                                                            deviceNo: data['device_name'],
+                                                            iosVer: deviceData['iosver'],
+                                                            flySmart: deviceData['flysmart'],
+                                                            lido: deviceData['lidoversion'],
+                                                            docunet: deviceData['docuversion'],
+                                                            deviceCondition: deviceData['condition'],
+                                                            ttdUser: data['signature_url'],
+                                                            ttdOCC: data['signature_url_occ'],
+                                                            loan: data['timestamp'],
+                                                            statusdevice: data['statusDevice'],
+                                                            handoverName: handoverTouserData != null ? handoverTouserData['NAME'] : 'Not Found',
+                                                            handoverID: handoverTouserData != null ? handoverTouserData['ID NO'] : 'Not Found',
+                                                          ).then((_) {
+                                                            Navigator.pop(context);
+                                                          }).catchError((error) {
+                                                            print('Error generating PDF: $error');
+                                                            Navigator.pop(context);
+                                                          });
+                                                          //generateLogPdfDevice1();
+                                                        },
+                                                        style: ElevatedButton.styleFrom(
+                                                          backgroundColor: TsOneColor.greenColor,
+                                                          shape: RoundedRectangleBorder(
+                                                            borderRadius: BorderRadius.circular(4.0),
+                                                          ),
                                                         ),
-                                                      ),
-                                                      child:
-                                                      Padding(
-                                                        padding: EdgeInsets.all(15),
-                                                        child: Text(
-                                                          'Download History',
-                                                          style: TextStyle(color: Colors.white),
-                                                        ),
-                                                      )
-                                                    ),
+                                                        child: Padding(
+                                                          padding: EdgeInsets.all(15),
+                                                          child: Text(
+                                                            'Download History',
+                                                            style: TextStyle(color: Colors.white),
+                                                          ),
+                                                        )),
                                                   ),
                                                 ],
                                               ),

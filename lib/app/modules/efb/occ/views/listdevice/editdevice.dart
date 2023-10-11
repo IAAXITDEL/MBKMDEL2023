@@ -265,7 +265,6 @@ class _EditDevice extends State<EditDevice> {
     );
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text(
           'Edit Device',
@@ -273,7 +272,7 @@ class _EditDevice extends State<EditDevice> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.only(top: 20, right: 20, left: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

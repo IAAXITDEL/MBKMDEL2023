@@ -53,8 +53,7 @@ class _AddDevice extends State<AddDevice> {
         border: OutlineInputBorder(),
       ),
       onEditingComplete: () {
-        FocusScope.of(context)
-            .requestFocus(_iosverFocus); // Pindah ke field berikutnya
+        FocusScope.of(context).requestFocus(_iosverFocus); // Pindah ke field berikutnya
       },
     );
     final iosverField = TextFormField(
@@ -77,8 +76,7 @@ class _AddDevice extends State<AddDevice> {
         border: OutlineInputBorder(),
       ),
       onEditingComplete: () {
-        FocusScope.of(context)
-            .requestFocus(_flysmartverFocus); // Pindah ke field berikutnya
+        FocusScope.of(context).requestFocus(_flysmartverFocus); // Pindah ke field berikutnya
       },
     );
     final flysmarvertField = TextFormField(
@@ -101,8 +99,7 @@ class _AddDevice extends State<AddDevice> {
         border: OutlineInputBorder(),
       ),
       onEditingComplete: () {
-        FocusScope.of(context)
-            .requestFocus(_lidoversionFocus); // Pindah ke field berikutnya
+        FocusScope.of(context).requestFocus(_lidoversionFocus); // Pindah ke field berikutnya
       },
     );
     final lidoField = TextFormField(
@@ -125,8 +122,7 @@ class _AddDevice extends State<AddDevice> {
         border: OutlineInputBorder(),
       ),
       onEditingComplete: () {
-        FocusScope.of(context)
-            .requestFocus(_docuversionFocus); // Pindah ke field berikutnya
+        FocusScope.of(context).requestFocus(_docuversionFocus); // Pindah ke field berikutnya
       },
     );
     final docuField = TextFormField(
@@ -149,11 +145,9 @@ class _AddDevice extends State<AddDevice> {
         border: OutlineInputBorder(),
       ),
       onEditingComplete: () {
-        FocusScope.of(context)
-            .requestFocus(_lidoversionFocus); // Pindah ke field berikutnya
+        FocusScope.of(context).requestFocus(_lidoversionFocus); // Pindah ke field berikutnya
       },
     );
-
 
     final conditionField = TextFormField(
       controller: _condition,
@@ -172,7 +166,6 @@ class _AddDevice extends State<AddDevice> {
         border: OutlineInputBorder(),
       ),
     );
-
 
     final conditionDropdown = DropdownButtonFormField<String>(
       value: _selectedCondition,
@@ -216,8 +209,6 @@ class _AddDevice extends State<AddDevice> {
       ),
     );
 
-
-
     Future<void> _showQuickAlert(BuildContext context) async {
       await QuickAlert.show(
         context: context,
@@ -244,7 +235,6 @@ class _AddDevice extends State<AddDevice> {
               docuversion: _docuversion.text,
               hub: _selectedHub,
               condition: _selectedCondition, // Menggunakan nilai yang dipilih dari dropdown
-
             );
             if (response.code == 200) {
               //Success
@@ -268,50 +258,49 @@ class _AddDevice extends State<AddDevice> {
     );
 
     return Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          title: Text(
-            'Add Device',
-            style: tsOneTextTheme.headlineLarge,
-          ),
+      appBar: AppBar(
+        title: Text(
+          'Add Device',
+          style: tsOneTextTheme.headlineLarge,
         ),
-        body: Padding(
-          padding: const EdgeInsets.only(top: 20, right: 20, left: 20),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      deviceNoField,
-                      const SizedBox(height: 15.0),
-                      iosverField,
-                      const SizedBox(height: 15.0),
-                      flysmarvertField,
-                      const SizedBox(height: 15.0),
-                      lidoField,
-                      const SizedBox(height: 15.0),
-                      docuField,
-                      const SizedBox(height: 15.0),
-                      hubDropdown,
-                      const SizedBox(height: 15.0),
-                      conditionDropdown,
-                      const SizedBox(height: 15.0),
-                    ],
-                  ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.only(top: 20, right: 20, left: 20),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    deviceNoField,
+                    const SizedBox(height: 15.0),
+                    iosverField,
+                    const SizedBox(height: 15.0),
+                    flysmarvertField,
+                    const SizedBox(height: 15.0),
+                    lidoField,
+                    const SizedBox(height: 15.0),
+                    docuField,
+                    const SizedBox(height: 15.0),
+                    hubDropdown,
+                    const SizedBox(height: 15.0),
+                    conditionDropdown,
+                    const SizedBox(height: 15.0),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
-        bottomNavigationBar: BottomAppBar(
-            child: Container(
-              child: SaveButton,
-            ),
-            ),
-        );
-}
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: Container(
+          child: SaveButton,
+        ),
+      ),
+    );
+  }
 }
