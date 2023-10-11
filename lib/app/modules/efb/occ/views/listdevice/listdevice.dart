@@ -25,7 +25,8 @@ class ListDevice extends StatefulWidget {
 }
 
 class _ListDeviceState extends State<ListDevice> {
-  final Stream<QuerySnapshot> collectionReference = DeviceController.readDevice();
+  final Stream<QuerySnapshot> collectionReference =
+      DeviceController.readDevice();
   String searchQuery = "";
   TextEditingController searchController = TextEditingController();
 
@@ -115,9 +116,13 @@ class _ListDeviceState extends State<ListDevice> {
   }
 
   Future<void> exportToExcel(List<Map<String, dynamic>> data) async {
-    final CollectionReference deviceCollection = FirebaseFirestore.instance.collection('Device');
+    final CollectionReference deviceCollection =
+        FirebaseFirestore.instance.collection('Device');
     QuerySnapshot deviceSnapshot = await deviceCollection.get();
-    List<Map<String, dynamic>> data = deviceSnapshot.docs.map((DocumentSnapshot document) => document.data() as Map<String, dynamic>).toList();
+    List<Map<String, dynamic>> data = deviceSnapshot.docs
+        .map((DocumentSnapshot document) =>
+            document.data() as Map<String, dynamic>)
+        .toList();
     // Create an Excel workbook
     final excel = Excel.createExcel();
 
@@ -125,24 +130,45 @@ class _ListDeviceState extends State<ListDevice> {
     final sheet = excel['Main Data'];
 
     // Add headers
-    sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: 0)).value = 'Device No';
-    sheet.cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: 0)).value = 'iOS Version';
-    sheet.cell(CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: 0)).value = 'Lido Version';
-    sheet.cell(CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: 0)).value = 'Flysmart';
-    sheet.cell(CellIndex.indexByColumnRow(columnIndex: 4, rowIndex: 0)).value = 'Docu Version';
-    sheet.cell(CellIndex.indexByColumnRow(columnIndex: 5, rowIndex: 0)).value = 'Hub';
-    sheet.cell(CellIndex.indexByColumnRow(columnIndex: 6, rowIndex: 0)).value = 'Condition';
+    sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: 0)).value =
+        'Device No';
+    sheet.cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: 0)).value =
+        'iOS Version';
+    sheet.cell(CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: 0)).value =
+        'Lido Version';
+    sheet.cell(CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: 0)).value =
+        'Flysmart';
+    sheet.cell(CellIndex.indexByColumnRow(columnIndex: 4, rowIndex: 0)).value =
+        'Docu Version';
+    sheet.cell(CellIndex.indexByColumnRow(columnIndex: 5, rowIndex: 0)).value =
+        'Hub';
+    sheet.cell(CellIndex.indexByColumnRow(columnIndex: 6, rowIndex: 0)).value =
+        'Condition';
 
     // Add data to the worksheet
     for (var i = 0; i < data.length; i++) {
       final device = data[i];
-      sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: i + 1)).value = device['deviceno'];
-      sheet.cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: i + 1)).value = device['iosver'];
-      sheet.cell(CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: i + 1)).value = device['lidoversion'];
-      sheet.cell(CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: i + 1)).value = device['flysmart'];
-      sheet.cell(CellIndex.indexByColumnRow(columnIndex: 4, rowIndex: i + 1)).value = device['docuversion'];
-      sheet.cell(CellIndex.indexByColumnRow(columnIndex: 5, rowIndex: i + 1)).value = device['hub'];
-      sheet.cell(CellIndex.indexByColumnRow(columnIndex: 6, rowIndex: i + 1)).value = device['condition'];
+      sheet
+          .cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: i + 1))
+          .value = device['deviceno'];
+      sheet
+          .cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: i + 1))
+          .value = device['iosver'];
+      sheet
+          .cell(CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: i + 1))
+          .value = device['lidoversion'];
+      sheet
+          .cell(CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: i + 1))
+          .value = device['flysmart'];
+      sheet
+          .cell(CellIndex.indexByColumnRow(columnIndex: 4, rowIndex: i + 1))
+          .value = device['docuversion'];
+      sheet
+          .cell(CellIndex.indexByColumnRow(columnIndex: 5, rowIndex: i + 1))
+          .value = device['hub'];
+      sheet
+          .cell(CellIndex.indexByColumnRow(columnIndex: 6, rowIndex: i + 1))
+          .value = device['condition'];
     }
 
     // Save the Excel file
@@ -153,7 +179,9 @@ class _ListDeviceState extends State<ListDevice> {
 
     // Open the Excel file using a platform-specific API
     // In this example, we'll use the OpenFile package to open the file
-    await OpenFile.open(excelFile.path, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    await OpenFile.open(excelFile.path,
+        type:
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
   }
 
   Future<void> _showDeleteConfirmationDialog(String deviceId) async {
@@ -174,11 +202,14 @@ class _ListDeviceState extends State<ListDevice> {
               width: 115,
               child: TextButton(
                   style: TextButton.styleFrom(
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0), side: BorderSide(color: TsOneColor.onSecondary))),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                          side: BorderSide(color: TsOneColor.onSecondary))),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text('No', style: TextStyle(color: TsOneColor.onSecondary))),
+                  child: Text('No',
+                      style: TextStyle(color: TsOneColor.onSecondary))),
             ),
             SizedBox(
               width: 15,
@@ -193,13 +224,18 @@ class _ListDeviceState extends State<ListDevice> {
                       )),
                   onPressed: () async {
                     Navigator.of(context).pop();
-                    var response = await DeviceController.deleteDevice(uid: deviceId);
+                    var response =
+                        await DeviceController.deleteDevice(uid: deviceId);
 
                     if (response.code == 200) {
-                      await QuickAlert.show(context: context, type: QuickAlertType.success, text: 'Device successfully delete');
+                      await QuickAlert.show(
+                          context: context,
+                          type: QuickAlertType.success,
+                          text: 'Device successfully delete');
                     }
                   },
-                  child: Text('Yes', style: TextStyle(color: TsOneColor.onPrimary))),
+                  child: Text('Yes',
+                      style: TextStyle(color: TsOneColor.onPrimary))),
             ),
           ],
         );
@@ -208,7 +244,8 @@ class _ListDeviceState extends State<ListDevice> {
   }
 
   Future<List<Map<String, dynamic>>> fetchDataFromFirebase() async {
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('your_collection').get();
+    QuerySnapshot querySnapshot =
+        await FirebaseFirestore.instance.collection('your_collection').get();
 
     List<Map<String, dynamic>> data = [];
     querySnapshot.docs.forEach((doc) {
@@ -229,7 +266,8 @@ class _ListDeviceState extends State<ListDevice> {
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.download_outlined),
+            icon: Icon(Icons.table_chart_rounded),
+            tooltip: "Export to Sheet",
             onPressed: () async {
               // Retrieve data from Firebase
               List<Map<String, dynamic>> data = await fetchDataFromFirebase();
@@ -259,7 +297,8 @@ class _ListDeviceState extends State<ListDevice> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (BuildContext context) => AddDevice()),
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => AddDevice()),
                     );
                   },
                   child: Row(
@@ -306,7 +345,8 @@ class _ListDeviceState extends State<ListDevice> {
               padding: const EdgeInsets.only(right: 10),
               child: StreamBuilder<QuerySnapshot>(
                 stream: collectionReference,
-                builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return CircularProgressIndicator();
                   }
@@ -315,7 +355,8 @@ class _ListDeviceState extends State<ListDevice> {
                     return Text('Error: ${snapshot.error}');
                   }
 
-                  final deviceCount = snapshot.hasData ? snapshot.data!.docs.length : 0;
+                  final deviceCount =
+                      snapshot.hasData ? snapshot.data!.docs.length : 0;
 
                   return Text(
                     'Total Devices: $deviceCount',
@@ -330,7 +371,8 @@ class _ListDeviceState extends State<ListDevice> {
             Expanded(
               child: StreamBuilder(
                 stream: collectionReference,
-                builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());
                   }
@@ -343,8 +385,12 @@ class _ListDeviceState extends State<ListDevice> {
                     return const EmptyScreenEFB();
                   }
 
-                  final filteredData =
-                      snapshot.data!.docs.where((e) => e["deviceno"].toString().toLowerCase().contains(searchQuery.toLowerCase())).toList();
+                  final filteredData = snapshot.data!.docs
+                      .where((e) => e["deviceno"]
+                          .toString()
+                          .toLowerCase()
+                          .contains(searchQuery.toLowerCase()))
+                      .toList();
 
                   if (filteredData.isEmpty) {
                     return const EmptyScreenEFB();
@@ -355,7 +401,8 @@ class _ListDeviceState extends State<ListDevice> {
                     itemBuilder: (context, index) {
                       final e = filteredData[index];
                       return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 3),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 3),
                         child: Container(
                           child: Expanded(
                               child: DecoratedBox(
@@ -365,7 +412,11 @@ class _ListDeviceState extends State<ListDevice> {
                                 borderRadius: BorderRadius.circular(4.0),
                                 boxShadow: const [
                                   BoxShadow(
-                                      color: TsOneColor.surface, blurRadius: 10, spreadRadius: 2, offset: Offset(1, 1), blurStyle: BlurStyle.normal)
+                                      color: TsOneColor.surface,
+                                      blurRadius: 10,
+                                      spreadRadius: 2,
+                                      offset: Offset(1, 1),
+                                      blurStyle: BlurStyle.normal)
                                 ]),
                             child: Column(
                               children: [
