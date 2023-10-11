@@ -141,7 +141,6 @@ class AnalyticsView extends GetView<AnalyticsController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text(
           'Analytics',

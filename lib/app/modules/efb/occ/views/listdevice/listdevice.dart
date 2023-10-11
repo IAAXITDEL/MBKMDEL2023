@@ -260,21 +260,28 @@ class _ListDeviceState extends State<ListDevice> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        backgroundColor: Colors.white, // Set background color to white
         title: Text(
           'List Device',
-          style: tsOneTextTheme.headlineLarge,
+          style: TextStyle(
+            color: Colors.black, // Set text color to red
+            fontSize: 24.0,
+            fontWeight: FontWeight.bold,
+          ),
         ),
+        centerTitle: true, // Center the title
         actions: [
-          IconButton(
-            icon: Icon(Icons.table_chart_rounded),
-            tooltip: "Export to Sheet",
-            onPressed: () async {
-              // Retrieve data from Firebase
-              List<Map<String, dynamic>> data = await fetchDataFromFirebase();
-
-              // Export data to Excel
-              await exportToExcel(data);
-            },
+          Tooltip(
+            message: 'Export to Sheet',
+            child: IconButton(
+              icon: Icon(
+                Icons.table_chart_rounded,
+              ),
+              onPressed: () async {
+                List<Map<String, dynamic>> data = await fetchDataFromFirebase();
+                await exportToExcel(data);
+              },
+            ),
           ),
         ],
       ),
@@ -283,40 +290,6 @@ class _ListDeviceState extends State<ListDevice> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Align(
-              alignment: Alignment.centerRight,
-              child: Container(
-                width: 155,
-                child: TextButton(
-                  style: TextButton.styleFrom(
-                    backgroundColor: TsOneColor.primary,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(4.0),
-                    ),
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => AddDevice()),
-                    );
-                  },
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.add_box_outlined,
-                        color: TsOneColor.onPrimary,
-                      ),
-                      SizedBox(width: 10),
-                      Text(
-                        "Add Device",
-                        style: TextStyle(color: TsOneColor.onPrimary),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
             SizedBox(height: 10),
             Container(
               height: 60,
@@ -453,6 +426,16 @@ class _ListDeviceState extends State<ListDevice> {
             ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (BuildContext context) => AddDevice()),
+          );
+        },
+        child: Icon(Icons.add),
+        backgroundColor: TsOneColor.primary,
       ),
     );
   }

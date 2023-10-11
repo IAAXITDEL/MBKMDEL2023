@@ -414,7 +414,7 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10.0),
                                   child: Card(
-                                    surfaceTintColor: TsOneColor.surface,
+                                    surfaceTintColor: Colors.white,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(15),
                                     ),
