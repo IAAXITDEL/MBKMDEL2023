@@ -2,15 +2,16 @@ import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/pdf.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:image/image.dart' as img;
 
 import '../../../../../data/users/user_preferences.dart';
 import '../../../../../data/users/users.dart';
@@ -33,7 +34,7 @@ class AttendanceConfirccController extends GetxController {
 
   void selectMeeting(String? newValue) {
     selectedMeeting.value =
-        newValue ?? "Training"; // Default to "Meeting 1" if newValue is null
+        newValue ?? "Training";
   }
 
   final RxString argumentid = "".obs;
@@ -45,6 +46,11 @@ class AttendanceConfirccController extends GetxController {
   final RxInt idInstructor = 0.obs;
 
   final RxString role = "".obs;
+
+
+  RxString date = "".obs;
+  RxInt idTrainingType = 0.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -76,8 +82,15 @@ class AttendanceConfirccController extends GetxController {
         .where("id", isEqualTo: argumentid.value)
         .snapshots()
         .asyncMap((attendanceQuery) async {
-      final usersQuery = await _firestore.collection('users').get();
-      final usersData = usersQuery.docs.map((doc) => doc.data()).toList();
+      List<int?> instructorIds =
+      attendanceQuery.docs.map((doc) => AttendanceModel.fromJson(doc.data()).instructor).toList();
+
+      final usersData = <Map<String, dynamic>>[];
+
+      if (instructorIds.isNotEmpty) {
+        final usersQuery = await _firestore.collection('users').where("ID NO", whereIn: instructorIds).get();
+        usersData.addAll(usersQuery.docs.map((doc) => doc.data()));
+      }
 
       final attendanceData = await Future.wait(
         attendanceQuery.docs.map((doc) async {
@@ -88,6 +101,10 @@ class AttendanceConfirccController extends GetxController {
           attendanceModel.name = user['NAME'];
           attendanceModel.loano = user['LOA NO'];
           idInstructor.value = attendanceModel.instructor!;
+
+          date.value = attendanceModel.date!;
+          idTrainingType.value = attendanceModel.idTrainingType!;
+
           return attendanceModel.toJson();
         }),
       );
@@ -103,8 +120,16 @@ class AttendanceConfirccController extends GetxController {
         .where("status", whereIn: ["done", "donescoring"])
         .snapshots()
         .asyncMap((attendanceQuery) async {
-          final usersQuery = await _firestore.collection('users').get();
-          final usersData = usersQuery.docs.map((doc) => doc.data()).toList();
+
+          List<int?> traineIds =
+          attendanceQuery.docs.map((doc) => AttendanceDetailModel.fromJson(doc.data()).idtraining).toList();
+
+          final usersData = <Map<String, dynamic>>[];
+
+          if (traineIds.isNotEmpty) {
+            final usersQuery = await _firestore.collection('users').where("ID NO", whereIn: traineIds).get();
+            usersData.addAll(usersQuery.docs.map((doc) => doc.data()));
+          }
 
           final attendanceData = await Future.wait(
             attendanceQuery.docs.map((doc) async {
@@ -159,15 +184,62 @@ class AttendanceConfirccController extends GetxController {
     await FirebaseFirestore.instance
         .collection('attendance')
         .doc(argumentid.value)
-        .update({'signaturePilotAdministratorUrl': imageUrl});
+        .update({
+      'signaturePilotAdministratorUrl': imageUrl,
+        });
   }
 
   //confir attendance oleh pilot administrator
   Future<void> confirattendance() async {
     userPreferences = getItLocator<UserPreferences>();
     CollectionReference attendance = _firestore.collection('attendance');
+
+
+    CollectionReference training = _firestore.collection('trainingType');
+    QuerySnapshot querySnapshot = await training
+        .where('id', isEqualTo: idTrainingType.value)
+        .get();
+
+    var lastDayOfMonth;
+    var dateFormat = DateFormat('dd-MM-yyyy');
+
+    if (querySnapshot.docs.isNotEmpty) {
+      for (DocumentSnapshot document in querySnapshot.docs) {
+        var dates = dateFormat.parse(date.value);
+
+        var recurrent = (document.data() as Map<String, dynamic>)['recurrent'];
+        var nextMonths;
+
+        if(recurrent == "NONE"){
+          nextMonths = DateTime(dates.year, dates.month, dates.day);
+        }else if(recurrent == "6 MONTH CALENDER"){
+           nextMonths = DateTime(dates.year, dates.month + 6, dates.day);
+        }else if(recurrent == "12 MONTH CALENDER"){
+           nextMonths = DateTime(dates.year, dates.month + 12, dates.day);
+        }else if(recurrent == "24 MONTH CALENDER"){
+           nextMonths = DateTime(dates.year, dates.month + 24, dates.day);
+        }else if(recurrent == "36 MONTH CALENDER"){
+          nextMonths = DateTime(dates.year, dates.month + 36, dates.day);
+        }else if(recurrent == "LAST MONTH ON THE NEXT YEAR OF THE PREVIOUS TRAINING"){
+          nextMonths = DateTime(dates.year + 1, 12, 31);
+        }
+
+        // Handling jika bulan melebihi 12 dan 24
+        if (nextMonths.month > 12) {
+          nextMonths = DateTime(nextMonths.year + (nextMonths.month ~/ 12), nextMonths.month % 12, nextMonths.day);
+        }
+
+        // Menghitung tanggal akhir dari bulan
+        lastDayOfMonth = DateTime(nextMonths.year, nextMonths.month + 1, 0);
+      }
+    } else {
+      print('No documents found');
+    }
+
     await attendance.doc(argumentid.value.toString()).update({
       "status": "done",
+      "valid_to" : lastDayOfMonth,
+      "expiry" : "VALID",
       "idPilotAdministrator": userPreferences.getIDNo(),
       "updatedTime": DateTime.now().toIso8601String(),
     });
@@ -206,8 +278,16 @@ class AttendanceConfirccController extends GetxController {
   // List daftar Absent
   Stream<List<Map<String, dynamic>>> absentStream() {
     return _firestore.collection('absent').where("idattendance", isEqualTo: argumentid.value).snapshots().asyncMap((attendanceQuery) async {
-      final usersQuery = await _firestore.collection('users').get();
-      final usersData = usersQuery.docs.map((doc) => doc.data()).toList();
+      List<int?> traineeIds =
+      attendanceQuery.docs.map((doc) => AttendanceDetailModel.fromJson(doc.data()).idtraining).toList();
+
+
+      final usersData = <Map<String, dynamic>>[];
+
+      if (traineeIds.isNotEmpty) {
+        final usersQuery = await _firestore.collection('users').where("ID NO", whereIn: traineeIds).get();
+        usersData.addAll(usersQuery.docs.map((doc) => doc.data()));
+      }
 
       final attendanceData = await Future.wait(
         attendanceQuery.docs.map((doc) async {
@@ -235,15 +315,22 @@ class AttendanceConfirccController extends GetxController {
   // List untuk Instructor
   Stream<List<Map<String, dynamic>>> instructorStream() {
     return _firestore.collection('attendance').where("id", isEqualTo: argumentid.value).snapshots().asyncMap((attendanceQuery) async {
-      final usersQuery = await _firestore.collection('users').get();
-      final usersData = usersQuery.docs.map((doc) => doc.data()).toList();
+      List<int?> instructorIds =
+      attendanceQuery.docs.map((doc) => AttendanceModel.fromJson(doc.data()).instructor).toList();
+
+      final usersData = <Map<String, dynamic>>[];
+
+      if (instructorIds.isNotEmpty) {
+        final usersQuery = await _firestore.collection('users').where("ID NO", whereIn: instructorIds).get();
+        usersData.addAll(usersQuery.docs.map((doc) => doc.data()));
+      }
 
       final attendanceData = await Future.wait(
         attendanceQuery.docs.map((doc) async {
           final attendanceModel = AttendanceModel.fromJson(doc.data());
           final user = usersData.firstWhere((user) => user['ID NO'] == attendanceModel.instructor, orElse: () => {});
           attendanceModel.name = user['NAME'];
-          attendanceModel.photoURL = user['PHOTOURL'];
+          attendanceModel.loano = user['LOA NO'];
           return attendanceModel.toJson();
         }),
       );
@@ -254,8 +341,15 @@ class AttendanceConfirccController extends GetxController {
   // List untuk Administrator
   Stream<List<Map<String, dynamic>>> administratorStream() {
     return _firestore.collection('attendance').where("id", isEqualTo: argumentid.value).snapshots().asyncMap((attendanceQuery) async {
-      final usersQuery = await _firestore.collection('users').get();
-      final usersData = usersQuery.docs.map((doc) => doc.data()).toList();
+      List<int?> adminIds =
+      attendanceQuery.docs.map((doc) => AttendanceModel.fromJson(doc.data()).idPilotAdministrator).toList();
+
+      final usersData = <Map<String, dynamic>>[];
+
+      if (adminIds.isNotEmpty) {
+        final usersQuery = await _firestore.collection('users').where("ID NO", whereIn: adminIds).get();
+        usersData.addAll(usersQuery.docs.map((doc) => doc.data()));
+      }
 
       final attendanceData = await Future.wait(
         attendanceQuery.docs.map((doc) async {
@@ -285,26 +379,24 @@ class AttendanceConfirccController extends GetxController {
     }
   }
 
+  Future<Uint8List> resizeImage(Uint8List imageData, int targetWidth, int targetHeight) async {
+    final image = img.decodeImage(imageData);
+    final resizedImage = img.copyResize(image!, width: targetWidth, height: targetHeight);
+    return Uint8List.fromList(img.encodePng(resizedImage));
+  }
+
   //Import PDF
-  Future<void> attendancelist() async {
+  Future<String> attendancelist() async {
     try {
-      final font = await rootBundle.load("assets/fonts/Poppins-Regular.ttf");
-      final ttf = pw.Font.ttf(font);
-
-      final fonticon = await rootBundle.load("assets/fonts/materialIcons.ttf");
-      final ttficon = pw.Font.ttf(fonticon);
       final pdf = pw.Document();
-
       final Uint8List backgroundImageData =
           (await rootBundle.load('assets/images/airasia_logo_circle.png'))
               .buffer
               .asUint8List();
-
       final Uint8List checkedImage =
       (await rootBundle.load('assets/images/check.png'))
           .buffer
           .asUint8List();
-
       final Uint8List uncheckedImage =
       (await rootBundle.load('assets/images/square.png'))
           .buffer
@@ -361,8 +453,12 @@ class AttendanceConfirccController extends GetxController {
 
       //menampilkan data training
       for (int e = 0; e < allAttendanceDetailModels.length; e++) {
-        final images = await loadImageFromNetwork(allAttendanceDetailModels[e].signature_url ?? "");
+       // var images = await loadImageFromNetwork(allAttendanceDetailModels[e].signature_url ?? "");
 
+        final Uint8List imageBytes = await _getImageBytes(allAttendanceDetailModels[e].signature_url ?? "");
+        final Uint8List resizedImageBytes = await resizeImage(imageBytes, 50, 50);
+
+        pw.MemoryImage images = pw.MemoryImage(resizedImageBytes);
         tableRows.add(
           pw.TableRow(
             children: [
@@ -389,17 +485,20 @@ class AttendanceConfirccController extends GetxController {
         );
       }
 
-      print("panjangnya instructor ${instructorModels.length}");
       //menampilkan data instructor
       for (int f = 0; f < instructorModels.length; f++) {
-        final imagesicc = await loadImageFromNetwork(instructorModels[f].signatureIccUrl ?? "");
+        //var imagesicc = await loadImageFromNetwork(instructorModels[f].signatureIccUrl ?? "");
 
+        final Uint8List imageBytesInstructor = await _getImageBytes(instructorModels[f].signatureIccUrl ?? "");
+        final Uint8List resizedImageBytesInstructor = await resizeImage(imageBytesInstructor, 50, 50); // Adjust dimensions as needed
+
+        pw.MemoryImage imagesicc = pw.MemoryImage(resizedImageBytesInstructor);
         instructorTableRows.add(
           pw.TableRow(
             children: [
               NormalTextFieldPdf(title: "${instructorModels[f].name}"),
               NormalTextFieldPdf(title: "${instructorModels[f].instructor}"),
-              NormalTextFieldPdf(title: "${instructorModels[f].name}"),
+              NormalTextFieldPdf(title: "${instructorModels[f].loano}"),
               pw.Container(
                 height: 15,
                 padding: pw.EdgeInsets.all(5),
@@ -415,13 +514,17 @@ class AttendanceConfirccController extends GetxController {
             ],
           ),
         );
+
       }
 
-      print("panjangnya ${administratorModels.length}");
       //menampilkan data pilot administrator
       for (int g = 0; g < administratorModels.length; g++) {
-        final imagesipa = await loadImageFromNetwork(administratorModels[g].signaturePilotAdministratorUrl ?? "");
+       // var imagesipa = await loadImageFromNetwork(administratorModels[g].signaturePilotAdministratorUrl ?? "");
 
+        final Uint8List imageBytesAdministrator = await _getImageBytes(administratorModels[g].signaturePilotAdministratorUrl ?? "");
+        final Uint8List resizedImageBytesAdministrator = await resizeImage(imageBytesAdministrator, 50, 50); // Adjust dimensions as needed
+
+        pw.MemoryImage imagesipa = pw.MemoryImage(resizedImageBytesAdministrator);
         administratorTableRows.add(
           pw.TableRow(
             children: [
@@ -442,6 +545,7 @@ class AttendanceConfirccController extends GetxController {
             ],
           ),
         );
+
       }
 
       // ------------------- PDF ------------------
@@ -789,39 +893,6 @@ class AttendanceConfirccController extends GetxController {
                                 ),
                               ],
                             ),
-                            // Data rows
-                            // for (int d = 0;
-                            //     d < allAttendanceDetailModels.length;
-                            //     d++)
-                            //   pw.TableRow(
-                            //     children: [
-                            //       NormalTextFieldPdf(title: "$d"),
-                            //       NormalTextFieldPdf(
-                            //           title:
-                            //               "${allAttendanceDetailModels[d].name}"),
-                            //       NormalTextFieldPdf(
-                            //           title:
-                            //               "${allAttendanceDetailModels[d].idtraining}"),
-                            //       NormalTextFieldPdf(
-                            //           title:
-                            //               "${allAttendanceDetailModels[d].rank}"),
-                            //       NormalTextFieldPdf(
-                            //           title:
-                            //               "${allAttendanceDetailModels[d].license}"),
-                            //       NormalTextFieldPdf(title: "03-11-22"),
-                            //       pw.Container(
-                            //         height: 15,
-                            //         child: pw.Center(
-                            //           child: pw.Image(
-                            //             image,
-                            //             fit: pw.BoxFit.cover,
-                            //             height: 50,
-                            //             width: 50,
-                            //           ),
-                            //         ),
-                            //       ),
-                            //     ],
-                            //   ),
                             ...tableRows
                           ],
                         ),
@@ -904,16 +975,6 @@ class AttendanceConfirccController extends GetxController {
                               ],
                             ),
                             ...instructorTableRows,
-                            // Data rows
-                            // for (int c = 0; c < 3; c++)
-                            //   pw.TableRow(
-                            //     children: [
-                            //       NormalTextFieldPdf(title: "03-11-22"),
-                            //       NormalTextFieldPdf(title: "12-12-22"),
-                            //       NormalTextFieldPdf(title: "03-11-22"),
-                            //       NormalTextFieldPdf(title: "12-12-22"),
-                            //     ],
-                            //   ),
                           ],
                         ),
                       ),
@@ -1036,26 +1097,56 @@ class AttendanceConfirccController extends GetxController {
         ),
       );
 
-      // Save the PDF to a file or perform other actions
-      // ...
-      final directory = await getApplicationDocumentsDirectory();
-      final file = File('${directory.path}/attandance57.pdf');
 
-      await file.writeAsBytes(await pdf.save());
 
-      final destinationDirectory = await getTemporaryDirectory();
-      final destinationPath = '${destinationDirectory.path}/attandance57.pdf';
+      // // Save the PDF to a file or perform other actions
+      // final directory = await getApplicationDocumentsDirectory();
+      // String pdfPath = '${directory.path}/AttendanceList.pdf';
+      // var bytes = await pdf.save();
+      // File(pdfPath).writeAsBytesSync(bytes);
+      //
+      // print("PDF saved at: $pdfPath");
 
-      await file.copy(destinationPath);
 
-      file.delete();
+      // Make Assessment TS1 Folder
+      Directory('/storage/emulated/0/Download/Attendance List/').createSync();
+
+      // Save into download directory
+      // Save and dispose the document.
+
+      String pathSavePDF =
+          '/storage/emulated/0/Download/Attendance List/T1.pdf';
+
+      Directory? tempDir = await getExternalStorageDirectory();
+      String cacheSavePDF =
+          '${tempDir?.path}/T1.pdf';
+
+
+      var bytes = await pdf.save();
+
+      print("BISA");
+
+      File(pathSavePDF).writeAsBytesSync(bytes);
+
+      print("BISGADWADAWA");
+
+      File(cacheSavePDF).writeAsBytesSync(bytes);
+      print("dwadawdawdaw");
 
       if(allAttendanceDetailModels.length > 0 ){
-        await OpenFile.open(destinationPath);
+        await OpenFile.open(pathSavePDF);
       }
 
+      return cacheSavePDF;
+
+      attendanceModels.clear();
+      allAttendanceDetailModels.clear();
+      instructorModels.clear();
+      administratorModels.clear();
+
     } catch (e) {
-      print('Error: $e');
+      print("Error generating PDF: $e");
+      return Future.value("Failed to generate PDF");
     }
   }
 

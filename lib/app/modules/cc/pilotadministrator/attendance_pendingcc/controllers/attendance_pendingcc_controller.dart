@@ -18,8 +18,15 @@ class AttendancePendingccController extends GetxController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   Stream<List<Map<String, dynamic>>> getCombinedAttendanceStream(String id) {
     return _firestore.collection('attendance').where("id", isEqualTo: id).snapshots().asyncMap((attendanceQuery) async {
-      final usersQuery = await _firestore.collection('users').get();
-      final usersData = usersQuery.docs.map((doc) => doc.data()).toList();
+      List<int?> instructorIds =
+      attendanceQuery.docs.map((doc) => AttendanceModel.fromJson(doc.data()).instructor).toList();
+
+      final usersData = <Map<String, dynamic>>[];
+
+      if (instructorIds.isNotEmpty) {
+        final usersQuery = await _firestore.collection('users').where("ID NO", whereIn: instructorIds).get();
+        usersData.addAll(usersQuery.docs.map((doc) => doc.data()));
+      }
 
       final attendanceData = await Future.wait(
         attendanceQuery.docs.map((doc) async {

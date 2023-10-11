@@ -31,15 +31,21 @@ class AttendancePilotccController extends GetxController {
   //Mendapatkan data kelas yang diikuti
   Stream<List<Map<String, dynamic>>> getCombinedAttendanceStream() {
     return firestore.collection('attendance').where("id", isEqualTo: idattendance.value).where("status", isEqualTo: "pending").snapshots().asyncMap((attendanceQuery) async {
-      final usersQuery = await firestore.collection('users').get();
-      final usersData = usersQuery.docs.map((doc) => doc.data()).toList();
+      List<int?> instructorIds =
+      attendanceQuery.docs.map((doc) => AttendanceModel.fromJson(doc.data()).instructor).toList();
+
+      final usersData = <Map<String, dynamic>>[];
+
+      if (instructorIds.isNotEmpty) {
+        final usersQuery = await firestore.collection('users').where("ID NO", whereIn: instructorIds).get();
+        usersData.addAll(usersQuery.docs.map((doc) => doc.data()));
+      }
 
       final attendanceData = await Future.wait(
         attendanceQuery.docs.map((doc) async {
           final attendanceModel = AttendanceModel.fromJson(doc.data());
           final user = usersData.firstWhere((user) => user['ID NO'] == attendanceModel.instructor, orElse: () => {});
-          attendanceModel.name = user['NAME']; // Set 'nama' di dalam model
-          attendanceModel.photoURL = user['PHOTOURL'];
+          attendanceModel.name = user['NAME'];
           return attendanceModel.toJson();
         }),
       );

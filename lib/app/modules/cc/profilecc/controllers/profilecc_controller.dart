@@ -17,6 +17,10 @@ class ProfileccController extends GetxController {
   late bool _canViewAllAssessments;
 
   RxBool isTraining = false.obs;
+  RxBool isInstructor = false.obs;
+  RxString instructorType = "".obs;
+
+
   RxInt idTraining = 0.obs;
   GoogleSignIn _googleSignIn = GoogleSignIn();
   FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -79,7 +83,10 @@ class ProfileccController extends GetxController {
     }
     // SEBAGAI INSTRUCTOR
     else if( userPreferences.getInstructor().contains(UserModel.keySubPositionCCP) || userPreferences.getInstructor().contains(UserModel.keySubPositionFIA) || userPreferences.getInstructor().contains(UserModel.keySubPositionFIS) || userPreferences.getInstructor().contains(UserModel.keySubPositionPGI)&& userPreferences.getRank().contains(UserModel.keyPositionCaptain) || userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)){
-
+      isTraining.value = true;
+      isInstructor.value = true;
+      instructorType.value = userPreferences.getInstructorString();
+      print(userPreferences.getInstructorString());
     }
     // SEBAGAI TRAINING
     else if( userPreferences.getRank().contains(UserModel.keyPositionCaptain) || userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)){

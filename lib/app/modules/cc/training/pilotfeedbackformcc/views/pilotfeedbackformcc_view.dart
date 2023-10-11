@@ -53,8 +53,8 @@ class PilotfeedbackformccView extends GetView<PilotfeedbackformccController> {
             padding: EdgeInsets.all(20),
             child: Column(
               children: [
-                StreamBuilder<List<Map<String, dynamic>>>(
-                    stream: controller.getCombinedAttendanceStream(),
+                FutureBuilder<List<Map<String, dynamic>>>(
+                    future: controller.getCombinedAttendance(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return LoadingScreen(); // Placeholder while loading

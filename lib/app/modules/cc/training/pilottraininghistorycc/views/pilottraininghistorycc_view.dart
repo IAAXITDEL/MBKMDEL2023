@@ -28,26 +28,45 @@ class PilottraininghistoryccView
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                //--------------KELAS TRAINING-------------
-                StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                  stream: controller.trainingStream(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return LoadingScreen(); // Placeholder while loading
-                    }
+                //--------------KELAS TRAINING-------------'
+                Row(
+                  children: [
+                    Expanded(flex:4 , child: Container(
+                      child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                        stream: controller.trainingStream(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return LoadingScreen(); // Placeholder while loading
+                          }
 
-                    if (snapshot.hasError) {
-                      return ErrorScreen();
-                    }
+                          if (snapshot.hasError) {
+                            return ErrorScreen();
+                          }
 
-                    var listTraining = snapshot.data!.docs;
+                          var listTraining = snapshot.data!.docs;
 
-                    return Text(
-                      listTraining[0]["training"],
-                      maxLines: 1,
-                      style: tsOneTextTheme.bodyLarge,
-                    );
-                  },
+                          return Text(
+                            listTraining[0]["training"],
+                            maxLines: 1,
+                            style: tsOneTextTheme.bodyLarge,
+                          );
+                        },
+                      ),
+                    ),),
+                   Obx(() =>  Expanded(flex: 1, child: Container(
+                     padding: EdgeInsets.symmetric(vertical: 3, horizontal: 10),
+                     decoration: BoxDecoration(
+                       color: controller.expiryC.value == "VALID" ? Colors.green.withOpacity(0.4) : Colors.red.withOpacity(0.4),
+                       borderRadius: BorderRadius.circular(10),
+                     ),
+                     child: Center(
+                       child: Text(
+                         controller.expiryC.value ,
+                         style: TextStyle(fontSize: 10, color: controller.expiryC.value == "VALID" ? Colors.green : Colors.red),
+                       ),
+                     ),
+                   ),),),
+                  ],
                 ),
 
                 SizedBox(
@@ -75,11 +94,19 @@ class PilottraininghistoryccView
                         itemCount: listAttendance.length,
                         physics: const NeverScrollableScrollPhysics(),
                         itemBuilder: (context, index) {
-                          String dateString = listAttendance[index]["date"];
+                          var dateFormat = DateFormat('dd-MM-yyyy');
 
-                          DateTime date = DateFormat('dd-MM-yyyy').parse(dateString);
+                          var dates = dateFormat.parse(listAttendance[index]["date"]);
+                          String dateC = DateFormat('dd MMMM yyyy').format(dates);
 
-                          String formattedDate = DateFormat('dd MMMM yyyy').format(date);
+                          // var valids = dateFormat.parse(listAttendance[index]["valid_to"]);
+                          // String validC = DateFormat('dd MMMM yyyy').format(valids);
+
+
+                          Timestamp? timestamp = listAttendance[index]["valid_to"];
+                          DateTime? dateTime = timestamp?.toDate();
+                          String validC = DateFormat('dd MMMM yyyy').format(dateTime!);
+                          print(validC);
                           return InkWell(
                             onTap: () {
                               Get.toNamed(Routes.PILOTTRAININGHISTORYDETAILCC, arguments: {
@@ -125,7 +152,7 @@ class PilottraininghistoryccView
                                         Expanded(
                                             flex: 8,
                                             child: Text(
-                                              formattedDate,
+                                              dateC,
                                               style: tsOneTextTheme.labelMedium,
                                             )),
                                       ],
@@ -147,7 +174,7 @@ class PilottraininghistoryccView
                                         Expanded(
                                             flex: 8,
                                             child: Text(
-                                              "31 September 2023",
+                                              validC,
                                               style: tsOneTextTheme.labelMedium,
                                             )),
                                       ],
