@@ -19,24 +19,8 @@ class PilottraininghistorydetailccView
     return Scaffold(
       appBar: AppBar(
         title:   //--------------KELAS TRAINING-------------
-        StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-          stream: controller.trainingStream(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return LoadingScreen(); // Placeholder while loading
-            }
-
-            if (snapshot.hasError) {
-              return ErrorScreen();
-            }
-
-            var listTraining = snapshot.data!.docs;
-
-            return RedTitleText( text :
-            "${listTraining[0]["training"]} TRAINING",
-            );
-          },
-        ),
+        RedTitleText(text :
+        "${controller.trainingName.value} TRAINING",),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -82,8 +66,8 @@ class PilottraininghistorydetailccView
                     borderRadius: BorderRadius.circular(10.0),
                     color: TsOneColor.surface,
                   ),
-                  child:  StreamBuilder<List<Map<String, dynamic>>>(
-                    stream: controller.getCombinedAttendanceStream(),
+                  child:  FutureBuilder<List<Map<String, dynamic>>>(
+                    future: controller.getCombinedAttendance(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return LoadingScreen(); // Placeholder while loading

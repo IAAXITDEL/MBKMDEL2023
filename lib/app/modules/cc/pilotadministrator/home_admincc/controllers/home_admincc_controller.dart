@@ -15,7 +15,6 @@ class HomeAdminccController extends GetxController {
   late bool _isPilotAdministrator;
 
 
-
   @override
   void onInit() {
     userPreferences = getItLocator<UserPreferences>();
@@ -36,7 +35,9 @@ class HomeAdminccController extends GetxController {
         titleToGreet = 'Allstar';
     }
 
-    var hour = DateTime.now().hour;
+    var hour = DateTime
+        .now()
+        .hour;
     if (hour < 12) {
       timeToGreet = "Morning";
     } else if (hour < 17) {
@@ -51,22 +52,47 @@ class HomeAdminccController extends GetxController {
 
   // LIST NEED CONFIRMATION
   FirebaseFirestore firestore = FirebaseFirestore.instance;
+
   Stream<List<Map<String, dynamic>>> getCombinedAttendanceStream() {
-    return firestore.collection('attendance').where("status", isEqualTo: "confirmation").where("is_delete", isEqualTo: 0).snapshots().asyncMap((attendanceQuery) async {
-      final usersQuery = await firestore.collection('users').get();
-      final usersData = usersQuery.docs.map((doc) => doc.data()).toList();
+    return firestore
+        .collection('attendance')
+        .where("status", isEqualTo: "confirmation")
+        .where("is_delete", isEqualTo: 0)
+        .snapshots()
+        .asyncMap((attendanceQuery) async {
+      final instructorIds = attendanceQuery.docs
+          .map((doc) => AttendanceModel.fromJson(doc.data()).instructor)
+          .toList();
+
+      final usersData = <Map<String, dynamic>>[];
+
+      if (instructorIds.isNotEmpty) {
+        final usersQuery = await firestore.collection('users').where("ID NO", whereIn: instructorIds).get();
+        usersData.addAll(usersQuery.docs.map((doc) => doc.data()));
+      }
 
       final attendanceData = await Future.wait(
         attendanceQuery.docs.map((doc) async {
           final attendanceModel = AttendanceModel.fromJson(doc.data());
-          final user = usersData.firstWhere((user) => user['ID NO'] == attendanceModel.instructor, orElse: () => {});
-          attendanceModel.name = user['NAME']; // Set 'nama' di dalam model
-          attendanceModel.photoURL = user['PHOTOURL'];
+          attendanceModel.name = usersData
+              .firstWhere((user) => user['ID NO'] == attendanceModel.instructor, orElse: () => {})['NAME'] ??
+              'N/A';
+
+          Timestamp? timestamp = attendanceModel.valid_to;
+
+          // Konversi Timestamp menjadi DateTime
+          DateTime? dateTime = timestamp?.toDate();
+
+          print('DateTime: $dateTime');
+          print(attendanceModel.name);
           return attendanceModel.toJson();
         }),
       );
+      print(attendanceData);
 
       return attendanceData;
     });
   }
+
 }
+

@@ -41,8 +41,15 @@ class ListAttendanceccController extends GetxController {
           .where("status", isEqualTo: "donescoring")
           .snapshots()
           .asyncMap((attendanceQuery) async {
-        final usersQuery = await _firestore.collection('users').get();
-        final usersData = usersQuery.docs.map((doc) => doc.data()).toList();
+        List<int?> traineeIds =
+        attendanceQuery.docs.map((doc) => AttendanceDetailModel.fromJson(doc.data()).idtraining).toList();
+
+        final usersData = <Map<String, dynamic>>[];
+
+        if (traineeIds.isNotEmpty) {
+          final usersQuery = await _firestore.collection('users').where("ID NO", whereIn: traineeIds).get();
+          usersData.addAll(usersQuery.docs.map((doc) => doc.data()));
+        }
 
         final attendanceData = await Future.wait(
           attendanceQuery.docs.map((doc) async {
@@ -77,8 +84,16 @@ class ListAttendanceccController extends GetxController {
         .where("status", whereIn: ["done", "donescoring"])
         .snapshots()
         .asyncMap((attendanceQuery) async {
-      final usersQuery = await _firestore.collection('users').get();
-      final usersData = usersQuery.docs.map((doc) => doc.data()).toList();
+      List<int?> traineeIds =
+      attendanceQuery.docs.map((doc) => AttendanceDetailModel.fromJson(doc.data()).idtraining).toList();
+
+
+      final usersData = <Map<String, dynamic>>[];
+
+      if (traineeIds.isNotEmpty) {
+        final usersQuery = await _firestore.collection('users').where("ID NO", whereIn: traineeIds).get();
+        usersData.addAll(usersQuery.docs.map((doc) => doc.data()));
+      }
 
       final attendanceData = await Future.wait(
         attendanceQuery.docs.map((doc) async {

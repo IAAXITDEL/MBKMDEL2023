@@ -243,28 +243,41 @@ class ProfileccView extends GetView<ProfileccController> {
                           SizedBox(
                             height: 10,
                           ),
-                          controller.isTraining.value == false
-                              ? Row(
-                                  children: [
-                                    Expanded(flex: 3, child: Text("LOA NO.")),
-                                    Expanded(flex: 1, child: Text(":")),
-                                    Expanded(
-                                        flex: 5,
-                                        child: Text(
-                                            documentData["LOA NO"] ?? "N/A")),
-                                    Expanded(
-                                        flex: 1,
-                                        child: InkWell(
-                                          onTap: (){
-                                            add();
-                                          },
-                                          child: Icon(
-                                            Icons.edit,
-                                            color: Colors.blue,
-                                          ),
-                                        )),
-                                  ],
-                                )
+                          controller.isInstructor.value == true
+                              ? Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Expanded(flex: 3, child: Text("INSTRUCTOR")),
+                                  Expanded(flex: 1, child: Text(":")),
+                                  Expanded(
+                                      flex: 6,
+                                      child: Text(controller.instructorType.value ?? "N/A")),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(flex: 3, child: Text("LOA NO.")),
+                                  Expanded(flex: 1, child: Text(":")),
+                                  Expanded(
+                                      flex: 5,
+                                      child: Text(
+                                          documentData["LOA NO"] ?? "N/A")),
+                                  Expanded(
+                                      flex: 1,
+                                      child: InkWell(
+                                        onTap: (){
+                                          add();
+                                        },
+                                        child: Icon(
+                                          Icons.edit,
+                                          color: Colors.blue,
+                                        ),
+                                      )),
+                                ],
+                              )
+                            ],
+                          )
                               : SizedBox()
                         ],
                       ),

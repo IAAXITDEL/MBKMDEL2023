@@ -40,8 +40,15 @@ class AttendanceInstructorconfirccController extends GetxController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   Stream<List<Map<String, dynamic>>> getCombinedAttendanceStream(String id) {
     return _firestore.collection('attendance').where("id", isEqualTo: id).snapshots().asyncMap((attendanceQuery) async {
-      final usersQuery = await _firestore.collection('users').get();
-      final usersData = usersQuery.docs.map((doc) => doc.data()).toList();
+      List<int?> instructorIds =
+      attendanceQuery.docs.map((doc) => AttendanceModel.fromJson(doc.data()).instructor).toList();
+
+      final usersData = <Map<String, dynamic>>[];
+
+      if (instructorIds.isNotEmpty) {
+        final usersQuery = await _firestore.collection('users').where("ID NO", whereIn: instructorIds).get();
+        usersData.addAll(usersQuery.docs.map((doc) => doc.data()));
+      }
 
       final attendanceData = await Future.wait(
         attendanceQuery.docs.map((doc) async {
@@ -52,7 +59,6 @@ class AttendanceInstructorconfirccController extends GetxController {
           return attendanceModel.toJson();
         }),
       );
-      print(attendanceData[0]["attendanceType"]);
       argumentTrainingType.value = attendanceData[0]["idTrainingType"];
       return attendanceData;
     });
@@ -76,7 +82,6 @@ class AttendanceInstructorconfirccController extends GetxController {
   //confir attendance oleh instructor
   Future<void> confirattendance(String department, String trainingType, String room, String loano) async {
     CollectionReference attendance = _firestore.collection('attendance');
-    CollectionReference attendancedetail = _firestore.collection('attendance-detail');
     await attendance.doc(argumentid.value.toString()).update({
       "department": department,
       "trainingType" :  trainingType,
@@ -89,7 +94,7 @@ class AttendanceInstructorconfirccController extends GetxController {
     });
 
 
-    QuerySnapshot querySnapshot = await attendancedetail
+    QuerySnapshot querySnapshot = await _firestore.collection('attendance-detail')
         .where("idattendance", isEqualTo: argumentid.value.toString())
         .get();
 
@@ -102,8 +107,7 @@ class AttendanceInstructorconfirccController extends GetxController {
 
     // update LOA NO pada instructor
     userPreferences = getItLocator<UserPreferences>();
-    CollectionReference users = _firestore.collection("users");
-    await users.doc(userPreferences.getIDNo().toString()).update({
+    await _firestore.collection("users").doc(userPreferences.getIDNo().toString()).update({
       "LOA NO": loano,
     });
   }

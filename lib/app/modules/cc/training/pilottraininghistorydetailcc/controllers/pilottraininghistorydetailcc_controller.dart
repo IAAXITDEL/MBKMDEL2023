@@ -8,11 +8,14 @@ class PilottraininghistorydetailccController extends GetxController {
   RxInt idTrainingType = 0.obs;
   RxString idAttendance ="".obs;
 
+  RxString trainingName = "".obs;
+
   @override
   void onInit() {
     super.onInit();
     idTrainingType.value = Get.arguments["idTrainingType"];
     idAttendance.value = Get.arguments["idAttendance"];
+    getCombinedAttendance();
   }
 
   //Mendapatkan Training
@@ -24,24 +27,41 @@ class PilottraininghistorydetailccController extends GetxController {
   }
 
   //Mendapatkan data kelas yang diikuti
-  Stream<List<Map<String, dynamic>>> getCombinedAttendanceStream() {
-    return firestore.collection('attendance').where("id", isEqualTo: idAttendance.value).snapshots().asyncMap((attendanceQuery) async {
-      final usersQuery = await firestore.collection('users').get();
-      final usersData = usersQuery.docs.map((doc) => doc.data()).toList();
+  Future<List<Map<String, dynamic>>> getCombinedAttendance() async {
+    final attendanceQuery = await firestore.collection('attendance').where("id", isEqualTo: idAttendance.value).get();
 
-      final attendanceData = await Future.wait(
-        attendanceQuery.docs.map((doc) async {
-          final attendanceModel = AttendanceModel.fromJson(doc.data());
-          final user = usersData.firstWhere((user) => user['ID NO'] == attendanceModel.instructor, orElse: () => {});
-          attendanceModel.name = user['NAME'];
-          attendanceModel.photoURL = user['PHOTOURL'];
-          return attendanceModel.toJson();
-        }),
-      );
+    List<Map<String, dynamic>> attendanceData = [];
 
-      return attendanceData;
-    });
+    for (var doc in attendanceQuery.docs) {
+      final attendanceModel = AttendanceModel.fromJson(doc.data());
+
+      // Ambil informasi pengguna hanya untuk instruktur yang terkait
+      final usersQuery = await firestore.collection('users').where("ID NO", isEqualTo: attendanceModel.instructor).get();
+      if (usersQuery.docs.isNotEmpty) {
+        final userData = usersQuery.docs[0].data();
+
+        // Ambil informasi yang diperlukan dari dokumen attendance
+        Map<String, dynamic> data = {
+          'subject': attendanceModel.subject,
+          'date': attendanceModel.date,
+          'name': userData['NAME'],
+          'department':  attendanceModel.department,
+          'trainingType': attendanceModel.trainingType,
+          'vanue': attendanceModel.vanue,
+          'room': attendanceModel.room,
+        };
+
+        // Tambahkan data ke list
+        attendanceData.add(data);
+      }
+
+      trainingName.value = attendanceModel.subject!;
+    }
+
+    return attendanceData;
   }
+
+
 
 
   @override

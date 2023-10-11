@@ -32,12 +32,16 @@ import '../modules/cc/instructor/home_instructorcc/bindings/home_instructorcc_bi
 import '../modules/cc/instructor/home_instructorcc/views/home_instructorcc_view.dart';
 import '../modules/cc/instructor/training_instructorcc/bindings/training_instructorcc_binding.dart';
 import '../modules/cc/instructor/training_instructorcc/views/training_instructorcc_view.dart';
+import '../modules/cc/instructor/training_typeinstructorcc/bindings/training_typeinstructorcc_binding.dart';
+import '../modules/cc/instructor/training_typeinstructorcc/views/training_typeinstructorcc_view.dart';
 import '../modules/cc/list_attendancecc/bindings/list_attendancecc_binding.dart';
 import '../modules/cc/list_attendancecc/views/list_attendancecc_view.dart';
 import '../modules/cc/list_attendancedetailcc/bindings/list_attendancedetailcc_binding.dart';
 import '../modules/cc/list_attendancedetailcc/views/list_attendancedetailcc_view.dart';
 import '../modules/cc/pilotadministrator/add_attendancecc/bindings/add_attendancecc_binding.dart';
 import '../modules/cc/pilotadministrator/add_attendancecc/views/add_attendancecc_view.dart';
+import '../modules/cc/pilotadministrator/add_trainingcc/bindings/add_trainingcc_binding.dart';
+import '../modules/cc/pilotadministrator/add_trainingcc/views/add_trainingcc_view.dart';
 import '../modules/cc/pilotadministrator/attendance_pendingcc/bindings/attendance_pendingcc_binding.dart';
 import '../modules/cc/pilotadministrator/attendance_pendingcc/views/attendance_pendingcc_view.dart';
 import '../modules/cc/pilotadministrator/edit_attendancecc/bindings/edit_attendancecc_binding.dart';
@@ -46,6 +50,10 @@ import '../modules/cc/pilotadministrator/home_admincc/bindings/home_admincc_bind
 import '../modules/cc/pilotadministrator/home_admincc/views/home_admincc_view.dart';
 import '../modules/cc/pilotadministrator/homecc/bindings/homecc_binding.dart';
 import '../modules/cc/pilotadministrator/homecc/views/homecc_view.dart';
+import '../modules/cc/pilotadministrator/pilotcrewcc/bindings/pilotcrewcc_binding.dart';
+import '../modules/cc/pilotadministrator/pilotcrewcc/views/pilotcrewcc_view.dart';
+import '../modules/cc/pilotadministrator/pilotcrewdetailcc/bindings/pilotcrewdetailcc_binding.dart';
+import '../modules/cc/pilotadministrator/pilotcrewdetailcc/views/pilotcrewdetailcc_view.dart';
 import '../modules/cc/pilotadministrator/trainingtypecc/bindings/trainingtypecc_binding.dart';
 import '../modules/cc/pilotadministrator/trainingtypecc/views/trainingtypecc_view.dart';
 import '../modules/cc/profilecc/bindings/profilecc_binding.dart';
@@ -76,20 +84,16 @@ import '../modules/list_pilotcptscc/bindings/list_pilotcptscc_binding.dart';
 import '../modules/list_pilotcptscc/views/list_pilotcptscc_view.dart';
 import '../modules/main_home/bindings/main_home_binding.dart';
 import '../modules/main_home/views/main_home_view.dart';
-import '../modules/pa/navcpts/bindings/navcpts_binding.dart';
-import '../modules/pa/navcpts/views/navcpts_view.dart';
 import '../modules/pa/navadmin/bindings/navadmin_binding.dart';
 import '../modules/pa/navadmin/views/navadmin_view.dart';
+import '../modules/pa/navcpts/bindings/navcpts_binding.dart';
+import '../modules/pa/navcpts/views/navcpts_view.dart';
 import '../modules/pa/navinstructor/bindings/navinstructor_binding.dart';
 import '../modules/pa/navinstructor/views/navinstructor_view.dart';
 import '../modules/pa/navpilot/bindings/navpilot_binding.dart';
 import '../modules/pa/navpilot/views/navpilot_view.dart';
 import '../modules/pa/occ/bindings/navocc_binding.dart';
 import '../modules/pa/occ/views/navocc_view.dart';
-import '../modules/cc/pilotadministrator/pilotcrewcc/bindings/pilotcrewcc_binding.dart';
-import '../modules/cc/pilotadministrator/pilotcrewcc/views/pilotcrewcc_view.dart';
-import '../modules/cc/pilotadministrator/pilotcrewdetailcc/bindings/pilotcrewdetailcc_binding.dart';
-import '../modules/cc/pilotadministrator/pilotcrewdetailcc/views/pilotcrewdetailcc_view.dart';
 
 part 'app_routes.dart';
 
@@ -402,6 +406,16 @@ class AppPages {
       name: _Paths.PILOTFEEDBACKFORMCC,
       page: () => PilotfeedbackformccView(),
       binding: PilotfeedbackformccBinding(),
+    ),
+    GetPage(
+      name: Routes.TRAINING_TYPEINSTRUCTORCC,
+      page: () => const TrainingTypeinstructorccView(),
+      binding: TrainingTypeinstructorccBinding(),
+    ),
+    GetPage(
+      name: _Paths.ADD_TRAININGCC,
+      page: () => AddTrainingccView(),
+      binding: AddTrainingccBinding(),
     ),
   ];
 }

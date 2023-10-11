@@ -58,47 +58,53 @@ class _TrainingtypeccViewState extends State<TrainingtypeccView>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                RedTitleText(text: controller.argumentname.value),
-                PopupMenuButton(
-                  itemBuilder: (BuildContext context) {
-                    return [
-                      PopupMenuItem(
-                        child: TextButton(
-                          onPressed: () {
-                            Get.toNamed(Routes.ADD_ATTENDANCECC, arguments: {
-                              "id" : controller.argumentid.value,
-                              "name" : controller.argumentname.value
-                            });
-                          },
-                          child: Row(
-                            children: [
-                              Icon(Icons.add, size: 16),
-                              SizedBox(width: 5,),
-                              Text("Add Attendance",)
-                            ],
-                          ),
-                        )
-                      ),
-                      PopupMenuItem(
-                        child: TextButton(
-                          onPressed: () {
-                            controller.deleteTraining();
-                          },
-                          child: Row(
-                            children: [
-                              Icon(Icons.delete, size: 16),
-                              SizedBox(width: 5,),
-                              Text("Delete",)
-                            ],
+                Expanded(
+                  flex: 8,
+                  child: RedTitleText(text: controller.argumentname.value),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: PopupMenuButton(
+                    itemBuilder: (BuildContext context) {
+                      return [
+                        PopupMenuItem(
+                          child: TextButton(
+                            onPressed: () {
+                              Get.toNamed(Routes.ADD_ATTENDANCECC, arguments: {
+                                "id" : controller.argumentid.value,
+                                "name" : controller.argumentname.value
+                              });
+                            },
+                            child: Row(
+                              children: [
+                                Icon(Icons.add, size: 16),
+                                SizedBox(width: 5,),
+                                Text("Add Attendance",)
+                              ],
+                            ),
+                          )
+                        ),
+                        PopupMenuItem(
+                          child: TextButton(
+                            onPressed: () {
+                              controller.deleteTraining();
+                            },
+                            child: Row(
+                              children: [
+                                Icon(Icons.delete, size: 16),
+                                SizedBox(width: 5,),
+                                Text("Delete",)
+                              ],
+                            ),
                           ),
                         ),
+                      ];
+                    },
+                    offset: Offset(0, 30),
+                    child: GestureDetector(
+                      child: Container(
+                        child: Icon(Icons.more_vert_outlined),
                       ),
-                    ];
-                  },
-                  offset: Offset(0, 30),
-                  child: GestureDetector(
-                    child: Container(
-                      child: Icon(Icons.more_vert_outlined),
                     ),
                   ),
                 ),
@@ -180,13 +186,11 @@ class _TrainingtypeccViewState extends State<TrainingtypeccView>
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return LoadingScreen(); // Placeholder while loading
                       }
-
                       if (snapshot.hasError) {
                         return ErrorScreen();
                       }
 
                       var listAttendance= snapshot.data!;
-                      print(listAttendance);
 
                       if(listAttendance.isEmpty){
                         return EmptyScreen();
