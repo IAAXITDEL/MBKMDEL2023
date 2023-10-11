@@ -13,10 +13,10 @@ class ListPilotcptsccController extends GetxController {
   DocumentSnapshot? lastDocument;
   var isClicked = false.obs;
   RxBool isLoading = false.obs;
+  RxString nameS = "".obs;
 
   final ScrollController scrollController = ScrollController();
 
-  RxString nameS = "".obs;
   final Rx<List<Map<String, dynamic>>> streamData =
       Rx<List<Map<String, dynamic>>>([]);
 
@@ -53,10 +53,18 @@ class ListPilotcptsccController extends GetxController {
     }
 
     if (nameS.isNotEmpty) {
-      query = query.where("NAME", isGreaterThanOrEqualTo: nameS.value).where(
-          "NAME",
-          isLessThan:
-              nameS.value + String.fromCharCode(nameS.value.runes.last + 1));
+      return query.snapshots().map((snapshot) {
+        final filteredData = snapshot.docs
+            .where((doc) =>
+            doc['NAME']
+                .toString()
+                .toLowerCase()
+                .startsWith(nameS.toLowerCase()))
+            .map((doc) => doc.data())
+            .toList();
+        streamData.value = filteredData;
+        return filteredData;
+      });
     }
 
     return query.snapshots().map((snapshot) {
@@ -84,8 +92,12 @@ class ListPilotcptsccController extends GetxController {
         .limit(20)
         .get();
 
+    final additionalList = additionalData.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+    streamData.value.addAll(additionalList); // Append the new data to the existing list
+
     isLoading.value = false;
   }
+
 
   DocumentSnapshot? _getLastDocument() {
     return null;
