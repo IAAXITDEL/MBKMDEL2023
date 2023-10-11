@@ -1,158 +1,283 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ts_one/presentation/theme.dart';
+import 'package:screenshot/screenshot.dart';
+import 'package:ts_one/app/modules/home_cptscc/controllers/home_cptscc_controller.dart';
+
 import '../../../../presentation/theme.dart';
-import '../../../../util/empty_screen.dart';
-import '../../../../util/error_screen.dart';
-import '../../../../util/loading_screen.dart';
 import '../../../../util/util.dart';
-import '../../../routes/app_pages.dart';
-
-import '../../list_pilotcptscc/views/list_pilotcptscc_view.dart';
-import '../controllers/home_cptscc_controller.dart';
-
-// Import other necessary dependencies
 
 class HomeCptsccView extends GetView<HomeCptsccController> {
   const HomeCptsccView({Key? key}) : super(key: key);
 
+  // Function to create a Card widget with specified content
+  Widget buildCard(String imagePath, String count, String title) {
+    return Card(
+      child: Column(
+        children: [
+          Image.asset(
+            imagePath,
+            width: 48,
+            height: 63,
+          ),
+          SizedBox(height: 8),
+          Text(
+            count,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          Text(
+            title,
+            style: TextStyle(fontSize: 13, color: Colors.red),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
-        appBar: AppBar(
-        title: Text('Home Page'),),
-
-      body: SingleChildScrollView(
+      body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20,),
-
-
-          // child: Column(
-          //   mainAxisAlignment: MainAxisAlignment.start,
-          //   crossAxisAlignment: CrossAxisAlignment.start,
-          //   children: [
-          //     SizedBox(height: 50,),
-          //     Row(
-          //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //       children: [
-          //         Text(
-          //           "Hi, ${controller.titleToGreet}!",
-          //           style: tsOneTextTheme.headlineLarge, // Add your text style
-          //         ),
-          //       ],
-          //     ),
-          //     Align(
-          //       alignment: Alignment.centerLeft,
-          //       child: Text(
-          //         'Good ${controller.timeToGreet}',
-          //         style: tsOneTextTheme.labelMedium,// Add your text style
-          //       ),
-          //     ),
-          //     Padding(
-          //       padding: const EdgeInsets.symmetric(vertical: 20,),
-          //       child: Row(
-          //         children: [
-          //           const Padding(
-          //             padding: EdgeInsets.only(right: 4.0),
-          //             child: Icon(
-          //               Icons.calendar_month_outlined,
-          //               color: TsOneColor.onSecondary,// Add your icon properties
-          //               size: 40,
-          //             ),
-          //           ),
-          //           Column(
-          //             crossAxisAlignment: CrossAxisAlignment.start,
-          //             children: [
-          //               Text(
-          //                 Util.convertDateTimeDisplay(DateTime.now().toString(), "EEEE"),
-          //                 style: tsOneTextTheme.labelSmall,// Add your text style
-          //               ),
-          //               Text(
-          //                 Util.convertDateTimeDisplay(DateTime.now().toString(), "dd MMMM yyyy"),
-          //                 style: tsOneTextTheme.labelSmall,// Add your text style
-          //               ),
-          //             ],
-          //           )
-          //         ],
-          //       ),
-          //     ),
-          //     Row(
-          //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //       children: [
-          //         Text(
-          //           "STATS",
-          //           style: tsOneTextTheme.headlineLarge,// Add your text style
-          //         ),
-          //         //See All
-          //       ],
-          //     ),
-          //     const SizedBox(height: 10,),
-          //     StreamBuilder<List<Map<String, dynamic>>>(
-          //       stream: controller.getCombinedAttendanceStream(),
-          //       builder: (context, snapshot) {
-          //         if (snapshot.connectionState == ConnectionState.waiting) {
-          //           return LoadingScreen(); // Placeholder while loading
-          //         }
-          //
-          //         if (snapshot.hasError) {
-          //           return ErrorScreen();
-          //         }
-          //
-          //         var listAttendance = snapshot.data!;
-          //         if (listAttendance.isEmpty) {
-          //           return EmptyScreen();
-          //         }
-          //
-          //         return ListView.builder(
-          //           shrinkWrap: true, // Important to prevent another overflow
-          //           itemCount: listAttendance.length,
-          //           itemBuilder: (context, index) {
-          //             return InkWell(
-          //               onTap: () {
-          //                 Get.toNamed(Routes.ATTENDANCE_CONFIRCC, arguments: {
-          //                   "id": listAttendance[index]["id"],
-          //                 });
-          //                 print("ini");
-          //               },
-          //               child: Container(
-          //                 margin: EdgeInsets.symmetric(vertical: 5),
-          //                 decoration: BoxDecoration(
-          //                   borderRadius: BorderRadius.circular(10.0),
-          //                   color: Colors.white,
-          //                   boxShadow: [
-          //                     BoxShadow(
-          //                       color: Colors.grey.withOpacity(0.3),
-          //                       spreadRadius: 2,
-          //                       blurRadius: 3,
-          //                       offset: const Offset(0, 2),
-          //                     ),
-          //                   ],
-          //
-          //                 ),
-          //                 child: ListTile(
-          //                   title: Text(
-          //                     listAttendance[index]["subject"],
-          //                     style: tsOneTextTheme.headlineMedium,// Add your text style
-          //                   ),
-          //                   subtitle: Text(
-          //                     listAttendance[index]["name"],
-          //                     style: tsOneTextTheme.labelSmall,// Add your text style
-          //                   ),
-          //                   trailing: const Icon(Icons.navigate_next),
-          //                 ),
-          //               ),
-          //             );
-          //           },
-          //         );
-          //       },
-          //     ),
-          //   ],
-          // ),
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Hi, ${controller.titleToGreet}!",
+                style: tsOneTextTheme.headlineLarge,
+              ),
+              Text(
+                'Good ${controller.timeToGreet}',
+                style: tsOneTextTheme.labelMedium,
+              ),
+              SizedBox(height: 20),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 4.0),
+                    child: Icon(
+                      Icons.calendar_month_outlined,
+                      color: TsOneColor.onSecondary,
+                      size: 32,
+                    ),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        Util.convertDateTimeDisplay(
+                            DateTime.now().toString(), "EEEE"),
+                        style: tsOneTextTheme.labelSmall,
+                      ),
+                      Text(
+                        Util.convertDateTimeDisplay(
+                            DateTime.now().toString(), "dd MMMM yyyy"),
+                        style: tsOneTextTheme.labelSmall,
+                      ),
+                    ],
+                  )
+                ],
+              ),
+              SizedBox(height: 20),
+              Text(
+                'STATS',
+                style: tsOneTextTheme.displayMedium,
+              ),
+              SizedBox(height: 20),
+              Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Expanded(
+                        child: Container(
+                          height: 140,
+                          child: Card(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  'assets/images/G1.png',
+                                  width: 48,
+                                  height: 63,
+                                ),
+                                SizedBox(height: 8),
+                                Text(
+                                  '${controller.trainingCount.value}',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  'Trainings',
+                                  style: TextStyle(
+                                      fontSize: 14, color: Colors.red),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Container(
+                          height: 140,
+                          child: Card(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  'assets/images/G2.png',
+                                  width: 48,
+                                  height: 63,
+                                ),
+                                SizedBox(height: 8),
+                                Text(
+                                  '${controller.instructorCount.value}',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  'Instructors',
+                                  style: TextStyle(
+                                      fontSize: 13, color: Colors.red),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Container(
+                          height: 140,
+                          child: Card(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  'assets/images/G3.png',
+                                  width: 48,
+                                  height: 63,
+                                ),
+                                SizedBox(height: 8),
+                                Text(
+                                  '${controller.pilotCount.value}',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  'Pilots',
+                                  style: TextStyle(
+                                      fontSize: 14, color: Colors.red),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Expanded(
+                        child: Container(
+                          height: 140,
+                          child: Card(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  'assets/images/G1.png',
+                                  width: 48,
+                                  height: 63,
+                                ),
+                                SizedBox(height: 8),
+                                Text(
+                                  '${controller.ongoingTrainingCount.value}',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  'Ongoing',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                                Text(
+                                  'Trainings',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Container(
+                          height: 140,
+                          child: Card(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  'assets/images/G2.png',
+                                  width: 48,
+                                  height: 63,
+                                ),
+                                SizedBox(height: 8),
+                                Text(
+                                  '${controller.completedTrainingCount.value}',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  'Completed',
+                                  style: TextStyle(
+                                      fontSize: 13, color: Colors.red),
+                                ),
+                                Text(
+                                  'Trainings',
+                                  style: TextStyle(
+                                      fontSize: 13, color: Colors.red),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Container(
+                          height: 140,
+                          child: Card(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  'assets/images/G3.png',
+                                  width: 48,
+                                  height: 63,
+                                ),
+                                SizedBox(height: 8),
+                                Text(
+                                  '${controller.traineeCount.value}',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  'Trainee',
+                                  style: TextStyle(
+                                      fontSize: 14, color: Colors.red),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 }
-
-

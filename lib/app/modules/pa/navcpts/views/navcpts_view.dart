@@ -4,6 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:ts_one/app/modules/home_cptscc/views/home_cptscc_view.dart';
+// import 'package:ts_one/app/modules/homecc/views/homecc_view.dart';
+import 'package:ts_one/app/modules/list_pilotcptscc/views/list_pilotcptscc_view.dart';
+// import 'package:ts_one/app/modules/profilecc/views/profilecc_view.dart';
+// import 'package:ts_one/app/modules/trainingcc/views/trainingcc_view.dart';
 import 'package:ts_one/presentation/theme.dart';
 
 import '../../../cc/pilotadministrator/pilotcrewcc/views/pilotcrewcc_view.dart';
@@ -32,7 +36,7 @@ class _NavcptsState extends State<NavcptsView> {
     return [
       const HomeCptsccView(),
       const TrainingccView(),
-      const PilotcrewccView(),
+      const ListPilotcptsccView(),
       const ProfileccView(),
     ];
   }

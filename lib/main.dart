@@ -1,9 +1,11 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:ts_one/app/modules/main_home/controllers/main_home_controller.dart';
 import 'package:ts_one/data/users/user_preferences.dart';
 import 'package:ts_one/di/locator.dart';
 import 'package:ts_one/domain/assessment_repo.dart';
@@ -26,6 +28,7 @@ void main() async {
 
   // register all the dependencies with GetIt
   setupLocator();
+
 
   runApp(
     MaterialApp(
@@ -86,6 +89,21 @@ class MyApp extends StatelessWidget {
     //   home: const SplashScreenView(title: 'TS1 AirAsia'),
     //   debugShowCheckedModeBanner: false,
     // );
+
+    final now = DateTime.now();
+    final tomorrow = DateTime(now.year, now.month, now.day + 1, 0, 0, 0, 0);
+    final duration = tomorrow.difference(now);
+
+    // Menjadwalkan eksekusi fungsi cekValidityStream pada pukul 12:00 AM setiap hari
+    Timer(duration, () {
+      // Memanggil fungsi cekValidityStream
+      Get.find<MainHomeController>().cekValidityStream().listen((data) {
+        // Lakukan apa pun yang perlu Anda lakukan dengan data
+        print('cekValidityStream executed.');
+        print('Data: $data');
+      });
+    });
+
     return GetMaterialApp(
       title: "Air Asia",
       theme: tsOneThemeData,

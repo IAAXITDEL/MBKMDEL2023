@@ -28,26 +28,45 @@ class PilottraininghistoryccView
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                //--------------KELAS TRAINING-------------
-                StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                  stream: controller.trainingStream(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return LoadingScreen(); // Placeholder while loading
-                    }
+                //--------------KELAS TRAINING-------------'
+                Row(
+                  children: [
+                    Expanded(flex:4 , child: Container(
+                      child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                        stream: controller.trainingStream(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return LoadingScreen(); // Placeholder while loading
+                          }
 
-                    if (snapshot.hasError) {
-                      return ErrorScreen();
-                    }
+                          if (snapshot.hasError) {
+                            return ErrorScreen();
+                          }
 
-                    var listTraining = snapshot.data!.docs;
+                          var listTraining = snapshot.data!.docs;
 
-                    return Text(
-                      listTraining[0]["training"],
-                      maxLines: 1,
-                      style: tsOneTextTheme.bodyLarge,
-                    );
-                  },
+                          return Text(
+                            listTraining[0]["training"],
+                            maxLines: 1,
+                            style: tsOneTextTheme.bodyLarge,
+                          );
+                        },
+                      ),
+                    ),),
+                   Obx(() =>  Expanded(flex: 1, child: Container(
+                     padding: EdgeInsets.symmetric(vertical: 3, horizontal: 10),
+                     decoration: BoxDecoration(
+                       color: controller.expiryC.value == "VALID" ? Colors.green.withOpacity(0.4) : Colors.red.withOpacity(0.4),
+                       borderRadius: BorderRadius.circular(10),
+                     ),
+                     child: Center(
+                       child: Text(
+                         controller.expiryC.value ,
+                         style: TextStyle(fontSize: 10, color: controller.expiryC.value == "VALID" ? Colors.green : Colors.red),
+                       ),
+                     ),
+                   ),),),
+                  ],
                 ),
 
                 SizedBox(

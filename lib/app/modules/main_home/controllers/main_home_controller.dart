@@ -99,7 +99,7 @@ class MainHomeController extends GetxController {
   }
 
   // List Training History
-  Stream<List<Map<String, dynamic>>> historyStream() {
+  Stream<List<Map<String, dynamic>>> cekValidityStream() {
     final now = DateTime.now();
     return firestore.collection('attendance')
         .where("status", isEqualTo: "done")
