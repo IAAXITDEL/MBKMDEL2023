@@ -55,8 +55,7 @@ class ListPilotcptsccController extends GetxController {
     if (nameS.isNotEmpty) {
       return query.snapshots().map((snapshot) {
         final filteredData = snapshot.docs
-            .where((doc) =>
-            doc['NAME']
+            .where((doc) => doc['NAME']
                 .toString()
                 .toLowerCase()
                 .startsWith(nameS.toLowerCase()))
@@ -92,12 +91,14 @@ class ListPilotcptsccController extends GetxController {
         .limit(20)
         .get();
 
-    final additionalList = additionalData.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
-    streamData.value.addAll(additionalList); // Append the new data to the existing list
+    final additionalList = additionalData.docs
+        .map((doc) => doc.data() as Map<String, dynamic>)
+        .toList();
+    streamData.value
+        .addAll(additionalList); // Append the new data to the existing list
 
     isLoading.value = false;
   }
-
 
   DocumentSnapshot? _getLastDocument() {
     return null;
