@@ -37,7 +37,6 @@ class ProfileccController extends GetxController {
     super.onInit();
   }
 
-
   //Mendapatkan data pribadi
   Stream<QuerySnapshot<Map<String, dynamic>>> profileList() {
     userPreferences = getItLocator<UserPreferences>();
@@ -55,8 +54,6 @@ class ProfileccController extends GetxController {
         .snapshots();
   }
 
-
-
   void checkCanViewAllAssessments() {
     if (userPreferences.getPrivileges().contains(UserModel.keyPrivilegeViewAllAssessments)) {
       _canViewAllAssessments = true;
@@ -65,8 +62,18 @@ class ProfileccController extends GetxController {
 
   Future<void> logout() async {
     try {
-      await _googleSignIn.disconnect();
-      await _googleSignIn.signOut();
+      try {
+        await _googleSignIn.disconnect();
+      } catch (e) {
+        print("Failed to disconnect: $e");
+      }
+
+      try {
+        await _googleSignIn.signOut();
+      } catch (e) {
+        print("Failed to sign out: $e");
+      }
+
       userPreferences.clearUser();
       Get.offAllNamed(Routes.login);
     } catch (e) {
