@@ -7,6 +7,7 @@ import '../../../../../../util/empty_screen.dart';
 import '../../../../../../util/error_screen.dart';
 import '../../../../../../util/loading_screen.dart';
 import '../../../../../../util/util.dart';
+import '../../../../../routes/app_pages.dart';
 import '../controllers/home_pilotcc_controller.dart';
 
 class HomePilotccView extends GetView<HomePilotccController> {
@@ -103,7 +104,9 @@ class HomePilotccView extends GetView<HomePilotccController> {
                         itemBuilder: (context, index) {
                           return InkWell(
                             onTap: () {
-
+                              Get.toNamed(Routes.ATTENDANCE_PILOTCC, arguments: {
+                                "id": listAttendance[0]["id"],
+                              });
                             },
                             child: Container(
                               margin: EdgeInsets.symmetric(vertical: 5),
@@ -124,10 +127,10 @@ class HomePilotccView extends GetView<HomePilotccController> {
                                   listAttendance[index]["subject"],
                                   style: tsOneTextTheme.headlineMedium,
                                 ),
-                                subtitle: Text(
-                                  listAttendance[index]["name"],
-                                  style: tsOneTextTheme.labelSmall,
-                                ),
+                                // subtitle: Text(
+                                //   listAttendance[index]["name"],
+                                //   style: tsOneTextTheme.labelSmall,
+                                // ),
                                 trailing: const Icon(Icons.navigate_next),
                               ) ,
                             ),

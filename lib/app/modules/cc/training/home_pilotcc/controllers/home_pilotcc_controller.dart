@@ -53,8 +53,8 @@ class HomePilotccController extends GetxController {
 
   Stream<List<Map<String, dynamic>>> getCombinedAttendanceStream() {
     userPreferences = getItLocator<UserPreferences>();
-    return firestore.collection('attendance').snapshots().asyncMap((attendanceQuery) async {
-      final attendanceDetailQuery = await firestore.collection('attendance-detail').where("idtraining", isEqualTo: userPreferences.getIDNo()).where("status", isEqualTo: "pending").get();
+    return firestore.collection('attendance').where("status", isEqualTo: "pending").snapshots().asyncMap((attendanceQuery) async {
+      final attendanceDetailQuery = await firestore.collection('attendance-detail').where("idtraining", isEqualTo: userPreferences.getIDNo()).where("status", isEqualTo: "confirmation").get();
       final attendanceDetailData = attendanceDetailQuery.docs.map((doc) => doc.data()).toList();
       if (attendanceDetailData.isEmpty) {
         return [];
