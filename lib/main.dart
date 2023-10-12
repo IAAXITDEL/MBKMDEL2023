@@ -19,7 +19,7 @@ import 'package:ts_one/presentation/view_model/user_viewmodel.dart';
 import 'firebase_options.dart';
 import 'package:get/get.dart';
 
-import 'app/modules/home_cptscc/views/home_cptscc_view.dart';
+import 'app/modules/cc/home_cptscc/views/home_cptscc_view.dart';
 import 'app/routes/app_pages.dart';
 
 void main() async {

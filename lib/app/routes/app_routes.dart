@@ -88,6 +88,9 @@ abstract class Routes {
   static const PILOTFEEDBACKFORMCC = _Paths.PILOTFEEDBACKFORMCC;
   static const TRAINING_TYPEINSTRUCTORCC = '/training-typeinstructorcc';
   static const ADD_TRAININGCC = _Paths.ADD_TRAININGCC;
+  static const TRAINING_CPTSCC = '/training-cptscc';
+  static const TRAININGHISTORYCC_CPTS = _Paths.TRAININGHISTORYCC_CPTS;
+  static const DETAILHISTORYCC_CPTS = _Paths.DETAILHISTORYCC_CPTS;
 }
 
 abstract class _Paths {
@@ -174,4 +177,6 @@ abstract class _Paths {
   static const PILOTTRAININGHISTORYDETAILCC = '/pilottraininghistorydetailcc';
   static const PILOTFEEDBACKFORMCC = '/pilotfeedbackformcc';
   static const ADD_TRAININGCC = '/add-trainingcc';
+  static const TRAININGHISTORYCC_CPTS = '/traininghistorycc-cpts';
+  static const DETAILHISTORYCC_CPTS = '/detailhistorycc-cpts';
 }

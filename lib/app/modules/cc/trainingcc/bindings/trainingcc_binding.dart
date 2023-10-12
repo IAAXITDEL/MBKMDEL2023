@@ -3,6 +3,7 @@ import 'package:ts_one/app/modules/cc/pilotadministrator/homecc/controllers/home
 
 import '../../instructor/training_instructorcc/controllers/training_instructorcc_controller.dart';
 import '../../pilotadministrator/trainingtypecc/controllers/trainingtypecc_controller.dart';
+import '../../traininghistorycc_cpts/controllers/traininghistorycc_cpts_controller.dart';
 import '../controllers/trainingcc_controller.dart';
 
 class TrainingccBinding extends Bindings {
@@ -19,6 +20,9 @@ class TrainingccBinding extends Bindings {
     );
     Get.lazyPut<TrainingtypeccController>(
           () => TrainingtypeccController(),
+    );
+    Get.lazyPut<TraininghistoryccCptsController>(
+          () => TraininghistoryccCptsController(),
     );
   }
 }

@@ -12,6 +12,7 @@ import '../../../../../presentation/view_model/attendance_model.dart';
 import '../../../../../util/error_screen.dart';
 import '../../../../../util/loading_screen.dart';
 import '../../../../routes/app_pages.dart';
+import '../../traininghistorycc_cpts/controllers/traininghistorycc_cpts_controller.dart';
 import '../controllers/trainingcc_controller.dart';
 
 class TrainingccView extends GetView<TrainingccController> {
