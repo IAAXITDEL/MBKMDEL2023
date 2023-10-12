@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 
+import '../../../../../../presentation/view_model/attendance_detail_model.dart';
 import '../../../../../../presentation/view_model/attendance_model.dart';
 
 class PilottraininghistoryccController extends GetxController {
@@ -33,41 +34,65 @@ class PilottraininghistoryccController extends GetxController {
         .where("status", isEqualTo: "done")
         .snapshots()
         .asyncMap((attendanceQuery) async {
-      final attendanceIds = attendanceQuery.docs
-          .map((doc) => AttendanceModel.fromJson(doc.data()).id)
-          .toList();
-
       final attendanceDetailData = <Map<String, dynamic>>[];
-      if (attendanceIds.isEmpty) {
+
+      final usersData = <Map<String, dynamic>>[];
+
+      if (attendanceQuery.docs.isNotEmpty) {
+        final attendanceIds = attendanceQuery.docs
+            .map((doc) => AttendanceModel.fromJson(doc.data()).id)
+            .toList();
+
+        if (attendanceIds.isNotEmpty) {
+          final attendanceDetailQuery = await firestore
+              .collection('attendance-detail')
+              .where("idtraining", isEqualTo: idTraining.value.toString())
+              .where("idattendance", whereIn: attendanceIds)
+              .get();
+          attendanceDetailData
+              .addAll(attendanceDetailQuery.docs.map((doc) => doc.data()));
+        }else{
+          return [];
+        }
+
+        if (attendanceDetailData.isNotEmpty) {
+          final idAttendances = attendanceDetailData
+              .map((attendanceDetail) => int.parse(attendanceDetail['idtraining']))
+              .toList();
+
+          final usersQuery = await firestore
+              .collection('users')
+              .where("ID NO", isEqualTo: idTraining.value)
+              .get();
+          usersData.addAll(usersQuery.docs.map((doc) => doc.data()));
+        }else{
+          return [];
+        }
+      }else{
         return [];
       }
 
-      final usersQuery = await firestore
-          .collection('attendance-detail')
-          .where("idtraining", isEqualTo: idTraining.value)
-          .where("idAttendance", whereIn: attendanceIds)
-          .get();
-      attendanceDetailData.addAll(usersQuery.docs.map((doc) => doc.data()));
-
-      final attendanceData = await Future.wait(
-        attendanceQuery.docs.map((doc) async {
-          final attendanceModel = AttendanceModel.fromJson(doc.data());
-          final attendanceDetail = attendanceDetailData.firstWhere(
+      final attendanceData = attendanceQuery.docs.map((doc) {
+        final attendanceModel = AttendanceModel.fromJson(doc.data());
+        final attendanceDetail = attendanceDetailData.firstWhere(
               (attendanceDetail) =>
-                  attendanceDetail['idattendance'] == attendanceModel.id,
-              orElse: () => {});
-          return attendanceModel.toJson();
-        }),
-      );
+          attendanceDetail['idattendance'] == attendanceModel.id,
+        );
+        return attendanceModel.toJson();
+      }).toList();
+
       // Sort attendanceData based on valid_to in descending order
       attendanceData.sort((a, b) {
-        Timestamp timestampA = Timestamp.fromMillisecondsSinceEpoch(
-            a['valid_to'].millisecondsSinceEpoch);
-        Timestamp timestampB = Timestamp.fromMillisecondsSinceEpoch(
-            b['valid_to'].millisecondsSinceEpoch);
+        Timestamp timestampA =
+        Timestamp.fromMillisecondsSinceEpoch(a['valid_to'].millisecondsSinceEpoch);
+        Timestamp timestampB =
+        Timestamp.fromMillisecondsSinceEpoch(b['valid_to'].millisecondsSinceEpoch);
         return timestampB.compareTo(timestampA);
       });
-      expiryC.value = attendanceData[0]["expiry"];
+
+      if (attendanceData.isNotEmpty) {
+        expiryC.value = attendanceData[0]["expiry"];
+      }
       return attendanceData;
     });
   }
