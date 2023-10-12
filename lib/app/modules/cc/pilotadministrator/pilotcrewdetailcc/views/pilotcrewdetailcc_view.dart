@@ -163,6 +163,7 @@ class PilotcrewdetailccView extends GetView<PilotcrewdetailccController> {
                     itemBuilder: (context, index) {
                       return InkWell(
                         onTap: () {
+                          print(controller.idTraining.value);
                           Get.toNamed(Routes.PILOTTRAININGHISTORYCC, arguments: {
                             "idTrainingType" : listTraining[index]["id"],
                             "idTraining" : controller.idTraining.value,
