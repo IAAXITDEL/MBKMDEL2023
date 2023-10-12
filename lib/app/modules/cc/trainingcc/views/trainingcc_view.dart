@@ -99,51 +99,24 @@ class TrainingccView extends GetView<TrainingccController> {
                 return;
               }
 
-              await showDialog(
-                context: context,
-                builder: (context) {
-                  return StreamBuilder<List<Map<String, dynamic>>>(
-                    stream:
-                        controller.joinClassStream(passwordC.text, training),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return LoadingScreen();
-                      }
-
-                      if (snapshot.hasError) {
-                        return ErrorScreen();
-                      }
-                      var listAttendance = snapshot.data!;
-                      if (snapshot.data!.isEmpty) {
-                        Future.delayed(Duration.zero, () {
-                          QuickAlert.show(
-                            context: context,
-                            type: QuickAlertType.error,
-                            text:
-                                "The class key is wrong, Please enter the key again!",
-                          );
-                        });
-                      } else {
-                        Future.delayed(Duration.zero, () {
-                          QuickAlert.show(
-                            context: context,
-                            type: QuickAlertType.success,
-                            text: "You have been joined to the class!",
-                          );
-                        });
-                        Get.back();
-                        // Get.toNamed(Routes.ATTENDANCE_PILOTCC, arguments: {
-                        //   "id" : listAttendance[0]["id"],
-                        // });
-                      }
-                      return SizedBox
-                          .shrink(); // Return an empty widget to avoid the error.
-                    },
+              try {
+                 List<Map<String, dynamic>> listAttendance = await controller.joinClassFuture(passwordC.text, training);
+                  print(listAttendance);
+                if (listAttendance.isEmpty) {
+                  Navigator.of(context, rootNavigator: true).pop();
+                  await QuickAlert.show(
+                    context: context,
+                    type: QuickAlertType.error,
+                    text: "The class key is wrong, Please enter the key again!",
                   );
-                },
-              );
-
-              Navigator.of(context, rootNavigator: true).pop();
+                } else {
+                  await Get.toNamed(Routes.ATTENDANCE_PILOTCC, arguments: {
+                    "id": listAttendance[0]["id"],
+                  });
+                }
+              } catch (e) {
+                print("Error joining class: $e");
+              }
             },
           );
         }

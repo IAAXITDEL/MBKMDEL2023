@@ -23,7 +23,7 @@ class TrainingccController extends GetxController {
   final RxBool cekPilot = false.obs;
   RxBool isAdministrator = false.obs;
   final RxString passwordKey = "".obs;
-
+  final RxBool isLoading = false.obs;
   // List untuk training remark
   Stream<QuerySnapshot<Map<String, dynamic>>> trainingRemarkStream() {
     return firestore
@@ -130,35 +130,28 @@ class TrainingccController extends GetxController {
   }
 
   // cek key sesuai dengan kelas yang sedang dibuka
-  Stream<List<Map<String, dynamic>>> joinClassStream(
-      String key, int idtraining) {
-    return firestore
+  Future<List<Map<String, dynamic>>> joinClassFuture(String key, int idtraining) async {
+    QuerySnapshot<Map<String, dynamic>> attendanceQuery = await firestore
         .collection('attendance')
         .where("keyAttendance", isEqualTo: key)
         .where("idTrainingType", isEqualTo: idtraining)
-        .snapshots()
-        .asyncMap((attendanceQuery) async {
-      final usersQuery = await firestore.collection('users').get();
-      final usersData = usersQuery.docs.map((doc) => doc.data()).toList();
+        .get();
 
-      final attendanceData = await Future.wait(
-        attendanceQuery.docs.map((doc) async {
-          final attendanceModel = AttendanceModel.fromJson(doc.data());
-          final user = usersData.firstWhere(
-              (user) => user['ID NO'] == attendanceModel.instructor,
-              orElse: () => {});
-          return attendanceModel.toJson();
-        }),
-      );
+    List<Map<String, dynamic>> attendanceData = await Future.wait(
+      attendanceQuery.docs.map((doc) async {
+        final attendanceModel = AttendanceModel.fromJson(doc.data());
+        return attendanceModel.toJson();
+      }),
+    );
 
-      if (attendanceData.isNotEmpty) {
-        // tambah data pilot kedalam attendance
-        await addAttendancePilotForm(
-            attendanceData[0]["id"], attendanceData[0]["idTrainingType"]);
-      }
-      return attendanceData;
-    });
+    if (attendanceData.isNotEmpty) {
+      await addAttendancePilotForm(
+          attendanceData[0]["id"], attendanceData[0]["idTrainingType"]);
+    }
+
+    return attendanceData;
   }
+
 
   //Membuat attendance untuk setiap  pilot
   Future<void> addAttendancePilotForm(
