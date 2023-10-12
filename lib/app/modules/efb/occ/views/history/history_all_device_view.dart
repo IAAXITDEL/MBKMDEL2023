@@ -76,7 +76,15 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('All Device Used'),
+        backgroundColor: Colors.white, // Set background color to white
+        title: Text(
+          'All Device Used ',
+          style: TextStyle(
+            color: Colors.black, // Set text color to red
+            fontSize: 20.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         centerTitle: true,
       ),
       body: Padding(
@@ -94,7 +102,7 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                         hintText: 'Search by Device No',
                         prefixIcon: Icon(Icons.search),
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                          borderRadius: BorderRadius.all(Radius.circular(16.0)),
                         ),
                       ),
                       onChanged: (value) {
@@ -103,7 +111,10 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                     ),
                   ),
                   IconButton(
-                    icon: Icon(Icons.filter_list),
+                    icon: Icon(
+                      Icons.filter_list,
+                      size: 40,
+                    ),
                     onPressed: _showFilterBottomSheet,
                   ),
                 ],

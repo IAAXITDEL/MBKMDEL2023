@@ -141,11 +141,18 @@ class AnalyticsView extends GetView<AnalyticsController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        backgroundColor: Colors.white, // Set background color to white
         title: Text(
           'Analytics',
-          style: tsOneTextTheme.headlineLarge,
+          style: TextStyle(
+            color: Colors.black, // Set text color to red
+            fontSize: 20.0,
+            fontWeight: FontWeight.bold,
+          ),
         ),
+        centerTitle: true, // Center the title
         actions: [
           IconButton(
             icon: Icon(Icons.table_chart_rounded),

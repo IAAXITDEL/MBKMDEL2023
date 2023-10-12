@@ -265,7 +265,7 @@ class _ListDeviceState extends State<ListDevice> {
           'List Device',
           style: TextStyle(
             color: Colors.black, // Set text color to red
-            fontSize: 24.0,
+            fontSize: 20.0,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -307,7 +307,7 @@ class _ListDeviceState extends State<ListDevice> {
                   ),
                   prefixIcon: Icon(Icons.search),
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                    borderRadius: BorderRadius.all(Radius.circular(16.0)),
                   ),
                 ),
               ),

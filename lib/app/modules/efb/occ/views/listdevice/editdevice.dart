@@ -265,15 +265,20 @@ class _EditDevice extends State<EditDevice> {
     );
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: Text(
           'Edit Device',
-          style: tsOneTextTheme.headlineLarge,
+          style: TextStyle(
+            color: Colors.black, // Set text color to red
+            fontSize: 20.0,
+            fontWeight: FontWeight.bold,
+          ),
         ),
+        centerTitle: true, // Center the title
       ),
       body: Padding(
-        padding: const EdgeInsets.only(top: 20, right: 20, left: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

@@ -154,7 +154,6 @@ class _AddDevice extends State<AddDevice> {
       },
     );
 
-
     final conditionField = TextFormField(
       controller: _condition,
       focusNode: _conditionFocus,
@@ -172,7 +171,6 @@ class _AddDevice extends State<AddDevice> {
         border: OutlineInputBorder(),
       ),
     );
-
 
     final conditionDropdown = DropdownButtonFormField<String>(
       value: _selectedCondition,
@@ -216,8 +214,6 @@ class _AddDevice extends State<AddDevice> {
       ),
     );
 
-
-
     Future<void> _showQuickAlert(BuildContext context) async {
       await QuickAlert.show(
         context: context,
@@ -243,8 +239,8 @@ class _AddDevice extends State<AddDevice> {
               lidoversion: _lidoversion.text,
               docuversion: _docuversion.text,
               hub: _selectedHub,
-              condition: _selectedCondition, // Menggunakan nilai yang dipilih dari dropdown
-
+              condition:
+                  _selectedCondition, // Menggunakan nilai yang dipilih dari dropdown
             );
             if (response.code == 200) {
               //Success
@@ -268,50 +264,55 @@ class _AddDevice extends State<AddDevice> {
     );
 
     return Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          title: Text(
-            'Add Device',
-            style: tsOneTextTheme.headlineLarge,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        title: Text(
+          'Add Device',
+          style: TextStyle(
+            color: Colors.black, // Set text color to red
+            fontSize: 20.0,
+            fontWeight: FontWeight.bold,
           ),
         ),
-        body: Padding(
-          padding: const EdgeInsets.only(top: 20, right: 20, left: 20),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      deviceNoField,
-                      const SizedBox(height: 15.0),
-                      iosverField,
-                      const SizedBox(height: 15.0),
-                      flysmarvertField,
-                      const SizedBox(height: 15.0),
-                      lidoField,
-                      const SizedBox(height: 15.0),
-                      docuField,
-                      const SizedBox(height: 15.0),
-                      hubDropdown,
-                      const SizedBox(height: 15.0),
-                      conditionDropdown,
-                      const SizedBox(height: 15.0),
-                    ],
-                  ),
+        centerTitle: true, // Center the title
+      ),
+      body: Padding(
+        padding: const EdgeInsets.only(top: 20, right: 20, left: 20),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    deviceNoField,
+                    const SizedBox(height: 15.0),
+                    iosverField,
+                    const SizedBox(height: 15.0),
+                    flysmarvertField,
+                    const SizedBox(height: 15.0),
+                    lidoField,
+                    const SizedBox(height: 15.0),
+                    docuField,
+                    const SizedBox(height: 15.0),
+                    hubDropdown,
+                    const SizedBox(height: 15.0),
+                    conditionDropdown,
+                    const SizedBox(height: 15.0),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
-        bottomNavigationBar: BottomAppBar(
-            child: Container(
-              child: SaveButton,
-            ),
-            ),
-        );
-}
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: Container(
+          child: SaveButton,
+        ),
+      ),
+    );
+  }
 }
