@@ -35,7 +35,7 @@ class HomeOCCView extends GetView<HomeOCCController> {
               child: Column(
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(top: 40, bottom: 10, left: 20,right: 20),
+                    padding: EdgeInsets.only(top: 40, bottom: 10, left: 20, right: 20),
                     child: Column(
                       children: [
                         Row(
@@ -75,13 +75,11 @@ class HomeOCCView extends GetView<HomeOCCController> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    Util.convertDateTimeDisplay(
-                                        DateTime.now().toString(), "EEEE"),
+                                    Util.convertDateTimeDisplay(DateTime.now().toString(), "EEEE"),
                                     style: tsOneTextTheme.labelSmall,
                                   ),
                                   Text(
-                                    Util.convertDateTimeDisplay(
-                                        DateTime.now().toString(), "dd MMMM yyyy"),
+                                    Util.convertDateTimeDisplay(DateTime.now().toString(), "dd MMMM yyyy"),
                                     style: tsOneTextTheme.labelSmall,
                                   ),
                                 ],
@@ -101,11 +99,25 @@ class HomeOCCView extends GetView<HomeOCCController> {
                           children: [
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 20),
-                              child: RedTitleText(text: "HUB : " + userHub!),
+                              child: FutureBuilder<String?>(
+                                future: _getUserHub(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState == ConnectionState.waiting) {
+                                    // Menampilkan indikator loading saat data sedang dimuat
+                                    return CircularProgressIndicator();
+                                  } else if (snapshot.hasError) {
+                                    // Menampilkan pesan kesalahan jika terjadi error
+                                    return Text('Error: ${snapshot.error}');
+                                  } else {
+                                    // Menampilkan konten jika data sudah tersedia
+                                    String? userHub = snapshot.data;
+                                    return RedTitleText(text: "HUB : ${userHub ?? 'Data tidak tersedia'}");
+                                  }
+                                },
+                              ),
                             ),
                           ],
                         ),
-
                       ],
                     ),
                   ),
@@ -200,7 +212,6 @@ class HomeOCCView extends GetView<HomeOCCController> {
                       ],
                     ),
                   ),
-
                   TabBar(
                     tabs: [
                       Tab(text: "Confirm"),
@@ -244,10 +255,7 @@ Future<String?> _getUserHub() async {
   final userEmail = user.email;
   if (userEmail == null) return null;
 
-  final userSnapshot = await FirebaseFirestore.instance
-      .collection('users')
-      .where('EMAIL', isEqualTo: userEmail)
-      .get();
+  final userSnapshot = await FirebaseFirestore.instance.collection('users').where('EMAIL', isEqualTo: userEmail).get();
 
   if (userSnapshot.docs.isNotEmpty) {
     final userDoc = userSnapshot.docs.first;
@@ -271,7 +279,7 @@ class FirebaseDataTab extends StatelessWidget {
       stream: FirebaseFirestore.instance
           .collection("pilot-device-1")
           .where("statusDevice", whereIn: statuses)
-          .where("field_hub", isEqualTo: userHub)  // Filter based on user's hub
+          .where("field_hub", isEqualTo: userHub) // Filter based on user's hub
           .snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -295,10 +303,7 @@ class FirebaseDataTab extends StatelessWidget {
             final userUid = data['user_uid'];
             // Get the user's name using a FutureBuilder
             return FutureBuilder<DocumentSnapshot>(
-              future: FirebaseFirestore.instance
-                  .collection("users")
-                  .doc(userUid)
-                  .get(),
+              future: FirebaseFirestore.instance.collection("users").doc(userUid).get(),
               builder: (context, userSnapshot) {
                 if (userSnapshot.connectionState == ConnectionState.waiting) {
                   return CircularProgressIndicator();
@@ -382,7 +387,7 @@ class FirebaseDataTab extends StatelessWidget {
                                           '$deviceName',
                                           style: tsOneTextTheme.labelSmall,
                                         ),
-                                      if (deviceName2.isNotEmpty && deviceName3.isNotEmpty  && deviceName.contains('-'))
+                                      if (deviceName2.isNotEmpty && deviceName3.isNotEmpty && deviceName.contains('-'))
                                         Text(
                                           '$deviceName2' + ' & ' + '$deviceName3',
                                           style: tsOneTextTheme.labelSmall,
@@ -415,4 +420,3 @@ class FirebaseDataTab extends StatelessWidget {
     );
   }
 }
-
