@@ -35,7 +35,7 @@ class HomeOCCView extends GetView<HomeOCCController> {
               child: Column(
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(top: 50, left: 20,right: 20),
+                    padding: EdgeInsets.only(top: 50, left: 20, right: 20),
                     child: Column(
                       children: [
                         Row(
@@ -94,17 +94,13 @@ class HomeOCCView extends GetView<HomeOCCController> {
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: Container(
                       decoration: BoxDecoration(
-                        color: tsOneColorScheme.onPrimary,  // Set the container background color to red
+                        color: tsOneColorScheme.onPrimary,
                         borderRadius: BorderRadius.circular(15.0),
-                        // border: Border.all(
-                        //   color: Colors.black,  // Set the border color to black
-                        //   width: 1.0,  // Set the border width
-                        // ),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black12, // Shadow color
-                            blurRadius: 5,  // Spread radius
-                            offset: Offset(0, 2),  // Offset in x and y direction
+                            color: Colors.black12,
+                            blurRadius: 5,
+                            offset: Offset(0, 2),
                           ),
                         ],
                       ),
@@ -118,14 +114,26 @@ class HomeOCCView extends GetView<HomeOCCController> {
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.symmetric(horizontal: 10),
-                                  child: BlackTitleText(text: userHub!),
+                                  child: FutureBuilder<String?>(
+                                    future: _getUserHub(),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState == ConnectionState.waiting) {
+                                        return CircularProgressIndicator();
+                                      } else if (snapshot.hasError) {
+                                        return Text('Error: ${snapshot.error}');
+                                      } else {
+                                        String? userHub = snapshot.data;
+                                        return RedTitleText(text: "HUB : ${userHub ?? 'Data tidak tersedia'}");
+                                      }
+                                    },
+                                  ),
                                 ),
                               ],
                             ),
                             Container(
-                              width: 1,  // Adjust the width of the "divider"
-                              height: 40,  // Adjust the height of the "divider"
-                              color: tsOneColorScheme.primary,  // Set the color of the "divider"
+                              width: 1,
+                              height: 40,
+                              color: tsOneColorScheme.primary,
                               margin: const EdgeInsets.symmetric(horizontal: 20),
                             ),
                             Expanded(
@@ -137,7 +145,7 @@ class HomeOCCView extends GetView<HomeOCCController> {
                                     stream: FirebaseFirestore.instance
                                         .collection("pilot-device-1")
                                         .where("statusDevice", isEqualTo: "in-use-pilot")
-                                        .where("field_hub", isEqualTo: userHub) // Using the logged-in userHub
+                                        .where("field_hub", isEqualTo: userHub)
                                         .snapshots(),
                                     builder: (context, snapshot) {
                                       if (snapshot.connectionState == ConnectionState.waiting) {
@@ -151,7 +159,10 @@ class HomeOCCView extends GetView<HomeOCCController> {
                                       final count = snapshot.data?.docs.length ?? 0;
                                       return Padding(
                                         padding: const EdgeInsets.symmetric(horizontal: 10),
-                                        child: Text('Used Device ' + ': $count', style: tsOneTextTheme.bodySmall,),
+                                        child: Text(
+                                          'Used Device ' + ': $count',
+                                          style: tsOneTextTheme.bodySmall,
+                                        ),
                                       );
                                     },
                                   ),
@@ -159,7 +170,7 @@ class HomeOCCView extends GetView<HomeOCCController> {
                                     stream: FirebaseFirestore.instance
                                         .collection("pilot-device-1")
                                         .where("statusDevice", isEqualTo: "in-use-pilot")
-                                        .where("field_hub", isEqualTo: userHub) // Using the logged-in userHub
+                                        .where("field_hub", isEqualTo: userHub)
                                         .snapshots(),
                                     builder: (context, snapshot) {
                                       if (snapshot.connectionState == ConnectionState.waiting) {
@@ -173,10 +184,7 @@ class HomeOCCView extends GetView<HomeOCCController> {
                                       final inUseCount = snapshot.data?.docs.length ?? 0;
 
                                       return StreamBuilder<QuerySnapshot>(
-                                        stream: FirebaseFirestore.instance
-                                            .collection("Device")
-                                            .where("hub", isEqualTo: userHub) // Using the logged-in userHub
-                                            .snapshots(),
+                                        stream: FirebaseFirestore.instance.collection("Device").where("hub", isEqualTo: userHub).snapshots(),
                                         builder: (context, snapshot) {
                                           if (snapshot.connectionState == ConnectionState.waiting) {
                                             return CircularProgressIndicator();
@@ -191,7 +199,10 @@ class HomeOCCView extends GetView<HomeOCCController> {
 
                                           return Padding(
                                             padding: const EdgeInsets.symmetric(horizontal: 10),
-                                            child: Text('Available Devices: $availableCount', style: tsOneTextTheme.bodySmall,),
+                                            child: Text(
+                                              'Available Devices: $availableCount',
+                                              style: tsOneTextTheme.bodySmall,
+                                            ),
                                           );
                                         },
                                       );
@@ -205,11 +216,9 @@ class HomeOCCView extends GetView<HomeOCCController> {
                       ),
                     ),
                   ),
-
-                  const SizedBox(height: 8,),
-
-
-
+                  const SizedBox(
+                    height: 8,
+                  ),
                   TabBar(
                     tabs: [
                       Tab(text: "Confirm"),
