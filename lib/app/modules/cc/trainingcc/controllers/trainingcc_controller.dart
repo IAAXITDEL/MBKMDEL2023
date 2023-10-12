@@ -171,7 +171,7 @@ class TrainingccController extends GetxController {
           .set({
         "id": "${userPreferences.getIDNo()}-${idtraining}-${formattedDate}",
         "idattendance": idattendance,
-        "idtraining": userPreferences.getIDNo(),
+        "idtraining": userPreferences.getIDNo().toInt(),
         "status": "confirmation",
         "creationTime": DateTime.now().toIso8601String(),
         "updatedTime": DateTime.now().toIso8601String(),
