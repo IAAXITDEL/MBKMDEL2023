@@ -262,10 +262,10 @@ class _ListDeviceState extends State<ListDevice> {
       appBar: AppBar(
         backgroundColor: Colors.white, // Set background color to white
         title: Text(
-          'List Device',
+          'List Device ',
           style: TextStyle(
             color: Colors.black, // Set text color to red
-            fontSize: 20.0,
+            fontSize: 19.0,
             fontWeight: FontWeight.bold,
           ),
         ),

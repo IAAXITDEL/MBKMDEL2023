@@ -81,7 +81,7 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
           'All Device Used ',
           style: TextStyle(
             color: Colors.black, // Set text color to red
-            fontSize: 20.0,
+            fontSize: 19.0,
             fontWeight: FontWeight.bold,
           ),
         ),

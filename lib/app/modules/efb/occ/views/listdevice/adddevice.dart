@@ -270,7 +270,7 @@ class _AddDevice extends State<AddDevice> {
           'Add Device',
           style: TextStyle(
             color: Colors.black, // Set text color to red
-            fontSize: 20.0,
+            fontSize: 19.0,
             fontWeight: FontWeight.bold,
           ),
         ),
