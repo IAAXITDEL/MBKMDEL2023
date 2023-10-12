@@ -43,28 +43,31 @@ class PilottraininghistoryccController extends GetxController {
             .map((doc) => AttendanceModel.fromJson(doc.data()).id)
             .toList();
 
+        print(attendanceIds);
         if (attendanceIds.isNotEmpty) {
           final attendanceDetailQuery = await firestore
               .collection('attendance-detail')
-              .where("idtraining", isEqualTo: idTraining.value.toString())
+              .where("idtraining", isEqualTo: idTraining.value)
               .where("idattendance", whereIn: attendanceIds)
               .get();
           attendanceDetailData
               .addAll(attendanceDetailQuery.docs.map((doc) => doc.data()));
+
+          print("disini 1");
+          print(attendanceDetailData);
         }else{
           return [];
         }
 
         if (attendanceDetailData.isNotEmpty) {
-          final idAttendances = attendanceDetailData
-              .map((attendanceDetail) => int.parse(attendanceDetail['idtraining']))
-              .toList();
-
           final usersQuery = await firestore
               .collection('users')
               .where("ID NO", isEqualTo: idTraining.value)
               .get();
           usersData.addAll(usersQuery.docs.map((doc) => doc.data()));
+
+          print("disini 2");
+          print(usersData);
         }else{
           return [];
         }
