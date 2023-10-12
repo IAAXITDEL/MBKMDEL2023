@@ -231,6 +231,7 @@ class _ListDeviceState extends State<ListDevice> {
             fontSize: 24.0,
             fontWeight: FontWeight.bold,
           ),
+
         ),
         centerTitle: true, // Center the title
         actions: [
@@ -248,7 +249,8 @@ class _ListDeviceState extends State<ListDevice> {
           ),
         ],
       ),
-      body: Padding(
+
+        body: Padding(
         padding: const EdgeInsets.only(top: 10, right: 20, left: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

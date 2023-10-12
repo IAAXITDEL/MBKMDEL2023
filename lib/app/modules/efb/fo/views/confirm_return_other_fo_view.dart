@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart'; // For camera feature
 import 'package:firebase_storage/firebase_storage.dart'; // For uploading images to Firebase Storage
 import 'package:quickalert/models/quickalert_type.dart';
@@ -7,6 +9,7 @@ import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'dart:io'; // For handling selected image file
 
 import '../../../../../presentation/theme.dart';
+import '../../../../routes/app_pages.dart';
 
 class ConfirmReturnOtherFOView extends StatefulWidget {
   final String deviceName2;
@@ -27,30 +30,39 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
   final TextEditingController remarksController = TextEditingController();
   File? selectedImage; // File to store the selected image
   final ImagePicker _imagePicker = ImagePicker(); // ImagePicker instance
+  String deviceId2 = "";
+  String deviceId3 = "";
+  String deviceName2 = "";
+  String deviceName3 = "";
+  String OccOnDuty = "";
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // Function to update status in Firestore and upload image to Firebase Storage
-  void updateStatusToInUsePilot(String deviceId) async {
-    final remarks = remarksController.text;
-
-    // Upload the selected image to Firebase Storage (if an image is selected)
-    String imageUrl = '';
-    if (selectedImage != null) {
-      final storageRef = FirebaseStorage.instance.ref().child('images/$deviceId.jpg');
-      await storageRef.putFile(selectedImage!);
-      imageUrl = await storageRef.getDownloadURL();
-    }
-
-    // Update Firestore
-    await FirebaseFirestore.instance.collection('pilot-device-1').doc(widget.deviceId).update({
-      'statusDevice': 'in-use-pilot',
-      'handover-to-crew': '-',
-      'remarks': remarks,
-      'prove_image_url': imageUrl,
+  @override
+  void initState() {
+    super.initState();
+    // Fetch deviceUid, deviceName, and OCC On Duty from Firestore using widget.deviceId
+    FirebaseFirestore.instance
+        .collection('pilot-device-1')
+        .doc(widget.deviceId)
+        .get()
+        .then((documentSnapshot) {
+      if (documentSnapshot.exists) {
+        setState(() {
+          deviceId2 = documentSnapshot['device_uid2'];
+          deviceId3 = documentSnapshot['device_uid3'];
+          deviceName2 = documentSnapshot['device_name2'];
+          deviceName3 = documentSnapshot['device_name3'];
+          OccOnDuty = documentSnapshot['occ-on-duty'];
+        });
+      }
     });
 
-    // Return to the previous page
-    _showQuickAlert(context);
   }
+
+
+
+  // Function to update status in Firestore and upload image to Firebase Storage
 
   // Function to open the image picker
   Future<void> _pickImage() async {
@@ -70,7 +82,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
       type: QuickAlertType.success,
       text: 'You have successfully added a device',
     );
-    Navigator.of(context).pop();
+    Get.offAllNamed(Routes.NAVOCC);
   }
 
   Future<void> _showConfirmationDialog() async {
@@ -96,11 +108,53 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
             ),
             TextButton(
               child: Text('Confirm'),
-              onPressed: () {
-                // Call the function to update status and upload image
-                updateStatusToInUsePilot(widget.deviceId);
-                Navigator.of(context).pop(); // Close the dialog
-                Navigator.of(context).pop();
+              onPressed: () async {
+                final remarks = remarksController.text;
+
+                // Upload the selected image to Firebase Storage (if an image is selected)
+                String imageUrl = '';
+                if (selectedImage != null) {
+                  final storageRef = FirebaseStorage.instance.ref().child('images/${widget.deviceId}.jpg');
+                  await storageRef.putFile(selectedImage!);
+                  imageUrl = await storageRef.getDownloadURL();
+                }
+
+                // Update Firestore
+                await FirebaseFirestore.instance.collection('pilot-device-1').doc(widget.deviceId).update({
+                  'statusDevice': 'handover-to-other-crew',
+                  'remarks': remarks,
+                  'prove_image_url': imageUrl,
+                });
+
+
+                User? user = _auth.currentUser;
+                QuerySnapshot userQuery = await _firestore.collection('users').where('EMAIL', isEqualTo: user?.email).get();
+                String userUid = userQuery.docs.first.id;
+
+
+                String hubField = await getHubFromDeviceName(deviceName2, deviceName3) ?? "Unknown Hub";
+
+                FirebaseFirestore.instance.collection('pilot-device-1').add({
+                  'user_uid': userUid,
+                  'device_uid': '-',
+                  'device_name': '-',
+                  'device_uid2': deviceId2,
+                  'device_name2': deviceName2,
+                  'device_uid3': deviceId3,
+                  'device_name3': deviceName3,
+                  'occ-on-duty': OccOnDuty,
+                  'handover-from': '-',
+                  'statusDevice': 'in-use-pilot',
+                  'timestamp': FieldValue.serverTimestamp(),
+                  'remarks' : '',
+                  'prove_image_url': '',
+                  'handover-to-crew': '-',
+                  'field_hub': hubField, // Add 'hub' field
+                });
+
+
+                // Return to the previous page
+                _showQuickAlert(context);
               },
             ),
           ],
@@ -123,6 +177,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
       );
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -151,7 +206,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
               final data = snapshot.data!.data() as Map<String, dynamic>;
 
               return FutureBuilder<DocumentSnapshot>(
-                future: FirebaseFirestore.instance.collection("users").doc(data['user_uid']).get(),
+                future: FirebaseFirestore.instance.collection("users").doc(data['handover-to-crew']).get(),
                 builder: (context, userSnapshot) {
                   if (userSnapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());
@@ -168,7 +223,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                   final userData = userSnapshot.data!.data() as Map<String, dynamic>;
 
                   return FutureBuilder<DocumentSnapshot>(
-                    future: FirebaseFirestore.instance.collection("users").doc(data['handover-from']).get(),
+                    future: FirebaseFirestore.instance.collection("users").doc(data['user_uid']).get(),
                     builder: (context, otheruserSnapshot) {
                       if (otheruserSnapshot.connectionState == ConnectionState.waiting) {
                         return Center(child: CircularProgressIndicator());
@@ -584,6 +639,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                 ),
 
 
+
                                 SizedBox(height: 20.0),
                                 Align(
                                   alignment: Alignment.centerLeft,
@@ -629,6 +685,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                   onPressed: () {
                                     // Call the function to update status and upload image
                                     _showConfirmationDialog();
+                                    print('device name: ' + widget.deviceName2);
                                   },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: TsOneColor.greenColor,
@@ -654,4 +711,26 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
       ),
     );
   }
+}
+
+
+Future<String> getHubFromDeviceName(String deviceName2, String deviceName3) async {
+  String hub = "Unknown Hub"; // Default value
+
+  try {
+    // Fetch the 'hub' field from the 'Device' collection based on deviceName
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('Device')
+        .where('deviceno', whereIn: [deviceName2, deviceName3])
+        .get();
+
+
+    if (querySnapshot.docs.isNotEmpty) {
+      hub = querySnapshot.docs.first['hub'];
+    }
+  } catch (e) {
+    print("Error getting hub from Device: $e");
+  }
+
+  return hub;
 }

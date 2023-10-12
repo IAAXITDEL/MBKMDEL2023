@@ -100,8 +100,7 @@ class HomePilotView extends GetView<HomePilotController> {
                   } else {
                     QuerySnapshot? pilotDevicesSnapshot = snapshot.data;
 
-                    if (pilotDevicesSnapshot != null &&
-                        pilotDevicesSnapshot.docs.isNotEmpty) {
+                    if (pilotDevicesSnapshot != null && pilotDevicesSnapshot.docs.isNotEmpty) {
                       // Filter the data for 'in-use-pilot' and 'waiting-confirmation-1'
                       final inUsePilotDocs = pilotDevicesSnapshot.docs
                           .where((doc) => doc['statusDevice'] == 'in-use-pilot')

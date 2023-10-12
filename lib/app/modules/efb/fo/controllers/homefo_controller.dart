@@ -51,6 +51,17 @@ class HomeFOController extends GetxController {
     super.onInit();
   }
 
+  // Stream controller for your data
+  final _dataStream = Rx<QuerySnapshot?>(null);
+
+  Stream<QuerySnapshot?> get dataStream => _dataStream.stream;
+
+  void fetchData() {
+    _firestore.collection('').snapshots().listen((event) {
+      _dataStream.value = event;
+    });
+  }
+
 
 
 

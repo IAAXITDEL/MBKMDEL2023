@@ -229,10 +229,10 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                       if (qrCode != '-1') {
                         setState(() {
                           deviceNoController.text = qrCode;
-                          selectedDevice =
-                              getMatchingDevices(qrCode).firstOrNull;
+                          selectedDevice = getMatchingDevices(qrCode).firstOrNull;
                         });
                       }
+
                     },
                     child: const Icon(Icons.qr_code_2),
                   ),

@@ -35,14 +35,14 @@ class HomeOCCView extends GetView<HomeOCCController> {
               child: Column(
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(top: 40, bottom: 10, left: 20, right: 20),
+                    padding: EdgeInsets.only(top: 50, left: 20,right: 20),
                     child: Column(
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "Hi, ${controller.titleToGreet!}",
+                              "Hi, ${controller.titleToGreet}",
                               style: tsOneTextTheme.headlineLarge,
                             ),
                             Spacer(),
@@ -92,126 +92,124 @@ class HomeOCCView extends GetView<HomeOCCController> {
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Column(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: tsOneColorScheme.onPrimary,  // Set the container background color to red
+                        borderRadius: BorderRadius.circular(15.0),
+                        // border: Border.all(
+                        //   color: Colors.black,  // Set the border color to black
+                        //   width: 1.0,  // Set the border width
+                        // ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black12, // Shadow color
+                            blurRadius: 5,  // Spread radius
+                            offset: Offset(0, 2),  // Offset in x and y direction
+                          ),
+                        ],
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 20),
-                              child: FutureBuilder<String?>(
-                                future: _getUserHub(),
-                                builder: (context, snapshot) {
-                                  if (snapshot.connectionState == ConnectionState.waiting) {
-                                    // Menampilkan indikator loading saat data sedang dimuat
-                                    return CircularProgressIndicator();
-                                  } else if (snapshot.hasError) {
-                                    // Menampilkan pesan kesalahan jika terjadi error
-                                    return Text('Error: ${snapshot.error}');
-                                  } else {
-                                    // Menampilkan konten jika data sudah tersedia
-                                    String? userHub = snapshot.data;
-                                    return RedTitleText(text: "HUB : ${userHub ?? 'Data tidak tersedia'}");
-                                  }
-                                },
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                                  child: BlackTitleText(text: userHub!),
+                                ),
+                              ],
+                            ),
+                            Container(
+                              width: 1,  // Adjust the width of the "divider"
+                              height: 40,  // Adjust the height of the "divider"
+                              color: tsOneColorScheme.primary,  // Set the color of the "divider"
+                              margin: const EdgeInsets.symmetric(horizontal: 20),
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  StreamBuilder<QuerySnapshot>(
+                                    stream: FirebaseFirestore.instance
+                                        .collection("pilot-device-1")
+                                        .where("statusDevice", isEqualTo: "in-use-pilot")
+                                        .where("field_hub", isEqualTo: userHub) // Using the logged-in userHub
+                                        .snapshots(),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState == ConnectionState.waiting) {
+                                        return CircularProgressIndicator();
+                                      }
+
+                                      if (snapshot.hasError) {
+                                        return Text("Error: ${snapshot.error}");
+                                      }
+
+                                      final count = snapshot.data?.docs.length ?? 0;
+                                      return Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                                        child: Text('Used Device ' + ': $count', style: tsOneTextTheme.bodySmall,),
+                                      );
+                                    },
+                                  ),
+                                  StreamBuilder<QuerySnapshot>(
+                                    stream: FirebaseFirestore.instance
+                                        .collection("pilot-device-1")
+                                        .where("statusDevice", isEqualTo: "in-use-pilot")
+                                        .where("field_hub", isEqualTo: userHub) // Using the logged-in userHub
+                                        .snapshots(),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState == ConnectionState.waiting) {
+                                        return CircularProgressIndicator();
+                                      }
+
+                                      if (snapshot.hasError) {
+                                        return Text("Error: ${snapshot.error}");
+                                      }
+
+                                      final inUseCount = snapshot.data?.docs.length ?? 0;
+
+                                      return StreamBuilder<QuerySnapshot>(
+                                        stream: FirebaseFirestore.instance
+                                            .collection("Device")
+                                            .where("hub", isEqualTo: userHub) // Using the logged-in userHub
+                                            .snapshots(),
+                                        builder: (context, snapshot) {
+                                          if (snapshot.connectionState == ConnectionState.waiting) {
+                                            return CircularProgressIndicator();
+                                          }
+
+                                          if (snapshot.hasError) {
+                                            return Text("Error: ${snapshot.error}");
+                                          }
+
+                                          final totalCount = snapshot.data?.docs.length ?? 0;
+                                          final availableCount = totalCount - inUseCount;
+
+                                          return Padding(
+                                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                                            child: Text('Available Devices: $availableCount', style: tsOneTextTheme.bodySmall,),
+                                          );
+                                        },
+                                      );
+                                    },
+                                  ),
+                                ],
                               ),
                             ),
                           ],
                         ),
-                      ],
+                      ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        // Menampilkan jumlah CGK dengan status in-use-pilot
-                        StreamBuilder<QuerySnapshot>(
-                          stream: FirebaseFirestore.instance
-                              .collection("pilot-device-1")
-                              .where("statusDevice", isEqualTo: "in-use-pilot")
-                              .where("field_hub", isEqualTo: "CGK")
-                              .snapshots(),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState == ConnectionState.waiting) {
-                              return CircularProgressIndicator();
-                            }
 
-                            if (snapshot.hasError) {
-                              return Text("Error: ${snapshot.error}");
-                            }
+                  const SizedBox(height: 8,),
 
-                            final count = snapshot.data?.docs.length ?? 0;
-                            return Text('CGK: $count');
-                          },
-                        ),
 
-                        // Menampilkan jumlah SUB dengan status in-use-pilot
-                        StreamBuilder<QuerySnapshot>(
-                          stream: FirebaseFirestore.instance
-                              .collection("pilot-device-1")
-                              .where("statusDevice", isEqualTo: "in-use-pilot")
-                              .where("field_hub", isEqualTo: "SUB")
-                              .snapshots(),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState == ConnectionState.waiting) {
-                              return CircularProgressIndicator();
-                            }
 
-                            if (snapshot.hasError) {
-                              return Text("Error: ${snapshot.error}");
-                            }
-
-                            final count = snapshot.data?.docs.length ?? 0;
-                            return Text('SUB: $count');
-                          },
-                        ),
-
-                        // Menampilkan jumlah DPS dengan status in-use-pilot
-                        StreamBuilder<QuerySnapshot>(
-                          stream: FirebaseFirestore.instance
-                              .collection("pilot-device-1")
-                              .where("statusDevice", isEqualTo: "in-use-pilot")
-                              .where("field_hub", isEqualTo: "DPS")
-                              .snapshots(),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState == ConnectionState.waiting) {
-                              return CircularProgressIndicator();
-                            }
-
-                            if (snapshot.hasError) {
-                              return Text("Error: ${snapshot.error}");
-                            }
-
-                            final count = snapshot.data?.docs.length ?? 0;
-                            return Text('DPS: $count');
-                          },
-                        ),
-
-                        // Menampilkan jumlah KNO dengan status in-use-pilot
-                        StreamBuilder<QuerySnapshot>(
-                          stream: FirebaseFirestore.instance
-                              .collection("pilot-device-1")
-                              .where("statusDevice", isEqualTo: "in-use-pilot")
-                              .where("field_hub", isEqualTo: "KNO")
-                              .snapshots(),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState == ConnectionState.waiting) {
-                              return CircularProgressIndicator();
-                            }
-
-                            if (snapshot.hasError) {
-                              return Text("Error: ${snapshot.error}");
-                            }
-
-                            final count = snapshot.data?.docs.length ?? 0;
-                            return Text('KNO: $count');
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
                   TabBar(
                     tabs: [
                       Tab(text: "Confirm"),

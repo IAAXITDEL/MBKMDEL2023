@@ -5,6 +5,8 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 
+import '../../../../../presentation/theme.dart';
+
 class ReturnOtherFOView extends StatefulWidget {
   final String documentId;
   final String deviceId;
@@ -131,30 +133,30 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                       .collection('pilot-device-1')
                       .doc(widget.deviceId)
                       .update({
-                    'statusDevice': 'handover-to-other-crew',
+                    'statusDevice': 'waiting-handover-to-other-crew',
                     'handover-to-crew': idNumber,
                   });
 
                   // Get the hub based on device_name
                   String hubField = await getHubFromDeviceName(deviceName2, deviceName3) ?? "Unknown Hub";
 
-                  FirebaseFirestore.instance.collection('pilot-device-1').add({
-                    'user_uid': idNumber,
-                    'device_uid': '-',
-                    'device_name': '-',
-                    'device_uid2': deviceId2,
-                    'device_name2': deviceName2,
-                    'device_uid3': deviceId3,
-                    'device_name3': deviceName3,
-                    'occ-on-duty': OccOnDuty,
-                    'handover-from': userUid,
-                    'statusDevice': 'waiting-confirmation-other-pilot',
-                    'timestamp': FieldValue.serverTimestamp(),
-                    'remarks' : '',
-                    'prove_image_url': '',
-                    'handover-to-crew': '-',
-                    'field_hub': hubField, // Add 'hub' field
-                  });
+                  // FirebaseFirestore.instance.collection('pilot-device-1').add({
+                  //   'user_uid': idNumber,
+                  //   'device_uid': '-',
+                  //   'device_name': '-',
+                  //   'device_uid2': deviceId2,
+                  //   'device_name2': deviceName2,
+                  //   'device_uid3': deviceId3,
+                  //   'device_name3': deviceName3,
+                  //   'occ-on-duty': OccOnDuty,
+                  //   'handover-from': userUid,
+                  //   'statusDevice': 'waiting-confirmation-other-pilot',
+                  //   'timestamp': FieldValue.serverTimestamp(),
+                  //   'remarks' : '',
+                  //   'prove_image_url': '',
+                  //   'handover-to-crew': '-',
+                  //   'field_hub': hubField, // Add 'hub' field
+                  // });
 
                   Navigator.pop(context); // Close the ReturnOtherPilotView
                 } else {
@@ -175,7 +177,7 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
         title: Text('Return Other Pilot'),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
+      body: SingleChildScrollView( 
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -186,8 +188,6 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                   Expanded(
                     child: TextField(
                       controller: _idController,
-                      enabled: selectedUser != null,  // Enable/disable based on user selection
-                      readOnly: true,  // Make the text field non-editable
                       decoration: InputDecoration(
                         labelText: 'Enter ID Number',
                       ),
@@ -258,9 +258,59 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                       'Selected User:',
                       style: TextStyle(fontSize: 18),
                     ),
-                    Text('ID NO: ${selectedUser!['ID NO']}'),
-                    Text('Name: ${selectedUser!['NAME']}'),
-                    Text('Rank: ${selectedUser!['RANK']}'),
+                    Row(
+                      children: [
+                        Expanded(flex: 6, child: Text("ID NO", style: tsOneTextTheme.bodySmall,)),
+                        Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
+                        Expanded(
+                          flex: 6,
+                          child: Text(
+                            '${selectedUser!['ID NO']}',
+                            style: tsOneTextTheme.bodySmall,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 5.0),
+                    Row(
+                      children: [
+                        Expanded(flex: 6, child: Text("Name", style: tsOneTextTheme.bodySmall,)),
+                        Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
+                        Expanded(
+                          flex: 6,
+                          child: Text(
+                            '${selectedUser!['NAME']}',
+                            style: tsOneTextTheme.bodySmall,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Expanded(flex: 6, child: Text("Rank", style: tsOneTextTheme.bodySmall,)),
+                        Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
+                        Expanded(
+                          flex: 6,
+                          child: Text(
+                            '${selectedUser!['RANK']}',
+                            style: tsOneTextTheme.bodySmall,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Expanded(flex: 6, child: Text("HUB", style: tsOneTextTheme.bodySmall,)),
+                        Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
+                        Expanded(
+                          flex: 6,
+                          child: Text(
+                            '${selectedUser!['HUB']}',
+                            style: tsOneTextTheme.bodySmall,
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ElevatedButton(

@@ -142,6 +142,7 @@ class AnalyticsView extends GetView<AnalyticsController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white, // Set background color to white
         title: Text(
           'Analytics',
           style: tsOneTextTheme.headlineLarge,
@@ -166,6 +167,7 @@ class AnalyticsView extends GetView<AnalyticsController> {
             },
           ),
         ],
+        centerTitle: true, // Center the title
       ),
       body: SingleChildScrollView(
         child: Padding(

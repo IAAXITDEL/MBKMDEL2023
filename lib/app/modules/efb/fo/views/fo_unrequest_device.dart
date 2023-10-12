@@ -8,6 +8,7 @@ import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 
 import '../../../../../presentation/theme.dart';
+import 'main_view_fo.dart';
 
 class FOUnRequestDeviceView extends GetView {
   final String deviceId;
@@ -25,7 +26,6 @@ class FOUnRequestDeviceView extends GetView {
     );
     Navigator.of(context).pop();
     Navigator.of(context).pop();
-    Navigator.of(context).pop();
   }
 
   void confirmRejected(BuildContext context) {
@@ -40,9 +40,16 @@ class FOUnRequestDeviceView extends GetView {
             TextButton(
               child: Text('Cancel'),
               onPressed: () {
-                Navigator.of(context).pop();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                    HomeFOView(),
+                  ),
+                );
               },
             ),
+
             TextButton(
               child: Text('Confirm'),
               onPressed: () async {
@@ -58,9 +65,7 @@ class FOUnRequestDeviceView extends GetView {
                       .doc(deviceId);
 
                   try {
-                    await pilotDeviceRef.update({
-                      'statusDevice': 'cancel-by-crew',
-                    });
+                    await FirebaseFirestore.instance.collection("pilot-device-1").doc(deviceId).delete();
 
                     print('Data updated successfully!');
                   } catch (error) {

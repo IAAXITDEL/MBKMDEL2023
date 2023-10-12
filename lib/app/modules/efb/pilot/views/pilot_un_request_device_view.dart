@@ -57,9 +57,7 @@ class PilotUnRequestDeviceView extends GetView {
                       .doc(deviceId);
 
                   try {
-                    await pilotDeviceRef.update({
-                      'statusDevice': 'cancel-by-crew',
-                    });
+                    await FirebaseFirestore.instance.collection("pilot-device-1").doc(deviceId).delete();
 
                     print('Data updated successfully!');
                   } catch (error) {
