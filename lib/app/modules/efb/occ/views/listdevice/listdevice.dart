@@ -221,19 +221,13 @@ class _ListDeviceState extends State<ListDevice> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        backgroundColor: Colors.white, // Set background color to white
+        backgroundColor: Colors.white,
         title: Text(
           'List Device',
-          style: TextStyle(
-            color: Colors.black, // Set text color to red
-            fontSize: 24.0,
-            fontWeight: FontWeight.bold,
-          ),
-
+          style: tsOneTextTheme.headlineLarge,
         ),
-        centerTitle: true, // Center the title
+        centerTitle: true,
         actions: [
           Tooltip(
             message: 'Export to Sheet',
@@ -249,13 +243,11 @@ class _ListDeviceState extends State<ListDevice> {
           ),
         ],
       ),
-
-        body: Padding(
-        padding: const EdgeInsets.only(top: 10, right: 20, left: 20),
+      body: Padding(
+        padding: const EdgeInsets.only(top: 0, right: 20, left: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 10),
             Container(
               height: 60,
               child: TextField(
@@ -297,13 +289,7 @@ class _ListDeviceState extends State<ListDevice> {
 
                   final deviceCount = snapshot.hasData ? snapshot.data!.docs.length : 0;
 
-                  return Text(
-                    'Total Devices: $deviceCount',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  );
+                  return Text('Total Devices: $deviceCount', style: tsOneTextTheme.headlineMedium);
                 },
               ),
             ),
@@ -344,44 +330,54 @@ class _ListDeviceState extends State<ListDevice> {
                     itemBuilder: (context, index) {
                       final e = filteredData[index];
                       return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 3),
+                        padding: const EdgeInsets.all(5),
                         child: Container(
                           child: Expanded(
-                              child: DecoratedBox(
-                            decoration: BoxDecoration(
-                                //color: TsOneColor.secondaryContainer,
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(4.0),
-                                boxShadow: const [
-                                  BoxShadow(
-                                      color: TsOneColor.surface, blurRadius: 10, spreadRadius: 2, offset: Offset(1, 1), blurStyle: BlurStyle.normal)
-                                ]),
-                            child: Column(
-                              children: [
-                                ListTile(
-                                  title: Text(
-                                    "${e["deviceno"]}",
-                                    style: tsOneTextTheme.bodyMedium,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.pushAndRemoveUntil<dynamic>(
+                                  context,
+                                  MaterialPageRoute<dynamic>(
+                                    builder: (BuildContext context) => ShowDevice(
+                                      device: Device(
+                                        uid: e.id,
+                                        deviceno: e["deviceno"],
+                                        iosver: e["iosver"],
+                                        flysmart: e["flysmart"],
+                                        lidoversion: e["lidoversion"],
+                                        docuversion: e["docuversion"],
+                                        hub: e["hub"],
+                                        condition: e["condition"],
+                                      ),
+                                    ),
                                   ),
-                                  trailing: _buildEditDeleteButton(e),
+                                  (route) => true,
+                                );
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: tsOneColorScheme.secondary,
+                                foregroundColor: tsOneColorScheme.secondaryContainer,
+                                surfaceTintColor: tsOneColorScheme.secondary,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
                                 ),
-                              ],
+                              ),
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(vertical: 7),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        "${e["deviceno"]}",
+                                        style: tsOneTextTheme.bodyMedium,
+                                      ),
+                                    ),
+                                    _buildEditDeleteButton(e),
+                                  ],
+                                ),
+                              ),
                             ),
-                          )),
-                          // child: Card(
-                          //   color: TsOneColor.surface,
-                          //   child: Column(
-                          //     children: [
-                          //       ListTile(
-                          //         title: Text(
-                          //           "${e["deviceno"]}",
-                          //           style: tsOneTextTheme.bodyMedium,
-                          //         ),
-                          //         trailing: _buildEditDeleteButton(e),
-                          //       ),
-                          //     ],
-                          //   ),
-                          // ),
+                          ),
                         ),
                       );
                     },

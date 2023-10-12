@@ -160,7 +160,11 @@ class ConfirmReturnBackPilotView extends GetView {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Need Confirm'),
+        backgroundColor: Colors.white,
+        title: Text(
+          'Need Confirm',
+          style: tsOneTextTheme.headlineLarge,
+        ),
         centerTitle: true,
       ),
       body: SingleChildScrollView(

@@ -220,7 +220,7 @@ class _AddDevice extends State<AddDevice> {
 
     final SaveButton = Material(
       elevation: 5.0,
-      borderRadius: BorderRadius.circular(25.0),
+      borderRadius: BorderRadius.circular(4.0),
       color: TsOneColor.primary,
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
@@ -258,10 +258,12 @@ class _AddDevice extends State<AddDevice> {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: Text(
           'Add Device',
           style: tsOneTextTheme.headlineLarge,
         ),
+        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 20, right: 20, left: 20),
@@ -295,13 +297,17 @@ class _AddDevice extends State<AddDevice> {
                 ),
               ),
             ),
-            Expanded(
-              flex: 1,
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 10),
-                child: SaveButton,
-              ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 10),
+              child: SaveButton,
             ),
+            // Expanded(
+            //   flex: 1,
+            //   child: Padding(
+            //     padding: EdgeInsets.symmetric(vertical: 10),
+            //     child: SaveButton,
+            //   ),
+            // ),
           ],
         ),
       ),

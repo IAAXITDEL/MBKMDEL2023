@@ -265,49 +265,58 @@ class _EditDevice extends State<EditDevice> {
     );
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: Text(
           'Edit Device',
           style: tsOneTextTheme.headlineLarge,
         ),
+        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 20, right: 20, left: 20),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    deviceNoField,
-                    const SizedBox(height: 15.0),
-                    IosVerField,
-                    const SizedBox(height: 15.0),
-                    flysmarvertField,
-                    const SizedBox(height: 15.0),
-                    lidoField,
-                    const SizedBox(height: 15.0),
-                    docuField,
-                    const SizedBox(height: 15.0),
-                    hubDropdown,
-                    const SizedBox(height: 15.0),
-                    conditionField,
-                    const SizedBox(height: 15.0),
-                  ],
+        child: Column(
+          children: [
+            Expanded(
+              flex: 9,
+              child: SingleChildScrollView(
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      deviceNoField,
+                      const SizedBox(height: 15.0),
+                      IosVerField,
+                      const SizedBox(height: 15.0),
+                      flysmarvertField,
+                      const SizedBox(height: 15.0),
+                      lidoField,
+                      const SizedBox(height: 15.0),
+                      docuField,
+                      const SizedBox(height: 15.0),
+                      hubDropdown,
+                      const SizedBox(height: 15.0),
+                      conditionField,
+                      const SizedBox(height: 15.0),
+                    ],
+                  ),
                 ),
               ),
-            ],
-          ),
-        ),
-      ),
-      bottomNavigationBar: BottomAppBar(
-        child: Expanded(
-          child: UpdateButton,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 20),
+              child: UpdateButton,
+            ),
+            // Expanded(
+            //   flex: 1,
+            //   child: Padding(
+            //     padding: EdgeInsets.symmetric(vertical: 10),
+            //     child: UpdateButton,
+            //   ),
+            // ),
+          ],
         ),
       ),
     );

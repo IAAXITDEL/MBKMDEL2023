@@ -91,7 +91,7 @@ class HomeOCCView extends GetView<HomeOCCController> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Container(
                       decoration: BoxDecoration(
                         color: tsOneColorScheme.onPrimary,
@@ -105,7 +105,7 @@ class HomeOCCView extends GetView<HomeOCCController> {
                         ],
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.all(15.0),
+                        padding: const EdgeInsets.all(10.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
@@ -336,17 +336,18 @@ class FirebaseDataTab extends StatelessWidget {
 
                 // Build the widget with the user's name and profile photo
                 return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width,
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Card(
+                        color : tsOneColorScheme.secondary,
                         surfaceTintColor: TsOneColor.surface,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15),
                         ),
-                        elevation: 2, // You can adjust the elevation as needed
+                        elevation: 3, // You can adjust the elevation as needed
                         child: InkWell(
                           onTap: () {
                             if (statuses.contains("waiting-confirmation-1")) {
@@ -371,13 +372,14 @@ class FirebaseDataTab extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
+                                SizedBox(width: 8.0),
                                 CircleAvatar(
                                   backgroundImage: photoUrl != null
                                       ? NetworkImage(photoUrl as String)
                                       : AssetImage('assets/default_profile_image.png') as ImageProvider,
                                   radius: 25.0,
                                 ),
-                                SizedBox(width: 12.0),
+                                SizedBox(width: 17.0),
                                 Flexible(
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -406,9 +408,11 @@ class FirebaseDataTab extends StatelessWidget {
                                     ],
                                   ),
                                 ),
+
+                                if (statuses.contains("waiting-confirmation-1") || statuses.contains("need-confirmation-occ"))
                                 const Icon(
                                   Icons.chevron_right,
-                                  color: TsOneColor.secondaryContainer,
+                                  color: TsOneColor.onSecondary,
                                   size: 30,
                                 )
                               ],
