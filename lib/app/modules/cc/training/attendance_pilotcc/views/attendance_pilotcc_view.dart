@@ -55,7 +55,12 @@ class AttendancePilotccView extends GetView<AttendancePilotccController> {
     return Scaffold(
       appBar: AppBar(
         title: const RedTitleText(text: "TRAINING",),
-        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Get.toNamed(Routes.NAVPILOT);
+          },
+        ),
       ),
       body: SingleChildScrollView(
         child: Center(

@@ -20,6 +20,21 @@ import '../../../../../presentation/shared_components/normaltextfieldpdf.dart';
 import '../../../../../presentation/shared_components/textfieldpdf.dart';
 import '../../../../../presentation/view_model/attendance_detail_model.dart';
 import '../../../../../presentation/view_model/attendance_model.dart';
+import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
+
+Future<void> requestStoragePermission() async {
+  if (Platform.isAndroid) {
+    final status = await Permission.storage.request();
+    if (status.isGranted) {
+      print('Storage permission granted.');
+    } else {
+      print('Storage permission denied.');
+      // Handle permission denied
+    }
+  }
+}
+
 
 class AttendanceConfirccController extends GetxController {
   var selectedMeeting = "Training".obs;
@@ -46,6 +61,7 @@ class AttendanceConfirccController extends GetxController {
   final RxInt idInstructor = 0.obs;
 
   final RxString role = "".obs;
+  final RxBool isLoading = false.obs;
 
 
   RxString date = "".obs;
@@ -379,14 +395,14 @@ class AttendanceConfirccController extends GetxController {
     }
   }
 
-  Future<Uint8List> resizeImage(Uint8List imageData, int targetWidth, int targetHeight) async {
-    final image = img.decodeImage(imageData);
-    final resizedImage = img.copyResize(image!, width: targetWidth, height: targetHeight);
-    return Uint8List.fromList(img.encodePng(resizedImage));
-  }
+  // Future<Uint8List> resizeImage(Uint8List imageData, int targetWidth, int targetHeight) async {
+  //   final image = img.decodeImage(imageData);
+  //   final resizedImage = img.copyResize(image!, width: targetWidth, height: targetHeight);
+  //   return Uint8List.fromList(img.encodePng(resizedImage));
+  // }
 
   //Import PDF
-  Future<String> attendancelist() async {
+  Future<Uint8List> attendancelist() async {
     try {
       final pdf = pw.Document();
       final Uint8List backgroundImageData =
@@ -456,9 +472,9 @@ class AttendanceConfirccController extends GetxController {
        // var images = await loadImageFromNetwork(allAttendanceDetailModels[e].signature_url ?? "");
 
         final Uint8List imageBytes = await _getImageBytes(allAttendanceDetailModels[e].signature_url ?? "");
-        final Uint8List resizedImageBytes = await resizeImage(imageBytes, 50, 50);
+        // final Uint8List resizedImageBytes = await resizeImage(imageBytes, 50, 50);
 
-        pw.MemoryImage images = pw.MemoryImage(resizedImageBytes);
+        pw.MemoryImage images = pw.MemoryImage(imageBytes);
         tableRows.add(
           pw.TableRow(
             children: [
@@ -490,9 +506,9 @@ class AttendanceConfirccController extends GetxController {
         //var imagesicc = await loadImageFromNetwork(instructorModels[f].signatureIccUrl ?? "");
 
         final Uint8List imageBytesInstructor = await _getImageBytes(instructorModels[f].signatureIccUrl ?? "");
-        final Uint8List resizedImageBytesInstructor = await resizeImage(imageBytesInstructor, 50, 50); // Adjust dimensions as needed
+       // final Uint8List resizedImageBytesInstructor = await resizeImage(imageBytesInstructor, 50, 50); // Adjust dimensions as needed
 
-        pw.MemoryImage imagesicc = pw.MemoryImage(resizedImageBytesInstructor);
+        pw.MemoryImage imagesicc = pw.MemoryImage(imageBytesInstructor);
         instructorTableRows.add(
           pw.TableRow(
             children: [
@@ -522,9 +538,9 @@ class AttendanceConfirccController extends GetxController {
        // var imagesipa = await loadImageFromNetwork(administratorModels[g].signaturePilotAdministratorUrl ?? "");
 
         final Uint8List imageBytesAdministrator = await _getImageBytes(administratorModels[g].signaturePilotAdministratorUrl ?? "");
-        final Uint8List resizedImageBytesAdministrator = await resizeImage(imageBytesAdministrator, 50, 50); // Adjust dimensions as needed
+     //   final Uint8List resizedImageBytesAdministrator = await resizeImage(imageBytesAdministrator, 50, 50); // Adjust dimensions as needed
 
-        pw.MemoryImage imagesipa = pw.MemoryImage(resizedImageBytesAdministrator);
+        pw.MemoryImage imagesipa = pw.MemoryImage(imageBytesAdministrator);
         administratorTableRows.add(
           pw.TableRow(
             children: [
@@ -1097,58 +1113,26 @@ class AttendanceConfirccController extends GetxController {
         ),
       );
 
-
-
-      // // Save the PDF to a file or perform other actions
-      // final directory = await getApplicationDocumentsDirectory();
-      // String pdfPath = '${directory.path}/AttendanceList.pdf';
-      // var bytes = await pdf.save();
-      // File(pdfPath).writeAsBytesSync(bytes);
-      //
-      // print("PDF saved at: $pdfPath");
-
-
-      // Make Assessment TS1 Folder
-      Directory('/storage/emulated/0/Download/Attendance List/').createSync();
-
-      // Save into download directory
-      // Save and dispose the document.
-
-      String pathSavePDF =
-          '/storage/emulated/0/Download/Attendance List/T1.pdf';
-
-      Directory? tempDir = await getExternalStorageDirectory();
-      String cacheSavePDF =
-          '${tempDir?.path}/T1.pdf';
-
-
-      var bytes = await pdf.save();
-
-      print("BISA");
-
-      File(pathSavePDF).writeAsBytesSync(bytes);
-
-      print("BISGADWADAWA");
-
-      File(cacheSavePDF).writeAsBytesSync(bytes);
-      print("dwadawdawdaw");
-
-      if(allAttendanceDetailModels.length > 0 ){
-        await OpenFile.open(pathSavePDF);
-      }
-
-      return cacheSavePDF;
-
-      attendanceModels.clear();
-      allAttendanceDetailModels.clear();
-      instructorModels.clear();
-      administratorModels.clear();
-
+      return pdf.save();
     } catch (e) {
       print("Error generating PDF: $e");
-      return Future.value("Failed to generate PDF");
+      return Future.value();
     }
   }
+
+  Future<void> savePdfFile(Uint8List byteList) async {
+    isLoading.value = true;
+    final output = await getTemporaryDirectory();
+    var filePath = "${output.path}/${argumentid.value}.pdf";
+    final file = File(filePath);
+    print("step 1");
+    await file.writeAsBytes(byteList);
+    print("step 2");
+    await OpenFile.open(filePath);
+    print("stetep 3");
+    isLoading.value = false;
+  }
+
 
   @override
   void onReady() {

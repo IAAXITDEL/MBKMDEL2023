@@ -20,6 +20,7 @@ import '../../../../routes/app_pages.dart';
 import '../controllers/attendance_confircc_controller.dart';
 import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
 import 'dart:ui' as ui;
+
 class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
   AttendanceConfirccView({Key? key}) : super(key: key);
   @override
@@ -40,46 +41,46 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
     _signaturePadKey = GlobalKey();
     void _clearSignature() {
       _signaturePadKey.currentState?.clear();
-    };
+    }
+
+    ;
 
     Future<void> confir() async {
       try {
-          // Menunggu hingga saveSignature selesai
-          Uint8List? signatureData = await _signaturePadKey.currentState!
-              .toImage()
-              .then((image) async {
-            ByteData? byteData =
-                await image.toByteData(format: ui.ImageByteFormat.png);
-            return byteData?.buffer.asUint8List();
-          });
+        // Menunggu hingga saveSignature selesai
+        Uint8List? signatureData =
+            await _signaturePadKey.currentState!.toImage().then((image) async {
+          ByteData? byteData =
+              await image.toByteData(format: ui.ImageByteFormat.png);
+          return byteData?.buffer.asUint8List();
+        });
 
-          if (signatureData != null) {
-            await controller.saveSignature(signatureData);
-            controller.confirattendance().then((status) async {
-              // Menampilkan QuickAlert setelah saveSignature berhasil
-              await QuickAlert.show(
-                context: context,
-                type: QuickAlertType.success,
-                text: 'Confirmation Attendance Completed Successfully!',
-              );
-
-              // Navigasi ke halaman lain setelah menampilkan QuickAlert
-              Get.offAllNamed(Routes.TRAININGTYPECC, arguments: {
-                "id": controller.argumentTrainingType.value,
-                "name": controller.argumentname.value
-              });
-            });
-
-          } else {
-            // Handle jika signatureData null
-            print('Error: Signature data is null');
-            // Menampilkan QuickAlert untuk kesalahan
+        if (signatureData != null) {
+          await controller.saveSignature(signatureData);
+          controller.confirattendance().then((status) async {
+            // Menampilkan QuickAlert setelah saveSignature berhasil
             await QuickAlert.show(
               context: context,
-              type: QuickAlertType.error,
-              text: 'An error occurred while saving the signature.',
+              type: QuickAlertType.success,
+              text: 'Confirmation Attendance Completed Successfully!',
             );
-          }
+
+            // Navigasi ke halaman lain setelah menampilkan QuickAlert
+            Get.offAllNamed(Routes.TRAININGTYPECC, arguments: {
+              "id": controller.argumentTrainingType.value,
+              "name": controller.argumentname.value
+            });
+          });
+        } else {
+          // Handle jika signatureData null
+          print('Error: Signature data is null');
+          // Menampilkan QuickAlert untuk kesalahan
+          await QuickAlert.show(
+            context: context,
+            type: QuickAlertType.error,
+            text: 'An error occurred while saving the signature.',
+          );
+        }
       } catch (error) {
         // Penanganan kesalahan jika saveSignature gagal
         print('Error in saveSignature: $error');
@@ -92,7 +93,6 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
         );
       }
     }
-
 
     return Scaffold(
         appBar: AppBar(
@@ -126,8 +126,7 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                         listAttendance[0]["trainingType"] ?? "N/A";
                     roomC.text = listAttendance[0]["room"] ?? "N/A";
                     instructorC.text = listAttendance[0]["name"] ?? "N/A";
-                    loaNoC.text = listAttendance[0]["loano"] ?? "" ;
-
+                    loaNoC.text = listAttendance[0]["loano"] ?? "";
                   } else {
                     // Handle the case where the list is empty or null
                     subjectC.text = "No Subject Data Available";
@@ -160,19 +159,38 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                                       return InkWell(
                                         onTap: () async {
                                           try {
-                                            await controller.attendancelist();
+                                            controller.isLoading.value = true;
+                                            // Tampilkan LoadingScreen
+                                            showDialog(
+                                              context: context,
+                                              barrierDismissible:
+                                                  false, // Tidak bisa menutup dialog dengan tap di luar
+                                              builder: (BuildContext context) {
+                                                return LoadingScreen();
+                                              },
+                                            );
+
+                                            await controller.savePdfFile(
+                                                await controller
+                                                    .attendancelist());
                                           } catch (e) {
                                             print('Error: $e');
+                                          } finally {
+                                            controller.isLoading.value = false;
+                                            // Tutup dialog saat selesai
+                                            Navigator.pop(context);
                                           }
                                         },
                                         child: Container(
                                           padding: EdgeInsets.all(5),
                                           decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(10.0),
+                                            borderRadius:
+                                                BorderRadius.circular(10.0),
                                             color: Colors.blue,
                                             boxShadow: [
                                               BoxShadow(
-                                                color: Colors.grey.withOpacity(0.3),
+                                                color: Colors.grey
+                                                    .withOpacity(0.3),
                                                 spreadRadius: 2,
                                                 blurRadius: 3,
                                                 offset: const Offset(0, 2),
@@ -191,7 +209,8 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                                               ),
                                               Text(
                                                 "Save PDF",
-                                                style: TextStyle(color: Colors.white),
+                                                style: TextStyle(
+                                                    color: Colors.white),
                                               )
                                             ],
                                           ),
@@ -275,9 +294,7 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                       SizedBox(
                         height: 20,
                       ),
-                      FormTextField(
-                          text: "LOA NO.",
-                          textController: loaNoC),
+                      FormTextField(text: "LOA NO.", textController: loaNoC),
                       SizedBox(
                         height: 20,
                       ),
@@ -646,5 +663,3 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
         ));
   }
 }
-
-
