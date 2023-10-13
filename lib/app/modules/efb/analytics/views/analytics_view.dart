@@ -28,7 +28,7 @@ class AnalyticsView extends GetView<AnalyticsController> {
 
     final Map<String, int> deviceCountByHub = {
       'CGK': 0,
-      'KNO': 0,
+      // 'KNO': 0,
       'DPS': 0,
       'SUB': 0,
     };
@@ -712,7 +712,7 @@ class _AnalyticsHubState extends State<AnalyticsHub>
 
     final Map<String, int> deviceCountByHub = {
       'CGK': 0,
-      'KNO': 0,
+      // 'KNO': 0,
       'DPS': 0,
       'SUB': 0,
     };

@@ -45,9 +45,7 @@ class _NavOCCView extends State<NavOCCView> {
         AnalyticsView(),
         ProfileView(),
       ];
-    } else if (_userPreferences
-        .getPrivileges()
-        .contains(UserModel.keyPilotRequestDevice)) {
+    } else if (_userPreferences.getPrivileges().contains(UserModel.keyPilotRequestDevice)) {
       _pilotRequestDevice = true;
       _screens = [
         HomePilotView(),
@@ -74,68 +72,13 @@ class _NavOCCView extends State<NavOCCView> {
   @override
   Widget build(BuildContext context) {
     int backPressTime = 0;
-    return
-        // WillPopScope(
-        // onWillPop: () async {
-        //   if (backPressTime + 300 > DateTime
-        //       .now()
-        //       .millisecondsSinceEpoch) {
-        //     return true;
-        //   }
-        //   else {
-        //     backPressTime = DateTime
-        //         .now()
-        //         .millisecondsSinceEpoch;
-        //     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        //       content: Text(
-        //         "Press back button again to exit",
-        //       ),
-        //     ));
-        //     return false;
-        //   }
-        // },
-        // child:
-        // Scaffold(
-        //   body: IndexedStack(
-        //     index: _selectedNav,
-        //     children: _screens,
-        //   ),
-        //   bottomNavigationBar: BottomNavigationBar(
-        //     items: <BottomNavigationBarItem>[
-        //       const BottomNavigationBarItem(
-        //         icon: Icon(Icons.home),
-        //         label: 'Home',
-        //       ),
-        //       const BottomNavigationBarItem(
-        //         icon: Icon(Icons.history),
-        //         label: 'History',
-        //       ),
-        //       if(_canManageDevice)
-        //         const BottomNavigationBarItem(
-        //           icon: Icon(Icons.analytics_rounded),
-        //           label: 'Analytics',
-        //         ),
-        //       const BottomNavigationBarItem(
-        //         icon: Icon(Icons.person),
-        //         label: 'Profile',
-        //       ),
-        //     ],
-        //     currentIndex: _selectedNav,
-        //     selectedItemColor: Colors.red,
-        //     unselectedItemColor: Colors.black,
-        //     showUnselectedLabels: true,
-        //     onTap: _changeSelectedNav,
-        //   ),
-        // );
-        Scaffold(
+    return Scaffold(
       body: IndexedStack(
         index: _selectedNav,
         children: _screens,
       ),
       bottomNavigationBar: Container(
-        padding: _pilotRequestDevice
-            ? const EdgeInsets.symmetric(horizontal: 20)
-            : const EdgeInsets.all(1.0),
+        padding: _pilotRequestDevice ? const EdgeInsets.symmetric(horizontal: 20) : const EdgeInsets.all(1.0),
         decoration: BoxDecoration(
           color: Colors.white,
           boxShadow: [

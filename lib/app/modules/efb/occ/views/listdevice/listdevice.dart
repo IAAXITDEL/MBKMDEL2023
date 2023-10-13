@@ -259,7 +259,7 @@ class _ListDeviceState extends State<ListDevice> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+        backgroundColor: Colors.white,
         title: Text(
           'List Device ',
           style: TextStyle(
