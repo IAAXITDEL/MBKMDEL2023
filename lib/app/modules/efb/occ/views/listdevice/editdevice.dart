@@ -271,7 +271,7 @@ class _EditDevice extends State<EditDevice> {
           'Edit Device',
           style: TextStyle(
             color: Colors.black, // Set text color to red
-            fontSize: 19.0,
+            fontSize: 20.0,
             fontWeight: FontWeight.bold,
           ),
         ),

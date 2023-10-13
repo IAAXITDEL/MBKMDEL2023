@@ -78,10 +78,10 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
       appBar: AppBar(
         backgroundColor: Colors.white, // Set background color to white
         title: Text(
-          'All Device Used ',
+          'All Device Used',
           style: TextStyle(
             color: Colors.black, // Set text color to red
-            fontSize: 19.0,
+            fontSize: 20.0,
             fontWeight: FontWeight.bold,
           ),
         ),
