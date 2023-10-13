@@ -195,6 +195,7 @@ class HomeFOView extends GetView<HomeFOController> {
                                               ),
                                             ),
                                           );
+                                          print(deviceId);
                                         },
                                         child: Padding(
                                           padding: const EdgeInsets.all(16.0),

@@ -95,7 +95,7 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
                   ElevatedButton(
                     onPressed: () async {
                       final signatureData = widget.signatureImage;
-                      if (signatureData != null) {
+                      {if (signatureData != null)
                         // Tampilkan dialog konfirmasi
                         showDialog(
                           context: context,

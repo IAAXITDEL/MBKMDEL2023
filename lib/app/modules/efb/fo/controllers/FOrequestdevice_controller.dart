@@ -173,8 +173,7 @@ class FORequestdeviceController extends GetxController {
           'prove_image_url': '',
           'occ-accepted-device': '-',
           'field_hub': fieldHub2, // Include the field hub in the data
-          'field_hub2': fieldHub2, // Include the field hub in the data
-          'field_hub3': fieldHub3, // Include the field hub in the data
+          'field_hub2': fieldHub3, // Include the field hub in the data
         });
       }
     }

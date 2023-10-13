@@ -1,9 +1,15 @@
+import 'dart:typed_data';
+import 'dart:ui';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
+import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
+import 'package:path/path.dart' as Path;
 
 import '../../../../../presentation/theme.dart';
 
@@ -37,6 +43,7 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
   String OccOnDuty = "";
   DocumentSnapshot? selectedUser;
   Stream<QuerySnapshot>? usersStream;
+  final GlobalKey<SfSignaturePadState> _signaturePadKey = GlobalKey<SfSignaturePadState>();
 
   @override
   void initState() {
@@ -57,6 +64,8 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
         });
       }
     });
+
+
 
     _idController.addListener(() {
       // Listen to changes in the text field and filter users accordingly
@@ -118,6 +127,7 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
             TextButton(
               child: Text('Confirm'),
               onPressed: () async {
+
                 _showQuickAlert(context);
                 Navigator.of(context).pop(); // Close the dialog
 
@@ -126,7 +136,14 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                   User? user = _auth.currentUser;
                   QuerySnapshot userQuery = await _firestore.collection('users').where('EMAIL', isEqualTo: user?.email).get();
                   String userUid = userQuery.docs.first.id;
+                  final image = await _signaturePadKey.currentState?.toImage(pixelRatio: 3.0);
+                  final ByteData? byteData = await image?.toByteData(format: ImageByteFormat.png);
+                  final Uint8List? uint8List = byteData?.buffer.asUint8List();
+                  final Reference storageReference = FirebaseStorage.instance.ref().child('signatures/${Path.basename(widget.deviceId)}.png');
+                  final UploadTask uploadTask = storageReference.putData(uint8List!);
 
+                  await uploadTask.whenComplete(() async {
+                  String signatureUrl = await storageReference.getDownloadURL();
                   await _fetchUserData(idNumber);
 
                   FirebaseFirestore.instance
@@ -135,28 +152,11 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                       .update({
                     'statusDevice': 'waiting-handover-to-other-crew',
                     'handover-to-crew': idNumber,
+                    'signature_url': signatureUrl,
+                    'document_id': widget.deviceId,
                   });
 
-                  // Get the hub based on device_name
-                  String hubField = await getHubFromDeviceName(deviceName2, deviceName3) ?? "Unknown Hub";
-
-                  // FirebaseFirestore.instance.collection('pilot-device-1').add({
-                  //   'user_uid': idNumber,
-                  //   'device_uid': '-',
-                  //   'device_name': '-',
-                  //   'device_uid2': deviceId2,
-                  //   'device_name2': deviceName2,
-                  //   'device_uid3': deviceId3,
-                  //   'device_name3': deviceName3,
-                  //   'occ-on-duty': OccOnDuty,
-                  //   'handover-from': userUid,
-                  //   'statusDevice': 'waiting-confirmation-other-pilot',
-                  //   'timestamp': FieldValue.serverTimestamp(),
-                  //   'remarks' : '',
-                  //   'prove_image_url': '',
-                  //   'handover-to-crew': '-',
-                  //   'field_hub': hubField, // Add 'hub' field
-                  // });
+                  });
 
                   Navigator.pop(context); // Close the ReturnOtherPilotView
                 } else {
@@ -177,7 +177,7 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
         title: Text('Return Other Pilot'),
         centerTitle: true,
       ),
-      body: SingleChildScrollView( 
+      body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -204,9 +204,10 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                         // Update the text field with the scanned result
                         setState(() {
                           _idController.text = barcodeScanResult;
+                          // _fetchUserData(barcodeScanResult);
                         });
                         // Fetch user data for the scanned ID
-                        await _fetchUserData(barcodeScanResult);
+
                       }
                     },
                     child: Icon(Icons.qr_code_2),
@@ -254,9 +255,13 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Selected User:',
-                      style: TextStyle(fontSize: 18),
+                    SizedBox(height: 20.0),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "SELECTED CREW",
+                        style: tsOneTextTheme.titleLarge,
+                      ),
                     ),
                     Row(
                       children: [
@@ -313,15 +318,71 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                     ),
                   ],
                 ),
-              ElevatedButton(
-                onPressed: () async {
-                  // Show the confirmation dialog when the Confirm button is pressed
-                  await _showConfirmationDialog();
-                },
-                child: Text('Confirm'),
+              SizedBox(height: 20.0),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "SIGNATURE",
+                  style: tsOneTextTheme.titleLarge,
+                ),
               ),
-              SizedBox(height: 16.0),
+              SizedBox(height: 10.0),
+              Stack(
+                alignment: Alignment.topRight,
+                children: [
+                  Container(
+                    width: double.infinity,
+                    height: 400.0,
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.3),
+                          spreadRadius: 5,
+                          blurRadius: 7,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: SfSignaturePad(
+                      key: _signaturePadKey,
+                      backgroundColor: Colors.white,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ElevatedButton(
+                      onPressed: _clearSignature,
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: Size(36, 36), // Adjust size as needed
+                        padding: EdgeInsets.zero,
+                        shape: CircleBorder(),
+                      ),
+                      child: Icon(Icons.delete, color: Colors.red),
+                    ),
+                  ),
+                ],
+              ),
             ],
+          ),
+        ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        surfaceTintColor: tsOneColorScheme.secondary,
+        child: Expanded(
+          child: ElevatedButton(
+            onPressed: () async {
+
+              // Call the function to update status and upload image
+              await _showConfirmationDialog();
+              print('device name: ' + widget.deviceName2);
+            },
+            style: ElevatedButton.styleFrom(
+                backgroundColor: TsOneColor.greenColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4.0),
+                )
+            ),
+            child: const Text('Confirm', style: TextStyle(color: Colors.white)),
           ),
         ),
       ),
@@ -333,7 +394,14 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
     _idController.dispose();
     super.dispose();
   }
+
+  // Function to clear the signature
+  void _clearSignature() {
+    _signaturePadKey.currentState?.clear();
+  }
 }
+
+
 
 Future<void> _showQuickAlert(BuildContext context) async {
   await QuickAlert.show(
@@ -364,3 +432,5 @@ Future<String> getHubFromDeviceName(String deviceName2, String deviceName3) asyn
 
   return hub;
 }
+
+

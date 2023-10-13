@@ -58,15 +58,11 @@ class ConfirmReturnBackPilotView extends GetView {
                 child: Text('Cancel'),
                 onPressed: () {
                   Navigator.of(context).pop(); // Close the dialog
-                  Navigator.of(context).pop(); // Close the dialog
-                  Navigator.of(context).pop(); // Close the dialog
                 },
               ),
               TextButton(
                 child: Text('Submit'),
                 onPressed: () {
-                  Navigator.of(context).pop(); // Close the confirmation dialog
-                  Navigator.of(context).pop(); // Close the confirmation dialog
                   Navigator.of(context).pop(); // Close the confirmation dialog
                   confirmInUse(context, cameraImageUrl);
                   _showQuickAlert(context); // Call the function to submit data
@@ -152,7 +148,8 @@ class ConfirmReturnBackPilotView extends GetView {
         } catch (error) {
           print('Error updating data: $error');
         }
-      });
+      }
+      );
     }
   }
 

@@ -59,7 +59,9 @@ class RequestdeviceController extends GetxController {
           'remarks': '',
           'prove_image_url': '',
           'occ-accepted-device': '-',
+          'signature_url_other_crew': '-',
           'field_hub': fieldHub, // Include the field hub in the data
+          'field_hub2': '', // Include the field hub in the data
         });
       }
     }

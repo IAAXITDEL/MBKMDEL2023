@@ -10,6 +10,7 @@ import 'dart:io'; // For handling selected image file
 
 import '../../../../../presentation/theme.dart';
 import '../../../../routes/app_pages.dart';
+import 'confirm_signature_other_fo.dart';
 
 class ConfirmReturnOtherFOView extends StatefulWidget {
   final String deviceName2;
@@ -114,7 +115,9 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                 // Upload the selected image to Firebase Storage (if an image is selected)
                 String imageUrl = '';
                 if (selectedImage != null) {
-                  final storageRef = FirebaseStorage.instance.ref().child('images/${widget.deviceId}.jpg');
+                  final Reference storageRef = FirebaseStorage.instance
+                      .ref()
+                      .child('signatures/${DateTime.now()}.png');
                   await storageRef.putFile(selectedImage!);
                   imageUrl = await storageRef.getDownloadURL();
                 }
@@ -183,7 +186,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Confirmation'),
+        title: Text('Confirmationn'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -598,102 +601,6 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                     ),
                                   ],
                                 ),
-                                SizedBox(height: 5.0),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                        flex: 6, child: Text("Condition", style: tsOneTextTheme.labelMedium,)),
-                                    Expanded(flex: 1, child: Text(":")),
-                                    Expanded(
-                                      flex: 6,
-                                      child: Text(
-                                        '${deviceData3['condition'] ?? 'No Data'}',
-                                        style: tsOneTextTheme.labelMedium,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-
-                                SizedBox(height: 20.0),
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    "PROOF",
-                                    style: tsOneTextTheme.titleLarge,
-                                  ),
-                                ),
-                                Text('If something doesn''t match, please inform us!'),
-
-
-                                SizedBox(height: 20.0),
-
-                                TextField(
-                                  controller: remarksController,
-                                  decoration: InputDecoration(
-                                    labelText: 'Remarks',
-                                    border: OutlineInputBorder(), // Add a border
-                                    hintText: 'Enter your remarks here', // Optional hint text
-                                    contentPadding: EdgeInsets.symmetric(vertical: 20, horizontal: 12), // Adjust vertical padding
-                                  ),
-                                  maxLines: null, // Allows multiple lines of text
-                                ),
-
-
-
-                                SizedBox(height: 20.0),
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    "PICK AN IMAGE",
-                                    style: tsOneTextTheme.titleLarge,
-                                  ),
-                                ),
-                                Text('If something doesn''t match, please take pictures of the damage!'),
-                                SizedBox(height: 5.0),
-
-                                // Button to open the image picker
-                                // Button to open the image picker
-                                ElevatedButton(
-                                  onPressed: _pickImage,
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.white,
-                                    minimumSize: const Size(double.infinity, 50),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        Icons.camera_alt, // Use the camera icon
-                                        color: Colors.red, // Set the icon color
-                                      ),
-                                      SizedBox(width: 8), // Add some space between the icon and text
-                                      Text(
-                                        'Camera',
-                                        style: TextStyle(color: Colors.red),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-
-                                SizedBox(height: 7.0),
-                                // Display the selected image
-                                _buildSelectedImage(),
-
-
-                                SizedBox(height: 50.0),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    // Call the function to update status and upload image
-                                    _showConfirmationDialog();
-                                    print('device name: ' + widget.deviceName2);
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: TsOneColor.greenColor,
-                                    minimumSize: const Size(double.infinity, 50),
-                                  ),
-                                  child: const Text('Confirm', style: TextStyle(color: Colors.white),),
-                                ),
-                                SizedBox(height: 20.0),
                               ],
                             ),
                           );
@@ -706,6 +613,32 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                 },
               );
             },
+          ),
+        ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        surfaceTintColor: tsOneColorScheme.secondary,
+        child: Expanded(
+          child: ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ConfirmSignatureReturnOtherFOView(
+                    deviceName2: deviceName2,
+                    deviceName3: deviceName3,
+                    deviceId: widget.deviceId,
+                  ),
+                ),
+              );
+            },
+            style: ElevatedButton.styleFrom(
+                backgroundColor: TsOneColor.greenColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4.0),
+                )
+            ),
+            child: const Text('Next', style: TextStyle(color: Colors.white)),
           ),
         ),
       ),
