@@ -35,6 +35,7 @@ class _ShowDeviceState extends State<ShowDevice> {
     loadImage();
   }
 
+
   Future<void> loadImage() async {
     final ByteData data = await rootBundle.load('assets/images/Wallpaper_EFB_Device.png');
     if (mounted) {
@@ -97,19 +98,22 @@ class _ShowDeviceState extends State<ShowDevice> {
     final String deviceNo = widget.device.deviceno;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        backgroundColor: Colors.white,
         title: Text(
           'Detail Device',
           style: tsOneTextTheme.headlineLarge,
         ),
-        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
           child: Column(
             children: <Widget>[
+              Align(
+                alignment: Alignment.centerLeft,
+                child: RedTitleText(text: 'Device Info'),
+              ),
               Container(
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
@@ -117,9 +121,9 @@ class _ShowDeviceState extends State<ShowDevice> {
                     children: [
                       Row(
                         children: [
-                          Expanded(flex: 6, child: const Text('Device Number')),
+                          Expanded(flex: 5, child: const Text('Device Number')),
                           Expanded(flex: 1, child: const Text(':')),
-                          Expanded(flex: 6, child: Text('${widget.device.deviceno}')),
+                          Expanded(flex: 5, child: Text('${widget.device.deviceno}')),
                         ],
                       ),
                       const SizedBox(
@@ -127,9 +131,9 @@ class _ShowDeviceState extends State<ShowDevice> {
                       ),
                       Row(
                         children: [
-                          Expanded(flex: 6, child: const Text('IOS Version')),
+                          Expanded(flex: 5, child: const Text('IOS Version')),
                           Expanded(flex: 1, child: const Text(':')),
-                          Expanded(flex: 6, child: Text('${widget.device.iosver}')),
+                          Expanded(flex: 5, child: Text('${widget.device.iosver}')),
                         ],
                       ),
                       const SizedBox(
@@ -137,9 +141,9 @@ class _ShowDeviceState extends State<ShowDevice> {
                       ),
                       Row(
                         children: [
-                          Expanded(flex: 6, child: const Text('FlySmart Version')),
+                          Expanded(flex: 5, child: const Text('FlySmart Version')),
                           Expanded(flex: 1, child: const Text(':')),
-                          Expanded(flex: 6, child: Text('${widget.device.flysmart}')),
+                          Expanded(flex: 5, child: Text('${widget.device.flysmart}')),
                         ],
                       ),
                       const SizedBox(
@@ -147,9 +151,9 @@ class _ShowDeviceState extends State<ShowDevice> {
                       ),
                       Row(
                         children: [
-                          Expanded(flex: 6, child: const Text('Lido Version')),
+                          Expanded(flex: 5, child: const Text('Lido Version')),
                           Expanded(flex: 1, child: const Text(':')),
-                          Expanded(flex: 6, child: Text('${widget.device.lidoversion}')),
+                          Expanded(flex: 5, child: Text('${widget.device.lidoversion}')),
                         ],
                       ),
                       const SizedBox(
@@ -157,9 +161,9 @@ class _ShowDeviceState extends State<ShowDevice> {
                       ),
                       Row(
                         children: [
-                          Expanded(flex: 6, child: const Text('Docu Version')),
+                          Expanded(flex: 5, child: const Text('Docu Version')),
                           Expanded(flex: 1, child: const Text(':')),
-                          Expanded(flex: 6, child: Text('${widget.device.docuversion}')),
+                          Expanded(flex: 5, child: Text('${widget.device.docuversion}')),
                         ],
                       ),
                       const SizedBox(
@@ -167,9 +171,9 @@ class _ShowDeviceState extends State<ShowDevice> {
                       ),
                       Row(
                         children: [
-                          Expanded(flex: 6, child: const Text('Hub')),
+                          Expanded(flex: 5, child: const Text('Hub')),
                           Expanded(flex: 1, child: const Text(':')),
-                          Expanded(flex: 6, child: Text('${widget.device.hub}')),
+                          Expanded(flex: 5, child: Text('${widget.device.hub}')),
                         ],
                       ),
                       const SizedBox(
@@ -177,9 +181,9 @@ class _ShowDeviceState extends State<ShowDevice> {
                       ),
                       Row(
                         children: [
-                          Expanded(flex: 6, child: const Text('Device Condition')),
+                          Expanded(flex: 5, child: const Text('Device Condition')),
                           Expanded(flex: 1, child: const Text(':')),
-                          Expanded(flex: 6, child: Text('${widget.device.condition}')),
+                          Expanded(flex: 5, child: Text('${widget.device.condition}')),
                         ],
                       ),
                       const SizedBox(
@@ -189,32 +193,20 @@ class _ShowDeviceState extends State<ShowDevice> {
                   ),
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.only(bottom: 16.0),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Divider(
-                        color: Colors.grey,
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Text(
-                        'QR - Wallpaper',
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                    ),
-                    Expanded(
-                      child: Divider(
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ],
-                ),
+              Container(
+                width: double.infinity,
+                height: 0.5,
+                color: Colors.black,
               ),
               SizedBox(
-                height: 10,
+                height: 15,
+              ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: RedTitleText(text: 'QR - Wallpaper'),
+              ),
+              SizedBox(
+                height: 15,
               ),
               Screenshot(
                 controller: screenshotController,
@@ -267,6 +259,7 @@ class _ShowDeviceState extends State<ShowDevice> {
           ),
         ),
       ),
+
       bottomNavigationBar: BottomAppBar(
         surfaceTintColor: tsOneColorScheme.secondary,
         child: Expanded(
@@ -278,7 +271,8 @@ class _ShowDeviceState extends State<ShowDevice> {
                 backgroundColor: TsOneColor.greenColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(4.0),
-                )),
+                )
+            ),
             child: const Text('Download Image', style: TextStyle(color: Colors.white)),
           ),
         ),

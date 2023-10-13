@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
-import 'package:ts_one/app/routes/app_pages.dart';
 import 'package:ts_one/presentation/shared_components/TitleText.dart';
 
 import '../../../../../presentation/theme.dart';
@@ -17,42 +16,16 @@ class PilotUnReturnDeviceView extends GetView {
 
   PilotUnReturnDeviceView({Key? key, required this.deviceId, required String deviceName}) : super(key: key);
 
-  String getMonthText(int month) {
-    const List<String> months = [
-      'Januar7',
-      'Februar7',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'Desember'
-    ];
-    return months[month - 1]; // Index 0-11 for Januari-Desember
-  }
-
-  String _formatTimestamp(Timestamp? timestamp) {
-    if (timestamp == null) return 'No Data';
-
-    DateTime dateTime = timestamp.toDate();
-    String formattedDateTime = '${dateTime.day} ${getMonthText(dateTime.month)} ${dateTime.year}'
-        ' ; '
-        '${dateTime.hour}:${dateTime.minute}';
-    return formattedDateTime;
-  }
 
   Future<void> _showQuickAlert(BuildContext context) async {
     await QuickAlert.show(
       context: context,
       type: QuickAlertType.success,
       text: 'You have succesfully Rejected The Device',
-    ).then((value) {
-      Get.offAllNamed(Routes.NAVOCC);
-    });
+    );
+    Navigator.of(context).pop();
+    Navigator.of(context).pop();
+    Navigator.of(context).pop();
   }
 
   void rejectedReturn(BuildContext context) async {
@@ -61,59 +34,42 @@ class PilotUnReturnDeviceView extends GetView {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Confirmation', style: tsOneTextTheme.headlineLarge),
+          title: Text('Confirmation'),
           content: Text('Are you sure you want to confirm the usage?'),
           actions: <Widget>[
-            Row(
-              children: [
-                Expanded(
-                  flex: 5,
-                  child: TextButton(
-                    child: Text('No', style: TextStyle(color: TsOneColor.secondaryContainer)),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ),
-                Spacer(flex: 1),
-                Expanded(
-                  flex: 5,
-                  child: TextButton(
-                    style: TextButton.styleFrom(
-                      backgroundColor: TsOneColor.greenColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                    ),
-                    child: Text('Yes', style: TextStyle(color: TsOneColor.onPrimary)),
-                    onPressed: () async {
-                      User? user = _auth.currentUser;
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Confirm'),
+              onPressed: () async {
+                User? user = _auth.currentUser;
 
-                      if (user != null) {
-                        // Get the user's ID
-                        QuerySnapshot userQuery = await _firestore.collection('users').where('EMAIL', isEqualTo: user.email).get();
-                        String userUid = userQuery.docs.first.id;
+                if (user != null) {
+                  // Get the user's ID
+                  QuerySnapshot userQuery = await _firestore.collection('users').where('EMAIL', isEqualTo: user.email).get();
+                  String userUid = userQuery.docs.first.id;
 
-                        DocumentReference pilotDeviceRef = FirebaseFirestore.instance
-                            .collection("pilot-device-1")
-                            .doc(deviceId);
+                  DocumentReference pilotDeviceRef = FirebaseFirestore.instance
+                      .collection("pilot-device-1")
+                      .doc(deviceId);
 
-                        try {
-                          await pilotDeviceRef.update({
-                            'statusDevice': 'in-use-pilot',
-                          });
+                  try {
+                    await pilotDeviceRef.update({
+                      'statusDevice': 'in-use-pilot',
+                    });
 
-                          print('Data updated successfully!');
-                        } catch (error) {
-                          print('Error updating data: $error');
-                        }
-                      }
-                      _showQuickAlert(context);
-                      Get.offAllNamed(Routes.NAVOCC);
-                    },
-                  ),
-                ),
-              ],
+                    print('Data updated successfully!');
+                  } catch (error) {
+                    print('Error updating data: $error');
+                  }
+                }
+                _showQuickAlert(context);
+                Navigator.of(context).pop(); // Close the dialog
+              },
             ),
           ],
         );
@@ -126,16 +82,12 @@ class PilotUnReturnDeviceView extends GetView {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: Text(
-          'Reject Return',
-          style: tsOneTextTheme.headlineLarge,
-        ),
+        title: Text('Device'),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+          padding: EdgeInsets.symmetric(horizontal: 16.0), // Adjust the padding here
           child: FutureBuilder<DocumentSnapshot>(
             future: FirebaseFirestore.instance
                 .collection("pilot-device-1")
@@ -204,66 +156,67 @@ class PilotUnReturnDeviceView extends GetView {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
+                            SizedBox(height: 10.0),
                             Align(
-                              alignment: Alignment.centerRight,
-                              child: Text(_formatTimestamp(data['timestamp']), style: tsOneTextTheme.labelSmall),
-                            ),
-                            SizedBox(height: 15),
-                            Row(
-                              children: [
-                                Expanded(flex: 6, child: Text("ID NO")),
-                                Expanded(flex: 1, child: Text(":")),
-                                Expanded(
-                                  flex: 6,
-                                  child: Text('${userData['ID NO'] ?? 'No Data'}'),
-                                ),
-                              ],
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "CREW INFO",
+                                style: tsOneTextTheme.titleLarge,
+                              ),
                             ),
                             SizedBox(height: 5.0),
                             Row(
                               children: [
-                                Expanded(flex: 6, child: Text("Name")),
-                                Expanded(flex: 1, child: Text(":")),
+                                Expanded(flex: 6, child: Text("ID NO", style: tsOneTextTheme.bodySmall,)),
+                                Expanded(flex: 1, child: Text(":",
+                                  style: tsOneTextTheme.bodySmall,
+                                )),
                                 Expanded(
                                   flex: 6,
-                                  child: Text('${userData['NAME'] ?? 'No Data'}'),
+                                  child: Text(
+                                    '${userData['ID NO'] ?? 'No Data'}',
+                                    style: tsOneTextTheme.bodySmall,
+                                  ),
                                 ),
                               ],
                             ),
-                            SizedBox(height: 5.0),
                             Row(
                               children: [
-                                Expanded(flex: 6, child: Text("Rank")),
-                                Expanded(flex: 1, child: Text(":")),
+                                Expanded(flex: 6, child: Text("Name", style: tsOneTextTheme.bodySmall,)),
+                                Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
                                 Expanded(
                                   flex: 6,
-                                  child: Text('${userData['RANK'] ?? 'No Data'}'),
+                                  child: Text(
+                                    '${userData['NAME'] ?? 'No Data'}',
+                                    style: tsOneTextTheme.bodySmall,
+                                  ),
                                 ),
                               ],
                             ),
-                            SizedBox(height: 20),
-                            const Padding(
-                              padding: EdgeInsets.only(bottom: 16.0),
-                              child: Row(
-                                children: <Widget>[
-                                  Expanded(
-                                    child: Divider(
-                                      color: Colors.grey,
-                                    ),
+                            Row(
+                              children: [
+                                Expanded(flex: 6, child: Text("Rank", style: tsOneTextTheme.bodySmall,)),
+                                Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
+                                Expanded(
+                                  flex: 6,
+                                  child: Text(
+                                    '${userData['RANK'] ?? 'No Data'}',
+                                      style: tsOneTextTheme.bodySmall,
                                   ),
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 8.0),
-                                    child: Text(
-                                      'Loan Details',
-                                      style: TextStyle(color: Colors.grey),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Divider(
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                ],
+                                ),
+                              ],
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(vertical: 20),
+                              child: Divider(
+                                color: TsOneColor.secondaryContainer,
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "DEVICE INFO",
+                                style: tsOneTextTheme.titleLarge,
                               ),
                             ),
                             SizedBox(height: 5.0),
@@ -387,7 +340,7 @@ class PilotUnReturnDeviceView extends GetView {
         child: Expanded(
           child: ElevatedButton(
             onPressed: () {
-              rejectedReturn(context);
+              rejectedReturn(context); // Pass the context to the function
             },
             style: ElevatedButton.styleFrom(
                 backgroundColor: TsOneColor.primary,

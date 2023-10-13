@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:ts_one/app/modules/efb/fo/controllers/FOrequestdevice_controller.dart';
@@ -14,7 +13,6 @@ import 'package:ts_one/presentation/shared_components/TitleText.dart';
 import 'package:ts_one/presentation/theme.dart';
 
 import '../../../../../util/empty_screen_efb.dart';
-import '../../../../routes/app_pages.dart';
 import '../../occ/model/device.dart';
 
 class FOrequestdeviceView extends StatefulWidget {
@@ -51,17 +49,6 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
         .toList();
   }
 
-  Future<void> _showQuickAlert(BuildContext context) async {
-    await QuickAlert.show(
-      context: context,
-      type: QuickAlertType.success,
-      text: 'You have successfully requested the use of the device',
-    ).then((value) {
-      Get.offAllNamed(Routes.NAVOCC);
-    });
-  }
-
-
 
 
   Future<void> _showConfirmationDialog() async {
@@ -75,6 +62,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
       );
       return;
     }
+
     return showDialog<void>(
       context: context,
       barrierDismissible: false,
@@ -130,7 +118,8 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                 ),
                 onPressed: () {
                   _saveBooking();
-
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
                 },
               ),
           ],
@@ -161,7 +150,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
         deviceNoController3.clear();
       });
 
-      _showQuickAlert(context);
+      Navigator.pop(context); // Close the confirmation dialog
     }
   }
 

@@ -48,43 +48,7 @@ class FORequestdeviceController extends GetxController {
           'in-use-fo',
           'waiting-confirmation-1',
           'need-confirmation-occ',
-          'waiting-handover-to-other-crew'
-        ]).get();
-
-        return snapshot; // Return the QuerySnapshot directly.
-      } else {
-        throw Exception('User not found in the "users" collection');
-      }
-    } else {
-      throw Exception(
-          'User not logged in'); // You can handle this case as needed.
-    }
-  }
-
-  Future<QuerySnapshot> getFODevicesHandover() async {
-    User? user = _auth.currentUser;
-
-    if (user != null) {
-      // Get the user's email
-      String userEmail = user.email ?? "";
-
-      // Query the 'users' collection to find the document with the matching email
-      QuerySnapshot userSnapshot = await _firestore
-          .collection('users')
-          .where('EMAIL', isEqualTo: userEmail)
-          .limit(1) // Limit to 1 document, assuming email is unique
-          .get();
-
-      if (userSnapshot.docs.isNotEmpty) {
-        // Get the user's document ID (user_id)
-        String userId = userSnapshot.docs.first.id;
-
-        // Query the 'pilot-device-1' collection based on the 'user_id'
-        QuerySnapshot snapshot = await _firestore
-            .collection('pilot-device-1')
-            .where('handover-to-crew', isEqualTo: userId)
-            .where('statusDevice', whereIn: [
-          'waiting-handover-to-other-crew',
+          'waiting-confirmation-other-pilot'
         ]).get();
 
         return snapshot; // Return the QuerySnapshot directly.
@@ -173,7 +137,8 @@ class FORequestdeviceController extends GetxController {
           'prove_image_url': '',
           'occ-accepted-device': '-',
           'field_hub': fieldHub2, // Include the field hub in the data
-          'field_hub2': fieldHub3, // Include the field hub in the data
+          'field_hub2': fieldHub2, // Include the field hub in the data
+          'field_hub3': fieldHub3, // Include the field hub in the data
         });
       }
     }

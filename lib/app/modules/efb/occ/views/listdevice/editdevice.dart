@@ -266,7 +266,7 @@ class _EditDevice extends State<EditDevice> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
         title: Text(
           'Edit Device',
           style: tsOneTextTheme.headlineLarge,
@@ -309,13 +309,6 @@ class _EditDevice extends State<EditDevice> {
               padding: EdgeInsets.symmetric(vertical: 20),
               child: UpdateButton,
             ),
-            // Expanded(
-            //   flex: 1,
-            //   child: Padding(
-            //     padding: EdgeInsets.symmetric(vertical: 10),
-            //     child: UpdateButton,
-            //   ),
-            // ),
           ],
         ),
       ),

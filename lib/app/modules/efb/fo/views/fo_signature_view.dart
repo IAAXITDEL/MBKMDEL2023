@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
@@ -13,7 +12,6 @@ import 'dart:typed_data';
 import 'package:ts_one/app/modules/efb/pilot/views/main_view_pilot.dart';
 
 import '../../../../../presentation/theme.dart';
-import '../../../../routes/app_pages.dart';
 
 class FOSignaturePadPage extends StatefulWidget {
   final GlobalKey<SfSignaturePadState> _signaturePadKey =
@@ -28,7 +26,6 @@ class FOSignaturePadPage extends StatefulWidget {
 }
 
 class _FOSignaturePadPageState extends State<FOSignaturePadPage> {
-  bool agree = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,259 +37,136 @@ class _FOSignaturePadPageState extends State<FOSignaturePadPage> {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              Align(
-                alignment: Alignment.center,
-                child: Text("Signature", style: tsOneTextTheme.headlineMedium,),
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              ConstrainedBox(
-                constraints: BoxConstraints(
-                  minHeight: 40,
-                  minWidth: 400,
-                ),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: tsOneColorScheme.primary,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(25.0),
-                      topRight: Radius.circular(25.0),
-                    ),
-                  ),
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: Text("Draw", style: TextStyle(color: tsOneColorScheme.secondary, fontWeight: FontWeight.w600)),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10,),
+                child: Text(
+                  'Please sign in the section provided.',
+                  style: TextStyle(
+                    color: Colors.red,  // Mengatur warna teks menjadi merah
+                    fontStyle: FontStyle.italic,  // Mengatur teks menjadi italic
                   ),
                 ),
               ),
-              Stack(
-                children: [
-                  Container(
-                    height: 480,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10.0),
-                        topRight: Radius.circular(10.0),
-                        bottomLeft: Radius.circular(25.0),
-                        bottomRight: Radius.circular(25.0),
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          blurRadius: 5,
-                          offset: Offset(0, 2),
-                        ),
-                      ],
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10.0), // Menambahkan lengkungan pada ujung box
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: Offset(0, 3), // Mengatur offset bayangan
                     ),
-                    child: SfSignaturePad(
-                      key: widget._signaturePadKey,
-                      backgroundColor: Colors.white,
-                      onDrawEnd: () async {
-                        final signatureImageData = await widget._signaturePadKey.currentState!.toImage();
-                        final byteData = await signatureImageData.toByteData(format: ImageByteFormat.png);
-                        if (byteData != null) {
-                          setState(() {
-                            widget.signatureImage = byteData.buffer.asUint8List();
-                          });
-                        }
-                      },
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.topRight,
-                    child: IconButton(
-                      icon: const Icon(
-                        Icons.delete_outline_outlined,
-                        size: 32,
-                        color: TsOneColor.primary,
-                      ),
-                      onPressed: () {
-                        widget._signaturePadKey.currentState?.clear();
-                      },
-                    ),
-                  ),
-                ],
+                  ],
+                ),
+                child: SfSignaturePad(
+                  key: widget._signaturePadKey,
+                  backgroundColor: Colors.white,
+                  // This callback is called when the user finishes drawing the signature
+                  onDrawEnd: () async {
+                    final signatureImageData =
+                    await widget._signaturePadKey.currentState!.toImage();
+                    final byteData = await signatureImageData.toByteData(
+                        format: ImageByteFormat.png);
+                    if (byteData != null) {
+                      setState(() {
+                        widget.signatureImage = byteData.buffer.asUint8List();
+                      });
+                    }
+                  },
+                ),
               ),
               SizedBox(height: 15,),
-              Column(
-                children: [
-                  Row(
-                    children: [
-                      Checkbox(
-                        value: agree,
-                        onChanged: (value) {
-                          setState(() {
-                            agree = value!;
-                          });
-                        },
-                      ),
-                      Text('I agree with all of the results', style: TextStyle(fontWeight: FontWeight.w300)),
-                    ],
-                  ),
-                  SizedBox(height: 10),
-                  ElevatedButton(
-                    onPressed: () async {
-                      final signatureData = widget.signatureImage;
-                      if (signatureData == null && !agree) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: const Text("Please provide signature & consent"),
-                            duration: const Duration(milliseconds: 1000),
-                            action: SnackBarAction(
-                              label: 'Close',
-                              onPressed: () {
-                                ScaffoldMessenger.of(context)
-                                    .hideCurrentSnackBar();
-                              },
-                            ),
-                          ),
-                        );
-                      } else if (signatureData == null) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: const Text("Please provide signature"),
-                            duration: const Duration(milliseconds: 1000),
-                            action: SnackBarAction(
-                              label: 'Close',
-                              onPressed: () {
-                                ScaffoldMessenger.of(context)
-                                    .hideCurrentSnackBar();
-                              },
-                            ),
-                          ),
-                        );
-                      } else if (agree && signatureData == null) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: const Text("Please provide signature"),
-                            duration: const Duration(milliseconds: 1000),
-                            action: SnackBarAction(
-                              label: 'Close',
-                              onPressed: () {
-                                ScaffoldMessenger.of(context)
-                                    .hideCurrentSnackBar();
-                              },
-                            ),
-                          ),
-                        );
-                      } else if (!agree) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: const Text("Please checklist consent"),
-                            duration: const Duration(milliseconds: 1000),
-                            action: SnackBarAction(
-                              label: 'Close',
-                              onPressed: () {
-                                ScaffoldMessenger.of(context)
-                                    .hideCurrentSnackBar();
-                              },
-                            ),
-                          ),
-                        );
-                      } else if (widget._signaturePadKey.currentState?.clear == null) {
-                        //widget._signaturePadKey.currentState!.clear();
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: const Text("Please provide signature"),
-                            duration: const Duration(milliseconds: 1000),
-                            action: SnackBarAction(
-                              label: 'Close',
-                              onPressed: () {
-                                ScaffoldMessenger.of(context)
-                                    .hideCurrentSnackBar();
-                              },
-                            ),
-                          ),
-                        );
-                      } else if (signatureData != null && agree) {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: Text(
-                                'Confirm',
-                                style: tsOneTextTheme.headlineLarge,
-                              ),
-                              content: const Text('Are you sure you want to save this signature?'),
-                              actions: [
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 5,
-                                      child: TextButton(
-                                        child: Text('No', style: TextStyle(color: TsOneColor.secondaryContainer)),
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                      ),
-                                    ),
-                                    Spacer(flex: 1),
-                                    Expanded(
-                                      flex: 5,
-                                      child: ElevatedButton(
-                                        onPressed: () async{
-
-                                          try {
-                                            // Simpan tanda tangan ke koleksi pilot-device-1
-                                            final newDocumentId =
-                                                await addToPilotDeviceCollection(signatureData, widget.deviceId,);
-                                            _showQuickAlert(context);
-
-                                            // Tampilkan pesan sukses
-                                          } catch (error) {
-                                            // Handle error jika diperlukan
-                                            showDialog(
-                                              context: context,
-                                              builder: (context) {
-                                                return AlertDialog(
-                                                  title: const Text('Error'),
-                                                  content: const Text(
-                                                      'An error occurred while saving the signature.'),
-                                                  actions: [
-                                                    ElevatedButton(
-                                                      onPressed: () {
-                                                        Navigator.pop(context); // Tutup dialog error
-                                                      },
-                                                      child:
-                                                      const Text('OK'),
-                                                    ),
-                                                  ],
-                                                );
-                                              },
-                                            );
-                                          }
-                                        },
-                                        child: const Text('Yes', style: TextStyle(color: TsOneColor.onPrimary)),
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: TsOneColor.greenColor,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(20.0),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: TsOneColor.greenColor,
-                        minimumSize: const Size(double.infinity, 50),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4),
-                        )
-                    ),
-                    child: const Text('Submit', style: TextStyle(color: Colors.white)),
-                  ),
-                ],
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size(double.infinity, 50),
+                ),
+                onPressed: () {
+                  widget._signaturePadKey.currentState?.clear();
+                },
+                child: const Text('Clear Signature'),
               ),
               // Teks untuk menampilkan deviceId
             ],
+          ),
+        ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        surfaceTintColor: tsOneColorScheme.secondary,
+        child: Expanded(
+          child: ElevatedButton(
+            onPressed: () async {
+              final signatureData = widget.signatureImage;
+              if (signatureData != null) {
+                // Tampilkan dialog konfirmasi
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: const Text('Confirmation'),
+                      content: const Text(
+                          'Are you sure you want to save this signature?'),
+                      actions: [
+                        ElevatedButton(
+                          onPressed: () async {
+                            Navigator.pop(context); // Tutup dialog konfirmasi
+                            _showQuickAlert(context);
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                            try {
+                              // Simpan tanda tangan ke koleksi pilot-device-1
+                              final newDocumentId =
+                              await addToPilotDeviceCollection(
+                                signatureData, widget.deviceId,);
+                              // Tampilkan pesan sukses
+                            } catch (error) {
+                              // Handle error jika diperlukan
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: const Text('Error'),
+                                    content: const Text(
+                                        'An error occurred while saving the signature.'),
+                                    actions: [
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.pop(context); // Tutup dialog error
+                                        },
+                                        child:
+                                        const Text('OK'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            }
+                          },
+                          child: const Text(
+                              'Yes'), // Tombol konfirmasi "Yes"
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.pop(
+                                context); // Tutup dialog konfirmasi
+                          },
+                          child: const Text(
+                              'No'), // Tombol konfirmasi "No"
+                        ),
+                      ],
+                    );
+                  },
+                );
+              }
+            },
+            style: ElevatedButton.styleFrom(
+                backgroundColor: TsOneColor.greenColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4.0),
+                )
+            ),
+            child: const Text('Confirm', style: TextStyle(color: Colors.white)),
           ),
         ),
       ),
@@ -361,6 +235,6 @@ Future<void> _showQuickAlert(BuildContext context) async {
     type: QuickAlertType.success,
     text: 'You have return to OCC! Please kindly wait after the OCC Confirm the Device okay?',
   );
-  Get.offAllNamed(Routes.NAVOCC);
+  Navigator.of(context).pop();
 }
 

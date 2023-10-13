@@ -2,13 +2,11 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 
 import 'package:ts_one/app/modules/efb/pilot/controllers/requestdevice_controller.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
-import 'package:ts_one/app/routes/app_pages.dart';
 import 'package:ts_one/presentation/shared_components/TitleText.dart';
 import 'package:ts_one/presentation/theme.dart';
 
@@ -41,30 +39,19 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
   }
 
   List<Device> getMatchingDevices(String input) {
-    return devices.where((device) => device.deviceno.toLowerCase().contains(input.toLowerCase())).toList();
+    return devices
+        .where((device) =>
+            device.deviceno.toLowerCase().contains(input.toLowerCase()))
+        .toList();
   }
 
-  //QuickAlert Success
   Future<void> _showQuickAlert(BuildContext context) async {
     await QuickAlert.show(
       context: context,
       type: QuickAlertType.success,
-      text: 'Succesfully Requested The Device',
-    ).then((value) {
-      Get.offAllNamed(Routes.NAVOCC);
-    });
-  }
-
-  //QuickAlert Info
-  Future<void> _showInfo(BuildContext context) async {
-    await QuickAlert.show(
-      context: context,
-      type: QuickAlertType.info,
-      text: 'Device is already in use',
-      textColor: tsOneColorScheme.primary,
-    ).then((value) {
-      Navigator.of(context).pop();
-    });
+      text: 'You have succesfully Requested The Device',
+    );
+    Navigator.of(context).pop();
   }
 
   Future<void> _showConfirmationDialog() async {
@@ -75,50 +62,61 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(
-            'Confirm Request',
-            style: tsOneTextTheme.headlineLarge,
+          title: const Text(
+            'Confirm Booking',
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'Poppins',
+            ),
           ),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                const Text('Are you sure you want to book this device?'),
+                if (deviceInUse)
+                  const Text(
+                    'Device is already in use.',
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontWeight: FontWeight.normal,
+                      fontFamily: 'Poppins',
+                    ),
+                  ),
+                const Text(
+                  'Are you sure you want to book this device?',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.normal,
+                    fontFamily: 'Poppins',
+                  ),
+                ),
               ],
             ),
           ),
           actions: <Widget>[
-            Row(
-              children: [
-                Expanded(
-                  flex: 5,
-                  child: TextButton(
-                    child: Text('No', style: TextStyle(color: TsOneColor.secondaryContainer)),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ),
-                Spacer(flex: 1),
-                Expanded(
-                  flex: 5,
-                  child: TextButton(
-                    style: TextButton.styleFrom(
-                      backgroundColor: TsOneColor.greenColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                    ),
-                    child: Text('Yes', style: TextStyle(color: TsOneColor.onPrimary)),
-                    onPressed: () {
-                      if (!deviceInUse) _saveBooking();
-                      if (!deviceInUse) _showQuickAlert(context);
-
-                      if (deviceInUse) _showInfo(context);
-                    },
-                  ),
-                ),
-              ],
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
             ),
+            if (!deviceInUse)
+              TextButton(
+                child: const Text(
+                  'Confirm',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Poppins',
+                  ),
+                ),
+                onPressed: () {
+                  _saveBooking();
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                  _showQuickAlert(context);
+                },
+              ),
           ],
         );
       },
@@ -128,6 +126,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
   Future<void> _saveBooking() async {
     if (selectedDevice != null) {
       String fieldHub = selectedDevice!.hub;
+      // Create the booking entry with necessary information
       _bookingService.requestDevice(
         selectedDevice!.uid,
         selectedDevice!.deviceno,
@@ -139,11 +138,13 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
         selectedDevice = null;
         deviceNoController.clear();
       });
+      Navigator.pop(context); // Close the confirmation dialog
     }
   }
 
   Future<Widget> getUserPhoto(String userUid) async {
-    final userSnapshot = await FirebaseFirestore.instance.collection("users").doc(userUid).get();
+    final userSnapshot =
+        await FirebaseFirestore.instance.collection("users").doc(userUid).get();
 
     if (userSnapshot.exists) {
       final userData = userSnapshot.data() as Map<String, dynamic>;
@@ -164,7 +165,8 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
   }
 
   Future<String> getUserName(String userUid) async {
-    final userSnapshot = await FirebaseFirestore.instance.collection("users").doc(userUid).get();
+    final userSnapshot =
+        await FirebaseFirestore.instance.collection("users").doc(userUid).get();
 
     if (userSnapshot.exists) {
       final userData = userSnapshot.data() as Map<String, dynamic>;
@@ -179,16 +181,16 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
 
   @override
   Widget build(BuildContext context) {
-    bool isDeviceNotFound = deviceNoController.text.isNotEmpty && getMatchingDevices(deviceNoController.text).isEmpty;
+    bool isDeviceNotFound = deviceNoController.text.isNotEmpty &&
+        getMatchingDevices(deviceNoController.text).isEmpty;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        backgroundColor: Colors.white,
         title: Text(
           'Request Device',
           style: tsOneTextTheme.headlineLarge,
         ),
-        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -206,7 +208,8 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                         });
                       },
                       decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                        contentPadding:
+                            const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                         labelText: 'Device No',
                         labelStyle: tsOneTextTheme.labelMedium,
                         border: OutlineInputBorder(),
@@ -226,7 +229,8 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                       if (qrCode != '-1') {
                         setState(() {
                           deviceNoController.text = qrCode;
-                          selectedDevice = getMatchingDevices(qrCode).firstOrNull;
+                          selectedDevice =
+                              getMatchingDevices(qrCode).firstOrNull;
                         });
                       }
                     },
@@ -234,25 +238,27 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                   ),
                 ],
               ),
-              if (isDeviceNotFound) const EmptyScreenEFB(),
+              if (isDeviceNotFound) // Show message if device is not found
+                const EmptyScreenEFB(),
               if (deviceNoController.text.isNotEmpty)
                 Column(
                   children: getMatchingDevices(deviceNoController.text)
                       .map(
                         (device) => ListTile(
-                      title: Text(device.deviceno),
-                      onTap: () {
-                        setState(() {
-                          selectedDevice = device;
-                          deviceNoController.text = device.deviceno;
-                        });
-                      },
-                    ),
-                  )
+                          title: Text(device.deviceno),
+                          onTap: () {
+                            setState(() {
+                              selectedDevice = device;
+                              deviceNoController.text = device.deviceno;
+                            });
+                          },
+                        ),
+                      )
                       .toList(),
                 ),
               const SizedBox(height: 16.0),
-              if (selectedDevice != null)
+              if (selectedDevice !=
+                  null) // Show attributes if a device is selected
                 Container(
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(4.0),
@@ -308,7 +314,8 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                         ),
                         Row(
                           children: [
-                            Expanded(flex: 7, child: Text("Lido mPilot Version")),
+                            Expanded(
+                                flex: 7, child: Text("Lido mPilot Version")),
                             Expanded(flex: 1, child: Text(":")),
                             Expanded(
                               flex: 6,
@@ -341,6 +348,21 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                   ),
                 ),
               const SizedBox(height: 16.0),
+              // ElevatedButton(
+              //   onPressed: () {
+              //     if (selectedDevice != null) {
+              //       _showConfirmationDialog();
+              //     }
+              //   },
+              //   style: ElevatedButton.styleFrom(
+              //     backgroundColor: TsOneColor.greenColor,
+              //     minimumSize: const Size(double.infinity, 50),
+              //   ),
+              //   child: const Text(
+              //     'Submit',
+              //     style: TextStyle(color: Colors.white),
+              //   ),
+              // ),
             ],
           ),
         ),

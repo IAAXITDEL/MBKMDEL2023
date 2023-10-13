@@ -473,17 +473,6 @@ class ConfirmRequestFOView extends GetView {
                                   style: tsOneTextTheme.titleLarge,
                                 ),
                               ),
-                              SizedBox(height: 70.0),
-                              ElevatedButton(
-                                onPressed: () {
-                                  confirmInUse(context); // Pass the context to the function
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: TsOneColor.greenColor,
-                                  minimumSize: const Size(double.infinity, 50),
-                                ),
-                                child: const Text('Confirm', style: TextStyle(color: Colors.white),),
-                              ),
                             ],
                           ),
                         ),

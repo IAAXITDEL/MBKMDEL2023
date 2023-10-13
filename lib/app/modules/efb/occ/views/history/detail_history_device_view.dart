@@ -500,7 +500,6 @@ class DetailHistoryDeviceView extends GetView {
                                                           ttdOCC: data['signature_url_occ'],
                                                           loan: data['timestamp'],
                                                           statusdevice: data['statusDevice'],
-                                                          ttdOtherCrew: data != null ? data['signature_url_other_user'] : 'Not Found',
                                                           handoverName: handoverTouserData != null ? handoverTouserData['NAME'] : 'Not Found',
                                                           handoverID: data['handover-to-crew'],
                                                         ).then((_) {

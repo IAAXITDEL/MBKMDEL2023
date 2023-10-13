@@ -7,7 +7,6 @@ import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:ts_one/presentation/shared_components/TitleText.dart';
 
 import '../../../../../presentation/theme.dart';
-import '../../../../routes/app_pages.dart';
 
 class ConfirmRequestPilotView extends GetView {
   final String dataId;
@@ -20,9 +19,10 @@ class ConfirmRequestPilotView extends GetView {
     await QuickAlert.show(
       context: context,
       type: QuickAlertType.success,
-      text: 'You have success to confirm',
+      text: 'You have succesfully Confirm The Request',
     );
-    Get.offAllNamed(Routes.NAVOCC);
+    Navigator.of(context).pop();
+
   }
 
 
@@ -60,14 +60,14 @@ class ConfirmRequestPilotView extends GetView {
                         'statusDevice': 'in-use-pilot',
                         'occ-on-duty': userUid, // Store the user's ID as occ-on-duty
                       });
-                      _showQuickAlert(context);
 
                       print('Data updated successfully!');
                     } catch (error) {
                       print('Error updating data: $error');
                     }
                   }
-
+                  _showQuickAlert(context);
+                  Navigator.of(context).pop(); // Close the dialog
                 },
               ),
             ],

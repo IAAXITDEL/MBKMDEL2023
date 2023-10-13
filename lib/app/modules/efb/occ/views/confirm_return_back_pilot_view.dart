@@ -15,7 +15,6 @@ import 'package:image/image.dart' as img;
 
 
 import '../../../../../presentation/theme.dart';
-import '../../../../routes/app_pages.dart';
 
 class ConfirmReturnBackPilotView extends GetView {
   final String dataId;
@@ -68,11 +67,15 @@ class ConfirmReturnBackPilotView extends GetView {
                 child: Text('Cancel'),
                 onPressed: () {
                   Navigator.of(context).pop(); // Close the dialog
+                  Navigator.of(context).pop(); // Close the dialog
+                  Navigator.of(context).pop(); // Close the dialog
                 },
               ),
               TextButton(
                 child: Text('Submit'),
                 onPressed: () {
+                  Navigator.of(context).pop(); // Close the confirmation dialog
+                  Navigator.of(context).pop(); // Close the confirmation dialog
                   Navigator.of(context).pop(); // Close the confirmation dialog
                   confirmInUse(context, cameraImageUrl);
                   _showQuickAlert(context); // Call the function to submit data
@@ -93,7 +96,7 @@ class ConfirmReturnBackPilotView extends GetView {
       type: QuickAlertType.success,
       text: 'Your data has been saved! Thank You',
     );
-    Get.offAllNamed(Routes.NAVOCC);
+    Navigator.of(context).pop();
   }
 
   void confirmInUse(BuildContext context, String cameraImageUrl) async {
@@ -158,8 +161,7 @@ class ConfirmReturnBackPilotView extends GetView {
         } catch (error) {
           print('Error updating data: $error');
         }
-      }
-      );
+      });
     }
   }
 
@@ -167,11 +169,7 @@ class ConfirmReturnBackPilotView extends GetView {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: Text(
-          'Need Confirm',
-          style: tsOneTextTheme.headlineLarge,
-        ),
+        title: Text('Need Confirm'),
         centerTitle: true,
       ),
       body: SingleChildScrollView(

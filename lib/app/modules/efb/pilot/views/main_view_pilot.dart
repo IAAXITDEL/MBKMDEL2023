@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ts_one/app/modules/efb/pilot/views/pilot_un_request_device_view.dart';
 import 'package:ts_one/app/modules/efb/pilot/views/pilot_un_return_device_view.dart';
-import 'package:ts_one/app/modules/efb/pilot/views/pilot_unreturn_to_other_crew.dart';
 import 'package:ts_one/app/modules/efb/pilot/views/pilotrequestdevice_view.dart';
 import 'package:ts_one/app/modules/efb/pilot/views/pilotreturndeviceview_view.dart';
 import 'package:ts_one/presentation/shared_components/TitleText.dart';
@@ -101,7 +100,8 @@ class HomePilotView extends GetView<HomePilotController> {
                   } else {
                     QuerySnapshot? pilotDevicesSnapshot = snapshot.data;
 
-                    if (pilotDevicesSnapshot != null && pilotDevicesSnapshot.docs.isNotEmpty) {
+                    if (pilotDevicesSnapshot != null &&
+                        pilotDevicesSnapshot.docs.isNotEmpty) {
                       // Filter the data for 'in-use-pilot' and 'waiting-confirmation-1'
                       final inUsePilotDocs = pilotDevicesSnapshot.docs
                           .where((doc) => doc['statusDevice'] == 'in-use-pilot')
@@ -118,7 +118,7 @@ class HomePilotView extends GetView<HomePilotController> {
                           .docs
                           .where((doc) =>
                               doc['statusDevice'] ==
-                              'waiting-handover-to-other-crew')
+                              'waiting-confirmation-other-pilot')
                           .toList();
                       return Column(
                         children: [
@@ -386,7 +386,7 @@ class HomePilotView extends GetView<HomePilotController> {
                             ),
                             Align(
                               alignment: Alignment.centerLeft,
-                              child: BlackTitleText(text: "Waiting For Confirmation!"),
+                              child: BlackTitleText(text: "Need Your Confirmation!"),
                             ),
                             SizedBox(height: 15),
                             Column(
@@ -410,7 +410,7 @@ class HomePilotView extends GetView<HomePilotController> {
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) =>
-                                                  PilotUnReturnToOtherCrewView(
+                                                  ConfirmReturnOtherPilotView(
                                                 deviceName: deviceName,
                                                 deviceId: deviceId,
                                               ),
@@ -618,240 +618,79 @@ class HomePilotView extends GetView<HomePilotController> {
                       );
                     } else {
                       // Data not found, show "Request Device" button
-                      // Data not found, show "Request Device" button
                       return Column(
                         children: [
-                          //Untuk Handover
-                          FutureBuilder<QuerySnapshot>(
-                            future: requestDeviceController.getPilotDevicesHandover(),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState == ConnectionState.waiting) {
-                                return CircularProgressIndicator();
-                              } else if (snapshot.hasError) {
-                                return Text('Error: ${snapshot.error}');
-                              } else {
-                                QuerySnapshot? pilotDevicesSnapshot = snapshot.data;
-                                if (pilotDevicesSnapshot != null &&
-                                    pilotDevicesSnapshot.docs.isNotEmpty) {
-                                  // Filter the data for 'in-use-pilot' and 'waiting-confirmation-1'
-                                  final inConfirmationPilotDocs = pilotDevicesSnapshot.docs
-                                      .where((doc) =>
-                                  doc['statusDevice'] == 'waiting-handover-to-other-crew')
-                                      .toList();
-
-                                  return Column(
-                                    children: [
-                                      // Display 'in-use-pilot' data
-                                      if (inConfirmationPilotDocs.isNotEmpty) ...[
-                                        Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: BlackTitleText(text: "Confirm From Other Crew"),
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-
-                                        //IN USE PILOT HERE
-                                        Column(
-                                          children: inConfirmationPilotDocs.map((doc) {
-                                            // Your existing code for displaying 'in-use-pilot' data
-                                            String deviceName = doc['device_name'];
-                                            String userId = doc['user_uid'];
-                                            String deviceId = doc.id;
-
-
-                                            return Align(
-                                              alignment: Alignment.centerLeft,
-                                              child: Container(
-                                                width: double.infinity, // Set lebar kartu ke seluruh lebar tampilan
-                                                child: Card(
-                                                  color: tsOneColorScheme.primary,  // Mengatur warna latar belakang kartu menjadi merah
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius: BorderRadius.circular(15),
-                                                  ),
-                                                  child: InkWell(
-                                                    onTap: () {
-                                                      Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                          builder: (context) => ConfirmReturnOtherPilotView(
-                                                            deviceName: deviceName,
-                                                            deviceId: deviceId,
-                                                          ),
-                                                        ),
-                                                      );
-                                                      print(deviceName);
-                                                    },
-                                                    child: Padding(
-                                                      padding: const EdgeInsets.all(16.0),
-                                                      child: Row(
-                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                        children: [
-                                                          Column(
-                                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                                            children: [
-                                                              const Text ("1'st Device", style: TextStyle(color: TsOneColor.secondary),),
-                                                              const Text ('FO ID', style: TextStyle(color: TsOneColor.secondary),),
-                                                              const Text ('Date', style: TextStyle(color: TsOneColor.secondary),),
-                                                            ],
-                                                          ),
-                                                          const SizedBox(
-                                                            width: 5,
-                                                          ),
-                                                          Column(
-                                                            children: [
-                                                              const Text(':',style: TextStyle(color: TsOneColor.secondary),),
-                                                              const Text(':',style: TextStyle(color: TsOneColor.secondary),),
-                                                              const Text(':',style: TextStyle(color: TsOneColor.secondary),),
-                                                            ],
-                                                          ),
-                                                          const SizedBox(
-                                                            width: 5,
-                                                          ),
-
-                                                          Expanded(
-                                                              child: Column(
-                                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                                children: [
-                                                                  Text(
-                                                                      deviceName,style: TextStyle(color: TsOneColor.secondary)
-                                                                  ),
-                                                                  Text(
-                                                                      userId,style: TextStyle(color: TsOneColor.secondary)
-                                                                  ),
-                                                                  Text(
-                                                                      _formatTimestamp(doc['timestamp']),style: TextStyle(color: TsOneColor.secondary)
-                                                                  ),
-                                                                ],
-                                                              )
-                                                          ),
-                                                          const Icon(
-                                                            Icons.chevron_right,
-                                                            color: TsOneColor.secondary,
-                                                            size: 48,
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            );
-
-                                          }).toList(),
-                                        ),
-                                        SizedBox(height: 10),
-                                        SizedBox(
-                                          height: 20.0,
-                                        ),
-                                        Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: BlackTitleText(text: "Waiting Confirmation"),
-                                        ),
-                                        SizedBox(
-                                          height: 15.0,
-                                        ),
-                                        Text(
-                                          "There is no data that need to confirm",
-                                        ),
-                                        SizedBox(
-                                          height: 20.0,
-                                        ),
-                                        Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: BlackTitleText(text: 'In Use')),
-                                        SizedBox(
-                                          height: 15.0,
-                                        ),
-                                        Text(
-                                          "There is data In Use ",
-                                        ),
-                                      ],
-
-                                    ],
-                                  );
-                                } else {
-                                  // Data not found, show "Request Device" button
-                                  return Column(
-                                    children: [
-                                      ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            backgroundColor: TsOneColor.primary,
-                                            minimumSize: Size(double.infinity, 50),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(15.0),
-                                            )),
-                                        onPressed: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  PilotrequestdeviceView(),
-                                            ),
-                                          );
-                                        },
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            Icon(
-                                              Icons.touch_app_rounded,
-                                              //Icons.qr_code_scanner_rounded,
-                                              color: TsOneColor.onPrimary,
-                                              size: 30,
-                                            ),
-                                            SizedBox(width: 10),
-                                            Text(
-                                              "Request Device",
-                                              style: TextStyle(color: TsOneColor.onPrimary),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 20.0,
-                                      ),
-                                      Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: BlackTitleText(text: "Waiting Confirmation"),
-                                      ),
-                                      SizedBox(
-                                        height: 15.0,
-                                      ),
-                                      Text(
-                                        "There is no data that need to confirm",
-                                      ),
-                                      SizedBox(
-                                        height: 20.0,
-                                      ),
-                                      Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: BlackTitleText(text: "Need Confirmation"),
-                                      ),
-                                      SizedBox(
-                                        height: 15.0,
-                                      ),
-                                      Text(
-                                        "There is no data that wait for confirmation",
-                                      ),
-                                      SizedBox(
-                                        height: 20.0,
-                                      ),
-                                      Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: BlackTitleText(text: 'In Use')),
-                                      SizedBox(
-                                        height: 15.0,
-                                      ),
-                                      Text(
-                                        "There is data In Use ",
-                                      ),
-                                    ],
-                                  );
-                                }
-                              }
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: TsOneColor.primary,
+                                minimumSize: Size(double.infinity, 50),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15.0),
+                                )),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      PilotrequestdeviceView(),
+                                ),
+                              );
                             },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.touch_app_rounded,
+                                  //Icons.qr_code_scanner_rounded,
+                                  color: TsOneColor.onPrimary,
+                                  size: 30,
+                                ),
+                                SizedBox(width: 10),
+                                Text(
+                                  "Request Device",
+                                  style: TextStyle(color: TsOneColor.onPrimary),
+                                ),
+                              ],
+                            ),
                           ),
-
+                          SizedBox(
+                            height: 20.0,
+                          ),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: BlackTitleText(text: "Waiting Confirmation"),
+                          ),
+                          SizedBox(
+                            height: 15.0,
+                          ),
+                          Text(
+                            "There is no data that needs confirmation",
+                          ),
+                          SizedBox(
+                            height: 20.0,
+                          ),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: BlackTitleText(text: "Need Confirmation"),
+                          ),
+                          SizedBox(
+                            height: 15.0,
+                          ),
+                          Text(
+                            "There is no data that needs confirmation",
+                          ),
+                          SizedBox(
+                            height: 20.0,
+                          ),
+                          Align(
+                              alignment: Alignment.centerLeft,
+                              child: BlackTitleText(text: 'In Use')),
+                          SizedBox(
+                            height: 15.0,
+                          ),
+                          Text(
+                            "There is no device you are using, ",
+                          ),
                         ],
                       );
                     }

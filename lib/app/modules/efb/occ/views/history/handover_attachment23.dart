@@ -46,7 +46,6 @@ Future<void> generateLogPdfDevice23({
   String? statusdevice,
   String? handoverName,
   String? handoverID,
-  String? ttdOtherCrew,
 }) async {
   final pdf = pw.Document();
 
@@ -82,24 +81,10 @@ Future<void> generateLogPdfDevice23({
       signatureImageOCCWidget = pw.Image(image);
     } catch (e) {
       print('Failed to load signature image: $e');
-      signatureImageOCCWidget = pw.Center(child: pw.Text('Failed to load occ signature image', style: pw.TextStyle(fontSize: 8)));
+      signatureImageOCCWidget = pw.Center(child: pw.Text('Failed to load signature image', style: pw.TextStyle(fontSize: 8)));
     }
   } else {
     signatureImageOCCWidget = pw.Center(child: pw.Text('No signature available', style: pw.TextStyle(fontSize: 8)));
-  }
-
-  pw.Widget signatureImageOtherCrewWidget;
-  if (ttdOtherCrew != null) {
-    try {
-      final imageBytes = await fetchImage(ttdOtherCrew);
-      final image = pw.MemoryImage(imageBytes);
-      signatureImageOtherCrewWidget = pw.Image(image);
-    } catch (e) {
-      print('Failed to load signature image: $e');
-      signatureImageOtherCrewWidget = pw.Center(child: pw.Text('Failed to load other crew signature image', style: pw.TextStyle(fontSize: 8)));
-    }
-  } else {
-    signatureImageOtherCrewWidget = pw.Center(child: pw.Text('No signature available', style: pw.TextStyle(fontSize: 8)));
   }
 
   final footer = pw.Container(
@@ -478,11 +463,7 @@ Future<void> generateLogPdfDevice23({
                       pw.SizedBox(height: 5.0),
                       pw.Text('Device No 1 Sign'),
                       pw.SizedBox(height: 5.0),
-                      pw.Container(
-                        child: signatureImageWidget,
-                        width: 150,
-                        height: 90,
-                      ),
+                      pw.Text('ttd image'),
                       pw.SizedBox(height: 5.0),
                       pw.Text(
                         '$userName',
@@ -498,11 +479,7 @@ Future<void> generateLogPdfDevice23({
                       pw.Text('2st Crew on Duty'),
                       pw.SizedBox(height: 5.0),
                       pw.Text('Device No 2 Sign'),
-                      pw.Container(
-                        child: signatureImageOtherCrewWidget,
-                        width: 150,
-                        height: 90,
-                      ),
+                      pw.SizedBox(height: 5.0),
                       pw.Text('ttd image'),
                       pw.SizedBox(height: 5.0),
                       pw.Text(
