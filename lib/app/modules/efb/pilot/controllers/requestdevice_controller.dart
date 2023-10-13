@@ -76,7 +76,7 @@ class RequestdeviceController extends GetxController {
       'in-use-pilot',
       'waiting-confirmation-1',
       'need-confirmation-occ',
-      'waiting-confirmation-other-pilot'
+      'waiting-handover-to-other-crew'
     ]).get();
 
     return snapshot.docs.isNotEmpty;
@@ -108,7 +108,43 @@ class RequestdeviceController extends GetxController {
           'in-use-pilot',
           'waiting-confirmation-1',
           'need-confirmation-occ',
-          'waiting-confirmation-other-pilot'
+          'waiting-handover-to-other-crew'
+        ]).get();
+
+        return snapshot; // Return the QuerySnapshot directly.
+      } else {
+        throw Exception('User not found in the "users" collection');
+      }
+    } else {
+      throw Exception(
+          'User not logged in'); // You can handle this case as needed.
+    }
+  }
+
+  Future<QuerySnapshot> getPilotDevicesHandover() async {
+    User? user = _auth.currentUser;
+
+    if (user != null) {
+      // Get the user's email
+      String userEmail = user.email ?? "";
+
+      // Query the 'users' collection to find the document with the matching email
+      QuerySnapshot userSnapshot = await _firestore
+          .collection('users')
+          .where('EMAIL', isEqualTo: userEmail)
+          .limit(1) // Limit to 1 document, assuming email is unique
+          .get();
+
+      if (userSnapshot.docs.isNotEmpty) {
+        // Get the user's document ID (user_id)
+        String userId = userSnapshot.docs.first.id;
+
+        // Query the 'pilot-device-1' collection based on the 'user_id'
+        QuerySnapshot snapshot = await _firestore
+            .collection('pilot-device-1')
+            .where('handover-to-crew', isEqualTo: userId)
+            .where('statusDevice', whereIn: [
+          'waiting-handover-to-other-crew',
         ]).get();
 
         return snapshot; // Return the QuerySnapshot directly.

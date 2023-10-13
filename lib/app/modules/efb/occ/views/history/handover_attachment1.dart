@@ -40,6 +40,7 @@ Future<void> generateLogPdfDevice1({
   String? deviceCondition,
   String? ttdUser,
   String? ttdOCC,
+  String? ttdOtherCrew,
   Timestamp? loan,
   String? statusdevice,
   String? handoverName,
@@ -89,6 +90,8 @@ Future<void> generateLogPdfDevice1({
     signatureImageWidget = pw.Text('No signature available');
   }
 
+
+
   pw.Widget signatureImageOCCWidget;
   if (ttdOCC != null) {
     try {
@@ -101,6 +104,20 @@ Future<void> generateLogPdfDevice1({
     }
   } else {
     signatureImageOCCWidget = pw.Text('No signature available');
+  }
+
+  pw.Widget signatureImageOherCrewWidget;
+  if (ttdOtherCrew != null) {
+    try {
+      final imageBytes = await fetchImage(ttdOtherCrew);
+      final image = pw.MemoryImage(imageBytes);
+      signatureImageOherCrewWidget = pw.Image(image);
+    } catch (e) {
+      print('Failed to load signature image: $e');
+      signatureImageOherCrewWidget = pw.Text('Failed to load signature image');
+    }
+  } else {
+    signatureImageOherCrewWidget = pw.Text('No signature available');
   }
 
   pdf.addPage(
@@ -387,63 +404,6 @@ Future<void> generateLogPdfDevice1({
 
           //handover to other crew
           if ('$statusdevice' == 'handover-to-other-crew')
-            // pw.Table(
-            //   tableWidth: pw.TableWidth.min,
-            //   columnWidths: {
-            //     0: pw.FlexColumnWidth(5),
-            //     1: pw.FlexColumnWidth(5),
-            //   },
-            //   children: [
-            //     pw.TableRow(
-            //       children: [
-            //         pw.Container(
-            //           height: 20.0,
-            //           child: _buildHeaderCellLeft('1st Crew on Duty', context),
-            //         ),
-            //         pw.Container(
-            //           height: 20.0,
-            //           child: _buildHeaderCellLeft('2nd Crew on Duty', context),
-            //         ),
-            //       ],
-            //     ),
-            //     pw.TableRow(
-            //       children: [
-            //         pw.Container(
-            //           height: 20.0,
-            //           child: _buildHeaderCellLeft('Device No 1 Sign', context),
-            //         ),
-            //         pw.Container(
-            //           height: 20.0,
-            //           child: _buildHeaderCellLeft('Device No 2 Sign', context),
-            //         ),
-            //       ],
-            //     ),
-            //     pw.TableRow(
-            //       children: [
-            //         pw.Container(
-            //           height: 50.0,
-            //           child: _buildHeaderCellLeft('image', context),
-            //         ),
-            //         pw.Container(
-            //           height: 50.0,
-            //           child: _buildHeaderCellLeft('image', context),
-            //         ),
-            //       ],
-            //     ),
-            //     pw.TableRow(
-            //       children: [
-            //         pw.Container(
-            //           height: 20.0,
-            //           child: _buildHeaderCellRight('$userName', context),
-            //         ),
-            //         pw.Container(
-            //           height: 20.0,
-            //           child: _buildHeaderCellRight('$handoverName', context),
-            //         ),
-            //       ],
-            //     ),
-            //   ],
-            // ),
             pw.Row(
               children: [
                 pw.Expanded(
@@ -454,7 +414,11 @@ Future<void> generateLogPdfDevice1({
                       pw.SizedBox(height: 5.0),
                       pw.Text('Device No 1 Sign'),
                       pw.SizedBox(height: 5.0),
-                      pw.Text('ttd image'),
+                      pw.Container(
+                        child: signatureImageWidget,
+                        width: 150,
+                        height: 90,
+                      ),
                       pw.SizedBox(height: 5.0),
                       pw.Text(
                         '$userName',
@@ -471,7 +435,11 @@ Future<void> generateLogPdfDevice1({
                       pw.SizedBox(height: 5.0),
                       pw.Text('Device No 2 Sign'),
                       pw.SizedBox(height: 5.0),
-                      pw.Text('ttd image'),
+                      pw.Container(
+                        child: signatureImageOherCrewWidget,
+                        width: 150,
+                        height: 90,
+                      ),
                       pw.SizedBox(height: 5.0),
                       pw.Text(
                         '$handoverName',

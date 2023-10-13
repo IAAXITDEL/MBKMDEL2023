@@ -194,7 +194,6 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 20.0),
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
@@ -254,7 +253,8 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                           ),
                         ),
                       ],
-                    ),
+                    ), SizedBox(height: 20.0),
+
                   ],
                 ),
               SizedBox(height: 20.0),

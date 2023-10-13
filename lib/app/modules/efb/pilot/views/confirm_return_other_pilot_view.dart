@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart'; // For camera feature
 import 'package:firebase_storage/firebase_storage.dart'; // For uploading images to Firebase Storage
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
+import 'package:ts_one/app/modules/efb/pilot/views/pilot_confirm_signature_other_crew.dart';
 import 'package:ts_one/app/routes/app_pages.dart';
 import 'package:ts_one/presentation/shared_components/TitleText.dart';
 import 'dart:io'; // For handling selected image file
@@ -27,7 +28,8 @@ class ConfirmReturnOtherPilotView extends StatefulWidget {
 class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotView> {
   final TextEditingController remarksController = TextEditingController();
   File? selectedImage; // File to store the selected image
-  final ImagePicker _imagePicker = ImagePicker(); // ImagePicker instance
+  final ImagePicker _imagePicker = ImagePicker();
+  String deviceName = "";
 
   // Function to update status in Firestore and upload image to Firebase Storage
   void updateStatusToInUsePilot(String deviceId) async {
@@ -66,8 +68,8 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
 
   String getMonthText(int month) {
     const List<String> months = [
-      'Januar7',
-      'Februar7',
+      'Januari',
+      'Februari',
       'March',
       'April',
       'May',
@@ -199,7 +201,7 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
               final data = snapshot.data!.data() as Map<String, dynamic>;
 
               return FutureBuilder<DocumentSnapshot>(
-                future: FirebaseFirestore.instance.collection("users").doc(data['user_uid']).get(),
+                future: FirebaseFirestore.instance.collection("users").doc(data['handover-to-crew']).get(),
                 builder: (context, userSnapshot) {
                   if (userSnapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());
@@ -216,7 +218,7 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                   final userData = userSnapshot.data!.data() as Map<String, dynamic>;
 
                   return FutureBuilder<DocumentSnapshot>(
-                    future: FirebaseFirestore.instance.collection("users").doc(data['handover-from']).get(),
+                    future: FirebaseFirestore.instance.collection("users").doc(data['user_uid']).get(),
                     builder: (context, otheruserSnapshot) {
                       if (otheruserSnapshot.connectionState == ConnectionState.waiting) {
                         return Center(child: CircularProgressIndicator());
@@ -227,7 +229,7 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                       }
 
                       if (!otheruserSnapshot.hasData || !otheruserSnapshot.data!.exists) {
-                        return Center(child: Text('Other Crew data not found'));
+                        return Center(child: Text('Other Crew From data not found'));
                       }
 
                       final otheruserData = otheruserSnapshot.data!.data() as Map<String, dynamic>;
@@ -568,89 +570,6 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                                     ),
                                   ],
                                 ),
-                                Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 10),
-                                  child: Divider(
-                                    color: TsOneColor.secondaryContainer,
-                                  ),
-                                ),
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    "PROOF",
-                                    style: tsOneTextTheme.titleLarge,
-                                  ),
-                                ),
-                                Text('If something doesn' 't match, please inform us!'),
-
-                                SizedBox(height: 20.0),
-
-                                TextField(
-                                  controller: remarksController,
-                                  decoration: InputDecoration(
-                                    labelText: 'Remarks',
-                                    border: OutlineInputBorder(), // Add a border
-                                    hintText: 'Enter your remarks here', // Optional hint text
-                                    contentPadding: EdgeInsets.symmetric(vertical: 20, horizontal: 12), // Adjust vertical padding
-                                  ),
-                                  maxLines: null, // Allows multiple lines of text
-                                ),
-
-                                SizedBox(height: 20.0),
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    "PICK AN IMAGE",
-                                    style: tsOneTextTheme.titleLarge,
-                                  ),
-                                ),
-                                Text('If something doesn' 't match, please take pictures of the damage!'),
-                                SizedBox(height: 5.0),
-
-                                // Button to open the image picker
-                                // Button to open the image picker
-                                ElevatedButton(
-                                  onPressed: _pickImage,
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.white,
-                                    minimumSize: const Size(double.infinity, 50),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        Icons.camera_alt, // Use the camera icon
-                                        color: Colors.red, // Set the icon color
-                                      ),
-                                      SizedBox(width: 8), // Add some space between the icon and text
-                                      Text(
-                                        'Camera',
-                                        style: TextStyle(color: Colors.red),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-
-                                SizedBox(height: 7.0),
-                                // Display the selected image
-                                _buildSelectedImage(),
-
-                                SizedBox(height: 50.0),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    // Call the function to update status and upload image
-                                    _showConfirmationDialog();
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: TsOneColor.greenColor,
-                                    minimumSize: const Size(double.infinity, 50),
-                                  ),
-                                  child: const Text(
-                                    'Confirm',
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                ),
-                                SizedBox(height: 20.0),
                               ],
                             ),
                           );
@@ -661,6 +580,31 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                 },
               );
             },
+          ),
+        ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        surfaceTintColor: tsOneColorScheme.secondary,
+        child: Expanded(
+          child: ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ConfirmSignatureReturnOtherPilotView(
+                    deviceName: deviceName,
+                    deviceId: widget.deviceId,
+                  ),
+                ),
+              );
+            },
+            style: ElevatedButton.styleFrom(
+                backgroundColor: TsOneColor.greenColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4.0),
+                )
+            ),
+            child: const Text('Next', style: TextStyle(color: Colors.white)),
           ),
         ),
       ),
