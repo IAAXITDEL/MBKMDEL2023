@@ -13,6 +13,7 @@ import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
 import 'package:path/path.dart' as Path;
 
 import '../../../../../presentation/theme.dart';
+import '../../../../routes/app_pages.dart';
 
 class ConfirmReturnBackPilotView extends GetView {
   final String dataId;
@@ -83,7 +84,7 @@ class ConfirmReturnBackPilotView extends GetView {
       type: QuickAlertType.success,
       text: 'Your data has been saved! Thank You',
     );
-    Navigator.of(context).pop();
+    Get.offAllNamed(Routes.NAVOCC);
   }
 
   void confirmInUse(BuildContext context, String cameraImageUrl) async {
@@ -157,7 +158,11 @@ class ConfirmReturnBackPilotView extends GetView {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Need Confirm'),
+        backgroundColor: Colors.white,
+        title: Text(
+          'Need Confirm',
+          style: tsOneTextTheme.headlineLarge,
+        ),
         centerTitle: true,
       ),
       body: SingleChildScrollView(

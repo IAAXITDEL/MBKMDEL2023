@@ -124,16 +124,36 @@
               TextButton(
                 child: Text('Confirm'),
                 onPressed: () async {
+                  // Show a circular button with "Please Wait" message
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        content: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            CircularProgressIndicator(),
+                            SizedBox(height: 16.0),
+                            Text('Please Wait'),
+                          ],
+                        ),
+                      );
+                    },
+                  );
+
+                  // Delay execution for demonstration purposes (you can remove this in your actual code)
+                  await Future.delayed(Duration(seconds: 2));
+
                   final remarks = remarksController.text;
-
-
                   // Check if the signature is empty
   
                   // Upload the signature to Firebase Storage
                   final image = await _signaturePadKey.currentState?.toImage(pixelRatio: 3.0);
                   final ByteData? byteData = await image?.toByteData(format: ImageByteFormat.png);
                   final Uint8List? uint8List = byteData?.buffer.asUint8List();
-                  final Reference storageReference = FirebaseStorage.instance.ref().child('signatures/${Path.basename(widget.deviceId)}.png');
+                  final Reference storageReference = FirebaseStorage.instance
+                      .ref()
+                      .child('signatures/${DateTime.now()}.png');
                   final UploadTask uploadTask = storageReference.putData(uint8List!);
 
   
@@ -213,9 +233,12 @@
                     'field_hub': hubField, // Add 'hub' field
                   });
 
+                  // Call the _showQuickAlert function
+                  _showQuickAlert(context);
+
   
                   // Return to the previous page
-                  _showQuickAlert(context);
+
                   print(newDeviceId);
                 },
               ),
@@ -418,7 +441,7 @@
                                             BoxShadow(
                                               color: Colors.grey.withOpacity(0.5),
                                               spreadRadius: 5,
-                                              blurRadius: 7,
+                                              blurRadius: 8,
                                               offset: Offset(0, 3), // Mengatur offset bayangan
                                             ),
                                           ],

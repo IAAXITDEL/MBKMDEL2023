@@ -35,7 +35,7 @@ class HomeOCCView extends GetView<HomeOCCController> {
               child: Column(
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(top: 50, left: 20,right: 20),
+                    padding: EdgeInsets.only(top: 50, left: 20, right: 20),
                     child: Column(
                       children: [
                         Row(
@@ -91,25 +91,21 @@ class HomeOCCView extends GetView<HomeOCCController> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Container(
                       decoration: BoxDecoration(
-                        color: tsOneColorScheme.onPrimary,  // Set the container background color to red
+                        color: tsOneColorScheme.onPrimary,
                         borderRadius: BorderRadius.circular(15.0),
-                        // border: Border.all(
-                        //   color: Colors.black,  // Set the border color to black
-                        //   width: 1.0,  // Set the border width
-                        // ),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black12, // Shadow color
-                            blurRadius: 5,  // Spread radius
-                            offset: Offset(0, 2),  // Offset in x and y direction
+                            color: Colors.black12,
+                            blurRadius: 5,
+                            offset: Offset(0, 2),
                           ),
                         ],
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.all(15.0),
+                        padding: const EdgeInsets.all(10.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
@@ -134,9 +130,9 @@ class HomeOCCView extends GetView<HomeOCCController> {
                               ],
                             ),
                             Container(
-                              width: 1,  // Adjust the width of the "divider"
-                              height: 40,  // Adjust the height of the "divider"
-                              color: tsOneColorScheme.primary,  // Set the color of the "divider"
+                              width: 1,
+                              height: 40,
+                              color: tsOneColorScheme.primary,
                               margin: const EdgeInsets.symmetric(horizontal: 20),
                             ),
                             Expanded(
@@ -148,7 +144,7 @@ class HomeOCCView extends GetView<HomeOCCController> {
                                     stream: FirebaseFirestore.instance
                                         .collection("pilot-device-1")
                                         .where("statusDevice", isEqualTo: "in-use-pilot")
-                                        .where("field_hub", isEqualTo: userHub) // Using the logged-in userHub
+                                        .where("field_hub", isEqualTo: userHub)
                                         .snapshots(),
                                     builder: (context, snapshot) {
                                       if (snapshot.connectionState == ConnectionState.waiting) {
@@ -162,7 +158,10 @@ class HomeOCCView extends GetView<HomeOCCController> {
                                       final count = snapshot.data?.docs.length ?? 0;
                                       return Padding(
                                         padding: const EdgeInsets.symmetric(horizontal: 10),
-                                        child: Text('Used Device ' + ': $count', style: tsOneTextTheme.bodySmall,),
+                                        child: Text(
+                                          'Used Device ' + ': $count',
+                                          style: tsOneTextTheme.bodySmall,
+                                        ),
                                       );
                                     },
                                   ),
@@ -229,6 +228,17 @@ class HomeOCCView extends GetView<HomeOCCController> {
                                             .where("hub", isEqualTo: userHub) // Using the logged-in userHub
                                             .snapshots(),
                                         builder: (context, snapshot) {
+                                        if (snapshot.connectionState == ConnectionState.waiting) {
+                                        return CircularProgressIndicator();
+                                        }
+
+                                        if (snapshot.hasError) {
+                                        return Text("Error: ${snapshot.error}");
+                                        }
+
+                                      return StreamBuilder<QuerySnapshot>(
+                                        stream: FirebaseFirestore.instance.collection("Device").where("hub", isEqualTo: userHub).snapshots(),
+                                        builder: (context, snapshot) {
                                           if (snapshot.connectionState == ConnectionState.waiting) {
                                             return CircularProgressIndicator();
                                           }
@@ -250,7 +260,9 @@ class HomeOCCView extends GetView<HomeOCCController> {
                                         },
                                       );
                                     },
-                                  ),
+                                  );
+                                    },
+                                 ),
                                 ],
                               ),
                             ),
@@ -259,11 +271,9 @@ class HomeOCCView extends GetView<HomeOCCController> {
                       ),
                     ),
                   ),
-
-                  const SizedBox(height: 8,),
-
-
-
+                  const SizedBox(
+                    height: 8,
+                  ),
                   TabBar(
                     tabs: [
                       Tab(text: "Confirm"),
@@ -381,17 +391,18 @@ class FirebaseDataTab extends StatelessWidget {
 
                 // Build the widget with the user's name and profile photo
                 return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width,
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Card(
+                        color : tsOneColorScheme.secondary,
                         surfaceTintColor: TsOneColor.surface,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15),
                         ),
-                        elevation: 2, // You can adjust the elevation as needed
+                        elevation: 3, // You can adjust the elevation as needed
                         child: InkWell(
                           onTap: () {
                             if (statuses.contains("waiting-confirmation-1")) {
@@ -416,13 +427,14 @@ class FirebaseDataTab extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
+                                SizedBox(width: 8.0),
                                 CircleAvatar(
                                   backgroundImage: photoUrl != null
                                       ? NetworkImage(photoUrl as String)
                                       : AssetImage('assets/default_profile_image.png') as ImageProvider,
                                   radius: 25.0,
                                 ),
-                                SizedBox(width: 12.0),
+                                SizedBox(width: 17.0),
                                 Flexible(
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -451,9 +463,11 @@ class FirebaseDataTab extends StatelessWidget {
                                     ],
                                   ),
                                 ),
+
+                                if (statuses.contains("waiting-confirmation-1") || statuses.contains("need-confirmation-occ"))
                                 const Icon(
                                   Icons.chevron_right,
-                                  color: TsOneColor.secondaryContainer,
+                                  color: TsOneColor.onSecondary,
                                   size: 30,
                                 )
                               ],

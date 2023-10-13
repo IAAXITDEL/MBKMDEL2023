@@ -2,6 +2,8 @@ import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:ts_one/data/users/user_preferences.dart';
+import 'package:ts_one/data/users/users.dart';
 
 import '../../../../../presentation/shared_components/TitleText.dart';
 import '../../../../../presentation/theme.dart';
@@ -9,7 +11,9 @@ import '../../../profilecc/controllers/profilecc_controller.dart';
 import '../controllers/profile_controller.dart';
 
 class ProfileView extends GetView<ProfileccController> {
-  const ProfileView({Key? key}) : super(key: key);
+  // late bool _canManageDevice = false;
+  // late bool _pilotRequestDevice = false;
+  // late UserPreferences _userPreferences;
 
   // Function to generate a QR code with the AirAsia logo in the center
   Widget generateQRCode() {
@@ -143,6 +147,10 @@ class ProfileView extends GetView<ProfileccController> {
                     const SizedBox(
                       height: 20,
                     ),
+                    //if (_userPreferences.getPrivileges().contains(UserModel.keyPrivilegeOCC))
+                    // if (_userPreferences.getPrivileges().contains(UserModel.keyPilotRequestDevice)) {
+                    //   _pilotRequestDevice = true,
+                    // }
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: tsOneColorScheme.secondary,
@@ -211,7 +219,7 @@ class ProfileView extends GetView<ProfileccController> {
                             ),
                             SizedBox(height: 5),
                             Text(
-                              "My QR",
+                              "Tap QR",
                               style: TextStyle(color: TsOneColor.primary),
                             ),
                           ],

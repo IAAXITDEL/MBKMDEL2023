@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart'; // For camera feature
 import 'package:firebase_storage/firebase_storage.dart'; // For uploading images to Firebase Storage
 import 'package:quickalert/models/quickalert_type.dart';
@@ -8,6 +9,7 @@ import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'dart:io'; // For handling selected image file
 
 import '../../../../../presentation/theme.dart';
+import '../../../../routes/app_pages.dart';
 
 class FOUnReturnOtherCrew extends StatefulWidget {
   final String deviceName2;
@@ -66,7 +68,8 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
       type: QuickAlertType.success,
       text: 'You have successfully added a device',
     );
-    Navigator.of(context).pop();
+    Get.offAllNamed(Routes.NAVOCC);
+
   }
 
   Future<void> _showConfirmationDialog() async {
@@ -95,8 +98,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
               onPressed: () {
                 // Call the function to update status and upload image
                 updateStatusToInUsePilot(widget.deviceId);
-                Navigator.of(context).pop(); // Close the dialog
-                Navigator.of(context).pop();
+
               },
             ),
           ],

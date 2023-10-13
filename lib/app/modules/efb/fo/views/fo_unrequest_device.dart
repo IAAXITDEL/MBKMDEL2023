@@ -8,6 +8,7 @@ import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 
 import '../../../../../presentation/theme.dart';
+import '../../../../routes/app_pages.dart';
 import 'main_view_fo.dart';
 
 class FOUnRequestDeviceView extends GetView {
@@ -24,8 +25,7 @@ class FOUnRequestDeviceView extends GetView {
       type: QuickAlertType.success,
       text: 'You have succesfully Rejected The Device',
     );
-    Navigator.of(context).pop();
-    Navigator.of(context).pop();
+    Get.offAllNamed(Routes.NAVOCC);
   }
 
   void confirmRejected(BuildContext context) {
