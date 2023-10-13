@@ -11,10 +11,9 @@ import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
 import 'package:path/path.dart' as Path;
-import 'package:image/image.dart' as img;
-
 
 import '../../../../../presentation/theme.dart';
+import '../../../../routes/app_pages.dart';
 
 class ConfirmReturnBackPilotView extends GetView {
   final String dataId;
@@ -27,23 +26,16 @@ class ConfirmReturnBackPilotView extends GetView {
   GlobalKey<SfSignaturePadState> signatureKey = GlobalKey();
 
   Future<void> _uploadImageAndShowDialog(XFile pickedFile, BuildContext context) async {
-    final Uint8List imageBytes = await pickedFile.readAsBytes();
-
-    // Load the image using image package
-    img.Image? image = img.decodeImage(imageBytes);
-
-    // Compress the image to reduce size and resize the resolution
-    image = img.copyResize(image!, width: 800);
-
-    // Encode the compressed image to Uint8List
-    final Uint8List compressedImageBytes = Uint8List.fromList(img.encodePng(image));
+    final ByteData byteData = await pickedFile
+        .readAsBytes()
+        .then((value) => ByteData.sublistView(Uint8List.fromList(value)));
 
     final Reference storageReference =
     FirebaseStorage.instance.ref().child('camera_images/${Path.basename(dataId)}.png');
 
     try {
-      // Upload the compressed image
-      await storageReference.putData(compressedImageBytes);
+      // Upload the image
+      await storageReference.putData(byteData.buffer.asUint8List());
 
       // Get the download URL after upload completes
       String cameraImageUrl = await storageReference.getDownloadURL();
@@ -67,15 +59,11 @@ class ConfirmReturnBackPilotView extends GetView {
                 child: Text('Cancel'),
                 onPressed: () {
                   Navigator.of(context).pop(); // Close the dialog
-                  Navigator.of(context).pop(); // Close the dialog
-                  Navigator.of(context).pop(); // Close the dialog
                 },
               ),
               TextButton(
                 child: Text('Submit'),
                 onPressed: () {
-                  Navigator.of(context).pop(); // Close the confirmation dialog
-                  Navigator.of(context).pop(); // Close the confirmation dialog
                   Navigator.of(context).pop(); // Close the confirmation dialog
                   confirmInUse(context, cameraImageUrl);
                   _showQuickAlert(context); // Call the function to submit data
@@ -96,7 +84,7 @@ class ConfirmReturnBackPilotView extends GetView {
       type: QuickAlertType.success,
       text: 'Your data has been saved! Thank You',
     );
-    Navigator.of(context).pop();
+    Get.offAllNamed(Routes.NAVOCC);
   }
 
   void confirmInUse(BuildContext context, String cameraImageUrl) async {
@@ -161,7 +149,8 @@ class ConfirmReturnBackPilotView extends GetView {
         } catch (error) {
           print('Error updating data: $error');
         }
-      });
+      }
+      );
     }
   }
 
@@ -169,7 +158,11 @@ class ConfirmReturnBackPilotView extends GetView {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Need Confirm'),
+        backgroundColor: Colors.white,
+        title: Text(
+          'Need Confirm',
+          style: tsOneTextTheme.headlineLarge,
+        ),
         centerTitle: true,
       ),
       body: SingleChildScrollView(

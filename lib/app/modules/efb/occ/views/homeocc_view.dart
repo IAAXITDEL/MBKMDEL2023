@@ -35,14 +35,14 @@ class HomeOCCView extends GetView<HomeOCCController> {
               child: Column(
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(top: 40, bottom: 10, left: 20,right: 20),
+                    padding: EdgeInsets.only(top: 50, left: 20, right: 20),
                     child: Column(
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "Hi, ${controller.titleToGreet!}",
+                              "Hi, ${controller.titleToGreet}",
                               style: tsOneTextTheme.headlineLarge,
                             ),
                             Spacer(),
@@ -75,13 +75,11 @@ class HomeOCCView extends GetView<HomeOCCController> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    Util.convertDateTimeDisplay(
-                                        DateTime.now().toString(), "EEEE"),
+                                    Util.convertDateTimeDisplay(DateTime.now().toString(), "EEEE"),
                                     style: tsOneTextTheme.labelSmall,
                                   ),
                                   Text(
-                                    Util.convertDateTimeDisplay(
-                                        DateTime.now().toString(), "dd MMMM yyyy"),
+                                    Util.convertDateTimeDisplay(DateTime.now().toString(), "dd MMMM yyyy"),
                                     style: tsOneTextTheme.labelSmall,
                                   ),
                                 ],
@@ -142,54 +140,54 @@ class HomeOCCView extends GetView<HomeOCCController> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  // StreamBuilder<QuerySnapshot>(
-                                  //   stream: FirebaseFirestore.instance
-                                  //       .collection("pilot-device-1")
-                                  //       .where("statusDevice", isEqualTo: "in-use-pilot")
-                                  //       .where("field_hub", isEqualTo: userHub)
-                                  //       .snapshots(),
-                                  //   builder: (context, snapshot) {
-                                  //     if (snapshot.connectionState == ConnectionState.waiting) {
-                                  //       return CircularProgressIndicator();
-                                  //     }
-                                  //
-                                  //     if (snapshot.hasError) {
-                                  //       return Text("Error: ${snapshot.error}");
-                                  //     }
-                                  //
-                                  //     final count = snapshot.data?.docs.length ?? 0;
-                                  //     return Padding(
-                                  //       padding: const EdgeInsets.symmetric(horizontal: 10),
-                                  //       child: Text(
-                                  //         'Used Device ' + ': $count',
-                                  //         style: tsOneTextTheme.bodySmall,
-                                  //       ),
-                                  //     );
-                                  //   },
-                                  // ),
-                                  //
-                                  // StreamBuilder<QuerySnapshot>(
-                                  //   stream: FirebaseFirestore.instance
-                                  //       .collection("pilot-device-1")
-                                  //       .where("statusDevice", isEqualTo: "in-use-pilot")
-                                  //       .where("field_hub2", isEqualTo: userHub) // Using the logged-in userHub
-                                  //       .snapshots(),
-                                  //   builder: (context, snapshot) {
-                                  //     if (snapshot.connectionState == ConnectionState.waiting) {
-                                  //       return CircularProgressIndicator();
-                                  //     }
-                                  //
-                                  //     if (snapshot.hasError) {
-                                  //       return Text("Error: ${snapshot.error}");
-                                  //     }
-                                  //
-                                  //     final count = snapshot.data?.docs.length ?? 0;
-                                  //     return Padding(
-                                  //       padding: const EdgeInsets.symmetric(horizontal: 10),
-                                  //       child: Text('Used Device 2' + ': $count', style: tsOneTextTheme.bodySmall,),
-                                  //     );
-                                  //   },
-                                  // ),
+                                  StreamBuilder<QuerySnapshot>(
+                                    stream: FirebaseFirestore.instance
+                                        .collection("pilot-device-1")
+                                        .where("statusDevice", isEqualTo: "in-use-pilot")
+                                        .where("field_hub", isEqualTo: userHub)
+                                        .snapshots(),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState == ConnectionState.waiting) {
+                                        return CircularProgressIndicator();
+                                      }
+
+                                      if (snapshot.hasError) {
+                                        return Text("Error: ${snapshot.error}");
+                                      }
+
+                                      final count = snapshot.data?.docs.length ?? 0;
+                                      return Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                                        child: Text(
+                                          'Used Device ' + ': $count',
+                                          style: tsOneTextTheme.bodySmall,
+                                        ),
+                                      );
+                                    },
+                                  ),
+
+                                  StreamBuilder<QuerySnapshot>(
+                                    stream: FirebaseFirestore.instance
+                                        .collection("pilot-device-1")
+                                        .where("statusDevice", isEqualTo: "in-use-pilot")
+                                        .where("field_hub2", isEqualTo: userHub) // Using the logged-in userHub
+                                        .snapshots(),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState == ConnectionState.waiting) {
+                                        return CircularProgressIndicator();
+                                      }
+
+                                      if (snapshot.hasError) {
+                                        return Text("Error: ${snapshot.error}");
+                                      }
+
+                                      final count = snapshot.data?.docs.length ?? 0;
+                                      return Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                                        child: Text('Used Device 2' + ': $count', style: tsOneTextTheme.bodySmall,),
+                                      );
+                                    },
+                                  ),
 
                                  StreamBuilder<QuerySnapshot>(
                                     stream: FirebaseFirestore.instance
@@ -255,20 +253,7 @@ class HomeOCCView extends GetView<HomeOCCController> {
 
                                           return Padding(
                                             padding: const EdgeInsets.symmetric(horizontal: 10),
-                                            child: Column(
-                                              children: [
-                                                Row(
-                                                  children: [
-                                                    Text('Available Devices: $availableCount', style: tsOneTextTheme.bodySmall,),
-                                                  ],
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    Text('Device Used: $deviceUsed', style: tsOneTextTheme.bodySmall,),
-                                                  ],
-                                                ),
-                                              ],
-                                            )
+                                            child: Text('Available Devices: $availableCount Device Used $deviceUsed', style: tsOneTextTheme.bodySmall,),
                                           );
                                         },
                                       );
@@ -332,10 +317,7 @@ Future<String?> _getUserHub() async {
   final userEmail = user.email;
   if (userEmail == null) return null;
 
-  final userSnapshot = await FirebaseFirestore.instance
-      .collection('users')
-      .where('EMAIL', isEqualTo: userEmail)
-      .get();
+  final userSnapshot = await FirebaseFirestore.instance.collection('users').where('EMAIL', isEqualTo: userEmail).get();
 
   if (userSnapshot.docs.isNotEmpty) {
     final userDoc = userSnapshot.docs.first;
@@ -359,7 +341,7 @@ class FirebaseDataTab extends StatelessWidget {
       stream: FirebaseFirestore.instance
           .collection("pilot-device-1")
           .where("statusDevice", whereIn: statuses)
-          .where("field_hub", isEqualTo: userHub)  // Filter based on user's hub
+          .where("field_hub", isEqualTo: userHub) // Filter based on user's hub
           .snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -383,10 +365,7 @@ class FirebaseDataTab extends StatelessWidget {
             final userUid = data['user_uid'];
             // Get the user's name using a FutureBuilder
             return FutureBuilder<DocumentSnapshot>(
-              future: FirebaseFirestore.instance
-                  .collection("users")
-                  .doc(userUid)
-                  .get(),
+              future: FirebaseFirestore.instance.collection("users").doc(userUid).get(),
               builder: (context, userSnapshot) {
                 if (userSnapshot.connectionState == ConnectionState.waiting) {
                   return CircularProgressIndicator();
@@ -412,17 +391,18 @@ class FirebaseDataTab extends StatelessWidget {
 
                 // Build the widget with the user's name and profile photo
                 return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width,
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Card(
+                        color : tsOneColorScheme.secondary,
                         surfaceTintColor: TsOneColor.surface,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15),
                         ),
-                        elevation: 2, // You can adjust the elevation as needed
+                        elevation: 3, // You can adjust the elevation as needed
                         child: InkWell(
                           onTap: () {
                             if (statuses.contains("waiting-confirmation-1")) {
@@ -447,13 +427,14 @@ class FirebaseDataTab extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
+                                SizedBox(width: 8.0),
                                 CircleAvatar(
                                   backgroundImage: photoUrl != null
                                       ? NetworkImage(photoUrl as String)
                                       : AssetImage('assets/default_profile_image.png') as ImageProvider,
                                   radius: 25.0,
                                 ),
-                                SizedBox(width: 12.0),
+                                SizedBox(width: 17.0),
                                 Flexible(
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -470,7 +451,7 @@ class FirebaseDataTab extends StatelessWidget {
                                           '$deviceName',
                                           style: tsOneTextTheme.labelSmall,
                                         ),
-                                      if (deviceName2.isNotEmpty && deviceName3.isNotEmpty  && deviceName.contains('-'))
+                                      if (deviceName2.isNotEmpty && deviceName3.isNotEmpty && deviceName.contains('-'))
                                         Text(
                                           '$deviceName2' + ' & ' + '$deviceName3',
                                           style: tsOneTextTheme.labelSmall,
@@ -482,9 +463,11 @@ class FirebaseDataTab extends StatelessWidget {
                                     ],
                                   ),
                                 ),
+
+                                if (statuses.contains("waiting-confirmation-1") || statuses.contains("need-confirmation-occ"))
                                 const Icon(
                                   Icons.chevron_right,
-                                  color: TsOneColor.secondaryContainer,
+                                  color: TsOneColor.onSecondary,
                                   size: 30,
                                 )
                               ],
@@ -503,4 +486,3 @@ class FirebaseDataTab extends StatelessWidget {
     );
   }
 }
-

@@ -7,6 +7,7 @@ import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 
 import '../../../../../presentation/theme.dart';
+import '../../../../routes/app_pages.dart';
 
 class FOUnReturnDeviceView extends GetView {
   final String deviceId;
@@ -22,9 +23,7 @@ class FOUnReturnDeviceView extends GetView {
       type: QuickAlertType.success,
       text: 'You have succesfully Rejected The Device',
     );
-    Navigator.of(context).pop();
-    Navigator.of(context).pop();
-    Navigator.of(context).pop();
+    Get.offAllNamed(Routes.NAVOCC);
   }
 
   void confirmRejected(BuildContext context) {
@@ -59,14 +58,15 @@ class FOUnReturnDeviceView extends GetView {
                   try {
                     await pilotDeviceRef.update({
                       'statusDevice': 'in-use-pilot',
-                    });
 
+                    });
+                    _showQuickAlert(context);
                     print('Data updated successfully!');
                   } catch (error) {
                     print('Error updating data: $error');
                   }
                 }
-                _showQuickAlert(context);
+
               },
 
             ),

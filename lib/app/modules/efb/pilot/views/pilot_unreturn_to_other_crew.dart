@@ -10,12 +10,12 @@ import 'package:ts_one/presentation/shared_components/TitleText.dart';
 
 import '../../../../../presentation/theme.dart';
 
-class PilotUnReturnDeviceView extends GetView {
+class PilotUnReturnToOtherCrewView extends GetView {
   final String deviceId;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  PilotUnReturnDeviceView({Key? key, required this.deviceId, required String deviceName}) : super(key: key);
+  PilotUnReturnToOtherCrewView({Key? key, required this.deviceId, required String deviceName}) : super(key: key);
 
   String getMonthText(int month) {
     const List<String> months = [
@@ -102,14 +102,13 @@ class PilotUnReturnDeviceView extends GetView {
                           await pilotDeviceRef.update({
                             'statusDevice': 'in-use-pilot',
                           });
-
+                          _showQuickAlert(context);
                           print('Data updated successfully!');
                         } catch (error) {
                           print('Error updating data: $error');
                         }
                       }
-                      _showQuickAlert(context);
-                      Get.offAllNamed(Routes.NAVOCC);
+
                     },
                   ),
                 ),

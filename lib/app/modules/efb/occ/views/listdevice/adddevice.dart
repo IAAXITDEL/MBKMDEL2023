@@ -53,8 +53,7 @@ class _AddDevice extends State<AddDevice> {
         border: OutlineInputBorder(),
       ),
       onEditingComplete: () {
-        FocusScope.of(context)
-            .requestFocus(_iosverFocus); // Pindah ke field berikutnya
+        FocusScope.of(context).requestFocus(_iosverFocus); // Pindah ke field berikutnya
       },
     );
     final iosverField = TextFormField(
@@ -77,8 +76,7 @@ class _AddDevice extends State<AddDevice> {
         border: OutlineInputBorder(),
       ),
       onEditingComplete: () {
-        FocusScope.of(context)
-            .requestFocus(_flysmartverFocus); // Pindah ke field berikutnya
+        FocusScope.of(context).requestFocus(_flysmartverFocus); // Pindah ke field berikutnya
       },
     );
     final flysmarvertField = TextFormField(
@@ -101,8 +99,7 @@ class _AddDevice extends State<AddDevice> {
         border: OutlineInputBorder(),
       ),
       onEditingComplete: () {
-        FocusScope.of(context)
-            .requestFocus(_lidoversionFocus); // Pindah ke field berikutnya
+        FocusScope.of(context).requestFocus(_lidoversionFocus); // Pindah ke field berikutnya
       },
     );
     final lidoField = TextFormField(
@@ -125,8 +122,7 @@ class _AddDevice extends State<AddDevice> {
         border: OutlineInputBorder(),
       ),
       onEditingComplete: () {
-        FocusScope.of(context)
-            .requestFocus(_docuversionFocus); // Pindah ke field berikutnya
+        FocusScope.of(context).requestFocus(_docuversionFocus); // Pindah ke field berikutnya
       },
     );
     final docuField = TextFormField(
@@ -149,8 +145,7 @@ class _AddDevice extends State<AddDevice> {
         border: OutlineInputBorder(),
       ),
       onEditingComplete: () {
-        FocusScope.of(context)
-            .requestFocus(_lidoversionFocus); // Pindah ke field berikutnya
+        FocusScope.of(context).requestFocus(_lidoversionFocus); // Pindah ke field berikutnya
       },
     );
 
@@ -238,8 +233,7 @@ class _AddDevice extends State<AddDevice> {
               lidoversion: _lidoversion.text,
               docuversion: _docuversion.text,
               hub: _selectedHub,
-              condition:
-                  _selectedCondition, // Menggunakan nilai yang dipilih dari dropdown
+              condition: _selectedCondition, // Menggunakan nilai yang dipilih dari dropdown
             );
             if (response.code == 200) {
               //Success
@@ -264,7 +258,7 @@ class _AddDevice extends State<AddDevice> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+        backgroundColor: Colors.white,
         title: Text(
           'Add Device',
           style: tsOneTextTheme.headlineLarge,

@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:ts_one/app/modules/efb/occ/views/history/history_all_device_view.dart';
 
 import '../../../../../../presentation/theme.dart';
-import '../../../occ/views/history/handover_attachment1.dart';
+import 'handover_attachment1.dart';
 
 class DetailHistoryDeviceView extends GetView {
   final String dataId;
@@ -500,6 +500,7 @@ class DetailHistoryDeviceView extends GetView {
                                                           ttdOCC: data['signature_url_occ'],
                                                           loan: data['timestamp'],
                                                           statusdevice: data['statusDevice'],
+                                                          ttdOtherCrew: data != null ? data['signature_url_other_user'] : 'Not Found',
                                                           handoverName: handoverTouserData != null ? handoverTouserData['NAME'] : 'Not Found',
                                                           handoverID: data['handover-to-crew'],
                                                         ).then((_) {

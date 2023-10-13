@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../../../presentation/theme.dart';
-import '../../../occ/views/history/handover_attachment23.dart';
+import 'handover_attachment23.dart';
 
 class DetailHistoryDeviceFOView extends GetView {
   final String dataId;
@@ -213,38 +213,6 @@ class DetailHistoryDeviceFOView extends GetView {
                                     final occAccepteduserData =
                                         occAcceptedSnapshot.data?.data()
                                             as Map<String, dynamic>?;
-
-                                    // generateLogPdfDevice23(
-                                    //   userName: userData['NAME'],
-                                    //   userRank: userData['RANK'],
-                                    //   userID: userData['ID NO'].toString(),
-                                    //   occAccept: occAccepteduserData?['NAME'],
-                                    //   occGiven: occOnDutyuserData?['NAME'],
-                                    //   deviceNo2: data['device_name2'],
-                                    //   iosVer2: deviceData2['iosver'],
-                                    //   flySmart2: deviceData2['flysmart'],
-                                    //   lido2: deviceData2['lidoversion'],
-                                    //   docunet2: deviceData2['docuversion'],
-                                    //   deviceCondition2:
-                                    //       deviceData2['condition'],
-                                    //   deviceNo3: data['device_name3'],
-                                    //   iosVer3: deviceData3['iosver'],
-                                    //   flySmart3: deviceData3['flysmart'],
-                                    //   lido3: deviceData3['lidoversion'],
-                                    //   docunet3: deviceData3['docuversion'],
-                                    //   deviceCondition3:
-                                    //       deviceData3['condition'],
-                                    //   ttdUser: data['signature_url'],
-                                    //   loan: data['timestamp'],
-                                    //   statusdevice: data['statusDevice'],
-                                    //   handoverName: handoverTouserData != null
-                                    //       ? handoverTouserData['NAME']
-                                    //       : 'Not Found',
-                                    //   handoverID: handoverTouserData != null
-                                    //       ? handoverTouserData['ID NO']
-                                    //           .toString()
-                                    //       : 'Not Found',
-                                    // );
 
                                     return Center(
                                       child: Column(
@@ -694,6 +662,9 @@ class DetailHistoryDeviceFOView extends GetView {
                                                                 deviceCondition3:deviceData3['condition'],
                                                                 ttdUser: data['signature_url'],
                                                                 ttdOCC: data['signature_url_occ'],
+                                                                ttdOtherCrew: data != null
+                                                                    ? data['signature_url_other_crew']
+                                                                    : 'Not Found',
                                                                 loan: data['timestamp'],
                                                                 statusdevice: data['statusDevice'],
                                                                 handoverName: handoverTouserData != null
@@ -708,7 +679,7 @@ class DetailHistoryDeviceFOView extends GetView {
                                                                 print('Error generating PDF: $error');
                                                                 Navigator.pop(context);
                                                               });
-                                                              //generateLogPdfDevice1();
+                                                              // generateLogPdfDevice23();
                                                             },
                                                             style: ElevatedButton.styleFrom(
                                                               backgroundColor: TsOneColor.greenColor,
