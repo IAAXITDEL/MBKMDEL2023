@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 import 'package:get/get.dart';
 import 'package:ts_one/presentation/shared_components/TitleText.dart';
@@ -341,7 +342,7 @@ class PilottraininghistorydetailccView
                             children: [
                               Container(
                                 margin: EdgeInsets.only(
-                                    right: 16), // Adjust the margin as needed
+                                    right: 16),
                                 child: CircleAvatar(
                                   radius: 20,
                                   backgroundColor: Colors.black26,
@@ -364,17 +365,31 @@ class PilottraininghistorydetailccView
                                 children: [
                                   Text(
                                     listAttendance[0]["trainee-name"],
-                                    style:
-                                    TextStyle(fontWeight: FontWeight.bold),
+                                    style: TextStyle(fontWeight: FontWeight.bold),
                                     maxLines: 1,
+                                  ),
+                                  RatingBar.builder(
+                                    initialRating: listAttendance[0]["rating"].toDouble(), // Ubah rating sesuai data Anda
+                                    minRating: 1,
+                                    direction: Axis.horizontal,
+                                    allowHalfRating: false,
+                                    itemCount: 5,
+                                    itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
+                                    itemSize: 20.0,
+                                    itemBuilder: (context, _) => Icon(
+                                      Icons.star,
+                                      color: Colors.amber,
+                                    ),
+                                    onRatingUpdate: (rating) {
+                                      print(rating); // Anda dapat meng-handle perubahan rating di sini
+                                    },
                                   ),
                                   Container(
                                     constraints: BoxConstraints(
-                                      maxWidth:
-                                      250, // Adjust the width as needed
+                                      maxWidth: 250,
                                     ),
                                     child: Text(
-                                      listAttendance[0]["feedback-from-trainee'"] ?? "N/A",
+                                      listAttendance[0]["feedback-from-trainee"] ?? "N/A",
                                       textAlign: TextAlign.justify,
                                     ),
                                   ),
@@ -383,7 +398,8 @@ class PilottraininghistorydetailccView
                             ],
                           ),
                         ],
-                      );
+                      )
+                      ;
                     },
                   ),
                 ),

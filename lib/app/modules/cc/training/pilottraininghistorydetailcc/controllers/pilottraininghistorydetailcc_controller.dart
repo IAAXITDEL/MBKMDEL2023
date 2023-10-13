@@ -80,6 +80,7 @@ class PilottraininghistorydetailccController extends GetxController {
             'room': attendanceModel.room,
             'feedback-from-trainer': attendanceDetailData['feedback'],
             'feedback-from-trainee': attendanceDetailData['feedbackforinstructor'],
+            'rating' : attendanceDetailData['rating'],
           };
 
           // Tambahkan data ke list
