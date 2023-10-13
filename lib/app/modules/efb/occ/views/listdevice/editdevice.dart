@@ -266,53 +266,50 @@ class _EditDevice extends State<EditDevice> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
         title: Text(
           'Edit Device',
-          style: TextStyle(
-            color: Colors.black, // Set text color to red
-            fontSize: 20.0,
-            fontWeight: FontWeight.bold,
-          ),
+          style: tsOneTextTheme.headlineLarge,
         ),
-        centerTitle: true, // Center the title
+        centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    deviceNoField,
-                    const SizedBox(height: 15.0),
-                    IosVerField,
-                    const SizedBox(height: 15.0),
-                    flysmarvertField,
-                    const SizedBox(height: 15.0),
-                    lidoField,
-                    const SizedBox(height: 15.0),
-                    docuField,
-                    const SizedBox(height: 15.0),
-                    hubDropdown,
-                    const SizedBox(height: 15.0),
-                    conditionField,
-                    const SizedBox(height: 15.0),
-                  ],
+        padding: const EdgeInsets.only(top: 20, right: 20, left: 20),
+        child: Column(
+          children: [
+            Expanded(
+              flex: 9,
+              child: SingleChildScrollView(
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      deviceNoField,
+                      const SizedBox(height: 15.0),
+                      IosVerField,
+                      const SizedBox(height: 15.0),
+                      flysmarvertField,
+                      const SizedBox(height: 15.0),
+                      lidoField,
+                      const SizedBox(height: 15.0),
+                      docuField,
+                      const SizedBox(height: 15.0),
+                      hubDropdown,
+                      const SizedBox(height: 15.0),
+                      conditionField,
+                      const SizedBox(height: 15.0),
+                    ],
+                  ),
                 ),
               ),
-            ],
-          ),
-        ),
-      ),
-      bottomNavigationBar: BottomAppBar(
-        child: Expanded(
-          child: UpdateButton,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 20),
+              child: UpdateButton,
+            ),
+          ],
         ),
       ),
     );

@@ -229,7 +229,6 @@ class _AddDevice extends State<AddDevice> {
       color: TsOneColor.primary,
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
-        padding: const EdgeInsets.all(15.0),
         onPressed: () async {
           if (_formKey.currentState!.validate()) {
             var response = await DeviceController.addDevice(
@@ -265,54 +264,65 @@ class _AddDevice extends State<AddDevice> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
         title: Text(
           'Add Device',
-          style: TextStyle(
-            color: Colors.black, // Set text color to red
-            fontSize: 20.0,
-            fontWeight: FontWeight.bold,
-          ),
+          style: tsOneTextTheme.headlineLarge,
         ),
-        centerTitle: true, // Center the title
+        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 20, right: 20, left: 20),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    deviceNoField,
-                    const SizedBox(height: 15.0),
-                    iosverField,
-                    const SizedBox(height: 15.0),
-                    flysmarvertField,
-                    const SizedBox(height: 15.0),
-                    lidoField,
-                    const SizedBox(height: 15.0),
-                    docuField,
-                    const SizedBox(height: 15.0),
-                    hubDropdown,
-                    const SizedBox(height: 15.0),
-                    conditionDropdown,
-                    const SizedBox(height: 15.0),
-                  ],
+        child: Column(
+          children: [
+            Expanded(
+              flex: 9,
+              child: SingleChildScrollView(
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      deviceNoField,
+                      const SizedBox(height: 15.0),
+                      iosverField,
+                      const SizedBox(height: 15.0),
+                      flysmarvertField,
+                      const SizedBox(height: 15.0),
+                      lidoField,
+                      const SizedBox(height: 15.0),
+                      docuField,
+                      const SizedBox(height: 15.0),
+                      hubDropdown,
+                      const SizedBox(height: 15.0),
+                      conditionDropdown,
+                      const SizedBox(height: 15.0),
+                    ],
+                  ),
                 ),
               ),
-            ],
-          ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 10),
+              child: SaveButton,
+            ),
+            // Expanded(
+            //   flex: 1,
+            //   child: Padding(
+            //     padding: EdgeInsets.symmetric(vertical: 10),
+            //     child: SaveButton,
+            //   ),
+            // ),
+          ],
         ),
       ),
-      bottomNavigationBar: BottomAppBar(
-        child: Container(
-          child: SaveButton,
-        ),
-      ),
+
+      // bottomNavigationBar: BottomAppBar(
+      //   child: Container(
+      //     child: SaveButton,
+      //   ),
+      // ),
     );
   }
 }
