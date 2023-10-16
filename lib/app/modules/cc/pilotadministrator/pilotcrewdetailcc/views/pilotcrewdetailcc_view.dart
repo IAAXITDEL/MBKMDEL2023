@@ -44,6 +44,7 @@ class PilotcrewdetailccView extends GetView<PilotcrewdetailccController> {
 
                     var listAttendance = snapshot.data!.docs;
                     var documentData = listAttendance[0].data();
+                    print(documentData);
                     controller.idTraining.value = documentData["ID NO"];
                     return Column(
                       children: [

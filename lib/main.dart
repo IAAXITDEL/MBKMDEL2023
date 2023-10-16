@@ -90,20 +90,6 @@ class MyApp extends StatelessWidget {
     //   debugShowCheckedModeBanner: false,
     // );
 
-    final now = DateTime.now();
-    final tomorrow = DateTime(now.year, now.month, now.day + 1, 0, 0, 0, 0);
-    final duration = tomorrow.difference(now);
-
-    // Menjadwalkan eksekusi fungsi cekValidityStream pada pukul 12:00 AM setiap hari
-    Timer(duration, () {
-      // Memanggil fungsi cekValidityStream
-      Get.find<MainHomeController>().cekValidityStream().listen((data) {
-        // Lakukan apa pun yang perlu Anda lakukan dengan data
-        print('cekValidityStream executed.');
-        print('Data: $data');
-      });
-    });
-
     return GetMaterialApp(
       title: "Air Asia",
       theme: tsOneThemeData,

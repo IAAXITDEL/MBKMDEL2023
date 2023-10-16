@@ -2,6 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:ts_one/presentation/view_model/attendance_detail_model.dart';
 
+import '../../../../../../data/users/user_preferences.dart';
+import '../../../../../../data/users/users.dart';
+import '../../../../../../di/locator.dart';
 import '../../../../../../presentation/view_model/attendance_model.dart';
 
 class PilottraininghistorydetailccController extends GetxController {
@@ -10,12 +13,17 @@ class PilottraininghistorydetailccController extends GetxController {
   RxString idAttendance = "".obs;
   RxString trainingName = "".obs;
 
+  late UserPreferences userPreferences;
+
+  final RxBool isTrainee = false.obs;
+
   @override
   void onInit() {
     super.onInit();
     idTrainingType.value = Get.arguments["idTrainingType"];
     idAttendance.value = Get.arguments["idAttendance"];
     getCombinedAttendance();
+    cekRole();
   }
 
   //Mendapatkan Training
@@ -92,6 +100,40 @@ class PilottraininghistorydetailccController extends GetxController {
 
     return attendanceData;
   }
+
+  Future<bool> cekRole() async {
+    userPreferences = getItLocator<UserPreferences>();
+
+    // SEBAGAI CPTS
+    if (userPreferences.getInstructor().contains(UserModel.keyCPTS) &&
+        userPreferences.getRank().contains(UserModel.keyPositionCaptain) ||
+        userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)) {
+    }
+    // SEBAGAI INSTRUCTOR
+    else if (userPreferences
+        .getInstructor()
+        .contains(UserModel.keySubPositionCCP) ||
+        userPreferences.getInstructor().contains(UserModel.keySubPositionFIA) ||
+        userPreferences.getInstructor().contains(UserModel.keySubPositionFIS) ||
+        userPreferences.getInstructor().contains(UserModel.keySubPositionPGI) &&
+            userPreferences.getRank().contains(UserModel.keyPositionCaptain) ||
+        userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)) {
+    }
+    // SEBAGAI PILOT
+    else if (userPreferences.getRank().contains(UserModel.keyPositionCaptain) ||
+        userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)) {
+      isTrainee.value = true;
+    }
+    // SEBAGAI PILOT ADMINISTRATOR
+    else if (userPreferences.getRank().contains("Pilot Administrator")) {
+    }
+    // SEBAGAI ALL STAR
+    else {
+      return false;
+    }
+    return false;
+  }
+
 
   @override
   void onReady() {
