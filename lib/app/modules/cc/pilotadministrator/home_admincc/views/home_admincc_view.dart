@@ -71,15 +71,9 @@ class HomeAdminccView extends GetView<HomeAdminccController> {
                 "Need Confirmation",
                 style: tsOneTextTheme.labelLarge,
               ),
-              InkWell(
-                child: Text(
-                  "See All",
-                  style: tsOneTextTheme.labelMedium,
-                ),
-              )
             ],
           ),
-          const SizedBox(height: 10,),
+          const SizedBox(height: 5,),
           StreamBuilder<List<Map<String, dynamic>>>(
             stream: controller.getCombinedAttendanceStream(),
             builder: (context, snapshot) {

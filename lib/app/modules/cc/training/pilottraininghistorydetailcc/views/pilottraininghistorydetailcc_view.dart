@@ -52,11 +52,14 @@ class PilottraininghistorydetailccView
                               borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(20.0),
                                 bottomLeft: Radius.circular(20.0),
+                                topRight: controller.isTrainee.value ? Radius.zero :  Radius.circular(20.0) ,
+                                bottomRight: controller.isTrainee.value ? Radius.zero :  Radius.circular(20.0) ,
                               ),
                             ),
                           ),
                           child: Text("Download Certificate")),
                     ),
+                    controller.isTrainee.value ?
                     Expanded(
                       child: ElevatedButton(
                           onPressed: () {
@@ -75,7 +78,7 @@ class PilottraininghistorydetailccView
                             ),
                           ),
                           child: Text("Give Feedback")),
-                    )
+                    )  : SizedBox(),
                   ],
                 ),
                 SizedBox(
@@ -204,7 +207,7 @@ class PilottraininghistorydetailccView
                                 Expanded(
                                     flex: 4,
                                     child: Text(
-                                        listAttendance[0]["name"] ?? "N/A")),
+                                        listAttendance[0]["trainer-name"] ?? "N/A")),
                               ],
                             ),
                           ),

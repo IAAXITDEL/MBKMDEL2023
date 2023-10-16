@@ -57,7 +57,7 @@ class AttendanceDetailModel {
         rank: json['rank'],
         license: json['license'],
         hub: json['hub'],
-        rating: json['rating'],
+        rating: json['rating']?.toDouble(),
         feedbackforinstructor: json['feedbackforinstructor']
     );
   }
