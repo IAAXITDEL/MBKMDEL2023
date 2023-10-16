@@ -169,7 +169,6 @@ class ProfileccView extends GetView<ProfileccController> {
                 height: 20,
               ),
               Container(
-                margin: EdgeInsets.symmetric(horizontal: 20),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10.0),
                   color: TsOneColor.surface,
@@ -286,11 +285,51 @@ class ProfileccView extends GetView<ProfileccController> {
                 ),
               ),
               SizedBox(
-                height: 10,
+                height: 20,
               ),
               controller.isTraining.value == true
                   ? Column(
                       children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text("TRAINING", style: tsOneTextTheme.headlineLarge,),
+                            Container(
+                              padding: EdgeInsets.all(5),
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                BorderRadius.circular(10.0),
+                                color: Colors.blue,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey
+                                        .withOpacity(0.3),
+                                    spreadRadius: 2,
+                                    blurRadius: 3,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ],
+                              ),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.picture_as_pdf,
+                                    size: 16,
+                                    color: Colors.white,
+                                  ),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Text(
+                                    "Save PDF",
+                                    style: TextStyle(
+                                        color: Colors.white),
+                                  ),],),)
+                          ],
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
                         StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
                           stream: controller.trainingStream(),
                           builder: (context, snapshot) {
@@ -323,7 +362,7 @@ class ProfileccView extends GetView<ProfileccController> {
                                   child: Container(
                                     padding: const EdgeInsets.all(5),
                                     margin: const EdgeInsets.symmetric(
-                                        vertical: 5, horizontal: 5),
+                                        vertical: 5, ),
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(10),
                                       color: Colors.white,

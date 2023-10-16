@@ -6,6 +6,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import '../../../../../data/users/user_preferences.dart';
 import '../../../../../data/users/users.dart';
 import '../../../../../di/locator.dart';
+import '../../../../../presentation/view_model/attendance_model.dart';
 import '../../../../../presentation/view_model/user_viewmodel.dart';
 import '../../../../routes/app_pages.dart';
 
@@ -14,26 +15,24 @@ class ProfileccController extends GetxController {
 
   late UserViewModel viewModel;
   late UserPreferences userPreferences;
-  late bool _canViewAllAssessments;
 
   RxBool isTraining = false.obs;
   RxBool isInstructor = false.obs;
   RxString instructorType = "".obs;
 
-
   RxInt idTraining = 0.obs;
   GoogleSignIn _googleSignIn = GoogleSignIn();
   FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  RxBool isReady = false.obs;
+
   @override
   void onInit() {
-    // viewModel = Provider.of<UserViewModel>(context, listen: false);
     userPreferences = getItLocator<UserPreferences>();
-    _canViewAllAssessments = false;
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      checkCanViewAllAssessments();
-    });
     cekRole();
+    print("two");
+    fetchAttendanceData();
+    print("one");
     super.onInit();
   }
 
@@ -52,12 +51,6 @@ class ProfileccController extends GetxController {
         .collection('trainingType')
         .where("is_delete", isEqualTo : 0)
         .snapshots();
-  }
-
-  void checkCanViewAllAssessments() {
-    if (userPreferences.getPrivileges().contains(UserModel.keyPrivilegeViewAllAssessments)) {
-      _canViewAllAssessments = true;
-    }
   }
 
   Future<void> logout() async {
@@ -121,6 +114,125 @@ class ProfileccController extends GetxController {
       print("Error updating LOA NO.: $e");
     }
   }
+
+
+  Future<void> fetchAttendanceData() async {
+    try {
+      userPreferences = getItLocator<UserPreferences>();
+      QuerySnapshot attendanceQuery = await firestore
+          .collection('attendance')
+          .where("expiry", isEqualTo: "VALID")
+          .where("status", isEqualTo: "done")
+          .get();
+
+      if (attendanceQuery.docs.isNotEmpty) {
+        final attendanceDetailQuery = await firestore.collection('attendance-detail').where("idtraining", isEqualTo: userPreferences.getIDNo()).where("status", isEqualTo: "donescoring").get();
+        final attendanceDetailData = attendanceDetailQuery.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+        if (attendanceDetailData.isEmpty) {
+          return;
+        }
+
+        final attendanceData = await Future.wait(
+          attendanceQuery.docs.map((doc) async {
+            final attendanceModel = AttendanceModel.fromJson(doc.data() as Map<String, dynamic>);
+            final matchingDetail = attendanceDetailData.where((attendanceDetail) => attendanceDetail['idattendance'] == attendanceModel.id);
+
+            if (matchingDetail.isNotEmpty) {
+              return attendanceModel.toJson();
+            }
+
+            return null;
+          }),
+        );
+
+        // Remove null values from attendanceData
+        final filteredAttendanceData = attendanceData.where((item) => item != null).toList();
+
+        final groupedAttendanceData = <String, Map<String, dynamic>>{};
+        for (var attendance in filteredAttendanceData) {
+          final subject = attendance?['subject'];
+          if (!groupedAttendanceData.containsKey(subject) ||
+              attendance?['valid_to'].compareTo(groupedAttendanceData[subject]!['valid_to']) > 0) {
+            groupedAttendanceData[subject] = attendance!;
+          }
+        }
+
+        // Sort the grouped attendance data by valid_to
+        final sortedAttendanceData = groupedAttendanceData.values.toList()
+          ..sort((a, b) {
+            Timestamp timestampA = a['valid_to'];
+            Timestamp timestampB = b['valid_to'];
+            return timestampB.compareTo(timestampA);
+          });
+
+        // Print the final attendance data
+        print("Final attendance data:");
+        sortedAttendanceData.forEach((attendance) {
+          print(attendance['id']);
+          print(attendance["expiry"]);
+          print(attendance["subject"]);
+          print(attendance["valid_to"]);
+        });
+
+        QuerySnapshot trainingQuery = await firestore
+            .collection('trainingType')
+            .get();
+
+        List<String?> trainingNames = trainingQuery.docs.map((doc) {
+          final data = doc.data() as Map<String, dynamic>?; // Cast to Map<String, dynamic>
+          return data != null ? data['training']?.toString() : null;
+        }).toList();
+
+        print(trainingNames);
+
+        // Create a map with keys from trainingNames and values from sortedAttendanceData
+        Map<String?, List<Map<String, dynamic>>> attendanceMap = {};
+
+        for (var attendance in sortedAttendanceData) {
+          final subject = attendance['subject'];
+          final expiry = attendance['expiry'];
+
+          // Check if the subject is present in trainingNames
+          if (trainingNames.contains(subject)) {
+            if (!attendanceMap.containsKey(subject)) {
+              attendanceMap[subject] = [];
+            }
+            attendanceMap[subject]!.add({
+              'id': attendance['id'],
+              'expiry': expiry,
+              'subject': subject,
+              'valid_to': attendance['valid_to'],
+            });
+          }
+        }
+
+    // Print the attendance map
+        print("Attendance Map:");
+        attendanceMap.forEach((key, value) {
+          print('Subject: $key');
+          value.forEach((attendance) {
+            print('  ${attendance['id']} - ${attendance['expiry']} - ${attendance['valid_to']}');
+          });
+        });
+
+        if(trainingNames.length > attendanceMap.length){
+          print("NOT VALID");
+          isReady.value = false;
+        }else{
+          isReady.value = true;
+        }
+
+      } else {
+        return;
+      }
+    } catch (error) {
+      print('Error fetching attendance data: $error');
+      // Handle the error accordingly
+    }
+  }
+
+
+
 
   @override
   void onReady() {
