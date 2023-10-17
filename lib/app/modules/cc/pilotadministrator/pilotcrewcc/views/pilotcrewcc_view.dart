@@ -35,7 +35,7 @@ class PilotcrewccView extends GetView<PilotcrewccController> {
                     prefixIcon: const Icon(Icons.search),
                     suffixIcon: IconButton(
                       icon: const Icon(Icons.clear), onPressed: () {
-                      controller.pilotCrewStream("");
+                      controller.nameS.value = "";
                       controller.searchC.clear();
                     },
                     ),

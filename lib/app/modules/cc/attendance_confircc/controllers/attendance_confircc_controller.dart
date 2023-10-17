@@ -73,10 +73,10 @@ class AttendanceConfirccController extends GetxController {
     final Map<String, dynamic> args = Get.arguments as Map<String, dynamic>;
     final String id = args["id"];
     argumentid.value = id;
-    attendanceStream();
-    getCombinedAttendanceStream();
-    cekRole();
-    instructorStream();
+    // attendanceStream();
+    // getCombinedAttendanceStream();
+    // cekRole();
+    // instructorStream();
     attendancelist();
   }
 
@@ -210,9 +210,7 @@ class AttendanceConfirccController extends GetxController {
     userPreferences = getItLocator<UserPreferences>();
     CollectionReference attendance = _firestore.collection('attendance');
 
-
-    CollectionReference training = _firestore.collection('trainingType');
-    QuerySnapshot querySnapshot = await training
+    QuerySnapshot querySnapshot = await _firestore.collection('trainingType')
         .where('id', isEqualTo: idTrainingType.value)
         .get();
 
@@ -277,10 +275,9 @@ class AttendanceConfirccController extends GetxController {
 
   //Membuat daftar absent
   Future<void> addAbsentForm(int idtraining) async {
-    CollectionReference absent = _firestore.collection("absent");
 
     try {
-      await absent.doc("$idtraining-${argumentid.value}").set({
+      await _firestore.collection("absent").doc("$idtraining-${argumentid.value}").set({
         "id" : "$idtraining-${argumentid.value}",
         "idattendance" : argumentid.value,
         "idtraining": idtraining,
