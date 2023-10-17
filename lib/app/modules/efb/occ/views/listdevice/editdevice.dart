@@ -269,7 +269,11 @@ class _EditDevice extends State<EditDevice> {
         backgroundColor: Color.fromARGB(255, 255, 255, 255),
         title: Text(
           'Edit Device',
-          style: tsOneTextTheme.headlineLarge,
+          style: TextStyle(
+            color: Colors.black, // Set text color to red
+            fontSize: 20.0,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         centerTitle: true,
       ),
@@ -309,6 +313,13 @@ class _EditDevice extends State<EditDevice> {
               padding: EdgeInsets.symmetric(vertical: 20),
               child: UpdateButton,
             ),
+            // Expanded(
+            //   flex: 1,
+            //   child: Padding(
+            //     padding: EdgeInsets.symmetric(vertical: 10),
+            //     child: UpdateButton,
+            //   ),
+            // ),
           ],
         ),
       ),

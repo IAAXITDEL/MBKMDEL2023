@@ -21,28 +21,28 @@ String selectedHub = 'ALL';
 class AnalyticsView extends GetView<AnalyticsController> {
   const AnalyticsView({Key? key}) : super(key: key);
 
-  // Future<Map<String, int>> countDevicesHub() async {
-  //   final firestore = FirebaseFirestore.instance;
-  //   final QuerySnapshot querySnapshot =
-  //       await firestore.collection('Device').get();
+  Future<Map<String, int>> countDevicesHub() async {
+    final firestore = FirebaseFirestore.instance;
+    final QuerySnapshot querySnapshot =
+        await firestore.collection('Device').get();
 
-  //   final Map<String, int> deviceCountByHub = {
-  //     'CGK': 0,
-  //     'KNO': 0,
-  //     'DPS': 0,
-  //     'SUB': 0,
-  //   };
+    final Map<String, int> deviceCountByHub = {
+      'CGK': 0,
+      'KNO': 0,
+      'DPS': 0,
+      'SUB': 0,
+    };
 
-  //   querySnapshot.docs.forEach((doc) {
-  //     final hub = doc['hub'] as String;
+    querySnapshot.docs.forEach((doc) {
+      final hub = doc['hub'] as String;
 
-  //     if (deviceCountByHub.containsKey(hub)) {
-  //       deviceCountByHub[hub] = (deviceCountByHub[hub] ?? 0) + 1;
-  //     }
-  //   });
+      if (deviceCountByHub.containsKey(hub)) {
+        deviceCountByHub[hub] = (deviceCountByHub[hub] ?? 0) + 1;
+      }
+    });
 
-  //   return deviceCountByHub;
-  // }
+    return deviceCountByHub;
+  }
 
   Future<void> exportToExcel(List<Map<String, dynamic>> data) async {
     final excel = Excel.createExcel();
@@ -220,7 +220,7 @@ class _AnalyticsHubState extends State<AnalyticsHub>
       context: context,
       initialDate: selectedStartDate ?? DateTime.now(),
       firstDate: DateTime(2023),
-      lastDate: DateTime(2023),
+      lastDate: DateTime(2024),
     );
     if (pickedStartDate != null && pickedStartDate != selectedStartDate) {
       setState(() {
@@ -234,7 +234,7 @@ class _AnalyticsHubState extends State<AnalyticsHub>
       context: context,
       initialDate: selectedEndDate ?? DateTime.now(),
       firstDate: DateTime(2023),
-      lastDate: DateTime(2023),
+      lastDate: DateTime(2024),
     );
     if (pickedEndDate != null && pickedEndDate != selectedEndDate) {
       setState(() {
@@ -264,6 +264,12 @@ class _AnalyticsHubState extends State<AnalyticsHub>
   }
 
   List<String> hubOptions = ['ALL', 'CGK', 'SUB', 'DPS', 'KNO'];
+
+  /// ALL HUB
+  // static String keyHubCGK = "CGK";
+  // static String keyHubSUB = "SUB";
+  // static String keyHubDPS = "DPS";
+  // static String keyHubKNO = "KNO";
 
   @override
   Widget build(BuildContext context) {
@@ -347,9 +353,7 @@ class _AnalyticsHubState extends State<AnalyticsHub>
                 ),
                 contentPadding:
                     EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                labelStyle: TextStyle(
-                    fontSize: 12,
-                    color: const Color.fromARGB(255, 183, 99, 99)),
+                labelStyle: TextStyle(fontSize: 12, color: Colors.black),
               ),
               child: DropdownButton<String>(
                 value: selectedHub,
@@ -375,7 +379,7 @@ class _AnalyticsHubState extends State<AnalyticsHub>
           countDevicesInUse('CGK'),
           percentageDevicesInUse('CGK'),
           percentageDevices23InUse('CGK'),
-          SizedBox(height: 25),
+          SizedBox(height: 16),
           Padding(
             padding: EdgeInsets.only(bottom: 8.0),
             child: Row(
@@ -414,7 +418,7 @@ class _AnalyticsHubState extends State<AnalyticsHub>
               ],
             ),
           ),
-          SizedBox(height: 25),
+          SizedBox(height: 16),
           Padding(
             padding: EdgeInsets.only(bottom: 8.0),
             child: Row(
@@ -438,6 +442,9 @@ class _AnalyticsHubState extends State<AnalyticsHub>
                 ),
               ],
             ),
+          ),
+          SizedBox(
+            height: 10,
           ),
         ],
       ),
@@ -763,7 +770,7 @@ class _AnalyticsHubState extends State<AnalyticsHub>
   Future<Map<String, int>> countDevicesHub(String hub) async {
     final firestore = FirebaseFirestore.instance;
     final QuerySnapshot querySnapshot =
-        await firestore.collection('pilot-device-1').get();
+        await firestore.collection('Device').get();
 
     final Map<String, int> deviceCountByHub = {
       'CGK': 0,
@@ -1084,7 +1091,6 @@ class _AnalyticsHubState extends State<AnalyticsHub>
     });
   }
 }
-// Pie Chart Acknowledgment
 
 // Pie Chart
 class PieChartWidget extends StatefulWidget {

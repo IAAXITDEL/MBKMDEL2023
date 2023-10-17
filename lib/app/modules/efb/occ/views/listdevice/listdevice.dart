@@ -261,7 +261,7 @@ class _ListDeviceState extends State<ListDevice> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: Text(
-          'List Device ',
+          'List Device',
           style: TextStyle(
             color: Colors.black, // Set text color to red
             fontSize: 20.0,
@@ -305,7 +305,7 @@ class _ListDeviceState extends State<ListDevice> {
                   ),
                   prefixIcon: Icon(Icons.search),
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                    borderRadius: BorderRadius.all(Radius.circular(8.0)),
                   ),
                 ),
               ),

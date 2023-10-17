@@ -76,8 +76,7 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(
-            255, 255, 255, 255), // Set background color to white
+        backgroundColor: Colors.white,
         title: Text(
           'All Device Used',
           style: TextStyle(
@@ -103,7 +102,7 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                         hintText: 'Search by Device No',
                         prefixIcon: Icon(Icons.search),
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                          borderRadius: BorderRadius.all(Radius.circular(8.0)),
                         ),
                       ),
                       onChanged: (value) {
@@ -114,7 +113,7 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                   IconButton(
                     icon: Icon(
                       Icons.filter_list,
-                      size: 40,
+                      size: 45,
                     ),
                     onPressed: _showFilterBottomSheet,
                   ),
@@ -370,7 +369,7 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                                                                     as ImageProvider,
                                                             radius: 25.0,
                                                           ),
-                                                          SizedBox(width: 17.0),
+                                                          SizedBox(width: 12.0),
                                                           Flexible(
                                                             child: Column(
                                                               crossAxisAlignment:
@@ -381,12 +380,15 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                                                                   width: double
                                                                       .infinity,
                                                                   child: Text(
-                                                                    '$userRank' +
-                                                                        ' ' +
-                                                                        '$userName',
+                                                                    '$userName',
                                                                     style: tsOneTextTheme
                                                                         .titleMedium,
                                                                   ),
+                                                                ),
+                                                                Text(
+                                                                  '$userRank',
+                                                                  style: tsOneTextTheme
+                                                                      .labelSmall,
                                                                 ),
                                                                 Text(
                                                                   '$deviceno2' +
@@ -429,12 +431,13 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10.0),
                                   child: Card(
-                                    surfaceTintColor: Colors.white,
+                                    color: tsOneColorScheme.secondary,
+                                    surfaceTintColor: TsOneColor.surface,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(15),
                                     ),
                                     elevation:
-                                        2, // You can adjust the elevation as needed
+                                        3, // You can adjust the elevation as needed
                                     child: InkWell(
                                       borderRadius: BorderRadius.circular(15.0),
                                       onTap: () {
@@ -471,12 +474,15 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                                                   Container(
                                                     width: double.infinity,
                                                     child: Text(
-                                                      '$userRank' +
-                                                          ' ' +
-                                                          '$userName',
+                                                      '$userName',
                                                       style: tsOneTextTheme
                                                           .titleMedium,
                                                     ),
+                                                  ),
+                                                  Text(
+                                                    '$userRank',
+                                                    style: tsOneTextTheme
+                                                        .labelSmall,
                                                   ),
                                                   Text(
                                                     '$deviceno',
@@ -573,8 +579,9 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // AppBar untuk menambahkan tombol Reset
             AppBar(
-              automaticallyImplyLeading: false,
+              automaticallyImplyLeading: false, // Menghilangkan tombol back
               title: Text(
                 'Filter',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),

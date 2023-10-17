@@ -264,7 +264,11 @@ class _AddDevice extends State<AddDevice> {
         backgroundColor: Color.fromARGB(255, 255, 255, 255),
         title: Text(
           'Add Device',
-          style: tsOneTextTheme.headlineLarge,
+          style: TextStyle(
+            color: Colors.black, // Set text color to red
+            fontSize: 20.0,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         centerTitle: true,
       ),
