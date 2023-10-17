@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:ts_one/app/modules/efb/occ/views/history/history_all_device_view.dart';
 
 import '../../../../../../presentation/theme.dart';
-import '../../../occ/views/history/handover_attachment1.dart';
+import 'handover_attachment1.dart';
 
 class DetailHistoryDeviceView extends GetView {
   final String dataId;
@@ -139,7 +139,7 @@ class DetailHistoryDeviceView extends GetView {
                             //occ accepted from
                             return FutureBuilder<DocumentSnapshot>(
                               future:
-                                  occAccepted != null ? FirebaseFirestore.instance.collection("users").doc(occAccepted).get() : Future.value(null),
+                              occAccepted != null ? FirebaseFirestore.instance.collection("users").doc(occAccepted).get() : Future.value(null),
                               builder: (context, occAcceptedSnapshot) {
                                 if (occAcceptedSnapshot.connectionState == ConnectionState.waiting) {
                                   return Center(child: CircularProgressIndicator());
@@ -306,24 +306,24 @@ class DetailHistoryDeviceView extends GetView {
                                                     fontFamily: 'Poppins',
                                                   ),
                                                 ),
-                                              if (status == 'Done') SizedBox(height: 7.0),
-                                              if (status == 'Done')
-                                              Row(
-                                                children: [
-                                                  Expanded(flex: 6, child: Text("Remarks")),
-                                                  Expanded(flex: 1, child: Text(":")),
-                                                  Expanded(
-                                                    flex: 6,
-                                                    child: Text('${data['remarks'] ?? '-'}'),
-                                                  ),
-                                                ],
-                                              ),
+                                              // if (status == 'Done') SizedBox(height: 7.0),
+                                              // if (status == 'Done')
+                                              // Row(
+                                              //   children: [
+                                              //     Expanded(flex: 6, child: Text("Remarks")),
+                                              //     Expanded(flex: 1, child: Text(":")),
+                                              //     Expanded(
+                                              //       flex: 6,
+                                              //       child: Text('${data['remarks'] ?? '-'}'),
+                                              //     ),
+                                              //   ],
+                                              // ),
 
                                               SizedBox(height: 5.0),
                                               if (status == 'Done')
                                                 Row(
                                                   children: [
-                                                    Expanded(flex: 6, child: Text("Image Proof")),
+                                                    Expanded(flex: 6, child: Text("Proof Back To Base")),
                                                     Expanded(flex: 1, child: Text(":")),
                                                     Expanded(
                                                       flex: 6,
@@ -345,7 +345,7 @@ class DetailHistoryDeviceView extends GetView {
                                                                         width: 400,
                                                                         height: 400,
                                                                         child: Image.network(
-                                                                          data['prove_back_to_base']!,
+                                                                          data['prove_back_to_base']?? 'No Image',
                                                                           fit: BoxFit.cover,
                                                                         ),
                                                                       ),
@@ -371,6 +371,90 @@ class DetailHistoryDeviceView extends GetView {
                                                     ),
                                                   ],
                                                 ),
+
+
+
+                                              if (status == 'handover-to-other-crew')
+                                                Text(
+                                                  "Proof Info",
+                                                  style: TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: tsOneColorScheme.onBackground,
+                                                    fontFamily: 'Poppins',
+                                                  ),
+                                                ),
+                                              SizedBox(height: 7.0),
+                                              if (status == 'handover-to-other-crew')
+                                                Row(
+                                                  children: [
+                                                    Expanded(flex: 6, child: Text("Remarks")),
+                                                    Expanded(flex: 1, child: Text(":")),
+                                                    Expanded(
+                                                      flex: 6,
+                                                      child: handoverTouserData != null
+                                                          ? Text('${data['remarks'] ?? 'Not Found'}')
+                                                          : Text('Not Found'),
+                                                    ),
+                                                  ],
+                                                ),
+                                              SizedBox(height: 7.0),
+                                              if (status == 'handover-to-other-crew')
+                                                Row(
+                                                  children: [
+                                                    Expanded(flex: 6, child: Text("Proof of Remarks")),
+                                                    Expanded(flex: 1, child: Text(":")),
+                                                    Expanded(
+                                                      flex: 6,
+                                                      child: Column(
+                                                        children: [
+                                                          if (status == 'handover-to-other-crew' && data['prove_image_url'] == null || data['prove_image_url'].isEmpty)
+                                                            Text(
+                                                              'There is no image',
+                                                              style: TextStyle(color: Colors.black),
+                                                            ),
+                                                          if (data['prove_image_url'] != null && data['prove_image_url'].isNotEmpty)
+                                                            GestureDetector(
+                                                              onTap: () {
+                                                                showDialog(
+                                                                  context: context,
+                                                                  builder: (BuildContext context) {
+
+                                                                    return AlertDialog(
+                                                                      content: Container(
+                                                                        width: 400,
+                                                                        height: 400,
+                                                                        child: Image.network(
+                                                                          data['prove_image_url']??'No Data',
+                                                                          fit: BoxFit.cover,
+                                                                        ),
+                                                                      ),
+                                                                    );
+                                                                  },
+                                                                );
+                                                              },
+                                                              child: Align(
+                                                                alignment: Alignment.centerLeft,
+                                                                child: Text(
+                                                                  'See Picture',
+                                                                  style: TextStyle(
+                                                                    color: TsOneColor.primary,
+                                                                    fontWeight: FontWeight.bold,
+                                                                    decoration: TextDecoration.underline,
+                                                                    decorationColor: TsOneColor.primary,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+
+
+
+                                              SizedBox(height: 15),
 
                                               if (status == 'handover-to-other-crew')
                                                 Text(
@@ -466,65 +550,65 @@ class DetailHistoryDeviceView extends GetView {
                                                 children: [
                                                   Expanded(
                                                     child: ElevatedButton(
-                                                      onPressed: () {
-                                                        showDialog(
-                                                          context: context,
-                                                          barrierDismissible: false,
-                                                          builder: (context) {
-                                                            return AlertDialog(
-                                                              content: Column(
-                                                                mainAxisSize: MainAxisSize.min,
-                                                                children: [
-                                                                  CircularProgressIndicator(),
-                                                                  SizedBox(height: 20),
-                                                                  Text('Please Wait...'),
-                                                                ],
-                                                              ),
-                                                            );
-                                                          },
-                                                        );
+                                                        onPressed: () {
+                                                          showDialog(
+                                                            context: context,
+                                                            barrierDismissible: false,
+                                                            builder: (context) {
+                                                              return AlertDialog(
+                                                                content: Column(
+                                                                  mainAxisSize: MainAxisSize.min,
+                                                                  children: [
+                                                                    CircularProgressIndicator(),
+                                                                    SizedBox(height: 20),
+                                                                    Text('Please Wait...'),
+                                                                  ],
+                                                                ),
+                                                              );
+                                                            },
+                                                          );
 
-                                                        generateLogPdfDevice1(
-                                                          userName: userData['NAME'],
-                                                          userRank: userData['RANK'],
-                                                          userID: userData['ID NO'].toString(),
-                                                          occAccept: occAccepteduserData?['NAME'],
-                                                          occGiven: occOnDutyuserData?['NAME'],
-                                                          deviceNo: data['device_name'],
-                                                          iosVer: deviceData['iosver'],
-                                                          flySmart: deviceData['flysmart'],
-                                                          lido: deviceData[' lidoversion'],
-                                                          docunet: deviceData['docuversion'],
-                                                          deviceCondition: deviceData['condition'],
-                                                          ttdUser: data['signature_url'],
-                                                          ttdOCC: data['signature_url_occ'],
-                                                          loan: data['timestamp'],
-                                                          statusdevice: data['statusDevice'],
-                                                          ttdOtherCrew: data != null ? data['signature_url_other_user'] : 'Not Found',
-                                                          handoverName: handoverTouserData != null ? handoverTouserData['NAME'] : 'Not Found',
-                                                          handoverID: data['handover-to-crew'],
-                                                        ).then((_) {
-                                                          Navigator.pop(context);
-                                                        }).catchError((error) {
-                                                          print('Error generating PDF: $error');
-                                                          Navigator.pop(context);
-                                                        });
-                                                        //generateLogPdfDevice1();
-                                                      },
-                                                      style: ElevatedButton.styleFrom(
-                                                        backgroundColor: TsOneColor.greenColor,
-                                                        shape: RoundedRectangleBorder(
-                                                          borderRadius: BorderRadius.circular(4.0),
+                                                          generateLogPdfDevice1(
+                                                            userName: userData['NAME'],
+                                                            userRank: userData['RANK'],
+                                                            userID: userData['ID NO'].toString(),
+                                                            occAccept: occAccepteduserData?['NAME'],
+                                                            occGiven: occOnDutyuserData?['NAME'],
+                                                            deviceNo: data['device_name'],
+                                                            iosVer: deviceData['iosver'],
+                                                            flySmart: deviceData['flysmart'],
+                                                            lido: deviceData[' lidoversion'],
+                                                            docunet: deviceData['docuversion'],
+                                                            deviceCondition: deviceData['condition'],
+                                                            ttdUser: data['signature_url'],
+                                                            ttdOCC: data['signature_url_occ'],
+                                                            loan: data['timestamp'],
+                                                            statusdevice: data['statusDevice'],
+                                                            ttdOtherCrew: data != null ? data['signature_url_other_user'] : 'Not Found',
+                                                            handoverName: handoverTouserData != null ? handoverTouserData['NAME'] : 'Not Found',
+                                                            handoverID: data['handover-to-crew'],
+                                                          ).then((_) {
+                                                            Navigator.pop(context);
+                                                          }).catchError((error) {
+                                                            print('Error generating PDF: $error');
+                                                            Navigator.pop(context);
+                                                          });
+                                                          //generateLogPdfDevice1();
+                                                        },
+                                                        style: ElevatedButton.styleFrom(
+                                                          backgroundColor: TsOneColor.greenColor,
+                                                          shape: RoundedRectangleBorder(
+                                                            borderRadius: BorderRadius.circular(4.0),
+                                                          ),
                                                         ),
-                                                      ),
-                                                      child:
-                                                      Padding(
-                                                        padding: EdgeInsets.all(15),
-                                                        child: Text(
-                                                          'Download History',
-                                                          style: TextStyle(color: Colors.white),
-                                                        ),
-                                                      )
+                                                        child:
+                                                        Padding(
+                                                          padding: EdgeInsets.all(15),
+                                                          child: Text(
+                                                            'Download History',
+                                                            style: TextStyle(color: Colors.white),
+                                                          ),
+                                                        )
                                                     ),
                                                   ),
                                                 ],
