@@ -16,7 +16,7 @@ class ListPilotcptsccView extends GetView<ListPilotcptsccController> {
     return Scaffold(
       appBar: AppBar(
         title: const RedTitleText(
-          text: 'PILOT / INSTRUCTOR',
+          text: 'PILOT LIST',
         ),
         backgroundColor: Colors.white,
         elevation: 0,
@@ -26,42 +26,43 @@ class ListPilotcptsccView extends GetView<ListPilotcptsccController> {
           padding: const EdgeInsets.all(20),
           child: Column(
             children: [
-              Row(
-                children: [
-                  DropdownButton<FilterType>(
-                    value: controller.filterType,
-                    onChanged: (FilterType? newValue) {
-                      if (newValue != null) {
-                        controller.setFilterType(newValue);
-                      }
-                    },
-                    items: FilterType.values.map((FilterType type) {
-                      String label;
-                      switch (type) {
-                        case FilterType.none:
-                          label = 'All';
-                          break;
-                        case FilterType.instructor:
-                          label = 'Instructors';
-                          break;
-                        case FilterType.pilot:
-                          label = 'Pilots';
-                          break;
-                      }
-
-                      return DropdownMenuItem<FilterType>(
-                        value: type,
-                        child: Text(
-                          label,
-                          style: TextStyle(
-                            color: Colors.black, // Text color
-                          ),
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                ],
-              ),
+              //FILTER DROPDOWN
+              // Row(
+              //   children: [
+              //     DropdownButton<FilterType>(
+              //       value: controller.filterType,
+              //       onChanged: (FilterType? newValue) {
+              //         if (newValue != null) {
+              //           controller.setFilterType(newValue);
+              //         }
+              //       },
+              //       items: FilterType.values.map((FilterType type) {
+              //         String label;
+              //         switch (type) {
+              //           case FilterType.none:
+              //             label = 'All';
+              //             break;
+              //           case FilterType.instructor:
+              //             label = 'Instructors';
+              //             break;
+              //           case FilterType.pilot:
+              //             label = 'Pilots';
+              //             break;
+              //         }
+              //
+              //         return DropdownMenuItem<FilterType>(
+              //           value: type,
+              //           child: Text(
+              //             label,
+              //             style: TextStyle(
+              //               color: Colors.black, // Text color
+              //             ),
+              //           ),
+              //         );
+              //       }).toList(),
+              //     ),
+              //   ],
+              // ),
 
               SizedBox(height: 10,),
 
