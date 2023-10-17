@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 import 'package:get/get.dart';
 import 'package:ts_one/presentation/shared_components/TitleText.dart';
@@ -29,19 +30,20 @@ class PilottraininghistorydetailccView
           child: Center(
             child: Column(
               children: [
-                Text(
-                  "Congratulations!",
-                  style: tsOneTextTheme.headlineLarge,
-                ),
-                Text(
-                  "Congratulations for passing the training!",
-                  style: tsOneTextTheme.labelSmall,
-                ),
-                SizedBox(
-                  height: 30,
-                ),
+                controller.isTrainee.value ?
                 Row(
                   children: [
+                    Text(
+                      "Congratulations!",
+                      style: tsOneTextTheme.headlineLarge,
+                    ),
+                    Text(
+                      "Congratulations for passing the training!",
+                      style: tsOneTextTheme.labelSmall,
+                    ),
+                    SizedBox(
+                      height: 30,
+                    ),
                     Expanded(
                       child: ElevatedButton(
                           onPressed: () {},
@@ -59,7 +61,7 @@ class PilottraininghistorydetailccView
                           ),
                           child: Text("Download Certificate")),
                     ),
-                    controller.isTrainee.value ?
+
                     Expanded(
                       child: ElevatedButton(
                           onPressed: () {
@@ -78,9 +80,10 @@ class PilottraininghistorydetailccView
                             ),
                           ),
                           child: Text("Give Feedback")),
-                    )  : SizedBox(),
+                    ),
                   ],
-                ),
+                ) : SizedBox(),
+
                 SizedBox(
                   height: 20,
                 ),
@@ -222,6 +225,7 @@ class PilottraininghistorydetailccView
                 ),
 
                 //FEEDBACK FROM TRAINER
+                controller.isCPTS.value ?
                 Container(
                   child: FutureBuilder<List<Map<String, dynamic>>>(
                     future: controller.getCombinedAttendance(),
@@ -243,7 +247,7 @@ class PilottraininghistorydetailccView
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Feedback from Trainer',
+                            'Feedback from Instructor',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 15,
@@ -257,20 +261,20 @@ class PilottraininghistorydetailccView
                             children: [
                               Container(
                                 margin: EdgeInsets.only(
-                                    right: 16), // Adjust the margin as needed
+                                    right: 16),
                                 child: CircleAvatar(
                                   radius: 20,
                                   backgroundColor: Colors.black26,
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(100),
                                     child: listAttendance[0]["PHOTOURL"] == null
-                                        ? Image.asset(
-                                            "assets/images/placeholder_person.png",
-                                            fit: BoxFit.cover,
+                                        ? Image.network(
+                                         "${listAttendance[0]["PHOTOURL"]}",
+                                          fit: BoxFit.cover,
                                           )
-                                        : Image.network(
-                                            "${listAttendance[0]["PHOTOURL"]}",
-                                            fit: BoxFit.cover,
+                                        : Image.asset(
+                                          "assets/images/placeholder_person.png",
+                                          fit: BoxFit.cover,
                                           ),
                                   ),
                                 ),
@@ -279,7 +283,7 @@ class PilottraininghistorydetailccView
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    listAttendance[0]["trainer-name"],
+                                    listAttendance[0]["trainer-name"] ?? "N/A",
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                     maxLines: 1,
@@ -302,94 +306,110 @@ class PilottraininghistorydetailccView
                       );
                     },
                   ),
-                ),
+                ) : SizedBox(),
 
                 SizedBox(
                   height: 20,
                 ),
 
                 //FEEDBACK FROM TRAINEE
-                Container(
-                  child: FutureBuilder<List<Map<String, dynamic>>>(
-                    future: controller.getCombinedAttendance(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return LoadingScreen(); // Placeholder while loading
-                      }
-
-                      if (snapshot.hasError) {
-                        return ErrorScreen();
-                      }
-
-                      var listAttendance = snapshot.data!;
-                      if (listAttendance.isEmpty) {
-                        return EmptyScreen();
-                      }
-
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Feedback from Trainee',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                margin: EdgeInsets.only(
-                                    right: 16), // Adjust the margin as needed
-                                child: CircleAvatar(
-                                  radius: 20,
-                                  backgroundColor: Colors.black26,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(100),
-                                    child: listAttendance[0]["PHOTOURL"] == null
-                                        ? Image.asset(
-                                      "assets/images/placeholder_person.png",
-                                      fit: BoxFit.cover,
-                                    )
-                                        : Image.network(
-                                      "${listAttendance[0]["PHOTOURL"]}",
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    listAttendance[0]["trainee-name"],
-                                    style:
-                                    TextStyle(fontWeight: FontWeight.bold),
-                                    maxLines: 1,
-                                  ),
-                                  Container(
-                                    constraints: BoxConstraints(
-                                      maxWidth:
-                                      250, // Adjust the width as needed
-                                    ),
-                                    child: Text(
-                                      listAttendance[0]["feedback-from-trainee'"] ?? "N/A",
-                                      textAlign: TextAlign.justify,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
-                      );
-                    },
-                  ),
-                ),
+                // controller.isCPTS.value ?
+                // Container(
+                //   child: FutureBuilder<List<Map<String, dynamic>>>(
+                //     future: controller.getCombinedAttendance(),
+                //     builder: (context, snapshot) {
+                //       if (snapshot.connectionState == ConnectionState.waiting) {
+                //         return LoadingScreen(); // Placeholder while loading
+                //       }
+                //
+                //       if (snapshot.hasError) {
+                //         return ErrorScreen();
+                //       }
+                //
+                //       var listAttendance = snapshot.data!;
+                //       if (listAttendance.isEmpty) {
+                //         return EmptyScreen();
+                //       }
+                //
+                //       return Column(
+                //         crossAxisAlignment: CrossAxisAlignment.start,
+                //         children: [
+                //           Text(
+                //             'Feedback from Trainee',
+                //             style: TextStyle(
+                //               fontWeight: FontWeight.bold,
+                //               fontSize: 15,
+                //             ),
+                //           ),
+                //           SizedBox(
+                //             height: 15,
+                //           ),
+                //           Row(
+                //             crossAxisAlignment: CrossAxisAlignment.start,
+                //             children: [
+                //               Container(
+                //                 margin: EdgeInsets.only(
+                //                     right: 16),
+                //                 child: CircleAvatar(
+                //                   radius: 20,
+                //                   backgroundColor: Colors.black26,
+                //                   child: ClipRRect(
+                //                     borderRadius: BorderRadius.circular(100),
+                //                     child: listAttendance[0]["PHOTOURL"] == null
+                //                         ? Image.asset(
+                //                       "assets/images/placeholder_person.png",
+                //                       fit: BoxFit.cover,
+                //                     )
+                //                         : Image.network(
+                //                       "${listAttendance[0]["PHOTOURL"]}",
+                //                       fit: BoxFit.cover,
+                //                     ),
+                //                   ),
+                //                 ),
+                //               ),
+                //               Column(
+                //                 crossAxisAlignment: CrossAxisAlignment.start,
+                //                 children: [
+                //                   Text(
+                //                     listAttendance[0]["trainee-name"],
+                //                     style: TextStyle(fontWeight: FontWeight.bold),
+                //                     maxLines: 1,
+                //                   ),
+                //                   RatingBar.builder(
+                //                     initialRating: listAttendance[0]["rating"].toDouble(),
+                //                     minRating: 1,
+                //                     direction: Axis.horizontal,
+                //                     allowHalfRating: false,
+                //                     itemCount: 5,
+                //                     itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
+                //                     itemSize: 20.0,
+                //                     itemBuilder: (context, _) => Icon(
+                //                       Icons.star,
+                //                       color: Colors.amber,
+                //                     ),
+                //                     onRatingUpdate: (rating) {
+                //                       print(rating);
+                //                     },
+                //                   ),
+                //                   Container(
+                //                     constraints: BoxConstraints(
+                //                       maxWidth: 250,
+                //                     ),
+                //                     child: Text(
+                //                       listAttendance[0]["feedback-from-trainee"] ?? "N/A",
+                //                       textAlign: TextAlign.justify,
+                //                     ),
+                //                   ),
+                //                 ],
+                //               ),
+                //             ],
+                //           ),
+                //         ],
+                //       )
+                //       ;
+                //     },
+                //   ),
+                // ) : SizedBox(),
               ],
             ),
           ),
