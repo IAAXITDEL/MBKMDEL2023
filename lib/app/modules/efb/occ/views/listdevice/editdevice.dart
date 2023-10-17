@@ -266,7 +266,7 @@ class _EditDevice extends State<EditDevice> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+        backgroundColor: Color.fromARGB(255, 255, 255, 255),
         title: Text(
           'Edit Device',
           style: tsOneTextTheme.headlineLarge,

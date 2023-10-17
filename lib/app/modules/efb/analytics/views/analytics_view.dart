@@ -21,28 +21,28 @@ String selectedHub = 'ALL';
 class AnalyticsView extends GetView<AnalyticsController> {
   const AnalyticsView({Key? key}) : super(key: key);
 
-  Future<Map<String, int>> countDevicesHub() async {
-    final firestore = FirebaseFirestore.instance;
-    final QuerySnapshot querySnapshot =
-        await firestore.collection('Device').get();
+  // Future<Map<String, int>> countDevicesHub() async {
+  //   final firestore = FirebaseFirestore.instance;
+  //   final QuerySnapshot querySnapshot =
+  //       await firestore.collection('Device').get();
 
-    final Map<String, int> deviceCountByHub = {
-      'CGK': 0,
-      // 'KNO': 0,
-      'DPS': 0,
-      'SUB': 0,
-    };
+  //   final Map<String, int> deviceCountByHub = {
+  //     'CGK': 0,
+  //     'KNO': 0,
+  //     'DPS': 0,
+  //     'SUB': 0,
+  //   };
 
-    querySnapshot.docs.forEach((doc) {
-      final hub = doc['hub'] as String;
+  //   querySnapshot.docs.forEach((doc) {
+  //     final hub = doc['hub'] as String;
 
-      if (deviceCountByHub.containsKey(hub)) {
-        deviceCountByHub[hub] = (deviceCountByHub[hub] ?? 0) + 1;
-      }
-    });
+  //     if (deviceCountByHub.containsKey(hub)) {
+  //       deviceCountByHub[hub] = (deviceCountByHub[hub] ?? 0) + 1;
+  //     }
+  //   });
 
-    return deviceCountByHub;
-  }
+  //   return deviceCountByHub;
+  // }
 
   Future<void> exportToExcel(List<Map<String, dynamic>> data) async {
     final excel = Excel.createExcel();
@@ -188,7 +188,7 @@ class AnalyticsView extends GetView<AnalyticsController> {
             children: [
               RedTitleText(text: "EFB Handover Monthly Report"),
               AnalyticsHub(),
-              RedTitleText(text: "Device Distribution"),
+              // RedTitleText(text: "Device Distribution"),
               // Pass the deviceCounts data here
             ],
           ),
@@ -220,7 +220,7 @@ class _AnalyticsHubState extends State<AnalyticsHub>
       context: context,
       initialDate: selectedStartDate ?? DateTime.now(),
       firstDate: DateTime(2023),
-      lastDate: DateTime(2024),
+      lastDate: DateTime(2023),
     );
     if (pickedStartDate != null && pickedStartDate != selectedStartDate) {
       setState(() {
@@ -234,7 +234,7 @@ class _AnalyticsHubState extends State<AnalyticsHub>
       context: context,
       initialDate: selectedEndDate ?? DateTime.now(),
       firstDate: DateTime(2023),
-      lastDate: DateTime(2024),
+      lastDate: DateTime(2023),
     );
     if (pickedEndDate != null && pickedEndDate != selectedEndDate) {
       setState(() {
@@ -347,7 +347,9 @@ class _AnalyticsHubState extends State<AnalyticsHub>
                 ),
                 contentPadding:
                     EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                labelStyle: TextStyle(fontSize: 12, color: Colors.black),
+                labelStyle: TextStyle(
+                    fontSize: 12,
+                    color: const Color.fromARGB(255, 183, 99, 99)),
               ),
               child: DropdownButton<String>(
                 value: selectedHub,
@@ -373,14 +375,67 @@ class _AnalyticsHubState extends State<AnalyticsHub>
           countDevicesInUse('CGK'),
           percentageDevicesInUse('CGK'),
           percentageDevices23InUse('CGK'),
+          SizedBox(height: 25),
+          Padding(
+            padding: EdgeInsets.only(bottom: 8.0),
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  child: Divider(
+                    color: Colors.grey,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Text(
+                    'Device Distribution',
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                ),
+                Expanded(
+                  child: Divider(
+                    color: Colors.grey,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
           Container(
-            height: MediaQuery.of(context).size.height * 0.6,
+            height: MediaQuery.of(context).size.height * 0.4,
             child: ListView(
               children: [
                 // Widgets for the content of the single "tab"
                 SizedBox(height: 10),
                 PieChartWidget(totalDeviceCounts),
                 SizedBox(height: 10),
+              ],
+            ),
+          ),
+          SizedBox(height: 25),
+          Padding(
+            padding: EdgeInsets.only(bottom: 8.0),
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  child: Divider(
+                    color: Colors.grey,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Text(
+                    'Acknowledgment',
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                ),
+                Expanded(
+                  child: Divider(
+                    color: Colors.grey,
+                  ),
+                ),
               ],
             ),
           ),
@@ -607,7 +662,7 @@ class _AnalyticsHubState extends State<AnalyticsHub>
                     flex: 10,
                     child: Column(
                       children: [
-                        Text("Device 1 & 2", style: tsOneTextTheme.bodySmall),
+                        Text("Device 2 & 3", style: tsOneTextTheme.bodySmall),
                         FutureBuilder(
                           future: Future.wait([
                             calculatePercentageDeviceName2and3(),
@@ -652,7 +707,7 @@ class _AnalyticsHubState extends State<AnalyticsHub>
                     flex: 10,
                     child: Column(
                       children: [
-                        Text("Device 1 & 2", style: tsOneTextTheme.bodySmall),
+                        Text("Device 2 & 3", style: tsOneTextTheme.bodySmall),
                         FutureBuilder(
                           future: Future.wait([
                             calculatePercentageDeviceName2and3Done(),
@@ -708,11 +763,11 @@ class _AnalyticsHubState extends State<AnalyticsHub>
   Future<Map<String, int>> countDevicesHub(String hub) async {
     final firestore = FirebaseFirestore.instance;
     final QuerySnapshot querySnapshot =
-        await firestore.collection('Device').get();
+        await firestore.collection('pilot-device-1').get();
 
     final Map<String, int> deviceCountByHub = {
       'CGK': 0,
-      // 'KNO': 0,
+      'KNO': 0,
       'DPS': 0,
       'SUB': 0,
     };
@@ -1029,6 +1084,7 @@ class _AnalyticsHubState extends State<AnalyticsHub>
     });
   }
 }
+// Pie Chart Acknowledgment
 
 // Pie Chart
 class PieChartWidget extends StatefulWidget {

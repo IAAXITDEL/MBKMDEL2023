@@ -113,9 +113,6 @@ class _AddDevice extends State<AddDevice> {
         if (value == null || value.trim().isEmpty) {
           return 'Please Enter Lido Version';
         }
-        // if (!_versionRegex.hasMatch(value)) {
-        //   return 'Invalid format. Use numbers and optional decimal point (e.g., 1.0)';
-        // }
         return null;
       },
       decoration: InputDecoration(
@@ -264,7 +261,7 @@ class _AddDevice extends State<AddDevice> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+        backgroundColor: Color.fromARGB(255, 255, 255, 255),
         title: Text(
           'Add Device',
           style: tsOneTextTheme.headlineLarge,
