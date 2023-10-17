@@ -135,7 +135,7 @@ class HomeFOView extends GetView<HomeFOController> {
                               height: 15.0,
                             ),
                             Text(
-                              "There is no data waiting for confirmation.",
+                              "There is no data that needs to wait",
                             ),
                             SizedBox(
                               height: 20.0,
@@ -149,7 +149,7 @@ class HomeFOView extends GetView<HomeFOController> {
                               height: 15.0,
                             ),
                             Text(
-                              "There is no data that needs to be confirmed.",
+                              "There is no data that needs confirmation",
                             ),
                             SizedBox(
                               height: 20.0,
@@ -368,7 +368,7 @@ class HomeFOView extends GetView<HomeFOController> {
                               height: 15.0,
                             ),
                             Text(
-                              "There is no data that needs to be confirmed.",
+                              "There is no data that needs confirmation",
                             ),
                             SizedBox(
                               height: 20.0,
@@ -381,7 +381,7 @@ class HomeFOView extends GetView<HomeFOController> {
                               height: 15.0,
                             ),
                             Text(
-                              "There are no devices in use.",
+                              "There is no data in use",
                             ),
                             SizedBox(
                               height: 20.0,
@@ -398,7 +398,7 @@ class HomeFOView extends GetView<HomeFOController> {
                               height: 15.0,
                             ),
                             Text(
-                              "There is no data waiting for confirmation.",
+                              "There is no data that needs confirmation",
                             ),
                             SizedBox(
                               height: 20.0,
@@ -510,7 +510,7 @@ class HomeFOView extends GetView<HomeFOController> {
                               height: 15.0,
                             ),
                             Text(
-                              "There are no devices in use.",
+                              "There is no data in use",
                             ),
                             SizedBox(
                               height: 20.0,
@@ -520,7 +520,7 @@ class HomeFOView extends GetView<HomeFOController> {
                           if (needConfirmationOccDocs.isNotEmpty) ...[
                             Align(
                               alignment: Alignment.centerLeft,
-                              child: BlackTitleText(text: "Wait for OCC To Confirm!"),
+                              child: BlackTitleText(text: "Waiting OCC To Confirm!"),
                             ),
                             SizedBox(
                               height: 10,
@@ -626,7 +626,7 @@ class HomeFOView extends GetView<HomeFOController> {
                               height: 15.0,
                             ),
                             Text(
-                              "There is no data that needs to be confirmed.",
+                              "There is no data that needs confirmation",
                             ),
                             SizedBox(
                               height: 20.0,
@@ -638,7 +638,7 @@ class HomeFOView extends GetView<HomeFOController> {
                               height: 15.0,
                             ),
                             Text(
-                              "There are no devices in use.",
+                              "There is no device you are using, ",
                             ),
                           ],
                         ],
@@ -671,7 +671,7 @@ class HomeFOView extends GetView<HomeFOController> {
                                       if (inConfirmationPilotDocs.isNotEmpty) ...[
                                         Align(
                                           alignment: Alignment.centerLeft,
-                                          child: BlackTitleText(text: "Need Your Confirmation!"),
+                                          child: BlackTitleText(text: "Confirm From Other Crew"),
                                         ),
                                         SizedBox(
                                           height: 10,
@@ -785,7 +785,7 @@ class HomeFOView extends GetView<HomeFOController> {
                                           height: 15.0,
                                         ),
                                         Text(
-                                          "There is no data waiting for confirmation.",
+                                          "There is no data that need to confirm",
                                         ),
                                         SizedBox(
                                           height: 20.0,
@@ -797,7 +797,7 @@ class HomeFOView extends GetView<HomeFOController> {
                                           height: 15.0,
                                         ),
                                         Text(
-                                          "There are no devices in use.",
+                                          "There is data In Use ",
                                         ),
                                       ],
 
@@ -845,13 +845,13 @@ class HomeFOView extends GetView<HomeFOController> {
                                       ),
                                       Align(
                                         alignment: Alignment.centerLeft,
-                                        child: BlackTitleText(text: "Waiting For Confirmation"),
+                                        child: BlackTitleText(text: "Waiting Confirmation"),
                                       ),
                                       SizedBox(
                                         height: 15.0,
                                       ),
                                       Text(
-                                        "There is no data waiting for confirmation.",
+                                        "There is no data that need to confirm",
                                       ),
                                       SizedBox(
                                         height: 20.0,
@@ -864,7 +864,7 @@ class HomeFOView extends GetView<HomeFOController> {
                                         height: 15.0,
                                       ),
                                       Text(
-                                        "There is no data that needs to be confirmed.",
+                                        "There is no data that wait for confirmation",
                                       ),
                                       SizedBox(
                                         height: 20.0,
@@ -876,7 +876,7 @@ class HomeFOView extends GetView<HomeFOController> {
                                         height: 15.0,
                                       ),
                                       Text(
-                                        "There are no devices in use.",
+                                        "There is data In Use ",
                                       ),
                                     ],
                                   );

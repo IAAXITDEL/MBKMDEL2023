@@ -11,7 +11,6 @@ import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
 import 'package:path/path.dart' as Path;
-import 'package:image/image.dart' as img;
 
 import '../../../../../presentation/theme.dart';
 import '../../../../routes/app_pages.dart';
@@ -26,42 +25,22 @@ class ConfirmReturnBackPilotView extends GetView {
 
   GlobalKey<SfSignaturePadState> signatureKey = GlobalKey();
 
-
   Future<void> _uploadImageAndShowDialog(XFile pickedFile, BuildContext context) async {
-    final int targetFileSizeInBytes = 2 * 1024 * 1024; // Target ukuran file 2MB
-
-    // Baca file gambar
-    final Uint8List imageData = await pickedFile.readAsBytes();
-
-    double compressionRatio = 1.0;
-
-    // Reduce the image dimensions iteratively until the file size is below the target
-    while (imageData.length > targetFileSizeInBytes && compressionRatio > 0) {
-      final img.Image? originalImage = img.decodeImage(imageData);
-      final img.Image compressedImage = img.copyResize(originalImage!,
-          width: (originalImage.width * compressionRatio).toInt(),
-          height: (originalImage.height * compressionRatio).toInt());
-
-      final compressedImageData = img.encodePng(compressedImage);
-
-      compressionRatio -= 0.1;
-
-      // Update imageData for the next iteration
-      imageData.clear();
-      imageData.addAll(compressedImageData);
-    }
+    final ByteData byteData = await pickedFile
+        .readAsBytes()
+        .then((value) => ByteData.sublistView(Uint8List.fromList(value)));
 
     final Reference storageReference =
     FirebaseStorage.instance.ref().child('camera_images/${Path.basename(dataId)}.png');
 
     try {
-      // Upload gambar yang sudah terkompresi
-      await storageReference.putData(imageData);
+      // Upload the image
+      await storageReference.putData(byteData.buffer.asUint8List());
 
-      // Dapatkan URL unduhan setelah proses unggah selesai
+      // Get the download URL after upload completes
       String cameraImageUrl = await storageReference.getDownloadURL();
 
-      // Tampilkan dialog konfirmasi setelah mendapatkan URL gambar
+      // Show confirmation dialog only after getting the image URL
       showDialog(
         context: context,
         barrierDismissible: false,
@@ -79,15 +58,15 @@ class ConfirmReturnBackPilotView extends GetView {
               TextButton(
                 child: Text('Cancel'),
                 onPressed: () {
-                  Navigator.of(context).pop(); // Tutup dialog
+                  Navigator.of(context).pop(); // Close the dialog
                 },
               ),
               TextButton(
                 child: Text('Submit'),
                 onPressed: () {
-                  Navigator.of(context).pop(); // Tutup dialog konfirmasi
+                  Navigator.of(context).pop(); // Close the confirmation dialog
                   confirmInUse(context, cameraImageUrl);
-                  _showQuickAlert(context); // Panggil fungsi untuk mengirimkan data
+                  _showQuickAlert(context); // Call the function to submit data
                 },
               ),
             ],
@@ -98,6 +77,7 @@ class ConfirmReturnBackPilotView extends GetView {
       print('Error uploading image: $error');
     }
   }
+
   Future<void> _showQuickAlert(BuildContext context) async {
     await QuickAlert.show(
       context: context,

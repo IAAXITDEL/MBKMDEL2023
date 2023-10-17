@@ -46,6 +46,10 @@ class HomeOCCView extends GetView<HomeOCCController> {
                               style: tsOneTextTheme.headlineLarge,
                             ),
                             Spacer(),
+                            Icon(
+                              Icons.notifications_active_outlined,
+                              color: tsOneColorScheme.onSecondary,
+                            )
                           ],
                         ),
                         Align(
@@ -109,20 +113,20 @@ class HomeOCCView extends GetView<HomeOCCController> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                                  child: FutureBuilder<String?>(
-                                    future: _getUserHub(),
-                                    builder: (context, snapshot) {
-                                      if (snapshot.connectionState == ConnectionState.waiting) {
-                                        return CircularProgressIndicator();
-                                      } else if (snapshot.hasError) {
-                                        return Text('Error: ${snapshot.error}');
-                                      } else {
-                                        String? userHub = snapshot.data;
-                                        return BlackTitleText(text: "${userHub ?? 'Data tidak tersedia'}");
-                                      }
-                                    },
-                                  ),),
+                                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                                    child: FutureBuilder<String?>(
+                                      future: _getUserHub(),
+                                      builder: (context, snapshot) {
+                                        if (snapshot.connectionState == ConnectionState.waiting) {
+                                          return CircularProgressIndicator();
+                                        } else if (snapshot.hasError) {
+                                          return Text('Error: ${snapshot.error}');
+                                        } else {
+                                          String? userHub = snapshot.data;
+                                          return BlackTitleText(text: "${userHub ?? 'Data tidak tersedia'}");
+                                        }
+                                      },
+                                    ),),
                               ],
                             ),
                             Container(
@@ -136,56 +140,56 @@ class HomeOCCView extends GetView<HomeOCCController> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  // StreamBuilder<QuerySnapshot>(
-                                  //   stream: FirebaseFirestore.instance
-                                  //       .collection("pilot-device-1")
-                                  //       .where("statusDevice", isEqualTo: "in-use-pilot")
-                                  //       .where("field_hub", isEqualTo: userHub)
-                                  //       .snapshots(),
-                                  //   builder: (context, snapshot) {
-                                  //     if (snapshot.connectionState == ConnectionState.waiting) {
-                                  //       return CircularProgressIndicator();
-                                  //     }
-                                  //
-                                  //     if (snapshot.hasError) {
-                                  //       return Text("Error: ${snapshot.error}");
-                                  //     }
-                                  //
-                                  //     final count = snapshot.data?.docs.length ?? 0;
-                                  //     return Padding(
-                                  //       padding: const EdgeInsets.symmetric(horizontal: 10),
-                                  //       child: Text(
-                                  //         'Used Device ' + ': $count',
-                                  //         style: tsOneTextTheme.bodySmall,
-                                  //       ),
-                                  //     );
-                                  //   },
-                                  // ),
-                                  //
-                                  // StreamBuilder<QuerySnapshot>(
-                                  //   stream: FirebaseFirestore.instance
-                                  //       .collection("pilot-device-1")
-                                  //       .where("statusDevice", isEqualTo: "in-use-pilot")
-                                  //       .where("field_hub2", isEqualTo: userHub) // Using the logged-in userHub
-                                  //       .snapshots(),
-                                  //   builder: (context, snapshot) {
-                                  //     if (snapshot.connectionState == ConnectionState.waiting) {
-                                  //       return CircularProgressIndicator();
-                                  //     }
-                                  //
-                                  //     if (snapshot.hasError) {
-                                  //       return Text("Error: ${snapshot.error}");
-                                  //     }
-                                  //
-                                  //     final count = snapshot.data?.docs.length ?? 0;
-                                  //     return Padding(
-                                  //       padding: const EdgeInsets.symmetric(horizontal: 10),
-                                  //       child: Text('Used Device 2' + ': $count', style: tsOneTextTheme.bodySmall,),
-                                  //     );
-                                  //   },
-                                  // ),
+                                  StreamBuilder<QuerySnapshot>(
+                                    stream: FirebaseFirestore.instance
+                                        .collection("pilot-device-1")
+                                        .where("statusDevice", isEqualTo: "in-use-pilot")
+                                        .where("field_hub", isEqualTo: userHub)
+                                        .snapshots(),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState == ConnectionState.waiting) {
+                                        return CircularProgressIndicator();
+                                      }
+
+                                      if (snapshot.hasError) {
+                                        return Text("Error: ${snapshot.error}");
+                                      }
+
+                                      final count = snapshot.data?.docs.length ?? 0;
+                                      return Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                                        child: Text(
+                                          'Used Device ' + ': $count',
+                                          style: tsOneTextTheme.bodySmall,
+                                        ),
+                                      );
+                                    },
+                                  ),
 
                                   StreamBuilder<QuerySnapshot>(
+                                    stream: FirebaseFirestore.instance
+                                        .collection("pilot-device-1")
+                                        .where("statusDevice", isEqualTo: "in-use-pilot")
+                                        .where("field_hub2", isEqualTo: userHub) // Using the logged-in userHub
+                                        .snapshots(),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState == ConnectionState.waiting) {
+                                        return CircularProgressIndicator();
+                                      }
+
+                                      if (snapshot.hasError) {
+                                        return Text("Error: ${snapshot.error}");
+                                      }
+
+                                      final count = snapshot.data?.docs.length ?? 0;
+                                      return Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                                        child: Text('Used Device 2' + ': $count', style: tsOneTextTheme.bodySmall,),
+                                      );
+                                    },
+                                  ),
+
+                                 StreamBuilder<QuerySnapshot>(
                                     stream: FirebaseFirestore.instance
                                         .collection("pilot-device-1")
                                         .where("statusDevice", isEqualTo: "in-use-pilot")
@@ -201,12 +205,39 @@ class HomeOCCView extends GetView<HomeOCCController> {
                                       }
                                       final inUseCount = snapshot.data?.docs.length ?? 0;
 
-                                      return StreamBuilder<QuerySnapshot>(
+                                       return StreamBuilder<QuerySnapshot>(
                                         stream: FirebaseFirestore.instance
                                             .collection("pilot-device-1")
                                             .where("statusDevice", isEqualTo: "in-use-pilot")
                                             .where("field_hub2", isEqualTo: userHub) // Using the logged-in userHub
                                             .snapshots(),
+                                        builder: (context, snapshot) {
+                                        if (snapshot.connectionState == ConnectionState.waiting) {
+                                        return CircularProgressIndicator();
+                                        }
+
+                                        if (snapshot.hasError) {
+                                        return Text("Error: ${snapshot.error}");
+                                        }
+                                        final inUseCount2 = snapshot.data?.docs.length ?? 0;
+
+
+                                      return StreamBuilder<QuerySnapshot>(
+                                        stream: FirebaseFirestore.instance
+                                            .collection("Device")
+                                            .where("hub", isEqualTo: userHub) // Using the logged-in userHub
+                                            .snapshots(),
+                                        builder: (context, snapshot) {
+                                        if (snapshot.connectionState == ConnectionState.waiting) {
+                                        return CircularProgressIndicator();
+                                        }
+
+                                        if (snapshot.hasError) {
+                                        return Text("Error: ${snapshot.error}");
+                                        }
+
+                                      return StreamBuilder<QuerySnapshot>(
+                                        stream: FirebaseFirestore.instance.collection("Device").where("hub", isEqualTo: userHub).snapshots(),
                                         builder: (context, snapshot) {
                                           if (snapshot.connectionState == ConnectionState.waiting) {
                                             return CircularProgressIndicator();
@@ -215,63 +246,23 @@ class HomeOCCView extends GetView<HomeOCCController> {
                                           if (snapshot.hasError) {
                                             return Text("Error: ${snapshot.error}");
                                           }
-                                          final inUseCount2 = snapshot.data?.docs.length ?? 0;
 
+                                          final totalCount = snapshot.data?.docs.length ?? 0;
+                                          final availableCount = totalCount - inUseCount;
+                                          final deviceUsed = inUseCount + inUseCount2;
 
-                                          return StreamBuilder<QuerySnapshot>(
-                                            stream: FirebaseFirestore.instance
-                                                .collection("Device")
-                                                .where("hub", isEqualTo: userHub) // Using the logged-in userHub
-                                                .snapshots(),
-                                            builder: (context, snapshot) {
-                                              if (snapshot.connectionState == ConnectionState.waiting) {
-                                                return CircularProgressIndicator();
-                                              }
-
-                                              if (snapshot.hasError) {
-                                                return Text("Error: ${snapshot.error}");
-                                              }
-
-                                              return StreamBuilder<QuerySnapshot>(
-                                                stream: FirebaseFirestore.instance.collection("Device").where("hub", isEqualTo: userHub).snapshots(),
-                                                builder: (context, snapshot) {
-                                                  if (snapshot.connectionState == ConnectionState.waiting) {
-                                                    return CircularProgressIndicator();
-                                                  }
-
-                                                  if (snapshot.hasError) {
-                                                    return Text("Error: ${snapshot.error}");
-                                                  }
-
-                                                  final totalCount = snapshot.data?.docs.length ?? 0;
-                                                  final availableCount = totalCount - inUseCount;
-                                                  final deviceUsed = inUseCount + inUseCount2;
-
-                                                  return Padding(
-                                                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                                                      child: Column(
-                                                        children: [
-                                                          Row(
-                                                            children: [
-                                                              Text('Available Devices: $availableCount', style: tsOneTextTheme.bodySmall,),
-                                                            ],
-                                                          ),
-                                                          Row(
-                                                            children: [
-                                                              Text('Device Used: $deviceUsed', style: tsOneTextTheme.bodySmall,),
-                                                            ],
-                                                          ),
-                                                        ],
-                                                      )
-                                                  );
-                                                },
-                                              );
-                                            },
+                                          return Padding(
+                                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                                            child: Text('Available Devices: $availableCount Device Used $deviceUsed', style: tsOneTextTheme.bodySmall,),
                                           );
                                         },
                                       );
+                                        },
+                                      );
                                     },
-                                  ),
+                                  );
+                                    },
+                                 ),
                                 ],
                               ),
                             ),
@@ -443,7 +434,7 @@ class FirebaseDataTab extends StatelessWidget {
                                       : AssetImage('assets/default_profile_image.png') as ImageProvider,
                                   radius: 25.0,
                                 ),
-                                SizedBox(width: 12.0),
+                                SizedBox(width: 17.0),
                                 Flexible(
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -451,13 +442,9 @@ class FirebaseDataTab extends StatelessWidget {
                                       Container(
                                         width: double.infinity,
                                         child: Text(
-                                          userName,
+                                          userRank + ' ' + userName,
                                           style: tsOneTextTheme.displaySmall,
                                         ),
-                                      ),
-                                      Text(
-                                        userRank,
-                                        style: tsOneTextTheme.labelSmall,
                                       ),
                                       if (!deviceName.contains('-'))
                                         Text(
@@ -478,11 +465,11 @@ class FirebaseDataTab extends StatelessWidget {
                                 ),
 
                                 if (statuses.contains("waiting-confirmation-1") || statuses.contains("need-confirmation-occ"))
-                                  const Icon(
-                                    Icons.chevron_right,
-                                    color: TsOneColor.onSecondary,
-                                    size: 30,
-                                  )
+                                const Icon(
+                                  Icons.chevron_right,
+                                  color: TsOneColor.onSecondary,
+                                  size: 30,
+                                )
                               ],
                             ),
                           ),

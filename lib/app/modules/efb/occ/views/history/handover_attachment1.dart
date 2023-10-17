@@ -13,7 +13,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:open_file/open_file.dart';
-import 'detail_history_device_view.dart';
+import '../../../occ/views/history/detail_history_device_view.dart';
 
 String _formatTimestamp(Timestamp? timestamp) {
   if (timestamp == null) return 'No Data';

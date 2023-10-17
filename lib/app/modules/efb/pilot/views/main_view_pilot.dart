@@ -132,7 +132,7 @@ class HomePilotView extends GetView<HomePilotController> {
                               height: 15.0,
                             ),
                             Text(
-                              "There is no data waiting for confirmation.",
+                              "There is no data that wait for confirmation",
                             ),
                             SizedBox(
                               height: 20.0,
@@ -145,7 +145,7 @@ class HomePilotView extends GetView<HomePilotController> {
                               height: 15.0,
                             ),
                             Text(
-                              "There is no data that needs to be confirmed.",
+                              "There is no data that needs confirmation",
                             ),
                             SizedBox(
                               height: 20.0,
@@ -349,7 +349,7 @@ class HomePilotView extends GetView<HomePilotController> {
                               height: 15.0,
                             ),
                             Text(
-                              "There is no data that needs to be confirmed.",
+                              "There is no data that needs confirmation",
                             ),
                             SizedBox(
                               height: 20.0,
@@ -362,7 +362,7 @@ class HomePilotView extends GetView<HomePilotController> {
                               height: 15.0,
                             ),
                             Text(
-                              "There are no devices in use.",
+                              "There is no data that In Use",
                             ),
                             SizedBox(
                               height: 20.0,
@@ -371,6 +371,19 @@ class HomePilotView extends GetView<HomePilotController> {
 
                           // Display 'waiting-confirmation-other-pilot' data
                           if (needConfirmationPilotDocs.isNotEmpty) ...[
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: BlackTitleText(text: "Waiting Confirmation"),
+                            ),
+                            SizedBox(
+                              height: 15.0,
+                            ),
+                            Text(
+                              "There is no data that wait for confirmation",
+                            ),
+                            SizedBox(
+                              height: 20.0,
+                            ),
                             Align(
                               alignment: Alignment.centerLeft,
                               child: BlackTitleText(text: "Waiting For Confirmation!"),
@@ -465,26 +478,13 @@ class HomePilotView extends GetView<HomePilotController> {
                             ),
                             Align(
                               alignment: Alignment.centerLeft,
-                              child: BlackTitleText(text: "Need Your Confirmation"),
-                            ),
-                            SizedBox(
-                              height: 15.0,
-                            ),
-                            Text(
-                              "There is no data that needs to be confirmed.",
-                            ),
-                            SizedBox(
-                              height: 20.0,
-                            ),
-                            Align(
-                              alignment: Alignment.centerLeft,
                               child: BlackTitleText(text: "In Use"),
                             ),
                             SizedBox(
                               height: 15.0,
                             ),
                             Text(
-                              "There are no devices in use.",
+                              "There is no data In Use",
                             ),
                             SizedBox(
                               height: 20.0,
@@ -595,7 +595,7 @@ class HomePilotView extends GetView<HomePilotController> {
                               height: 15.0,
                             ),
                             Text(
-                              "There is no data that needs to be confirmed.",
+                              "There is no data that needs confirmation",
                             ),
                             SizedBox(
                               height: 20.0,
@@ -608,7 +608,7 @@ class HomePilotView extends GetView<HomePilotController> {
                               height: 15.0,
                             ),
                             Text(
-                              "There are no devices in use.",
+                              "There is no data that In Use",
                             ),
                             SizedBox(
                               height: 20.0,
@@ -645,7 +645,7 @@ class HomePilotView extends GetView<HomePilotController> {
                                       if (inConfirmationPilotDocs.isNotEmpty) ...[
                                         Align(
                                           alignment: Alignment.centerLeft,
-                                          child: BlackTitleText(text: "Need Your Confirmation!"),
+                                          child: BlackTitleText(text: "Confirm From Other Crew"),
                                         ),
                                         SizedBox(
                                           height: 10,
@@ -752,7 +752,7 @@ class HomePilotView extends GetView<HomePilotController> {
                                           height: 15.0,
                                         ),
                                         Text(
-                                          "There is no data waiting for confirmation.",
+                                          "There is no data that need to confirm",
                                         ),
                                         SizedBox(
                                           height: 20.0,
@@ -764,7 +764,7 @@ class HomePilotView extends GetView<HomePilotController> {
                                           height: 15.0,
                                         ),
                                         Text(
-                                          "There are no devices in use.",
+                                          "There is data In Use ",
                                         ),
                                       ],
 
@@ -817,11 +817,8 @@ class HomePilotView extends GetView<HomePilotController> {
                                       SizedBox(
                                         height: 15.0,
                                       ),
-                                      Align(
-                                        alignment: Alignment.centerLeft,
-                                        child:  Text(
-                                          "There is no data waiting for confirmation.",
-                                        ),
+                                      Text(
+                                        "There is no data that need to confirm",
                                       ),
                                       SizedBox(
                                         height: 20.0,
@@ -833,11 +830,8 @@ class HomePilotView extends GetView<HomePilotController> {
                                       SizedBox(
                                         height: 15.0,
                                       ),
-                                      Align(
-                                        alignment: Alignment.centerLeft,
-                                        child:  Text(
-                                          "There is no data that needs to be confirmed.",
-                                        ),
+                                      Text(
+                                        "There is no data that wait for confirmation",
                                       ),
                                       SizedBox(
                                         height: 20.0,
@@ -848,11 +842,8 @@ class HomePilotView extends GetView<HomePilotController> {
                                       SizedBox(
                                         height: 15.0,
                                       ),
-                                      Align(
-                                          alignment: Alignment.centerLeft,
-                                          child:  Text(
-                                            "There are no devices in use.",
-                                          ),
+                                      Text(
+                                        "There is data In Use ",
                                       ),
                                     ],
                                   );

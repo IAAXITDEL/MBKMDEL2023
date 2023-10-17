@@ -68,7 +68,7 @@ class _EditDevice extends State<EditDevice> {
         return null;
       },
       decoration: const InputDecoration(
-        labelText: 'Ios Version',
+        labelText: 'IOS Version',
         contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         border: OutlineInputBorder(),
       ),
@@ -95,12 +95,12 @@ class _EditDevice extends State<EditDevice> {
       autofocus: false,
       validator: (value) {
         if (value == null || value.trim().isEmpty) {
-          return 'Please Enter Lido Version';
+          return 'Please Enter Lido mPilot Version';
         }
         return null;
       },
       decoration: const InputDecoration(
-        labelText: 'Lido Version',
+        labelText: 'Lido mPilot Version',
         contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         border: OutlineInputBorder(),
       ),
@@ -111,12 +111,12 @@ class _EditDevice extends State<EditDevice> {
       autofocus: false,
       validator: (value) {
         if (value == null || value.trim().isEmpty) {
-          return 'Please Enter Docu Version';
+          return 'Please Enter Docunet Version';
         }
         return null;
       },
       decoration: const InputDecoration(
-        labelText: 'Docu Version',
+        labelText: 'Docunet Version',
         contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         border: OutlineInputBorder(),
       ),
@@ -266,10 +266,14 @@ class _EditDevice extends State<EditDevice> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Color.fromARGB(255, 255, 255, 255),
         title: Text(
           'Edit Device',
-          style: tsOneTextTheme.headlineLarge,
+          style: TextStyle(
+            color: Colors.black, // Set text color to red
+            fontSize: 20.1,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         centerTitle: true,
       ),

@@ -147,6 +147,36 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
                 Center(
                   child: Text('Please select the user'),
                 ),
+              if (usersStream != null)
+                StreamBuilder<QuerySnapshot>(
+                  stream: usersStream,
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return CircularProgressIndicator();
+                    }
+
+                    final users = snapshot.data!.docs;
+
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: users.length,
+                      itemBuilder: (context, index) {
+                        final user = users[index];
+
+                        return ListTile(
+                          title: Text(user.id), // Display the document ID
+                          onTap: () {
+                            _idController.text = user.id;
+                            _fetchUserData(user.id);
+                            setState(() {
+                              usersStream = null;
+                            });
+                          },
+                        );
+                      },
+                    );
+                  },
+                ),
               SizedBox(height: 16.0),
               if (selectedUser != null)
                 Column(

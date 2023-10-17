@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../../../presentation/theme.dart';
-import 'handover_attachment23.dart';
+import '../../../occ/views/history/handover_attachment23.dart';
 
 class DetailHistoryDeviceFOView extends GetView {
   final String dataId;
