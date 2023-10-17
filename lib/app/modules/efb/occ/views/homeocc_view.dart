@@ -400,7 +400,7 @@ class FirebaseDataTab extends StatelessWidget {
 
                 // Build the widget with the user's name and profile photo
                 return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width,
                     child: Align(

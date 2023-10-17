@@ -70,7 +70,7 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: Text(
-          'Device Used',
+          'Device In Use',
           style: tsOneTextTheme.headlineLarge,
         ),
         centerTitle: true,
@@ -196,7 +196,7 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                                   ),
                                   Row(
                                     children: [
-                                      Expanded(flex: 5, child: Text("iOS Version")),
+                                      Expanded(flex: 5, child: Text("IOS Version")),
                                       Expanded(flex: 1, child: Text(":")),
                                       Expanded(flex: 5, child: Text(iosver)),
                                     ],
@@ -216,7 +216,7 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                                   ),
                                   Row(
                                     children: [
-                                      Expanded(flex: 5, child: Text("Docu Version")),
+                                      Expanded(flex: 5, child: Text("Docunet Version")),
                                       Expanded(flex: 1, child: Text(":")),
                                       Expanded(flex: 5, child: Text(docuversion)),
                                     ],
@@ -226,7 +226,7 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                                   ),
                                   Row(
                                     children: [
-                                      Expanded(flex: 5, child: Text("Lido Version")),
+                                      Expanded(flex: 5, child: Text("Lido mPilot Version")),
                                       Expanded(flex: 1, child: Text(":")),
                                       Expanded(flex: 5, child: Text(lidoversion)),
                                     ],
@@ -384,7 +384,7 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
             }
           },
           style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
             backgroundColor: TsOneColor.primary,
           ),
           child: SizedBox(

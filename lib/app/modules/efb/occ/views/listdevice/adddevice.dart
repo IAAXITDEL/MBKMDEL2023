@@ -108,7 +108,7 @@ class _AddDevice extends State<AddDevice> {
       autofocus: false,
       validator: (value) {
         if (value == null || value.trim().isEmpty) {
-          return 'Please Enter Lido Version';
+          return 'Please Enter Lido mPilot Version';
         }
         // if (!_versionRegex.hasMatch(value)) {
         //   return 'Invalid format. Use numbers and optional decimal point (e.g., 1.0)';
@@ -117,7 +117,7 @@ class _AddDevice extends State<AddDevice> {
       },
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        labelText: 'Lido Version',
+        labelText: 'Lido mPilot Version',
         labelStyle: tsOneTextTheme.labelMedium,
         border: OutlineInputBorder(),
       ),
@@ -131,7 +131,7 @@ class _AddDevice extends State<AddDevice> {
       autofocus: false,
       validator: (value) {
         if (value == null || value.trim().isEmpty) {
-          return 'Please Enter Docu Version';
+          return 'Please Enter Docunet Version';
         }
         // if (!_versionRegex.hasMatch(value)) {
         //   return 'Invalid format. Use numbers and optional decimal point (e.g., 1.0)';
@@ -140,7 +140,7 @@ class _AddDevice extends State<AddDevice> {
       },
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        labelText: 'Docu Version',
+        labelText: 'Docunet Version',
         labelStyle: tsOneTextTheme.labelMedium,
         border: OutlineInputBorder(),
       ),

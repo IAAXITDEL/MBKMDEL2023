@@ -22,19 +22,27 @@ class HomePilotView extends GetView<HomePilotController> {
 
     String getMonthText(int month) {
       const List<String> months = [
-        'January', 'February', 'March', 'April',
-        'May', 'June', 'July', 'August',
-        'September', 'October', 'November', 'Desember'
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'Desember'
       ];
-      return months[month - 1];  // Index 0-11 for Januari-Desember
+      return months[month - 1]; // Index 0-11 for Januari-Desember
     }
 
     String _formatTimestamp(Timestamp? timestamp) {
       if (timestamp == null) return 'No Data';
 
       DateTime dateTime = timestamp.toDate();
-      String formattedDateTime =
-          '${dateTime.day} ${getMonthText(dateTime.month)} ${dateTime.year}';
+      String formattedDateTime = '${dateTime.day} ${getMonthText(dateTime.month)} ${dateTime.year}';
       return formattedDateTime;
     }
 
@@ -76,13 +84,11 @@ class HomePilotView extends GetView<HomePilotController> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          Util.convertDateTimeDisplay(
-                              DateTime.now().toString(), "EEEE"),
+                          Util.convertDateTimeDisplay(DateTime.now().toString(), "EEEE"),
                           style: tsOneTextTheme.labelSmall,
                         ),
                         Text(
-                          Util.convertDateTimeDisplay(
-                              DateTime.now().toString(), "dd MMMM yyyy"),
+                          Util.convertDateTimeDisplay(DateTime.now().toString(), "dd MMMM yyyy"),
                           style: tsOneTextTheme.labelSmall,
                         ),
                       ],
@@ -103,27 +109,17 @@ class HomePilotView extends GetView<HomePilotController> {
 
                     if (pilotDevicesSnapshot != null && pilotDevicesSnapshot.docs.isNotEmpty) {
                       // Filter the data for 'in-use-pilot' and 'waiting-confirmation-1'
-                      final inUsePilotDocs = pilotDevicesSnapshot.docs
-                          .where((doc) => doc['statusDevice'] == 'in-use-pilot')
-                          .toList();
-                      final waitingConfirmationDocs = pilotDevicesSnapshot.docs
-                          .where((doc) =>
-                              doc['statusDevice'] == 'waiting-confirmation-1')
-                          .toList();
-                      final needConfirmationOccDocs = pilotDevicesSnapshot.docs
-                          .where((doc) =>
-                              doc['statusDevice'] == 'need-confirmation-occ')
-                          .toList();
-                      final needConfirmationPilotDocs = pilotDevicesSnapshot
-                          .docs
-                          .where((doc) =>
-                              doc['statusDevice'] ==
-                              'waiting-handover-to-other-crew')
-                          .toList();
+                      final inUsePilotDocs = pilotDevicesSnapshot.docs.where((doc) => doc['statusDevice'] == 'in-use-pilot').toList();
+                      final waitingConfirmationDocs =
+                          pilotDevicesSnapshot.docs.where((doc) => doc['statusDevice'] == 'waiting-confirmation-1').toList();
+                      final needConfirmationOccDocs =
+                          pilotDevicesSnapshot.docs.where((doc) => doc['statusDevice'] == 'need-confirmation-occ').toList();
+                      final needConfirmationPilotDocs =
+                          pilotDevicesSnapshot.docs.where((doc) => doc['statusDevice'] == 'waiting-handover-to-other-crew').toList();
                       return Column(
                         children: [
                           // Display 'in-use-pilot' data
-                          if (inUsePilotDocs.isNotEmpty ) ...[
+                          if (inUsePilotDocs.isNotEmpty) ...[
                             Align(
                               alignment: Alignment.centerLeft,
                               child: BlackTitleText(text: "Waiting Confirmation"),
@@ -150,10 +146,7 @@ class HomePilotView extends GetView<HomePilotController> {
                             SizedBox(
                               height: 20.0,
                             ),
-                            Align(
-                                alignment: Alignment.centerLeft,
-                                child: BlackTitleText(text: "In Use Pilot")
-                                ),
+                            Align(alignment: Alignment.centerLeft, child: BlackTitleText(text: "In Use Pilot")),
                             SizedBox(
                               height: 10,
                             ),
@@ -170,7 +163,7 @@ class HomePilotView extends GetView<HomePilotController> {
                                   child: Container(
                                     width: double.infinity, // Set lebar kartu ke seluruh lebar tampilan
                                     child: Card(
-                                      color: tsOneColorScheme.primary,  // Mengatur warna latar belakang kartu menjadi merah
+                                      color: tsOneColorScheme.primary, // Mengatur warna latar belakang kartu menjadi merah
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(15),
                                       ),
@@ -179,8 +172,7 @@ class HomePilotView extends GetView<HomePilotController> {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) =>
-                                                  PilotreturndeviceviewView(
+                                              builder: (context) => PilotreturndeviceviewView(
                                                 deviceName: deviceName,
                                                 deviceId: deviceId,
                                                 OccOnDuty: OccOnDuty,
@@ -196,9 +188,18 @@ class HomePilotView extends GetView<HomePilotController> {
                                               Column(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
-                                                  const Text ('1st Device', style: TextStyle(color: TsOneColor.secondary),),
-                                                  const Text ('FO ID', style: TextStyle(color: TsOneColor.secondary),),
-                                                  const Text ('Date', style: TextStyle(color: TsOneColor.secondary),),
+                                                  const Text(
+                                                    '1st Device',
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
+                                                  const Text(
+                                                    'FO ID',
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
+                                                  const Text(
+                                                    'Date',
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
                                                 ],
                                               ),
                                               const SizedBox(
@@ -206,9 +207,18 @@ class HomePilotView extends GetView<HomePilotController> {
                                               ),
                                               Column(
                                                 children: [
-                                                  const Text(':',style: TextStyle(color: TsOneColor.secondary),),
-                                                  const Text(':',style: TextStyle(color: TsOneColor.secondary),),
-                                                  const Text(':',style: TextStyle(color: TsOneColor.secondary),),
+                                                  const Text(
+                                                    ':',
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
+                                                  const Text(
+                                                    ':',
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
+                                                  const Text(
+                                                    ':',
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
                                                 ],
                                               ),
                                               const SizedBox(
@@ -216,20 +226,13 @@ class HomePilotView extends GetView<HomePilotController> {
                                               ),
                                               Expanded(
                                                   child: Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children: [
-                                                      Text(
-                                                          deviceName,style: TextStyle(color: TsOneColor.secondary)
-                                                      ),
-                                                      Text(
-                                                          userId,style: TextStyle(color: TsOneColor.secondary)
-                                                      ),
-                                                      Text(
-                                                          _formatTimestamp(doc['timestamp']),style: TextStyle(color: TsOneColor.secondary)
-                                                      ),
-                                                    ],
-                                                  )
-                                              ),
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(deviceName, style: TextStyle(color: TsOneColor.secondary)),
+                                                  Text(userId, style: TextStyle(color: TsOneColor.secondary)),
+                                                  Text(_formatTimestamp(doc['timestamp']), style: TextStyle(color: TsOneColor.secondary)),
+                                                ],
+                                              )),
                                               const Icon(
                                                 Icons.chevron_right,
                                                 color: TsOneColor.secondary,
@@ -249,10 +252,7 @@ class HomePilotView extends GetView<HomePilotController> {
 
                           // Display 'waiting-confirmation-1' data
                           if (waitingConfirmationDocs.isNotEmpty) ...[
-                            Align(
-                                alignment: Alignment.centerLeft,
-                                child: BlackTitleText(text: "Waiting OCC To Confirm")
-                            ),
+                            Align(alignment: Alignment.centerLeft, child: BlackTitleText(text: "Waiting OCC To Confirm")),
                             SizedBox(height: 10),
                             Column(
                               children: waitingConfirmationDocs.map((doc) {
@@ -265,7 +265,7 @@ class HomePilotView extends GetView<HomePilotController> {
                                   child: Container(
                                     width: double.infinity, // Set lebar kartu ke seluruh lebar tampilan
                                     child: Card(
-                                      color: tsOneColorScheme.primary,  // Mengatur warna latar belakang kartu menjadi merah
+                                      color: tsOneColorScheme.primary, // Mengatur warna latar belakang kartu menjadi merah
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(15),
                                       ),
@@ -274,8 +274,7 @@ class HomePilotView extends GetView<HomePilotController> {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) =>
-                                                  PilotUnRequestDeviceView(
+                                              builder: (context) => PilotUnRequestDeviceView(
                                                 deviceName: deviceName,
                                                 deviceId: deviceId,
                                               ),
@@ -290,9 +289,18 @@ class HomePilotView extends GetView<HomePilotController> {
                                               Column(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
-                                                  const Text ('1st Device', style: TextStyle(color: TsOneColor.secondary),),
-                                                  const Text ('FO ID', style: TextStyle(color: TsOneColor.secondary),),
-                                                  const Text ('Date', style: TextStyle(color: TsOneColor.secondary),),
+                                                  const Text(
+                                                    '1st Device',
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
+                                                  const Text(
+                                                    'FO ID',
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
+                                                  const Text(
+                                                    'Date',
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
                                                 ],
                                               ),
                                               const SizedBox(
@@ -300,9 +308,18 @@ class HomePilotView extends GetView<HomePilotController> {
                                               ),
                                               Column(
                                                 children: [
-                                                  const Text(':',style: TextStyle(color: TsOneColor.secondary),),
-                                                  const Text(':',style: TextStyle(color: TsOneColor.secondary),),
-                                                  const Text(':',style: TextStyle(color: TsOneColor.secondary),),
+                                                  const Text(
+                                                    ':',
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
+                                                  const Text(
+                                                    ':',
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
+                                                  const Text(
+                                                    ':',
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
                                                 ],
                                               ),
                                               const SizedBox(
@@ -310,20 +327,13 @@ class HomePilotView extends GetView<HomePilotController> {
                                               ),
                                               Expanded(
                                                   child: Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children: [
-                                                      Text(
-                                                          deviceName,style: TextStyle(color: TsOneColor.secondary)
-                                                      ),
-                                                      Text(
-                                                          userId,style: TextStyle(color: TsOneColor.secondary)
-                                                      ),
-                                                      Text(
-                                                          _formatTimestamp(doc['timestamp']),style: TextStyle(color: TsOneColor.secondary)
-                                                      ),
-                                                    ],
-                                                  )
-                                              ),
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(deviceName, style: TextStyle(color: TsOneColor.secondary)),
+                                                  Text(userId, style: TextStyle(color: TsOneColor.secondary)),
+                                                  Text(_formatTimestamp(doc['timestamp']), style: TextStyle(color: TsOneColor.secondary)),
+                                                ],
+                                              )),
                                               const Icon(
                                                 Icons.chevron_right,
                                                 color: TsOneColor.secondary,
@@ -387,7 +397,7 @@ class HomePilotView extends GetView<HomePilotController> {
                                   child: Container(
                                     width: double.infinity, // Set lebar kartu ke seluruh lebar tampilan
                                     child: Card(
-                                      color: tsOneColorScheme.primary,  // Mengatur warna latar belakang kartu menjadi merah
+                                      color: tsOneColorScheme.primary, // Mengatur warna latar belakang kartu menjadi merah
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(15),
                                       ),
@@ -396,8 +406,7 @@ class HomePilotView extends GetView<HomePilotController> {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) =>
-                                                  PilotUnReturnToOtherCrewView(
+                                              builder: (context) => PilotUnReturnToOtherCrewView(
                                                 deviceName: deviceName,
                                                 deviceId: deviceId,
                                               ),
@@ -412,9 +421,18 @@ class HomePilotView extends GetView<HomePilotController> {
                                               Column(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
-                                                  const Text ('1st Device', style: TextStyle(color: TsOneColor.secondary),),
-                                                  const Text ('FO ID', style: TextStyle(color: TsOneColor.secondary),),
-                                                  const Text ('Date', style: TextStyle(color: TsOneColor.secondary),),
+                                                  const Text(
+                                                    '1st Device',
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
+                                                  const Text(
+                                                    'FO ID',
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
+                                                  const Text(
+                                                    'Date',
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
                                                 ],
                                               ),
                                               const SizedBox(
@@ -422,9 +440,18 @@ class HomePilotView extends GetView<HomePilotController> {
                                               ),
                                               Column(
                                                 children: [
-                                                  const Text(':',style: TextStyle(color: TsOneColor.secondary),),
-                                                  const Text(':',style: TextStyle(color: TsOneColor.secondary),),
-                                                  const Text(':',style: TextStyle(color: TsOneColor.secondary),),
+                                                  const Text(
+                                                    ':',
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
+                                                  const Text(
+                                                    ':',
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
+                                                  const Text(
+                                                    ':',
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
                                                 ],
                                               ),
                                               const SizedBox(
@@ -432,20 +459,13 @@ class HomePilotView extends GetView<HomePilotController> {
                                               ),
                                               Expanded(
                                                   child: Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children: [
-                                                      Text(
-                                                          deviceName,style: TextStyle(color: TsOneColor.secondary)
-                                                      ),
-                                                      Text(
-                                                          userId,style: TextStyle(color: TsOneColor.secondary)
-                                                      ),
-                                                      Text(
-                                                          _formatTimestamp(doc['timestamp']),style: TextStyle(color: TsOneColor.secondary)
-                                                      ),
-                                                    ],
-                                                  )
-                                              ),
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(deviceName, style: TextStyle(color: TsOneColor.secondary)),
+                                                  Text(userId, style: TextStyle(color: TsOneColor.secondary)),
+                                                  Text(_formatTimestamp(doc['timestamp']), style: TextStyle(color: TsOneColor.secondary)),
+                                                ],
+                                              )),
                                               const Icon(
                                                 Icons.chevron_right,
                                                 color: TsOneColor.secondary,
@@ -511,7 +531,7 @@ class HomePilotView extends GetView<HomePilotController> {
                                   child: Container(
                                     width: double.infinity, // Set lebar kartu ke seluruh lebar tampilan
                                     child: Card(
-                                      color: tsOneColorScheme.primary,  // Mengatur warna latar belakang kartu menjadi merah
+                                      color: tsOneColorScheme.primary, // Mengatur warna latar belakang kartu menjadi merah
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(15),
                                       ),
@@ -520,8 +540,7 @@ class HomePilotView extends GetView<HomePilotController> {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) =>
-                                                  PilotUnReturnDeviceView(
+                                              builder: (context) => PilotUnReturnDeviceView(
                                                 deviceName: deviceName,
                                                 deviceId: deviceId,
                                               ),
@@ -536,9 +555,18 @@ class HomePilotView extends GetView<HomePilotController> {
                                               Column(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
-                                                  const Text ('1st Device', style: TextStyle(color: TsOneColor.secondary),),
-                                                  const Text ('FO ID', style: TextStyle(color: TsOneColor.secondary),),
-                                                  const Text ('Date', style: TextStyle(color: TsOneColor.secondary),),
+                                                  const Text(
+                                                    '1st Device',
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
+                                                  const Text(
+                                                    'FO ID',
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
+                                                  const Text(
+                                                    'Date',
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
                                                 ],
                                               ),
                                               const SizedBox(
@@ -546,9 +574,18 @@ class HomePilotView extends GetView<HomePilotController> {
                                               ),
                                               Column(
                                                 children: [
-                                                  const Text(':',style: TextStyle(color: TsOneColor.secondary),),
-                                                  const Text(':',style: TextStyle(color: TsOneColor.secondary),),
-                                                  const Text(':',style: TextStyle(color: TsOneColor.secondary),),
+                                                  const Text(
+                                                    ':',
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
+                                                  const Text(
+                                                    ':',
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
+                                                  const Text(
+                                                    ':',
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
                                                 ],
                                               ),
                                               const SizedBox(
@@ -556,20 +593,13 @@ class HomePilotView extends GetView<HomePilotController> {
                                               ),
                                               Expanded(
                                                   child: Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children: [
-                                                      Text(
-                                                          deviceName,style: TextStyle(color: TsOneColor.secondary)
-                                                      ),
-                                                      Text(
-                                                          userId,style: TextStyle(color: TsOneColor.secondary)
-                                                      ),
-                                                      Text(
-                                                          _formatTimestamp(doc['timestamp']),style: TextStyle(color: TsOneColor.secondary)
-                                                      ),
-                                                    ],
-                                                  )
-                                              ),
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(deviceName, style: TextStyle(color: TsOneColor.secondary)),
+                                                  Text(userId, style: TextStyle(color: TsOneColor.secondary)),
+                                                  Text(_formatTimestamp(doc['timestamp']), style: TextStyle(color: TsOneColor.secondary)),
+                                                ],
+                                              )),
                                               const Icon(
                                                 Icons.chevron_right,
                                                 color: TsOneColor.secondary,
@@ -631,13 +661,10 @@ class HomePilotView extends GetView<HomePilotController> {
                                 return Text('Error: ${snapshot.error}');
                               } else {
                                 QuerySnapshot? pilotDevicesSnapshot = snapshot.data;
-                                if (pilotDevicesSnapshot != null &&
-                                    pilotDevicesSnapshot.docs.isNotEmpty) {
+                                if (pilotDevicesSnapshot != null && pilotDevicesSnapshot.docs.isNotEmpty) {
                                   // Filter the data for 'in-use-pilot' and 'waiting-confirmation-1'
-                                  final inConfirmationPilotDocs = pilotDevicesSnapshot.docs
-                                      .where((doc) =>
-                                  doc['statusDevice'] == 'waiting-handover-to-other-crew')
-                                      .toList();
+                                  final inConfirmationPilotDocs =
+                                      pilotDevicesSnapshot.docs.where((doc) => doc['statusDevice'] == 'waiting-handover-to-other-crew').toList();
 
                                   return Column(
                                     children: [
@@ -659,13 +686,12 @@ class HomePilotView extends GetView<HomePilotController> {
                                             String userId = doc['user_uid'];
                                             String deviceId = doc.id;
 
-
                                             return Align(
                                               alignment: Alignment.centerLeft,
                                               child: Container(
                                                 width: double.infinity, // Set lebar kartu ke seluruh lebar tampilan
                                                 child: Card(
-                                                  color: tsOneColorScheme.primary,  // Mengatur warna latar belakang kartu menjadi merah
+                                                  color: tsOneColorScheme.primary, // Mengatur warna latar belakang kartu menjadi merah
                                                   shape: RoundedRectangleBorder(
                                                     borderRadius: BorderRadius.circular(15),
                                                   ),
@@ -690,9 +716,18 @@ class HomePilotView extends GetView<HomePilotController> {
                                                           Column(
                                                             crossAxisAlignment: CrossAxisAlignment.start,
                                                             children: [
-                                                              const Text ("1'st Device", style: TextStyle(color: TsOneColor.secondary),),
-                                                              const Text ('FO ID', style: TextStyle(color: TsOneColor.secondary),),
-                                                              const Text ('Date', style: TextStyle(color: TsOneColor.secondary),),
+                                                              const Text(
+                                                                "Device 2",
+                                                                style: TextStyle(color: TsOneColor.secondary),
+                                                              ),
+                                                              const Text(
+                                                                'FO ID',
+                                                                style: TextStyle(color: TsOneColor.secondary),
+                                                              ),
+                                                              const Text(
+                                                                'Date',
+                                                                style: TextStyle(color: TsOneColor.secondary),
+                                                              ),
                                                             ],
                                                           ),
                                                           const SizedBox(
@@ -700,31 +735,32 @@ class HomePilotView extends GetView<HomePilotController> {
                                                           ),
                                                           Column(
                                                             children: [
-                                                              const Text(':',style: TextStyle(color: TsOneColor.secondary),),
-                                                              const Text(':',style: TextStyle(color: TsOneColor.secondary),),
-                                                              const Text(':',style: TextStyle(color: TsOneColor.secondary),),
+                                                              const Text(
+                                                                ':',
+                                                                style: TextStyle(color: TsOneColor.secondary),
+                                                              ),
+                                                              const Text(
+                                                                ':',
+                                                                style: TextStyle(color: TsOneColor.secondary),
+                                                              ),
+                                                              const Text(
+                                                                ':',
+                                                                style: TextStyle(color: TsOneColor.secondary),
+                                                              ),
                                                             ],
                                                           ),
                                                           const SizedBox(
                                                             width: 5,
                                                           ),
-
                                                           Expanded(
                                                               child: Column(
-                                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                                children: [
-                                                                  Text(
-                                                                      deviceName,style: TextStyle(color: TsOneColor.secondary)
-                                                                  ),
-                                                                  Text(
-                                                                      userId,style: TextStyle(color: TsOneColor.secondary)
-                                                                  ),
-                                                                  Text(
-                                                                      _formatTimestamp(doc['timestamp']),style: TextStyle(color: TsOneColor.secondary)
-                                                                  ),
-                                                                ],
-                                                              )
-                                                          ),
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                            children: [
+                                                              Text(deviceName, style: TextStyle(color: TsOneColor.secondary)),
+                                                              Text(userId, style: TextStyle(color: TsOneColor.secondary)),
+                                                              Text(_formatTimestamp(doc['timestamp']), style: TextStyle(color: TsOneColor.secondary)),
+                                                            ],
+                                                          )),
                                                           const Icon(
                                                             Icons.chevron_right,
                                                             color: TsOneColor.secondary,
@@ -737,7 +773,6 @@ class HomePilotView extends GetView<HomePilotController> {
                                                 ),
                                               ),
                                             );
-
                                           }).toList(),
                                         ),
                                         SizedBox(height: 10),
@@ -757,9 +792,7 @@ class HomePilotView extends GetView<HomePilotController> {
                                         SizedBox(
                                           height: 20.0,
                                         ),
-                                        Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: BlackTitleText(text: 'In Use')),
+                                        Align(alignment: Alignment.centerLeft, child: BlackTitleText(text: 'In Use')),
                                         SizedBox(
                                           height: 15.0,
                                         ),
@@ -767,7 +800,6 @@ class HomePilotView extends GetView<HomePilotController> {
                                           "There are no devices in use.",
                                         ),
                                       ],
-
                                     ],
                                   );
                                 } else {
@@ -785,8 +817,7 @@ class HomePilotView extends GetView<HomePilotController> {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) =>
-                                                  PilotrequestdeviceView(),
+                                              builder: (context) => PilotrequestdeviceView(),
                                             ),
                                           );
                                         },
@@ -842,9 +873,7 @@ class HomePilotView extends GetView<HomePilotController> {
                                       SizedBox(
                                         height: 20.0,
                                       ),
-                                      Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: BlackTitleText(text: 'In Use')),
+                                      Align(alignment: Alignment.centerLeft, child: BlackTitleText(text: 'In Use')),
                                       SizedBox(
                                         height: 15.0,
                                       ),
@@ -860,7 +889,6 @@ class HomePilotView extends GetView<HomePilotController> {
                               }
                             },
                           ),
-
                         ],
                       );
                     }

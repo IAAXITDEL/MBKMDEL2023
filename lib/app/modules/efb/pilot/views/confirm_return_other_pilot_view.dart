@@ -270,7 +270,6 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                                     ),
                                   ],
                                 ),
-
                                 SizedBox(height: 5.0),
                                 Row(
                                   children: [
@@ -282,7 +281,6 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                                     ),
                                   ],
                                 ),
-
                                 SizedBox(height: 5.0),
                                 Row(
                                   children: [
@@ -295,7 +293,6 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                                   ],
                                 ),
                                 SizedBox(height: 16.0),
-
                                 const Padding(
                                   padding: EdgeInsets.only(bottom: 16.0),
                                   child: Row(
@@ -320,7 +317,6 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                                     ],
                                   ),
                                 ),
-
                                 Row(
                                   children: [
                                     Expanded(
@@ -393,7 +389,6 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                                   ],
                                 ),
                                 SizedBox(height: 16.0),
-
                                 Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
@@ -401,14 +396,13 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                                     style: tsOneTextTheme.titleMedium,
                                   ),
                                 ),
-
                                 SizedBox(height: 7.0),
                                 Row(
                                   children: [
                                     Expanded(
                                         flex: 6,
                                         child: Text(
-                                          "Device ID",
+                                          "Device No",
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
@@ -432,7 +426,7 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                                     Expanded(
                                         flex: 6,
                                         child: Text(
-                                          "iOS Version",
+                                          "IOS Version",
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
@@ -480,7 +474,7 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                                     Expanded(
                                         flex: 6,
                                         child: Text(
-                                          "Docu Version",
+                                          "Docunet Version",
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
@@ -504,7 +498,7 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                                     Expanded(
                                         flex: 6,
                                         child: Text(
-                                          "Lido Version",
+                                          "Lido mPilot Version",
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
@@ -602,8 +596,7 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                 backgroundColor: TsOneColor.greenColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(4.0),
-                )
-            ),
+                )),
             child: const Text('Next', style: TextStyle(color: Colors.white)),
           ),
         ),

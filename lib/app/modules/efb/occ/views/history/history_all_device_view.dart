@@ -91,7 +91,7 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                         hintText: 'Search by Device No',
                         prefixIcon: Icon(Icons.search),
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                          borderRadius: BorderRadius.all(Radius.circular(16.0)),
                         ),
                       ),
                       onChanged: (value) {
@@ -264,7 +264,7 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                                               child: Align(
                                                 alignment: Alignment.centerLeft,
                                                 child: Card(
-                                                  color : tsOneColorScheme.secondary,
+                                                  color: tsOneColorScheme.secondary,
                                                   surfaceTintColor: TsOneColor.surface,
                                                   shape: RoundedRectangleBorder(
                                                     borderRadius: BorderRadius.circular(15),
@@ -320,7 +320,6 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                                                                   '${DateFormat('yyyy-MM-dd HH:mm a').format(timestamp.toDate())}',
                                                                   style: tsOneTextTheme.labelSmall,
                                                                 ),
-
                                                               ],
                                                             ),
                                                           ),
@@ -348,7 +347,7 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                                 return Padding(
                                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                                   child: Card(
-                                    color : tsOneColorScheme.secondary,
+                                    color: tsOneColorScheme.secondary,
                                     surfaceTintColor: TsOneColor.surface,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(15),
@@ -369,13 +368,14 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                                         padding: const EdgeInsets.all(10.0), // Adjust padding as needed
                                         child: Row(
                                           children: [
+                                            SizedBox(width: 8.0),
                                             CircleAvatar(
                                               backgroundImage: photoUrl != null
                                                   ? NetworkImage(photoUrl as String)
                                                   : AssetImage('assets/default_profile_image.png') as ImageProvider,
                                               radius: 25.0,
                                             ),
-                                            SizedBox(width: 12.0),
+                                            SizedBox(width: 17.0),
                                             Expanded(
                                               child: Column(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -399,13 +399,12 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                                                     '${DateFormat('yyyy-MM-dd HH:mm a').format(timestamp.toDate())}',
                                                     style: tsOneTextTheme.labelSmall,
                                                   ),
-
                                                 ],
                                               ),
                                             ),
                                             const Icon(
                                               Icons.chevron_right,
-                                              color: TsOneColor.secondaryContainer,
+                                              color: TsOneColor.onSecondary,
                                               size: 30,
                                             )
                                           ],
