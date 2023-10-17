@@ -264,7 +264,7 @@ class _ListDeviceState extends State<ListDevice> {
           'List Device',
           style: TextStyle(
             color: Colors.black, // Set text color to red
-            fontSize: 20.0,
+            fontSize: 20.1,
             fontWeight: FontWeight.bold,
           ),
         ),

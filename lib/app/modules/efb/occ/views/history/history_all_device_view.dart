@@ -81,7 +81,7 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
           'All Device Used',
           style: TextStyle(
             color: Colors.black, // Set text color to red
-            fontSize: 20.0,
+            fontSize: 20.1,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -432,6 +432,7 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                                       horizontal: 10.0),
                                   child: Card(
                                     color: tsOneColorScheme.secondary,
+
                                     surfaceTintColor: TsOneColor.surface,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(15),
@@ -456,6 +457,7 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                                             10.0), // Adjust padding as needed
                                         child: Row(
                                           children: [
+                                            SizedBox(width: 8.0),
                                             CircleAvatar(
                                               backgroundImage: photoUrl != null
                                                   ? NetworkImage(
@@ -465,7 +467,7 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                                                       as ImageProvider,
                                               radius: 25.0,
                                             ),
-                                            SizedBox(width: 12.0),
+                                            SizedBox(width: 17.0),
                                             Expanded(
                                               child: Column(
                                                 crossAxisAlignment:
