@@ -91,6 +91,7 @@ abstract class Routes {
   static const TRAINING_CPTSCC = '/training-cptscc';
   static const TRAININGHISTORYCC_CPTS = _Paths.TRAININGHISTORYCC_CPTS;
   static const DETAILHISTORYCC_CPTS = _Paths.DETAILHISTORYCC_CPTS;
+  static const LIST_ABSENTCPTSCC = _Paths.LIST_ABSENTCPTSCC;
 }
 
 abstract class _Paths {
@@ -179,4 +180,5 @@ abstract class _Paths {
   static const ADD_TRAININGCC = '/add-trainingcc';
   static const TRAININGHISTORYCC_CPTS = '/traininghistorycc-cpts';
   static const DETAILHISTORYCC_CPTS = '/detailhistorycc-cpts';
+  static const LIST_ABSENTCPTSCC = '/list-absentcptscc';
 }
