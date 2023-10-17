@@ -296,7 +296,7 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                                                                 : AssetImage('assets/default_profile_image.png') as ImageProvider,
                                                             radius: 25.0,
                                                           ),
-                                                          SizedBox(width: 17.0),
+                                                          SizedBox(width: 12.0),
                                                           Flexible(
                                                             child: Column(
                                                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -304,9 +304,13 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                                                                 Container(
                                                                   width: double.infinity,
                                                                   child: Text(
-                                                                    '$userRank' + ' ' + '$userName',
+                                                                    '$userName',
                                                                     style: tsOneTextTheme.titleMedium,
                                                                   ),
+                                                                ),
+                                                                Text(
+                                                                  '$userRank',
+                                                                  style: tsOneTextTheme.labelSmall,
                                                                 ),
                                                                 Text(
                                                                   '$deviceno2' + ' & ' + '$deviceno3',
@@ -316,6 +320,7 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                                                                   '${DateFormat('yyyy-MM-dd HH:mm a').format(timestamp.toDate())}',
                                                                   style: tsOneTextTheme.labelSmall,
                                                                 ),
+
                                                               ],
                                                             ),
                                                           ),
@@ -343,11 +348,12 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                                 return Padding(
                                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                                   child: Card(
-                                    surfaceTintColor: Colors.white,
+                                    color : tsOneColorScheme.secondary,
+                                    surfaceTintColor: TsOneColor.surface,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(15),
                                     ),
-                                    elevation: 2, // You can adjust the elevation as needed
+                                    elevation: 3, // You can adjust the elevation as needed
                                     child: InkWell(
                                       borderRadius: BorderRadius.circular(15.0),
                                       onTap: () {
@@ -377,9 +383,13 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                                                   Container(
                                                     width: double.infinity,
                                                     child: Text(
-                                                      '$userRank' + ' ' + '$userName',
+                                                      '$userName',
                                                       style: tsOneTextTheme.titleMedium,
                                                     ),
+                                                  ),
+                                                  Text(
+                                                    '$userRank',
+                                                    style: tsOneTextTheme.labelSmall,
                                                   ),
                                                   Text(
                                                     '$deviceno',
@@ -389,6 +399,7 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                                                     '${DateFormat('yyyy-MM-dd HH:mm a').format(timestamp.toDate())}',
                                                     style: tsOneTextTheme.labelSmall,
                                                   ),
+
                                                 ],
                                               ),
                                             ),
