@@ -431,7 +431,7 @@ class _AnalyticsHubState extends State<AnalyticsHub>
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 8.0),
                   child: Text(
-                    'Return',
+                    'Return & Acknowledgment',
                     style: TextStyle(color: Colors.grey),
                   ),
                 ),
