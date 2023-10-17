@@ -208,7 +208,7 @@ class _ListDeviceState extends State<ListDevice> {
   }
 
   Future<List<Map<String, dynamic>>> fetchDataFromFirebase() async {
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('your_collection').get();
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Device').get();
 
     List<Map<String, dynamic>> data = [];
     querySnapshot.docs.forEach((doc) {
