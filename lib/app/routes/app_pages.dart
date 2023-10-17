@@ -26,6 +26,10 @@ import '../../presentation/view/users/login.dart';
 import '../../presentation/view/users/update_user.dart';
 import '../modules/cc/attendance_confircc/bindings/attendance_confircc_binding.dart';
 import '../modules/cc/attendance_confircc/views/attendance_confircc_view.dart';
+import '../modules/cc/detailhistorycc_cpts/bindings/detailhistorycc_cpts_binding.dart';
+import '../modules/cc/detailhistorycc_cpts/views/detailhistorycc_cpts_view.dart';
+import '../modules/cc/home_cptscc/bindings/home_cptscc_binding.dart';
+import '../modules/cc/home_cptscc/views/home_cptscc_view.dart';
 import '../modules/cc/instructor/attendance_instructorconfircc/bindings/attendance_instructorconfircc_binding.dart';
 import '../modules/cc/instructor/attendance_instructorconfircc/views/attendance_instructorconfircc_view.dart';
 import '../modules/cc/instructor/home_instructorcc/bindings/home_instructorcc_binding.dart';
@@ -70,6 +74,8 @@ import '../modules/cc/training/pilottraininghistorydetailcc/bindings/pilottraini
 import '../modules/cc/training/pilottraininghistorydetailcc/views/pilottraininghistorydetailcc_view.dart';
 import '../modules/cc/trainingcc/bindings/trainingcc_binding.dart';
 import '../modules/cc/trainingcc/views/trainingcc_view.dart';
+import '../modules/cc/traininghistorycc_cpts/bindings/traininghistorycc_cpts_binding.dart';
+import '../modules/cc/traininghistorycc_cpts/views/traininghistorycc_cpts_view.dart';
 import '../modules/efb/fo/bindings/homefo_binding.dart';
 import '../modules/efb/fo/views/main_view_fo.dart';
 import '../modules/efb/occ/bindings/device_binding.dart';
@@ -78,8 +84,8 @@ import '../modules/efb/occ/views/homeocc_view.dart';
 import '../modules/efb/occ/views/listdevice/listdevice.dart';
 import '../modules/efb/pilot/bindings/homepilot_binding.dart';
 import '../modules/efb/pilot/views/main_view_pilot.dart';
-import '../modules/home_cptscc/bindings/home_cptscc_binding.dart';
-import '../modules/home_cptscc/views/home_cptscc_view.dart';
+import '../modules/cc/list_absentcptscc/bindings/list_absentcptscc_binding.dart';
+import '../modules/cc/list_absentcptscc/views/list_absentcptscc_view.dart';
 import '../modules/list_pilotcptscc/bindings/list_pilotcptscc_binding.dart';
 import '../modules/list_pilotcptscc/views/list_pilotcptscc_view.dart';
 import '../modules/main_home/bindings/main_home_binding.dart';
@@ -416,6 +422,23 @@ class AppPages {
       name: _Paths.ADD_TRAININGCC,
       page: () => AddTrainingccView(),
       binding: AddTrainingccBinding(),
+    ),
+    GetPage(
+      name: _Paths.TRAININGHISTORYCC_CPTS,
+      page: () => const TraininghistoryccCptsView(),
+      binding: TraininghistoryccCptsBinding(),
+    ),
+    GetPage(
+      name: _Paths.DETAILHISTORYCC_CPTS,
+      page: () => const DetailhistoryccCptsView(
+        listAttendance: [],
+      ),
+      binding: DetailhistoryccCptsBinding(),
+    ),
+    GetPage(
+      name: _Paths.LIST_ABSENTCPTSCC,
+      page: () => const ListAbsentcptsccView(),
+      binding: ListAbsentcptsccBinding(),
     ),
   ];
 }
