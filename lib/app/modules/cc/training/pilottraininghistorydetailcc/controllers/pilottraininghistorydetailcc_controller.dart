@@ -16,6 +16,7 @@ class PilottraininghistorydetailccController extends GetxController {
   late UserPreferences userPreferences;
 
   final RxBool isTrainee = false.obs;
+  final RxBool isCPTS = false.obs;
 
   @override
   void onInit() {
@@ -49,10 +50,9 @@ class PilottraininghistorydetailccController extends GetxController {
     List<Map<String, dynamic>> attendanceData = [];
 
     for (var doc in attendanceQuery.docs) {
-      final attendanceDetailModel = AttendanceDetailModel.fromJson(doc.data());
-
-      for (var doc in attendanceQuery.docs) {
-        final attendanceModel = AttendanceModel.fromJson(doc.data());
+      final attendanceModel = AttendanceModel.fromJson(doc.data());
+        for (var doc in attendanceDetailQuery.docs) {
+          final attendanceDetailModel = AttendanceDetailModel.fromJson(doc.data());
 
         // Ambil informasi pengguna hanya untuk trainer yang terkait
         final trainersQuery = await firestore
@@ -61,22 +61,23 @@ class PilottraininghistorydetailccController extends GetxController {
             .get();
 
         // Ambil informasi pengguna hanya untuk trainee yang terkait
-        final traineesQuery = await firestore
-            .collection('users')
-            .where("ID NO", isEqualTo: attendanceDetailModel.idtraining)
-            .get();
-
-        // Ambil informasi pengguna hanya untuk trainee yang terkait
         final attendanceDetailsQuery = await firestore
             .collection('attendance-detail')
             .where("idattendance", isEqualTo: attendanceModel.id)
             .get();
-        if (trainersQuery.docs.isNotEmpty) {
+
+          // Ambil informasi pengguna hanya untuk trainee yang terkait
+          final traineesQuery = await firestore
+              .collection('users')
+              .where("ID NO", isEqualTo: attendanceDetailModel.idtraining)
+              .get();
+
+        if (traineesQuery.docs.isNotEmpty) {
           final trainerData = trainersQuery.docs[0].data();
           final traineeData = traineesQuery.docs[0].data();
           final attendanceDetailData = attendanceDetailsQuery.docs[0].data();
 
-          // Ambil informasi yang diperlukan dari dokumen attendance
+          // Ambil informasi yang diperlukan dari dokumen attendance, attendance detail dan users
           Map<String, dynamic> data = {
             'subject': attendanceModel.subject,
             'date': attendanceModel.date,
@@ -109,6 +110,7 @@ class PilottraininghistorydetailccController extends GetxController {
     if (userPreferences.getInstructor().contains(UserModel.keyCPTS) &&
         userPreferences.getRank().contains(UserModel.keyPositionCaptain) ||
         userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)) {
+      isCPTS.value = true;
     }
     // SEBAGAI INSTRUCTOR
     else if (userPreferences
