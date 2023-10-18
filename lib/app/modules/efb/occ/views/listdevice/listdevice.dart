@@ -54,7 +54,7 @@ class _ListDeviceState extends State<ListDevice> {
                 ),
               ),
             ),
-                (route) => true,
+            (route) => true,
           );
         } else if (value == 'delete') {
           _showDeleteConfirmationDialog(e.id);
@@ -75,7 +75,7 @@ class _ListDeviceState extends State<ListDevice> {
                 ),
               ),
             ),
-                (route) => true,
+            (route) => true,
           );
         }
       },
@@ -316,7 +316,7 @@ class _ListDeviceState extends State<ListDevice> {
                   }
 
                   final filteredData =
-                  snapshot.data!.docs.where((e) => e["deviceno"].toString().toLowerCase().contains(searchQuery.toLowerCase())).toList();
+                      snapshot.data!.docs.where((e) => e["deviceno"].toString().toLowerCase().contains(searchQuery.toLowerCase())).toList();
 
                   if (filteredData.isEmpty) {
                     return const EmptyScreenEFB();
@@ -351,7 +351,7 @@ class _ListDeviceState extends State<ListDevice> {
                                       ),
                                     ),
                                   ),
-                                      (route) => true,
+                                  (route) => true,
                                 );
                               },
                               style: ElevatedButton.styleFrom(

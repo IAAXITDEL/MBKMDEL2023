@@ -145,7 +145,7 @@ class DetailHistoryDeviceView extends GetView {
                             //occ accepted from
                             return FutureBuilder<DocumentSnapshot>(
                               future:
-                              occAccepted != null ? FirebaseFirestore.instance.collection("users").doc(occAccepted).get() : Future.value(null),
+                                  occAccepted != null ? FirebaseFirestore.instance.collection("users").doc(occAccepted).get() : Future.value(null),
                               builder: (context, occAcceptedSnapshot) {
                                 if (occAcceptedSnapshot.connectionState == ConnectionState.waiting) {
                                   return Center(child: CircularProgressIndicator());
@@ -398,7 +398,7 @@ class DetailHistoryDeviceView extends GetView {
                                                     Expanded(
                                                       flex: 6,
                                                       child:
-                                                      handoverTouserData != null ? Text('${data['remarks'] ?? 'Not Found'}') : Text('Not Found'),
+                                                          handoverTouserData != null ? Text('${data['remarks'] ?? 'Not Found'}') : Text('Not Found'),
                                                     ),
                                                   ],
                                                 ),

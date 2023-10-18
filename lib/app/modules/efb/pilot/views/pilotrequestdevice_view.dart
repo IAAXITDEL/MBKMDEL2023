@@ -245,15 +245,15 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                   children: getMatchingDevices(deviceNoController.text)
                       .map(
                         (device) => ListTile(
-                      title: Text(device.deviceno),
-                      onTap: () {
-                        setState(() {
-                          selectedDevice = device;
-                          deviceNoController.text = device.deviceno;
-                        });
-                      },
-                    ),
-                  )
+                          title: Text(device.deviceno),
+                          onTap: () {
+                            setState(() {
+                              selectedDevice = device;
+                              deviceNoController.text = device.deviceno;
+                            });
+                          },
+                        ),
+                      )
                       .toList(),
                 ),
               const SizedBox(height: 16.0),

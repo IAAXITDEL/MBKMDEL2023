@@ -14,7 +14,6 @@ import 'package:path/path.dart' as Path;
 
 import 'dart:io'; // For handling selected image file
 
-
 import '../../../../../presentation/theme.dart';
 import '../../../../routes/app_pages.dart';
 
@@ -29,7 +28,6 @@ class ConfirmSignatureReturnOtherPilotView extends StatefulWidget {
 
   @override
   _ConfirmSignatureReturnOtherPilotViewState createState() => _ConfirmSignatureReturnOtherPilotViewState();
-
 }
 
 class _ConfirmSignatureReturnOtherPilotViewState extends State<ConfirmSignatureReturnOtherPilotView> {
@@ -48,11 +46,7 @@ class _ConfirmSignatureReturnOtherPilotViewState extends State<ConfirmSignatureR
   void initState() {
     super.initState();
     // Fetch deviceUid, deviceName, and OCC On Duty from Firestore using widget.deviceId
-    FirebaseFirestore.instance
-        .collection('pilot-device-1')
-        .doc(widget.deviceId)
-        .get()
-        .then((documentSnapshot) {
+    FirebaseFirestore.instance.collection('pilot-device-1').doc(widget.deviceId).get().then((documentSnapshot) {
       if (documentSnapshot.exists) {
         setState(() {
           deviceId = documentSnapshot['device_uid'];
@@ -61,15 +55,12 @@ class _ConfirmSignatureReturnOtherPilotViewState extends State<ConfirmSignatureR
         });
       }
     });
-
   }
 
   // Function to clear the signature
   void _clearSignature() {
     _signaturePadKey.currentState?.clear();
   }
-
-
 
   // Function to update status in Firestore and upload image to Firebase Storage
 
@@ -100,7 +91,10 @@ class _ConfirmSignatureReturnOtherPilotViewState extends State<ConfirmSignatureR
       barrierDismissible: false, // Dialog cannot be dismissed by tapping outside
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Confirm Return'),
+          title: Text(
+            'Confirmation Return',
+            style: tsOneTextTheme.headlineLarge,
+          ),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
@@ -145,12 +139,8 @@ class _ConfirmSignatureReturnOtherPilotViewState extends State<ConfirmSignatureR
                 final image = await _signaturePadKey.currentState?.toImage(pixelRatio: 3.0);
                 final ByteData? byteData = await image?.toByteData(format: ImageByteFormat.png);
                 final Uint8List? uint8List = byteData?.buffer.asUint8List();
-                final Reference storageReference = FirebaseStorage.instance
-                    .ref()
-                    .child('signatures/${DateTime.now()}.png');
+                final Reference storageReference = FirebaseStorage.instance.ref().child('signatures/${DateTime.now()}.png');
                 final UploadTask uploadTask = storageReference.putData(uint8List!);
-
-
 
                 // Upload the selected image to Firebase Storage (if an image is selected)
                 String imageUrl = '';
@@ -166,7 +156,10 @@ class _ConfirmSignatureReturnOtherPilotViewState extends State<ConfirmSignatureR
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
-                        title: Text('Signature Required'),
+                        title: Text(
+                          'Signature Required',
+                          style: tsOneTextTheme.headlineLarge,
+                        ),
                         content: Text('Please provide your signature.'),
                         actions: <Widget>[
                           TextButton(
@@ -184,15 +177,13 @@ class _ConfirmSignatureReturnOtherPilotViewState extends State<ConfirmSignatureR
                 await uploadTask.whenComplete(() async {
                   String signatureUrl = await storageReference.getDownloadURL();
                   // Update Firestore
-                  await FirebaseFirestore.instance.collection(
-                      'pilot-device-1').doc(widget.deviceId).update({
+                  await FirebaseFirestore.instance.collection('pilot-device-1').doc(widget.deviceId).update({
                     'statusDevice': 'handover-to-other-crew',
                     'remarks': remarks,
                     'prove_image_url': imageUrl,
                     'signature_url_other_crew': signatureUrl,
                   });
                 });
-
 
                 User? user = _auth.currentUser;
                 QuerySnapshot userQuery = await _firestore.collection('users').where('EMAIL', isEqualTo: user?.email).get();
@@ -201,8 +192,7 @@ class _ConfirmSignatureReturnOtherPilotViewState extends State<ConfirmSignatureR
                 String hubField = await getHubFromDeviceName(deviceName) ?? "Unknown Hub";
 
                 // Membuat referensi koleksi 'pilot-device-1' tanpa menambahkan dokumen
-                CollectionReference pilotDeviceCollection =
-                _firestore.collection('pilot-device-1');
+                CollectionReference pilotDeviceCollection = _firestore.collection('pilot-device-1');
 
                 // Mendapatkan ID dokumen yang baru akan dibuat
                 String newDeviceId = pilotDeviceCollection.doc().id;
@@ -211,12 +201,12 @@ class _ConfirmSignatureReturnOtherPilotViewState extends State<ConfirmSignatureR
                   'user_uid': userUid,
                   'device_uid': deviceId,
                   'device_name': deviceName,
-                  'document_id': newDeviceId,  // Tambahkan document_id di sini
+                  'document_id': newDeviceId, // Tambahkan document_id di sini
                   'occ-on-duty': OccOnDuty,
                   'handover-from': '-',
                   'statusDevice': 'in-use-pilot',
                   'timestamp': FieldValue.serverTimestamp(),
-                  'remarks' : '',
+                  'remarks': '',
                   'prove_image_url': '',
                   'handover-to-crew': '-',
                   'occ-accepted-device': '-',
@@ -226,7 +216,6 @@ class _ConfirmSignatureReturnOtherPilotViewState extends State<ConfirmSignatureR
 
                 // Call the _showQuickAlert function
                 _showQuickAlert(context);
-
 
                 // Return to the previous page
 
@@ -238,8 +227,6 @@ class _ConfirmSignatureReturnOtherPilotViewState extends State<ConfirmSignatureR
       },
     );
   }
-
-
 
   Widget _buildSelectedImage() {
     if (selectedImage == null) {
@@ -254,12 +241,16 @@ class _ConfirmSignatureReturnOtherPilotViewState extends State<ConfirmSignatureR
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Confirmation'),
+        backgroundColor: Colors.white,
+        centerTitle: true,
+        title: Text(
+          'Confirmation',
+          style: tsOneTextTheme.headlineLarge,
+        ),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -330,120 +321,117 @@ class _ConfirmSignatureReturnOtherPilotViewState extends State<ConfirmSignatureR
                             return Center(child: Text('Device data 2 not found'));
                           }
 
-
-
-                              return Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    SizedBox(height: 20.0),
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        "PROOF",
-                                        style: tsOneTextTheme.titleLarge,
-                                      ),
-                                    ),
-                                    Text('If something doesn''t match, please inform us!'),
-
-
-                                    SizedBox(height: 20.0),
-
-                                    TextField(
-                                      controller: remarksController,
-                                      decoration: InputDecoration(
-                                        labelText: 'Remarks',
-                                        border: OutlineInputBorder(), // Add a border
-                                        hintText: 'Enter your remarks here', // Optional hint text
-                                        contentPadding: EdgeInsets.symmetric(vertical: 20, horizontal: 12), // Adjust vertical padding
-                                      ),
-                                      maxLines: null, // Allows multiple lines of text
-                                    ),
-
-                                    SizedBox(height: 20.0),
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        "PICK AN IMAGE",
-                                        style: tsOneTextTheme.titleLarge,
-                                      ),
-                                    ),
-                                    Text('If something doesn''t match, please take pictures of the damage!'),
-                                    SizedBox(height: 5.0),
-
-                                    // Button to open the image picker
-                                    // Button to open the image picker
-                                    ElevatedButton(
-                                      onPressed: _pickImage,
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.white,
-                                        minimumSize: const Size(double.infinity, 50),
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Icon(
-                                            Icons.camera_alt, // Use the camera icon
-                                            color: Colors.red, // Set the icon color
-                                          ),
-                                          SizedBox(width: 8), // Add some space between the icon and text
-                                          Text(
-                                            'Camera',
-                                            style: TextStyle(color: Colors.red),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-
-                                    SizedBox(height: 7.0),
-                                    // Display the selected image
-                                    _buildSelectedImage(),
-                                    // Add the SignaturePad widget
-                                    SizedBox(height: 20.0),
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        "SIGNATURE",
-                                        style: tsOneTextTheme.titleLarge,
-                                      ),
-                                    ),
-                                    SizedBox(height: 5.0),
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10.0), // Menambahkan lengkungan pada ujung box
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.grey.withOpacity(0.5),
-                                            spreadRadius: 5,
-                                            blurRadius: 8,
-                                            offset: Offset(0, 3), // Mengatur offset bayangan
-                                          ),
-                                        ],
-                                      ),
-                                      child: SfSignaturePad(
-                                        key: _signaturePadKey,
-                                        backgroundColor: Colors.white,
-                                      ),
-                                    ),
-
-                                    SizedBox(height: 10.0),
-
-                                    // Button to clear the signature
-                                    ElevatedButton(
-                                      onPressed: _clearSignature,
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: TsOneColor.primary,
-                                        minimumSize: const Size(double.infinity, 50),
-                                      ),
-                                      child: const Text('Clear Signature', style: TextStyle(color: Colors.white)),
-                                    ),
-                                  ],
+                          return Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                SizedBox(height: 20.0),
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    "PROOF",
+                                    style: tsOneTextTheme.titleLarge,
+                                  ),
                                 ),
-                              );
-                            },
+                                Text('If something doesn' 't match, please inform us!'),
+
+                                SizedBox(height: 20.0),
+
+                                TextField(
+                                  controller: remarksController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Remarks',
+                                    border: OutlineInputBorder(), // Add a border
+                                    hintText: 'Enter your remarks here', // Optional hint text
+                                    contentPadding: EdgeInsets.symmetric(vertical: 20, horizontal: 12), // Adjust vertical padding
+                                  ),
+                                  maxLines: null, // Allows multiple lines of text
+                                ),
+
+                                SizedBox(height: 20.0),
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    "PICK AN IMAGE",
+                                    style: tsOneTextTheme.titleLarge,
+                                  ),
+                                ),
+                                Text('If something doesn' 't match, please take pictures of the damage!'),
+                                SizedBox(height: 5.0),
+
+                                // Button to open the image picker
+                                // Button to open the image picker
+                                ElevatedButton(
+                                  onPressed: _pickImage,
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.white,
+                                    minimumSize: const Size(double.infinity, 50),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.camera_alt, // Use the camera icon
+                                        color: Colors.red, // Set the icon color
+                                      ),
+                                      SizedBox(width: 8), // Add some space between the icon and text
+                                      Text(
+                                        'Camera',
+                                        style: TextStyle(color: Colors.red),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+
+                                SizedBox(height: 7.0),
+                                // Display the selected image
+                                _buildSelectedImage(),
+                                // Add the SignaturePad widget
+                                SizedBox(height: 20.0),
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    "SIGNATURE",
+                                    style: tsOneTextTheme.titleLarge,
+                                  ),
+                                ),
+                                SizedBox(height: 5.0),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.0), // Menambahkan lengkungan pada ujung box
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.5),
+                                        spreadRadius: 5,
+                                        blurRadius: 8,
+                                        offset: Offset(0, 3), // Mengatur offset bayangan
+                                      ),
+                                    ],
+                                  ),
+                                  child: SfSignaturePad(
+                                    key: _signaturePadKey,
+                                    backgroundColor: Colors.white,
+                                  ),
+                                ),
+
+                                SizedBox(height: 10.0),
+
+                                // Button to clear the signature
+                                ElevatedButton(
+                                  onPressed: _clearSignature,
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: TsOneColor.primary,
+                                    minimumSize: const Size(double.infinity, 50),
+                                  ),
+                                  child: const Text('Clear Signature', style: TextStyle(color: Colors.white)),
+                                ),
+                              ],
+                            ),
                           );
                         },
                       );
+                    },
+                  );
                 },
               );
             },
@@ -455,7 +443,6 @@ class _ConfirmSignatureReturnOtherPilotViewState extends State<ConfirmSignatureR
         child: Expanded(
           child: ElevatedButton(
             onPressed: () {
-
               // Call the function to update status and upload image
               _showConfirmationDialog();
               print('device name: ' + widget.deviceName);
@@ -464,8 +451,7 @@ class _ConfirmSignatureReturnOtherPilotViewState extends State<ConfirmSignatureR
                 backgroundColor: TsOneColor.greenColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(4.0),
-                )
-            ),
+                )),
             child: const Text('Confirm', style: TextStyle(color: Colors.white)),
           ),
         ),
@@ -474,17 +460,14 @@ class _ConfirmSignatureReturnOtherPilotViewState extends State<ConfirmSignatureR
   }
 }
 
-
 Future<String> getHubFromDeviceName(String deviceName) async {
   String hub = "Unknown Hub"; // Default value
 
   try {
     // Fetch the 'hub' field from the 'Device' collection based on deviceName
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-        .collection('Device')
-        .where('deviceno', whereIn: [deviceName,])
-        .get();
-
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Device').where('deviceno', whereIn: [
+      deviceName,
+    ]).get();
 
     if (querySnapshot.docs.isNotEmpty) {
       hub = querySnapshot.docs.first['hub'];

@@ -29,7 +29,10 @@ class ConfirmRequestFOView extends GetView {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Confirmation'),
+          title: Text(
+            'Confirmation',
+            style: tsOneTextTheme.headlineLarge,
+          ),
           content: Text('Are you sure you want to confirm the usage?'),
           actions: <Widget>[
             TextButton(

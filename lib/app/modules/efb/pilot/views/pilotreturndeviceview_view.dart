@@ -175,7 +175,7 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                                   ),
                                   SizedBox(height: 15),
                                   Text(
-                                    "Loan Details",
+                                    "Device Details",
                                     style: TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.w600,

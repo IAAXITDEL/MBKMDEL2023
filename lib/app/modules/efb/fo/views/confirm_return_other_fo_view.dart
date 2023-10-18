@@ -83,7 +83,9 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Confirmationn'),
+        backgroundColor: Colors.white,
+        centerTitle: true,
+        title: Text('Confirmationn', style: tsOneTextTheme.headlineLarge),
       ),
       body: SingleChildScrollView(
         child: Padding(

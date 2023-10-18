@@ -238,7 +238,7 @@ class PilotUnReturnToOtherCrewView extends GetView {
                                   Padding(
                                     padding: EdgeInsets.symmetric(horizontal: 8.0),
                                     child: Text(
-                                      'Loan Details',
+                                      'Device Details',
                                       style: TextStyle(color: Colors.grey),
                                     ),
                                   ),

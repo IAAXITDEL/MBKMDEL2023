@@ -76,7 +76,10 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
       barrierDismissible: false, // Dialog cannot be dismissed by tapping outside
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Confirm Return'),
+          title: Text(
+            'Confirmation Return',
+            style: tsOneTextTheme.headlineLarge,
+          ),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
@@ -121,7 +124,12 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Confirmation'),
+        title: Text(
+          'Confirmation',
+          style: tsOneTextTheme.headlineLarge,
+        ),
+        backgroundColor: Colors.white,
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Padding(

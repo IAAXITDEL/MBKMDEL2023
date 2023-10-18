@@ -201,7 +201,10 @@ class _ConfirmReturnBackPilotViewState extends State<ConfirmReturnBackPilotView>
             barrierDismissible: false,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: Text('Confirmation'),
+                title: Text(
+                  'Confirmation',
+                  style: tsOneTextTheme.headlineLarge,
+                ),
                 content: SingleChildScrollView(
                   child: ListBody(
                     children: <Widget>[

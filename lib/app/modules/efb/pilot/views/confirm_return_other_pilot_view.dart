@@ -111,7 +111,7 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
       barrierDismissible: false, // Dialog cannot be dismissed by tapping outside
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Confirm Return'),
+          title: Text('Confirmation Return'),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
