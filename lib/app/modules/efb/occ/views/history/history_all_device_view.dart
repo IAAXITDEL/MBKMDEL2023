@@ -309,7 +309,11 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
         backgroundColor: Colors.white, // Set background color to white
         title: Text(
           'History',
-          style: tsOneTextTheme.headlineLarge,
+          style: TextStyle(
+            color: Colors.black, // Set text color to red
+            fontSize: 20.1,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         actions: [
           Tooltip(

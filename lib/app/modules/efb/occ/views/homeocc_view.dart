@@ -35,7 +35,7 @@ class HomeOCCView extends GetView<HomeOCCController> {
               child: Column(
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(top: 120, left: 20, right: 20),
+                    padding: EdgeInsets.only(top: 50, left: 20, right: 20),
                     child: Column(
                       children: [
                         Row(

@@ -453,7 +453,6 @@ class DetailHistoryDeviceView extends GetView {
                                                 ),
 
 
-
                                               SizedBox(height: 15),
 
                                               if (status == 'handover-to-other-crew')

@@ -1,4 +1,6 @@
 import 'package:avatar_glow/avatar_glow.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -11,10 +13,6 @@ import '../../../profilecc/controllers/profilecc_controller.dart';
 import '../controllers/profile_controller.dart';
 
 class ProfileView extends GetView<ProfileccController> {
-  // late bool _canManageDevice = false;
-  // late bool _pilotRequestDevice = false;
-  // late UserPreferences _userPreferences;
-
   // Function to generate a QR code with the AirAsia logo in the center
   Widget generateQRCode() {
     final idNo = controller.userPreferences.getIDNo().toString();
@@ -47,51 +45,26 @@ class ProfileView extends GetView<ProfileccController> {
     );
   }
 
+  Future<String?> _getUserHub() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return null;
+
+    final userEmail = user.email;
+    if (userEmail == null) return null;
+
+    final userSnapshot = await FirebaseFirestore.instance.collection('users').where('EMAIL', isEqualTo: userEmail).get();
+
+    if (userSnapshot.docs.isNotEmpty) {
+      final userDoc = userSnapshot.docs.first;
+      return userDoc['HUB'];
+    } else {
+      return null;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   backgroundColor: Colors.transparent,
-      //   elevation: 0,
-      //   actions: [
-      //     // LOGOUT
-      //     Container(
-      //       margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-      //       child: ElevatedButton(
-      //         style: ElevatedButton.styleFrom(
-      //           backgroundColor: tsOneColorScheme.primary,
-      //           padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
-      //           shape: RoundedRectangleBorder(
-      //             borderRadius: BorderRadius.circular(10),
-      //           ),
-      //         ),
-      //         onPressed: () {
-      //           controller.logout();
-      //         },
-      //         child: Row(
-      //           mainAxisAlignment: MainAxisAlignment.center,
-      //           children: const [
-      //             Icon(
-      //               Icons.logout,
-      //               color: Colors.white,
-      //               size: 20,
-      //             ),
-      //             SizedBox(
-      //               width: 10,
-      //             ),
-      //             Text(
-      //               "Logout",
-      //               style: TextStyle(
-      //                 color: TsOneColor.surface,
-      //                 fontFamily: 'Poppins',
-      //               ),
-      //             ),
-      //           ],
-      //         ),
-      //       ),
-      //     ),
-      //   ],
-      // ),
       body: Padding(
         padding: const EdgeInsets.only(top: 70, left: 20, bottom: 10, right: 20),
         child: Center(
@@ -147,201 +120,102 @@ class ProfileView extends GetView<ProfileccController> {
                     const SizedBox(
                       height: 20,
                     ),
-                    //if (_userPreferences.getPrivileges().contains(UserModel.keyPrivilegeOCC))
-                    // if (_userPreferences.getPrivileges().contains(UserModel.keyPilotRequestDevice)) {
-                    //   _pilotRequestDevice = true,
-                    // }
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: tsOneColorScheme.secondary,
-                        foregroundColor: tsOneColorScheme.secondaryContainer,
-                        surfaceTintColor: tsOneColorScheme.secondary,
-                        elevation: 3,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4.0),
-                          //side: BorderSide(color: TsOneColor.onSecondary, width: 1),
-                        ),
-                      ),
-                      onPressed: () {
-                        showModalBottomSheet(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return SingleChildScrollView(
-                              child: Container(
-                                width: Get.width,
-                                padding: EdgeInsets.only(top: 20, right: 20, left: 20),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(20.0),
-                                    topRight: Radius.circular(20.0),
-                                  ),
-                                  color: TsOneColor.secondary,
-                                ),
-                                child: Column(
-                                  children: [
-                                    Text("My QR", style: tsOneTextTheme.labelMedium),
-                                    SizedBox(height: 5),
-                                    RedTitleText(text: "SCAN ME"),
-                                    SizedBox(height: 10),
-                                    addAirAsiaLogoToQRCode(),
-                                    SizedBox(height: 10),
-                                    Text(
-                                      "${controller.userPreferences.getName()}",
-                                      style: tsOneTextTheme.bodyMedium,
-                                    ),
-                                    Text(
-                                      "${controller.userPreferences.getIDNo()}",
-                                      style: tsOneTextTheme.bodyMedium,
-                                    ),
-                                    SizedBox(height: 10),
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: Text("Close"),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            );
+                    if (controller.userPreferences.getRank().toString() == "OCC")
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: FutureBuilder<String?>(
+                          future: _getUserHub(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return CircularProgressIndicator();
+                            } else if (snapshot.hasError) {
+                              return Text('Error: ${snapshot.error}');
+                            } else {
+                              String? userHub = snapshot.data;
+                              return GreenTitleText(text: "HUB : ${userHub ?? 'Data tidak tersedia'}");
+                            }
                           },
-                        );
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 5),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.qr_code_2_rounded,
-                              size: 50,
-                              color: tsOneColorScheme.onSecondary,
-                            ),
-                            SizedBox(height: 5),
-                            Text(
-                              "Tap QR",
-                              style: TextStyle(color: TsOneColor.primary),
-                            ),
-                          ],
                         ),
                       ),
-                    ),
+                    if (controller.userPreferences.getRank().toString() == "CAPT" || controller.userPreferences.getRank().toString() == "FO")
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: tsOneColorScheme.secondary,
+                          foregroundColor: tsOneColorScheme.secondaryContainer,
+                          surfaceTintColor: tsOneColorScheme.secondary,
+                          elevation: 3,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(4.0),
+                            //side: BorderSide(color: TsOneColor.onSecondary, width: 1),
+                          ),
+                        ),
+                        onPressed: () {
+                          showModalBottomSheet(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return SingleChildScrollView(
+                                child: Container(
+                                  width: Get.width,
+                                  padding: EdgeInsets.only(top: 20, right: 20, left: 20),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(20.0),
+                                      topRight: Radius.circular(20.0),
+                                    ),
+                                    color: TsOneColor.secondary,
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Text("My QR", style: tsOneTextTheme.labelMedium),
+                                      SizedBox(height: 5),
+                                      RedTitleText(text: "SCAN ME"),
+                                      SizedBox(height: 10),
+                                      addAirAsiaLogoToQRCode(),
+                                      SizedBox(height: 10),
+                                      Text(
+                                        "${controller.userPreferences.getName()}",
+                                        style: tsOneTextTheme.bodyMedium,
+                                      ),
+                                      Text(
+                                        "${controller.userPreferences.getIDNo()}",
+                                        style: tsOneTextTheme.bodyMedium,
+                                      ),
+                                      SizedBox(height: 10),
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text("Close"),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 5),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.qr_code_2_rounded,
+                                size: 50,
+                                color: tsOneColorScheme.onSecondary,
+                              ),
+                              SizedBox(height: 5),
+                              Text(
+                                "Tap QR",
+                                style: TextStyle(color: TsOneColor.primary),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                   ],
                 ),
               ),
-
-              // Expanded(
-              //   flex: 0,
-              //   child: Center(
-              //     child: Padding(
-              //       padding: const EdgeInsets.symmetric(vertical: 25.0, horizontal: 10),
-              //       child: DecoratedBox(
-              //         decoration: BoxDecoration(
-              //           color: TsOneColor.primary,
-              //           borderRadius: BorderRadius.circular(16),
-              //           border: Border.all(
-              //             color: TsOneColor.primary,
-              //             width: 1,
-              //           ),
-              //           boxShadow: const [
-              //             BoxShadow(
-              //               color: TsOneColor.secondaryContainer,
-              //               blurRadius: 15,
-              //               spreadRadius: -5,
-              //               offset: Offset(-2, 1),
-              //               blurStyle: BlurStyle.normal,
-              //             ),
-              //           ],
-              //         ),
-              //         child: Padding(
-              //           padding: EdgeInsets.only(top: 16.0, left: 16.0, bottom: 16),
-              //           child: Column(
-              //             children: [
-              //               Row(
-              //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //                 children: [
-              //                   Expanded(
-              //                       flex: 2,
-              //                       child: const Text(
-              //                         "NAME",
-              //                         style: TextStyle(color: TsOneColor.secondary),
-              //                       )),
-              //                   Expanded(
-              //                       flex: 1,
-              //                       child: const Text(
-              //                         ":",
-              //                         style: TextStyle(color: TsOneColor.secondary),
-              //                       )),
-              //                   Expanded(
-              //                       flex: 5,
-              //                       child: Text(
-              //                         "${controller.userPreferences.getName()}",
-              //                         style: TextStyle(color: TsOneColor.secondary),
-              //                       )),
-              //                 ],
-              //               ),
-              //               const SizedBox(
-              //                 height: 10,
-              //               ),
-              //               Row(
-              //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //                 children: [
-              //                   Expanded(
-              //                       flex: 2,
-              //                       child: const Text(
-              //                         "ID NO",
-              //                         style: TextStyle(color: TsOneColor.secondary),
-              //                       )),
-              //                   Expanded(
-              //                       flex: 1,
-              //                       child: const Text(
-              //                         ":",
-              //                         style: TextStyle(color: TsOneColor.secondary),
-              //                       )),
-              //                   Expanded(
-              //                       flex: 5,
-              //                       child: Text(
-              //                         "${controller.userPreferences.getIDNo()}",
-              //                         style: TextStyle(color: TsOneColor.secondary),
-              //                       )),
-              //                 ],
-              //               ),
-              //               const SizedBox(
-              //                 height: 10,
-              //               ),
-              //               Row(
-              //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //                 children: [
-              //                   Expanded(
-              //                       flex: 2,
-              //                       child: const Text(
-              //                         "RANK",
-              //                         style: TextStyle(color: TsOneColor.secondary),
-              //                       )),
-              //                   Expanded(
-              //                       flex: 1,
-              //                       child: const Text(
-              //                         ":",
-              //                         style: TextStyle(color: TsOneColor.secondary),
-              //                       )),
-              //                   Expanded(
-              //                       flex: 5,
-              //                       child: Text(
-              //                         "${controller.userPreferences.getRank()}",
-              //                         style: TextStyle(color: TsOneColor.secondary),
-              //                       )),
-              //                 ],
-              //               ),
-              //               const SizedBox(
-              //                 height: 10,
-              //               ),
-              //             ],
-              //           ),
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // ),
               ElevatedButton(
                 onPressed: () {
                   controller.logout();
