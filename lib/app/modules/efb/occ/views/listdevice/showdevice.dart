@@ -36,7 +36,8 @@ class _ShowDeviceState extends State<ShowDevice> {
   }
 
   Future<void> loadImage() async {
-    final ByteData data = await rootBundle.load('assets/images/Wallpaper_EFB_Device.png');
+    final ByteData data =
+        await rootBundle.load('assets/images/Wallpaper_EFB_Device.png');
     if (mounted) {
       setState(() {
         imageData = data;
@@ -55,7 +56,9 @@ class _ShowDeviceState extends State<ShowDevice> {
         final buffer = capturedImage.buffer?.asUint8List();
 
         if (buffer != null) {
-          final result = await ImageGallerySaver.saveImage(Uint8List.fromList(buffer), quality: 80);
+          final result = await ImageGallerySaver.saveImage(
+              Uint8List.fromList(buffer),
+              quality: 80);
 
           if (result['isSuccess']) {
             print("The image has been successfully saved in the gallery.");
@@ -119,7 +122,9 @@ class _ShowDeviceState extends State<ShowDevice> {
                         children: [
                           Expanded(flex: 6, child: const Text('Device Number')),
                           Expanded(flex: 1, child: const Text(':')),
-                          Expanded(flex: 6, child: Text('${widget.device.deviceno}')),
+                          Expanded(
+                              flex: 6,
+                              child: Text('${widget.device.deviceno}')),
                         ],
                       ),
                       const SizedBox(
@@ -129,7 +134,8 @@ class _ShowDeviceState extends State<ShowDevice> {
                         children: [
                           Expanded(flex: 6, child: const Text('IOS Version')),
                           Expanded(flex: 1, child: const Text(':')),
-                          Expanded(flex: 6, child: Text('${widget.device.iosver}')),
+                          Expanded(
+                              flex: 6, child: Text('${widget.device.iosver}')),
                         ],
                       ),
                       const SizedBox(
@@ -137,9 +143,12 @@ class _ShowDeviceState extends State<ShowDevice> {
                       ),
                       Row(
                         children: [
-                          Expanded(flex: 6, child: const Text('FlySmart Version')),
+                          Expanded(
+                              flex: 6, child: const Text('FlySmart Version')),
                           Expanded(flex: 1, child: const Text(':')),
-                          Expanded(flex: 6, child: Text('${widget.device.flysmart}')),
+                          Expanded(
+                              flex: 6,
+                              child: Text('${widget.device.flysmart}')),
                         ],
                       ),
                       const SizedBox(
@@ -147,9 +156,13 @@ class _ShowDeviceState extends State<ShowDevice> {
                       ),
                       Row(
                         children: [
-                          Expanded(flex: 6, child: const Text('Lido Version')),
+                          Expanded(
+                              flex: 6,
+                              child: const Text('Lido mPilot Version')),
                           Expanded(flex: 1, child: const Text(':')),
-                          Expanded(flex: 6, child: Text('${widget.device.lidoversion}')),
+                          Expanded(
+                              flex: 6,
+                              child: Text('${widget.device.lidoversion}')),
                         ],
                       ),
                       const SizedBox(
@@ -157,9 +170,12 @@ class _ShowDeviceState extends State<ShowDevice> {
                       ),
                       Row(
                         children: [
-                          Expanded(flex: 6, child: const Text('Docu Version')),
+                          Expanded(
+                              flex: 6, child: const Text('Docunet Version')),
                           Expanded(flex: 1, child: const Text(':')),
-                          Expanded(flex: 6, child: Text('${widget.device.docuversion}')),
+                          Expanded(
+                              flex: 6,
+                              child: Text('${widget.device.docuversion}')),
                         ],
                       ),
                       const SizedBox(
@@ -169,7 +185,8 @@ class _ShowDeviceState extends State<ShowDevice> {
                         children: [
                           Expanded(flex: 6, child: const Text('Hub')),
                           Expanded(flex: 1, child: const Text(':')),
-                          Expanded(flex: 6, child: Text('${widget.device.hub}')),
+                          Expanded(
+                              flex: 6, child: Text('${widget.device.hub}')),
                         ],
                       ),
                       const SizedBox(
@@ -177,9 +194,12 @@ class _ShowDeviceState extends State<ShowDevice> {
                       ),
                       Row(
                         children: [
-                          Expanded(flex: 6, child: const Text('Device Condition')),
+                          Expanded(
+                              flex: 6, child: const Text('Device Condition')),
                           Expanded(flex: 1, child: const Text(':')),
-                          Expanded(flex: 6, child: Text('${widget.device.condition}')),
+                          Expanded(
+                              flex: 6,
+                              child: Text('${widget.device.condition}')),
                         ],
                       ),
                       const SizedBox(
@@ -222,7 +242,9 @@ class _ShowDeviceState extends State<ShowDevice> {
                   key: _captureKey,
                   child: Stack(
                     children: [
-                      if (imageData != null) Image.memory(Uint8List.sublistView(imageData!.buffer.asUint8List())),
+                      if (imageData != null)
+                        Image.memory(Uint8List.sublistView(
+                            imageData!.buffer.asUint8List())),
                       if (imageData == null) CircularProgressIndicator(),
                       Center(
                         child: Padding(
@@ -279,7 +301,8 @@ class _ShowDeviceState extends State<ShowDevice> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(4.0),
                 )),
-            child: const Text('Download Image', style: TextStyle(color: Colors.white)),
+            child: const Text('Download Image',
+                style: TextStyle(color: Colors.white)),
           ),
         ),
       ),

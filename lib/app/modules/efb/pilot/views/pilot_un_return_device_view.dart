@@ -49,20 +49,19 @@ class PilotUnReturnDeviceView extends GetView {
     await QuickAlert.show(
       context: context,
       type: QuickAlertType.success,
-      text: 'You have succesfully Rejected The Device',
+      text: 'You have successfully rejected the device.',
     ).then((value) {
       Get.offAllNamed(Routes.NAVOCC);
     });
   }
 
   void rejectedReturn(BuildContext context) async {
-
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Confirmation', style: tsOneTextTheme.headlineLarge),
-          content: Text('Are you sure you want to confirm the usage?'),
+          content: Text('Are you sure you want to reject the usage?'),
           actions: <Widget>[
             Row(
               children: [
@@ -94,9 +93,7 @@ class PilotUnReturnDeviceView extends GetView {
                         QuerySnapshot userQuery = await _firestore.collection('users').where('EMAIL', isEqualTo: user.email).get();
                         String userUid = userQuery.docs.first.id;
 
-                        DocumentReference pilotDeviceRef = FirebaseFirestore.instance
-                            .collection("pilot-device-1")
-                            .doc(deviceId);
+                        DocumentReference pilotDeviceRef = FirebaseFirestore.instance.collection("pilot-device-1").doc(deviceId);
 
                         try {
                           await pilotDeviceRef.update({
@@ -121,7 +118,6 @@ class PilotUnReturnDeviceView extends GetView {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -135,12 +131,9 @@ class PilotUnReturnDeviceView extends GetView {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
           child: FutureBuilder<DocumentSnapshot>(
-            future: FirebaseFirestore.instance
-                .collection("pilot-device-1")
-                .doc(deviceId)
-                .get(),
+            future: FirebaseFirestore.instance.collection("pilot-device-1").doc(deviceId).get(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator());
@@ -160,10 +153,7 @@ class PilotUnReturnDeviceView extends GetView {
               final deviceUid = data['device_uid'];
 
               return FutureBuilder<DocumentSnapshot>(
-                future: FirebaseFirestore.instance
-                    .collection("users")
-                    .doc(userUid)
-                    .get(),
+                future: FirebaseFirestore.instance.collection("users").doc(userUid).get(),
                 builder: (context, userSnapshot) {
                   if (userSnapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());
@@ -180,10 +170,7 @@ class PilotUnReturnDeviceView extends GetView {
                   final userData = userSnapshot.data!.data() as Map<String, dynamic>;
 
                   return FutureBuilder<DocumentSnapshot>(
-                    future: FirebaseFirestore.instance
-                        .collection("Device")
-                        .doc(deviceUid)
-                        .get(),
+                    future: FirebaseFirestore.instance.collection("Device").doc(deviceUid).get(),
                     builder: (context, deviceSnapshot) {
                       if (deviceSnapshot.connectionState == ConnectionState.waiting) {
                         return Center(child: CircularProgressIndicator());
@@ -197,8 +184,7 @@ class PilotUnReturnDeviceView extends GetView {
                         return Center(child: Text('Device data not found'));
                       }
 
-                      final deviceData =
-                      deviceSnapshot.data!.data() as Map<String, dynamic>;
+                      final deviceData = deviceSnapshot.data!.data() as Map<String, dynamic>;
 
                       return Center(
                         child: Column(
@@ -266,12 +252,26 @@ class PilotUnReturnDeviceView extends GetView {
                                 ],
                               ),
                             ),
+                            SizedBox(height: 15.0),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text("Device 1", style: tsOneTextTheme.displaySmall),
+                            ),
                             SizedBox(height: 5.0),
                             Row(
                               children: [
                                 Expanded(
-                                    flex: 6, child: Text("Device ID", style: tsOneTextTheme.bodySmall,)),
-                                Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
+                                    flex: 6,
+                                    child: Text(
+                                      "Device No",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
+                                Expanded(
+                                    flex: 1,
+                                    child: Text(
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
@@ -285,8 +285,17 @@ class PilotUnReturnDeviceView extends GetView {
                             Row(
                               children: [
                                 Expanded(
-                                    flex: 6, child: Text("iOS Version",style: tsOneTextTheme.bodySmall,)),
-                                Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
+                                    flex: 6,
+                                    child: Text(
+                                      "IOS Version",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
+                                Expanded(
+                                    flex: 1,
+                                    child: Text(
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
@@ -300,8 +309,17 @@ class PilotUnReturnDeviceView extends GetView {
                             Row(
                               children: [
                                 Expanded(
-                                    flex: 6, child: Text("FlySmart Version", style: tsOneTextTheme.bodySmall,)),
-                                Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
+                                    flex: 6,
+                                    child: Text(
+                                      "FlySmart Version",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
+                                Expanded(
+                                    flex: 1,
+                                    child: Text(
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
@@ -315,8 +333,17 @@ class PilotUnReturnDeviceView extends GetView {
                             Row(
                               children: [
                                 Expanded(
-                                    flex: 6, child: Text("Docu Version", style: tsOneTextTheme.bodySmall,)),
-                                Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
+                                    flex: 6,
+                                    child: Text(
+                                      "Docunet Version",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
+                                Expanded(
+                                    flex: 1,
+                                    child: Text(
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
@@ -330,8 +357,17 @@ class PilotUnReturnDeviceView extends GetView {
                             Row(
                               children: [
                                 Expanded(
-                                    flex: 6, child: Text("Lido Version", style: tsOneTextTheme.bodySmall,)),
-                                Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
+                                    flex: 6,
+                                    child: Text(
+                                      "Lido mPilot Version",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
+                                Expanded(
+                                    flex: 1,
+                                    child: Text(
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
@@ -345,8 +381,17 @@ class PilotUnReturnDeviceView extends GetView {
                             Row(
                               children: [
                                 Expanded(
-                                    flex: 6, child: Text("HUB", style: tsOneTextTheme.bodySmall,)),
-                                Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
+                                    flex: 6,
+                                    child: Text(
+                                      "Hub",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
+                                Expanded(
+                                    flex: 1,
+                                    child: Text(
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
@@ -360,8 +405,17 @@ class PilotUnReturnDeviceView extends GetView {
                             Row(
                               children: [
                                 Expanded(
-                                    flex: 6, child: Text("Condition", style: tsOneTextTheme.bodySmall,)),
-                                Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
+                                    flex: 6,
+                                    child: Text(
+                                      "Condition",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
+                                Expanded(
+                                    flex: 1,
+                                    child: Text(
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
@@ -393,8 +447,7 @@ class PilotUnReturnDeviceView extends GetView {
                 backgroundColor: TsOneColor.primary,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(4.0),
-                )
-            ),
+                )),
             child: const Text('Reject', style: TextStyle(color: Colors.white)),
           ),
         ),

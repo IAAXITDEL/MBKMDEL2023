@@ -44,7 +44,6 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
   Uint8List? signatureImage;
   final GlobalKey<SfSignaturePadState> _signaturePadKey = GlobalKey<SfSignaturePadState>();
 
-
   @override
   void initState() {
     super.initState();
@@ -92,8 +91,6 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
       );
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -191,8 +188,18 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
                     ),
                     Row(
                       children: [
-                        Expanded(flex: 6, child: Text("ID NO", style: tsOneTextTheme.bodySmall,)),
-                        Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
+                        Expanded(
+                            flex: 6,
+                            child: Text(
+                              "ID NO",
+                              style: tsOneTextTheme.bodySmall,
+                            )),
+                        Expanded(
+                            flex: 1,
+                            child: Text(
+                              ":",
+                              style: tsOneTextTheme.bodySmall,
+                            )),
                         Expanded(
                           flex: 6,
                           child: Text(
@@ -205,8 +212,18 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
                     SizedBox(height: 5.0),
                     Row(
                       children: [
-                        Expanded(flex: 6, child: Text("Name", style: tsOneTextTheme.bodySmall,)),
-                        Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
+                        Expanded(
+                            flex: 6,
+                            child: Text(
+                              "Name",
+                              style: tsOneTextTheme.bodySmall,
+                            )),
+                        Expanded(
+                            flex: 1,
+                            child: Text(
+                              ":",
+                              style: tsOneTextTheme.bodySmall,
+                            )),
                         Expanded(
                           flex: 6,
                           child: Text(
@@ -218,8 +235,18 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
                     ),
                     Row(
                       children: [
-                        Expanded(flex: 6, child: Text("Rank", style: tsOneTextTheme.bodySmall,)),
-                        Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
+                        Expanded(
+                            flex: 6,
+                            child: Text(
+                              "Rank",
+                              style: tsOneTextTheme.bodySmall,
+                            )),
+                        Expanded(
+                            flex: 1,
+                            child: Text(
+                              ":",
+                              style: tsOneTextTheme.bodySmall,
+                            )),
                         Expanded(
                           flex: 6,
                           child: Text(
@@ -231,8 +258,18 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
                     ),
                     Row(
                       children: [
-                        Expanded(flex: 6, child: Text("HUB", style: tsOneTextTheme.bodySmall,)),
-                        Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
+                        Expanded(
+                            flex: 6,
+                            child: Text(
+                              "HUB",
+                              style: tsOneTextTheme.bodySmall,
+                            )),
+                        Expanded(
+                            flex: 1,
+                            child: Text(
+                              ":",
+                              style: tsOneTextTheme.bodySmall,
+                            )),
                         Expanded(
                           flex: 6,
                           child: Text(
@@ -247,7 +284,10 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
               SizedBox(height: 20.0),
               Align(
                 alignment: Alignment.center,
-                child: Text("Signature", style: tsOneTextTheme.headlineMedium,),
+                child: Text(
+                  "Signature",
+                  style: tsOneTextTheme.headlineMedium,
+                ),
               ),
               const SizedBox(
                 height: 15,
@@ -346,8 +386,7 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
                             action: SnackBarAction(
                               label: 'Close',
                               onPressed: () {
-                                ScaffoldMessenger.of(context)
-                                    .hideCurrentSnackBar();
+                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
                               },
                             ),
                           ),
@@ -360,8 +399,7 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
                             action: SnackBarAction(
                               label: 'Close',
                               onPressed: () {
-                                ScaffoldMessenger.of(context)
-                                    .hideCurrentSnackBar();
+                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
                               },
                             ),
                           ),
@@ -374,8 +412,7 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
                             action: SnackBarAction(
                               label: 'Close',
                               onPressed: () {
-                                ScaffoldMessenger.of(context)
-                                    .hideCurrentSnackBar();
+                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
                               },
                             ),
                           ),
@@ -388,8 +425,7 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
                             action: SnackBarAction(
                               label: 'Close',
                               onPressed: () {
-                                ScaffoldMessenger.of(context)
-                                    .hideCurrentSnackBar();
+                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
                               },
                             ),
                           ),
@@ -403,8 +439,7 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
                             action: SnackBarAction(
                               label: 'Close',
                               onPressed: () {
-                                ScaffoldMessenger.of(context)
-                                    .hideCurrentSnackBar();
+                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
                               },
                             ),
                           ),
@@ -440,30 +475,26 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
                                             final idNumber = _idController.text.trim();
                                             if (idNumber.isNotEmpty) {
                                               User? user = _auth.currentUser;
-                                              QuerySnapshot userQuery = await _firestore.collection('users').where('EMAIL', isEqualTo: user?.email).get();
+                                              QuerySnapshot userQuery =
+                                                  await _firestore.collection('users').where('EMAIL', isEqualTo: user?.email).get();
                                               String userUid = userQuery.docs.first.id;
                                               final image = await _signaturePadKey.currentState?.toImage(pixelRatio: 3.0);
                                               final ByteData? byteData = await image?.toByteData(format: ImageByteFormat.png);
                                               final Uint8List? uint8List = byteData?.buffer.asUint8List();
-                                              final Reference storageReference = FirebaseStorage.instance
-                                                  .ref()
-                                                  .child('signatures/${DateTime.now()}.png');
+                                              final Reference storageReference =
+                                                  FirebaseStorage.instance.ref().child('signatures/${DateTime.now()}.png');
                                               final UploadTask uploadTask = storageReference.putData(uint8List!);
 
                                               await uploadTask.whenComplete(() async {
                                                 String signatureUrl = await storageReference.getDownloadURL();
                                                 await _fetchUserData(idNumber);
 
-                                                FirebaseFirestore.instance
-                                                    .collection('pilot-device-1')
-                                                    .doc(widget.deviceId)
-                                                    .update({
+                                                FirebaseFirestore.instance.collection('pilot-device-1').doc(widget.deviceId).update({
                                                   'statusDevice': 'waiting-handover-to-other-crew',
                                                   'handover-to-crew': idNumber,
                                                   'signature_url': signatureUrl,
                                                   'document_id': widget.deviceId,
                                                 });
-
                                               });
 
                                               _showQuickAlert(context);
@@ -482,8 +513,7 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
                                                       onPressed: () {
                                                         Navigator.pop(context);
                                                       },
-                                                      child:
-                                                      const Text('OK'),
+                                                      child: const Text('OK'),
                                                     ),
                                                   ],
                                                 );
@@ -514,8 +544,7 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
                         minimumSize: const Size(double.infinity, 50),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(4),
-                        )
-                    ),
+                        )),
                     child: const Text('Submit', style: TextStyle(color: Colors.white)),
                   ),
                 ],
@@ -524,7 +553,6 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
           ),
         ),
       ),
-
     );
   }
 

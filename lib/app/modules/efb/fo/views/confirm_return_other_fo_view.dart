@@ -43,11 +43,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
   void initState() {
     super.initState();
     // Fetch deviceUid, deviceName, and OCC On Duty from Firestore using widget.deviceId
-    FirebaseFirestore.instance
-        .collection('pilot-device-1')
-        .doc(widget.deviceId)
-        .get()
-        .then((documentSnapshot) {
+    FirebaseFirestore.instance.collection('pilot-device-1').doc(widget.deviceId).get().then((documentSnapshot) {
       if (documentSnapshot.exists) {
         setState(() {
           deviceId2 = documentSnapshot['device_uid2'];
@@ -58,10 +54,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
         });
       }
     });
-
   }
-
-
 
   // Function to update status in Firestore and upload image to Firebase Storage
 
@@ -85,8 +78,6 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
     );
     Get.offAllNamed(Routes.NAVOCC);
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -165,356 +156,428 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
 
                           final deviceData2 = device2Snapshot.data!.data() as Map<String, dynamic>;
 
-                              return FutureBuilder<DocumentSnapshot>(
-                              future: FirebaseFirestore.instance.collection("Device").doc(data['device_uid3']).get(),
-                              builder: (context, device3Snapshot) {
+                          return FutureBuilder<DocumentSnapshot>(
+                            future: FirebaseFirestore.instance.collection("Device").doc(data['device_uid3']).get(),
+                            builder: (context, device3Snapshot) {
                               if (device3Snapshot.connectionState == ConnectionState.waiting) {
-                              return Center(child: CircularProgressIndicator());
+                                return Center(child: CircularProgressIndicator());
                               }
 
                               if (device3Snapshot.hasError) {
-                              return Center(child: Text('Error: ${device3Snapshot.error}'));
+                                return Center(child: Text('Error: ${device3Snapshot.error}'));
                               }
 
                               if (!device3Snapshot.hasData || !device3Snapshot.data!.exists) {
-                              return Center(child: Text('Device data not found'));
+                                return Center(child: Text('Device data not found'));
                               }
 
                               final deviceData3 = device3Snapshot.data!.data() as Map<String, dynamic>;
 
-                          return Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                SizedBox(height: 10.0),
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    "HANDOVER FROM",
-                                    style: tsOneTextTheme.titleLarge,
-                                  ),
-                                ),
-
-                                SizedBox(height: 5.0),
-                                Row(
+                              return Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    Expanded(
-                                        flex: 6, child: Text("ID NO", style: tsOneTextTheme.labelMedium,)),
-                                    Expanded(flex: 1, child: Text(":")),
-                                    Expanded(
-                                      flex: 6,
+                                    SizedBox(height: 10.0),
+                                    Align(
+                                      alignment: Alignment.centerLeft,
                                       child: Text(
-                                        '${otheruserData['ID NO'] ?? 'No Data'}',
-                                        style: tsOneTextTheme.labelMedium,
+                                        "HANDOVER FROM",
+                                        style: tsOneTextTheme.titleLarge,
                                       ),
+                                    ),
+                                    SizedBox(height: 5.0),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                            flex: 6,
+                                            child: Text(
+                                              "ID NO",
+                                              style: tsOneTextTheme.labelMedium,
+                                            )),
+                                        Expanded(flex: 1, child: Text(":")),
+                                        Expanded(
+                                          flex: 6,
+                                          child: Text(
+                                            '${otheruserData['ID NO'] ?? 'No Data'}',
+                                            style: tsOneTextTheme.labelMedium,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 5.0),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                            flex: 6,
+                                            child: Text(
+                                              "Name",
+                                              style: tsOneTextTheme.labelMedium,
+                                            )),
+                                        Expanded(flex: 1, child: Text(":")),
+                                        Expanded(
+                                          flex: 6,
+                                          child: Text(
+                                            '${otheruserData['NAME'] ?? 'No Data'}',
+                                            style: tsOneTextTheme.labelMedium,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 5.0),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                            flex: 6,
+                                            child: Text(
+                                              "RANK",
+                                              style: tsOneTextTheme.labelMedium,
+                                            )),
+                                        Expanded(flex: 1, child: Text(":")),
+                                        Expanded(
+                                          flex: 6,
+                                          child: Text(
+                                            '${otheruserData['RANK'] ?? 'No Data'}',
+                                            style: tsOneTextTheme.labelMedium,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 20.0),
+                                    Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        "HANDOVER TO",
+                                        style: tsOneTextTheme.titleLarge,
+                                      ),
+                                    ),
+                                    SizedBox(height: 5.0),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                            flex: 6,
+                                            child: Text(
+                                              "ID NO",
+                                              style: tsOneTextTheme.labelMedium,
+                                            )),
+                                        Expanded(flex: 1, child: Text(":")),
+                                        Expanded(
+                                          flex: 6,
+                                          child: Text(
+                                            '${userData['ID NO'] ?? 'No Data'}',
+                                            style: tsOneTextTheme.labelMedium,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 5.0),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                            flex: 6,
+                                            child: Text(
+                                              "Name",
+                                              style: tsOneTextTheme.labelMedium,
+                                            )),
+                                        Expanded(flex: 1, child: Text(":")),
+                                        Expanded(
+                                          flex: 6,
+                                          child: Text(
+                                            '${userData['NAME'] ?? 'No Data'}',
+                                            style: tsOneTextTheme.labelMedium,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 5.0),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                            flex: 6,
+                                            child: Text(
+                                              "Rank",
+                                              style: tsOneTextTheme.labelMedium,
+                                            )),
+                                        Expanded(flex: 1, child: Text(":")),
+                                        Expanded(
+                                          flex: 6,
+                                          child: Text(
+                                            '${userData['RANK'] ?? 'No Data'}',
+                                            style: tsOneTextTheme.labelMedium,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 20.0),
+                                    Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        "DEVICE INFO 1",
+                                        style: tsOneTextTheme.titleLarge,
+                                      ),
+                                    ),
+                                    SizedBox(height: 5.0),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                            flex: 6,
+                                            child: Text(
+                                              "Device No",
+                                              style: tsOneTextTheme.labelMedium,
+                                            )),
+                                        Expanded(flex: 1, child: Text(":")),
+                                        Expanded(
+                                          flex: 6,
+                                          child: Text(
+                                            '${data['device_name2'] ?? 'No Data'}',
+                                            style: tsOneTextTheme.labelMedium,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 5.0),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                            flex: 6,
+                                            child: Text(
+                                              "IOS Version",
+                                              style: tsOneTextTheme.labelMedium,
+                                            )),
+                                        Expanded(flex: 1, child: Text(":")),
+                                        Expanded(
+                                          flex: 6,
+                                          child: Text(
+                                            '${deviceData2['iosver'] ?? 'No Data'}',
+                                            style: tsOneTextTheme.labelMedium,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 5.0),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                            flex: 6,
+                                            child: Text(
+                                              "FlySmart Version",
+                                              style: tsOneTextTheme.labelMedium,
+                                            )),
+                                        Expanded(flex: 1, child: Text(":")),
+                                        Expanded(
+                                          flex: 6,
+                                          child: Text(
+                                            '${deviceData2['flysmart'] ?? 'No Data'}',
+                                            style: tsOneTextTheme.labelMedium,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 5.0),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                            flex: 6,
+                                            child: Text(
+                                              "Docunet Version",
+                                              style: tsOneTextTheme.labelMedium,
+                                            )),
+                                        Expanded(flex: 1, child: Text(":")),
+                                        Expanded(
+                                          flex: 6,
+                                          child: Text(
+                                            '${deviceData2['docuversion'] ?? 'No Data'}',
+                                            style: tsOneTextTheme.labelMedium,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 5.0),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                            flex: 6,
+                                            child: Text(
+                                              "Lido mPilot Version",
+                                              style: tsOneTextTheme.labelMedium,
+                                            )),
+                                        Expanded(flex: 1, child: Text(":")),
+                                        Expanded(
+                                          flex: 6,
+                                          child: Text(
+                                            '${deviceData2['lidoversion'] ?? 'No Data'}',
+                                            style: tsOneTextTheme.labelMedium,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 5.0),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                            flex: 6,
+                                            child: Text(
+                                              "HUB",
+                                              style: tsOneTextTheme.labelMedium,
+                                            )),
+                                        Expanded(flex: 1, child: Text(":")),
+                                        Expanded(
+                                          flex: 6,
+                                          child: Text(
+                                            '${deviceData2['hub'] ?? 'No Data'}',
+                                            style: tsOneTextTheme.labelMedium,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 5.0),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                            flex: 6,
+                                            child: Text(
+                                              "Condition",
+                                              style: tsOneTextTheme.labelMedium,
+                                            )),
+                                        Expanded(flex: 1, child: Text(":")),
+                                        Expanded(
+                                          flex: 6,
+                                          child: Text(
+                                            '${deviceData2['condition'] ?? 'No Data'}',
+                                            style: tsOneTextTheme.labelMedium,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 20.0),
+                                    Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        "DEVICE INFO 2",
+                                        style: tsOneTextTheme.titleLarge,
+                                      ),
+                                    ),
+                                    SizedBox(height: 5.0),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                            flex: 6,
+                                            child: Text(
+                                              "Device No",
+                                              style: tsOneTextTheme.labelMedium,
+                                            )),
+                                        Expanded(flex: 1, child: Text(":")),
+                                        Expanded(
+                                          flex: 6,
+                                          child: Text(
+                                            '${data['device_name3'] ?? 'No Data'}',
+                                            style: tsOneTextTheme.labelMedium,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 5.0),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                            flex: 6,
+                                            child: Text(
+                                              "IOS Version",
+                                              style: tsOneTextTheme.labelMedium,
+                                            )),
+                                        Expanded(flex: 1, child: Text(":")),
+                                        Expanded(
+                                          flex: 6,
+                                          child: Text(
+                                            '${deviceData3['iosver'] ?? 'No Data'}',
+                                            style: tsOneTextTheme.labelMedium,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 5.0),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                            flex: 6,
+                                            child: Text(
+                                              "FlySmart Version",
+                                              style: tsOneTextTheme.labelMedium,
+                                            )),
+                                        Expanded(flex: 1, child: Text(":")),
+                                        Expanded(
+                                          flex: 6,
+                                          child: Text(
+                                            '${deviceData3['flysmart'] ?? 'No Data'}',
+                                            style: tsOneTextTheme.labelMedium,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 5.0),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                            flex: 6,
+                                            child: Text(
+                                              "Docunet Version",
+                                              style: tsOneTextTheme.labelMedium,
+                                            )),
+                                        Expanded(flex: 1, child: Text(":")),
+                                        Expanded(
+                                          flex: 6,
+                                          child: Text(
+                                            '${deviceData3['docuversion'] ?? 'No Data'}',
+                                            style: tsOneTextTheme.labelMedium,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 5.0),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                            flex: 6,
+                                            child: Text(
+                                              "Lido mPilot Version",
+                                              style: tsOneTextTheme.labelMedium,
+                                            )),
+                                        Expanded(flex: 1, child: Text(":")),
+                                        Expanded(
+                                          flex: 6,
+                                          child: Text(
+                                            '${deviceData3['lidoversion'] ?? 'No Data'}',
+                                            style: tsOneTextTheme.labelMedium,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 5.0),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                            flex: 6,
+                                            child: Text(
+                                              "HUB",
+                                              style: tsOneTextTheme.labelMedium,
+                                            )),
+                                        Expanded(flex: 1, child: Text(":")),
+                                        Expanded(
+                                          flex: 6,
+                                          child: Text(
+                                            '${deviceData3['hub'] ?? 'No Data'}',
+                                            style: tsOneTextTheme.labelMedium,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
-
-
-                                SizedBox(height: 5.0),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                        flex: 6, child: Text("Name", style: tsOneTextTheme.labelMedium,)),
-                                    Expanded(flex: 1, child: Text(":")),
-                                    Expanded(
-                                      flex: 6,
-                                      child: Text(
-                                        '${otheruserData['NAME'] ?? 'No Data'}',
-                                        style: tsOneTextTheme.labelMedium,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-
-                                SizedBox(height: 5.0),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                        flex: 6, child: Text("RANK", style: tsOneTextTheme.labelMedium,)),
-                                    Expanded(flex: 1, child: Text(":")),
-                                    Expanded(
-                                      flex: 6,
-                                      child: Text(
-                                        '${otheruserData['RANK'] ?? 'No Data'}',
-                                        style: tsOneTextTheme.labelMedium,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-
-
-                                SizedBox(height: 20.0),
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    "HANDOVER TO",
-                                    style: tsOneTextTheme.titleLarge,
-                                  ),
-                                ),
-                                SizedBox(height: 5.0),
-                                Row(
-                                  children: [
-                                    Expanded(flex: 6, child: Text("ID NO", style: tsOneTextTheme.labelMedium,)),
-                                    Expanded(flex: 1, child: Text(":")),
-                                    Expanded(
-                                      flex: 6,
-                                      child: Text(
-                                        '${userData['ID NO'] ?? 'No Data'}',
-                                        style: tsOneTextTheme.labelMedium,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 5.0),
-                                Row(
-                                  children: [
-                                    Expanded(flex: 6, child: Text("Name", style: tsOneTextTheme.labelMedium,)),
-                                    Expanded(flex: 1, child: Text(":")),
-                                    Expanded(
-                                      flex: 6,
-                                      child: Text(
-                                        '${userData['NAME'] ?? 'No Data'}',
-                                        style: tsOneTextTheme.labelMedium,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 5.0),
-                                Row(
-                                  children: [
-                                    Expanded(flex: 6, child: Text("Rank", style: tsOneTextTheme.labelMedium,)),
-                                    Expanded(flex: 1, child: Text(":")),
-                                    Expanded(
-                                      flex: 6,
-                                      child: Text(
-                                        '${userData['RANK'] ?? 'No Data'}',
-                                        style: tsOneTextTheme.labelMedium,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 20.0),
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    "DEVICE INFO 1",
-                                    style: tsOneTextTheme.titleLarge,
-                                  ),
-                                ),
-                                SizedBox(height: 5.0),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                        flex: 6, child: Text("Device ID", style: tsOneTextTheme.labelMedium,)),
-                                    Expanded(flex: 1, child: Text(":")),
-                                    Expanded(
-                                      flex: 6,
-                                      child: Text(
-                                        '${data['device_name2'] ?? 'No Data'}',
-                                        style: tsOneTextTheme.labelMedium,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 5.0),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                        flex: 6, child: Text("iOS Version", style: tsOneTextTheme.labelMedium,)),
-                                    Expanded(flex: 1, child: Text(":")),
-                                    Expanded(
-                                      flex: 6,
-                                      child: Text(
-                                        '${deviceData2['iosver'] ?? 'No Data'}',
-                                        style: tsOneTextTheme.labelMedium,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 5.0),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                        flex: 6, child: Text("FlySmart Version", style: tsOneTextTheme.labelMedium,)),
-                                    Expanded(flex: 1, child: Text(":")),
-                                    Expanded(
-                                      flex: 6,
-                                      child: Text(
-                                        '${deviceData2['flysmart'] ?? 'No Data'}',
-                                        style: tsOneTextTheme.labelMedium,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 5.0),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                        flex: 6, child: Text("Docu Version", style: tsOneTextTheme.labelMedium,)),
-                                    Expanded(flex: 1, child: Text(":")),
-                                    Expanded(
-                                      flex: 6,
-                                      child: Text(
-                                        '${deviceData2['docuversion'] ?? 'No Data'}',
-                                        style: tsOneTextTheme.labelMedium,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 5.0),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                        flex: 6, child: Text("Lido Version", style: tsOneTextTheme.labelMedium,)),
-                                    Expanded(flex: 1, child: Text(":")),
-                                    Expanded(
-                                      flex: 6,
-                                      child: Text(
-                                        '${deviceData2['lidoversion'] ?? 'No Data'}',
-                                        style: tsOneTextTheme.labelMedium,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 5.0),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                        flex: 6, child: Text("HUB", style: tsOneTextTheme.labelMedium,)),
-                                    Expanded(flex: 1, child: Text(":")),
-                                    Expanded(
-                                      flex: 6,
-                                      child: Text(
-                                        '${deviceData2['hub'] ?? 'No Data'}',
-                                        style: tsOneTextTheme.labelMedium,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 5.0),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                        flex: 6, child: Text("Condition", style: tsOneTextTheme.labelMedium,)),
-                                    Expanded(flex: 1, child: Text(":")),
-                                    Expanded(
-                                      flex: 6,
-                                      child: Text(
-                                        '${deviceData2['condition'] ?? 'No Data'}',
-                                        style: tsOneTextTheme.labelMedium,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-
-                                SizedBox(height: 20.0),
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    "DEVICE INFO 2",
-                                    style: tsOneTextTheme.titleLarge,
-                                  ),
-                                ),
-                                SizedBox(height: 5.0),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                        flex: 6, child: Text("Device ID", style: tsOneTextTheme.labelMedium,)),
-                                    Expanded(flex: 1, child: Text(":")),
-                                    Expanded(
-                                      flex: 6,
-                                      child: Text(
-                                        '${data['device_name3'] ?? 'No Data'}',
-                                        style: tsOneTextTheme.labelMedium,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 5.0),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                        flex: 6, child: Text("iOS Version", style: tsOneTextTheme.labelMedium,)),
-                                    Expanded(flex: 1, child: Text(":")),
-                                    Expanded(
-                                      flex: 6,
-                                      child: Text(
-                                        '${deviceData3['iosver'] ?? 'No Data'}',
-                                        style: tsOneTextTheme.labelMedium,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 5.0),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                        flex: 6, child: Text("FlySmart Version", style: tsOneTextTheme.labelMedium,)),
-                                    Expanded(flex: 1, child: Text(":")),
-                                    Expanded(
-                                      flex: 6,
-                                      child: Text(
-                                        '${deviceData3['flysmart'] ?? 'No Data'}',
-                                        style: tsOneTextTheme.labelMedium,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 5.0),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                        flex: 6, child: Text("Docu Version", style: tsOneTextTheme.labelMedium,)),
-                                    Expanded(flex: 1, child: Text(":")),
-                                    Expanded(
-                                      flex: 6,
-                                      child: Text(
-                                        '${deviceData3['docuversion'] ?? 'No Data'}',
-                                        style: tsOneTextTheme.labelMedium,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 5.0),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                        flex: 6, child: Text("Lido Version", style: tsOneTextTheme.labelMedium,)),
-                                    Expanded(flex: 1, child: Text(":")),
-                                    Expanded(
-                                      flex: 6,
-                                      child: Text(
-                                        '${deviceData3['lidoversion'] ?? 'No Data'}',
-                                        style: tsOneTextTheme.labelMedium,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 5.0),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                        flex: 6, child: Text("HUB", style: tsOneTextTheme.labelMedium,)),
-                                    Expanded(flex: 1, child: Text(":")),
-                                    Expanded(
-                                      flex: 6,
-                                      child: Text(
-                                        '${deviceData3['hub'] ?? 'No Data'}',
-                                        style: tsOneTextTheme.labelMedium,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
+                              );
+                            },
                           );
                         },
                       );
                     },
-                  );
-                },
                   );
                 },
               );
@@ -542,8 +605,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                 backgroundColor: TsOneColor.greenColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(4.0),
-                )
-            ),
+                )),
             child: const Text('Next', style: TextStyle(color: Colors.white)),
           ),
         ),
@@ -552,17 +614,12 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
   }
 }
 
-
 Future<String> getHubFromDeviceName(String deviceName2, String deviceName3) async {
   String hub = "Unknown Hub"; // Default value
 
   try {
     // Fetch the 'hub' field from the 'Device' collection based on deviceName
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-        .collection('Device')
-        .where('deviceno', whereIn: [deviceName2, deviceName3])
-        .get();
-
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Device').where('deviceno', whereIn: [deviceName2, deviceName3]).get();
 
     if (querySnapshot.docs.isNotEmpty) {
       hub = querySnapshot.docs.first['hub'];

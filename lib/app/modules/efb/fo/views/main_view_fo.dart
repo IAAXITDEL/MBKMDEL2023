@@ -23,22 +23,29 @@ class HomeFOView extends GetView<HomeFOController> {
 
     String getMonthText(int month) {
       const List<String> months = [
-        'January', 'February', 'March', 'April',
-        'May', 'June', 'July', 'August',
-        'September', 'October', 'November', 'Desember'
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'Desember'
       ];
-      return months[month - 1];  // Index 0-11 for Januari-Desember
+      return months[month - 1]; // Index 0-11 for Januari-Desember
     }
 
     String _formatTimestamp(Timestamp? timestamp) {
       if (timestamp == null) return 'No Data';
 
       DateTime dateTime = timestamp.toDate();
-      String formattedDateTime =
-          '${dateTime.day} ${getMonthText(dateTime.month)} ${dateTime.year}';
+      String formattedDateTime = '${dateTime.day} ${getMonthText(dateTime.month)} ${dateTime.year}';
       return formattedDateTime;
     }
-
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -78,13 +85,11 @@ class HomeFOView extends GetView<HomeFOController> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          Util.convertDateTimeDisplay(
-                              DateTime.now().toString(), "EEEE"),
+                          Util.convertDateTimeDisplay(DateTime.now().toString(), "EEEE"),
                           style: tsOneTextTheme.labelSmall,
                         ),
                         Text(
-                          Util.convertDateTimeDisplay(
-                              DateTime.now().toString(), "dd MMMM yyyy"),
+                          Util.convertDateTimeDisplay(DateTime.now().toString(), "dd MMMM yyyy"),
                           style: tsOneTextTheme.labelSmall,
                         ),
                       ],
@@ -92,9 +97,6 @@ class HomeFOView extends GetView<HomeFOController> {
                   ],
                 ),
               ),
-
-
-
               SizedBox(height: 20),
               FutureBuilder<QuerySnapshot>(
                 future: requestdeviceController.getFODevices(),
@@ -105,23 +107,15 @@ class HomeFOView extends GetView<HomeFOController> {
                     return Text('Error: ${snapshot.error}');
                   } else {
                     QuerySnapshot? pilotDevicesSnapshot = snapshot.data;
-                    if (pilotDevicesSnapshot != null &&
-                        pilotDevicesSnapshot.docs.isNotEmpty) {
+                    if (pilotDevicesSnapshot != null && pilotDevicesSnapshot.docs.isNotEmpty) {
                       // Filter the data for 'in-use-pilot' and 'waiting-confirmation-1'
-                      final inUsePilotDocs = pilotDevicesSnapshot.docs
-                          .where((doc) =>
-                      doc['statusDevice'] == 'in-use-pilot')
-                          .toList();
-                      final waitingConfirmationDocs = pilotDevicesSnapshot.docs
-                          .where((doc) =>
-                      doc['statusDevice'] == 'waiting-confirmation-1')
-                          .toList();
-                      final needConfirmationOccDocs = pilotDevicesSnapshot.docs
-                          .where((doc) => doc['statusDevice'] == 'need-confirmation-occ')
-                          .toList();
-                      final needConfirmationPilotDocs = pilotDevicesSnapshot.docs
-                          .where((doc) => doc['statusDevice'] == 'waiting-handover-to-other-crew')
-                          .toList();
+                      final inUsePilotDocs = pilotDevicesSnapshot.docs.where((doc) => doc['statusDevice'] == 'in-use-pilot').toList();
+                      final waitingConfirmationDocs =
+                          pilotDevicesSnapshot.docs.where((doc) => doc['statusDevice'] == 'waiting-confirmation-1').toList();
+                      final needConfirmationOccDocs =
+                          pilotDevicesSnapshot.docs.where((doc) => doc['statusDevice'] == 'need-confirmation-occ').toList();
+                      final needConfirmationPilotDocs =
+                          pilotDevicesSnapshot.docs.where((doc) => doc['statusDevice'] == 'waiting-handover-to-other-crew').toList();
 
                       return Column(
                         children: [
@@ -172,13 +166,12 @@ class HomeFOView extends GetView<HomeFOController> {
                                 String userId = doc['user_uid'];
                                 String deviceId = doc.id;
 
-
                                 return Align(
                                   alignment: Alignment.centerLeft,
                                   child: Container(
                                     width: double.infinity, // Set lebar kartu ke seluruh lebar tampilan
                                     child: Card(
-                                      color: tsOneColorScheme.primary,  // Mengatur warna latar belakang kartu menjadi merah
+                                      color: tsOneColorScheme.primary, // Mengatur warna latar belakang kartu menjadi merah
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(15),
                                       ),
@@ -202,24 +195,48 @@ class HomeFOView extends GetView<HomeFOController> {
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
-                                             Column(
-                                               crossAxisAlignment: CrossAxisAlignment.start,
-                                               children: [
-                                                 const Text ("1'st Device", style: TextStyle(color: TsOneColor.secondary),),
-                                                 const Text ("2'nd Device", style: TextStyle(color: TsOneColor.secondary),),
-                                                 const Text ('FO ID', style: TextStyle(color: TsOneColor.secondary),),
-                                                 const Text ('Date', style: TextStyle(color: TsOneColor.secondary),),
-                                               ],
-                                             ),
+                                              Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  const Text(
+                                                    "Device 2",
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
+                                                  const Text(
+                                                    "Device 3",
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
+                                                  const Text(
+                                                    'FO ID',
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
+                                                  const Text(
+                                                    'Date',
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
+                                                ],
+                                              ),
                                               const SizedBox(
                                                 width: 5,
                                               ),
                                               Column(
                                                 children: [
-                                                  const Text(':',style: TextStyle(color: TsOneColor.secondary),),
-                                                  const Text(':',style: TextStyle(color: TsOneColor.secondary),),
-                                                  const Text(':',style: TextStyle(color: TsOneColor.secondary),),
-                                                  const Text(':',style: TextStyle(color: TsOneColor.secondary),),
+                                                  const Text(
+                                                    ':',
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
+                                                  const Text(
+                                                    ':',
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
+                                                  const Text(
+                                                    ':',
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
+                                                  const Text(
+                                                    ':',
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
                                                 ],
                                               ),
                                               const SizedBox(
@@ -227,23 +244,14 @@ class HomeFOView extends GetView<HomeFOController> {
                                               ),
                                               Expanded(
                                                   child: Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children: [
-                                                      Text(
-                                                        deviceName2,style: TextStyle(color: TsOneColor.secondary)
-                                                      ),
-                                                      Text(
-                                                          deviceName3,style: TextStyle(color: TsOneColor.secondary)
-                                                      ),
-                                                      Text(
-                                                          userId,style: TextStyle(color: TsOneColor.secondary)
-                                                      ),
-                                                      Text(
-                                                        _formatTimestamp(doc['timestamp']),style: TextStyle(color: TsOneColor.secondary)
-                                                      ),
-                                                    ],
-                                                  )
-                                              ),
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(deviceName2, style: TextStyle(color: TsOneColor.secondary)),
+                                                  Text(deviceName3, style: TextStyle(color: TsOneColor.secondary)),
+                                                  Text(userId, style: TextStyle(color: TsOneColor.secondary)),
+                                                  Text(_formatTimestamp(doc['timestamp']), style: TextStyle(color: TsOneColor.secondary)),
+                                                ],
+                                              )),
                                               const Icon(
                                                 Icons.chevron_right,
                                                 color: TsOneColor.secondary,
@@ -256,7 +264,6 @@ class HomeFOView extends GetView<HomeFOController> {
                                     ),
                                   ),
                                 );
-
                               }).toList(),
                             ),
                             SizedBox(height: 10),
@@ -281,7 +288,7 @@ class HomeFOView extends GetView<HomeFOController> {
                                   child: Container(
                                     width: double.infinity, // Set lebar kartu ke seluruh lebar tampilan
                                     child: Card(
-                                      color: tsOneColorScheme.primary,  // Mengatur warna latar belakang kartu menjadi merah
+                                      color: tsOneColorScheme.primary, // Mengatur warna latar belakang kartu menjadi merah
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(15),
                                       ),
@@ -291,10 +298,10 @@ class HomeFOView extends GetView<HomeFOController> {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) =>
-                                                  FOUnRequestDeviceView(
-                                                    deviceId: deviceId, deviceName: '',
-                                                  ),
+                                              builder: (context) => FOUnRequestDeviceView(
+                                                deviceId: deviceId,
+                                                deviceName: '',
+                                              ),
                                             ),
                                           );
                                         },
@@ -306,10 +313,22 @@ class HomeFOView extends GetView<HomeFOController> {
                                               Column(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
-                                                  const Text ("1'st Device", style: TextStyle(color: TsOneColor.secondary),),
-                                                  const Text ("2'nd Device", style: TextStyle(color: TsOneColor.secondary),),
-                                                  const Text ('FO ID', style: TextStyle(color: TsOneColor.secondary),),
-                                                  const Text ('Date', style: TextStyle(color: TsOneColor.secondary),),
+                                                  const Text(
+                                                    "Device 2",
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
+                                                  const Text(
+                                                    "Device 3",
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
+                                                  const Text(
+                                                    'FO ID',
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
+                                                  const Text(
+                                                    'Date',
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
                                                 ],
                                               ),
                                               const SizedBox(
@@ -317,10 +336,22 @@ class HomeFOView extends GetView<HomeFOController> {
                                               ),
                                               Column(
                                                 children: [
-                                                  const Text(':',style: TextStyle(color: TsOneColor.secondary),),
-                                                  const Text(':',style: TextStyle(color: TsOneColor.secondary),),
-                                                  const Text(':',style: TextStyle(color: TsOneColor.secondary),),
-                                                  const Text(':',style: TextStyle(color: TsOneColor.secondary),),
+                                                  const Text(
+                                                    ':',
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
+                                                  const Text(
+                                                    ':',
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
+                                                  const Text(
+                                                    ':',
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
+                                                  const Text(
+                                                    ':',
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
                                                 ],
                                               ),
                                               const SizedBox(
@@ -328,23 +359,14 @@ class HomeFOView extends GetView<HomeFOController> {
                                               ),
                                               Expanded(
                                                   child: Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children: [
-                                                      Text(
-                                                          deviceName2,style: TextStyle(color: TsOneColor.secondary)
-                                                      ),
-                                                      Text(
-                                                          deviceName3,style: TextStyle(color: TsOneColor.secondary)
-                                                      ),
-                                                      Text(
-                                                          userId,style: TextStyle(color: TsOneColor.secondary)
-                                                      ),
-                                                      Text(
-                                                          _formatTimestamp(doc['timestamp']),style: TextStyle(color: TsOneColor.secondary)
-                                                      ),
-                                                    ],
-                                                  )
-                                              ),
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(deviceName2, style: TextStyle(color: TsOneColor.secondary)),
+                                                  Text(deviceName3, style: TextStyle(color: TsOneColor.secondary)),
+                                                  Text(userId, style: TextStyle(color: TsOneColor.secondary)),
+                                                  Text(_formatTimestamp(doc['timestamp']), style: TextStyle(color: TsOneColor.secondary)),
+                                                ],
+                                              )),
                                               const Icon(
                                                 Icons.chevron_right,
                                                 color: TsOneColor.secondary,
@@ -403,7 +425,6 @@ class HomeFOView extends GetView<HomeFOController> {
                             SizedBox(
                               height: 20.0,
                             ),
-
                             Align(
                               alignment: Alignment.centerLeft,
                               child: BlackTitleText(text: "Wait For Confirmation!"),
@@ -421,7 +442,7 @@ class HomeFOView extends GetView<HomeFOController> {
                                   child: Container(
                                     width: double.infinity, // Set lebar kartu ke seluruh lebar tampilan
                                     child: Card(
-                                      color: tsOneColorScheme.primary,  // Mengatur warna latar belakang kartu menjadi merah
+                                      color: tsOneColorScheme.primary, // Mengatur warna latar belakang kartu menjadi merah
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(15),
                                       ),
@@ -431,12 +452,11 @@ class HomeFOView extends GetView<HomeFOController> {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) =>
-                                                  FOUnReturnOtherCrew(
-                                                    deviceName2: deviceName2,
-                                                    deviceName3: deviceName3,
-                                                    deviceId: deviceId,
-                                                  ),
+                                              builder: (context) => FOUnReturnOtherCrew(
+                                                deviceName2: deviceName2,
+                                                deviceName3: deviceName3,
+                                                deviceId: deviceId,
+                                              ),
                                             ),
                                           );
                                         },
@@ -448,10 +468,22 @@ class HomeFOView extends GetView<HomeFOController> {
                                               Column(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
-                                                  const Text ("1'st Device", style: TextStyle(color: TsOneColor.secondary),),
-                                                  const Text ("2'nd Device", style: TextStyle(color: TsOneColor.secondary),),
-                                                  const Text ('FO ID', style: TextStyle(color: TsOneColor.secondary),),
-                                                  const Text ('Date', style: TextStyle(color: TsOneColor.secondary),),
+                                                  const Text(
+                                                    "Device 2",
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
+                                                  const Text(
+                                                    "Device 3",
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
+                                                  const Text(
+                                                    'FO ID',
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
+                                                  const Text(
+                                                    'Date',
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
                                                 ],
                                               ),
                                               const SizedBox(
@@ -459,10 +491,22 @@ class HomeFOView extends GetView<HomeFOController> {
                                               ),
                                               Column(
                                                 children: [
-                                                  const Text(':',style: TextStyle(color: TsOneColor.secondary),),
-                                                  const Text(':',style: TextStyle(color: TsOneColor.secondary),),
-                                                  const Text(':',style: TextStyle(color: TsOneColor.secondary),),
-                                                  const Text(':',style: TextStyle(color: TsOneColor.secondary),),
+                                                  const Text(
+                                                    ':',
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
+                                                  const Text(
+                                                    ':',
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
+                                                  const Text(
+                                                    ':',
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
+                                                  const Text(
+                                                    ':',
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
                                                 ],
                                               ),
                                               const SizedBox(
@@ -470,23 +514,14 @@ class HomeFOView extends GetView<HomeFOController> {
                                               ),
                                               Expanded(
                                                   child: Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children: [
-                                                      Text(
-                                                          deviceName2,style: TextStyle(color: TsOneColor.secondary)
-                                                      ),
-                                                      Text(
-                                                          deviceName3,style: TextStyle(color: TsOneColor.secondary)
-                                                      ),
-                                                      Text(
-                                                          userId,style: TextStyle(color: TsOneColor.secondary)
-                                                      ),
-                                                      Text(
-                                                          _formatTimestamp(doc['timestamp']),style: TextStyle(color: TsOneColor.secondary)
-                                                      ),
-                                                    ],
-                                                  )
-                                              ),
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(deviceName2, style: TextStyle(color: TsOneColor.secondary)),
+                                                  Text(deviceName3, style: TextStyle(color: TsOneColor.secondary)),
+                                                  Text(userId, style: TextStyle(color: TsOneColor.secondary)),
+                                                  Text(_formatTimestamp(doc['timestamp']), style: TextStyle(color: TsOneColor.secondary)),
+                                                ],
+                                              )),
                                               const Icon(
                                                 Icons.chevron_right,
                                                 color: TsOneColor.secondary,
@@ -537,7 +572,7 @@ class HomeFOView extends GetView<HomeFOController> {
                                   child: Container(
                                     width: double.infinity, // Set lebar kartu ke seluruh lebar tampilan
                                     child: Card(
-                                      color: tsOneColorScheme.primary,  // Mengatur warna latar belakang kartu menjadi merah
+                                      color: tsOneColorScheme.primary, // Mengatur warna latar belakang kartu menjadi merah
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(15),
                                       ),
@@ -547,10 +582,9 @@ class HomeFOView extends GetView<HomeFOController> {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) =>
-                                                  FOUnReturnDeviceView(
-                                                    deviceId: deviceId,
-                                                  ),
+                                              builder: (context) => FOUnReturnDeviceView(
+                                                deviceId: deviceId,
+                                              ),
                                             ),
                                           );
                                         },
@@ -562,10 +596,22 @@ class HomeFOView extends GetView<HomeFOController> {
                                               Column(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
-                                                  const Text ("1'st Device", style: TextStyle(color: TsOneColor.secondary),),
-                                                  const Text ("2'nd Device", style: TextStyle(color: TsOneColor.secondary),),
-                                                  const Text ('FO ID', style: TextStyle(color: TsOneColor.secondary),),
-                                                  const Text ('Date', style: TextStyle(color: TsOneColor.secondary),),
+                                                  const Text(
+                                                    "Device 2",
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
+                                                  const Text(
+                                                    "Device 3",
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
+                                                  const Text(
+                                                    'FO ID',
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
+                                                  const Text(
+                                                    'Date',
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
                                                 ],
                                               ),
                                               const SizedBox(
@@ -573,10 +619,22 @@ class HomeFOView extends GetView<HomeFOController> {
                                               ),
                                               Column(
                                                 children: [
-                                                  const Text(':',style: TextStyle(color: TsOneColor.secondary),),
-                                                  const Text(':',style: TextStyle(color: TsOneColor.secondary),),
-                                                  const Text(':',style: TextStyle(color: TsOneColor.secondary),),
-                                                  const Text(':',style: TextStyle(color: TsOneColor.secondary),),
+                                                  const Text(
+                                                    ':',
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
+                                                  const Text(
+                                                    ':',
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
+                                                  const Text(
+                                                    ':',
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
+                                                  const Text(
+                                                    ':',
+                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                  ),
                                                 ],
                                               ),
                                               const SizedBox(
@@ -584,23 +642,14 @@ class HomeFOView extends GetView<HomeFOController> {
                                               ),
                                               Expanded(
                                                   child: Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children: [
-                                                      Text(
-                                                          deviceName2,style: TextStyle(color: TsOneColor.secondary)
-                                                      ),
-                                                      Text(
-                                                          deviceName3,style: TextStyle(color: TsOneColor.secondary)
-                                                      ),
-                                                      Text(
-                                                          userId,style: TextStyle(color: TsOneColor.secondary)
-                                                      ),
-                                                      Text(
-                                                          _formatTimestamp(doc['timestamp']),style: TextStyle(color: TsOneColor.secondary)
-                                                      ),
-                                                    ],
-                                                  )
-                                              ),
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(deviceName2, style: TextStyle(color: TsOneColor.secondary)),
+                                                  Text(deviceName3, style: TextStyle(color: TsOneColor.secondary)),
+                                                  Text(userId, style: TextStyle(color: TsOneColor.secondary)),
+                                                  Text(_formatTimestamp(doc['timestamp']), style: TextStyle(color: TsOneColor.secondary)),
+                                                ],
+                                              )),
                                               const Icon(
                                                 Icons.chevron_right,
                                                 color: TsOneColor.secondary,
@@ -631,9 +680,7 @@ class HomeFOView extends GetView<HomeFOController> {
                             SizedBox(
                               height: 20.0,
                             ),
-                            Align(
-                                alignment: Alignment.centerLeft,
-                                child: BlackTitleText(text: 'In Use')),
+                            Align(alignment: Alignment.centerLeft, child: BlackTitleText(text: 'In Use')),
                             SizedBox(
                               height: 15.0,
                             ),
@@ -657,13 +704,10 @@ class HomeFOView extends GetView<HomeFOController> {
                                 return Text('Error: ${snapshot.error}');
                               } else {
                                 QuerySnapshot? pilotDevicesSnapshot = snapshot.data;
-                                if (pilotDevicesSnapshot != null &&
-                                    pilotDevicesSnapshot.docs.isNotEmpty) {
+                                if (pilotDevicesSnapshot != null && pilotDevicesSnapshot.docs.isNotEmpty) {
                                   // Filter the data for 'in-use-pilot' and 'waiting-confirmation-1'
-                                  final inConfirmationPilotDocs = pilotDevicesSnapshot.docs
-                                      .where((doc) =>
-                                  doc['statusDevice'] == 'waiting-handover-to-other-crew')
-                                      .toList();
+                                  final inConfirmationPilotDocs =
+                                      pilotDevicesSnapshot.docs.where((doc) => doc['statusDevice'] == 'waiting-handover-to-other-crew').toList();
 
                                   return Column(
                                     children: [
@@ -686,13 +730,12 @@ class HomeFOView extends GetView<HomeFOController> {
                                             String userId = doc['user_uid'];
                                             String deviceId = doc.id;
 
-
                                             return Align(
                                               alignment: Alignment.centerLeft,
                                               child: Container(
                                                 width: double.infinity, // Set lebar kartu ke seluruh lebar tampilan
                                                 child: Card(
-                                                  color: tsOneColorScheme.primary,  // Mengatur warna latar belakang kartu menjadi merah
+                                                  color: tsOneColorScheme.primary, // Mengatur warna latar belakang kartu menjadi merah
                                                   shape: RoundedRectangleBorder(
                                                     borderRadius: BorderRadius.circular(15),
                                                   ),
@@ -718,10 +761,22 @@ class HomeFOView extends GetView<HomeFOController> {
                                                           Column(
                                                             crossAxisAlignment: CrossAxisAlignment.start,
                                                             children: [
-                                                              const Text ("1'st Device", style: TextStyle(color: TsOneColor.secondary),),
-                                                              const Text ("2'nd Device", style: TextStyle(color: TsOneColor.secondary),),
-                                                              const Text ('FO ID', style: TextStyle(color: TsOneColor.secondary),),
-                                                              const Text ('Date', style: TextStyle(color: TsOneColor.secondary),),
+                                                              const Text(
+                                                                "Device 2",
+                                                                style: TextStyle(color: TsOneColor.secondary),
+                                                              ),
+                                                              const Text(
+                                                                "Device 3",
+                                                                style: TextStyle(color: TsOneColor.secondary),
+                                                              ),
+                                                              const Text(
+                                                                'FO ID',
+                                                                style: TextStyle(color: TsOneColor.secondary),
+                                                              ),
+                                                              const Text(
+                                                                'Date',
+                                                                style: TextStyle(color: TsOneColor.secondary),
+                                                              ),
                                                             ],
                                                           ),
                                                           const SizedBox(
@@ -729,35 +784,37 @@ class HomeFOView extends GetView<HomeFOController> {
                                                           ),
                                                           Column(
                                                             children: [
-                                                              const Text(':',style: TextStyle(color: TsOneColor.secondary),),
-                                                              const Text(':',style: TextStyle(color: TsOneColor.secondary),),
-                                                              const Text(':',style: TextStyle(color: TsOneColor.secondary),),
-                                                              const Text(':',style: TextStyle(color: TsOneColor.secondary),),
+                                                              const Text(
+                                                                ':',
+                                                                style: TextStyle(color: TsOneColor.secondary),
+                                                              ),
+                                                              const Text(
+                                                                ':',
+                                                                style: TextStyle(color: TsOneColor.secondary),
+                                                              ),
+                                                              const Text(
+                                                                ':',
+                                                                style: TextStyle(color: TsOneColor.secondary),
+                                                              ),
+                                                              const Text(
+                                                                ':',
+                                                                style: TextStyle(color: TsOneColor.secondary),
+                                                              ),
                                                             ],
                                                           ),
                                                           const SizedBox(
                                                             width: 5,
                                                           ),
-
                                                           Expanded(
                                                               child: Column(
-                                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                                children: [
-                                                                  Text(
-                                                                      deviceName2,style: TextStyle(color: TsOneColor.secondary)
-                                                                  ),
-                                                                  Text(
-                                                                      deviceName3,style: TextStyle(color: TsOneColor.secondary)
-                                                                  ),
-                                                                  Text(
-                                                                      userId,style: TextStyle(color: TsOneColor.secondary)
-                                                                  ),
-                                                                  Text(
-                                                                      _formatTimestamp(doc['timestamp']),style: TextStyle(color: TsOneColor.secondary)
-                                                                  ),
-                                                                ],
-                                                              )
-                                                          ),
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                            children: [
+                                                              Text(deviceName2, style: TextStyle(color: TsOneColor.secondary)),
+                                                              Text(deviceName3, style: TextStyle(color: TsOneColor.secondary)),
+                                                              Text(userId, style: TextStyle(color: TsOneColor.secondary)),
+                                                              Text(_formatTimestamp(doc['timestamp']), style: TextStyle(color: TsOneColor.secondary)),
+                                                            ],
+                                                          )),
                                                           const Icon(
                                                             Icons.chevron_right,
                                                             color: TsOneColor.secondary,
@@ -770,7 +827,6 @@ class HomeFOView extends GetView<HomeFOController> {
                                                 ),
                                               ),
                                             );
-
                                           }).toList(),
                                         ),
                                         SizedBox(height: 10),
@@ -790,9 +846,7 @@ class HomeFOView extends GetView<HomeFOController> {
                                         SizedBox(
                                           height: 20.0,
                                         ),
-                                        Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: BlackTitleText(text: 'In Use')),
+                                        Align(alignment: Alignment.centerLeft, child: BlackTitleText(text: 'In Use')),
                                         SizedBox(
                                           height: 15.0,
                                         ),
@@ -800,7 +854,6 @@ class HomeFOView extends GetView<HomeFOController> {
                                           "There is data In Use ",
                                         ),
                                       ],
-
                                     ],
                                   );
                                 } else {
@@ -818,8 +871,7 @@ class HomeFOView extends GetView<HomeFOController> {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) =>
-                                                  FOrequestdeviceView(),
+                                              builder: (context) => FOrequestdeviceView(),
                                             ),
                                           );
                                         },
@@ -869,9 +921,7 @@ class HomeFOView extends GetView<HomeFOController> {
                                       SizedBox(
                                         height: 20.0,
                                       ),
-                                      Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: BlackTitleText(text: 'In Use')),
+                                      Align(alignment: Alignment.centerLeft, child: BlackTitleText(text: 'In Use')),
                                       SizedBox(
                                         height: 15.0,
                                       ),
@@ -884,7 +934,6 @@ class HomeFOView extends GetView<HomeFOController> {
                               }
                             },
                           ),
-
                         ],
                       );
                     }

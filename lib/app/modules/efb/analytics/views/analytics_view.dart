@@ -98,16 +98,16 @@ class AnalyticsView extends GetView<AnalyticsController> {
       }
       sheet
           .cell(CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: i + 2))
-          .value = device['field_hub'];
+          .value = device['field_hub'] ?? '-';
       sheet
           .cell(CellIndex.indexByColumnRow(columnIndex: 4, rowIndex: i + 2))
-          .value = device['device_name'];
+          .value = device['device_name'] ?? '-';
       sheet
           .cell(CellIndex.indexByColumnRow(columnIndex: 5, rowIndex: i + 2))
-          .value = device['device_name2'];
+          .value = device['device_name2'] ?? '-';
       sheet
           .cell(CellIndex.indexByColumnRow(columnIndex: 6, rowIndex: i + 2))
-          .value = device['device_name3'];
+          .value = device['device_name3'] ?? '-';
     }
 
     // Simpan data
@@ -214,7 +214,6 @@ class _AnalyticsHubState extends State<AnalyticsHub>
   late String selectedOption;
   int currentTabIndex = 0;
 
-  // Define variabel untuk menyimpan teks "start date" dan "end date"
   void _selectStartingDate(BuildContext context) async {
     final DateTime? pickedStartDate = await showDatePicker(
       context: context,
