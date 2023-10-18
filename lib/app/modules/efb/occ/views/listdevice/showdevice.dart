@@ -147,7 +147,7 @@ class _ShowDeviceState extends State<ShowDevice> {
                       ),
                       Row(
                         children: [
-                          Expanded(flex: 6, child: const Text('Lido Version')),
+                          Expanded(flex: 6, child: const Text('Lido mPilot Version')),
                           Expanded(flex: 1, child: const Text(':')),
                           Expanded(flex: 6, child: Text('${widget.device.lidoversion}')),
                         ],
@@ -157,7 +157,7 @@ class _ShowDeviceState extends State<ShowDevice> {
                       ),
                       Row(
                         children: [
-                          Expanded(flex: 6, child: const Text('Docu Version')),
+                          Expanded(flex: 6, child: const Text('Docunet Version')),
                           Expanded(flex: 1, child: const Text(':')),
                           Expanded(flex: 6, child: Text('${widget.device.docuversion}')),
                         ],

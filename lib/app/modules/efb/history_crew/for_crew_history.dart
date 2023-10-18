@@ -79,29 +79,54 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('History'),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            icon: Icon(Icons.filter_list),
-            onPressed: _showFilterBottomSheet,
+        backgroundColor: Colors.white, // Set background color to white
+        title: Text(
+          'History',
+          style: TextStyle(
+            color: Colors.black, // Set text color to red
+            fontSize: 20.1,
+            fontWeight: FontWeight.bold,
           ),
-        ],
+        ),
+        centerTitle: true,
+        // actions: [
+        //   IconButton(
+        //     icon: Icon(Icons.filter_list),
+        //     onPressed: _showFilterBottomSheet,
+        //   ),
+        // ],
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                controller: _searchController,
-                decoration: InputDecoration(
-                  hintText: 'Search by Device No',
-                ),
-                onChanged: (value) {
-                  setState(() {});
-                },
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: _searchController,
+                      decoration: InputDecoration(
+                        hintText: 'Search by Device No',
+                        prefixIcon: Icon(Icons.search),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                        ),
+                      ),
+                      onChanged: (value) {
+                        setState(() {});
+                      },
+                    ),
+                  ),
+                  IconButton(
+                    icon: Icon(
+                      Icons.filter_list,
+                      size: 45,
+                    ),
+                    onPressed: _showFilterBottomSheet,
+                  ),
+                ],
               ),
             ),
             Expanded(
@@ -128,7 +153,7 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
                     final userName = data['NAME'].toString().toLowerCase();
                     final deviceName = data['device_name'].toString().toLowerCase();
                     final deviceName2 = data['device_name2'].toString().toLowerCase();
-                    final deviceName3 = data['device_nam3'].toString().toLowerCase();
+                    final deviceName3 = data['device_name3'].toString().toLowerCase();
                     final searchTerm = _searchController.text.toLowerCase();
 
                     return userName.contains(searchTerm) || deviceName.contains(searchTerm) || deviceName2.contains(searchTerm) || deviceName3.contains(searchTerm);
@@ -236,66 +261,107 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
 
 
                                           return Padding(
-                                            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 10.0),
                                             child: SizedBox(
-                                              width: MediaQuery.of(context).size.width,
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
                                               child: Align(
                                                 alignment: Alignment.centerLeft,
                                                 child: Card(
-                                                  surfaceTintColor: TsOneColor.surface,
+                                                  color: tsOneColorScheme
+                                                      .secondary,
+                                                  surfaceTintColor:
+                                                  TsOneColor.surface,
                                                   shape: RoundedRectangleBorder(
-                                                    borderRadius: BorderRadius.circular(15),
+                                                    borderRadius:
+                                                    BorderRadius.circular(
+                                                        15),
                                                   ),
-                                                  elevation: 2, // You can adjust the elevation as needed
+                                                  elevation:
+                                                  3, // You can adjust the elevation as needed
                                                   child: InkWell(
                                                     onTap: () {
-                                                      Navigator.of(context).push(MaterialPageRoute(
-                                                        builder: (context) => DetailHistoryDeviceFOView(
-                                                          dataId: dataId,
-                                                          userName: userName,
-                                                          deviceno2: deviceno2,
-                                                          deviceno3: deviceno3,
+                                                      Navigator.of(context)
+                                                          .push(
+                                                        MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              DetailHistoryDeviceFOView(
+                                                                dataId: dataId,
+                                                                userName: userName,
+                                                                deviceno2:
+                                                                deviceno2,
+                                                                deviceno3:
+                                                                deviceno3,
+                                                              ),
                                                         ),
-                                                      ));
+                                                      );
                                                     },
                                                     child: Padding(
-                                                      padding: const EdgeInsets.all(10.0),
+                                                      padding:
+                                                      const EdgeInsets.all(
+                                                          10.0),
                                                       child: Row(
-                                                        mainAxisAlignment: MainAxisAlignment.center,
-                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                        crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
                                                         children: [
+                                                          SizedBox(width: 8.0),
                                                           CircleAvatar(
-                                                            backgroundImage: photoUrl != null
-                                                                ? NetworkImage(photoUrl as String)
-                                                                : AssetImage('assets/default_profile_image.png') as ImageProvider,
+                                                            backgroundImage: photoUrl !=
+                                                                null
+                                                                ? NetworkImage(
+                                                                photoUrl
+                                                                as String)
+                                                                : AssetImage(
+                                                                'assets/default_profile_image.png')
+                                                            as ImageProvider,
                                                             radius: 25.0,
                                                           ),
                                                           SizedBox(width: 12.0),
                                                           Flexible(
                                                             child: Column(
-                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                              crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
                                                               children: [
                                                                 Container(
-                                                                  width: double.infinity,
+                                                                  width: double
+                                                                      .infinity,
                                                                   child: Text(
-                                                                    '$userRank' + ' ' + '$userName',
-                                                                    style: tsOneTextTheme.titleMedium,
+                                                                    '$userName',
+                                                                    style: tsOneTextTheme
+                                                                        .titleMedium,
                                                                   ),
                                                                 ),
                                                                 Text(
-                                                                  '$deviceno2' + ' & ' + '$deviceno3',
-                                                                  style: tsOneTextTheme.labelSmall,
+                                                                  '$userRank',
+                                                                  style: tsOneTextTheme
+                                                                      .labelSmall,
+                                                                ),
+                                                                Text(
+                                                                  '$deviceno2' +
+                                                                      ' & ' +
+                                                                      '$deviceno3',
+                                                                  style: tsOneTextTheme
+                                                                      .labelSmall,
                                                                 ),
                                                                 Text(
                                                                   '${DateFormat('yyyy-MM-dd HH:mm a').format(timestamp.toDate())}',
-                                                                  style: tsOneTextTheme.labelSmall,
+                                                                  style: tsOneTextTheme
+                                                                      .labelSmall,
                                                                 ),
                                                               ],
                                                             ),
                                                           ),
                                                           const Icon(
                                                             Icons.chevron_right,
-                                                            color: TsOneColor.secondaryContainer,
+                                                            color: TsOneColor
+                                                                .onSecondary,
                                                             size: 30,
                                                           )
                                                         ],
@@ -316,60 +382,81 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
 
 
                                 return Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10.0),
                                   child: Card(
+                                    color: tsOneColorScheme.secondary,
+
                                     surfaceTintColor: TsOneColor.surface,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(15),
                                     ),
-                                    elevation: 2, // You can adjust the elevation as needed
+                                    elevation:
+                                    3, // You can adjust the elevation as needed
                                     child: InkWell(
                                       borderRadius: BorderRadius.circular(15.0),
                                       onTap: () {
-                                        Navigator.of(context).push(MaterialPageRoute(
-                                          builder: (context) => DetailHistoryDeviceView(
-                                            dataId: dataId,
-                                            userName: userName,
-                                            deviceno: deviceno,
-                                          ),
+                                        Navigator.of(context)
+                                            .push(MaterialPageRoute(
+                                          builder: (context) =>
+                                              DetailHistoryDeviceView(
+                                                dataId: dataId,
+                                                userName: userName,
+                                                deviceno: deviceno,
+                                              ),
                                         ));
                                       },
                                       child: Padding(
-                                        padding: const EdgeInsets.all(10.0), // Adjust padding as needed
+                                        padding: const EdgeInsets.all(
+                                            10.0), // Adjust padding as needed
                                         child: Row(
                                           children: [
+                                            SizedBox(width: 8.0),
                                             CircleAvatar(
                                               backgroundImage: photoUrl != null
-                                                  ? NetworkImage(photoUrl as String)
-                                                  : AssetImage('assets/default_profile_image.png') as ImageProvider,
+                                                  ? NetworkImage(
+                                                  photoUrl as String)
+                                                  : AssetImage(
+                                                  'assets/default_profile_image.png')
+                                              as ImageProvider,
                                               radius: 25.0,
                                             ),
-                                            SizedBox(width: 12.0),
+                                            SizedBox(width: 17.0),
                                             Expanded(
                                               child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                                 children: [
                                                   Container(
                                                     width: double.infinity,
                                                     child: Text(
-                                                      '$userRank' + ' ' + '$userName',
-                                                      style: tsOneTextTheme.titleMedium,
+                                                      '$userName',
+                                                      style: tsOneTextTheme
+                                                          .titleMedium,
                                                     ),
                                                   ),
                                                   Text(
+                                                    '$userRank',
+                                                    style: tsOneTextTheme
+                                                        .labelSmall,
+                                                  ),
+                                                  Text(
                                                     '$deviceno',
-                                                    style: tsOneTextTheme.labelSmall,
+                                                    style: tsOneTextTheme
+                                                        .labelSmall,
                                                   ),
                                                   Text(
                                                     '${DateFormat('yyyy-MM-dd HH:mm a').format(timestamp.toDate())}',
-                                                    style: tsOneTextTheme.labelSmall,
+                                                    style: tsOneTextTheme
+                                                        .labelSmall,
                                                   ),
                                                 ],
                                               ),
                                             ),
                                             const Icon(
                                               Icons.chevron_right,
-                                              color: TsOneColor.secondaryContainer,
+                                              color: TsOneColor
+                                                  .onSecondary,
                                               size: 30,
                                             )
                                           ],

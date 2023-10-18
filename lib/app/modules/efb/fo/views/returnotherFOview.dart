@@ -53,11 +53,7 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
   void initState() {
     super.initState();
     // Fetch deviceUid, deviceName, and OCC On Duty from Firestore using widget.deviceId
-    FirebaseFirestore.instance
-        .collection('pilot-device-1')
-        .doc(widget.deviceId)
-        .get()
-        .then((documentSnapshot) {
+    FirebaseFirestore.instance.collection('pilot-device-1').doc(widget.deviceId).get().then((documentSnapshot) {
       if (documentSnapshot.exists) {
         setState(() {
           deviceId2 = documentSnapshot['device_uid2'];
@@ -68,8 +64,6 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
         });
       }
     });
-
-
 
     _idController.addListener(() {
       // Listen to changes in the text field and filter users accordingly
@@ -88,10 +82,7 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
   }
 
   Future<void> _fetchUserData(String id) async {
-    final documentSnapshot = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(id)
-        .get();
+    final documentSnapshot = await FirebaseFirestore.instance.collection('users').doc(id).get();
 
     if (documentSnapshot.exists) {
       setState(() {
@@ -108,13 +99,16 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Return Other Pilot'),
         centerTitle: true,
+        backgroundColor: Colors.white,
+        title: Text(
+          'Return',
+          style: tsOneTextTheme.headlineLarge,
+        ),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -132,12 +126,10 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                       ),
                     ),
                   ),
-
                   ElevatedButton(
                     onPressed: () async {
                       // Trigger barcode scanning
-                      String barcodeScanResult = await FlutterBarcodeScanner.scanBarcode(
-                          '#FF0000', 'Cancel', true, ScanMode.BARCODE);
+                      String barcodeScanResult = await FlutterBarcodeScanner.scanBarcode('#FF0000', 'Cancel', true, ScanMode.BARCODE);
 
                       if (barcodeScanResult != '-1') {
                         // Update the text field with the scanned result
@@ -146,49 +138,47 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                           _fetchUserData(barcodeScanResult);
                         });
                         // Fetch user data for the scanned ID
-
                       }
                     },
                     child: Icon(Icons.qr_code_2),
                   ),
                 ],
               ),
-
               SizedBox(height: 16.0),
               if (usersStream == null && selectedUser == null)
                 Center(
                   child: Text('Please select the user'),
                 ),
-              if (usersStream != null)
-                StreamBuilder<QuerySnapshot>(
-                  stream: usersStream,
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
-                      return CircularProgressIndicator();
-                    }
-
-                    final users = snapshot.data!.docs;
-
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: users.length,
-                      itemBuilder: (context, index) {
-                        final user = users[index];
-
-                        return ListTile(
-                          title: Text(user.id), // Display the document ID
-                          onTap: () {
-                            _idController.text = user.id;
-                            _fetchUserData(user.id);
-                            setState(() {
-                              usersStream = null;
-                            });
-                          },
-                        );
-                      },
-                    );
-                  },
-                ),
+              // if (usersStream != null)
+              //   StreamBuilder<QuerySnapshot>(
+              //     stream: usersStream,
+              //     builder: (context, snapshot) {
+              //       if (!snapshot.hasData) {
+              //         return CircularProgressIndicator();
+              //       }
+              //
+              //       final users = snapshot.data!.docs;
+              //
+              //       return ListView.builder(
+              //         shrinkWrap: true,
+              //         itemCount: users.length,
+              //         itemBuilder: (context, index) {
+              //           final user = users[index];
+              //
+              //           return ListTile(
+              //             title: Text(user.id), // Display the document ID
+              //             onTap: () {
+              //               _idController.text = user.id;
+              //               _fetchUserData(user.id);
+              //               setState(() {
+              //                 usersStream = null;
+              //               });
+              //             },
+              //           );
+              //         },
+              //       );
+              //     },
+              //   ),
               SizedBox(height: 16.0),
               if (selectedUser != null)
                 Column(
@@ -203,8 +193,18 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                     ),
                     Row(
                       children: [
-                        Expanded(flex: 6, child: Text("ID NO", style: tsOneTextTheme.bodySmall,)),
-                        Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
+                        Expanded(
+                            flex: 6,
+                            child: Text(
+                              "ID NO",
+                              style: tsOneTextTheme.bodySmall,
+                            )),
+                        Expanded(
+                            flex: 1,
+                            child: Text(
+                              ":",
+                              style: tsOneTextTheme.bodySmall,
+                            )),
                         Expanded(
                           flex: 6,
                           child: Text(
@@ -217,8 +217,18 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                     SizedBox(height: 5.0),
                     Row(
                       children: [
-                        Expanded(flex: 6, child: Text("Name", style: tsOneTextTheme.bodySmall,)),
-                        Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
+                        Expanded(
+                            flex: 6,
+                            child: Text(
+                              "Name",
+                              style: tsOneTextTheme.bodySmall,
+                            )),
+                        Expanded(
+                            flex: 1,
+                            child: Text(
+                              ":",
+                              style: tsOneTextTheme.bodySmall,
+                            )),
                         Expanded(
                           flex: 6,
                           child: Text(
@@ -230,8 +240,18 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                     ),
                     Row(
                       children: [
-                        Expanded(flex: 6, child: Text("Rank", style: tsOneTextTheme.bodySmall,)),
-                        Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
+                        Expanded(
+                            flex: 6,
+                            child: Text(
+                              "Rank",
+                              style: tsOneTextTheme.bodySmall,
+                            )),
+                        Expanded(
+                            flex: 1,
+                            child: Text(
+                              ":",
+                              style: tsOneTextTheme.bodySmall,
+                            )),
                         Expanded(
                           flex: 6,
                           child: Text(
@@ -243,8 +263,18 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                     ),
                     Row(
                       children: [
-                        Expanded(flex: 6, child: Text("HUB", style: tsOneTextTheme.bodySmall,)),
-                        Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
+                        Expanded(
+                            flex: 6,
+                            child: Text(
+                              "HUB",
+                              style: tsOneTextTheme.bodySmall,
+                            )),
+                        Expanded(
+                            flex: 1,
+                            child: Text(
+                              ":",
+                              style: tsOneTextTheme.bodySmall,
+                            )),
                         Expanded(
                           flex: 6,
                           child: Text(
@@ -253,14 +283,17 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                           ),
                         ),
                       ],
-                    ), SizedBox(height: 20.0),
-
+                    ),
+                    SizedBox(height: 20.0),
                   ],
                 ),
               SizedBox(height: 20.0),
               Align(
                 alignment: Alignment.center,
-                child: Text("Signature", style: tsOneTextTheme.headlineMedium,),
+                child: Text(
+                  "Signature",
+                  style: tsOneTextTheme.headlineMedium,
+                ),
               ),
               const SizedBox(
                 height: 15,
@@ -360,8 +393,7 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                             action: SnackBarAction(
                               label: 'Close',
                               onPressed: () {
-                                ScaffoldMessenger.of(context)
-                                    .hideCurrentSnackBar();
+                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
                               },
                             ),
                           ),
@@ -374,8 +406,7 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                             action: SnackBarAction(
                               label: 'Close',
                               onPressed: () {
-                                ScaffoldMessenger.of(context)
-                                    .hideCurrentSnackBar();
+                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
                               },
                             ),
                           ),
@@ -388,8 +419,7 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                             action: SnackBarAction(
                               label: 'Close',
                               onPressed: () {
-                                ScaffoldMessenger.of(context)
-                                    .hideCurrentSnackBar();
+                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
                               },
                             ),
                           ),
@@ -402,8 +432,7 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                             action: SnackBarAction(
                               label: 'Close',
                               onPressed: () {
-                                ScaffoldMessenger.of(context)
-                                    .hideCurrentSnackBar();
+                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
                               },
                             ),
                           ),
@@ -417,8 +446,7 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                             action: SnackBarAction(
                               label: 'Close',
                               onPressed: () {
-                                ScaffoldMessenger.of(context)
-                                    .hideCurrentSnackBar();
+                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
                               },
                             ),
                           ),
@@ -454,30 +482,26 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                                             final idNumber = _idController.text.trim();
                                             if (idNumber.isNotEmpty) {
                                               User? user = _auth.currentUser;
-                                              QuerySnapshot userQuery = await _firestore.collection('users').where('EMAIL', isEqualTo: user?.email).get();
+                                              QuerySnapshot userQuery =
+                                              await _firestore.collection('users').where('EMAIL', isEqualTo: user?.email).get();
                                               String userUid = userQuery.docs.first.id;
                                               final image = await _signaturePadKey.currentState?.toImage(pixelRatio: 3.0);
                                               final ByteData? byteData = await image?.toByteData(format: ImageByteFormat.png);
                                               final Uint8List? uint8List = byteData?.buffer.asUint8List();
-                                              final Reference storageReference = FirebaseStorage.instance
-                                                  .ref()
-                                                  .child('signatures/${DateTime.now()}.png');
+                                              final Reference storageReference =
+                                              FirebaseStorage.instance.ref().child('signatures/${DateTime.now()}.png');
                                               final UploadTask uploadTask = storageReference.putData(uint8List!);
 
                                               await uploadTask.whenComplete(() async {
                                                 String signatureUrl = await storageReference.getDownloadURL();
                                                 await _fetchUserData(idNumber);
 
-                                                FirebaseFirestore.instance
-                                                    .collection('pilot-device-1')
-                                                    .doc(widget.deviceId)
-                                                    .update({
+                                                FirebaseFirestore.instance.collection('pilot-device-1').doc(widget.deviceId).update({
                                                   'statusDevice': 'waiting-handover-to-other-crew',
                                                   'handover-to-crew': idNumber,
                                                   'signature_url': signatureUrl,
                                                   'document_id': widget.deviceId,
                                                 });
-
                                               });
 
                                               Navigator.pop(context); // Close the ReturnOtherPilotView
@@ -496,8 +520,7 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                                                       onPressed: () {
                                                         Navigator.pop(context);
                                                       },
-                                                      child:
-                                                      const Text('OK'),
+                                                      child: const Text('OK'),
                                                     ),
                                                   ],
                                                 );
@@ -528,8 +551,7 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                         minimumSize: const Size(double.infinity, 50),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(4),
-                        )
-                    ),
+                        )),
                     child: const Text('Submit', style: TextStyle(color: Colors.white)),
                   ),
                 ],
@@ -553,8 +575,6 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
   }
 }
 
-
-
 Future<void> _showQuickAlert(BuildContext context) async {
   await QuickAlert.show(
     context: context,
@@ -562,7 +582,6 @@ Future<void> _showQuickAlert(BuildContext context) async {
     text: 'You have Returned To Other Crew! Thankss Capt!',
   );
   Get.offAllNamed(Routes.NAVOCC);
-
 }
 
 Future<String> getHubFromDeviceName(String deviceName2, String deviceName3) async {
@@ -570,11 +589,7 @@ Future<String> getHubFromDeviceName(String deviceName2, String deviceName3) asyn
 
   try {
     // Fetch the 'hub' field from the 'Device' collection based on deviceName
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-        .collection('Device')
-        .where('deviceno', whereIn: [deviceName2, deviceName3])
-        .get();
-
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Device').where('deviceno', whereIn: [deviceName2, deviceName3]).get();
 
     if (querySnapshot.docs.isNotEmpty) {
       hub = querySnapshot.docs.first['hub'];
@@ -585,5 +600,3 @@ Future<String> getHubFromDeviceName(String deviceName2, String deviceName3) asyn
 
   return hub;
 }
-
-

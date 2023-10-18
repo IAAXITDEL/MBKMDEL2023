@@ -6,17 +6,15 @@ import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:open_file/open_file.dart';
-import '../../../occ/views/history/detail_history_device_view.dart';
+import 'detail_history_device_view.dart';
 import 'package:http/http.dart' as http;
-
 
 String _formatTimestamp(Timestamp? timestamp) {
   if (timestamp == null) return 'No Data';
 
   DateTime dateTime = timestamp.toDate();
   // Format the date and time as desired, e.g., 'dd/MM/yyyy HH:mm:ss'
-  String formattedDateTime =
-      '${dateTime.day}/${dateTime.month}/${dateTime.year}'
+  String formattedDateTime = '${dateTime.day}/${dateTime.month}/${dateTime.year}'
       ' at '
       '${dateTime.hour}:${dateTime.minute}';
   return formattedDateTime;
@@ -53,8 +51,7 @@ Future<void> generateLogPdfDevice23({
   final output = await getTemporaryDirectory();
   final file = File("${output.path}/log_device2&3.pdf");
 
-  final ByteData logo =
-      await rootBundle.load('assets/images/airasia_logo_circle.png');
+  final ByteData logo = await rootBundle.load('assets/images/airasia_logo_circle.png');
   final Uint8List uint8list = logo.buffer.asUint8List();
 
   final font = await rootBundle.load("assets/fonts/Poppins-Regular.ttf");
@@ -120,7 +117,6 @@ Future<void> generateLogPdfDevice23({
       ],
     ),
   );
-  
 
   pdf.addPage(
     pw.Page(
@@ -296,7 +292,7 @@ Future<void> generateLogPdfDevice23({
                 children: [
                   pw.Container(
                     height: 20.0,
-                    child: _buildHeaderCellLeft('Flysmart Version 2', context),
+                    child: _buildHeaderCellLeft('FlySmart Version 2', context),
                   ),
                   pw.Container(
                     height: 20.0,
@@ -304,7 +300,7 @@ Future<void> generateLogPdfDevice23({
                   ),
                   pw.Container(
                     height: 20.0,
-                    child: _buildHeaderCellLeft('Flysmart Version 3', context),
+                    child: _buildHeaderCellLeft('FlySmart Version 3', context),
                   ),
                   pw.Container(
                     height: 20.0,
@@ -316,7 +312,7 @@ Future<void> generateLogPdfDevice23({
                 children: [
                   pw.Container(
                     height: 20.0,
-                    child: _buildHeaderCellLeft('LIDO Version 2', context),
+                    child: _buildHeaderCellLeft('Lido mPilot Version 2', context),
                   ),
                   pw.Container(
                     height: 20.0,
@@ -324,7 +320,7 @@ Future<void> generateLogPdfDevice23({
                   ),
                   pw.Container(
                     height: 20.0,
-                    child: _buildHeaderCellLeft('LIDO Version 3', context),
+                    child: _buildHeaderCellLeft('Lido mPilot Version 3', context),
                   ),
                   pw.Container(
                     height: 20.0,
@@ -401,8 +397,7 @@ Future<void> generateLogPdfDevice23({
           ),
 
           //Handover to other crew
-          if ('$statusdevice' == 'handover-to-other-crew')
-            pw.SizedBox(height: 10.0),
+          if ('$statusdevice' == 'handover-to-other-crew') pw.SizedBox(height: 10.0),
           if ('$statusdevice' == 'handover-to-other-crew')
             pw.Table(
               tableWidth: pw.TableWidth.min,
@@ -515,7 +510,6 @@ Future<void> generateLogPdfDevice23({
               ],
             ),
 
-
           if ('$statusdevice' == 'Done')
             pw.Row(
               children: [
@@ -532,52 +526,50 @@ Future<void> generateLogPdfDevice23({
                   child: pw.Column(
                     children: [
                       pw.Text('Receive Device 1 By'),
-
                     ],
                   ),
                 ),
               ],
             ),
           if ('$statusdevice' == 'Done')
-          pw.Row(
-            children: [
-              pw.Expanded(
-                flex: 5,
-                child: pw.Column(
-                  children: [
-                    pw.SizedBox(height: 5.0),
-                    pw.Container(
-                      child: signatureImageOCCWidget,
-                      width: 150,
-                      height: 90,
-                    ),
-                    pw.SizedBox(height: 5.0),
-                    pw.Text('$occAccept'),
-                  ],
+            pw.Row(
+              children: [
+                pw.Expanded(
+                  flex: 5,
+                  child: pw.Column(
+                    children: [
+                      pw.SizedBox(height: 5.0),
+                      pw.Container(
+                        child: signatureImageOCCWidget,
+                        width: 150,
+                        height: 90,
+                      ),
+                      pw.SizedBox(height: 5.0),
+                      pw.Text('$occAccept'),
+                    ],
+                  ),
                 ),
-              ),
-              pw.Expanded(
-                flex: 5,
-                child: pw.Column(
-                  children: [
-                    pw.SizedBox(height: 5.0),
-                    pw.Container(
-                      child: signatureImageWidget,
-                      width: 150,
-                      height: 90,
-                    ),
-                    pw.SizedBox(height: 5.0),
-                    pw.Text('$userName'),
-                    pw.SizedBox(height: 2.0),
-                    pw.Text('$userRank'),
-                  ],
+                pw.Expanded(
+                  flex: 5,
+                  child: pw.Column(
+                    children: [
+                      pw.SizedBox(height: 5.0),
+                      pw.Container(
+                        child: signatureImageWidget,
+                        width: 150,
+                        height: 90,
+                      ),
+                      pw.SizedBox(height: 5.0),
+                      pw.Text('$userName'),
+                      pw.SizedBox(height: 2.0),
+                      pw.Text('$userRank'),
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ),
+              ],
+            ),
 
-          if ('$statusdevice' == 'handover-to-other-crew')
-            pw.SizedBox(height: 50),
+          if ('$statusdevice' == 'handover-to-other-crew') pw.SizedBox(height: 50),
           if ('$statusdevice' == 'handover-to-other-crew')
             pw.Column(
               children: [footer],
@@ -647,7 +639,6 @@ pw.Widget _buildHeaderCellRight(String text, pw.Context context) {
       ),
     ),
   );
-
 }
 
 Future<Uint8List> fetchImage(String imageUrl) async {
@@ -658,6 +649,3 @@ Future<Uint8List> fetchImage(String imageUrl) async {
     throw Exception('Failed to load image');
   }
 }
-
-
-

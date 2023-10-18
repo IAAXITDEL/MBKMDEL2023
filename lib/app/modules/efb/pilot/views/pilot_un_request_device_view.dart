@@ -49,7 +49,7 @@ class PilotUnRequestDeviceView extends GetView {
     await QuickAlert.show(
       context: context,
       type: QuickAlertType.success,
-      text: 'Succesfully Rejected The Device',
+      text: 'Succesfully rejected the device',
     ).then((value) {
       Get.offAllNamed(Routes.NAVOCC);
     });
@@ -267,7 +267,7 @@ class PilotUnRequestDeviceView extends GetView {
                                 Expanded(
                                     flex: 6,
                                     child: Text(
-                                      "Device ID",
+                                      "Device No",
                                       style: tsOneTextTheme.bodySmall,
                                     )),
                                 Expanded(
@@ -291,7 +291,7 @@ class PilotUnRequestDeviceView extends GetView {
                                 Expanded(
                                     flex: 6,
                                     child: Text(
-                                      "iOS Version",
+                                      "IOS Version",
                                       style: tsOneTextTheme.bodySmall,
                                     )),
                                 Expanded(
@@ -339,7 +339,7 @@ class PilotUnRequestDeviceView extends GetView {
                                 Expanded(
                                     flex: 6,
                                     child: Text(
-                                      "Docu Version",
+                                      "Docunet Version",
                                       style: tsOneTextTheme.bodySmall,
                                     )),
                                 Expanded(
@@ -363,7 +363,7 @@ class PilotUnRequestDeviceView extends GetView {
                                 Expanded(
                                     flex: 6,
                                     child: Text(
-                                      "Lido Version",
+                                      "Lido mPilot Version",
                                       style: tsOneTextTheme.bodySmall,
                                     )),
                                 Expanded(

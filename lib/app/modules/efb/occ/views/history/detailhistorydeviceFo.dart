@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../../../presentation/theme.dart';
-import '../../../occ/views/history/handover_attachment23.dart';
+import 'handover_attachment23.dart';
 
 class DetailHistoryDeviceFOView extends GetView {
   final String dataId;
@@ -25,8 +25,7 @@ class DetailHistoryDeviceFOView extends GetView {
 
     DateTime dateTime = timestamp.toDate();
     // Format the date and time as desired, e.g., 'dd/MM/yyyy HH:mm:ss'
-    String formattedDateTime =
-        '${dateTime.day}/${dateTime.month}/${dateTime.year}'
+    String formattedDateTime = '${dateTime.day}/${dateTime.month}/${dateTime.year}'
         ' at '
         '${dateTime.hour}:${dateTime.minute}';
     return formattedDateTime;
@@ -44,10 +43,7 @@ class DetailHistoryDeviceFOView extends GetView {
       ),
       body: SingleChildScrollView(
         child: FutureBuilder<DocumentSnapshot>(
-          future: FirebaseFirestore.instance
-              .collection("pilot-device-1")
-              .doc(dataId)
-              .get(),
+          future: FirebaseFirestore.instance.collection("pilot-device-1").doc(dataId).get(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(child: CircularProgressIndicator());
@@ -72,10 +68,7 @@ class DetailHistoryDeviceFOView extends GetView {
             final occAccepted = data['occ-accepted-device'];
 
             return FutureBuilder<DocumentSnapshot>(
-              future: FirebaseFirestore.instance
-                  .collection("users")
-                  .doc(userUid)
-                  .get(),
+              future: FirebaseFirestore.instance.collection("users").doc(userUid).get(),
               builder: (context, userSnapshot) {
                 if (userSnapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());
@@ -89,130 +82,85 @@ class DetailHistoryDeviceFOView extends GetView {
                   return Center(child: Text('User data not found'));
                 }
 
-                final userData =
-                    userSnapshot.data!.data() as Map<String, dynamic>;
+                final userData = userSnapshot.data!.data() as Map<String, dynamic>;
 
                 //handover from
                 return FutureBuilder<DocumentSnapshot>(
-                  future: handoverTo != null
-                      ? FirebaseFirestore.instance
-                          .collection("users")
-                          .doc(handoverTo)
-                          .get()
-                      : Future.value(null),
+                  future: handoverTo != null ? FirebaseFirestore.instance.collection("users").doc(handoverTo).get() : Future.value(null),
                   builder: (context, handoverToSnapshot) {
-                    if (handoverToSnapshot.connectionState ==
-                        ConnectionState.waiting) {
+                    if (handoverToSnapshot.connectionState == ConnectionState.waiting) {
                       return Center(child: CircularProgressIndicator());
                     }
 
                     if (handoverToSnapshot.hasError) {
-                      return Center(
-                          child: Text('Error: ${handoverToSnapshot.error}'));
+                      return Center(child: Text('Error: ${handoverToSnapshot.error}'));
                     }
 
-                    final handoverTouserData = handoverToSnapshot.data?.data()
-                        as Map<String, dynamic>?;
+                    final handoverTouserData = handoverToSnapshot.data?.data() as Map<String, dynamic>?;
 
                     return FutureBuilder<DocumentSnapshot>(
-                      future: FirebaseFirestore.instance
-                          .collection("Device")
-                          .doc(deviceUid2)
-                          .get(),
+                      future: FirebaseFirestore.instance.collection("Device").doc(deviceUid2).get(),
                       builder: (context, deviceUid2Snapshot) {
-                        if (deviceUid2Snapshot.connectionState ==
-                            ConnectionState.waiting) {
+                        if (deviceUid2Snapshot.connectionState == ConnectionState.waiting) {
                           return Center(child: CircularProgressIndicator());
                         }
 
                         if (deviceUid2Snapshot.hasError) {
-                          return Center(
-                              child:
-                                  Text('Error: ${deviceUid2Snapshot.error}'));
+                          return Center(child: Text('Error: ${deviceUid2Snapshot.error}'));
                         }
 
-                        if (!deviceUid2Snapshot.hasData ||
-                            !deviceUid2Snapshot.data!.exists) {
+                        if (!deviceUid2Snapshot.hasData || !deviceUid2Snapshot.data!.exists) {
                           return Center(child: Text('Device data not found'));
                         }
 
-                        final deviceData2 = deviceUid2Snapshot.data!.data()
-                            as Map<String, dynamic>;
+                        final deviceData2 = deviceUid2Snapshot.data!.data() as Map<String, dynamic>;
 
                         return FutureBuilder<DocumentSnapshot>(
-                          future: FirebaseFirestore.instance
-                              .collection("Device")
-                              .doc(deviceUid3)
-                              .get(),
+                          future: FirebaseFirestore.instance.collection("Device").doc(deviceUid3).get(),
                           builder: (context, deviceUid3Snapshot) {
-                            if (deviceUid3Snapshot.connectionState ==
-                                ConnectionState.waiting) {
+                            if (deviceUid3Snapshot.connectionState == ConnectionState.waiting) {
                               return Center(child: CircularProgressIndicator());
                             }
 
                             if (deviceUid3Snapshot.hasError) {
-                              return Center(
-                                  child: Text(
-                                      'Error: ${deviceUid3Snapshot.error}'));
+                              return Center(child: Text('Error: ${deviceUid3Snapshot.error}'));
                             }
 
-                            if (!deviceUid3Snapshot.hasData ||
-                                !deviceUid3Snapshot.data!.exists) {
-                              return Center(
-                                  child: Text('Device data 3 not found'));
+                            if (!deviceUid3Snapshot.hasData || !deviceUid3Snapshot.data!.exists) {
+                              return Center(child: Text('Device data 3 not found'));
                             }
 
-                            final deviceData3 = deviceUid3Snapshot.data!.data()
-                                as Map<String, dynamic>;
+                            final deviceData3 = deviceUid3Snapshot.data!.data() as Map<String, dynamic>;
 
                             //occ on duty from
                             return FutureBuilder<DocumentSnapshot>(
-                              future: occOnDuty != null
-                                  ? FirebaseFirestore.instance
-                                      .collection("users")
-                                      .doc(occOnDuty)
-                                      .get()
-                                  : Future.value(null),
+                              future: occOnDuty != null ? FirebaseFirestore.instance.collection("users").doc(occOnDuty).get() : Future.value(null),
                               builder: (context, occOnDutySnapshot) {
-                                if (occOnDutySnapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return Center(
-                                      child: CircularProgressIndicator());
+                                if (occOnDutySnapshot.connectionState == ConnectionState.waiting) {
+                                  return Center(child: CircularProgressIndicator());
                                 }
 
                                 if (occOnDutySnapshot.hasError) {
-                                  return Center(
-                                      child: Text(
-                                          'Error: ${occOnDutySnapshot.error}'));
+                                  return Center(child: Text('Error: ${occOnDutySnapshot.error}'));
                                 }
 
-                                final occOnDutyuserData = occOnDutySnapshot.data
-                                    ?.data() as Map<String, dynamic>?;
+                                final occOnDutyuserData = occOnDutySnapshot.data?.data() as Map<String, dynamic>?;
 
                                 //occ accepted from
                                 return FutureBuilder<DocumentSnapshot>(
                                   future: occAccepted != null
-                                      ? FirebaseFirestore.instance
-                                          .collection("users")
-                                          .doc(occAccepted)
-                                          .get()
+                                      ? FirebaseFirestore.instance.collection("users").doc(occAccepted).get()
                                       : Future.value(null),
                                   builder: (context, occAcceptedSnapshot) {
-                                    if (occAcceptedSnapshot.connectionState ==
-                                        ConnectionState.waiting) {
-                                      return Center(
-                                          child: CircularProgressIndicator());
+                                    if (occAcceptedSnapshot.connectionState == ConnectionState.waiting) {
+                                      return Center(child: CircularProgressIndicator());
                                     }
 
                                     if (occAcceptedSnapshot.hasError) {
-                                      return Center(
-                                          child: Text(
-                                              'Error: ${occAcceptedSnapshot.error}'));
+                                      return Center(child: Text('Error: ${occAcceptedSnapshot.error}'));
                                     }
 
-                                    final occAccepteduserData =
-                                        occAcceptedSnapshot.data?.data()
-                                            as Map<String, dynamic>?;
+                                    final occAccepteduserData = occAcceptedSnapshot.data?.data() as Map<String, dynamic>?;
 
                                     return Center(
                                       child: Column(
@@ -294,7 +242,7 @@ class DetailHistoryDeviceFOView extends GetView {
                                                   SizedBox(height: 7.0),
                                                   Row(
                                                     children: [
-                                                      Expanded(flex: 6, child: Text("Device ID")),
+                                                      Expanded(flex: 6, child: Text("Device No")),
                                                       Expanded(flex: 1, child: Text(":")),
                                                       Expanded(
                                                         flex: 6,
@@ -305,7 +253,7 @@ class DetailHistoryDeviceFOView extends GetView {
                                                   SizedBox(height: 5.0),
                                                   Row(
                                                     children: [
-                                                      Expanded(flex: 6, child: Text("iOS Version")),
+                                                      Expanded(flex: 6, child: Text("IOS Version")),
                                                       Expanded(flex: 1, child: Text(":")),
                                                       Expanded(
                                                         flex: 6,
@@ -327,7 +275,7 @@ class DetailHistoryDeviceFOView extends GetView {
                                                   SizedBox(height: 5.0),
                                                   Row(
                                                     children: [
-                                                      Expanded(flex: 6, child: Text("Docu Version")),
+                                                      Expanded(flex: 6, child: Text("Docunet Version")),
                                                       Expanded(flex: 1, child: Text(":")),
                                                       Expanded(
                                                         flex: 6,
@@ -338,7 +286,7 @@ class DetailHistoryDeviceFOView extends GetView {
                                                   SizedBox(height: 5.0),
                                                   Row(
                                                     children: [
-                                                      Expanded(flex: 6, child: Text("Lido Version")),
+                                                      Expanded(flex: 6, child: Text("Lido mPilot Version")),
                                                       Expanded(flex: 1, child: Text(":")),
                                                       Expanded(
                                                         flex: 6,
@@ -360,8 +308,8 @@ class DetailHistoryDeviceFOView extends GetView {
                                                   SizedBox(height: 5.0),
                                                   Row(
                                                     children: [
-                                                      Expanded(flex: 6,child: Text("Condition")),
-                                                      Expanded(flex: 1,child: Text(":")),
+                                                      Expanded(flex: 6, child: Text("Condition")),
+                                                      Expanded(flex: 1, child: Text(":")),
                                                       Expanded(
                                                         flex: 6,
                                                         child: Text('${deviceData2['condition'] ?? 'No Data'}'),
@@ -382,7 +330,7 @@ class DetailHistoryDeviceFOView extends GetView {
                                                   SizedBox(height: 7.0),
                                                   Row(
                                                     children: [
-                                                      Expanded(flex: 6, child: Text("Device ID")),
+                                                      Expanded(flex: 6, child: Text("Device No")),
                                                       Expanded(flex: 1, child: Text(":")),
                                                       Expanded(
                                                         flex: 6,
@@ -393,7 +341,7 @@ class DetailHistoryDeviceFOView extends GetView {
                                                   SizedBox(height: 5.0),
                                                   Row(
                                                     children: [
-                                                      Expanded(flex: 6, child: Text("iOS Version")),
+                                                      Expanded(flex: 6, child: Text("IOS Version")),
                                                       Expanded(flex: 1, child: Text(":")),
                                                       Expanded(
                                                         flex: 6,
@@ -415,7 +363,7 @@ class DetailHistoryDeviceFOView extends GetView {
                                                   SizedBox(height: 5.0),
                                                   Row(
                                                     children: [
-                                                      Expanded(flex: 6, child: Text("Docu Version")),
+                                                      Expanded(flex: 6, child: Text("Docunet Version")),
                                                       Expanded(flex: 1, child: Text(":")),
                                                       Expanded(
                                                         flex: 6,
@@ -426,7 +374,7 @@ class DetailHistoryDeviceFOView extends GetView {
                                                   SizedBox(height: 5.0),
                                                   Row(
                                                     children: [
-                                                      Expanded(flex: 6, child: Text("Lido Version")),
+                                                      Expanded(flex: 6, child: Text("Lido mPilot Version")),
                                                       Expanded(flex: 1, child: Text(":")),
                                                       Expanded(
                                                         flex: 6,
@@ -459,15 +407,15 @@ class DetailHistoryDeviceFOView extends GetView {
 
                                                   SizedBox(height: 15.0),
                                                   if (status == 'Done')
-                                                  Text(
-                                                    "Return Documentation",
-                                                    style: TextStyle(
-                                                      fontSize: 18,
-                                                      fontWeight: FontWeight.w600,
-                                                      color: tsOneColorScheme.onBackground,
-                                                      fontFamily: 'Poppins',
+                                                    Text(
+                                                      "Return Documentation",
+                                                      style: TextStyle(
+                                                        fontSize: 18,
+                                                        fontWeight: FontWeight.w600,
+                                                        color: tsOneColorScheme.onBackground,
+                                                        fontFamily: 'Poppins',
+                                                      ),
                                                     ),
-                                                  ),
                                                   if (status == 'Done') SizedBox(height: 7.0),
                                                   if (status == 'Done')
                                                     Row(
@@ -491,8 +439,10 @@ class DetailHistoryDeviceFOView extends GetView {
                                                           flex: 6,
                                                           child: Column(
                                                             children: [
-                                                              if (status == 'Done' && data['prove_back_to_base'] == null || data['prove_back_to_base'].isEmpty)
-                                                                Text('There is no image',
+                                                              if (status == 'Done' && data['prove_back_to_base'] == null ||
+                                                                  data['prove_back_to_base'].isEmpty)
+                                                                Text(
+                                                                  'There is no image',
                                                                   style: TextStyle(color: Colors.black),
                                                                 ),
                                                               if (data['prove_back_to_base'] != null && data['prove_back_to_base'].isNotEmpty)
@@ -533,88 +483,8 @@ class DetailHistoryDeviceFOView extends GetView {
                                                       ],
                                                     ),
 
-
-                                                  if (status == 'handover-to-other-crew')
-                                                    Text(
-                                                      "Proof Info",
-                                                      style: TextStyle(
-                                                        fontSize: 20,
-                                                        fontWeight: FontWeight.w600,
-                                                        color: tsOneColorScheme.onBackground,
-                                                        fontFamily: 'Poppins',
-                                                      ),
-                                                    ),
-                                                  SizedBox(height: 7.0),
-                                                  if (status == 'handover-to-other-crew')
-                                                    Row(
-                                                      children: [
-                                                        Expanded(flex: 6, child: Text("Remarks")),
-                                                        Expanded(flex: 1, child: Text(":")),
-                                                        Expanded(
-                                                          flex: 6,
-                                                          child: handoverTouserData != null
-                                                              ? Text('${data['remarks'] ?? 'Not Found'}')
-                                                              : Text('Not Found'),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  SizedBox(height: 7.0),
-                                                  if (status == 'handover-to-other-crew')
-                                                    Row(
-                                                      children: [
-                                                        Expanded(flex: 6, child: Text("Proof of Remarks")),
-                                                        Expanded(flex: 1, child: Text(":")),
-                                                        Expanded(
-                                                          flex: 6,
-                                                          child: Column(
-                                                            children: [
-                                                              if (status == 'handover-to-other-crew' && data['prove_image_url'] == null || data['prove_image_url'].isEmpty)
-                                                                Text(
-                                                                  'There is no image',
-                                                                  style: TextStyle(color: Colors.black),
-                                                                ),
-                                                              if (data['prove_image_url'] != null && data['prove_image_url'].isNotEmpty)
-                                                                GestureDetector(
-                                                                  onTap: () {
-                                                                    showDialog(
-                                                                      context: context,
-                                                                      builder: (BuildContext context) {
-
-                                                                        return AlertDialog(
-                                                                          content: Container(
-                                                                            width: 400,
-                                                                            height: 400,
-                                                                            child: Image.network(
-                                                                              data['prove_image_url']??'No Data',
-                                                                              fit: BoxFit.cover,
-                                                                            ),
-                                                                          ),
-                                                                        );
-                                                                      },
-                                                                    );
-                                                                  },
-                                                                  child: Align(
-                                                                    alignment: Alignment.centerLeft,
-                                                                    child: Text(
-                                                                      'See Picture',
-                                                                      style: TextStyle(
-                                                                        color: TsOneColor.primary,
-                                                                        fontWeight: FontWeight.bold,
-                                                                        decoration: TextDecoration.underline,
-                                                                        decorationColor: TsOneColor.primary,
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  SizedBox(height: 15),
-
-
                                                   if (status == 'Done') SizedBox(height: 15),
+                                                  if (status == 'Done')
                                                     Text(
                                                       "OCC On Duty",
                                                       style: TextStyle(
@@ -646,7 +516,7 @@ class DetailHistoryDeviceFOView extends GetView {
                                                       ],
                                                     ),
 
-                                                  if (status =='handover-to-other-crew')
+                                                  if (status == 'handover-to-other-crew')
                                                     Text(
                                                       "Given To",
                                                       style: TextStyle(
@@ -660,13 +530,13 @@ class DetailHistoryDeviceFOView extends GetView {
                                                   if (status == 'handover-to-other-crew')
                                                     Row(
                                                       children: [
-                                                        Expanded( flex: 6, child: Text("ID NO")),
-                                                        Expanded( flex: 1, child: Text(":")),
+                                                        Expanded(flex: 6, child: Text("ID NO")),
+                                                        Expanded(flex: 1, child: Text(":")),
                                                         Expanded(
                                                           flex: 6,
                                                           child: handoverTouserData != null
-                                                            ? Text('${handoverTouserData['ID NO'] ?? 'Not Found'}')
-                                                            : Text('Not Found'),
+                                                              ? Text('${handoverTouserData['ID NO'] ?? 'Not Found'}')
+                                                              : Text('Not Found'),
                                                         ),
                                                       ],
                                                     ),
@@ -693,8 +563,8 @@ class DetailHistoryDeviceFOView extends GetView {
                                                         Expanded(
                                                           flex: 6,
                                                           child: handoverTouserData != null
-                                                            ? Text('${handoverTouserData['RANK'] ?? 'Not Found'}')
-                                                            : Text('Not Found'),
+                                                              ? Text('${handoverTouserData['RANK'] ?? 'Not Found'}')
+                                                              : Text('Not Found'),
                                                         ),
                                                       ],
                                                     ),
@@ -739,20 +609,15 @@ class DetailHistoryDeviceFOView extends GetView {
                                                                 flySmart3: deviceData3['flysmart'],
                                                                 lido3: deviceData3['lidoversion'],
                                                                 docunet3: deviceData3['docuversion'],
-                                                                deviceCondition3:deviceData3['condition'],
+                                                                deviceCondition3: deviceData3['condition'],
                                                                 ttdUser: data['signature_url'],
                                                                 ttdOCC: data['signature_url_occ'],
-                                                                ttdOtherCrew: data != null
-                                                                    ? data['signature_url_other_crew']
-                                                                    : 'Not Found',
+                                                                ttdOtherCrew: data != null ? data['signature_url_other_crew'] : 'Not Found',
                                                                 loan: data['timestamp'],
                                                                 statusdevice: data['statusDevice'],
-                                                                handoverName: handoverTouserData != null
-                                                                    ? handoverTouserData['NAME']
-                                                                    : 'Not Found',
-                                                                handoverID: handoverTouserData != null
-                                                                    ? handoverTouserData['ID NO'].toString()
-                                                                    : 'Not Found',
+                                                                handoverName: handoverTouserData != null ? handoverTouserData['NAME'] : 'Not Found',
+                                                                handoverID:
+                                                                handoverTouserData != null ? handoverTouserData['ID NO'].toString() : 'Not Found',
                                                               ).then((_) {
                                                                 Navigator.pop(context);
                                                               }).catchError((error) {
@@ -767,15 +632,13 @@ class DetailHistoryDeviceFOView extends GetView {
                                                                 borderRadius: BorderRadius.circular(4.0),
                                                               ),
                                                             ),
-                                                            child:
-                                                            Padding(
+                                                            child: Padding(
                                                               padding: EdgeInsets.all(15),
                                                               child: Text(
                                                                 'Download History',
                                                                 style: TextStyle(color: Colors.white),
                                                               ),
-                                                            )
-                                                        ),
+                                                            )),
                                                       ),
                                                     ],
                                                   ),

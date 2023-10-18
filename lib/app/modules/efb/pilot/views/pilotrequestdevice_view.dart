@@ -60,7 +60,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
     await QuickAlert.show(
       context: context,
       type: QuickAlertType.info,
-      text: 'Device is already in use',
+      text: 'The device is already in use',
       textColor: tsOneColorScheme.primary,
     ).then((value) {
       Navigator.of(context).pop();
@@ -82,7 +82,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                const Text('Are you sure you want to book this device?'),
+                const Text('Are you sure you want to request this device?'),
               ],
             ),
           ),
@@ -195,6 +195,11 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
           child: Column(
             children: [
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text("Device 1", style: tsOneTextTheme.displaySmall),
+              ),
+              SizedBox(width: 7.0),
               Row(
                 children: [
                   Expanded(
@@ -264,7 +269,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        RedTitleText(text: 'Request Details'),
+                        RedTitleText(text: 'Device Details'),
                         SizedBox(height: 5.0),
                         Row(
                           children: [
@@ -288,7 +293,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                         ),
                         Row(
                           children: [
-                            Expanded(flex: 7, child: Text("Flysmart Version")),
+                            Expanded(flex: 7, child: Text("FlySmart Version")),
                             Expanded(flex: 1, child: Text(":")),
                             Expanded(
                               flex: 6,
@@ -346,6 +351,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
+        surfaceTintColor: tsOneColorScheme.secondary,
         child: Expanded(
           child: ElevatedButton(
             onPressed: () {

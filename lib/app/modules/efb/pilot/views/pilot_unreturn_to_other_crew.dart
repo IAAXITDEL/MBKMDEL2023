@@ -49,14 +49,13 @@ class PilotUnReturnToOtherCrewView extends GetView {
     await QuickAlert.show(
       context: context,
       type: QuickAlertType.success,
-      text: 'You have succesfully Rejected The Device',
+      text: 'You have successfully rejected the device.',
     ).then((value) {
       Get.offAllNamed(Routes.NAVOCC);
     });
   }
 
   void rejectedReturn(BuildContext context) async {
-
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -94,9 +93,7 @@ class PilotUnReturnToOtherCrewView extends GetView {
                         QuerySnapshot userQuery = await _firestore.collection('users').where('EMAIL', isEqualTo: user.email).get();
                         String userUid = userQuery.docs.first.id;
 
-                        DocumentReference pilotDeviceRef = FirebaseFirestore.instance
-                            .collection("pilot-device-1")
-                            .doc(deviceId);
+                        DocumentReference pilotDeviceRef = FirebaseFirestore.instance.collection("pilot-device-1").doc(deviceId);
 
                         try {
                           await pilotDeviceRef.update({
@@ -108,7 +105,6 @@ class PilotUnReturnToOtherCrewView extends GetView {
                           print('Error updating data: $error');
                         }
                       }
-
                     },
                   ),
                 ),
@@ -119,7 +115,6 @@ class PilotUnReturnToOtherCrewView extends GetView {
       },
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -136,10 +131,7 @@ class PilotUnReturnToOtherCrewView extends GetView {
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
           child: FutureBuilder<DocumentSnapshot>(
-            future: FirebaseFirestore.instance
-                .collection("pilot-device-1")
-                .doc(deviceId)
-                .get(),
+            future: FirebaseFirestore.instance.collection("pilot-device-1").doc(deviceId).get(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator());
@@ -159,10 +151,7 @@ class PilotUnReturnToOtherCrewView extends GetView {
               final deviceUid = data['device_uid'];
 
               return FutureBuilder<DocumentSnapshot>(
-                future: FirebaseFirestore.instance
-                    .collection("users")
-                    .doc(userUid)
-                    .get(),
+                future: FirebaseFirestore.instance.collection("users").doc(userUid).get(),
                 builder: (context, userSnapshot) {
                   if (userSnapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());
@@ -179,10 +168,7 @@ class PilotUnReturnToOtherCrewView extends GetView {
                   final userData = userSnapshot.data!.data() as Map<String, dynamic>;
 
                   return FutureBuilder<DocumentSnapshot>(
-                    future: FirebaseFirestore.instance
-                        .collection("Device")
-                        .doc(deviceUid)
-                        .get(),
+                    future: FirebaseFirestore.instance.collection("Device").doc(deviceUid).get(),
                     builder: (context, deviceSnapshot) {
                       if (deviceSnapshot.connectionState == ConnectionState.waiting) {
                         return Center(child: CircularProgressIndicator());
@@ -196,8 +182,7 @@ class PilotUnReturnToOtherCrewView extends GetView {
                         return Center(child: Text('Device data not found'));
                       }
 
-                      final deviceData =
-                      deviceSnapshot.data!.data() as Map<String, dynamic>;
+                      final deviceData = deviceSnapshot.data!.data() as Map<String, dynamic>;
 
                       return Center(
                         child: Column(
@@ -269,8 +254,17 @@ class PilotUnReturnToOtherCrewView extends GetView {
                             Row(
                               children: [
                                 Expanded(
-                                    flex: 6, child: Text("Device ID", style: tsOneTextTheme.bodySmall,)),
-                                Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
+                                    flex: 6,
+                                    child: Text(
+                                      "Device No",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
+                                Expanded(
+                                    flex: 1,
+                                    child: Text(
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
@@ -284,8 +278,17 @@ class PilotUnReturnToOtherCrewView extends GetView {
                             Row(
                               children: [
                                 Expanded(
-                                    flex: 6, child: Text("iOS Version",style: tsOneTextTheme.bodySmall,)),
-                                Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
+                                    flex: 6,
+                                    child: Text(
+                                      "IOS Version",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
+                                Expanded(
+                                    flex: 1,
+                                    child: Text(
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
@@ -299,8 +302,17 @@ class PilotUnReturnToOtherCrewView extends GetView {
                             Row(
                               children: [
                                 Expanded(
-                                    flex: 6, child: Text("FlySmart Version", style: tsOneTextTheme.bodySmall,)),
-                                Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
+                                    flex: 6,
+                                    child: Text(
+                                      "FlySmart Version",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
+                                Expanded(
+                                    flex: 1,
+                                    child: Text(
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
@@ -314,8 +326,17 @@ class PilotUnReturnToOtherCrewView extends GetView {
                             Row(
                               children: [
                                 Expanded(
-                                    flex: 6, child: Text("Docu Version", style: tsOneTextTheme.bodySmall,)),
-                                Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
+                                    flex: 6,
+                                    child: Text(
+                                      "Docunet Version",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
+                                Expanded(
+                                    flex: 1,
+                                    child: Text(
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
@@ -329,8 +350,17 @@ class PilotUnReturnToOtherCrewView extends GetView {
                             Row(
                               children: [
                                 Expanded(
-                                    flex: 6, child: Text("Lido Version", style: tsOneTextTheme.bodySmall,)),
-                                Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
+                                    flex: 6,
+                                    child: Text(
+                                      "Lido mPilot Version",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
+                                Expanded(
+                                    flex: 1,
+                                    child: Text(
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
@@ -344,8 +374,17 @@ class PilotUnReturnToOtherCrewView extends GetView {
                             Row(
                               children: [
                                 Expanded(
-                                    flex: 6, child: Text("HUB", style: tsOneTextTheme.bodySmall,)),
-                                Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
+                                    flex: 6,
+                                    child: Text(
+                                      "HUB",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
+                                Expanded(
+                                    flex: 1,
+                                    child: Text(
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
@@ -359,8 +398,17 @@ class PilotUnReturnToOtherCrewView extends GetView {
                             Row(
                               children: [
                                 Expanded(
-                                    flex: 6, child: Text("Condition", style: tsOneTextTheme.bodySmall,)),
-                                Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
+                                    flex: 6,
+                                    child: Text(
+                                      "Condition",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
+                                Expanded(
+                                    flex: 1,
+                                    child: Text(
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
@@ -392,8 +440,7 @@ class PilotUnReturnToOtherCrewView extends GetView {
                 backgroundColor: TsOneColor.primary,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(4.0),
-                )
-            ),
+                )),
             child: const Text('Reject', style: TextStyle(color: Colors.white)),
           ),
         ),

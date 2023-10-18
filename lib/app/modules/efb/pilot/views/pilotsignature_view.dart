@@ -16,8 +16,7 @@ import 'package:get/get.dart';
 import '../../../../../presentation/theme.dart';
 
 class SignaturePadPage extends StatefulWidget {
-  final GlobalKey<SfSignaturePadState> _signaturePadKey =
-  GlobalKey<SfSignaturePadState>();
+  final GlobalKey<SfSignaturePadState> _signaturePadKey = GlobalKey<SfSignaturePadState>();
   Uint8List? signatureImage;
   final String deviceId;
 
@@ -34,10 +33,10 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
         centerTitle: true,
+        backgroundColor: Colors.white,
         title: Text(
-          'Confirmation',
+          'Return',
           style: tsOneTextTheme.headlineLarge,
         ),
       ),
@@ -48,7 +47,10 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
             children: [
               Align(
                 alignment: Alignment.center,
-                child: Text("Signature", style: tsOneTextTheme.headlineMedium,),
+                child: Text(
+                  "Signature",
+                  style: tsOneTextTheme.headlineMedium,
+                ),
               ),
               const SizedBox(
                 height: 15,
@@ -72,7 +74,6 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
                   ),
                 ),
               ),
-
               Stack(
                 children: [
                   Container(
@@ -121,7 +122,6 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
                   ),
                 ],
               ),
-
               SizedBox(height: 10),
               Column(
                 children: [
@@ -150,8 +150,7 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
                             action: SnackBarAction(
                               label: 'Close',
                               onPressed: () {
-                                ScaffoldMessenger.of(context)
-                                    .hideCurrentSnackBar();
+                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
                               },
                             ),
                           ),
@@ -164,8 +163,7 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
                             action: SnackBarAction(
                               label: 'Close',
                               onPressed: () {
-                                ScaffoldMessenger.of(context)
-                                    .hideCurrentSnackBar();
+                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
                               },
                             ),
                           ),
@@ -178,8 +176,7 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
                             action: SnackBarAction(
                               label: 'Close',
                               onPressed: () {
-                                ScaffoldMessenger.of(context)
-                                    .hideCurrentSnackBar();
+                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
                               },
                             ),
                           ),
@@ -192,8 +189,7 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
                             action: SnackBarAction(
                               label: 'Close',
                               onPressed: () {
-                                ScaffoldMessenger.of(context)
-                                    .hideCurrentSnackBar();
+                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
                               },
                             ),
                           ),
@@ -207,8 +203,7 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
                             action: SnackBarAction(
                               label: 'Close',
                               onPressed: () {
-                                ScaffoldMessenger.of(context)
-                                    .hideCurrentSnackBar();
+                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
                               },
                             ),
                           ),
@@ -219,7 +214,7 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
                           builder: (context) {
                             return AlertDialog(
                               title: Text(
-                                'Confirm',
+                                'Confirmation',
                                 style: tsOneTextTheme.headlineLarge,
                               ),
                               content: const Text('Are you sure you want to save this signature?'),
@@ -241,7 +236,10 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
                                       child: ElevatedButton(
                                         onPressed: () {
                                           try {
-                                            final newDocumentId = addToPilotDeviceCollection(signatureData, widget.deviceId,);
+                                            final newDocumentId = addToPilotDeviceCollection(
+                                              signatureData,
+                                              widget.deviceId,
+                                            );
                                           } catch (error) {
                                             showDialog(
                                               context: context,
@@ -254,8 +252,7 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
                                                       onPressed: () {
                                                         Navigator.pop(context);
                                                       },
-                                                      child:
-                                                      const Text('OK'),
+                                                      child: const Text('OK'),
                                                     ),
                                                   ],
                                                 );
@@ -282,17 +279,15 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: TsOneColor.greenColor,
-                      minimumSize: const Size(double.infinity, 50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(4),
-                      )
-                    ),
+                        backgroundColor: TsOneColor.greenColor,
+                        minimumSize: const Size(double.infinity, 50),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4),
+                        )),
                     child: const Text('Submit', style: TextStyle(color: Colors.white)),
                   ),
                 ],
               ),
-
             ],
           ),
         ),
@@ -314,10 +309,7 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
       };
 
       try {
-        await FirebaseFirestore.instance
-            .collection('pilot-device-1')
-            .doc(deviceId)
-            .update(additionalData);
+        await FirebaseFirestore.instance.collection('pilot-device-1').doc(deviceId).update(additionalData);
 
         return;
       } catch (e) {
@@ -331,9 +323,7 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
 
   Future<String> uploadSignatureToFirestore(Uint8List signatureData) async {
     try {
-      final Reference storageRef = FirebaseStorage.instance
-          .ref()
-          .child('signatures/${DateTime.now()}.png');
+      final Reference storageRef = FirebaseStorage.instance.ref().child('signatures/${DateTime.now()}.png');
       final UploadTask uploadTask = storageRef.putData(signatureData);
       await uploadTask.whenComplete(() {});
       final String downloadUrl = await storageRef.getDownloadURL();
@@ -349,7 +339,7 @@ Future<void> _showQuickAlert(BuildContext context) async {
   await QuickAlert.show(
     context: context,
     type: QuickAlertType.success,
-    text: 'You have return to OCC! Please kindly wait after the OCC Confirm the Device okay?',
+    text: 'You have returned to OCC!\nPlease kindly wait until OCC confirms the device.',
   ).then((value) {
     Get.offAllNamed(Routes.NAVOCC);
   });

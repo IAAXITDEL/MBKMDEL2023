@@ -16,8 +16,7 @@ import '../../../../../presentation/theme.dart';
 import '../../../../routes/app_pages.dart';
 
 class FOSignaturePadPage extends StatefulWidget {
-  final GlobalKey<SfSignaturePadState> _signaturePadKey =
-  GlobalKey<SfSignaturePadState>();
+  final GlobalKey<SfSignaturePadState> _signaturePadKey = GlobalKey<SfSignaturePadState>();
   Uint8List? signatureImage;
   final String deviceId;
 
@@ -33,7 +32,12 @@ class _FOSignaturePadPageState extends State<FOSignaturePadPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Signature'),
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        title: Text(
+          'Return',
+          style: tsOneTextTheme.headlineLarge,
+        ),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -42,7 +46,10 @@ class _FOSignaturePadPageState extends State<FOSignaturePadPage> {
             children: [
               Align(
                 alignment: Alignment.center,
-                child: Text("Signature", style: tsOneTextTheme.headlineMedium,),
+                child: Text(
+                  "Signature",
+                  style: tsOneTextTheme.headlineMedium,
+                ),
               ),
               const SizedBox(
                 height: 15,
@@ -114,7 +121,9 @@ class _FOSignaturePadPageState extends State<FOSignaturePadPage> {
                   ),
                 ],
               ),
-              SizedBox(height: 15,),
+              SizedBox(
+                height: 15,
+              ),
               Column(
                 children: [
                   Row(
@@ -142,8 +151,7 @@ class _FOSignaturePadPageState extends State<FOSignaturePadPage> {
                             action: SnackBarAction(
                               label: 'Close',
                               onPressed: () {
-                                ScaffoldMessenger.of(context)
-                                    .hideCurrentSnackBar();
+                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
                               },
                             ),
                           ),
@@ -156,8 +164,7 @@ class _FOSignaturePadPageState extends State<FOSignaturePadPage> {
                             action: SnackBarAction(
                               label: 'Close',
                               onPressed: () {
-                                ScaffoldMessenger.of(context)
-                                    .hideCurrentSnackBar();
+                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
                               },
                             ),
                           ),
@@ -170,8 +177,7 @@ class _FOSignaturePadPageState extends State<FOSignaturePadPage> {
                             action: SnackBarAction(
                               label: 'Close',
                               onPressed: () {
-                                ScaffoldMessenger.of(context)
-                                    .hideCurrentSnackBar();
+                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
                               },
                             ),
                           ),
@@ -184,8 +190,7 @@ class _FOSignaturePadPageState extends State<FOSignaturePadPage> {
                             action: SnackBarAction(
                               label: 'Close',
                               onPressed: () {
-                                ScaffoldMessenger.of(context)
-                                    .hideCurrentSnackBar();
+                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
                               },
                             ),
                           ),
@@ -199,8 +204,7 @@ class _FOSignaturePadPageState extends State<FOSignaturePadPage> {
                             action: SnackBarAction(
                               label: 'Close',
                               onPressed: () {
-                                ScaffoldMessenger.of(context)
-                                    .hideCurrentSnackBar();
+                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
                               },
                             ),
                           ),
@@ -231,12 +235,13 @@ class _FOSignaturePadPageState extends State<FOSignaturePadPage> {
                                     Expanded(
                                       flex: 5,
                                       child: ElevatedButton(
-                                        onPressed: () async{
-
+                                        onPressed: () async {
                                           try {
                                             // Simpan tanda tangan ke koleksi pilot-device-1
-                                            final newDocumentId =
-                                                await addToPilotDeviceCollection(signatureData, widget.deviceId,);
+                                            final newDocumentId = await addToPilotDeviceCollection(
+                                              signatureData,
+                                              widget.deviceId,
+                                            );
                                             _showQuickAlert(context);
 
                                             // Tampilkan pesan sukses
@@ -247,15 +252,13 @@ class _FOSignaturePadPageState extends State<FOSignaturePadPage> {
                                               builder: (context) {
                                                 return AlertDialog(
                                                   title: const Text('Error'),
-                                                  content: const Text(
-                                                      'An error occurred while saving the signature.'),
+                                                  content: const Text('An error occurred while saving the signature.'),
                                                   actions: [
                                                     ElevatedButton(
                                                       onPressed: () {
                                                         Navigator.pop(context); // Tutup dialog error
                                                       },
-                                                      child:
-                                                      const Text('OK'),
+                                                      child: const Text('OK'),
                                                     ),
                                                   ],
                                                 );
@@ -285,8 +288,7 @@ class _FOSignaturePadPageState extends State<FOSignaturePadPage> {
                         minimumSize: const Size(double.infinity, 50),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(4),
-                        )
-                    ),
+                        )),
                     child: const Text('Submit', style: TextStyle(color: Colors.white)),
                   ),
                 ],
@@ -336,13 +338,10 @@ class _FOSignaturePadPageState extends State<FOSignaturePadPage> {
     throw Exception("User not authenticated");
   }
 
-
   // Fungsi untuk mengunggah tanda tangan ke Firebase Firestore
   Future<String> uploadSignatureToFirestore(Uint8List signatureData) async {
     try {
-      final Reference storageRef = FirebaseStorage.instance
-          .ref()
-          .child('signatures/${DateTime.now()}.png');
+      final Reference storageRef = FirebaseStorage.instance.ref().child('signatures/${DateTime.now()}.png');
       final UploadTask uploadTask = storageRef.putData(signatureData);
       await uploadTask.whenComplete(() {});
       final String downloadUrl = await storageRef.getDownloadURL();
@@ -359,8 +358,8 @@ Future<void> _showQuickAlert(BuildContext context) async {
   await QuickAlert.show(
     context: context,
     type: QuickAlertType.success,
-    text: 'You have return to OCC! Please kindly wait after the OCC Confirm the Device okay?',
-  );
-  Get.offAllNamed(Routes.NAVOCC);
+    text: 'You have returned to OCC!\nPlease kindly wait until OCC confirms the device.',
+  ).then((value) {
+    Get.offAllNamed(Routes.NAVOCC);
+  });
 }
-

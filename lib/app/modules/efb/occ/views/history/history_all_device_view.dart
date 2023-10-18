@@ -28,6 +28,26 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
   bool isCaptChecked = false;
 
   Future<void> exportToExcel(List<Map<String, dynamic>> data) async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CircularProgressIndicator(),
+              SizedBox(height: 16.0),
+              Text('Please Wait'),
+            ],
+          ),
+        );
+      },
+    );
+
+    // Delay execution for demonstration purposes (you can remove this in your actual code)
+    await Future.delayed(Duration(seconds: 2));
+
+
     final CollectionReference deviceCollection = FirebaseFirestore.instance.collection('pilot-device-1');
     QuerySnapshot deviceSnapshot = await deviceCollection
         .where('statusDevice', whereIn: ['Done', 'handover-to-other-crew'])
@@ -236,6 +256,9 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
     final output = await getTemporaryDirectory();
     final excelFile = File('${output.path}/handover-history.xlsx');
     await excelFile.writeAsBytes(excelBytes!);
+
+    // Close the dialog
+    Navigator.pop(context);  // Close the dialog
 
     // Open the Excel file using a platform-specific API
     await OpenFile.open(excelFile.path, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
@@ -745,8 +768,8 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                                             ),
                                             const Icon(
                                               Icons.chevron_right,
-                                              color:
-                                                  TsOneColor.secondaryContainer,
+                                              color: TsOneColor
+                                                  .onSecondary,
                                               size: 30,
                                             )
                                           ],
