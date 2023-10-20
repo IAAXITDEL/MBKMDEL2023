@@ -42,6 +42,8 @@ import '../modules/cc/list_attendancecc/bindings/list_attendancecc_binding.dart'
 import '../modules/cc/list_attendancecc/views/list_attendancecc_view.dart';
 import '../modules/cc/list_attendancedetailcc/bindings/list_attendancedetailcc_binding.dart';
 import '../modules/cc/list_attendancedetailcc/views/list_attendancedetailcc_view.dart';
+import '../modules/cc/list_pilotcptscc/bindings/list_pilotcptscc_binding.dart';
+import '../modules/cc/list_pilotcptscc/views/list_pilotcptscc_view.dart';
 import '../modules/cc/pilotadministrator/add_attendancecc/bindings/add_attendancecc_binding.dart';
 import '../modules/cc/pilotadministrator/add_attendancecc/views/add_attendancecc_view.dart';
 import '../modules/cc/pilotadministrator/add_trainingcc/bindings/add_trainingcc_binding.dart';
@@ -86,8 +88,6 @@ import '../modules/efb/pilot/bindings/homepilot_binding.dart';
 import '../modules/efb/pilot/views/main_view_pilot.dart';
 import '../modules/cc/list_absentcptscc/bindings/list_absentcptscc_binding.dart';
 import '../modules/cc/list_absentcptscc/views/list_absentcptscc_view.dart';
-import '../modules/list_pilotcptscc/bindings/list_pilotcptscc_binding.dart';
-import '../modules/list_pilotcptscc/views/list_pilotcptscc_view.dart';
 import '../modules/main_home/bindings/main_home_binding.dart';
 import '../modules/main_home/views/main_home_view.dart';
 import '../modules/pa/navadmin/bindings/navadmin_binding.dart';
