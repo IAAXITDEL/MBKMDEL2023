@@ -498,7 +498,6 @@ Future<void> generateLogPdfDevice23({
                         width: 150,
                         height: 90,
                       ),
-                      pw.Text('ttd image'),
                       pw.SizedBox(height: 5.0),
                       pw.Text(
                         '$handoverName',

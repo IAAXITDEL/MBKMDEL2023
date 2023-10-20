@@ -73,6 +73,7 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.white, // Set background color to white
         title: Text(
           'History',
@@ -112,7 +113,7 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
                   IconButton(
                     icon: Icon(
                       Icons.filter_list,
-                      size: 45,
+                      size: 32.0,
                     ),
                     onPressed: _showFilterBottomSheet,
                   ),

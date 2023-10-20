@@ -635,7 +635,7 @@ class DetailHistoryDeviceFOView extends GetView {
                                                             child: Padding(
                                                               padding: EdgeInsets.all(15),
                                                               child: Text(
-                                                                'Download History',
+                                                                'Open Attachment',
                                                                 style: TextStyle(color: Colors.white),
                                                               ),
                                                             )),

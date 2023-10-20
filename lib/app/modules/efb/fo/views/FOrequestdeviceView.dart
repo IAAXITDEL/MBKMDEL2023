@@ -87,7 +87,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(
-            'Confirm Request',
+            'Confirmation Request',
             style: tsOneTextTheme.headlineLarge,
           ),
           content: SingleChildScrollView(

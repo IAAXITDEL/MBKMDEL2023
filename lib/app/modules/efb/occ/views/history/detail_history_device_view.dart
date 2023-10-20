@@ -20,8 +20,8 @@ class DetailHistoryDeviceView extends GetView {
 
   String getMonthText(int month) {
     const List<String> months = [
-      'Januar7',
-      'Februar7',
+      'January',
+      'February',
       'March',
       'April',
       'May',
@@ -606,7 +606,7 @@ class DetailHistoryDeviceView extends GetView {
                                                         child: Padding(
                                                           padding: EdgeInsets.all(15),
                                                           child: Text(
-                                                            'Download History',
+                                                            'Open Attachment',
                                                             style: TextStyle(color: Colors.white),
                                                           ),
                                                         )),

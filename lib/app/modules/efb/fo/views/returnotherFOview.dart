@@ -515,7 +515,7 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                             builder: (context) {
                               return AlertDialog(
                                 title: Text(
-                                  'Confirm',
+                                  'Confirmation',
                                   style: tsOneTextTheme.headlineLarge,
                                 ),
                                 content: const Text('Are you sure you want to save this signature?'),
@@ -612,6 +612,9 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                           )),
                       child: const Text('Submit', style: TextStyle(color: Colors.white)),
                     ),
+                    SizedBox(
+                      height: 20,
+                    )
                   ],
                 ),
             ],

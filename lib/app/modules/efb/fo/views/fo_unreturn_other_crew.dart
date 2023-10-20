@@ -45,7 +45,6 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
       'statusDevice': 'in-use-pilot',
     });
 
-    // Return to the previous page
     _showQuickAlert(context);
   }
 
@@ -60,20 +59,20 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
     }
   }
 
-  // Function to show a success message using QuickAlert
   Future<void> _showQuickAlert(BuildContext context) async {
     await QuickAlert.show(
       context: context,
       type: QuickAlertType.success,
       text: 'You have successfully added a device',
-    );
-    Get.offAllNamed(Routes.NAVOCC);
+    ).then((value) {
+      Get.offAllNamed(Routes.NAVOCC);
+    });
   }
 
   Future<void> _showConfirmationDialog() async {
     return showDialog<void>(
       context: context,
-      barrierDismissible: false, // Dialog cannot be dismissed by tapping outside
+      barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(
@@ -88,18 +87,34 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
             ),
           ),
           actions: <Widget>[
-            TextButton(
-              child: Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-              },
-            ),
-            TextButton(
-              child: Text('Confirm'),
-              onPressed: () {
-                // Call the function to update status and upload image
-                updateStatusToInUsePilot(widget.deviceId);
-              },
+            Row(
+              children: [
+                Expanded(
+                  flex: 5,
+                  child: TextButton(
+                    child: Text('No', style: TextStyle(color: TsOneColor.secondaryContainer)),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ),
+                Spacer(flex: 1),
+                Expanded(
+                  flex: 5,
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      backgroundColor: TsOneColor.greenColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                    ),
+                    child: Text('Yes', style: TextStyle(color: TsOneColor.onPrimary)),
+                    onPressed: () async {
+                      updateStatusToInUsePilot(widget.deviceId);
+                    },
+                  ),
+                ),
+              ],
             ),
           ],
         );

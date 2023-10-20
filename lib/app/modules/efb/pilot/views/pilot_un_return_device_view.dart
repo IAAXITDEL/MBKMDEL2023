@@ -19,8 +19,8 @@ class PilotUnReturnDeviceView extends GetView {
 
   String getMonthText(int month) {
     const List<String> months = [
-      'Januar7',
-      'Februar7',
+      'January',
+      'February',
       'March',
       'April',
       'May',
@@ -252,12 +252,11 @@ class PilotUnReturnDeviceView extends GetView {
                                 ],
                               ),
                             ),
-                            SizedBox(height: 15.0),
                             Align(
                               alignment: Alignment.centerLeft,
                               child: Text("Device 1", style: tsOneTextTheme.displaySmall),
                             ),
-                            SizedBox(height: 5.0),
+                            SizedBox(height: 7.0),
                             Row(
                               children: [
                                 Expanded(
