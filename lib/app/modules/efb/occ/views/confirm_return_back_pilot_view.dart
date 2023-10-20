@@ -21,6 +21,7 @@ class ConfirmReturnBackPilotView extends GetView {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   bool isImageUploading = false;
+  bool isApproved = false; // Tambahkan variabel ini sebagai state
 
   ConfirmReturnBackPilotView({Key? key, required this.dataId}) : super(key: key);
 
@@ -70,6 +71,7 @@ class ConfirmReturnBackPilotView extends GetView {
                 child: Text('Cancel'),
                 onPressed: () {
                   Navigator.of(context).pop(); // Close the dialog
+                  Navigator.of(context).pop(); // Close the confirmation dialog
                 },
               ),
               TextButton(
@@ -583,28 +585,41 @@ class ConfirmReturnBackPilotView extends GetView {
                                               "SIGNATURE",
                                               style: tsOneTextTheme.headlineLarge,
                                             ),
-
-                                            Text(
-                                              'Please sign in the section provided.',
-                                              style: TextStyle(
-                                                color: Colors.red,  // Mengatur warna teks menjadi merah
-                                                fontStyle: FontStyle.italic,  // Mengatur teks menjadi italic
+                                            ConstrainedBox(
+                                              constraints: BoxConstraints(
+                                                minHeight: 40,
+                                                minWidth: 300,
+                                              ),
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  color: tsOneColorScheme.primary,
+                                                  borderRadius: BorderRadius.only(
+                                                    topLeft: Radius.circular(25.0),
+                                                    topRight: Radius.circular(25.0),
+                                                  ),
+                                                ),
+                                                child: Align(
+                                                  alignment: Alignment.center,
+                                                  child: Text("Draw", style: TextStyle(color: tsOneColorScheme.secondary, fontWeight: FontWeight.w600)),
+                                                ),
                                               ),
                                             ),
-
-                                            SizedBox(height: 7.0),
-                                            Column(
+                                            Stack(
                                               children: [
                                                 Container(
-                                                  width: double.infinity,
-                                                  height: 400.0,
+                                                  height: 350,
                                                   decoration: BoxDecoration(
+                                                    borderRadius: BorderRadius.only(
+                                                      topLeft: Radius.circular(10.0),
+                                                      topRight: Radius.circular(10.0),
+                                                      bottomLeft: Radius.circular(25.0),
+                                                      bottomRight: Radius.circular(25.0),
+                                                    ),
                                                     boxShadow: [
                                                       BoxShadow(
-                                                        color: Colors.grey.withOpacity(0.3),
-                                                        spreadRadius: 5,
-                                                        blurRadius: 7,
-                                                        offset: Offset(0, 3),
+                                                        color: Colors.grey.withOpacity(0.5),
+                                                        blurRadius: 5,
+                                                        offset: Offset(0, 2),
                                                       ),
                                                     ],
                                                   ),
@@ -613,16 +628,18 @@ class ConfirmReturnBackPilotView extends GetView {
                                                     backgroundColor: Colors.white,
                                                   ),
                                                 ),
-                                                SizedBox(height: 10.0),
-                                                ElevatedButton(
-                                                  onPressed: () {
-                                                    signatureKey.currentState?.clear();
-                                                  },
-                                                  style: ElevatedButton.styleFrom(
-                                                    backgroundColor: TsOneColor.primary,
-                                                    minimumSize: const Size(double.infinity, 50),
+                                                Container(
+                                                  alignment: Alignment.topRight,
+                                                  child: IconButton(
+                                                    icon: const Icon(
+                                                      Icons.delete_outline_outlined,
+                                                      size: 32,
+                                                      color: TsOneColor.primary,
+                                                    ),
+                                                    onPressed: () {
+                                                      signatureKey.currentState?.clear();
+                                                    },
                                                   ),
-                                                  child: const Text('Clear Signature', style: TextStyle(color: Colors.white)),
                                                 ),
                                               ],
                                             ),
@@ -797,31 +814,49 @@ class ConfirmReturnBackPilotView extends GetView {
                                       color: TsOneColor.secondaryContainer,
                                     ),
                                   ),
-                                  Text(
-                                    "SIGNATURE",
-                                    style: tsOneTextTheme.headlineLarge,
-                                  ),
-                                  Text(
-                                    'Please sign in the section provided.',
-                                    style: TextStyle(
-                                      color: Colors.red,  // Mengatur warna teks menjadi merah
-                                      fontStyle: FontStyle.italic,  // Mengatur teks menjadi italic
+                                  Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      "SIGNATURE",
+                                      style: tsOneTextTheme.titleLarge,
                                     ),
                                   ),
-
-                                  SizedBox(height: 7.0),
-                                  Column(
+                                  SizedBox(height: 5.0),
+                                  ConstrainedBox(
+                                    constraints: BoxConstraints(
+                                      minHeight: 40,
+                                      minWidth: 300,
+                                    ),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: tsOneColorScheme.primary,
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(25.0),
+                                          topRight: Radius.circular(25.0),
+                                        ),
+                                      ),
+                                      child: Align(
+                                        alignment: Alignment.center,
+                                        child: Text("Draw", style: TextStyle(color: tsOneColorScheme.secondary, fontWeight: FontWeight.w600)),
+                                      ),
+                                    ),
+                                  ),
+                                  Stack(
                                     children: [
                                       Container(
-                                        width: double.infinity,
-                                        height: 400.0,
+                                        height: 350,
                                         decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(10.0),
+                                            topRight: Radius.circular(10.0),
+                                            bottomLeft: Radius.circular(25.0),
+                                            bottomRight: Radius.circular(25.0),
+                                          ),
                                           boxShadow: [
                                             BoxShadow(
-                                              color: Colors.grey.withOpacity(0.3),
-                                              spreadRadius: 5,
-                                              blurRadius: 7,
-                                              offset: Offset(0, 3),
+                                              color: Colors.grey.withOpacity(0.5),
+                                              blurRadius: 5,
+                                              offset: Offset(0, 2),
                                             ),
                                           ],
                                         ),
@@ -830,16 +865,18 @@ class ConfirmReturnBackPilotView extends GetView {
                                           backgroundColor: Colors.white,
                                         ),
                                       ),
-                                      SizedBox(height: 10.0),
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          signatureKey.currentState?.clear();
-                                        },
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: TsOneColor.primary,
-                                          minimumSize: const Size(double.infinity, 50),
+                                      Container(
+                                        alignment: Alignment.topRight,
+                                        child: IconButton(
+                                          icon: const Icon(
+                                            Icons.delete_outline_outlined,
+                                            size: 32,
+                                            color: TsOneColor.primary,
+                                          ),
+                                          onPressed: () {
+                                            signatureKey.currentState?.clear();
+                                          },
                                         ),
-                                        child: const Text('Clear Signature', style: TextStyle(color: Colors.white)),
                                       ),
                                     ],
                                   ),
@@ -848,7 +885,6 @@ class ConfirmReturnBackPilotView extends GetView {
                                     onPressed: () async {
                                       final ImagePicker _picker = ImagePicker();
                                       XFile? pickedFile = await _picker.pickImage(source: ImageSource.camera);
-
                                       if (pickedFile != null) {
                                         showDialog(
                                           context: context,

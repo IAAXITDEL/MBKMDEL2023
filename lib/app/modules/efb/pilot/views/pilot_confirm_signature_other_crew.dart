@@ -155,7 +155,7 @@ class _ConfirmSignatureReturnOtherPilotViewState extends State<ConfirmSignatureR
                 // Upload the selected image to Firebase Storage (if an image is selected)
                 String imageUrl = '';
                 if (selectedImage != null) {
-                  final storageRef = FirebaseStorage.instance.ref().child('images/${widget.deviceId}.jpg');
+                  final storageRef = FirebaseStorage.instance.ref().child('proof-images/${widget.deviceId} at ${DateTime.now()}.jpg');
                   await storageRef.putFile(selectedImage!);
                   imageUrl = await storageRef.getDownloadURL();
                 }
