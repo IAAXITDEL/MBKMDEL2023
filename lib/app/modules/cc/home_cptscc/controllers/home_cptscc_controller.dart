@@ -11,6 +11,13 @@ class HomeCptsccController extends GetxController {
   late bool _isCPTS;
   late bool _isInstructor;
   late bool _isPilotAdministrator;
+  RxInt instructorCount = 0.obs; // Number of instructors (use .obs here)
+  RxInt pilotCount = 0.obs; // Number of pilots (use .obs here)
+  RxInt ongoingTrainingCount = 0.obs; // Number of ongoing(use .obs here)
+  RxInt completedTrainingCount =
+      0.obs; // Number of completed trainings(use .obs here)
+  RxInt traineeCount = 0.obs; // Number of trainee (use .obs here)
+  RxInt trainingCount = 0.obs; // Number of trainings (use .obs here)
 
   @override
   void onInit() {
@@ -41,7 +48,57 @@ class HomeCptsccController extends GetxController {
       timeToGreet = "Evening";
     }
 
-    super.onInit();
+    // Fetch Firestore data to count instructors
+    FirebaseFirestore.instance
+        .collection('users')
+        .where('INSTRUCTOR', arrayContainsAny: ["CCP", "FIA", "FIS", "PGI"])
+        .get()
+        .then((querySnapshot) {
+      instructorCount.value = querySnapshot.docs.length;
+    });
+
+    // Fetch Firestore data to count pilots
+    FirebaseFirestore.instance
+        .collection('users')
+        .where('INSTRUCTOR', arrayContains: "")
+        .get()
+        .then((querySnapshot) {
+      pilotCount.value = querySnapshot.docs.length;
+    });
+
+    // Fetch Firestore data to count completed trainings
+    FirebaseFirestore.instance
+        .collection('attendance')
+        .where('status', isEqualTo: "done")
+        .get()
+        .then((querySnapshot) {
+      completedTrainingCount.value = querySnapshot.docs.length;
+    });
+
+    // Fetch Firestore data to count ongoing trainings
+    FirebaseFirestore.instance
+        .collection('attendance')
+        .where('status', isEqualTo: "pending")
+        .get()
+        .then((querySnapshot) {
+      ongoingTrainingCount.value = querySnapshot.docs.length;
+    });
+
+    // Fetch Firestore data to count trainee
+    FirebaseFirestore.instance
+        .collection('attendance-detail')
+        .get()
+        .then((querySnapshot) {
+      traineeCount.value = querySnapshot.docs.length;
+    });
+
+    // Fetch Firestore data to count trainings
+    FirebaseFirestore.instance
+        .collection('trainingType')
+        .get()
+        .then((querySnapshot) {
+      trainingCount.value = querySnapshot.docs.length;
+    });
   }
 
   @override
@@ -53,5 +110,4 @@ class HomeCptsccController extends GetxController {
   void onClose() {
     super.onClose();
   }
-
 }

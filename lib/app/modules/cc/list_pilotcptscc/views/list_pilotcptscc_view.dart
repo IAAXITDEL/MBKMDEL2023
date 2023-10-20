@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../../presentation/shared_components/TitleText.dart';
-import '../../../../presentation/theme.dart';
-import '../../../../util/error_screen.dart';
-import '../../../../util/loading_screen.dart';
-import '../../../routes/app_pages.dart';
+import '../../../../../presentation/shared_components/TitleText.dart';
+import '../../../../../presentation/theme.dart';
+import '../../../../../util/error_screen.dart';
+import '../../../../../util/loading_screen.dart';
+import '../../../../routes/app_pages.dart';
 import '../controllers/list_pilotcptscc_controller.dart';
 
 class ListPilotcptsccView extends GetView<ListPilotcptsccController> {

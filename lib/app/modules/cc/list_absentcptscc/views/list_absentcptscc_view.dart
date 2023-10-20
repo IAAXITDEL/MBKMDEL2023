@@ -20,22 +20,22 @@ class ListAbsentcptsccView extends GetView<ListAbsentcptsccController> {
               RedTitleText(
                 text: "ABSENT LIST",
               ),
-              Row(
-                children: [
-                  Expanded(
-                      child: Container(
-                        margin: EdgeInsets.symmetric(vertical: 5),
-                        padding: EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5.0),
-
-                          color: Colors.white,
-                        ),
-                        child:Obx(()=>  Text("Attendance : ${controller.jumlah.value.toString()} person")),
-                      )
-                  )
-                ],
-              ),
+              // Row(
+              //   children: [
+              //     Expanded(
+              //         child: Container(
+              //           margin: EdgeInsets.symmetric(vertical: 5),
+              //           padding: EdgeInsets.all(8),
+              //           decoration: BoxDecoration(
+              //             borderRadius: BorderRadius.circular(5.0),
+              //
+              //             color: Colors.white,
+              //           ),
+              //           child:Obx(()=>  Text("Attendance : ${controller.jumlah.value.toString()} person")),
+              //         )
+              //     )
+              //   ],
+              // ),
           ]
     ),
     )

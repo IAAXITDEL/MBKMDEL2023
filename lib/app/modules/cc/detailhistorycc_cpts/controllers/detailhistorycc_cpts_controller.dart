@@ -19,7 +19,8 @@ class DetailhistoryccCptsController extends GetxController {
     idAttendance.value = Get.arguments["idAttendance"];
     print(idAttendance.value);
     getCombinedAttendance();
-   /* final String id = (Get.arguments as Map<String, dynamic>)["id"];
+    getFeedbackDataList();
+    /* final String id = (Get.arguments as Map<String, dynamic>)["id"];
     argument.value = id;*/
     attendanceStream();
     print(jumlah.value);
@@ -146,6 +147,76 @@ class DetailhistoryccCptsController extends GetxController {
 
     return attendanceData;
   }
+
+  Future<List<Map<String, dynamic>>> getFeedbackDataList()  async {
+    final attendanceQuery = await firestore
+        .collection('attendance')
+        .where("id", isEqualTo: idAttendance.value)
+        .get();
+
+    final attendanceDetailQuery = await firestore
+        .collection('attendance-detail')
+        .where("idattendance", isEqualTo: idAttendance.value)
+        .get();
+
+    List<Map<String, dynamic>> feedbackDataList = [];
+
+    for (var doc in attendanceDetailQuery.docs) {
+      final attendanceDetailModel = AttendanceDetailModel.fromJson(doc.data());
+
+      for (var doc in attendanceQuery.docs) {
+        final attendanceModel = AttendanceModel.fromJson(doc.data());
+
+        // Ambil informasi pengguna hanya untuk trainer yang terkait
+        final trainersQuery = await firestore
+            .collection('users')
+            .where("ID NO", isEqualTo: attendanceModel.instructor)
+            .get();
+
+        // Ambil informasi pengguna hanya untuk trainee yang terkait
+        final traineesQuery = await firestore
+            .collection('users')
+            .where("ID NO", isEqualTo: attendanceDetailModel.idtraining)
+            .get();
+
+        // Ambil informasi pengguna hanya untuk trainee yang terkait
+        final attendanceDetailsQuery = await firestore
+            .collection('attendance-detail')
+            .where("idattendance", isEqualTo: attendanceModel.id)
+            .get();
+
+        // Find the trainer's name from the trainersQuery
+        final trainerName = trainersQuery.docs.isNotEmpty ? trainersQuery.docs[0].data()['NAME'] : '';
+        final traineeName = traineesQuery.docs.isNotEmpty ? traineesQuery.docs[0].data()['NAME'] : '';
+
+        // Iterate through feedback documents
+        for (var feedbackDoc in attendanceDetailsQuery.docs) {
+          final feedbackData = feedbackDoc.data();
+          final traineeId = feedbackData['idtraining']; // ID of the trainee
+          final feedbackForInstructor = feedbackData['feedbackforinstructor'];
+          final rating = feedbackData['rating'];
+
+          // Create a map for each feedback entry
+          final feedbackEntry = {
+            'traineeId': traineeId,
+            'instructorName': trainerName,
+            'traineeName': traineeName,
+            'feedbackForInstructor': feedbackForInstructor,
+            'rating': rating,
+          };
+
+          // Tambahkan data ke list
+          feedbackDataList.add(feedbackEntry);
+        }
+
+        trainingName.value = attendanceModel.subject!;
+      }
+    }
+
+    print(feedbackDataList);
+    return feedbackDataList;
+  }
+
 
   @override
   void onReady() {
