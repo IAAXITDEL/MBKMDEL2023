@@ -81,6 +81,7 @@ class PilottraininghistoryccView
                     }
 
                     if (snapshot.hasError) {
+                      print(snapshot.error.toString());
                       return ErrorScreen();
                     }
 
@@ -88,6 +89,7 @@ class PilottraininghistoryccView
                     if (listAttendance.isEmpty) {
                       return EmptyScreen();
                     }
+
 
                     return ListView.builder(
                         shrinkWrap: true,

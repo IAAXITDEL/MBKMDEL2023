@@ -5,7 +5,7 @@ import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:ts_one/app/modules/cc/instructor/training_typeinstructorcc/views/training_typeinstructorcc_view.dart';
 
 import '../../../../../presentation/theme.dart';
-import '../../../cc/pilotadministrator/homecc/views/homecc_view.dart';
+import '../../../cc/instructor/home_instructorcc/views/home_instructorcc_view.dart';
 import '../../../cc/profilecc/views/profilecc_view.dart';
 import '../../../cc/trainingcc/views/trainingcc_view.dart';
 
@@ -28,7 +28,7 @@ class _NavinstructorState extends State<NavinstructorView> {
 
   List<Widget> _buildScreens() {
     return [
-      const HomeccView(),
+      const HomeInstructorccView(),
       const TrainingTypeinstructorccView(),
       const TrainingccView(),
       const ProfileccView(),

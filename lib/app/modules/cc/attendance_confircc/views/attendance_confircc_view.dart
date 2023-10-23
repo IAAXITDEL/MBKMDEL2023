@@ -41,9 +41,7 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
     _signaturePadKey = GlobalKey();
     void _clearSignature() {
       _signaturePadKey.currentState?.clear();
-    }
-
-    ;
+    };
 
     Future<void> confir() async {
       try {

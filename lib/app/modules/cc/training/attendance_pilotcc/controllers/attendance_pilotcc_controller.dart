@@ -23,8 +23,7 @@ class AttendancePilotccController extends GetxController {
   void onInit() {
     super.onInit();
 
-    final String id = (Get.arguments as Map<String, dynamic>)["id"];
-    idattendance.value = id;
+    idattendance.value = Get.arguments["id"];
     checkSignature();
   }
 
@@ -45,11 +44,12 @@ class AttendancePilotccController extends GetxController {
         attendanceQuery.docs.map((doc) async {
           final attendanceModel = AttendanceModel.fromJson(doc.data());
           final user = usersData.firstWhere((user) => user['ID NO'] == attendanceModel.instructor, orElse: () => {});
+
           attendanceModel.name = user['NAME'];
           return attendanceModel.toJson();
         }),
       );
-
+      checkSignature();
       return attendanceData;
     });
   }
@@ -58,13 +58,15 @@ class AttendancePilotccController extends GetxController {
   Future<void> checkSignature() async {
     try {
       final attendancedet = await firestore.collection('attendance-detail').where("idattendance", isEqualTo: idattendance.value).get();
-
+      print(idattendance.value);
       if (attendancedet.docs.isNotEmpty) {
         final status = attendancedet.docs[0]["status"];
         if(status == "confirmation"){
           cekstatus.value = true;
+        }else{
+          cekstatus.value = false;
         }
-
+        print("hasilnya ${cekstatus.value}");
       } else {
         print("Tidak ada data yang sesuai dengan kriteria pencarian.");
       }

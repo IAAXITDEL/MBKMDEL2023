@@ -84,7 +84,6 @@ class AttendancePilotccView extends GetView<AttendancePilotccController> {
                       if (snapshot.hasError) {
                         return ErrorScreen();
                       }
-
                       var listAttendance= snapshot.data!;
                       if(listAttendance.isEmpty){
                         return EmptyScreen();

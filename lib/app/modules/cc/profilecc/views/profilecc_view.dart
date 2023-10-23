@@ -294,37 +294,64 @@ class ProfileccView extends GetView<ProfileccController> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text("TRAINING", style: tsOneTextTheme.headlineLarge,),
-                            Container(
-                              padding: EdgeInsets.all(5),
-                              decoration: BoxDecoration(
-                                borderRadius:
-                                BorderRadius.circular(10.0),
-                                color: Colors.blue,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey
-                                        .withOpacity(0.3),
-                                    spreadRadius: 2,
-                                    blurRadius: 3,
-                                    offset: const Offset(0, 2),
-                                  ),
-                                ],
-                              ),
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.picture_as_pdf,
-                                    size: 16,
-                                    color: Colors.white,
-                                  ),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                  Text(
-                                    "Save PDF",
-                                    style: TextStyle(
-                                        color: Colors.white),
-                                  ),],),)
+                           Obx(() {
+                             return  controller.isReady.value ?
+                             InkWell(
+                               onTap: () async {
+                                 try {
+                                   // Tampilkan LoadingScreen
+                                   showDialog(
+                                     context: context,
+                                     barrierDismissible:
+                                     false, // Tidak bisa menutup dialog dengan tap di luar
+                                     builder: (BuildContext context) {
+                                       return LoadingScreen();
+                                     },
+                                   );
+
+                                   await controller.savePdfFile(
+                                       await controller
+                                           .getPDFTrainingCard());
+                                 } catch (e) {
+                                   print('Error: $e');
+                                 } finally {
+                                   // Tutup dialog saat selesai
+                                   Navigator.pop(context);
+                                 }
+                               },
+                               child: Container(
+                                 padding: EdgeInsets.all(5),
+                                 decoration: BoxDecoration(
+                                   borderRadius:
+                                   BorderRadius.circular(10.0),
+                                   color: Colors.blue,
+                                   boxShadow: [
+                                     BoxShadow(
+                                       color: Colors.grey
+                                           .withOpacity(0.3),
+                                       spreadRadius: 2,
+                                       blurRadius: 3,
+                                       offset: const Offset(0, 2),
+                                     ),
+                                   ],
+                                 ),
+                                 child: Row(
+                                   children: [
+                                     Icon(
+                                       Icons.picture_as_pdf,
+                                       size: 16,
+                                       color: Colors.white,
+                                     ),
+                                     SizedBox(
+                                       width: 5,
+                                     ),
+                                     Text(
+                                       "Save PDF",
+                                       style: TextStyle(
+                                           color: Colors.white),
+                                     ),],),) ,
+                             ):  SizedBox();
+                           })
                           ],
                         ),
                         SizedBox(

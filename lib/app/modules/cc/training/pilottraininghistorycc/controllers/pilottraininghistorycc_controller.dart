@@ -32,6 +32,7 @@ class PilottraininghistoryccController extends GetxController {
         .collection('attendance')
         .where("idTrainingType", isEqualTo: idTrainingType.value)
         .where("status", isEqualTo: "done")
+        .where("is_delete", isEqualTo: 0)
         .snapshots()
         .asyncMap((attendanceQuery) async {
       final attendanceDetailData = <Map<String, dynamic>>[];
@@ -75,14 +76,41 @@ class PilottraininghistoryccController extends GetxController {
         return [];
       }
 
-      final attendanceData = attendanceQuery.docs.map((doc) {
+      // // Inside the attendanceData mapping section
+      // final attendanceData = attendanceQuery.docs.map((doc) {
+      //   final attendanceModel = AttendanceModel.fromJson(doc.data());
+      //
+      //   // Find the corresponding attendanceDetail
+      //   Map<String, dynamic> attendanceDetail;
+      //   for (var detail in attendanceDetailData) {
+      //     if (detail['idattendance'] == attendanceModel.id) {
+      //       attendanceDetail = detail;
+      //       break;
+      //     }
+      //   }
+      //
+      //   return attendanceModel.toJson();
+      // }).where((attendance) => attendance != null).toList();
+
+      // Filter attendanceQuery based on whether there is a corresponding attendanceDetail
+      final filteredAttendanceQuery = attendanceQuery.docs.where((doc) {
+        final attendanceModel = AttendanceModel.fromJson(doc.data());
+        return attendanceDetailData.any((attendanceDetail) => attendanceDetail['idattendance'] == attendanceModel.id);
+      });
+
+      final attendanceData = <Map<String, dynamic>>[];
+      for (var doc in filteredAttendanceQuery) {
         final attendanceModel = AttendanceModel.fromJson(doc.data());
         final attendanceDetail = attendanceDetailData.firstWhere(
-              (attendanceDetail) =>
-          attendanceDetail['idattendance'] == attendanceModel.id,
+              (attendanceDetail) => attendanceDetail['idattendance'] == attendanceModel.id,
+          orElse: () => <String, dynamic>{}, // Return an empty map
         );
-        return attendanceModel.toJson();
-      }).toList();
+
+        print(attendanceModel);
+        if (attendanceDetail != null) {
+          attendanceData.add(attendanceModel.toJson());
+        }
+      }
 
       // Sort attendanceData based on valid_to in descending order
       attendanceData.sort((a, b) {
@@ -96,6 +124,7 @@ class PilottraininghistoryccController extends GetxController {
       if (attendanceData.isNotEmpty) {
         expiryC.value = attendanceData[0]["expiry"];
       }
+
       return attendanceData;
     });
   }

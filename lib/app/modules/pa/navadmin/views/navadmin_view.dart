@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import '../../../../../presentation/theme.dart';
+import '../../../cc/pilotadministrator/home_admincc/views/home_admincc_view.dart';
 import '../../../cc/pilotadministrator/homecc/views/homecc_view.dart';
 import '../../../cc/pilotadministrator/pilotcrewcc/views/pilotcrewcc_view.dart';
 import '../../../cc/profilecc/views/profilecc_view.dart';
@@ -29,7 +30,7 @@ class _NavadminState extends State<NavadminView> {
 
   List<Widget> _buildScreens() {
     return [
-      const HomeccView(),
+      const HomeAdminccView(),
       const TrainingccView(),
       const PilotcrewccView(),
       const ProfileccView(),
