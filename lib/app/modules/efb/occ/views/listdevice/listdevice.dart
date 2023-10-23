@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:excel/excel.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -133,13 +134,13 @@ class _ListDeviceState extends State<ListDevice> {
     sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: 0)).value =
         'Device No';
     sheet.cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: 0)).value =
-        'iOS Version';
+        'IOS Version';
     sheet.cell(CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: 0)).value =
-        'Lido Version';
+        'Lido mPilot Version';
     sheet.cell(CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: 0)).value =
         'Flysmart';
     sheet.cell(CellIndex.indexByColumnRow(columnIndex: 4, rowIndex: 0)).value =
-        'Docu Version';
+        'Docunet Version';
     sheet.cell(CellIndex.indexByColumnRow(columnIndex: 5, rowIndex: 0)).value =
         'Hub';
     sheet.cell(CellIndex.indexByColumnRow(columnIndex: 6, rowIndex: 0)).value =
@@ -262,11 +263,7 @@ class _ListDeviceState extends State<ListDevice> {
         backgroundColor: Colors.white,
         title: Text(
           'List Device',
-          style: TextStyle(
-            color: Colors.black, // Set text color to red
-            fontSize: 20.1,
-            fontWeight: FontWeight.bold,
-          ),
+          style: tsOneTextTheme.headlineLarge,
         ),
         centerTitle: true,
         actions: [
@@ -305,7 +302,7 @@ class _ListDeviceState extends State<ListDevice> {
                   ),
                   prefixIcon: Icon(Icons.search),
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                    borderRadius: BorderRadius.all(Radius.circular(4.0)),
                   ),
                 ),
               ),
@@ -439,15 +436,20 @@ class _ListDeviceState extends State<ListDevice> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (BuildContext context) => AddDevice()),
-          );
-        },
-        child: Icon(Icons.add),
-        backgroundColor: TsOneColor.primary,
+      floatingActionButton: AvatarGlow(
+        endRadius: 40,
+        glowColor: Colors.black,
+        duration: const Duration(seconds: 2),
+        child: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (BuildContext context) => AddDevice()),
+            );
+          },
+          child: Icon(Icons.add),
+          backgroundColor: TsOneColor.primary,
+        ),
       ),
     );
   }
