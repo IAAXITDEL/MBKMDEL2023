@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-
 import 'package:get/get.dart';
-
 import '../../../../../presentation/theme.dart';
 import '../../../../../util/empty_screen.dart';
 import '../../../../../util/error_screen.dart';
@@ -187,10 +185,13 @@ class DetailhistoryccCptsView extends GetView<DetailhistoryccCptsController> {
                   onTap: () {
                     if (controller.jumlah.value > 0) {
                       print(controller.jumlah.value);
-                      Get.toNamed(Routes.LIST_ATTENDANCECC, arguments: {
-                        "id": controller.idAttendance.value,
-                        "status": "donescoring"
-                      });
+                      Get.toNamed(
+                        Routes.LIST_ATTENDANCECC,
+                        arguments: {
+                          "id": controller.idAttendance.value,
+                          "status": "donescoring"
+                        },
+                      );
                     }
                   },
                   child: Container(
@@ -206,12 +207,14 @@ class DetailhistoryccCptsView extends GetView<DetailhistoryccCptsController> {
                         "Attendance",
                         style: tsOneTextTheme.labelSmall,
                       ),
-                      subtitle: Obx(() {
-                        return Text(
-                          "${controller.jumlah.value.toString()} person",
-                          style: tsOneTextTheme.headlineMedium,
-                        );
-                      }),
+                      subtitle: Obx(
+                        () {
+                          return Text(
+                            "${controller.jumlah.value.toString()} person",
+                            style: tsOneTextTheme.headlineMedium,
+                          );
+                        },
+                      ),
                       trailing: Icon(Icons.navigate_next),
                     ),
                   ),
@@ -225,10 +228,13 @@ class DetailhistoryccCptsView extends GetView<DetailhistoryccCptsController> {
                   onTap: () {
                     if (controller.jumlah.value > 0) {
                       print(controller.jumlah.value);
-                      Get.toNamed(Routes.LIST_ABSENTCPTSCC, arguments: {
-                        /*"id": controller.idAttendance.value,
+                      Get.toNamed(
+                        Routes.LIST_ABSENTCPTSCC,
+                        arguments: {
+                          /*"id": controller.idAttendance.value,
                         "status": "donescoring"*/
-                      });
+                        },
+                      );
                     }
                   },
                   child: Container(
@@ -259,7 +265,8 @@ class DetailhistoryccCptsView extends GetView<DetailhistoryccCptsController> {
                 ),
 
                 Align(
-                  alignment: Alignment.centerLeft, // This ensures left alignment
+                  alignment:
+                      Alignment.centerLeft, // This ensures left alignment
                   child: Text(
                     'Feedback from Trainees',
                     style: TextStyle(
@@ -332,9 +339,10 @@ class DetailhistoryccCptsView extends GetView<DetailhistoryccCptsController> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        listFeedback[index]["traineeName"] ??
-                                            "N/A",
-                                        // listFeedback[0]["traineeId"].toString(),
+                                        // listFeedback[index]["traineeName"] ??
+                                        //     "N/A",
+                                        listFeedback[index]["traineeId"]
+                                            .toString(),
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold),
                                         maxLines: 1,
