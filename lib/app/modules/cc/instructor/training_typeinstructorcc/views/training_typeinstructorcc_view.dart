@@ -79,7 +79,7 @@ class TrainingTypeinstructorccView
                               padding: const EdgeInsets.symmetric(
                                   vertical: 1, horizontal: 10),
                               child: Text(
-                                trainingData["training"],
+                                trainingData["training"], style: tsOneTextTheme.labelSmall, textAlign: TextAlign.center,
                               ),
                             ),
                           ),

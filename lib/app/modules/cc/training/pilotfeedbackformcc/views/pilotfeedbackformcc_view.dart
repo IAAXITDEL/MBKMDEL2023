@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:ts_one/presentation/shared_components/TitleText.dart';
@@ -61,14 +62,19 @@ class PilotfeedbackformccView extends GetView<PilotfeedbackformccController> {
                       }
 
                       if (snapshot.hasError) {
+                        print("unu ${snapshot.error}");
                         return ErrorScreen();
                       }
 
                       var listAttendance = snapshot.data!;
 
                       if (listAttendance != null && listAttendance.isNotEmpty) {
+
+                        Timestamp? date = listAttendance[0]["date"];
+                        DateTime? dates = date?.toDate();
+
                         subjectC.text = listAttendance[0]["subject"] ?? "N/A";
-                        dateC.text = listAttendance[0]["date"] ?? "N/A";
+                        dateC.text = DateFormat('dd MMM yyyy').format(dates!) ?? "N/A";
                         departmentC.text =
                             listAttendance[0]["department"] ?? "N/A";
                         vanueC.text = listAttendance[0]["vanue"] ?? "N/A";
@@ -248,6 +254,8 @@ class PilotfeedbackformccView extends GetView<PilotfeedbackformccController> {
                                 }
 
                                 if (snapshot.hasError) {
+                                  print("asagda");
+                                  print("scs ${snapshot.error}");
                                   return ErrorScreen();
                                 }
 
@@ -260,6 +268,7 @@ class PilotfeedbackformccView extends GetView<PilotfeedbackformccController> {
                                   subjectC.text = "No Subject Data Available";
                                 }
 
+                                print("test");
                                 return Form(
                                   key: _formKey,
                                   child: Column(

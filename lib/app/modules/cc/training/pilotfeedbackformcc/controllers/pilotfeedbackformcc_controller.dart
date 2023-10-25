@@ -98,12 +98,15 @@ class PilotfeedbackformccController extends GetxController {
 
       // Check if 'rating' exists in the document
       if (attendanceDoc.data().containsKey('rating')) {
-        attendance.rating = attendanceDoc['rating'];
+        attendance.rating = attendanceDoc['rating'].toDouble();
       }
       attendanceList.add(attendance);
     });
 
-    rating.value = attendanceList.isNotEmpty ? attendanceList[0].rating ?? 1 : 1;
+    rating.value = attendanceList.isNotEmpty ? attendanceList[0].rating ?? 1.0 : 1.0;
+
+    print("asda");
+    print(attendanceList);
     return attendanceList;
   }
 

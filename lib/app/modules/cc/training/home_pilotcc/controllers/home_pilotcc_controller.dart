@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:ts_one/app/modules/cc/training/attendance_pilotcc/controllers/attendance_pilotcc_controller.dart';
 
 import '../../../../../../data/users/user_preferences.dart';
 import '../../../../../../di/locator.dart';
+import '../../../../../../presentation/view_model/attendance_detail_model.dart';
 import '../../../../../../presentation/view_model/attendance_model.dart';
+import '../../../../../routes/app_pages.dart';
 
 class HomePilotccController extends GetxController {
   late UserPreferences userPreferences;
@@ -51,25 +54,71 @@ class HomePilotccController extends GetxController {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
 
+  // Stream<List<Map<String, dynamic>>> getCombinedAttendanceStream() {
+  //   userPreferences = getItLocator<UserPreferences>();
+  //   return firestore.collection('attendance').where("status", isEqualTo: "pending").snapshots().asyncMap((attendanceQuery) async {
+  //     final attendanceDetailQuery = await firestore.collection('attendance-detail').where("idtraining", isEqualTo: userPreferences.getIDNo()).where("status", isEqualTo: "confirmation").get();
+  //     final attendanceDetailData = attendanceDetailQuery.docs.map((doc) => doc.data()).toList();
+  //
+  //     if (attendanceDetailData.isEmpty) {
+  //       return [];
+  //     }
+  //
+  //     final attendanceData = await Future.wait(
+  //       attendanceQuery.docs.map((doc) async {
+  //         final attendanceModel = AttendanceModel.fromJson(doc.data());
+  //         final attendanceDetail = attendanceDetailData.firstWhere((attendanceDetail) => attendanceDetail['idattendance'] == attendanceModel.id, orElse: () => {});
+  //         return attendanceModel.toJson();
+  //       }),
+  //     );
+  //     return attendanceData;
+  //   });
+  // }
   Stream<List<Map<String, dynamic>>> getCombinedAttendanceStream() {
     userPreferences = getItLocator<UserPreferences>();
     return firestore.collection('attendance').where("status", isEqualTo: "pending").snapshots().asyncMap((attendanceQuery) async {
-      final attendanceDetailQuery = await firestore.collection('attendance-detail').where("idtraining", isEqualTo: userPreferences.getIDNo()).where("status", isEqualTo: "confirmation").get();
-      final attendanceDetailData = attendanceDetailQuery.docs.map((doc) => doc.data()).toList();
+
+      var attendanceDetailData = <Map<String, dynamic>>[];
+      if (attendanceQuery.docs.isNotEmpty) {
+        final attendanceDetailQuery = await firestore.collection('attendance-detail').where("idtraining", isEqualTo: userPreferences.getIDNo()).where("status", isEqualTo: "confirmation").get();
+        attendanceDetailData = attendanceDetailQuery.docs.map((doc) => doc.data()).toList();
+      }
+
       if (attendanceDetailData.isEmpty) {
         return [];
       }
 
-      final attendanceData = await Future.wait(
-        attendanceQuery.docs.map((doc) async {
-          final attendanceModel = AttendanceModel.fromJson(doc.data());
-          final attendanceDetail = attendanceDetailData.firstWhere((attendanceDetail) => attendanceDetail['idattendance'] == attendanceModel.id, orElse: () => {});
-          return attendanceModel.toJson();
-        }),
-      );
+      // Filter attendanceQuery based on whether there is a corresponding attendanceDetail
+      final filteredAttendanceQuery = attendanceQuery.docs.where((doc) {
+        final attendanceModel = AttendanceModel.fromJson(doc.data());
+        return attendanceDetailData.any((attendanceDetail) => attendanceDetail['idattendance'] == attendanceModel.id);
+      });
+
+      final attendanceData = <Map<String, dynamic>>[];
+      for (var doc in filteredAttendanceQuery) {
+        final attendanceModel = AttendanceModel.fromJson(doc.data());
+        final attendanceDetail = attendanceDetailData.firstWhere(
+              (attendanceDetail) => attendanceDetail['idattendance'] == attendanceModel.id,
+          orElse: () => <String, dynamic>{}, // Return an empty map
+        );
+
+        print(attendanceModel);
+        if (attendanceDetail != null) {
+          attendanceData.add(attendanceModel.toJson());
+        }
+      }
+
       return attendanceData;
     });
   }
+
+  Future<void> toAttendance(String id) async {
+    Get.toNamed(Routes.ATTENDANCE_PILOTCC, arguments: {
+      "id": id,
+    });
+    Get.find<AttendancePilotccController>().onInit();
+  }
+
 
   @override
   void onReady() {

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:ts_one/presentation/theme.dart';
 
@@ -29,7 +30,7 @@ class AddAttendanceccView extends GetView<AddAttendanceccController> {
     subjectC.text = controller.argumentname.value;
     int? instructorC = 0;
 
-    Future<void> add(String subject, String date, String venue, int instructor, int idtrainingtype) async {
+    Future<void> add(String subject, DateTime date, String venue, int instructor, int idtrainingtype) async {
       controller.addAttendanceForm(subject, date, venue, instructor, idtrainingtype).then((status) async {
         await QuickAlert.show(
           context: context,
@@ -146,7 +147,7 @@ class AddAttendanceccView extends GetView<AddAttendanceccController> {
                                 return FutureBuilder<void>(
                                   future: add(
                                     subjectC.text,
-                                    dateC.text,
+                                    DateFormat('dd-MM-yyyy').parse(dateC.text),
                                     venueC.text,
                                     instructorC!,
                                     controller.argumentid.value,

@@ -12,6 +12,7 @@ import '../../../../../presentation/view_model/attendance_model.dart';
 import '../../../../../util/error_screen.dart';
 import '../../../../../util/loading_screen.dart';
 import '../../../../routes/app_pages.dart';
+import '../../training/attendance_pilotcc/controllers/attendance_pilotcc_controller.dart';
 import '../../traininghistorycc_cpts/controllers/traininghistorycc_cpts_controller.dart';
 import '../controllers/trainingcc_controller.dart';
 
@@ -40,6 +41,7 @@ class TrainingccView extends GetView<TrainingccController> {
           Get.toNamed(Routes.ATTENDANCE_PILOTCC, arguments: {
             "id": attendanceList[0].id,
           });
+          Get.find<AttendancePilotccController>().onInit();
           return;
         } else {
           await QuickAlert.show(
@@ -111,9 +113,12 @@ class TrainingccView extends GetView<TrainingccController> {
                     text: "The class key is wrong, Please enter the key again!",
                   );
                 } else {
+                  Navigator.of(context, rootNavigator: true).pop();
                   await Get.toNamed(Routes.ATTENDANCE_PILOTCC, arguments: {
                     "id": listAttendance[0]["id"],
                   });
+                  Get.find<AttendancePilotccController>().onInit();
+                  passwordC.clear();
                 }
               } catch (e) {
                 print("Error joining class: $e");
@@ -324,8 +329,10 @@ class TrainingccView extends GetView<TrainingccController> {
                             child: Container(
                               padding: const EdgeInsets.symmetric(
                                   vertical: 1, horizontal: 10),
-                              child: Text(
-                                trainingData["training"],
+                              child: Center(
+                                child: Text(
+                                  trainingData["training"], style: tsOneTextTheme.labelSmall, textAlign: TextAlign.center,
+                                ),
                               ),
                             ),
                           ),

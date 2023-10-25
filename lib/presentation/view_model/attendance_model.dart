@@ -13,7 +13,7 @@ class AttendanceModel {
   String? status;
   String? subject;
   String? trainingType;
-  String? date;
+  Timestamp? date;
   Timestamp? valid_to;
   String? department;
   String? vanue;

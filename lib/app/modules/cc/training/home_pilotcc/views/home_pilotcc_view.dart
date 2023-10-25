@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:ts_one/app/modules/cc/training/attendance_pilotcc/controllers/attendance_pilotcc_controller.dart';
 
 import '../../../../../../presentation/theme.dart';
 import '../../../../../../util/empty_screen.dart';
@@ -89,6 +90,7 @@ class HomePilotccView extends GetView<HomePilotccController> {
                     }
 
                     if (snapshot.hasError) {
+                      print(snapshot.error.toString());
                       return ErrorScreen();
                     }
 
@@ -102,11 +104,10 @@ class HomePilotccView extends GetView<HomePilotccController> {
                         itemCount: listAttendance.length,
                         physics: const NeverScrollableScrollPhysics(),
                         itemBuilder: (context, index) {
+
                           return InkWell(
                             onTap: () {
-                              Get.toNamed(Routes.ATTENDANCE_PILOTCC, arguments: {
-                                "id": listAttendance[0]["id"],
-                              });
+                              controller.toAttendance(listAttendance[index]["id"]);
                             },
                             child: Container(
                               margin: EdgeInsets.symmetric(vertical: 5),

@@ -76,6 +76,7 @@ class ListAttendanceccView extends GetView<ListAttendanceccController> {
                      }
 
                      if (snapshot.hasError) {
+                       print(snapshot.error.toString());
                        return ErrorScreen();
                      }
 
