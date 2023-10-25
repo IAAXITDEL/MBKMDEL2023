@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 
@@ -41,9 +42,7 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
     _signaturePadKey = GlobalKey();
     void _clearSignature() {
       _signaturePadKey.currentState?.clear();
-    }
-
-    ;
+    };
 
     Future<void> confir() async {
       try {
@@ -118,8 +117,12 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                   var listAttendance = snapshot.data!;
 
                   if (listAttendance != null && listAttendance.isNotEmpty) {
+
+                    Timestamp? timestamp = listAttendance[0]["date"];
+                    DateTime? dateTime = timestamp?.toDate();
+
                     subjectC.text = listAttendance[0]["subject"] ?? "N/A";
-                    dateC.text = listAttendance[0]["date"] ?? "N/A";
+                    dateC.text = DateFormat('dd MMMM yyyy').format(dateTime!) ?? "N/A";
                     departmentC.text = listAttendance[0]["department"] ?? "N/A";
                     vanueC.text = listAttendance[0]["vanue"] ?? "N/A";
                     trainingtypeC.text =

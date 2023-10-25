@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:ts_one/app/modules/pa/navadmin/views/navadmin_view.dart';
 import 'package:ts_one/presentation/shared_components/TitleText.dart';
 
@@ -187,6 +188,7 @@ class _TrainingtypeccViewState extends State<TrainingtypeccView>
                         return LoadingScreen(); // Placeholder while loading
                       }
                       if (snapshot.hasError) {
+                        print("cccc ${snapshot.error.toString()}");
                         return ErrorScreen();
                       }
 
@@ -199,6 +201,9 @@ class _TrainingtypeccViewState extends State<TrainingtypeccView>
                       return ListView.builder(
                           itemCount: listAttendance.length,
                           itemBuilder: (context, index) {
+                            Timestamp? timestamp = listAttendance[index]["date"];
+                            DateTime? dateTime = timestamp?.toDate();
+                            String dateC = DateFormat('dd MMMM yyyy').format(dateTime!);
                             return ListTile(
                               onTap: () => Get.toNamed(Routes.ATTENDANCE_PENDINGCC,  arguments: {
                                 "id" : listAttendance[index]["id"],
@@ -214,7 +219,7 @@ class _TrainingtypeccViewState extends State<TrainingtypeccView>
                                   ) : Image.network("${listAttendance[index]["photoURL"]}", fit: BoxFit.cover),),
                               ),
                               title: Text(listAttendance[index]["name"].toString()),
-                              subtitle: Text(listAttendance[index]["date"]),
+                              subtitle: Text(dateC),
                               trailing: Icon(Icons.navigate_next),
                             );
                           }
@@ -241,6 +246,9 @@ class _TrainingtypeccViewState extends State<TrainingtypeccView>
                       return ListView.builder(
                           itemCount: listAttendance.length,
                           itemBuilder: (context, index) {
+                            Timestamp? timestamp = listAttendance[index]["date"];
+                            DateTime? dateTime = timestamp?.toDate();
+                            String dateC = DateFormat('dd MMMM yyyy').format(dateTime!);
                             return ListTile(
                               leading: CircleAvatar(
                                 radius: 20,
@@ -253,7 +261,7 @@ class _TrainingtypeccViewState extends State<TrainingtypeccView>
                                   ) : Image.network("${listAttendance[index]["photoURL"]}", fit: BoxFit.cover),),
                               ),
                               title: Text(listAttendance[index]["name"].toString()),
-                              subtitle: Text(listAttendance[index]["date"]),
+                              subtitle: Text(dateC),
                               trailing: Icon(Icons.navigate_next),
                               onTap: () => Get.toNamed(Routes.ATTENDANCE_CONFIRCC,  arguments: {
                                 "id" : listAttendance[index]["id"],
@@ -271,6 +279,8 @@ class _TrainingtypeccViewState extends State<TrainingtypeccView>
                       }
 
                       if (snapshot.hasError) {
+
+                        print("cccc ${snapshot.error.toString()}");
                         return ErrorScreen();
                       }
 
@@ -282,6 +292,10 @@ class _TrainingtypeccViewState extends State<TrainingtypeccView>
                       return ListView.builder(
                           itemCount: listAttendance.length,
                           itemBuilder: (context, index) {
+
+                            Timestamp? timestamp = listAttendance[index]["date"];
+                            DateTime? dateTime = timestamp?.toDate();
+                            String dateC = DateFormat('dd MMMM yyyy').format(dateTime!);
                             return ListTile(
                               leading: CircleAvatar(
                                 radius: 20,
@@ -294,7 +308,7 @@ class _TrainingtypeccViewState extends State<TrainingtypeccView>
                                   ) : Image.network("${listAttendance[index]["photoURL"]}", fit: BoxFit.cover),),
                               ),
                               title: Text(listAttendance[index]["name"].toString()),
-                              subtitle: Text(listAttendance[index]["date"]),
+                              subtitle: Text(dateC),
                               trailing: Icon(Icons.navigate_next),
                               onTap: () => Get.toNamed(Routes.ATTENDANCE_CONFIRCC,  arguments: {
                                 "id" : listAttendance[index]["id"],

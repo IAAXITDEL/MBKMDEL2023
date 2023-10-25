@@ -23,19 +23,6 @@ import '../../../../../presentation/view_model/attendance_model.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-Future<void> requestStoragePermission() async {
-  if (Platform.isAndroid) {
-    final status = await Permission.storage.request();
-    if (status.isGranted) {
-      print('Storage permission granted.');
-    } else {
-      print('Storage permission denied.');
-      // Handle permission denied
-    }
-  }
-}
-
-
 class AttendanceConfirccController extends GetxController {
   var selectedMeeting = "Training".obs;
   late UserPreferences userPreferences;
@@ -73,10 +60,10 @@ class AttendanceConfirccController extends GetxController {
     final Map<String, dynamic> args = Get.arguments as Map<String, dynamic>;
     final String id = args["id"];
     argumentid.value = id;
-    // attendanceStream();
-    // getCombinedAttendanceStream();
-    // cekRole();
-    // instructorStream();
+    attendanceStream();
+    getCombinedAttendanceStream();
+    cekRole();
+    instructorStream();
     attendancelist();
   }
 
@@ -118,7 +105,7 @@ class AttendanceConfirccController extends GetxController {
           attendanceModel.loano = user['LOA NO'];
           idInstructor.value = attendanceModel.instructor!;
 
-          date.value = attendanceModel.date!;
+          date.value = attendanceModel.date!.toString();
           idTrainingType.value = attendanceModel.idTrainingType!;
 
           return attendanceModel.toJson();
@@ -231,6 +218,7 @@ class AttendanceConfirccController extends GetxController {
         }else if(recurrent == "12 MONTH CALENDER"){
            nextMonths = DateTime(dates.year, dates.month + 12, dates.day);
         }else if(recurrent == "24 MONTH CALENDER"){
+          print("disin");
            nextMonths = DateTime(dates.year, dates.month + 24, dates.day);
         }else if(recurrent == "36 MONTH CALENDER"){
           nextMonths = DateTime(dates.year, dates.month + 36, dates.day);
@@ -749,7 +737,7 @@ class AttendanceConfirccController extends GetxController {
                                     children: [
                                       TextFieldPdf(title: "DATE"),
                                       TextFieldPdf(
-                                          title: attendanceModel.date ?? ''),
+                                          title: attendanceModel.date.toString() ?? ''),
                                     ],
                                   ),
 

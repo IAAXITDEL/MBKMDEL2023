@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:ts_one/app/routes/app_pages.dart';
 
 import '../../../../../../presentation/view_model/attendance_model.dart';
@@ -59,7 +60,8 @@ class TrainingtypeccController extends GetxController {
       final usersData = <Map<String, dynamic>>[];
 
       if (instructorIds.isNotEmpty) {
-        final usersQuery = await _firestore.collection('users').where("ID NO", whereIn: instructorIds).get();
+        final usersQuery =
+        await _firestore.collection('users').where("ID NO", whereIn: instructorIds).get();
         usersData.addAll(usersQuery.docs.map((doc) => doc.data()));
       }
 
@@ -72,6 +74,8 @@ class TrainingtypeccController extends GetxController {
           return attendanceModel.toJson();
         }),
       );
+
+      attendanceData.sort((a, b) => b['date'].compareTo(a['date']));
 
       return attendanceData;
     });

@@ -65,6 +65,7 @@ class MainHomeController extends GetxController {
       checkInstructor();
     });
     super.onInit();
+    cekValidityStream();
   }
 
   void checkInstructor() {
@@ -103,6 +104,8 @@ class MainHomeController extends GetxController {
     final now = DateTime.now();
     return firestore.collection('attendance')
         .where("status", isEqualTo: "done")
+        .where("expiry", isEqualTo: "VALID")
+        .where("is_delete", isEqualTo: 0)
         .snapshots()
         .asyncMap((attendanceQuery) async {
       final attendanceData = await Future.wait(
@@ -112,15 +115,16 @@ class MainHomeController extends GetxController {
 
           if (target != null) {
             if (now.isBefore(target)) {
-              final oneMonthBeforeTarget = target.subtract(Duration(days: 30));
-              if (now.isAfter(oneMonthBeforeTarget)) {
-                await firestore.collection('attendance').doc(attendanceModel.id).update({
-                  "expiry": "EARLY WARNING",
-                });
-                print("Attendance with ID ${attendanceModel.id} is in EARLY WARNING.");
-              } else {
-                print("Attendance with ID ${attendanceModel.id} is still valid.");
-              }
+              // final oneMonthBeforeTarget = target.subtract(Duration(days: 30));
+              // if (now.isAfter(oneMonthBeforeTarget)) {
+              //   await firestore.collection('attendance').doc(attendanceModel.id).update({
+              //     "expiry": "EARLY WARNING",
+              //   });
+              //   print("Attendance with ID ${attendanceModel.id} is in EARLY WARNING.");
+              // } else {
+              //   print("Attendance with ID ${attendanceModel.id} is still valid.");
+              // }
+
             } else {
               await firestore.collection('attendance').doc(attendanceModel.id).update({
                 "expiry": "NOT VALID",
@@ -135,8 +139,4 @@ class MainHomeController extends GetxController {
       return attendanceData;
     });
   }
-
-
-
-
 }

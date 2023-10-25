@@ -81,6 +81,7 @@ class PilottraininghistoryccView
                     }
 
                     if (snapshot.hasError) {
+                      print(snapshot.error.toString());
                       return ErrorScreen();
                     }
 
@@ -89,19 +90,16 @@ class PilottraininghistoryccView
                       return EmptyScreen();
                     }
 
+
                     return ListView.builder(
                         shrinkWrap: true,
                         itemCount: listAttendance.length,
                         physics: const NeverScrollableScrollPhysics(),
                         itemBuilder: (context, index) {
-                          var dateFormat = DateFormat('dd-MM-yyyy');
 
-                          var dates = dateFormat.parse(listAttendance[index]["date"]);
-                          String dateC = DateFormat('dd MMMM yyyy').format(dates);
-
-                          // var valids = dateFormat.parse(listAttendance[index]["valid_to"]);
-                          // String validC = DateFormat('dd MMMM yyyy').format(valids);
-
+                          Timestamp? date = listAttendance[index]["date"];
+                          DateTime? dates = date?.toDate();
+                          String dateC = DateFormat('dd MMMM yyyy').format(dates!);
 
                           Timestamp? timestamp = listAttendance[index]["valid_to"];
                           DateTime? dateTime = timestamp?.toDate();
