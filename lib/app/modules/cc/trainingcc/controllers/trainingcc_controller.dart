@@ -13,6 +13,7 @@ import '../../../../../presentation/view_model/attendance_model.dart';
 import '../../../../routes/app_pages.dart';
 import '../../instructor/training_instructorcc/controllers/training_instructorcc_controller.dart';
 import '../../pilotadministrator/trainingtypecc/controllers/trainingtypecc_controller.dart';
+import '../../traininghistorycc_cpts/controllers/traininghistorycc_cpts_controller.dart';
 class TrainingccController extends GetxController {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   late UserPreferences userPreferences;
@@ -22,6 +23,7 @@ class TrainingccController extends GetxController {
 
   final RxBool cekPilot = false.obs;
   RxBool isAdministrator = false.obs;
+  RxBool iscpts = false.obs;
   final RxString passwordKey = "".obs;
   final RxBool isLoading = false.obs;
   // List untuk training remark
@@ -48,6 +50,9 @@ class TrainingccController extends GetxController {
     if (userPreferences.getInstructor().contains(UserModel.keyCPTS) &&
             userPreferences.getRank().contains(UserModel.keyPositionCaptain) ||
         userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)) {
+        iscpts.value = true;
+        Get.toNamed(Routes.TRAININGHISTORYCC_CPTS, arguments: {"id": argumentid.value});
+        Get.find<TraininghistoryccCptsController>().onInit();
     }
     // SEBAGAI INSTRUCTOR
     // else if (userPreferences

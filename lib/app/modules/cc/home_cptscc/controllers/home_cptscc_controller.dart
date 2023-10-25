@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
-import '../../../../data/users/user_preferences.dart';
-import '../../../../di/locator.dart';
+import '../../../../../data/users/user_preferences.dart';
+import '../../../../../di/locator.dart';
+
 
 class HomeCptsccController extends GetxController {
   late UserPreferences userPreferences;
@@ -53,8 +54,8 @@ class HomeCptsccController extends GetxController {
         .where('INSTRUCTOR', arrayContainsAny: ["CCP", "FIA", "FIS", "PGI"])
         .get()
         .then((querySnapshot) {
-          instructorCount.value = querySnapshot.docs.length;
-        });
+      instructorCount.value = querySnapshot.docs.length;
+    });
 
     // Fetch Firestore data to count pilots
     FirebaseFirestore.instance

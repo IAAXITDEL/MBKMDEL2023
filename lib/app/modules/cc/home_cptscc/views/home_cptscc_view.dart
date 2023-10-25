@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:screenshot/screenshot.dart';
-import 'package:ts_one/app/modules/home_cptscc/controllers/home_cptscc_controller.dart';
-
-import '../../../../presentation/theme.dart';
-import '../../../../util/util.dart';
+import 'package:ts_one/app/modules/cc/home_cptscc/controllers/home_cptscc_controller.dart';
+import '../../../../../presentation/theme.dart';
+import '../../../../../util/util.dart';
 
 class HomeCptsccView extends GetView<HomeCptsccController> {
   const HomeCptsccView({Key? key}) : super(key: key);

@@ -8,7 +8,8 @@ import '../../cc/pilotadministrator/homecc/controllers/homecc_controller.dart';
 import '../../cc/pilotadministrator/pilotcrewcc/controllers/pilotcrewcc_controller.dart';
 import '../../cc/profilecc/controllers/profilecc_controller.dart';
 import '../../cc/trainingcc/controllers/trainingcc_controller.dart';
-import '../../home_cptscc/controllers/home_cptscc_controller.dart';
+import '../../cc/home_cptscc/controllers/home_cptscc_controller.dart';
+import '../../cc/traininghistorycc_cpts/controllers/traininghistorycc_cpts_controller.dart';
 import '../controllers/main_home_controller.dart';
 
 class MainHomeBinding extends Bindings {
@@ -43,6 +44,9 @@ class MainHomeBinding extends Bindings {
     );
     Get.lazyPut<HomeCptsccController>(
           () => HomeCptsccController(),
+    );
+    Get.lazyPut<TraininghistoryccCptsController>(
+          () => TraininghistoryccCptsController(),
     );
   }
 }
