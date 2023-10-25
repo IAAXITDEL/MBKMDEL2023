@@ -28,6 +28,7 @@ class ProfileccController extends GetxController {
 
   RxBool isTraining = false.obs;
   RxBool isInstructor = false.obs;
+  RxBool isAdministrator = false.obs;
   RxString instructorType = "".obs;
 
   RxInt idTraining = 0.obs;
@@ -105,7 +106,7 @@ class ProfileccController extends GetxController {
     }
     // SEBAGAI PILOT ADMINISTRATOR
     else if( userPreferences.getRank().contains("Pilot Administrator")){
-
+      isAdministrator.value = true;
     }
     // SEBAGAI ALL STAR
     else{

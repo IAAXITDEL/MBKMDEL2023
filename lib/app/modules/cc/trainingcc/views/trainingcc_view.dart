@@ -328,8 +328,10 @@ class TrainingccView extends GetView<TrainingccController> {
                             child: Container(
                               padding: const EdgeInsets.symmetric(
                                   vertical: 1, horizontal: 10),
-                              child: Text(
-                                trainingData["training"],
+                              child: Center(
+                                child: Text(
+                                  trainingData["training"], style: tsOneTextTheme.labelSmall, textAlign: TextAlign.center,
+                                ),
                               ),
                             ),
                           ),

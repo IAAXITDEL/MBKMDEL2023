@@ -54,8 +54,6 @@ class PilottraininghistoryccController extends GetxController {
           attendanceDetailData
               .addAll(attendanceDetailQuery.docs.map((doc) => doc.data()));
 
-          print("disini 1");
-          print(attendanceDetailData);
         }else{
           return [];
         }
@@ -67,8 +65,6 @@ class PilottraininghistoryccController extends GetxController {
               .get();
           usersData.addAll(usersQuery.docs.map((doc) => doc.data()));
 
-          print("disini 2");
-          print(usersData);
         }else{
           return [];
         }
@@ -106,7 +102,6 @@ class PilottraininghistoryccController extends GetxController {
           orElse: () => <String, dynamic>{}, // Return an empty map
         );
 
-        print(attendanceModel);
         if (attendanceDetail != null) {
           attendanceData.add(attendanceModel.toJson());
         }

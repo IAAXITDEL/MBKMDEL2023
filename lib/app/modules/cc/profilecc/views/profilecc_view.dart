@@ -230,18 +230,24 @@ class ProfileccView extends GetView<ProfileccController> {
                           SizedBox(
                             height: 10,
                           ),
-                          Row(
-                            children: [
-                              Expanded(flex: 3, child: Text("HUB")),
-                              Expanded(flex: 1, child: Text(":")),
-                              Expanded(
-                                  flex: 6,
-                                  child: Text(documentData["HUB"] ?? "N/A")),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
+                          controller.isAdministrator.value == false ?
+                              Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Expanded(flex: 3, child: Text("HUB")),
+                                      Expanded(flex: 1, child: Text(":")),
+                                      Expanded(
+                                          flex: 6,
+                                          child: Text(documentData["HUB"] ?? "N/A")),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                ],
+                              ) : SizedBox(),
+
                           controller.isInstructor.value == true
                               ? Column(
                             children: [

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:ts_one/presentation/shared_components/TitleText.dart';
 
 import '../../../../../../presentation/theme.dart';
@@ -109,6 +110,10 @@ class PilottraininghistorydetailccView
                         return EmptyScreen();
                       }
 
+
+                      Timestamp? date = listAttendance[0]["date"];
+                      DateTime? dates = date?.toDate();
+                      String dateC = DateFormat('dd MMMM yyyy').format(dates!);
                       return Column(
                         children: [
                           //SUBJECT
@@ -165,7 +170,7 @@ class PilottraininghistorydetailccView
                                 Expanded(
                                     flex: 4,
                                     child: Text(
-                                        listAttendance[0]["date"] ?? "N/A")),
+                                        dateC ?? "N/A")),
                               ],
                             ),
                           ),

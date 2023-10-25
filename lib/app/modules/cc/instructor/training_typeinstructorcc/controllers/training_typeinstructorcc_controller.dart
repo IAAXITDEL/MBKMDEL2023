@@ -122,6 +122,7 @@ class TrainingTypeinstructorccController extends GetxController {
         }),
       );
 
+      attendanceData.sort((a, b) => b['date'].compareTo(a['date']));
       return attendanceData;
     });
   }

@@ -105,7 +105,7 @@ class AttendanceConfirccController extends GetxController {
           attendanceModel.loano = user['LOA NO'];
           idInstructor.value = attendanceModel.instructor!;
 
-          date.value = attendanceModel.date!;
+          date.value = attendanceModel.date!.toString();
           idTrainingType.value = attendanceModel.idTrainingType!;
 
           return attendanceModel.toJson();
@@ -737,7 +737,7 @@ class AttendanceConfirccController extends GetxController {
                                     children: [
                                       TextFieldPdf(title: "DATE"),
                                       TextFieldPdf(
-                                          title: attendanceModel.date ?? ''),
+                                          title: attendanceModel.date.toString() ?? ''),
                                     ],
                                   ),
 

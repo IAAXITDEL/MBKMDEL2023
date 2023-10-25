@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
@@ -89,6 +90,10 @@ class AttendancePilotccView extends GetView<AttendancePilotccController> {
                         return EmptyScreen();
                       }
 
+
+                      Timestamp? date = listAttendance[0]["date"];
+                      DateTime? dates = date?.toDate();
+                      String dateC = DateFormat('dd MMMM yyyy').format(dates!);
                       return Column(
                         children: [
                           //SUBJECT
@@ -158,7 +163,7 @@ class AttendancePilotccView extends GetView<AttendancePilotccController> {
                                     child: Text(":")),
                                 Expanded(
                                     flex: 4,
-                                    child: Text(listAttendance[0]["date"] ?? "N/A")),
+                                    child: Text(dateC ?? "N/A")),
                               ],
                             ),
                           ),

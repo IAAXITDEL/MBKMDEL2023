@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:googleapis/androidpublisher/v3.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../../../presentation/shared_components/TitleText.dart';
 import '../../../../../../presentation/theme.dart';
@@ -104,6 +106,8 @@ class HomeInstructorccView extends GetView<HomeInstructorccController> {
                           physics: const NeverScrollableScrollPhysics(),
                           itemCount: listAttendance.length,
                           itemBuilder: (context, index) {
+                            DateTime? dateTime = listAttendance[index]["date"].toDate();
+                            String dateC = dateTime != null ? DateFormat('dd MMMM yyyy').format(dateTime) : 'Invalid Date';
                             return Container(
                               margin: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
                               decoration: BoxDecoration(
@@ -128,7 +132,7 @@ class HomeInstructorccView extends GetView<HomeInstructorccController> {
                                     style: tsOneTextTheme.headlineMedium,
                                   ),
                                   subtitle: Text(
-                                    listAttendance[index]["date"],
+                                    dateC,
                                     style: tsOneTextTheme.labelSmall,
                                   ),
                                   trailing: const Icon(Icons.navigate_next),
