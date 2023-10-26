@@ -62,6 +62,14 @@ class _PilotFeedBackState extends State<PilotFeedBack> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Batery Integrity",
+                    style: tsOneTextTheme.titleMedium,
+                  ),
+                ),
+                SizedBox(height: 5,),
                 Text('Do you Charge the device during your duty?', style: tsOneTextTheme.labelLarge),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0), // Mengatur jarak antara radio buttons
@@ -90,10 +98,9 @@ class _PilotFeedBackState extends State<PilotFeedBack> {
                       activeColor: Colors.red,
                     )
 
-            ],
+                ],
                   ),
                 ),
-                SizedBox(height: 10), // Spasi tambahan antara teks dan radio buttons
                 Text('Do you find any risk or concern on the cabling?', style: tsOneTextTheme.labelLarge),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0), // Mengatur jarak antara radio buttons
@@ -124,7 +131,14 @@ class _PilotFeedBackState extends State<PilotFeedBack> {
                   ],
                   ),
                 ),
-                SizedBox(height: 10), // Spasi tambahan antara teks dan radio buttons
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "If charging the device is REQUIRED.",
+                    style: tsOneTextTheme.titleMedium,
+                  ),
+                ),
+                SizedBox(height: 5,),
                 Text('Flight Phase', style: tsOneTextTheme.labelLarge),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0), // Mengatur jarak antara radio buttons
@@ -230,7 +244,14 @@ class _PilotFeedBackState extends State<PilotFeedBack> {
                     ],
                   ),
                 ),
-                SizedBox(height: 10), // Spasi tambahan antara teks dan radio buttons
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "If charging the device is NOT REQUIRED.",
+                    style: tsOneTextTheme.titleMedium,
+                  ),
+                ),
+                SizedBox(height: 5,),
                 Text('Did you utilize ALL EFB software during your duty?', style: tsOneTextTheme.labelLarge),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0), // Mengatur jarak antara radio buttons

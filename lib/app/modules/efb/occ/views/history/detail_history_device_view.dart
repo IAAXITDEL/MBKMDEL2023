@@ -429,7 +429,6 @@ class DetailHistoryDeviceView extends GetView {
                                               ),
 
                                               SizedBox(height: 15),
-                                              if (status == 'Done')
                                                 Text(
                                                   "Return Documentation",
                                                   style: TextStyle(
@@ -440,25 +439,6 @@ class DetailHistoryDeviceView extends GetView {
                                                     fontFamily: 'Poppins',
                                                   ),
                                                 ),
-                                              if (status == 'Done')
-                                                SizedBox(height: 7.0),
-                                              if (status == 'Done')
-                                                Row(
-                                                  children: [
-                                                    Expanded(
-                                                        flex: 6,
-                                                        child: Text("Remarks")),
-                                                    Expanded(
-                                                        flex: 1,
-                                                        child: Text(":")),
-                                                    Expanded(
-                                                      flex: 6,
-                                                      child: Text(
-                                                          '${data['remarks'] ?? '-'}'),
-                                                    ),
-                                                  ],
-                                                ),
-
 
 
                                               SizedBox(height: 5.0),
@@ -468,7 +448,7 @@ class DetailHistoryDeviceView extends GetView {
                                                     Expanded(
                                                         flex: 6,
                                                         child: Text(
-                                                            "Image Proof")),
+                                                            "Proof Back To Base")),
                                                     Expanded(
                                                         flex: 1,
                                                         child: Text(":")),
@@ -546,6 +526,87 @@ class DetailHistoryDeviceView extends GetView {
                                                     ),
                                                   ],
                                                 ),
+
+                                                SizedBox(height: 7.0),
+                                              SizedBox(height: 10.0),
+                                              if (status == 'handover-to-other-crew')
+                                                Text(
+                                                  "Return Documentation",
+                                                  style: TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: tsOneColorScheme.onBackground,
+                                                    fontFamily: 'Poppins',
+                                                  ),
+                                                ),
+                                              SizedBox(height: 7.0),
+                                              if (status == 'handover-to-other-crew')
+                                                Row(
+                                                  children: [
+                                                    Expanded(flex: 6, child: Text("Remarks")),
+                                                    Expanded(flex: 1, child: Text(":")),
+                                                    Expanded(
+                                                      flex: 6,
+                                                      child:
+                                                      handoverTouserData != null ? Text('${data['remarks'] ?? 'Not Found'}') : Text('Not Found'),
+                                                    ),
+                                                  ],
+                                                ),
+                                              SizedBox(height: 7.0),
+                                              if (status == 'handover-to-other-crew')
+                                                Row(
+                                                  children: [
+                                                    Expanded(flex: 6, child: Text("Proof of Remarks")),
+                                                    Expanded(flex: 1, child: Text(":")),
+                                                    Expanded(
+                                                      flex: 6,
+                                                      child: Column(
+                                                        children: [
+                                                          if (status == 'handover-to-other-crew' && data['prove_image_url'] == null ||
+                                                              data['prove_image_url'].isEmpty)
+                                                            Text(
+                                                              'There is no image',
+                                                              style: TextStyle(color: Colors.black),
+                                                            ),
+                                                          if (data['prove_image_url'] != null && data['prove_image_url'].isNotEmpty)
+                                                            GestureDetector(
+                                                              onTap: () {
+                                                                showDialog(
+                                                                  context: context,
+                                                                  builder: (BuildContext context) {
+                                                                    return AlertDialog(
+                                                                      content: Container(
+                                                                        width: 400,
+                                                                        height: 400,
+                                                                        child: Image.network(
+                                                                          data['prove_image_url'] ?? 'No Data',
+                                                                          fit: BoxFit.cover,
+                                                                        ),
+                                                                      ),
+                                                                    );
+                                                                  },
+                                                                );
+                                                              },
+                                                              child: Align(
+                                                                alignment: Alignment.centerLeft,
+                                                                child: Text(
+                                                                  'See Picture',
+                                                                  style: TextStyle(
+                                                                    color: TsOneColor.primary,
+                                                                    fontWeight: FontWeight.bold,
+                                                                    decoration: TextDecoration.underline,
+                                                                    decorationColor: TsOneColor.primary,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+
+                                              SizedBox(height: 5.0),
 
                                               if (status ==
                                                   'handover-to-other-crew')
