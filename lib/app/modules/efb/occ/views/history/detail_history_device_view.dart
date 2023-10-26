@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ts_one/app/modules/efb/occ/views/feedbackDetail/feedbackDetailPage.dart';
 import 'package:ts_one/app/modules/efb/occ/views/history/history_all_device_view.dart';
 
 import '../../../../../../presentation/theme.dart';
@@ -20,8 +21,8 @@ class DetailHistoryDeviceView extends GetView {
 
   String getMonthText(int month) {
     const List<String> months = [
-      'Januar7',
-      'Februar7',
+      'January',
+      'February',
       'March',
       'April',
       'May',
@@ -45,6 +46,25 @@ class DetailHistoryDeviceView extends GetView {
         '${dateTime.hour}:${dateTime.minute}';
     return formattedDateTime;
   }
+
+  Future<String> getDocumentIdForFeedback(String feedbackId) async {
+    // Ambil semua dokumen dari koleksi 'pilot-feedback'
+    QuerySnapshot feedbackQuerySnapshot = await FirebaseFirestore.instance.collection('pilot-feedback').get();
+
+    for (QueryDocumentSnapshot doc in feedbackQuerySnapshot.docs) {
+      // Untuk setiap dokumen, periksa apakah 'id' sesuai dengan 'feedbackId'
+      if (doc['feedback_id'] == feedbackId) {
+        // Jika cocok, kembalikan id dokumen yang sesuai
+        return feedbackId;
+      }
+    }
+
+    // Jika tidak ada yang cocok, kembalikan 'N/A' atau nilai default lainnya
+    return 'N/A';
+  }
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -79,6 +99,9 @@ class DetailHistoryDeviceView extends GetView {
             final handoverTo = data['handover-to-crew'];
             final occOnDuty = data['occ-on-duty'];
             final occAccepted = data['occ-accepted-device'];
+            final feedbackId = data['feedbackId'];
+
+
 
             return FutureBuilder<DocumentSnapshot>(
               future: FirebaseFirestore.instance.collection("users").doc(userUid).get(),
@@ -145,7 +168,7 @@ class DetailHistoryDeviceView extends GetView {
                             //occ accepted from
                             return FutureBuilder<DocumentSnapshot>(
                               future:
-                              occAccepted != null ? FirebaseFirestore.instance.collection("users").doc(occAccepted).get() : Future.value(null),
+                                  occAccepted != null ? FirebaseFirestore.instance.collection("users").doc(occAccepted).get() : Future.value(null),
                               builder: (context, occAcceptedSnapshot) {
                                 if (occAcceptedSnapshot.connectionState == ConnectionState.waiting) {
                                   return Center(child: CircularProgressIndicator());
@@ -325,6 +348,8 @@ class DetailHistoryDeviceView extends GetView {
                                               //   ],
                                               // ),
 
+
+
                                               SizedBox(height: 5.0),
                                               if (status == 'Done')
                                                 Row(
@@ -398,7 +423,7 @@ class DetailHistoryDeviceView extends GetView {
                                                     Expanded(
                                                       flex: 6,
                                                       child:
-                                                      handoverTouserData != null ? Text('${data['remarks'] ?? 'Not Found'}') : Text('Not Found'),
+                                                          handoverTouserData != null ? Text('${data['remarks'] ?? 'Not Found'}') : Text('Not Found'),
                                                     ),
                                                   ],
                                                 ),
@@ -546,6 +571,54 @@ class DetailHistoryDeviceView extends GetView {
                                                     ),
                                                   ],
                                                 ),
+                                              Row(
+                                                children: [
+                                                  Expanded(
+                                                      child: ElevatedButton(
+                                                        onPressed: () async {
+                                                          if (feedbackId != null && feedbackId.isNotEmpty) {
+                                                            // Menggunakan Navigator untuk berpindah ke halaman FeedbackDetailPage
+                                                            Navigator.of(context).push(
+                                                              MaterialPageRoute(
+                                                                builder: (context) => FeedbackDetailPage(
+                                                                    feedbackId: feedbackId
+                                                                ),
+                                                              ),
+                                                            );
+                                                          } else if (feedbackId == null || feedbackId == '-') {
+                                                            // Tindakan alternatif jika feedbackId tidak ada atau kosong
+                                                            showDialog(
+                                                              context: context,
+                                                              builder: (context) {
+                                                                return AlertDialog(
+                                                                  title: Text('Feedback Not Found'),
+                                                                  content: Text('The selected feedback was not found.'),
+                                                                  actions: [
+                                                                    TextButton(
+                                                                      onPressed: () {
+                                                                        Navigator.pop(context);
+                                                                      },
+                                                                      child: Text('OK'),
+                                                                    ),
+                                                                  ],
+                                                                );
+                                                              },
+                                                            );
+                                                          }
+                                                          print(feedbackId);
+                                                        },
+                                                        child: Padding(
+                                                          padding: EdgeInsets.all(15),
+                                                          child: Text(
+                                                            'Open Feedback',
+                                                            style: TextStyle(color: Colors.white),
+                                                          ),
+                                                        ),
+                                                      ),
+
+                                                  ),
+                                                ],
+                                              ),
 
                                               SizedBox(height: 80.0),
                                               Row(
@@ -606,10 +679,11 @@ class DetailHistoryDeviceView extends GetView {
                                                         child: Padding(
                                                           padding: EdgeInsets.all(15),
                                                           child: Text(
-                                                            'Download History',
+                                                            'Open Attachment',
                                                             style: TextStyle(color: Colors.white),
                                                           ),
-                                                        )),
+                                                        )
+                                                    ),
                                                   ),
                                                 ],
                                               ),

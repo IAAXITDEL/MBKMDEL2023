@@ -154,7 +154,7 @@ Future<void> generateLogPdfDevice1({
             children: [
               pw.Align(
                 child: pw.Text(
-                  '1st Device',
+                  'Device 1',
                   style: pw.TextStyle(
                     fontSize: 12,
                     fontWeight: pw.FontWeight.bold,

@@ -8,10 +8,8 @@ import 'package:ts_one/app/modules/efb/occ/views/history/detail_history_device_v
 import '../../../../presentation/theme.dart';
 import '../occ/views/history/detailhistorydeviceFo.dart';
 
-
 class HistoryEachCrewView extends StatefulWidget {
   const HistoryEachCrewView({Key? key}) : super(key: key);
-
 
   @override
   _HistoryEachCrewViewState createState() => _HistoryEachCrewViewState();
@@ -48,10 +46,7 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
       String userEmail = user.email ?? "";
 
       // Query the 'users' collection to find the document with the matching email
-      QuerySnapshot userSnapshot = await _firestore
-          .collection('users')
-          .where('EMAIL', isEqualTo: userEmail)
-          .get();
+      QuerySnapshot userSnapshot = await _firestore.collection('users').where('EMAIL', isEqualTo: userEmail).get();
 
       if (userSnapshot.docs.isNotEmpty) {
         // Get the user's document ID (user_id)
@@ -70,8 +65,7 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
         throw Exception('User not found in the "users" collection');
       }
     } else {
-      throw Exception(
-          'User not logged in'); // You can handle this case as needed.
+      throw Exception('User not logged in'); // You can handle this case as needed.
     }
   }
 
@@ -79,14 +73,11 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.white, // Set background color to white
         title: Text(
           'History',
-          style: TextStyle(
-            color: Colors.black, // Set text color to red
-            fontSize: 20.1,
-            fontWeight: FontWeight.bold,
-          ),
+          style: tsOneTextTheme.headlineLarge,
         ),
         centerTitle: true,
         // actions: [
@@ -122,7 +113,7 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
                   IconButton(
                     icon: Icon(
                       Icons.filter_list,
-                      size: 45,
+                      size: 32.0,
                     ),
                     onPressed: _showFilterBottomSheet,
                   ),
@@ -131,7 +122,7 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
             ),
             Expanded(
               child: FutureBuilder<QuerySnapshot>(
-                    future: getFODevices(),
+                future: getFODevices(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());
@@ -156,7 +147,10 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
                     final deviceName3 = data['device_name3'].toString().toLowerCase();
                     final searchTerm = _searchController.text.toLowerCase();
 
-                    return userName.contains(searchTerm) || deviceName.contains(searchTerm) || deviceName2.contains(searchTerm) || deviceName3.contains(searchTerm);
+                    return userName.contains(searchTerm) ||
+                        deviceName.contains(searchTerm) ||
+                        deviceName2.contains(searchTerm) ||
+                        deviceName3.contains(searchTerm);
                   }).toList();
 
                   return ListView.builder(
@@ -172,10 +166,7 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 4.0),
                         child: FutureBuilder<DocumentSnapshot>(
-                          future: FirebaseFirestore.instance
-                              .collection('users')
-                              .doc(userUid)
-                              .get(),
+                          future: FirebaseFirestore.instance.collection('users').doc(userUid).get(),
                           builder: (context, userSnapshot) {
                             if (userSnapshot.connectionState == ConnectionState.waiting) {
                               return CircularProgressIndicator();
@@ -196,10 +187,7 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
                             final photoUrl = userData['PHOTOURL'] as String?; // Get the profile photo URL
 
                             return FutureBuilder<DocumentSnapshot>(
-                              future: FirebaseFirestore.instance
-                                  .collection('Device')
-                                  .doc(deviceUid)
-                                  .get(),
+                              future: FirebaseFirestore.instance.collection('Device').doc(deviceUid).get(),
                               builder: (context, deviceSnapshot) {
                                 if (deviceSnapshot.connectionState == ConnectionState.waiting) {
                                   return CircularProgressIndicator();
@@ -216,10 +204,7 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
                                   final deviceUid3 = data['device_uid3'];
 
                                   return FutureBuilder<DocumentSnapshot>(
-                                    future: FirebaseFirestore.instance
-                                        .collection('Device')
-                                        .doc(deviceUid2)
-                                        .get(),
+                                    future: FirebaseFirestore.instance.collection('Device').doc(deviceUid2).get(),
                                     builder: (context, deviceUid2Snapshot) {
                                       if (deviceUid2Snapshot.connectionState == ConnectionState.waiting) {
                                         return CircularProgressIndicator();
@@ -238,10 +223,7 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
                                       final deviceno2 = deviceData2?['deviceno'];
 
                                       return FutureBuilder<DocumentSnapshot>(
-                                        future: FirebaseFirestore.instance
-                                            .collection('Device')
-                                            .doc(deviceUid3)
-                                            .get(),
+                                        future: FirebaseFirestore.instance.collection('Device').doc(deviceUid3).get(),
                                         builder: (context, deviceUid3Snapshot) {
                                           if (deviceUid3Snapshot.connectionState == ConnectionState.waiting) {
                                             return CircularProgressIndicator();
@@ -259,109 +241,75 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
 
                                           final deviceno3 = deviceData3?['deviceno'];
 
-
                                           return Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 10.0),
+                                            padding: const EdgeInsets.symmetric(horizontal: 10.0),
                                             child: SizedBox(
-                                              width: MediaQuery.of(context)
-                                                  .size
-                                                  .width,
+                                              width: MediaQuery.of(context).size.width,
                                               child: Align(
                                                 alignment: Alignment.centerLeft,
                                                 child: Card(
-                                                  color: tsOneColorScheme
-                                                      .secondary,
-                                                  surfaceTintColor:
-                                                  TsOneColor.surface,
+                                                  color: tsOneColorScheme.secondary,
+                                                  surfaceTintColor: TsOneColor.surface,
                                                   shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                    BorderRadius.circular(
-                                                        15),
+                                                    borderRadius: BorderRadius.circular(15),
                                                   ),
-                                                  elevation:
-                                                  3, // You can adjust the elevation as needed
+                                                  elevation: 3, // You can adjust the elevation as needed
                                                   child: InkWell(
                                                     onTap: () {
-                                                      Navigator.of(context)
-                                                          .push(
+                                                      Navigator.of(context).push(
                                                         MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              DetailHistoryDeviceFOView(
-                                                                dataId: dataId,
-                                                                userName: userName,
-                                                                deviceno2:
-                                                                deviceno2,
-                                                                deviceno3:
-                                                                deviceno3,
-                                                              ),
+                                                          builder: (context) => DetailHistoryDeviceFOView(
+                                                            dataId: dataId,
+                                                            userName: userName,
+                                                            deviceno2: deviceno2,
+                                                            deviceno3: deviceno3,
+                                                          ),
                                                         ),
                                                       );
                                                     },
                                                     child: Padding(
-                                                      padding:
-                                                      const EdgeInsets.all(
-                                                          10.0),
+                                                      padding: const EdgeInsets.all(10.0),
                                                       child: Row(
-                                                        mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                        crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
                                                         children: [
                                                           SizedBox(width: 8.0),
                                                           CircleAvatar(
-                                                            backgroundImage: photoUrl !=
-                                                                null
-                                                                ? NetworkImage(
-                                                                photoUrl
-                                                                as String)
-                                                                : AssetImage(
-                                                                'assets/default_profile_image.png')
-                                                            as ImageProvider,
+                                                            backgroundImage: photoUrl != null
+                                                                ? NetworkImage(photoUrl as String)
+                                                                : AssetImage('assets/default_profile_image.png') as ImageProvider,
                                                             radius: 25.0,
                                                           ),
                                                           SizedBox(width: 12.0),
                                                           Flexible(
                                                             child: Column(
-                                                              crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
+                                                              crossAxisAlignment: CrossAxisAlignment.start,
                                                               children: [
                                                                 Container(
-                                                                  width: double
-                                                                      .infinity,
+                                                                  width: double.infinity,
                                                                   child: Text(
                                                                     '$userName',
-                                                                    style: tsOneTextTheme
-                                                                        .titleMedium,
+                                                                    style: tsOneTextTheme.titleMedium,
                                                                   ),
                                                                 ),
                                                                 Text(
                                                                   '$userRank',
-                                                                  style: tsOneTextTheme
-                                                                      .labelSmall,
+                                                                  style: tsOneTextTheme.labelSmall,
                                                                 ),
                                                                 Text(
-                                                                  '$deviceno2' +
-                                                                      ' & ' +
-                                                                      '$deviceno3',
-                                                                  style: tsOneTextTheme
-                                                                      .labelSmall,
+                                                                  '$deviceno2' + ' & ' + '$deviceno3',
+                                                                  style: tsOneTextTheme.labelSmall,
                                                                 ),
                                                                 Text(
                                                                   '${DateFormat('yyyy-MM-dd HH:mm a').format(timestamp.toDate())}',
-                                                                  style: tsOneTextTheme
-                                                                      .labelSmall,
+                                                                  style: tsOneTextTheme.labelSmall,
                                                                 ),
                                                               ],
                                                             ),
                                                           ),
                                                           const Icon(
                                                             Icons.chevron_right,
-                                                            color: TsOneColor
-                                                                .onSecondary,
+                                                            color: TsOneColor.onSecondary,
                                                             size: 30,
                                                           )
                                                         ],
@@ -380,10 +328,8 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
 
                                 final deviceno = deviceData?['deviceno'];
 
-
                                 return Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10.0),
+                                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
                                   child: Card(
                                     color: tsOneColorScheme.secondary,
 
@@ -391,72 +337,59 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(15),
                                     ),
-                                    elevation:
-                                    3, // You can adjust the elevation as needed
+                                    elevation: 3, // You can adjust the elevation as needed
                                     child: InkWell(
                                       borderRadius: BorderRadius.circular(15.0),
                                       onTap: () {
-                                        Navigator.of(context)
-                                            .push(MaterialPageRoute(
-                                          builder: (context) =>
-                                              DetailHistoryDeviceView(
-                                                dataId: dataId,
-                                                userName: userName,
-                                                deviceno: deviceno,
-                                              ),
+                                        Navigator.of(context).push(MaterialPageRoute(
+                                          builder: (context) => DetailHistoryDeviceView(
+                                            dataId: dataId,
+                                            userName: userName,
+                                            deviceno: deviceno,
+                                          ),
                                         ));
                                       },
                                       child: Padding(
-                                        padding: const EdgeInsets.all(
-                                            10.0), // Adjust padding as needed
+                                        padding: const EdgeInsets.all(10.0), // Adjust padding as needed
                                         child: Row(
                                           children: [
                                             SizedBox(width: 8.0),
                                             CircleAvatar(
                                               backgroundImage: photoUrl != null
-                                                  ? NetworkImage(
-                                                  photoUrl as String)
-                                                  : AssetImage(
-                                                  'assets/default_profile_image.png')
-                                              as ImageProvider,
+                                                  ? NetworkImage(photoUrl as String)
+                                                  : AssetImage('assets/default_profile_image.png') as ImageProvider,
                                               radius: 25.0,
                                             ),
                                             SizedBox(width: 17.0),
                                             Expanded(
                                               child: Column(
-                                                crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
                                                   Container(
                                                     width: double.infinity,
                                                     child: Text(
                                                       '$userName',
-                                                      style: tsOneTextTheme
-                                                          .titleMedium,
+                                                      style: tsOneTextTheme.titleMedium,
                                                     ),
                                                   ),
                                                   Text(
                                                     '$userRank',
-                                                    style: tsOneTextTheme
-                                                        .labelSmall,
+                                                    style: tsOneTextTheme.labelSmall,
                                                   ),
                                                   Text(
                                                     '$deviceno',
-                                                    style: tsOneTextTheme
-                                                        .labelSmall,
+                                                    style: tsOneTextTheme.labelSmall,
                                                   ),
                                                   Text(
                                                     '${DateFormat('yyyy-MM-dd HH:mm a').format(timestamp.toDate())}',
-                                                    style: tsOneTextTheme
-                                                        .labelSmall,
+                                                    style: tsOneTextTheme.labelSmall,
                                                   ),
                                                 ],
                                               ),
                                             ),
                                             const Icon(
                                               Icons.chevron_right,
-                                              color: TsOneColor
-                                                  .onSecondary,
+                                              color: TsOneColor.onSecondary,
                                               size: 30,
                                             )
                                           ],

@@ -78,7 +78,7 @@ class _NavOCCView extends State<NavOCCView> {
         children: _screens,
       ),
       bottomNavigationBar: Container(
-        padding: _pilotRequestDevice ? const EdgeInsets.symmetric(horizontal: 20) : const EdgeInsets.all(1.0),
+        padding: _canManageDevice ? const EdgeInsets.symmetric(horizontal: 1.0) : const EdgeInsets.all(1.0),
         decoration: BoxDecoration(
           color: Colors.white,
           boxShadow: [
@@ -94,9 +94,9 @@ class _NavOCCView extends State<NavOCCView> {
           activeColor: Colors.white,
           iconSize: 24,
           //padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-          padding: _pilotRequestDevice
-              ? const EdgeInsets.symmetric(vertical: 20, horizontal: 30)
-              : const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+          padding: _canManageDevice
+              ? const EdgeInsets.symmetric(vertical: 20, horizontal: 10)
+              : const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
           duration: const Duration(milliseconds: 200),
           tabBackgroundColor: tsOneColorScheme.primary,
           selectedIndex: _selectedNav,

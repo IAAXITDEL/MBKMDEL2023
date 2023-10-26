@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ts_one/app/modules/efb/pilot/views/PilotFeedback.dart';
 import 'package:ts_one/app/modules/efb/pilot/views/pilotsignature_view.dart';
 import 'package:ts_one/app/modules/efb/pilot/views/return_other_pilot_view.dart';
 import 'package:ts_one/presentation/shared_components/TitleText.dart';
@@ -38,8 +39,8 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
 
   String getMonthText(int month) {
     const List<String> months = [
-      'Januar7',
-      'Februar7',
+      'January',
+      'February',
       'March',
       'April',
       'May',
@@ -112,6 +113,7 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
 
                     final userUid = pilotDeviceData['user_uid'];
 
+
                     return FutureBuilder<DocumentSnapshot>(
                       future: FirebaseFirestore.instance.collection("users").doc(userUid).get(),
                       builder: (context, userSnapshot) {
@@ -174,14 +176,33 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                                     ],
                                   ),
                                   SizedBox(height: 15),
-                                  Text(
-                                    "Loan Details",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w600,
-                                      color: tsOneColorScheme.onBackground,
-                                      fontFamily: 'Poppins',
+                                  const Padding(
+                                    padding: EdgeInsets.only(bottom: 16.0),
+                                    child: Row(
+                                      children: <Widget>[
+                                        Expanded(
+                                          child: Divider(
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.symmetric(horizontal: 8.0),
+                                          child: Text(
+                                            'Device Details',
+                                            style: TextStyle(color: Colors.grey),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Divider(
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                      ],
                                     ),
+                                  ),
+                                  Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text("Device 1", style: tsOneTextTheme.displaySmall),
                                   ),
                                   SizedBox(height: 7.0),
                                   Row(
@@ -251,16 +272,16 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                                       Expanded(flex: 5, child: Text(condition)),
                                     ],
                                   ),
-                                  SizedBox(
-                                    height: 8,
-                                  ),
-                                  Row(
-                                    children: [
-                                      Expanded(flex: 5, child: Text("OCC On Duty")),
-                                      Expanded(flex: 1, child: Text(":")),
-                                      Expanded(flex: 5, child: Text(occOnDuty)),
-                                    ],
-                                  ),
+                                  // SizedBox(
+                                  //   height: 8,
+                                  // ),
+                                  // Row(
+                                  //   children: [
+                                  //     Expanded(flex: 5, child: Text("OCC On Duty")),
+                                  //     Expanded(flex: 1, child: Text(":")),
+                                  //     Expanded(flex: 5, child: Text(occOnDuty)),
+                                  //   ],
+                                  // ),
                                   const SizedBox(
                                     height: 15,
                                   ),
@@ -297,6 +318,26 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                     ),
                   ],
                 ),
+              ),
+
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ElevatedButton(
+                      onPressed: () async {
+                        String documentId = await getDocumentIdForDevice(widget.deviceId);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => PilotFeedBack(
+                              documentId: documentId,
+                              deviceId: widget.deviceId,
+                            ),
+                          ),
+                        );
+                      },
+                      child: Text("FeedBack"))
+                ],
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

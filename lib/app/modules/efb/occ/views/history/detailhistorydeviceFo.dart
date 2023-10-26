@@ -680,7 +680,7 @@ class DetailHistoryDeviceFOView extends GetView {
                                                                 statusdevice: data['statusDevice'],
                                                                 handoverName: handoverTouserData != null ? handoverTouserData['NAME'] : 'Not Found',
                                                                 handoverID:
-                                                                handoverTouserData != null ? handoverTouserData['ID NO'].toString() : 'Not Found',
+                                                                    handoverTouserData != null ? handoverTouserData['ID NO'].toString() : 'Not Found',
                                                               ).then((_) {
                                                                 Navigator.pop(context);
                                                               }).catchError((error) {
@@ -698,7 +698,7 @@ class DetailHistoryDeviceFOView extends GetView {
                                                             child: Padding(
                                                               padding: EdgeInsets.all(15),
                                                               child: Text(
-                                                                'Download History',
+                                                                'Open Attachment',
                                                                 style: TextStyle(color: Colors.white),
                                                               ),
                                                             )),

@@ -54,7 +54,7 @@ class _ListDeviceState extends State<ListDevice> {
                 ),
               ),
             ),
-                (route) => true,
+            (route) => true,
           );
         } else if (value == 'delete') {
           _showDeleteConfirmationDialog(e.id);
@@ -75,7 +75,7 @@ class _ListDeviceState extends State<ListDevice> {
                 ),
               ),
             ),
-                (route) => true,
+            (route) => true,
           );
         }
       },
@@ -244,7 +244,7 @@ class _ListDeviceState extends State<ListDevice> {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.only(top: 0, right: 20, left: 20),
+        padding: const EdgeInsets.only(top: 10, right: 20, left: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -264,7 +264,7 @@ class _ListDeviceState extends State<ListDevice> {
                   ),
                   prefixIcon: Icon(Icons.search),
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
                   ),
                 ),
               ),
@@ -316,7 +316,7 @@ class _ListDeviceState extends State<ListDevice> {
                   }
 
                   final filteredData =
-                  snapshot.data!.docs.where((e) => e["deviceno"].toString().toLowerCase().contains(searchQuery.toLowerCase())).toList();
+                      snapshot.data!.docs.where((e) => e["deviceno"].toString().toLowerCase().contains(searchQuery.toLowerCase())).toList();
 
                   if (filteredData.isEmpty) {
                     return const EmptyScreenEFB();
@@ -351,7 +351,7 @@ class _ListDeviceState extends State<ListDevice> {
                                       ),
                                     ),
                                   ),
-                                      (route) => true,
+                                  (route) => true,
                                 );
                               },
                               style: ElevatedButton.styleFrom(

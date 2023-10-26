@@ -6,7 +6,7 @@ import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:ts_one/app/routes/app_pages.dart';
 import 'package:ts_one/presentation/shared_components/TitleText.dart';
-
+//sssss
 import '../../../../../presentation/theme.dart';
 import '../../../../routes/app_pages.dart';
 
@@ -29,8 +29,8 @@ class ConfirmRequestPilotView extends GetView {
 
   String getMonthText(int month) {
     const List<String> months = [
-      'Januar7',
-      'Februar7',
+      'January',
+      'February',
       'March',
       'April',
       'May',
@@ -60,7 +60,10 @@ class ConfirmRequestPilotView extends GetView {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Confirmation'),
+          title: Text(
+            'Confirmation',
+            style: tsOneTextTheme.headlineLarge,
+          ),
           content: const Text('Are you sure you want to approve the usage of this device? '),
           actions: <Widget>[
             Row(children: [
@@ -121,7 +124,7 @@ class ConfirmRequestPilotView extends GetView {
         centerTitle: true,
         backgroundColor: Colors.white,
         title: Text(
-          'Return Other Pilot',
+          'Confirmation Request',
           style: tsOneTextTheme.headlineLarge,
         ),
       ),
@@ -284,7 +287,7 @@ class ConfirmRequestPilotView extends GetView {
                                       ),
                                       Align(
                                         alignment: Alignment.centerLeft,
-                                        child: Text("Device 2", style: tsOneTextTheme.displaySmall),
+                                        child: Text("Device 1", style: tsOneTextTheme.displaySmall),
                                       ),
                                       SizedBox(height: 10.0),
                                       Row(
@@ -712,7 +715,7 @@ class ConfirmRequestPilotView extends GetView {
                           SizedBox(height: 5.0),
                           Align(
                             alignment: Alignment.centerLeft,
-                            child: Text("Device 2", style: tsOneTextTheme.displaySmall),
+                            child: Text("Device 1", style: tsOneTextTheme.displaySmall),
                           ),
                           SizedBox(height: 10.0),
                           Row(

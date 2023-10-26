@@ -87,7 +87,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(
-            'Confirm Request',
+            'Confirmation Request',
             style: tsOneTextTheme.headlineLarge,
           ),
           content: SingleChildScrollView(
@@ -299,15 +299,15 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                   children: getMatchingDevices(deviceNoController2.text)
                       .map(
                         (device) => ListTile(
-                      title: Text(device.deviceno),
-                      onTap: () {
-                        setState(() {
-                          selectedDevice2 = device;
-                          deviceNoController2.text = device.deviceno;
-                        });
-                      },
-                    ),
-                  )
+                          title: Text(device.deviceno),
+                          onTap: () {
+                            setState(() {
+                              selectedDevice2 = device;
+                              deviceNoController2.text = device.deviceno;
+                            });
+                          },
+                        ),
+                      )
                       .toList(),
                 ),
               const SizedBox(height: 16.0),
@@ -457,15 +457,15 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                   children: getMatchingDevices(deviceNoController3.text)
                       .map(
                         (device) => ListTile(
-                      title: Text(device.deviceno),
-                      onTap: () {
-                        setState(() {
-                          selectedDevice3 = device;
-                          deviceNoController3.text = device.deviceno;
-                        });
-                      },
-                    ),
-                  )
+                          title: Text(device.deviceno),
+                          onTap: () {
+                            setState(() {
+                              selectedDevice3 = device;
+                              deviceNoController3.text = device.deviceno;
+                            });
+                          },
+                        ),
+                      )
                       .toList(),
                 ),
               const SizedBox(height: 16.0),

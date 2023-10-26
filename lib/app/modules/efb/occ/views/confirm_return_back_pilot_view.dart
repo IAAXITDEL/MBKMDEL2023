@@ -67,20 +67,35 @@ class ConfirmReturnBackPilotView extends GetView {
               ),
             ),
             actions: <Widget>[
-              TextButton(
-                child: Text('Cancel'),
-                onPressed: () {
-                  Navigator.of(context).pop(); // Close the dialog
-                  Navigator.of(context).pop(); // Close the confirmation dialog
-                },
-              ),
-              TextButton(
-                child: Text('Submit'),
-                onPressed: () {
-                  Navigator.of(context).pop(); // Close the confirmation dialog
-                  confirmInUse(context, cameraImageUrl);
-                  _showQuickAlert(context); // Call the function to submit data
-                },
+              Row(
+                children: [
+                  Expanded(
+                    flex: 5,
+                    child: TextButton(
+                      child: Text('No', style: TextStyle(color: TsOneColor.secondaryContainer)),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ),
+                  Spacer(flex: 1),
+                  Expanded(
+                    flex: 5,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        confirmInUse(context, cameraImageUrl);
+                        _showQuickAlert(context);
+                      },
+                      child: const Text('Yes', style: TextStyle(color: TsOneColor.onPrimary)),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: TsOneColor.greenColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           );
@@ -96,16 +111,16 @@ class ConfirmReturnBackPilotView extends GetView {
       context: context,
       type: QuickAlertType.success,
       text: 'Your data has been saved! Thank You',
-    );
-    Get.offAllNamed(Routes.NAVOCC);
+    ).then((value) {
+      Get.offAllNamed(Routes.NAVOCC);
+    });
   }
 
   void confirmInUse(BuildContext context, String cameraImageUrl) async {
     User? user = _auth.currentUser;
 
     if (user != null) {
-      QuerySnapshot userQuery =
-      await _firestore.collection('users').where('EMAIL', isEqualTo: user.email).get();
+      QuerySnapshot userQuery = await _firestore.collection('users').where('EMAIL', isEqualTo: user.email).get();
       String userUid = userQuery.docs.first.id;
 
       final signatureKey = this.signatureKey.currentState!;
@@ -120,8 +135,7 @@ class ConfirmReturnBackPilotView extends GetView {
       await uploadTask.whenComplete(() async {
         String signatureURL = await storageReference.getDownloadURL();
 
-        DocumentReference pilotDeviceRef =
-        FirebaseFirestore.instance.collection("pilot-device-1").doc(dataId);
+        DocumentReference pilotDeviceRef = FirebaseFirestore.instance.collection("pilot-device-1").doc(dataId);
 
         try {
           await pilotDeviceRef.update({
@@ -140,7 +154,10 @@ class ConfirmReturnBackPilotView extends GetView {
             barrierDismissible: false,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: Text('Confirmation'),
+                title: Text(
+                  'Confirmation',
+                  style: tsOneTextTheme.headlineLarge,
+                ),
                 content: SingleChildScrollView(
                   child: ListBody(
                     children: <Widget>[
@@ -162,8 +179,7 @@ class ConfirmReturnBackPilotView extends GetView {
         } catch (error) {
           print('Error updating data: $error');
         }
-      }
-      );
+      });
     }
   }
 
@@ -173,7 +189,7 @@ class ConfirmReturnBackPilotView extends GetView {
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: Text(
-          'Need Confirm',
+          'Confirmation Return',
           style: tsOneTextTheme.headlineLarge,
         ),
         centerTitle: true,
@@ -232,53 +248,38 @@ class ConfirmReturnBackPilotView extends GetView {
                       final deviceUid3 = data['device_uid3'];
 
                       return FutureBuilder<DocumentSnapshot>(
-                        future: FirebaseFirestore.instance
-                            .collection("Device")
-                            .doc(deviceUid2)
-                            .get(),
+                        future: FirebaseFirestore.instance.collection("Device").doc(deviceUid2).get(),
                         builder: (context, deviceSnapshot) {
-                          if (deviceSnapshot.connectionState ==
-                              ConnectionState.waiting) {
+                          if (deviceSnapshot.connectionState == ConnectionState.waiting) {
                             return Center(child: CircularProgressIndicator());
                           }
 
                           if (deviceSnapshot.hasError) {
-                            return Center(
-                                child: Text('Error: ${deviceSnapshot.error}'));
+                            return Center(child: Text('Error: ${deviceSnapshot.error}'));
                           }
 
                           if (!deviceSnapshot.hasData || !deviceSnapshot.data!.exists) {
                             return Center(child: Text('Device data 2 not found'));
                           }
 
-                          final deviceData2 = deviceSnapshot.data!.data() as Map<
-                              String,
-                              dynamic>;
+                          final deviceData2 = deviceSnapshot.data!.data() as Map<String, dynamic>;
 
                           return FutureBuilder<DocumentSnapshot>(
-                            future: FirebaseFirestore.instance
-                                .collection("Device")
-                                .doc(deviceUid3)
-                                .get(),
+                            future: FirebaseFirestore.instance.collection("Device").doc(deviceUid3).get(),
                             builder: (context, deviceSnapshot) {
-                              if (deviceSnapshot.connectionState ==
-                                  ConnectionState.waiting) {
+                              if (deviceSnapshot.connectionState == ConnectionState.waiting) {
                                 return Center(child: CircularProgressIndicator());
                               }
 
                               if (deviceSnapshot.hasError) {
-                                return Center(
-                                    child: Text('Error: ${deviceSnapshot.error}'));
+                                return Center(child: Text('Error: ${deviceSnapshot.error}'));
                               }
 
-                              if (!deviceSnapshot.hasData ||
-                                  !deviceSnapshot.data!.exists) {
+                              if (!deviceSnapshot.hasData || !deviceSnapshot.data!.exists) {
                                 return Center(child: Text('Device data 2 not found'));
                               }
 
-                              final deviceData3 = deviceSnapshot.data!.data() as Map<
-                                  String,
-                                  dynamic>;
+                              final deviceData3 = deviceSnapshot.data!.data() as Map<String, dynamic>;
 
                               return Center(
                                 child: Column(
@@ -302,8 +303,18 @@ class ConfirmReturnBackPilotView extends GetView {
                                             SizedBox(height: 5.0),
                                             Row(
                                               children: [
-                                                Expanded(flex: 6, child: Text("ID NO", style: tsOneTextTheme.bodySmall,)),
-                                                Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
+                                                Expanded(
+                                                    flex: 6,
+                                                    child: Text(
+                                                      "ID NO",
+                                                      style: tsOneTextTheme.bodySmall,
+                                                    )),
+                                                Expanded(
+                                                    flex: 1,
+                                                    child: Text(
+                                                      ":",
+                                                      style: tsOneTextTheme.bodySmall,
+                                                    )),
                                                 Expanded(
                                                   flex: 6,
                                                   child: Text(
@@ -316,8 +327,18 @@ class ConfirmReturnBackPilotView extends GetView {
                                             SizedBox(height: 5.0),
                                             Row(
                                               children: [
-                                                Expanded(flex: 6, child: Text("Name", style: tsOneTextTheme.bodySmall,)),
-                                                Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
+                                                Expanded(
+                                                    flex: 6,
+                                                    child: Text(
+                                                      "Name",
+                                                      style: tsOneTextTheme.bodySmall,
+                                                    )),
+                                                Expanded(
+                                                    flex: 1,
+                                                    child: Text(
+                                                      ":",
+                                                      style: tsOneTextTheme.bodySmall,
+                                                    )),
                                                 Expanded(
                                                   flex: 6,
                                                   child: Text(
@@ -330,8 +351,18 @@ class ConfirmReturnBackPilotView extends GetView {
                                             SizedBox(height: 5.0),
                                             Row(
                                               children: [
-                                                Expanded(flex: 6, child: Text("Rank", style: tsOneTextTheme.bodySmall,)),
-                                                Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
+                                                Expanded(
+                                                    flex: 6,
+                                                    child: Text(
+                                                      "Rank",
+                                                      style: tsOneTextTheme.bodySmall,
+                                                    )),
+                                                Expanded(
+                                                    flex: 1,
+                                                    child: Text(
+                                                      ":",
+                                                      style: tsOneTextTheme.bodySmall,
+                                                    )),
                                                 Expanded(
                                                   flex: 6,
                                                   child: Text(
@@ -358,8 +389,17 @@ class ConfirmReturnBackPilotView extends GetView {
                                             Row(
                                               children: [
                                                 Expanded(
-                                                    flex: 6, child: Text("Device ID", style: tsOneTextTheme.bodySmall,)),
-                                                Expanded(flex: 1, child: Text(":" , style: tsOneTextTheme.bodySmall,)),
+                                                    flex: 6,
+                                                    child: Text(
+                                                      "Device ID",
+                                                      style: tsOneTextTheme.bodySmall,
+                                                    )),
+                                                Expanded(
+                                                    flex: 1,
+                                                    child: Text(
+                                                      ":",
+                                                      style: tsOneTextTheme.bodySmall,
+                                                    )),
                                                 Expanded(
                                                   flex: 6,
                                                   child: Text(
@@ -373,8 +413,17 @@ class ConfirmReturnBackPilotView extends GetView {
                                             Row(
                                               children: [
                                                 Expanded(
-                                                    flex: 6, child: Text("iOS Version", style: tsOneTextTheme.bodySmall,)),
-                                                Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
+                                                    flex: 6,
+                                                    child: Text(
+                                                      "iOS Version",
+                                                      style: tsOneTextTheme.bodySmall,
+                                                    )),
+                                                Expanded(
+                                                    flex: 1,
+                                                    child: Text(
+                                                      ":",
+                                                      style: tsOneTextTheme.bodySmall,
+                                                    )),
                                                 Expanded(
                                                   flex: 6,
                                                   child: Text(
@@ -388,8 +437,17 @@ class ConfirmReturnBackPilotView extends GetView {
                                             Row(
                                               children: [
                                                 Expanded(
-                                                    flex: 6, child: Text("FlySmart Version", style: tsOneTextTheme.bodySmall,)),
-                                                Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
+                                                    flex: 6,
+                                                    child: Text(
+                                                      "FlySmart Version",
+                                                      style: tsOneTextTheme.bodySmall,
+                                                    )),
+                                                Expanded(
+                                                    flex: 1,
+                                                    child: Text(
+                                                      ":",
+                                                      style: tsOneTextTheme.bodySmall,
+                                                    )),
                                                 Expanded(
                                                   flex: 6,
                                                   child: Text(
@@ -403,8 +461,17 @@ class ConfirmReturnBackPilotView extends GetView {
                                             Row(
                                               children: [
                                                 Expanded(
-                                                    flex: 6, child: Text("Docu Version", style: tsOneTextTheme.bodySmall,)),
-                                                Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
+                                                    flex: 6,
+                                                    child: Text(
+                                                      "Docu Version",
+                                                      style: tsOneTextTheme.bodySmall,
+                                                    )),
+                                                Expanded(
+                                                    flex: 1,
+                                                    child: Text(
+                                                      ":",
+                                                      style: tsOneTextTheme.bodySmall,
+                                                    )),
                                                 Expanded(
                                                   flex: 6,
                                                   child: Text(
@@ -418,8 +485,17 @@ class ConfirmReturnBackPilotView extends GetView {
                                             Row(
                                               children: [
                                                 Expanded(
-                                                    flex: 6, child: Text("Lido Version", style: tsOneTextTheme.bodySmall,)),
-                                                Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
+                                                    flex: 6,
+                                                    child: Text(
+                                                      "Lido Version",
+                                                      style: tsOneTextTheme.bodySmall,
+                                                    )),
+                                                Expanded(
+                                                    flex: 1,
+                                                    child: Text(
+                                                      ":",
+                                                      style: tsOneTextTheme.bodySmall,
+                                                    )),
                                                 Expanded(
                                                   flex: 6,
                                                   child: Text(
@@ -433,8 +509,17 @@ class ConfirmReturnBackPilotView extends GetView {
                                             Row(
                                               children: [
                                                 Expanded(
-                                                    flex: 6, child: Text("HUB", style: tsOneTextTheme.bodySmall,)),
-                                                Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
+                                                    flex: 6,
+                                                    child: Text(
+                                                      "HUB",
+                                                      style: tsOneTextTheme.bodySmall,
+                                                    )),
+                                                Expanded(
+                                                    flex: 1,
+                                                    child: Text(
+                                                      ":",
+                                                      style: tsOneTextTheme.bodySmall,
+                                                    )),
                                                 Expanded(
                                                   flex: 6,
                                                   child: Text(
@@ -448,8 +533,17 @@ class ConfirmReturnBackPilotView extends GetView {
                                             Row(
                                               children: [
                                                 Expanded(
-                                                    flex: 6, child: Text("Condition", style: tsOneTextTheme.bodySmall,)),
-                                                Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
+                                                    flex: 6,
+                                                    child: Text(
+                                                      "Condition",
+                                                      style: tsOneTextTheme.bodySmall,
+                                                    )),
+                                                Expanded(
+                                                    flex: 1,
+                                                    child: Text(
+                                                      ":",
+                                                      style: tsOneTextTheme.bodySmall,
+                                                    )),
                                                 Expanded(
                                                   flex: 6,
                                                   child: Text(
@@ -459,7 +553,6 @@ class ConfirmReturnBackPilotView extends GetView {
                                                 ),
                                               ],
                                             ),
-
 
                                             //DEVICE INFO 2
                                             SizedBox(height: 10.0),
@@ -474,8 +567,17 @@ class ConfirmReturnBackPilotView extends GetView {
                                             Row(
                                               children: [
                                                 Expanded(
-                                                    flex: 6, child: Text("Device ID", style: tsOneTextTheme.bodySmall,)),
-                                                Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
+                                                    flex: 6,
+                                                    child: Text(
+                                                      "Device ID",
+                                                      style: tsOneTextTheme.bodySmall,
+                                                    )),
+                                                Expanded(
+                                                    flex: 1,
+                                                    child: Text(
+                                                      ":",
+                                                      style: tsOneTextTheme.bodySmall,
+                                                    )),
                                                 Expanded(
                                                   flex: 6,
                                                   child: Text(
@@ -489,8 +591,17 @@ class ConfirmReturnBackPilotView extends GetView {
                                             Row(
                                               children: [
                                                 Expanded(
-                                                    flex: 6, child: Text("iOS Version", style: tsOneTextTheme.bodySmall,)),
-                                                Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
+                                                    flex: 6,
+                                                    child: Text(
+                                                      "iOS Version",
+                                                      style: tsOneTextTheme.bodySmall,
+                                                    )),
+                                                Expanded(
+                                                    flex: 1,
+                                                    child: Text(
+                                                      ":",
+                                                      style: tsOneTextTheme.bodySmall,
+                                                    )),
                                                 Expanded(
                                                   flex: 6,
                                                   child: Text(
@@ -504,8 +615,17 @@ class ConfirmReturnBackPilotView extends GetView {
                                             Row(
                                               children: [
                                                 Expanded(
-                                                    flex: 6, child: Text("FlySmart Version", style: tsOneTextTheme.bodySmall,)),
-                                                Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
+                                                    flex: 6,
+                                                    child: Text(
+                                                      "FlySmart Version",
+                                                      style: tsOneTextTheme.bodySmall,
+                                                    )),
+                                                Expanded(
+                                                    flex: 1,
+                                                    child: Text(
+                                                      ":",
+                                                      style: tsOneTextTheme.bodySmall,
+                                                    )),
                                                 Expanded(
                                                   flex: 6,
                                                   child: Text(
@@ -519,8 +639,17 @@ class ConfirmReturnBackPilotView extends GetView {
                                             Row(
                                               children: [
                                                 Expanded(
-                                                    flex: 6, child: Text("Docu Version", style: tsOneTextTheme.bodySmall,)),
-                                                Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
+                                                    flex: 6,
+                                                    child: Text(
+                                                      "Docu Version",
+                                                      style: tsOneTextTheme.bodySmall,
+                                                    )),
+                                                Expanded(
+                                                    flex: 1,
+                                                    child: Text(
+                                                      ":",
+                                                      style: tsOneTextTheme.bodySmall,
+                                                    )),
                                                 Expanded(
                                                   flex: 6,
                                                   child: Text(
@@ -534,8 +663,17 @@ class ConfirmReturnBackPilotView extends GetView {
                                             Row(
                                               children: [
                                                 Expanded(
-                                                    flex: 6, child: Text("Lido Version", style: tsOneTextTheme.bodySmall,)),
-                                                Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
+                                                    flex: 6,
+                                                    child: Text(
+                                                      "Lido Version",
+                                                      style: tsOneTextTheme.bodySmall,
+                                                    )),
+                                                Expanded(
+                                                    flex: 1,
+                                                    child: Text(
+                                                      ":",
+                                                      style: tsOneTextTheme.bodySmall,
+                                                    )),
                                                 Expanded(
                                                   flex: 6,
                                                   child: Text(
@@ -549,8 +687,17 @@ class ConfirmReturnBackPilotView extends GetView {
                                             Row(
                                               children: [
                                                 Expanded(
-                                                    flex: 6, child: Text("HUB", style: tsOneTextTheme.bodySmall,)),
-                                                Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
+                                                    flex: 6,
+                                                    child: Text(
+                                                      "HUB",
+                                                      style: tsOneTextTheme.bodySmall,
+                                                    )),
+                                                Expanded(
+                                                    flex: 1,
+                                                    child: Text(
+                                                      ":",
+                                                      style: tsOneTextTheme.bodySmall,
+                                                    )),
                                                 Expanded(
                                                   flex: 6,
                                                   child: Text(
@@ -563,8 +710,17 @@ class ConfirmReturnBackPilotView extends GetView {
                                             Row(
                                               children: [
                                                 Expanded(
-                                                    flex: 6, child: Text("Condition", style: tsOneTextTheme.bodySmall,)),
-                                                Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
+                                                    flex: 6,
+                                                    child: Text(
+                                                      "Condition",
+                                                      style: tsOneTextTheme.bodySmall,
+                                                    )),
+                                                Expanded(
+                                                    flex: 1,
+                                                    child: Text(
+                                                      ":",
+                                                      style: tsOneTextTheme.bodySmall,
+                                                    )),
                                                 Expanded(
                                                   flex: 6,
                                                   child: Text(
@@ -720,28 +876,72 @@ class ConfirmReturnBackPilotView extends GetView {
                                   SizedBox(height: 7.0),
                                   Row(
                                     children: [
-                                      Expanded(flex: 6, child: Text("ID NO",style: tsOneTextTheme.bodySmall,)),
-                                      Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
-                                      Expanded(flex: 6, child: Text('${userData['ID NO'] ?? 'No Data'}',style: tsOneTextTheme.bodySmall,)),
+                                      Expanded(
+                                          flex: 6,
+                                          child: Text(
+                                            "ID NO",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
+                                      Expanded(
+                                          flex: 1,
+                                          child: Text(
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
+                                      Expanded(
+                                          flex: 6,
+                                          child: Text(
+                                            '${userData['ID NO'] ?? 'No Data'}',
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
                                     ],
                                   ),
                                   SizedBox(height: 5.0),
                                   Row(
                                     children: [
-                                      Expanded(flex: 6, child: Text("Name",style: tsOneTextTheme.bodySmall,)),
-                                      Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
-                                      Expanded(flex: 6, child: Text('${userData['NAME'] ?? 'No Data'}',style: tsOneTextTheme.bodySmall, )),
+                                      Expanded(
+                                          flex: 6,
+                                          child: Text(
+                                            "Name",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
+                                      Expanded(
+                                          flex: 1,
+                                          child: Text(
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
+                                      Expanded(
+                                          flex: 6,
+                                          child: Text(
+                                            '${userData['NAME'] ?? 'No Data'}',
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
                                     ],
                                   ),
                                   SizedBox(height: 5.0),
                                   Row(
                                     children: [
-                                      Expanded(flex: 6, child: Text("Rank", style: tsOneTextTheme.bodySmall,)),
-                                      Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
-                                      Expanded(flex: 6, child: Text('${userData['RANK'] ?? 'No Data'}',style: tsOneTextTheme.bodySmall,)),
+                                      Expanded(
+                                          flex: 6,
+                                          child: Text(
+                                            "Rank",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
+                                      Expanded(
+                                          flex: 1,
+                                          child: Text(
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
+                                      Expanded(
+                                          flex: 6,
+                                          child: Text(
+                                            '${userData['RANK'] ?? 'No Data'}',
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
                                     ],
                                   ),
-
                                   Padding(
                                     padding: EdgeInsets.symmetric(vertical: 20),
                                     child: Divider(
@@ -755,57 +955,162 @@ class ConfirmReturnBackPilotView extends GetView {
                                   SizedBox(height: 5.0),
                                   Row(
                                     children: [
-                                      Expanded(flex: 6, child: Text("Device ID",style: tsOneTextTheme.bodySmall,)),
-                                      Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
-                                      Expanded(flex: 6, child: Text('${data['device_name'] ?? 'No Data'}',style: tsOneTextTheme.bodySmall,)),
+                                      Expanded(
+                                          flex: 6,
+                                          child: Text(
+                                            "Device ID",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
+                                      Expanded(
+                                          flex: 1,
+                                          child: Text(
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
+                                      Expanded(
+                                          flex: 6,
+                                          child: Text(
+                                            '${data['device_name'] ?? 'No Data'}',
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
                                     ],
                                   ),
                                   SizedBox(height: 5.0),
                                   Row(
                                     children: [
-                                      Expanded(flex: 6, child: Text("iOS Version",style: tsOneTextTheme.bodySmall,)),
-                                      Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
-                                      Expanded(flex: 6, child: Text('${deviceData['iosver'] ?? 'No Data'}',style: tsOneTextTheme.bodySmall,)),
+                                      Expanded(
+                                          flex: 6,
+                                          child: Text(
+                                            "iOS Version",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
+                                      Expanded(
+                                          flex: 1,
+                                          child: Text(
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
+                                      Expanded(
+                                          flex: 6,
+                                          child: Text(
+                                            '${deviceData['iosver'] ?? 'No Data'}',
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
                                     ],
                                   ),
                                   SizedBox(height: 5.0),
                                   Row(
                                     children: [
-                                      Expanded(flex: 6, child: Text("FlySmart Version",style: tsOneTextTheme.bodySmall,)),
-                                      Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
-                                      Expanded(flex: 6, child: Text('${deviceData['flysmart'] ?? 'No Data'}',style: tsOneTextTheme.bodySmall,)),
+                                      Expanded(
+                                          flex: 6,
+                                          child: Text(
+                                            "FlySmart Version",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
+                                      Expanded(
+                                          flex: 1,
+                                          child: Text(
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
+                                      Expanded(
+                                          flex: 6,
+                                          child: Text(
+                                            '${deviceData['flysmart'] ?? 'No Data'}',
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
                                     ],
                                   ),
                                   SizedBox(height: 5.0),
                                   Row(
                                     children: [
-                                      Expanded(flex: 6, child: Text("Docu Version",style: tsOneTextTheme.bodySmall,)),
-                                      Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
-                                      Expanded(flex: 6, child: Text('${deviceData['docuversion'] ?? 'No Data'}',style: tsOneTextTheme.bodySmall,)),
+                                      Expanded(
+                                          flex: 6,
+                                          child: Text(
+                                            "Docu Version",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
+                                      Expanded(
+                                          flex: 1,
+                                          child: Text(
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
+                                      Expanded(
+                                          flex: 6,
+                                          child: Text(
+                                            '${deviceData['docuversion'] ?? 'No Data'}',
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
                                     ],
                                   ),
                                   SizedBox(height: 5.0),
                                   Row(
                                     children: [
-                                      Expanded(flex: 6, child: Text("Lido Version",style: tsOneTextTheme.bodySmall,)),
-                                      Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
-                                      Expanded(flex: 6, child: Text('${deviceData['lidoversion'] ?? 'No Data'}',style: tsOneTextTheme.bodySmall,)),
+                                      Expanded(
+                                          flex: 6,
+                                          child: Text(
+                                            "Lido Version",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
+                                      Expanded(
+                                          flex: 1,
+                                          child: Text(
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
+                                      Expanded(
+                                          flex: 6,
+                                          child: Text(
+                                            '${deviceData['lidoversion'] ?? 'No Data'}',
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
                                     ],
                                   ),
                                   SizedBox(height: 5.0),
                                   Row(
                                     children: [
-                                      Expanded(flex: 6, child: Text("HUB",style: tsOneTextTheme.bodySmall,)),
-                                      Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
-                                      Expanded(flex: 6, child: Text('${deviceData['hub'] ?? 'No Data'}',style: tsOneTextTheme.bodySmall,)),
+                                      Expanded(
+                                          flex: 6,
+                                          child: Text(
+                                            "HUB",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
+                                      Expanded(
+                                          flex: 1,
+                                          child: Text(
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
+                                      Expanded(
+                                          flex: 6,
+                                          child: Text(
+                                            '${deviceData['hub'] ?? 'No Data'}',
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
                                     ],
                                   ),
                                   SizedBox(height: 5.0),
                                   Row(
                                     children: [
-                                      Expanded(flex: 6, child: Text("Condition",style: tsOneTextTheme.bodySmall,)),
-                                      Expanded(flex: 1, child: Text(":",style: tsOneTextTheme.bodySmall,)),
-                                      Expanded(flex: 6, child: Text('${deviceData['condition'] ?? 'No Data'}',style: tsOneTextTheme.bodySmall,)),
+                                      Expanded(
+                                          flex: 6,
+                                          child: Text(
+                                            "Condition",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
+                                      Expanded(
+                                          flex: 1,
+                                          child: Text(
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
+                                      Expanded(
+                                          flex: 6,
+                                          child: Text(
+                                            '${deviceData['condition'] ?? 'No Data'}',
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
                                     ],
                                   ),
                                   Padding(
@@ -921,7 +1226,6 @@ class ConfirmReturnBackPilotView extends GetView {
                                     ),
                                     child: const Text('Take Picture To Approve', style: TextStyle(color: Colors.white)),
                                   ),
-
                                   SizedBox(height: 20.0),
                                 ],
                               ),
@@ -940,4 +1244,3 @@ class ConfirmReturnBackPilotView extends GetView {
     );
   }
 }
-
