@@ -104,19 +104,38 @@ class _ConfirmReturnBackPilotViewState
               ),
             ),
             actions: <Widget>[
-              TextButton(
-                child: Text('Cancel'),
-                onPressed: () {
-                  Navigator.of(context).pop(); // Close the dialog
-                },
-              ),
-              TextButton(
-                child: Text('Submit'),
-                onPressed: () {
-                  Navigator.of(context).pop(); // Close the confirmation dialog
-                  confirmInUse(context, cameraImageUrl);
-                  _showQuickAlert(context); // Call the function to submit data
-                },
+              Row(
+                children: [
+                  Expanded(
+                    flex: 5,
+                    child: TextButton(
+                      child: Text('No',
+                          style:
+                              TextStyle(color: TsOneColor.secondaryContainer)),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ),
+                  Spacer(flex: 1),
+                  Expanded(
+                    flex: 5,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        confirmInUse(context, cameraImageUrl);
+                        _showQuickAlert(context);
+                      },
+                      child: const Text('Yes',
+                          style: TextStyle(color: TsOneColor.onPrimary)),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: TsOneColor.greenColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           );

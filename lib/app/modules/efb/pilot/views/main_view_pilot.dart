@@ -193,7 +193,7 @@ class HomePilotView extends GetView<HomePilotController> {
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
                                                   const Text(
-                                                    'FO ID',
+                                                    'CAPT ID',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
                                                   const Text(
@@ -294,7 +294,7 @@ class HomePilotView extends GetView<HomePilotController> {
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
                                                   const Text(
-                                                    'FO ID',
+                                                    'CAPT ID',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
                                                   const Text(
@@ -439,7 +439,7 @@ class HomePilotView extends GetView<HomePilotController> {
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
                                                   const Text(
-                                                    'FO ID',
+                                                    'CAPT ID',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
                                                   const Text(
@@ -560,7 +560,7 @@ class HomePilotView extends GetView<HomePilotController> {
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
                                                   const Text(
-                                                    'FO ID',
+                                                    'CAPT ID',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
                                                   const Text(
@@ -717,11 +717,11 @@ class HomePilotView extends GetView<HomePilotController> {
                                                             crossAxisAlignment: CrossAxisAlignment.start,
                                                             children: [
                                                               const Text(
-                                                                "Device 2",
+                                                                "Device 1",
                                                                 style: TextStyle(color: TsOneColor.secondary),
                                                               ),
                                                               const Text(
-                                                                'FO ID',
+                                                                'CAPT ID',
                                                                 style: TextStyle(color: TsOneColor.secondary),
                                                               ),
                                                               const Text(

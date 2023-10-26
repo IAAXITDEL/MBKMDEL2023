@@ -70,8 +70,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
     AssessmentVariables.keyMarkerFive,
   ];
 
-
-
   @override
   void initState() {
     userPreferences = getItLocator<UserPreferences>();
@@ -148,9 +146,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
   // ================================================================================================
   void getMyAssessments() async {
-    myAssessment = await viewModel.getMyAssessmentResultsPaginated(
-        _limit, _selectedRankFilterMy, _selectedMarkerFilterMy, filterDateFromMy, filterDateToMy
-    );
+    myAssessment =
+        await viewModel.getMyAssessmentResultsPaginated(_limit, _selectedRankFilterMy, _selectedMarkerFilterMy, filterDateFromMy, filterDateToMy);
     log("myAssessment 163: ${myAssessment.length}");
   }
 
@@ -253,8 +250,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           labelColor: TsOneColor.primary,
                           unselectedLabelColor: TsOneColor.secondary,
                           indicator: const BoxDecoration(
-                            borderRadius:
-                                BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+                            borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
                             color: TsOneColor.secondary,
                           ),
                           tabs: [
@@ -552,8 +548,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                               ),
                               child: InkWell(
                                 onTap: () {
-                                  Navigator.pushNamed(context, NamedRoute.resultAssessmentVariables,
-                                      arguments: allAssessment[index]);
+                                  Navigator.pushNamed(context, NamedRoute.resultAssessmentVariables, arguments: allAssessment[index]);
                                 },
                                 child: Padding(
                                   padding: const EdgeInsets.all(10),
@@ -621,8 +616,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                   ),
                                   child: InkWell(
                                     onTap: () {
-                                      Navigator.pushNamed(context, NamedRoute.resultAssessmentVariables,
-                                          arguments: searchedAssessment[index]);
+                                      Navigator.pushNamed(context, NamedRoute.resultAssessmentVariables, arguments: searchedAssessment[index]);
                                     },
                                     child: Padding(
                                       padding: const EdgeInsets.all(10),
@@ -694,8 +688,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       ),
                       child: InkWell(
                         onTap: () {
-                          Navigator.pushNamed(context, NamedRoute.resultAssessmentVariables,
-                              arguments: selfAssessment[index]);
+                          Navigator.pushNamed(context, NamedRoute.resultAssessmentVariables, arguments: selfAssessment[index]);
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(10),
@@ -840,12 +833,11 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                       height: 16,
                                     ),
                                     const Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        "Rank",
-                                        style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
-                                      )
-                                    ),
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          "Rank",
+                                          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
+                                        )),
                                     Row(
                                       // FROM MY ASSESSMENT VIEW
                                       children: rankChoiceChips(setModalState, false),
@@ -886,9 +878,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                             controller: TextEditingController(
                                               text: filterDateFromMy != null
                                                   ? Util.convertDateTimeDisplay(
-                                                filterDateFromMy.toString(),
-                                                "dd MMM yyyy",
-                                              )
+                                                      filterDateFromMy.toString(),
+                                                      "dd MMM yyyy",
+                                                    )
                                                   : "",
                                             ),
                                             textInputAction: TextInputAction.next,
@@ -914,9 +906,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                             controller: TextEditingController(
                                               text: filterDateToMy != null
                                                   ? Util.convertDateTimeDisplay(
-                                                filterDateToMy.toString(),
-                                                "dd MMM yyyy",
-                                              )
+                                                      filterDateToMy.toString(),
+                                                      "dd MMM yyyy",
+                                                    )
                                                   : "",
                                             ),
                                             textInputAction: TextInputAction.next,
@@ -992,8 +984,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                               ),
                               child: InkWell(
                                 onTap: () {
-                                  Navigator.pushNamed(context, NamedRoute.resultAssessmentVariables,
-                                      arguments: myAssessment[index]);
+                                  Navigator.pushNamed(context, NamedRoute.resultAssessmentVariables, arguments: myAssessment[index]);
                                 },
                                 child: Padding(
                                   padding: const EdgeInsets.all(10),
@@ -1061,8 +1052,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                   ),
                                   child: InkWell(
                                     onTap: () {
-                                      Navigator.pushNamed(context, NamedRoute.resultAssessmentVariables,
-                                          arguments: myAssessmentSearched[index]);
+                                      Navigator.pushNamed(context, NamedRoute.resultAssessmentVariables, arguments: myAssessmentSearched[index]);
                                     },
                                     child: Padding(
                                       padding: const EdgeInsets.all(10),
@@ -1101,8 +1091,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                               ),
                                             ),
                                           ),
-                                          Text(
-                                              Util.convertDateTimeDisplay(myAssessmentSearched[index].date.toString())),
+                                          Text(Util.convertDateTimeDisplay(myAssessmentSearched[index].date.toString())),
                                         ],
                                       ),
                                     ),
@@ -1130,8 +1119,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
             selected: _selectedRankFilterAll == rankList[i],
             selectedColor: TsOneColor.primary,
             checkmarkColor: _selectedRankFilterAll == rankList[i] ? TsOneColor.secondary : null,
-            labelStyle:
-            TextStyle(color: _selectedRankFilterAll == rankList[i] ? TsOneColor.secondary : TsOneColor.onSecondary),
+            labelStyle: TextStyle(color: _selectedRankFilterAll == rankList[i] ? TsOneColor.secondary : TsOneColor.onSecondary),
             onSelected: (bool value) {
               if (_selectedRankFilterAll != rankList[i]) {
                 setModalState(() {
@@ -1152,8 +1140,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
             selected: _selectedRankFilterMy == rankList[i],
             selectedColor: TsOneColor.primary,
             checkmarkColor: _selectedRankFilterMy == rankList[i] ? TsOneColor.secondary : null,
-            labelStyle:
-            TextStyle(color: _selectedRankFilterMy == rankList[i] ? TsOneColor.secondary : TsOneColor.onSecondary),
+            labelStyle: TextStyle(color: _selectedRankFilterMy == rankList[i] ? TsOneColor.secondary : TsOneColor.onSecondary),
             onSelected: (bool value) {
               if (_selectedRankFilterMy != rankList[i]) {
                 setModalState(() {
@@ -1182,8 +1169,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
             selected: _selectedMarkerFilterAll == markerList[i],
             selectedColor: TsOneColor.primary,
             checkmarkColor: _selectedMarkerFilterAll == markerList[i] ? TsOneColor.secondary : null,
-            labelStyle:
-            TextStyle(color: _selectedMarkerFilterAll == markerList[i] ? TsOneColor.secondary : TsOneColor.onSecondary),
+            labelStyle: TextStyle(color: _selectedMarkerFilterAll == markerList[i] ? TsOneColor.secondary : TsOneColor.onSecondary),
             onSelected: (bool value) {
               if (_selectedMarkerFilterAll != markerList[i]) {
                 setModalState(() {
@@ -1204,8 +1190,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
             selected: _selectedMarkerFilterMy == markerList[i],
             selectedColor: TsOneColor.primary,
             checkmarkColor: _selectedMarkerFilterMy == markerList[i] ? TsOneColor.secondary : null,
-            labelStyle:
-            TextStyle(color: _selectedMarkerFilterMy == markerList[i] ? TsOneColor.secondary : TsOneColor.onSecondary),
+            labelStyle: TextStyle(color: _selectedMarkerFilterMy == markerList[i] ? TsOneColor.secondary : TsOneColor.onSecondary),
             onSelected: (bool value) {
               if (_selectedMarkerFilterMy != markerList[i]) {
                 setModalState(() {
@@ -1231,7 +1216,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
           initialDate: filterDateToAll != null
               ? DateTime(filterDateToAll!.year, filterDateToAll!.month, filterDateToAll!.day)
               : filterDateFromAll == null
-              ? DateTime(now.year, now.month, now.day) : filterDateFromAll!,
+                  ? DateTime(now.year, now.month, now.day)
+                  : filterDateFromAll!,
           firstDate: DateTime(2006),
           lastDate: filterDateToAll == null ? Util.getCurrentDateWithoutTime() : filterDateToAll!,
           helpText: "Select filter date");
@@ -1253,7 +1239,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
         });
       }
     }
-
   }
 
   void _showSelectDatePickerTo(BuildContext context, StateSetter setModalState, isAll) async {

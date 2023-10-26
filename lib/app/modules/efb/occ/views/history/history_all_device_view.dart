@@ -113,7 +113,7 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                   IconButton(
                     icon: Icon(
                       Icons.filter_list,
-                      size: 45,
+                      size: 32.0,
                     ),
                     onPressed: _showFilterBottomSheet,
                   ),
@@ -583,7 +583,6 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
           children: [
             // AppBar untuk menambahkan tombol Reset
             AppBar(
-              automaticallyImplyLeading: false, // Menghilangkan tombol back
               title: Text(
                 'Filter',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),

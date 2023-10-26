@@ -47,13 +47,18 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
   DocumentSnapshot? selectedUser;
   Stream<QuerySnapshot>? usersStream;
   Uint8List? signatureImage;
-  final GlobalKey<SfSignaturePadState> _signaturePadKey = GlobalKey<SfSignaturePadState>();
+  final GlobalKey<SfSignaturePadState> _signaturePadKey =
+      GlobalKey<SfSignaturePadState>();
 
   @override
   void initState() {
     super.initState();
     // Fetch deviceUid, deviceName, and OCC On Duty from Firestore using widget.deviceId
-    FirebaseFirestore.instance.collection('pilot-device-1').doc(widget.deviceId).get().then((documentSnapshot) {
+    FirebaseFirestore.instance
+        .collection('pilot-device-1')
+        .doc(widget.deviceId)
+        .get()
+        .then((documentSnapshot) {
       if (documentSnapshot.exists) {
         setState(() {
           deviceId2 = documentSnapshot['device_uid2'];
@@ -72,7 +77,8 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
         usersStream = FirebaseFirestore.instance
             .collection('users')
             .where(FieldPath.documentId, isGreaterThanOrEqualTo: searchText)
-            .where(FieldPath.documentId, isLessThanOrEqualTo: searchText + '\uf8ff')
+            .where(FieldPath.documentId,
+                isLessThanOrEqualTo: searchText + '\uf8ff')
             .snapshots();
       } else {
         usersStream = null;
@@ -82,7 +88,8 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
   }
 
   Future<void> _fetchUserData(String id) async {
-    final documentSnapshot = await FirebaseFirestore.instance.collection('users').doc(id).get();
+    final documentSnapshot =
+        await FirebaseFirestore.instance.collection('users').doc(id).get();
 
     if (documentSnapshot.exists) {
       setState(() {
@@ -129,7 +136,9 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                   ElevatedButton(
                     onPressed: () async {
                       // Trigger barcode scanning
-                      String barcodeScanResult = await FlutterBarcodeScanner.scanBarcode('#FF0000', 'Cancel', true, ScanMode.BARCODE);
+                      String barcodeScanResult =
+                          await FlutterBarcodeScanner.scanBarcode(
+                              '#FF0000', 'Cancel', true, ScanMode.BARCODE);
 
                       if (barcodeScanResult != '-1') {
                         // Update the text field with the scanned result
@@ -313,7 +322,10 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                   ),
                   child: Align(
                     alignment: Alignment.center,
-                    child: Text("Draw", style: TextStyle(color: tsOneColorScheme.secondary, fontWeight: FontWeight.w600)),
+                    child: Text("Draw",
+                        style: TextStyle(
+                            color: tsOneColorScheme.secondary,
+                            fontWeight: FontWeight.w600)),
                   ),
                 ),
               ),
@@ -340,8 +352,10 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                       key: _signaturePadKey,
                       backgroundColor: Colors.white,
                       onDrawEnd: () async {
-                        final signatureImageData = await _signaturePadKey.currentState!.toImage();
-                        final byteData = await signatureImageData.toByteData(format: ImageByteFormat.png);
+                        final signatureImageData =
+                            await _signaturePadKey.currentState!.toImage();
+                        final byteData = await signatureImageData.toByteData(
+                            format: ImageByteFormat.png);
                         if (byteData != null) {
                           setState(() {
                             signatureImage = byteData.buffer.asUint8List();
@@ -378,7 +392,8 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                           });
                         },
                       ),
-                      Text('I agree with all of the results', style: TextStyle(fontWeight: FontWeight.w300)),
+                      Text('I agree with all of the results',
+                          style: TextStyle(fontWeight: FontWeight.w300)),
                     ],
                   ),
                   SizedBox(height: 10),
@@ -388,12 +403,14 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                       if (signatureData == null && !agree) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: const Text("Please provide signature & consent"),
+                            content: const Text(
+                                "Please provide signature & consent"),
                             duration: const Duration(milliseconds: 1000),
                             action: SnackBarAction(
                               label: 'Close',
                               onPressed: () {
-                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                ScaffoldMessenger.of(context)
+                                    .hideCurrentSnackBar();
                               },
                             ),
                           ),
@@ -406,7 +423,8 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                             action: SnackBarAction(
                               label: 'Close',
                               onPressed: () {
-                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                ScaffoldMessenger.of(context)
+                                    .hideCurrentSnackBar();
                               },
                             ),
                           ),
@@ -419,7 +437,8 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                             action: SnackBarAction(
                               label: 'Close',
                               onPressed: () {
-                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                ScaffoldMessenger.of(context)
+                                    .hideCurrentSnackBar();
                               },
                             ),
                           ),
@@ -432,7 +451,8 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                             action: SnackBarAction(
                               label: 'Close',
                               onPressed: () {
-                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                ScaffoldMessenger.of(context)
+                                    .hideCurrentSnackBar();
                               },
                             ),
                           ),
@@ -446,7 +466,8 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                             action: SnackBarAction(
                               label: 'Close',
                               onPressed: () {
-                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                ScaffoldMessenger.of(context)
+                                    .hideCurrentSnackBar();
                               },
                             ),
                           ),
@@ -460,14 +481,18 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                                 'Confirm',
                                 style: tsOneTextTheme.headlineLarge,
                               ),
-                              content: const Text('Are you sure you want to save this signature?'),
+                              content: const Text(
+                                  'Are you sure you want to save this signature?'),
                               actions: [
                                 Row(
                                   children: [
                                     Expanded(
                                       flex: 5,
                                       child: TextButton(
-                                        child: Text('No', style: TextStyle(color: TsOneColor.secondaryContainer)),
+                                        child: Text('No',
+                                            style: TextStyle(
+                                                color: TsOneColor
+                                                    .secondaryContainer)),
                                         onPressed: () {
                                           Navigator.of(context).pop();
                                         },
@@ -479,32 +504,63 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                                       child: ElevatedButton(
                                         onPressed: () async {
                                           try {
-                                            final idNumber = _idController.text.trim();
+                                            final idNumber =
+                                                _idController.text.trim();
                                             if (idNumber.isNotEmpty) {
                                               User? user = _auth.currentUser;
                                               QuerySnapshot userQuery =
-                                                  await _firestore.collection('users').where('EMAIL', isEqualTo: user?.email).get();
-                                              String userUid = userQuery.docs.first.id;
-                                              final image = await _signaturePadKey.currentState?.toImage(pixelRatio: 3.0);
-                                              final ByteData? byteData = await image?.toByteData(format: ImageByteFormat.png);
-                                              final Uint8List? uint8List = byteData?.buffer.asUint8List();
+                                                  await _firestore
+                                                      .collection('users')
+                                                      .where('EMAIL',
+                                                          isEqualTo:
+                                                              user?.email)
+                                                      .get();
+                                              String userUid =
+                                                  userQuery.docs.first.id;
+                                              final image =
+                                                  await _signaturePadKey
+                                                      .currentState
+                                                      ?.toImage(
+                                                          pixelRatio: 3.0);
+                                              final ByteData? byteData =
+                                                  await image?.toByteData(
+                                                      format:
+                                                          ImageByteFormat.png);
+                                              final Uint8List? uint8List =
+                                                  byteData?.buffer
+                                                      .asUint8List();
                                               final Reference storageReference =
-                                                  FirebaseStorage.instance.ref().child('signatures/${DateTime.now()}.png');
-                                              final UploadTask uploadTask = storageReference.putData(uint8List!);
+                                                  FirebaseStorage.instance
+                                                      .ref()
+                                                      .child(
+                                                          'signatures/${DateTime.now()}.png');
+                                              final UploadTask uploadTask =
+                                                  storageReference
+                                                      .putData(uint8List!);
 
-                                              await uploadTask.whenComplete(() async {
-                                                String signatureUrl = await storageReference.getDownloadURL();
+                                              await uploadTask
+                                                  .whenComplete(() async {
+                                                String signatureUrl =
+                                                    await storageReference
+                                                        .getDownloadURL();
                                                 await _fetchUserData(idNumber);
 
-                                                FirebaseFirestore.instance.collection('pilot-device-1').doc(widget.deviceId).update({
-                                                  'statusDevice': 'waiting-handover-to-other-crew',
+                                                FirebaseFirestore.instance
+                                                    .collection(
+                                                        'pilot-device-1')
+                                                    .doc(widget.deviceId)
+                                                    .update({
+                                                  'statusDevice':
+                                                      'waiting-handover-to-other-crew',
                                                   'handover-to-crew': idNumber,
                                                   'signature_url': signatureUrl,
-                                                  'document_id': widget.deviceId,
+                                                  'document_id':
+                                                      widget.deviceId,
                                                 });
                                               });
 
-                                              Navigator.pop(context); // Close the ReturnOtherPilotView
+                                              Navigator.pop(
+                                                  context); // Close the ReturnOtherPilotView
                                             } else {
                                               // Handle invalid input, show a message, or prevent submission
                                             }
@@ -514,7 +570,8 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                                               builder: (context) {
                                                 return AlertDialog(
                                                   title: const Text('Error'),
-                                                  content: const Text('An error occurred while saving the signature.'),
+                                                  content: const Text(
+                                                      'An error occurred while saving the signature.'),
                                                   actions: [
                                                     ElevatedButton(
                                                       onPressed: () {
@@ -529,11 +586,15 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                                           }
                                           _showQuickAlert(context);
                                         },
-                                        child: const Text('Yes', style: TextStyle(color: TsOneColor.onPrimary)),
+                                        child: const Text('Yes',
+                                            style: TextStyle(
+                                                color: TsOneColor.onPrimary)),
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor: TsOneColor.greenColor,
+                                          backgroundColor:
+                                              TsOneColor.greenColor,
                                           shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(20.0),
+                                            borderRadius:
+                                                BorderRadius.circular(20.0),
                                           ),
                                         ),
                                       ),
@@ -552,7 +613,8 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(4),
                         )),
-                    child: const Text('Submit', style: TextStyle(color: Colors.white)),
+                    child: const Text('Submit',
+                        style: TextStyle(color: Colors.white)),
                   ),
                 ],
               ),
@@ -584,12 +646,15 @@ Future<void> _showQuickAlert(BuildContext context) async {
   Get.offAllNamed(Routes.NAVOCC);
 }
 
-Future<String> getHubFromDeviceName(String deviceName2, String deviceName3) async {
+Future<String> getHubFromDeviceName(
+    String deviceName2, String deviceName3) async {
   String hub = "Unknown Hub"; // Default value
 
   try {
     // Fetch the 'hub' field from the 'Device' collection based on deviceName
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Device').where('deviceno', whereIn: [deviceName2, deviceName3]).get();
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('Device')
+        .where('deviceno', whereIn: [deviceName2, deviceName3]).get();
 
     if (querySnapshot.docs.isNotEmpty) {
       hub = querySnapshot.docs.first['hub'];

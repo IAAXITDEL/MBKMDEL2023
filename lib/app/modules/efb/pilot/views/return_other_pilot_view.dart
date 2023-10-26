@@ -42,13 +42,18 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
   DocumentSnapshot? selectedUser;
   Stream<QuerySnapshot>? usersStream;
   Uint8List? signatureImage;
-  final GlobalKey<SfSignaturePadState> _signaturePadKey = GlobalKey<SfSignaturePadState>();
+  final GlobalKey<SfSignaturePadState> _signaturePadKey =
+      GlobalKey<SfSignaturePadState>();
 
   @override
   void initState() {
     super.initState();
     // Fetch deviceUid, deviceName, and OCC On Duty from Firestore using widget.deviceId
-    FirebaseFirestore.instance.collection('pilot-device-1').doc(widget.deviceId).get().then((documentSnapshot) {
+    FirebaseFirestore.instance
+        .collection('pilot-device-1')
+        .doc(widget.deviceId)
+        .get()
+        .then((documentSnapshot) {
       if (documentSnapshot.exists) {
         setState(() {
           deviceId = documentSnapshot['device_uid'];
@@ -65,7 +70,8 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
         usersStream = FirebaseFirestore.instance
             .collection('users')
             .where(FieldPath.documentId, isGreaterThanOrEqualTo: searchText)
-            .where(FieldPath.documentId, isLessThanOrEqualTo: searchText + '\uf8ff')
+            .where(FieldPath.documentId,
+                isLessThanOrEqualTo: searchText + '\uf8ff')
             .snapshots();
       } else {
         usersStream = null;
@@ -75,7 +81,8 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
   }
 
   Future<void> _fetchUserData(String id) async {
-    final documentSnapshot = await FirebaseFirestore.instance.collection('users').doc(id).get();
+    final documentSnapshot =
+        await FirebaseFirestore.instance.collection('users').doc(id).get();
 
     if (documentSnapshot.exists) {
       setState(() {
@@ -105,7 +112,7 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -124,7 +131,9 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
                   ElevatedButton(
                     onPressed: () async {
                       // Trigger barcode scanning
-                      String barcodeScanResult = await FlutterBarcodeScanner.scanBarcode('#FF0000', 'Cancel', true, ScanMode.BARCODE);
+                      String barcodeScanResult =
+                          await FlutterBarcodeScanner.scanBarcode(
+                              '#FF0000', 'Cancel', true, ScanMode.BARCODE);
 
                       if (barcodeScanResult != '-1') {
                         // Update the text field with the scanned result
@@ -176,379 +185,461 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
                 ),
               SizedBox(height: 16.0),
               if (selectedUser != null)
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        "SELECTED CREW",
-                        style: tsOneTextTheme.titleLarge,
-                      ),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(4.0),
+                    border: Border.all(
+                      color: tsOneColorScheme.onSecondary,
                     ),
-                    Row(
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(
-                            flex: 6,
-                            child: Text(
-                              "ID NO",
-                              style: tsOneTextTheme.bodySmall,
-                            )),
-                        Expanded(
-                            flex: 1,
-                            child: Text(
-                              ":",
-                              style: tsOneTextTheme.bodySmall,
-                            )),
-                        Expanded(
-                          flex: 6,
+                        Align(
+                          alignment: Alignment.center,
                           child: Text(
-                            '${selectedUser!['ID NO']}',
-                            style: tsOneTextTheme.bodySmall,
+                            "Crew Info",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.black,
+                              fontFamily: 'Poppins',
+                            ),
                           ),
+                        ),
+                        // Row(
+                        //   children: [
+                        //     Expanded(
+                        //         flex: 6,
+                        //         child: Text(
+                        //           "ID NO",
+                        //           style: tsOneTextTheme.bodySmall,
+                        //         )),
+                        //     Expanded(
+                        //         flex: 1,
+                        //         child: Text(
+                        //           ":",
+                        //           style: tsOneTextTheme.bodySmall,
+                        //         )),
+                        //     Expanded(
+                        //       flex: 6,
+                        //       child: Text(
+                        //         '${selectedUser!['ID NO']}',
+                        //         style: tsOneTextTheme.bodySmall,
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
+                        SizedBox(height: 5.0),
+                        Row(
+                          children: [
+                            Expanded(
+                                flex: 6,
+                                child: Text(
+                                  "Name",
+                                  style: tsOneTextTheme.bodySmall,
+                                )),
+                            Expanded(
+                                flex: 1,
+                                child: Text(
+                                  ":",
+                                  style: tsOneTextTheme.bodySmall,
+                                )),
+                            Expanded(
+                              flex: 6,
+                              child: Text(
+                                '${selectedUser!['NAME']}',
+                                style: tsOneTextTheme.bodySmall,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                                flex: 6,
+                                child: Text(
+                                  "Rank",
+                                  style: tsOneTextTheme.bodySmall,
+                                )),
+                            Expanded(
+                                flex: 1,
+                                child: Text(
+                                  ":",
+                                  style: tsOneTextTheme.bodySmall,
+                                )),
+                            Expanded(
+                              flex: 6,
+                              child: Text(
+                                '${selectedUser!['RANK']}',
+                                style: tsOneTextTheme.bodySmall,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                                flex: 6,
+                                child: Text(
+                                  "HUB",
+                                  style: tsOneTextTheme.bodySmall,
+                                )),
+                            Expanded(
+                                flex: 1,
+                                child: Text(
+                                  ":",
+                                  style: tsOneTextTheme.bodySmall,
+                                )),
+                            Expanded(
+                              flex: 6,
+                              child: Text(
+                                '${selectedUser!['HUB']}',
+                                style: tsOneTextTheme.bodySmall,
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                    SizedBox(height: 5.0),
-                    Row(
-                      children: [
-                        Expanded(
-                            flex: 6,
-                            child: Text(
-                              "Name",
-                              style: tsOneTextTheme.bodySmall,
-                            )),
-                        Expanded(
-                            flex: 1,
-                            child: Text(
-                              ":",
-                              style: tsOneTextTheme.bodySmall,
-                            )),
-                        Expanded(
-                          flex: 6,
-                          child: Text(
-                            '${selectedUser!['NAME']}',
-                            style: tsOneTextTheme.bodySmall,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                            flex: 6,
-                            child: Text(
-                              "Rank",
-                              style: tsOneTextTheme.bodySmall,
-                            )),
-                        Expanded(
-                            flex: 1,
-                            child: Text(
-                              ":",
-                              style: tsOneTextTheme.bodySmall,
-                            )),
-                        Expanded(
-                          flex: 6,
-                          child: Text(
-                            '${selectedUser!['RANK']}',
-                            style: tsOneTextTheme.bodySmall,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                            flex: 6,
-                            child: Text(
-                              "HUB",
-                              style: tsOneTextTheme.bodySmall,
-                            )),
-                        Expanded(
-                            flex: 1,
-                            child: Text(
-                              ":",
-                              style: tsOneTextTheme.bodySmall,
-                            )),
-                        Expanded(
-                          flex: 6,
-                          child: Text(
-                            '${selectedUser!['HUB']}',
-                            style: tsOneTextTheme.bodySmall,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+                  ),
                 ),
               SizedBox(height: 20.0),
-              Align(
-                alignment: Alignment.center,
-                child: Text(
-                  "Signature",
-                  style: tsOneTextTheme.headlineMedium,
+              if (selectedUser != null)
+                Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    "Signature",
+                    style: tsOneTextTheme.headlineMedium,
+                  ),
                 ),
-              ),
               const SizedBox(
                 height: 15,
               ),
-              ConstrainedBox(
-                constraints: BoxConstraints(
-                  minHeight: 40,
-                  minWidth: 400,
-                ),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: tsOneColorScheme.primary,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(25.0),
-                      topRight: Radius.circular(25.0),
-                    ),
+              if (selectedUser != null)
+                ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minHeight: 40,
+                    minWidth: 400,
                   ),
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: Text("Draw", style: TextStyle(color: tsOneColorScheme.secondary, fontWeight: FontWeight.w600)),
-                  ),
-                ),
-              ),
-              Stack(
-                children: [
-                  Container(
-                    height: 480,
+                  child: Container(
                     decoration: BoxDecoration(
+                      color: tsOneColorScheme.primary,
                       borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10.0),
-                        topRight: Radius.circular(10.0),
-                        bottomLeft: Radius.circular(25.0),
-                        bottomRight: Radius.circular(25.0),
+                        topLeft: Radius.circular(25.0),
+                        topRight: Radius.circular(25.0),
                       ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          blurRadius: 5,
-                          offset: Offset(0, 2),
+                    ),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text("Draw",
+                          style: TextStyle(
+                              color: tsOneColorScheme.secondary,
+                              fontWeight: FontWeight.w600)),
+                    ),
+                  ),
+                ),
+              if (selectedUser != null)
+                Stack(
+                  children: [
+                    Container(
+                      height: 480,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10.0),
+                          topRight: Radius.circular(10.0),
+                          bottomLeft: Radius.circular(25.0),
+                          bottomRight: Radius.circular(25.0),
                         ),
-                      ],
-                    ),
-                    child: SfSignaturePad(
-                      key: _signaturePadKey,
-                      backgroundColor: Colors.white,
-                      onDrawEnd: () async {
-                        final signatureImageData = await _signaturePadKey.currentState!.toImage();
-                        final byteData = await signatureImageData.toByteData(format: ImageByteFormat.png);
-                        if (byteData != null) {
-                          setState(() {
-                            signatureImage = byteData.buffer.asUint8List();
-                          });
-                        }
-                      },
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.topRight,
-                    child: IconButton(
-                      icon: const Icon(
-                        Icons.delete_outline_outlined,
-                        size: 32,
-                        color: TsOneColor.primary,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            blurRadius: 5,
+                            offset: Offset(0, 2),
+                          ),
+                        ],
                       ),
-                      onPressed: () {
-                        _signaturePadKey.currentState?.clear();
-                      },
-                    ),
-                  ),
-                ],
-              ),
-              Column(
-                children: [
-                  Row(
-                    children: [
-                      Checkbox(
-                        value: agree,
-                        onChanged: (value) {
-                          setState(() {
-                            agree = value!;
-                          });
+                      child: SfSignaturePad(
+                        key: _signaturePadKey,
+                        backgroundColor: Colors.white,
+                        onDrawEnd: () async {
+                          final signatureImageData =
+                              await _signaturePadKey.currentState!.toImage();
+                          final byteData = await signatureImageData.toByteData(
+                              format: ImageByteFormat.png);
+                          if (byteData != null) {
+                            setState(() {
+                              signatureImage = byteData.buffer.asUint8List();
+                            });
+                          }
                         },
                       ),
-                      Text('I agree with all of the results', style: TextStyle(fontWeight: FontWeight.w300)),
-                    ],
-                  ),
-                  SizedBox(height: 10),
-                  ElevatedButton(
-                    onPressed: () async {
-                      final signatureData = signatureImage;
-                      if (signatureData == null && !agree) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: const Text("Please provide signature & consent"),
-                            duration: const Duration(milliseconds: 1000),
-                            action: SnackBarAction(
-                              label: 'Close',
-                              onPressed: () {
-                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                              },
-                            ),
-                          ),
-                        );
-                      } else if (signatureData == null) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: const Text("Please provide signature"),
-                            duration: const Duration(milliseconds: 1000),
-                            action: SnackBarAction(
-                              label: 'Close',
-                              onPressed: () {
-                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                              },
-                            ),
-                          ),
-                        );
-                      } else if (agree && signatureData == null) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: const Text("Please provide signature"),
-                            duration: const Duration(milliseconds: 1000),
-                            action: SnackBarAction(
-                              label: 'Close',
-                              onPressed: () {
-                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                              },
-                            ),
-                          ),
-                        );
-                      } else if (!agree) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: const Text("Please checklist consent"),
-                            duration: const Duration(milliseconds: 1000),
-                            action: SnackBarAction(
-                              label: 'Close',
-                              onPressed: () {
-                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                              },
-                            ),
-                          ),
-                        );
-                      } else if (_signaturePadKey.currentState?.clear == null) {
-                        //widget._signaturePadKey.currentState!.clear();
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: const Text("Please provide signature"),
-                            duration: const Duration(milliseconds: 1000),
-                            action: SnackBarAction(
-                              label: 'Close',
-                              onPressed: () {
-                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                              },
-                            ),
-                          ),
-                        );
-                      } else if (signatureData != null && agree) {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: Text(
-                                'Confirm',
-                                style: tsOneTextTheme.headlineLarge,
+                    ),
+                    Container(
+                      alignment: Alignment.topRight,
+                      child: IconButton(
+                        icon: const Icon(
+                          Icons.delete_outline_outlined,
+                          size: 32,
+                          color: TsOneColor.primary,
+                        ),
+                        onPressed: () {
+                          _signaturePadKey.currentState?.clear();
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              SizedBox(height: 10),
+              if (selectedUser != null)
+                Column(
+                  children: [
+                    Row(
+                      children: [
+                        Checkbox(
+                          value: agree,
+                          onChanged: (value) {
+                            setState(() {
+                              agree = value!;
+                            });
+                          },
+                        ),
+                        Text('I agree with all of the results',
+                            style: TextStyle(fontWeight: FontWeight.w300)),
+                      ],
+                    ),
+                    SizedBox(height: 10),
+                    ElevatedButton(
+                      onPressed: () async {
+                        final signatureData = signatureImage;
+                        if (signatureData == null && !agree) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: const Text(
+                                  "Please provide signature & consent"),
+                              duration: const Duration(milliseconds: 1000),
+                              action: SnackBarAction(
+                                label: 'Close',
+                                onPressed: () {
+                                  ScaffoldMessenger.of(context)
+                                      .hideCurrentSnackBar();
+                                },
                               ),
-                              content: const Text('Are you sure you want to save this signature?'),
-                              actions: [
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 5,
-                                      child: TextButton(
-                                        child: Text('No', style: TextStyle(color: TsOneColor.secondaryContainer)),
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
+                            ),
+                          );
+                        } else if (signatureData == null) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: const Text("Please provide signature"),
+                              duration: const Duration(milliseconds: 1000),
+                              action: SnackBarAction(
+                                label: 'Close',
+                                onPressed: () {
+                                  ScaffoldMessenger.of(context)
+                                      .hideCurrentSnackBar();
+                                },
+                              ),
+                            ),
+                          );
+                        } else if (agree && signatureData == null) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: const Text("Please provide signature"),
+                              duration: const Duration(milliseconds: 1000),
+                              action: SnackBarAction(
+                                label: 'Close',
+                                onPressed: () {
+                                  ScaffoldMessenger.of(context)
+                                      .hideCurrentSnackBar();
+                                },
+                              ),
+                            ),
+                          );
+                        } else if (!agree) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: const Text("Please checklist consent"),
+                              duration: const Duration(milliseconds: 1000),
+                              action: SnackBarAction(
+                                label: 'Close',
+                                onPressed: () {
+                                  ScaffoldMessenger.of(context)
+                                      .hideCurrentSnackBar();
+                                },
+                              ),
+                            ),
+                          );
+                        } else if (_signaturePadKey.currentState?.clear ==
+                            null) {
+                          //widget._signaturePadKey.currentState!.clear();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: const Text("Please provide signature"),
+                              duration: const Duration(milliseconds: 1000),
+                              action: SnackBarAction(
+                                label: 'Close',
+                                onPressed: () {
+                                  ScaffoldMessenger.of(context)
+                                      .hideCurrentSnackBar();
+                                },
+                              ),
+                            ),
+                          );
+                        } else if (signatureData != null && agree) {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: Text(
+                                  'Confirmation',
+                                  style: tsOneTextTheme.headlineLarge,
+                                ),
+                                content: const Text(
+                                    'Are you sure you want to save this signature?'),
+                                actions: [
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        flex: 5,
+                                        child: TextButton(
+                                          child: Text('No',
+                                              style: TextStyle(
+                                                  color: TsOneColor
+                                                      .secondaryContainer)),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
                                       ),
-                                    ),
-                                    Spacer(flex: 1),
-                                    Expanded(
-                                      flex: 5,
-                                      child: ElevatedButton(
-                                        onPressed: () async {
-                                          try {
-                                            final idNumber = _idController.text.trim();
-                                            if (idNumber.isNotEmpty) {
-                                              User? user = _auth.currentUser;
-                                              QuerySnapshot userQuery =
-                                                  await _firestore.collection('users').where('EMAIL', isEqualTo: user?.email).get();
-                                              String userUid = userQuery.docs.first.id;
-                                              final image = await _signaturePadKey.currentState?.toImage(pixelRatio: 3.0);
-                                              final ByteData? byteData = await image?.toByteData(format: ImageByteFormat.png);
-                                              final Uint8List? uint8List = byteData?.buffer.asUint8List();
-                                              final Reference storageReference =
-                                                  FirebaseStorage.instance.ref().child('signatures/${DateTime.now()}.png');
-                                              final UploadTask uploadTask = storageReference.putData(uint8List!);
+                                      Spacer(flex: 1),
+                                      Expanded(
+                                        flex: 5,
+                                        child: ElevatedButton(
+                                          onPressed: () async {
+                                            try {
+                                              final idNumber =
+                                                  _idController.text.trim();
+                                              if (idNumber.isNotEmpty) {
+                                                User? user = _auth.currentUser;
+                                                QuerySnapshot userQuery =
+                                                    await _firestore
+                                                        .collection('users')
+                                                        .where('EMAIL',
+                                                            isEqualTo:
+                                                                user?.email)
+                                                        .get();
+                                                String userUid =
+                                                    userQuery.docs.first.id;
+                                                final image =
+                                                    await _signaturePadKey
+                                                        .currentState
+                                                        ?.toImage(
+                                                            pixelRatio: 3.0);
+                                                final ByteData? byteData =
+                                                    await image?.toByteData(
+                                                        format: ImageByteFormat
+                                                            .png);
+                                                final Uint8List? uint8List =
+                                                    byteData?.buffer
+                                                        .asUint8List();
+                                                final Reference
+                                                    storageReference =
+                                                    FirebaseStorage.instance
+                                                        .ref()
+                                                        .child(
+                                                            'signatures/${DateTime.now()}.png');
+                                                final UploadTask uploadTask =
+                                                    storageReference
+                                                        .putData(uint8List!);
 
-                                              await uploadTask.whenComplete(() async {
-                                                String signatureUrl = await storageReference.getDownloadURL();
-                                                await _fetchUserData(idNumber);
+                                                await uploadTask
+                                                    .whenComplete(() async {
+                                                  String signatureUrl =
+                                                      await storageReference
+                                                          .getDownloadURL();
+                                                  await _fetchUserData(
+                                                      idNumber);
 
-                                                FirebaseFirestore.instance.collection('pilot-device-1').doc(widget.deviceId).update({
-                                                  'statusDevice': 'waiting-handover-to-other-crew',
-                                                  'handover-to-crew': idNumber,
-                                                  'signature_url': signatureUrl,
-                                                  'document_id': widget.deviceId,
+                                                  FirebaseFirestore.instance
+                                                      .collection(
+                                                          'pilot-device-1')
+                                                      .doc(widget.deviceId)
+                                                      .update({
+                                                    'statusDevice':
+                                                        'waiting-handover-to-other-crew',
+                                                    'handover-to-crew':
+                                                        idNumber,
+                                                    'signature_url':
+                                                        signatureUrl,
+                                                    'document_id':
+                                                        widget.deviceId,
+                                                  });
                                                 });
-                                              });
 
-                                              _showQuickAlert(context);
-                                            } else {
-                                              // Handle invalid input, show a message, or prevent submission
+                                                _showQuickAlert(context);
+                                              } else {
+                                                // Handle invalid input, show a message, or prevent submission
+                                              }
+                                            } catch (error) {
+                                              showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  return AlertDialog(
+                                                    title: const Text('Error'),
+                                                    content: const Text(
+                                                        'An error occurred while saving the signature.'),
+                                                    actions: [
+                                                      ElevatedButton(
+                                                        onPressed: () {
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                        child: const Text('OK'),
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              );
                                             }
-                                          } catch (error) {
-                                            showDialog(
-                                              context: context,
-                                              builder: (context) {
-                                                return AlertDialog(
-                                                  title: const Text('Error'),
-                                                  content: const Text('An error occurred while saving the signature.'),
-                                                  actions: [
-                                                    ElevatedButton(
-                                                      onPressed: () {
-                                                        Navigator.pop(context);
-                                                      },
-                                                      child: const Text('OK'),
-                                                    ),
-                                                  ],
-                                                );
-                                              },
-                                            );
-                                          }
-                                          _showQuickAlert(context);
-                                        },
-                                        child: const Text('Yes', style: TextStyle(color: TsOneColor.onPrimary)),
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: TsOneColor.greenColor,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(20.0),
+                                            _showQuickAlert(context);
+                                          },
+                                          child: const Text('Yes',
+                                              style: TextStyle(
+                                                  color: TsOneColor.onPrimary)),
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor:
+                                                TsOneColor.greenColor,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(20.0),
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: TsOneColor.greenColor,
-                        minimumSize: const Size(double.infinity, 50),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4),
-                        )),
-                    child: const Text('Submit', style: TextStyle(color: Colors.white)),
-                  ),
-                ],
-              ),
+                                    ],
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: TsOneColor.greenColor,
+                          minimumSize: const Size(double.infinity, 50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(4),
+                          )),
+                      child: const Text('Submit',
+                          style: TextStyle(color: Colors.white)),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    )
+                  ],
+                ),
             ],
           ),
         ),
@@ -577,7 +668,10 @@ Future<String> getHubFromDeviceName(String deviceName) async {
 
   try {
     // Fetch the 'hub' field from the 'Device' collection based on deviceName
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Device').where('deviceno', isEqualTo: deviceName).get();
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('Device')
+        .where('deviceno', isEqualTo: deviceName)
+        .get();
 
     if (querySnapshot.docs.isNotEmpty) {
       hub = querySnapshot.docs.first['hub'];
