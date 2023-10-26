@@ -28,87 +28,47 @@ class FOUnRequestDeviceView extends GetView {
     });
   }
 
-  String getMonthText(int month) {
-    const List<String> months = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'Desember'
-    ];
-    return months[month - 1]; // Index 0-11 for Januari-Desember
-  }
-
-  String _formatTimestamp(Timestamp? timestamp) {
-    if (timestamp == null) return 'No Data';
-
-    DateTime dateTime = timestamp.toDate();
-    String formattedDateTime = '${dateTime.day} ${getMonthText(dateTime.month)} ${dateTime.year}'
-        ' ; '
-        '${dateTime.hour}:${dateTime.minute}';
-    return formattedDateTime;
-  }
-
   void confirmRejected(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Confirmation', style: tsOneTextTheme.headlineLarge),
+          title: Text('Confirmation'),
           content: Text('Are you sure you want to reject the usage?'),
           actions: <Widget>[
-            Row(
-              children: [
-                Expanded(
-                  flex: 5,
-                  child: TextButton(
-                    child: Text('No', style: TextStyle(color: TsOneColor.secondaryContainer)),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => HomeFOView(),
                   ),
-                ),
-                Spacer(flex: 1),
-                Expanded(
-                  flex: 5,
-                  child: TextButton(
-                    style: TextButton.styleFrom(
-                      backgroundColor: TsOneColor.greenColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                    ),
-                    child: Text('Yes', style: TextStyle(color: TsOneColor.onPrimary)),
-                    onPressed: () async {
-                      User? user = _auth.currentUser;
+                );
+              },
+            ),
+            TextButton(
+              child: Text('Confirm'),
+              onPressed: () async {
+                User? user = _auth.currentUser;
 
-                      if (user != null) {
-                        // Get the user's ID
-                        QuerySnapshot userQuery = await _firestore.collection('users').where('EMAIL', isEqualTo: user.email).get();
-                        String userUid = userQuery.docs.first.id;
+                if (user != null) {
+                  // Get the user's ID
+                  QuerySnapshot userQuery = await _firestore.collection('users').where('EMAIL', isEqualTo: user.email).get();
+                  String userUid = userQuery.docs.first.id;
 
-                        DocumentReference pilotDeviceRef = FirebaseFirestore.instance.collection("pilot-device-1").doc(deviceId);
+                  DocumentReference pilotDeviceRef = FirebaseFirestore.instance.collection("pilot-device-1").doc(deviceId);
 
-                        try {
-                          await FirebaseFirestore.instance.collection("pilot-device-1").doc(deviceId).delete();
+                  try {
+                    await FirebaseFirestore.instance.collection("pilot-device-1").doc(deviceId).delete();
 
-                          print('Data updated successfully!');
-                        } catch (error) {
-                          print('Error updating data: $error');
-                        }
-                      }
-                      _showQuickAlert(context);
-                    },
-                  ),
-                ),
-              ],
+                    print('Data updated successfully!');
+                  } catch (error) {
+                    print('Error updating data: $error');
+                  }
+                }
+                _showQuickAlert(context);
+              },
             ),
           ],
         );
@@ -120,13 +80,12 @@ class FOUnRequestDeviceView extends GetView {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Reject', style: tsOneTextTheme.headlineLarge),
-        backgroundColor: Colors.white,
+        title: Text('Device'),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+          padding: EdgeInsets.symmetric(horizontal: 16.0), // Adjust the padding here
           child: FutureBuilder<DocumentSnapshot>(
             future: FirebaseFirestore.instance.collection("pilot-device-1").doc(deviceId).get(),
             builder: (context, snapshot) {
@@ -203,71 +162,97 @@ class FOUnRequestDeviceView extends GetView {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Align(
-                                  alignment: Alignment.centerRight,
-                                  child: Text(_formatTimestamp(data['timestamp']), style: tsOneTextTheme.labelSmall),
-                                ),
-                                SizedBox(height: 15),
-                                Row(
-                                  children: [
-                                    Expanded(flex: 6, child: Text("ID NO")),
-                                    Expanded(flex: 1, child: Text(":")),
-                                    Expanded(
-                                      flex: 6,
-                                      child: Text('${userData['ID NO'] ?? 'No Data'}'),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 5.0),
-                                Row(
-                                  children: [
-                                    Expanded(flex: 6, child: Text("Name")),
-                                    Expanded(flex: 1, child: Text(":")),
-                                    Expanded(
-                                      flex: 6,
-                                      child: Text('${userData['NAME'] ?? 'No Data'}'),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 5.0),
-                                Row(
-                                  children: [
-                                    Expanded(flex: 6, child: Text("Rank")),
-                                    Expanded(flex: 1, child: Text(":")),
-                                    Expanded(
-                                      flex: 6,
-                                      child: Text('${userData['RANK'] ?? 'No Data'}'),
-                                    ),
-                                  ],
-                                ),
                                 SizedBox(height: 20.0),
-                                const Padding(
-                                  padding: EdgeInsets.only(bottom: 16.0),
-                                  child: Row(
-                                    children: <Widget>[
-                                      Expanded(
-                                        child: Divider(
-                                          color: Colors.grey,
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.symmetric(horizontal: 8.0),
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    "CREW INFO",
+                                    style: tsOneTextTheme.titleLarge,
+                                  ),
+                                ),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                        flex: 6,
                                         child: Text(
-                                          'Device Details',
-                                          style: TextStyle(color: Colors.grey),
-                                        ),
+                                          "ID NO",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        flex: 1,
+                                        child: Text(
+                                          ":",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                      flex: 6,
+                                      child: Text(
+                                        '${userData['ID NO'] ?? 'No Data'}',
+                                        style: tsOneTextTheme.bodySmall,
                                       ),
-                                      Expanded(
-                                        child: Divider(
-                                          color: Colors.grey,
-                                        ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 5.0),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                          "Name",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        flex: 1,
+                                        child: Text(
+                                          ":",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                      flex: 6,
+                                      child: Text(
+                                        '${userData['NAME'] ?? 'No Data'}',
+                                        style: tsOneTextTheme.bodySmall,
                                       ),
-                                    ],
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 5.0),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                          "Rank",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        flex: 1,
+                                        child: Text(
+                                          ":",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                      flex: 6,
+                                      child: Text(
+                                        '${userData['RANK'] ?? 'No Data'}',
+                                        style: tsOneTextTheme.bodySmall,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 7),
+                                  child: Divider(
+                                    color: TsOneColor.secondaryContainer,
                                   ),
                                 ),
                                 Align(
                                   alignment: Alignment.centerLeft,
-                                  child: Text("Device 2", style: tsOneTextTheme.displaySmall),
+                                  child: Text(
+                                    "DEVICE INFO 1",
+                                    style: tsOneTextTheme.titleLarge,
+                                  ),
                                 ),
                                 SizedBox(height: 5.0),
                                 Row(
@@ -286,7 +271,10 @@ class FOUnRequestDeviceView extends GetView {
                                         )),
                                     Expanded(
                                       flex: 6,
-                                      child: Text('${data['device_name2'] ?? 'No Data'}'),
+                                      child: Text(
+                                        '${data['device_name2'] ?? 'No Data'}',
+                                        style: tsOneTextTheme.bodySmall,
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -434,10 +422,13 @@ class FOUnRequestDeviceView extends GetView {
                                     ),
                                   ],
                                 ),
-                                SizedBox(height: 20.0),
+                                SizedBox(height: 10.0),
                                 Align(
                                   alignment: Alignment.centerLeft,
-                                  child: Text("Device 3", style: tsOneTextTheme.displaySmall),
+                                  child: Text(
+                                    "DEVICE INFO 2",
+                                    style: tsOneTextTheme.titleLarge,
+                                  ),
                                 ),
                                 SizedBox(height: 5.0),
                                 Row(

@@ -266,10 +266,14 @@ class _EditDevice extends State<EditDevice> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Color.fromARGB(255, 255, 255, 255),
         title: Text(
           'Edit Device',
-          style: tsOneTextTheme.headlineLarge,
+          style: TextStyle(
+            color: Colors.black, // Set text color to red
+            fontSize: 20.1,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         centerTitle: true,
       ),

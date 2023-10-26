@@ -6,8 +6,9 @@ import 'package:image_picker/image_picker.dart'; // For camera feature
 import 'package:firebase_storage/firebase_storage.dart'; // For uploading images to Firebase Storage
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
-import 'dart:io';
-import '../../../../../presentation/theme.dart'; //
+import 'dart:io'; // For handling selected image file
+
+import '../../../../../presentation/theme.dart';
 import '../../../../routes/app_pages.dart';
 import 'confirm_signature_other_fo.dart';
 
@@ -55,33 +56,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
     });
   }
 
-  String getMonthText(int month) {
-    const List<String> months = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'Desember'
-    ];
-    return months[month - 1]; // Index 0-11 for Januari-Desember
-  }
-
-  String _formatTimestamp(Timestamp? timestamp) {
-    if (timestamp == null) return 'No Data';
-
-    DateTime dateTime = timestamp.toDate();
-    String formattedDateTime = '${dateTime.day} ${getMonthText(dateTime.month)} ${dateTime.year}'
-        ' ; '
-        '${dateTime.hour}:${dateTime.minute}';
-    return formattedDateTime;
-  }
+  // Function to update status in Firestore and upload image to Firebase Storage
 
   // Function to open the image picker
   Future<void> _pickImage() async {
@@ -100,22 +75,19 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
       context: context,
       type: QuickAlertType.success,
       text: 'You have successfully added a device',
-    ).then((value) {
-      Get.offAllNamed(Routes.NAVOCC);
-    });
+    );
+    Get.offAllNamed(Routes.NAVOCC);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        centerTitle: true,
-        title: Text('Confirmation', style: tsOneTextTheme.headlineLarge),
+        title: Text('Confirmationn'),
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.0),
+          padding: EdgeInsets.symmetric(horizontal: 16.0), // Adjust the padding here
           child: FutureBuilder<DocumentSnapshot>(
             future: FirebaseFirestore.instance.collection("pilot-device-1").doc(widget.deviceId).get(),
             builder: (context, snapshot) {
@@ -207,18 +179,13 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                   children: [
                                     SizedBox(height: 10.0),
                                     Align(
-                                      alignment: Alignment.centerRight,
-                                      child: Text(_formatTimestamp(data['timestamp']), style: tsOneTextTheme.labelSmall),
-                                    ),
-                                    SizedBox(height: 10.0),
-                                    Align(
                                       alignment: Alignment.centerLeft,
                                       child: Text(
-                                        "Handover From",
-                                        style: tsOneTextTheme.headlineMedium,
+                                        "HANDOVER FROM",
+                                        style: tsOneTextTheme.titleLarge,
                                       ),
                                     ),
-                                    SizedBox(height: 10.0),
+                                    SizedBox(height: 5.0),
                                     Row(
                                       children: [
                                         Expanded(
@@ -275,15 +242,15 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 16.0),
+                                    SizedBox(height: 20.0),
                                     Align(
                                       alignment: Alignment.centerLeft,
                                       child: Text(
-                                        "Handover To",
-                                        style: tsOneTextTheme.headlineMedium,
+                                        "HANDOVER TO",
+                                        style: tsOneTextTheme.titleLarge,
                                       ),
                                     ),
-                                    SizedBox(height: 10.0),
+                                    SizedBox(height: 5.0),
                                     Row(
                                       children: [
                                         Expanded(
@@ -340,39 +307,15 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                         ),
                                       ],
                                     ),
-                                    const SizedBox(height: 16),
-                                    const Padding(
-                                      padding: EdgeInsets.only(bottom: 16.0),
-                                      child: Row(
-                                        children: <Widget>[
-                                          Expanded(
-                                            child: Divider(
-                                              color: Colors.grey,
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.symmetric(horizontal: 8.0),
-                                            child: Text(
-                                              'Device Details',
-                                              style: TextStyle(color: Colors.grey),
-                                            ),
-                                          ),
-                                          Expanded(
-                                            child: Divider(
-                                              color: Colors.grey,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
+                                    SizedBox(height: 20.0),
                                     Align(
                                       alignment: Alignment.centerLeft,
                                       child: Text(
-                                        "Device 2",
-                                        style: tsOneTextTheme.headlineMedium,
+                                        "DEVICE INFO 1",
+                                        style: tsOneTextTheme.titleLarge,
                                       ),
                                     ),
-                                    SizedBox(height: 10.0),
+                                    SizedBox(height: 5.0),
                                     Row(
                                       children: [
                                         Expanded(
@@ -509,11 +452,11 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                     Align(
                                       alignment: Alignment.centerLeft,
                                       child: Text(
-                                        "Device 3",
-                                        style: tsOneTextTheme.headlineMedium,
+                                        "DEVICE INFO 2",
+                                        style: tsOneTextTheme.titleLarge,
                                       ),
                                     ),
-                                    SizedBox(height: 10.0),
+                                    SizedBox(height: 5.0),
                                     Row(
                                       children: [
                                         Expanded(

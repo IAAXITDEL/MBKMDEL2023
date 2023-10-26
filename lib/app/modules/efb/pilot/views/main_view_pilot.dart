@@ -189,11 +189,11 @@ class HomePilotView extends GetView<HomePilotController> {
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
                                                   const Text(
-                                                    'Device 1',
+                                                    '1st Device',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
                                                   const Text(
-                                                    'CAPT ID',
+                                                    'FO ID',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
                                                   const Text(
@@ -290,11 +290,11 @@ class HomePilotView extends GetView<HomePilotController> {
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
                                                   const Text(
-                                                    'Device 1',
+                                                    '1st Device',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
                                                   const Text(
-                                                    'CAPT ID',
+                                                    'FO ID',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
                                                   const Text(
@@ -435,11 +435,11 @@ class HomePilotView extends GetView<HomePilotController> {
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
                                                   const Text(
-                                                    'Device 1',
+                                                    '1st Device',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
                                                   const Text(
-                                                    'CAPT ID',
+                                                    'FO ID',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
                                                   const Text(
@@ -556,11 +556,11 @@ class HomePilotView extends GetView<HomePilotController> {
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
                                                   const Text(
-                                                    'Device 1',
+                                                    '1st Device',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
                                                   const Text(
-                                                    'CAPT ID',
+                                                    'FO ID',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
                                                   const Text(
@@ -717,11 +717,11 @@ class HomePilotView extends GetView<HomePilotController> {
                                                             crossAxisAlignment: CrossAxisAlignment.start,
                                                             children: [
                                                               const Text(
-                                                                "Device 1",
+                                                                "Device 2",
                                                                 style: TextStyle(color: TsOneColor.secondary),
                                                               ),
                                                               const Text(
-                                                                'CAPT ID',
+                                                                'FO ID',
                                                                 style: TextStyle(color: TsOneColor.secondary),
                                                               ),
                                                               const Text(

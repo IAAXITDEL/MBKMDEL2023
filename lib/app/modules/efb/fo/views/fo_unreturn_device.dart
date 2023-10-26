@@ -18,8 +18,8 @@ class FOUnReturnDeviceView extends GetView {
 
   String getMonthText(int month) {
     const List<String> months = [
-      'January',
-      'February',
+      'Januar7',
+      'Februar7',
       'March',
       'April',
       'May',
@@ -257,7 +257,7 @@ class FOUnReturnDeviceView extends GetView {
                                       Padding(
                                         padding: EdgeInsets.symmetric(horizontal: 8.0),
                                         child: Text(
-                                          'Device Details',
+                                          'Loan Details',
                                           style: TextStyle(color: Colors.grey),
                                         ),
                                       ),
@@ -610,6 +610,7 @@ class FOUnReturnDeviceView extends GetView {
                                     ),
                                   ],
                                 ),
+                                SizedBox(height: 70.0),
                               ],
                             ),
                           );

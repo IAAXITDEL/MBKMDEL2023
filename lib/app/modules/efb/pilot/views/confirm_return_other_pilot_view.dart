@@ -111,7 +111,7 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
       barrierDismissible: false, // Dialog cannot be dismissed by tapping outside
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Confirmation Return'),
+          title: Text('Confirm Return'),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
@@ -255,20 +255,11 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                SizedBox(height: 10.0),
                                 Align(
                                   alignment: Alignment.centerRight,
                                   child: Text(_formatTimestamp(data['timestamp']), style: tsOneTextTheme.labelSmall),
                                 ),
-                                SizedBox(height: 10.0),
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    "Handover From",
-                                    style: tsOneTextTheme.headlineMedium,
-                                  ),
-                                ),
-                                SizedBox(height: 10.0),
+                                SizedBox(height: 16.0),
                                 Row(
                                   children: [
                                     Expanded(flex: 6, child: Text("ID NO")),
@@ -302,14 +293,30 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                                   ],
                                 ),
                                 SizedBox(height: 16.0),
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    "Handover To",
-                                    style: tsOneTextTheme.headlineMedium,
+                                const Padding(
+                                  padding: EdgeInsets.only(bottom: 16.0),
+                                  child: Row(
+                                    children: <Widget>[
+                                      Expanded(
+                                        child: Divider(
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(horizontal: 8.0),
+                                        child: Text(
+                                          'Handover To',
+                                          style: TextStyle(color: Colors.grey),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Divider(
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                SizedBox(height: 10.0),
                                 Row(
                                   children: [
                                     Expanded(
@@ -381,36 +388,12 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                                     ),
                                   ],
                                 ),
-                                const SizedBox(height: 16),
-                                const Padding(
-                                  padding: EdgeInsets.only(bottom: 16.0),
-                                  child: Row(
-                                    children: <Widget>[
-                                      Expanded(
-                                        child: Divider(
-                                          color: Colors.grey,
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.symmetric(horizontal: 8.0),
-                                        child: Text(
-                                          'Device Details',
-                                          style: TextStyle(color: Colors.grey),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: Divider(
-                                          color: Colors.grey,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                                SizedBox(height: 16.0),
                                 Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
-                                    "Device 1",
-                                    style: tsOneTextTheme.headlineMedium,
+                                    "Device Info",
+                                    style: tsOneTextTheme.titleMedium,
                                   ),
                                 ),
                                 SizedBox(height: 7.0),
@@ -581,7 +564,6 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                                     ),
                                   ],
                                 ),
-                                SizedBox(height: 5.0),
                               ],
                             ),
                           );

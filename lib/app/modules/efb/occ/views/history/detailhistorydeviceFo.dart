@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../../../presentation/theme.dart';
-import 'handover_attachment23.dart';
+import '../../../occ/views/history/handover_attachment23.dart';
 
 class DetailHistoryDeviceFOView extends GetView {
   final String dataId;
@@ -698,7 +698,7 @@ class DetailHistoryDeviceFOView extends GetView {
                                                             child: Padding(
                                                               padding: EdgeInsets.all(15),
                                                               child: Text(
-                                                                'Open Attachment',
+                                                                'Download History',
                                                                 style: TextStyle(color: Colors.white),
                                                               ),
                                                             )),

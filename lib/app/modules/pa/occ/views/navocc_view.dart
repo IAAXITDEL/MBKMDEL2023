@@ -45,7 +45,9 @@ class _NavOCCView extends State<NavOCCView> {
         AnalyticsView(),
         ProfileView(),
       ];
-    } else if (_userPreferences.getPrivileges().contains(UserModel.keyPilotRequestDevice)) {
+    } else if (_userPreferences
+        .getPrivileges()
+        .contains(UserModel.keyPilotRequestDevice)) {
       _pilotRequestDevice = true;
       _screens = [
         HomePilotView(),
@@ -78,7 +80,9 @@ class _NavOCCView extends State<NavOCCView> {
         children: _screens,
       ),
       bottomNavigationBar: Container(
-        padding: _canManageDevice ? const EdgeInsets.symmetric(horizontal: 1.0) : const EdgeInsets.all(1.0),
+        padding: _pilotRequestDevice
+            ? const EdgeInsets.symmetric(horizontal: 20)
+            : const EdgeInsets.all(1.0),
         decoration: BoxDecoration(
           color: Colors.white,
           boxShadow: [

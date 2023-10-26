@@ -31,11 +31,7 @@ class DetailHistoryPilotView extends GetView {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'DETAIL',
-          style: tsOneTextTheme.headlineLarge,
-        ),
-        backgroundColor: Colors.white,
+        title: Text('DETAIL'),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -252,7 +248,7 @@ class DetailHistoryPilotView extends GetView {
                                               SizedBox(height: 5.0),
                                               Row(
                                                 children: [
-                                                  Expanded(flex: 6, child: Text("Lido Version")),
+                                                  Expanded(flex: 6, child: Text("Lido mPilot Version")),
                                                   Expanded(flex: 1, child: Text(":")),
                                                   Expanded(
                                                     flex: 6,

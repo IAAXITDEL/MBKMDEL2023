@@ -273,7 +273,7 @@ class HomeFOView extends GetView<HomeFOController> {
                           if (waitingConfirmationDocs.isNotEmpty) ...[
                             Align(
                               alignment: Alignment.centerLeft,
-                              child: BlackTitleText(text: "Waiting For OCC To Confirmation"),
+                              child: BlackTitleText(text: "Waiting For OCC To Confirm"),
                             ),
                             SizedBox(height: 10),
                             Column(

@@ -215,7 +215,7 @@ class _FOSignaturePadPageState extends State<FOSignaturePadPage> {
                           builder: (context) {
                             return AlertDialog(
                               title: Text(
-                                'Confirmation',
+                                'Confirm',
                                 style: tsOneTextTheme.headlineLarge,
                               ),
                               content: const Text('Are you sure you want to save this signature?'),
