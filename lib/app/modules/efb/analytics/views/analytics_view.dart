@@ -50,28 +50,46 @@ class AnalyticsView extends GetView<AnalyticsController> {
     final sheet = excel['Main Data'];
 
     // Menentukan judul kolom
-    sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: 1)).value =
+    sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: 2)).value =
         'Crew ID';
-    sheet.cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: 1)).value =
+    sheet.cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: 2)).value =
         'NAME';
-    sheet.cell(CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: 1)).value =
+    sheet.cell(CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: 2)).value =
         'RANK';
-    sheet.cell(CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: 1)).value =
+    sheet.cell(CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: 2)).value =
         'HUB';
-    sheet.cell(CellIndex.indexByColumnRow(columnIndex: 4, rowIndex: 1)).value =
+    sheet.cell(CellIndex.indexByColumnRow(columnIndex: 4, rowIndex: 2)).value =
         'Device 1';
-    sheet.cell(CellIndex.indexByColumnRow(columnIndex: 5, rowIndex: 1)).value =
+    sheet.cell(CellIndex.indexByColumnRow(columnIndex: 5, rowIndex: 2)).value =
         'Device 2';
-    sheet.cell(CellIndex.indexByColumnRow(columnIndex: 6, rowIndex: 1)).value =
+    sheet.cell(CellIndex.indexByColumnRow(columnIndex: 6, rowIndex: 2)).value =
         'Device 3';
-    sheet.cell(CellIndex.indexByColumnRow(columnIndex: 7, rowIndex: 1)).value =
+    sheet.cell(CellIndex.indexByColumnRow(columnIndex: 7, rowIndex: 2)).value =
         'Status';
-
+    final titleCellStyle = CellStyle(
+      backgroundColorHex: '#FFFF00', // Warna latar belakang kuning
+      horizontalAlign: HorizontalAlign.Center,
+      verticalAlign: VerticalAlign.Center,
+    );
     // Merge & center cell untuk judul Device
-    sheet.merge(CellIndex.indexByColumnRow(columnIndex: 4, rowIndex: 0),
+    sheet.merge(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: 0),
         CellIndex.indexByColumnRow(columnIndex: 7, rowIndex: 0));
+    sheet
+        .cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: 0))
+        .cellStyle = titleCellStyle;
+    final deviceTitleCellHeader =
+        sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: 0));
+    deviceTitleCellHeader.value = 'Acknowledgment & Return Process';
+
+    final centerAlignmentHeader = CellStyle(
+      horizontalAlign: HorizontalAlign.Center,
+    );
+    deviceTitleCellHeader.cellStyle = centerAlignmentHeader;
+
+    sheet.merge(CellIndex.indexByColumnRow(columnIndex: 4, rowIndex: 1),
+        CellIndex.indexByColumnRow(columnIndex: 7, rowIndex: 1));
     final deviceTitleCell =
-        sheet.cell(CellIndex.indexByColumnRow(columnIndex: 4, rowIndex: 0));
+        sheet.cell(CellIndex.indexByColumnRow(columnIndex: 4, rowIndex: 1));
     deviceTitleCell.value = 'Device Used';
 
     final centerAlignment = CellStyle(
@@ -89,26 +107,26 @@ class AnalyticsView extends GetView<AnalyticsController> {
       if (userSnapshot.exists) {
         final userData = userSnapshot.data() as Map<String, dynamic>;
         sheet
-            .cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: i + 2))
+            .cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: i + 3))
             .value = userData['ID NO'];
         sheet
-            .cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: i + 2))
+            .cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: i + 3))
             .value = userData['NAME'];
         sheet
-            .cell(CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: i + 2))
+            .cell(CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: i + 3))
             .value = userData['RANK'];
       }
       sheet
-          .cell(CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: i + 2))
+          .cell(CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: i + 3))
           .value = device['field_hub'] ?? '-';
       sheet
-          .cell(CellIndex.indexByColumnRow(columnIndex: 4, rowIndex: i + 2))
+          .cell(CellIndex.indexByColumnRow(columnIndex: 4, rowIndex: i + 3))
           .value = device['device_name'] ?? '-';
       sheet
-          .cell(CellIndex.indexByColumnRow(columnIndex: 5, rowIndex: i + 2))
+          .cell(CellIndex.indexByColumnRow(columnIndex: 5, rowIndex: i + 3))
           .value = device['device_name2'] ?? '-';
       sheet
-          .cell(CellIndex.indexByColumnRow(columnIndex: 6, rowIndex: i + 2))
+          .cell(CellIndex.indexByColumnRow(columnIndex: 6, rowIndex: i + 3))
           .value = device['device_name3'] ?? '-';
 
       String statusDeviceAlias = device['statusDevice'];
@@ -120,7 +138,7 @@ class AnalyticsView extends GetView<AnalyticsController> {
         statusDeviceAlias = 'Not Return';
       }
       sheet
-          .cell(CellIndex.indexByColumnRow(columnIndex: 7, rowIndex: i + 2))
+          .cell(CellIndex.indexByColumnRow(columnIndex: 7, rowIndex: i + 3))
           .value = statusDeviceAlias;
     }
     // Simpan data

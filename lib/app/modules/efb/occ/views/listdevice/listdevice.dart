@@ -282,7 +282,7 @@ class _ListDeviceState extends State<ListDevice> {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.only(top: 0, right: 20, left: 20),
+        padding: const EdgeInsets.only(top: 10, right: 20, left: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -302,7 +302,7 @@ class _ListDeviceState extends State<ListDevice> {
                   ),
                   prefixIcon: Icon(Icons.search),
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
                   ),
                 ),
               ),
