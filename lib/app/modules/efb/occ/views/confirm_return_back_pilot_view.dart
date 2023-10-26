@@ -11,37 +11,30 @@ import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
 import 'package:path/path.dart' as Path;
+import 'package:image/image.dart' as img;
 
 import '../../../../../presentation/theme.dart';
 import '../../../../routes/app_pages.dart';
 
-class ConfirmReturnBackPilotView extends StatefulWidget {
+class ConfirmReturnBackPilotView extends GetView {
   final String dataId;
-  final GlobalKey<SfSignaturePadState> _signaturePadKey =
-      GlobalKey<SfSignaturePadState>();
-  Uint8List? signatureImage;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  bool isImageUploading = false;
+  bool agree = false;
 
   ConfirmReturnBackPilotView({Key? key, required this.dataId})
       : super(key: key);
 
-  @override
-  _ConfirmReturnBackPilotViewState createState() =>
-      _ConfirmReturnBackPilotViewState();
-}
-
-class _ConfirmReturnBackPilotViewState
-    extends State<ConfirmReturnBackPilotView> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  bool isImageUploading = false;
-
-  bool agree = false;
-  var isChecked = false.obs;
+  //GlobalKey<SfSignaturePadState> signatureKey = GlobalKey();
+  final GlobalKey<SfSignaturePadState> signatureKey =
+      GlobalKey<SfSignaturePadState>();
+  Uint8List? signatureImage;
 
   String getMonthText(int month) {
     const List<String> months = [
-      'Januar7',
-      'Februar7',
+      'January',
+      'February',
       'March',
       'April',
       'May',
@@ -67,21 +60,31 @@ class _ConfirmReturnBackPilotViewState
     return formattedDateTime;
   }
 
-  GlobalKey<SfSignaturePadState> signatureKey = GlobalKey();
-
   Future<void> _uploadImageAndShowDialog(
       XFile pickedFile, BuildContext context) async {
-    final ByteData byteData = await pickedFile
-        .readAsBytes()
-        .then((value) => ByteData.sublistView(Uint8List.fromList(value)));
+    final Uint8List imageBytes = await pickedFile.readAsBytes();
 
-    final Reference storageReference = FirebaseStorage.instance
-        .ref()
-        .child('camera_images/${Path.basename(widget.dataId)}.png');
+    // Load the image using the image package
+    img.Image? originalImage = img.decodeImage(imageBytes);
+
+    // Define maximum dimensions
+    int maxWidth = 1024;
+    int maxHeight = 1024;
+
+    // Resize the image while maintaining its aspect ratio
+    img.Image resizedImage =
+        img.copyResize(originalImage!, width: maxWidth, height: maxHeight);
+
+    // Encode the resized image to Uint8List with JPEG format and adjustable quality
+    Uint8List compressedImageBytes =
+        img.encodeJpg(resizedImage, quality: 75); // Adjust quality as needed
+
+    final Reference storageReference = FirebaseStorage.instance.ref().child(
+        'camera_images/${Path.basename(dataId)} at ${DateTime.now()}.jpg');
 
     try {
-      // Upload the image
-      await storageReference.putData(byteData.buffer.asUint8List());
+      // Upload the compressed image
+      await storageReference.putData(compressedImageBytes);
 
       // Get the download URL after upload completes
       String cameraImageUrl = await storageReference.getDownloadURL();
@@ -150,7 +153,7 @@ class _ConfirmReturnBackPilotViewState
     await QuickAlert.show(
       context: context,
       type: QuickAlertType.success,
-      text: 'Your data has been saved. Thank You',
+      text: 'Your data has been saved! Thank You',
     ).then((value) {
       Get.offAllNamed(Routes.NAVOCC);
     });
@@ -174,16 +177,15 @@ class _ConfirmReturnBackPilotViewState
 
       final Reference storageReference = FirebaseStorage.instance
           .ref()
-          .child('signatures/${Path.basename(widget.dataId)}.png');
+          .child('signatures/${Path.basename(dataId)}.png');
 
       final UploadTask uploadTask = storageReference.putData(uint8List!);
 
       await uploadTask.whenComplete(() async {
         String signatureURL = await storageReference.getDownloadURL();
 
-        DocumentReference pilotDeviceRef = FirebaseFirestore.instance
-            .collection("pilot-device-1")
-            .doc(widget.dataId);
+        DocumentReference pilotDeviceRef =
+            FirebaseFirestore.instance.collection("pilot-device-1").doc(dataId);
 
         try {
           await pilotDeviceRef.update({
@@ -194,13 +196,18 @@ class _ConfirmReturnBackPilotViewState
           });
 
           print('Data updated successfully!');
+          Navigator.of(context).pop(); // Close the dialog
+          Navigator.of(context).pop();
 
           showDialog(
             context: context,
             barrierDismissible: false,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: Text('Confirmation'),
+                title: Text(
+                  'Confirmation',
+                  style: tsOneTextTheme.headlineLarge,
+                ),
                 content: SingleChildScrollView(
                   child: ListBody(
                     children: <Widget>[
@@ -212,7 +219,7 @@ class _ConfirmReturnBackPilotViewState
                   TextButton(
                     child: Text('OK'),
                     onPressed: () {
-                      Navigator.of(context).pop();
+                      Navigator.of(context).pop(); // Close the dialog
                     },
                   ),
                 ],
@@ -241,7 +248,7 @@ class _ConfirmReturnBackPilotViewState
         child: FutureBuilder<DocumentSnapshot>(
           future: FirebaseFirestore.instance
               .collection("pilot-device-1")
-              .doc(widget.dataId)
+              .doc(dataId)
               .get(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
@@ -361,11 +368,21 @@ class _ConfirmReturnBackPilotViewState
                                   children: [
                                     Container(
                                       margin: EdgeInsets.symmetric(
-                                          horizontal: 20, vertical: 20),
+                                          horizontal: 20, vertical: 10),
                                       child: Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
                                         children: [
+                                          // SizedBox(height: 10.0),
+                                          // Align(
+                                          //   alignment: Alignment.centerLeft,
+                                          //   child: Text(
+                                          //     "CREW INFO",
+                                          //     style: tsOneTextTheme.titleLarge,
+                                          //   ),
+                                          // ),
+                                          // SizedBox(height: 5.0),
+                                          SizedBox(height: 10.0),
                                           Align(
                                             alignment: Alignment.centerRight,
                                             child: Text(
@@ -374,18 +391,30 @@ class _ConfirmReturnBackPilotViewState
                                                 style:
                                                     tsOneTextTheme.labelSmall),
                                           ),
-                                          SizedBox(height: 15.0),
+                                          SizedBox(height: 10.0),
                                           Row(
                                             children: [
                                               Expanded(
                                                   flex: 6,
-                                                  child: Text("ID NO")),
+                                                  child: Text(
+                                                    "ID NO",
+                                                    style: tsOneTextTheme
+                                                        .bodySmall,
+                                                  )),
                                               Expanded(
-                                                  flex: 1, child: Text(":")),
+                                                  flex: 1,
+                                                  child: Text(
+                                                    ":",
+                                                    style: tsOneTextTheme
+                                                        .bodySmall,
+                                                  )),
                                               Expanded(
                                                 flex: 6,
                                                 child: Text(
-                                                    '${userData['ID NO'] ?? 'No Data'}'),
+                                                  '${userData['ID NO'] ?? 'No Data'}',
+                                                  style:
+                                                      tsOneTextTheme.bodySmall,
+                                                ),
                                               ),
                                             ],
                                           ),
@@ -393,13 +422,26 @@ class _ConfirmReturnBackPilotViewState
                                           Row(
                                             children: [
                                               Expanded(
-                                                  flex: 6, child: Text("Name")),
+                                                  flex: 6,
+                                                  child: Text(
+                                                    "Name",
+                                                    style: tsOneTextTheme
+                                                        .bodySmall,
+                                                  )),
                                               Expanded(
-                                                  flex: 1, child: Text(":")),
+                                                  flex: 1,
+                                                  child: Text(
+                                                    ":",
+                                                    style: tsOneTextTheme
+                                                        .bodySmall,
+                                                  )),
                                               Expanded(
                                                 flex: 6,
                                                 child: Text(
-                                                    '${userData['NAME'] ?? 'No Data'}'),
+                                                  '${userData['NAME'] ?? 'No Data'}',
+                                                  style:
+                                                      tsOneTextTheme.bodySmall,
+                                                ),
                                               ),
                                             ],
                                           ),
@@ -407,19 +449,44 @@ class _ConfirmReturnBackPilotViewState
                                           Row(
                                             children: [
                                               Expanded(
-                                                  flex: 6, child: Text("Rank")),
+                                                  flex: 6,
+                                                  child: Text(
+                                                    "Rank",
+                                                    style: tsOneTextTheme
+                                                        .bodySmall,
+                                                  )),
                                               Expanded(
-                                                  flex: 1, child: Text(":")),
+                                                  flex: 1,
+                                                  child: Text(
+                                                    ":",
+                                                    style: tsOneTextTheme
+                                                        .bodySmall,
+                                                  )),
                                               Expanded(
                                                 flex: 6,
                                                 child: Text(
-                                                    '${userData['RANK'] ?? 'No Data'}'),
+                                                  '${userData['RANK'] ?? 'No Data'}',
+                                                  style:
+                                                      tsOneTextTheme.bodySmall,
+                                                ),
                                               ),
                                             ],
                                           ),
-                                          SizedBox(
-                                            height: 15,
-                                          ),
+                                          // Padding(
+                                          //   padding: EdgeInsets.symmetric(vertical: 20),
+                                          //   child: Divider(
+                                          //     color: TsOneColor.secondaryContainer,
+                                          //   ),
+                                          // ),
+                                          // Align(
+                                          //   alignment: Alignment.centerLeft,
+                                          //   child: Text(
+                                          //     "DEVICE INFO 1",
+                                          //     style: tsOneTextTheme.titleLarge,
+                                          //   ),
+                                          // ),
+                                          // SizedBox(height: 5.0),
+                                          const SizedBox(height: 16),
                                           const Padding(
                                             padding:
                                                 EdgeInsets.only(bottom: 16.0),
@@ -447,20 +514,21 @@ class _ConfirmReturnBackPilotViewState
                                               ],
                                             ),
                                           ),
-
                                           Align(
                                             alignment: Alignment.centerLeft,
-                                            child: Text("Device 2",
-                                                style: tsOneTextTheme
-                                                    .displaySmall),
+                                            child: Text(
+                                              "Device 2",
+                                              style:
+                                                  tsOneTextTheme.headlineMedium,
+                                            ),
                                           ),
-                                          SizedBox(height: 7.0),
+                                          SizedBox(height: 5.0),
                                           Row(
                                             children: [
                                               Expanded(
                                                   flex: 6,
                                                   child: Text(
-                                                    "Device No",
+                                                    "Device ID",
                                                     style: tsOneTextTheme
                                                         .bodySmall,
                                                   )),
@@ -487,7 +555,7 @@ class _ConfirmReturnBackPilotViewState
                                               Expanded(
                                                   flex: 6,
                                                   child: Text(
-                                                    "IOS Version",
+                                                    "iOS Version",
                                                     style: tsOneTextTheme
                                                         .bodySmall,
                                                   )),
@@ -541,7 +609,7 @@ class _ConfirmReturnBackPilotViewState
                                               Expanded(
                                                   flex: 6,
                                                   child: Text(
-                                                    "Docunet Version",
+                                                    "Docu Version",
                                                     style: tsOneTextTheme
                                                         .bodySmall,
                                                   )),
@@ -568,7 +636,7 @@ class _ConfirmReturnBackPilotViewState
                                               Expanded(
                                                   flex: 6,
                                                   child: Text(
-                                                    "Lido mPilot Version",
+                                                    "Lido Version",
                                                     style: tsOneTextTheme
                                                         .bodySmall,
                                                   )),
@@ -645,20 +713,29 @@ class _ConfirmReturnBackPilotViewState
                                           ),
 
                                           //DEVICE INFO 2
-                                          SizedBox(height: 15.0),
+                                          SizedBox(height: 10.0),
+                                          // Align(
+                                          //   alignment: Alignment.centerLeft,
+                                          //   child: Text(
+                                          //     "DEVICE INFO 2",
+                                          //     style: tsOneTextTheme.titleLarge,
+                                          //   ),
+                                          // ),
                                           Align(
                                             alignment: Alignment.centerLeft,
-                                            child: Text("Device 3",
-                                                style: tsOneTextTheme
-                                                    .displaySmall),
+                                            child: Text(
+                                              "Device 3",
+                                              style:
+                                                  tsOneTextTheme.headlineMedium,
+                                            ),
                                           ),
-                                          SizedBox(height: 7.0),
+                                          SizedBox(height: 5.0),
                                           Row(
                                             children: [
                                               Expanded(
                                                   flex: 6,
                                                   child: Text(
-                                                    "Device No",
+                                                    "Device ID",
                                                     style: tsOneTextTheme
                                                         .bodySmall,
                                                   )),
@@ -685,7 +762,7 @@ class _ConfirmReturnBackPilotViewState
                                               Expanded(
                                                   flex: 6,
                                                   child: Text(
-                                                    "IOS Version",
+                                                    "iOS Version",
                                                     style: tsOneTextTheme
                                                         .bodySmall,
                                                   )),
@@ -739,7 +816,7 @@ class _ConfirmReturnBackPilotViewState
                                               Expanded(
                                                   flex: 6,
                                                   child: Text(
-                                                    "Docunet Version",
+                                                    "Docu Version",
                                                     style: tsOneTextTheme
                                                         .bodySmall,
                                                   )),
@@ -766,7 +843,7 @@ class _ConfirmReturnBackPilotViewState
                                               Expanded(
                                                   flex: 6,
                                                   child: Text(
-                                                    "Lido mPilot Version",
+                                                    "Lido Version",
                                                     style: tsOneTextTheme
                                                         .bodySmall,
                                                   )),
@@ -841,36 +918,54 @@ class _ConfirmReturnBackPilotViewState
                                             ],
                                           ),
 
+                                          // Padding(
+                                          //   padding: EdgeInsets.symmetric(vertical: 20),
+                                          //   child: Divider(
+                                          //     color: TsOneColor.secondaryContainer,
+                                          //   ),
+                                          // ),
+                                          // Text(
+                                          //   "SIGNATURE",
+                                          //   style: tsOneTextTheme.headlineLarge,
+                                          // ),
+
+                                          // Text(
+                                          //   'Please sign in the section provided.',
+                                          //   style: TextStyle(
+                                          //     color: Colors.red, // Mengatur warna teks menjadi merah
+                                          //     fontStyle: FontStyle.italic, // Mengatur teks menjadi italic
+                                          //   ),
+                                          // ),
+
+                                          // SizedBox(height: 7.0),
                                           SizedBox(height: 20.0),
                                           const Padding(
                                             padding:
-                                                EdgeInsets.only(bottom: 20.0),
+                                                EdgeInsets.only(bottom: 16.0),
                                             child: Row(
                                               children: <Widget>[
                                                 Expanded(
                                                   child: Divider(
-                                                    color: TsOneColor.primary,
+                                                    color: Colors.grey,
                                                   ),
                                                 ),
                                                 Padding(
                                                   padding: EdgeInsets.symmetric(
                                                       horizontal: 8.0),
                                                   child: Text(
-                                                    'Please sign in the section provided.',
+                                                    'Please sign in the provided section',
                                                     style: TextStyle(
-                                                        color:
-                                                            TsOneColor.primary),
+                                                        color: Colors.grey),
                                                   ),
                                                 ),
                                                 Expanded(
                                                   child: Divider(
-                                                    color: TsOneColor.primary,
+                                                    color: Colors.grey,
                                                   ),
                                                 ),
                                               ],
                                             ),
                                           ),
-
                                           Align(
                                             alignment: Alignment.center,
                                             child: Text(
@@ -879,9 +974,8 @@ class _ConfirmReturnBackPilotViewState
                                                   tsOneTextTheme.headlineMedium,
                                             ),
                                           ),
-                                          const SizedBox(
-                                            height: 15,
-                                          ),
+                                          SizedBox(height: 15.0),
+
                                           ConstrainedBox(
                                             constraints: BoxConstraints(
                                               minHeight: 40,
@@ -938,8 +1032,7 @@ class _ConfirmReturnBackPilotViewState
                                                   backgroundColor: Colors.white,
                                                   onDrawEnd: () async {
                                                     final signatureImageData =
-                                                        await widget
-                                                            ._signaturePadKey
+                                                        await signatureKey
                                                             .currentState!
                                                             .toImage();
                                                     final byteData =
@@ -948,6 +1041,11 @@ class _ConfirmReturnBackPilotViewState
                                                                 format:
                                                                     ImageByteFormat
                                                                         .png);
+                                                    // if (byteData != null) {
+                                                    //   setState(() {
+                                                    //     widget.signatureImage = byteData.buffer.asUint8List();
+                                                    //   });
+                                                    // }
                                                   },
                                                 ),
                                               ),
@@ -968,250 +1066,28 @@ class _ConfirmReturnBackPilotViewState
                                               ),
                                             ],
                                           ),
-                                          SizedBox(height: 10),
-                                          Column(
+                                          SizedBox(
+                                            height: 15,
+                                          ),
+                                          Row(
                                             children: [
-                                              Row(
-                                                children: [
-                                                  Obx(() {
-                                                    return Checkbox(
-                                                      value: isChecked.value,
-                                                      onChanged: (value) {
-                                                        isChecked.value =
-                                                            value!;
-                                                      },
-                                                    );
-                                                  }),
-                                                  Text(
-                                                      'I agree with all of the results',
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w300)),
-                                                ],
+                                              StatefulBuilder(
+                                                builder: (context, setState) {
+                                                  return Checkbox(
+                                                    value: agree,
+                                                    onChanged: (value) {
+                                                      setState(() {
+                                                        agree = value!;
+                                                      });
+                                                    },
+                                                  );
+                                                },
                                               ),
-                                              SizedBox(height: 15),
-                                              ElevatedButton(
-                                                  onPressed: () async {
-                                                    final signatureData =
-                                                        await signatureKey
-                                                            .currentState!
-                                                            .toImage();
-                                                    if (!isChecked.value) {
-                                                      ScaffoldMessenger.of(
-                                                              context)
-                                                          .showSnackBar(
-                                                        SnackBar(
-                                                          content: const Text(
-                                                              "Please checklist consent"),
-                                                          duration:
-                                                              const Duration(
-                                                                  milliseconds:
-                                                                      1000),
-                                                          action:
-                                                              SnackBarAction(
-                                                            label: 'Close',
-                                                            onPressed: () {
-                                                              ScaffoldMessenger
-                                                                      .of(context)
-                                                                  .hideCurrentSnackBar();
-                                                            },
-                                                          ),
-                                                        ),
-                                                      );
-                                                    } else if (widget
-                                                            ._signaturePadKey
-                                                            .currentState
-                                                            ?.clear !=
-                                                        null) {
-                                                      //widget._signaturePadKey.currentState!.clear();
-                                                      ScaffoldMessenger.of(
-                                                              context)
-                                                          .showSnackBar(
-                                                        SnackBar(
-                                                          content: const Text(
-                                                              "Please provide signature"),
-                                                          duration:
-                                                              const Duration(
-                                                                  milliseconds:
-                                                                      1000),
-                                                          action:
-                                                              SnackBarAction(
-                                                            label: 'Close',
-                                                            onPressed: () {
-                                                              ScaffoldMessenger
-                                                                      .of(context)
-                                                                  .hideCurrentSnackBar();
-                                                            },
-                                                          ),
-                                                        ),
-                                                      );
-                                                    } else {
-                                                      final ImagePicker
-                                                          _picker =
-                                                          ImagePicker();
-                                                      XFile? pickedFile =
-                                                          await _picker.pickImage(
-                                                              source:
-                                                                  ImageSource
-                                                                      .camera);
-
-                                                      if (pickedFile != null) {
-                                                        showDialog(
-                                                          context: context,
-                                                          barrierDismissible:
-                                                              false,
-                                                          builder: (BuildContext
-                                                              context) {
-                                                            return FutureBuilder<
-                                                                void>(
-                                                              future:
-                                                                  _uploadImageAndShowDialog(
-                                                                      pickedFile,
-                                                                      context),
-                                                              builder: (context,
-                                                                  snapshot) {
-                                                                if (snapshot
-                                                                        .connectionState ==
-                                                                    ConnectionState
-                                                                        .waiting) {
-                                                                  return AlertDialog(
-                                                                    content:
-                                                                        Column(
-                                                                      mainAxisSize:
-                                                                          MainAxisSize
-                                                                              .min,
-                                                                      children: [
-                                                                        CircularProgressIndicator(),
-                                                                        SizedBox(
-                                                                            height:
-                                                                                10.0),
-                                                                        Text(
-                                                                            "This might take a second..."),
-                                                                      ],
-                                                                    ),
-                                                                  );
-                                                                } else {
-                                                                  return Container();
-                                                                }
-                                                              },
-                                                            );
-                                                          },
-                                                        );
-                                                      } else {
-                                                        print(
-                                                            'No image selected');
-                                                      }
-                                                    }
-
-                                                    // else if (signatureData != null && agree) {
-                                                    //   showDialog(
-                                                    //     context: context,
-                                                    //     builder: (context) {
-                                                    //       return AlertDialog(
-                                                    //         title: Text(
-                                                    //           'Confirm',
-                                                    //           style: tsOneTextTheme.headlineLarge,
-                                                    //         ),
-                                                    //         content: const Text('Are you sure you want to save this signature?'),
-                                                    //         actions: [
-                                                    //           Row(
-                                                    //             children: [
-                                                    //               Expanded(
-                                                    //                 flex: 5,
-                                                    //                 child: TextButton(
-                                                    //                   child: Text('No', style: TextStyle(color: TsOneColor.secondaryContainer)),
-                                                    //                   onPressed: () {
-                                                    //                     Navigator.of(context).pop();
-                                                    //                   },
-                                                    //                 ),
-                                                    //               ),
-                                                    //               Spacer(flex: 1),
-                                                    //               Expanded(
-                                                    //                 flex: 5,
-                                                    //                 child: ElevatedButton(
-                                                    //                   onPressed: () {
-                                                    //                     try {
-                                                    //                       final newDocumentId = addToPilotDeviceCollection(
-                                                    //                         signatureData,
-                                                    //                         widget.deviceId,
-                                                    //                       );
-                                                    //                     } catch (error) {
-                                                    //                       showDialog(
-                                                    //                         context: context,
-                                                    //                         builder: (context) {
-                                                    //                           return AlertDialog(
-                                                    //                             title: const Text('Error'),
-                                                    //                             content: const Text('An error occurred while saving the signature.'),
-                                                    //                             actions: [
-                                                    //                               ElevatedButton(
-                                                    //                                 onPressed: () {
-                                                    //                                   Navigator.pop(context);
-                                                    //                                 },
-                                                    //                                 child: const Text('OK'),
-                                                    //                               ),
-                                                    //                             ],
-                                                    //                           );
-                                                    //                         },
-                                                    //                       );
-                                                    //                     }
-                                                    //                     _showQuickAlert(context);
-                                                    //                   },
-                                                    //                   child: const Text('Yes', style: TextStyle(color: TsOneColor.onPrimary)),
-                                                    //                   style: ElevatedButton.styleFrom(
-                                                    //                     backgroundColor: TsOneColor.greenColor,
-                                                    //                     shape: RoundedRectangleBorder(
-                                                    //                       borderRadius: BorderRadius.circular(20.0),
-                                                    //                     ),
-                                                    //                   ),
-                                                    //                 ),
-                                                    //               ),
-                                                    //             ],
-                                                    //           ),
-                                                    //         ],
-                                                    //       );
-                                                    //     },
-                                                    //   );
-                                                    // }
-                                                  },
-                                                  style:
-                                                      ElevatedButton.styleFrom(
-                                                          backgroundColor:
-                                                              TsOneColor
-                                                                  .greenColor,
-                                                          minimumSize:
-                                                              const Size(
-                                                                  double
-                                                                      .infinity,
-                                                                  50),
-                                                          shape:
-                                                              RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        4),
-                                                          )),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Icon(
-                                                        Icons
-                                                            .camera_alt_outlined,
-                                                        size: 24,
-                                                        color: Colors.white,
-                                                      ),
-                                                      SizedBox(width: 10),
-                                                      Text(
-                                                          'Take a picture for approval',
-                                                          style: TextStyle(
-                                                              color: Colors
-                                                                  .white)),
-                                                    ],
-                                                  )),
+                                              Text(
+                                                  'I agree with all of the results',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w300)),
                                             ],
                                           ),
 
@@ -1249,48 +1125,124 @@ class _ConfirmReturnBackPilotViewState
                                           //   ],
                                           // ),
 
-                                          SizedBox(height: 15.0),
-                                          // ElevatedButton(
-                                          //   onPressed: () async {
-                                          //     final ImagePicker _picker = ImagePicker();
-                                          //     XFile? pickedFile = await _picker.pickImage(source: ImageSource.camera);
-                                          //
-                                          //     if (pickedFile != null) {
-                                          //       showDialog(
-                                          //         context: context,
-                                          //         barrierDismissible: false,
-                                          //         builder: (BuildContext context) {
-                                          //           return FutureBuilder<void>(
-                                          //             future: _uploadImageAndShowDialog(pickedFile, context),
-                                          //             builder: (context, snapshot) {
-                                          //               if (snapshot.connectionState == ConnectionState.waiting) {
-                                          //                 return AlertDialog(
-                                          //                   content: Column(
-                                          //                     mainAxisSize: MainAxisSize.min,
-                                          //                     children: [
-                                          //                       CircularProgressIndicator(),
-                                          //                       SizedBox(height: 10.0),
-                                          //                       Text("This might take a second..."),
-                                          //                     ],
-                                          //                   ),
-                                          //                 );
-                                          //               } else {
-                                          //                 return Container(); // Placeholder, you can customize this based on your requirements
-                                          //               }
-                                          //             },
-                                          //           );
-                                          //         },
-                                          //       );
-                                          //     } else {
-                                          //       print('No image selected.');
-                                          //     }
-                                          //   },
-                                          //   style: ElevatedButton.styleFrom(
-                                          //     backgroundColor: TsOneColor.greenColor,
-                                          //     minimumSize: const Size(double.infinity, 50),
-                                          //   ),
-                                          //   child: const Text('Take Picture To Approve', style: TextStyle(color: Colors.white)),
-                                          // ),
+                                          SizedBox(height: 20.0),
+                                          ElevatedButton(
+                                            onPressed: () async {
+                                              // final ImagePicker _picker = ImagePicker();
+                                              // XFile? pickedFile = await _picker.pickImage(source: ImageSource.camera);
+                                              final signatureData =
+                                                  await signatureKey
+                                                      .currentState!
+                                                      .toImage();
+
+                                              if (!agree) {
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                  SnackBar(
+                                                    content: const Text(
+                                                        "Please checklist consent"),
+                                                    duration: const Duration(
+                                                        milliseconds: 1000),
+                                                    action: SnackBarAction(
+                                                      label: 'Close',
+                                                      onPressed: () {
+                                                        ScaffoldMessenger.of(
+                                                                context)
+                                                            .hideCurrentSnackBar();
+                                                      },
+                                                    ),
+                                                  ),
+                                                );
+                                              } else if (signatureKey
+                                                          .currentState
+                                                          ?.clear ==
+                                                      null ||
+                                                  signatureData == null) {
+                                                //widget._signaturePadKey.currentState!.clear();
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                  SnackBar(
+                                                    content: const Text(
+                                                        "Please provide signature"),
+                                                    duration: const Duration(
+                                                        milliseconds: 1000),
+                                                    action: SnackBarAction(
+                                                      label: 'Close',
+                                                      onPressed: () {
+                                                        ScaffoldMessenger.of(
+                                                                context)
+                                                            .hideCurrentSnackBar();
+                                                      },
+                                                    ),
+                                                  ),
+                                                );
+                                              } else {
+                                                final ImagePicker _picker =
+                                                    ImagePicker();
+                                                XFile? pickedFile =
+                                                    await _picker.pickImage(
+                                                        source:
+                                                            ImageSource.camera);
+                                                if (pickedFile != null) {
+                                                  showDialog(
+                                                    context: context,
+                                                    barrierDismissible: false,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return FutureBuilder<
+                                                          void>(
+                                                        future:
+                                                            _uploadImageAndShowDialog(
+                                                                pickedFile,
+                                                                context),
+                                                        builder: (context,
+                                                            snapshot) {
+                                                          if (snapshot
+                                                                  .connectionState ==
+                                                              ConnectionState
+                                                                  .waiting) {
+                                                            return AlertDialog(
+                                                              content: Column(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .min,
+                                                                children: [
+                                                                  CircularProgressIndicator(),
+                                                                  SizedBox(
+                                                                      height:
+                                                                          10.0),
+                                                                  Text(
+                                                                      "This might take a second..."),
+                                                                ],
+                                                              ),
+                                                            );
+                                                          } else {
+                                                            return Container(); // Placeholder, you can customize this based on your requirements
+                                                          }
+                                                        },
+                                                      );
+                                                    },
+                                                  );
+                                                } else {
+                                                  print('No image selected.');
+                                                }
+                                              }
+                                            },
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor:
+                                                  TsOneColor.greenColor,
+                                              minimumSize: const Size(
+                                                  double.infinity, 50),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(4),
+                                              ),
+                                            ),
+                                            child: const Text(
+                                                'Take Picture To Approve',
+                                                style: TextStyle(
+                                                    color: Colors.white)),
+                                          ),
                                         ],
                                       ),
                                     ),
@@ -1313,321 +1265,519 @@ class _ConfirmReturnBackPilotViewState
                           Container(
                             margin: EdgeInsets.symmetric(
                                 horizontal: 20, vertical: 10),
-                            child: Padding(
-                              padding: EdgeInsets.all(10),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(height: 5),
-                                  Text(
-                                    "CREW INFO",
-                                    style: tsOneTextTheme.headlineLarge,
-                                  ),
-                                  SizedBox(height: 7.0),
-                                  Row(
-                                    children: [
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // SizedBox(height: 5),
+                                // Text(
+                                //   "CREW INFO",
+                                //   style: tsOneTextTheme.headlineLarge,
+                                // ),
+                                // SizedBox(height: 7.0),
+                                SizedBox(height: 10.0),
+                                Align(
+                                  alignment: Alignment.centerRight,
+                                  child: Text(
+                                      _formatTimestamp(data['timestamp']),
+                                      style: tsOneTextTheme.labelSmall),
+                                ),
+                                SizedBox(height: 10.0),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                          "ID NO",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        flex: 1,
+                                        child: Text(
+                                          ":",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                          '${userData['ID NO'] ?? 'No Data'}',
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                  ],
+                                ),
+                                SizedBox(height: 5.0),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                          "Name",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        flex: 1,
+                                        child: Text(
+                                          ":",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                          '${userData['NAME'] ?? 'No Data'}',
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                  ],
+                                ),
+                                SizedBox(height: 5.0),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                          "Rank",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        flex: 1,
+                                        child: Text(
+                                          ":",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                          '${userData['RANK'] ?? 'No Data'}',
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                  ],
+                                ),
+                                const SizedBox(height: 16),
+                                const Padding(
+                                  padding: EdgeInsets.only(bottom: 16.0),
+                                  child: Row(
+                                    children: <Widget>[
                                       Expanded(
-                                          flex: 6,
-                                          child: Text(
-                                            "ID NO",
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                      Expanded(
-                                          flex: 1,
-                                          child: Text(
-                                            ":",
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                      Expanded(
-                                          flex: 6,
-                                          child: Text(
-                                            '${userData['ID NO'] ?? 'No Data'}',
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                    ],
-                                  ),
-                                  SizedBox(height: 5.0),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                          flex: 6,
-                                          child: Text(
-                                            "Name",
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                      Expanded(
-                                          flex: 1,
-                                          child: Text(
-                                            ":",
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                      Expanded(
-                                          flex: 6,
-                                          child: Text(
-                                            '${userData['NAME'] ?? 'No Data'}',
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                    ],
-                                  ),
-                                  SizedBox(height: 5.0),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                          flex: 6,
-                                          child: Text(
-                                            "Rank",
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                      Expanded(
-                                          flex: 1,
-                                          child: Text(
-                                            ":",
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                      Expanded(
-                                          flex: 6,
-                                          child: Text(
-                                            '${userData['RANK'] ?? 'No Data'}',
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                    ],
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(vertical: 20),
-                                    child: Divider(
-                                      color: TsOneColor.secondaryContainer,
-                                    ),
-                                  ),
-                                  Text(
-                                    "DEVICE INFO",
-                                    style: tsOneTextTheme.headlineLarge,
-                                  ),
-                                  SizedBox(height: 5.0),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                          flex: 6,
-                                          child: Text(
-                                            "Device No",
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                      Expanded(
-                                          flex: 1,
-                                          child: Text(
-                                            ":",
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                      Expanded(
-                                          flex: 6,
-                                          child: Text(
-                                            '${data['device_name'] ?? 'No Data'}',
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                    ],
-                                  ),
-                                  SizedBox(height: 5.0),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                          flex: 6,
-                                          child: Text(
-                                            "IOS Version",
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                      Expanded(
-                                          flex: 1,
-                                          child: Text(
-                                            ":",
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                      Expanded(
-                                          flex: 6,
-                                          child: Text(
-                                            '${deviceData['iosver'] ?? 'No Data'}',
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                    ],
-                                  ),
-                                  SizedBox(height: 5.0),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                          flex: 6,
-                                          child: Text(
-                                            "FlySmart Version",
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                      Expanded(
-                                          flex: 1,
-                                          child: Text(
-                                            ":",
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                      Expanded(
-                                          flex: 6,
-                                          child: Text(
-                                            '${deviceData['flysmart'] ?? 'No Data'}',
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                    ],
-                                  ),
-                                  SizedBox(height: 5.0),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                          flex: 6,
-                                          child: Text(
-                                            "Docunet Version",
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                      Expanded(
-                                          flex: 1,
-                                          child: Text(
-                                            ":",
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                      Expanded(
-                                          flex: 6,
-                                          child: Text(
-                                            '${deviceData['docuversion'] ?? 'No Data'}',
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                    ],
-                                  ),
-                                  SizedBox(height: 5.0),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                          flex: 6,
-                                          child: Text(
-                                            "Lido mPilot Version",
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                      Expanded(
-                                          flex: 1,
-                                          child: Text(
-                                            ":",
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                      Expanded(
-                                          flex: 6,
-                                          child: Text(
-                                            '${deviceData['lidoversion'] ?? 'No Data'}',
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                    ],
-                                  ),
-                                  SizedBox(height: 5.0),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                          flex: 6,
-                                          child: Text(
-                                            "HUB",
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                      Expanded(
-                                          flex: 1,
-                                          child: Text(
-                                            ":",
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                      Expanded(
-                                          flex: 6,
-                                          child: Text(
-                                            '${deviceData['hub'] ?? 'No Data'}',
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                    ],
-                                  ),
-                                  SizedBox(height: 5.0),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                          flex: 6,
-                                          child: Text(
-                                            "Condition",
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                      Expanded(
-                                          flex: 1,
-                                          child: Text(
-                                            ":",
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                      Expanded(
-                                          flex: 6,
-                                          child: Text(
-                                            '${deviceData['condition'] ?? 'No Data'}',
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                    ],
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(vertical: 20),
-                                    child: Divider(
-                                      color: TsOneColor.secondaryContainer,
-                                    ),
-                                  ),
-                                  Text(
-                                    "SIGNATURE",
-                                    style: tsOneTextTheme.headlineLarge,
-                                  ),
-                                  Text(
-                                    'Please sign in the section provided.',
-                                    style: TextStyle(
-                                      color: Colors
-                                          .red, // Mengatur warna teks menjadi merah
-                                      fontStyle: FontStyle
-                                          .italic, // Mengatur teks menjadi italic
-                                    ),
-                                  ),
-                                  SizedBox(height: 7.0),
-                                  Column(
-                                    children: [
-                                      Container(
-                                        width: double.infinity,
-                                        height: 400.0,
-                                        decoration: BoxDecoration(
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color:
-                                                  Colors.grey.withOpacity(0.3),
-                                              spreadRadius: 5,
-                                              blurRadius: 7,
-                                              offset: Offset(0, 3),
-                                            ),
-                                          ],
-                                        ),
-                                        child: SfSignaturePad(
-                                          key: signatureKey,
-                                          backgroundColor: Colors.white,
+                                        child: Divider(
+                                          color: Colors.grey,
                                         ),
                                       ),
-                                      SizedBox(height: 10.0),
-                                      ElevatedButton(
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 8.0),
+                                        child: Text(
+                                          'Device Details',
+                                          style: TextStyle(color: Colors.grey),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Divider(
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Text(
+                                  "Device 1",
+                                  style: tsOneTextTheme.headlineMedium,
+                                ),
+                                SizedBox(height: 5.0),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                          "Device ID",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        flex: 1,
+                                        child: Text(
+                                          ":",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                          '${data['device_name'] ?? 'No Data'}',
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                  ],
+                                ),
+                                SizedBox(height: 5.0),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                          "iOS Version",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        flex: 1,
+                                        child: Text(
+                                          ":",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                          '${deviceData['iosver'] ?? 'No Data'}',
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                  ],
+                                ),
+                                SizedBox(height: 5.0),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                          "FlySmart Version",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        flex: 1,
+                                        child: Text(
+                                          ":",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                          '${deviceData['flysmart'] ?? 'No Data'}',
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                  ],
+                                ),
+                                SizedBox(height: 5.0),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                          "Docu Version",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        flex: 1,
+                                        child: Text(
+                                          ":",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                          '${deviceData['docuversion'] ?? 'No Data'}',
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                  ],
+                                ),
+                                SizedBox(height: 5.0),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                          "Lido Version",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        flex: 1,
+                                        child: Text(
+                                          ":",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                          '${deviceData['lidoversion'] ?? 'No Data'}',
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                  ],
+                                ),
+                                SizedBox(height: 5.0),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                          "HUB",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        flex: 1,
+                                        child: Text(
+                                          ":",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                          '${deviceData['hub'] ?? 'No Data'}',
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                  ],
+                                ),
+                                SizedBox(height: 5.0),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                          "Condition",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        flex: 1,
+                                        child: Text(
+                                          ":",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                          '${deviceData['condition'] ?? 'No Data'}',
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                  ],
+                                ),
+                                // Padding(
+                                //   padding: EdgeInsets.symmetric(vertical: 20),
+                                //   child: Divider(
+                                //     color: TsOneColor.secondaryContainer,
+                                //   ),
+                                // ),
+                                // Text(
+                                //   "SIGNATURE",
+                                //   style: tsOneTextTheme.headlineLarge,
+                                // ),
+                                // Text(
+                                //   'Please sign in the section provided.',
+                                //   style: TextStyle(
+                                //     color: Colors.red, // Mengatur warna teks menjadi merah
+                                //     fontStyle: FontStyle.italic, // Mengatur teks menjadi italic
+                                //   ),
+                                // ),
+                                // SizedBox(height: 7.0),
+                                SizedBox(height: 20.0),
+                                const Padding(
+                                  padding: EdgeInsets.only(bottom: 16.0),
+                                  child: Row(
+                                    children: <Widget>[
+                                      Expanded(
+                                        child: Divider(
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 8.0),
+                                        child: Text(
+                                          'Please sign in the provided section',
+                                          style: TextStyle(color: Colors.grey),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Divider(
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    "Signature",
+                                    style: tsOneTextTheme.headlineMedium,
+                                  ),
+                                ),
+                                SizedBox(height: 15.0),
+
+                                ConstrainedBox(
+                                  constraints: BoxConstraints(
+                                    minHeight: 40,
+                                    minWidth: 400,
+                                  ),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: tsOneColorScheme.primary,
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(25.0),
+                                        topRight: Radius.circular(25.0),
+                                      ),
+                                    ),
+                                    child: Align(
+                                      alignment: Alignment.center,
+                                      child: Text("Draw",
+                                          style: TextStyle(
+                                              color: tsOneColorScheme.secondary,
+                                              fontWeight: FontWeight.w600)),
+                                    ),
+                                  ),
+                                ),
+                                Stack(
+                                  children: [
+                                    Container(
+                                      height: 480,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(10.0),
+                                          topRight: Radius.circular(10.0),
+                                          bottomLeft: Radius.circular(25.0),
+                                          bottomRight: Radius.circular(25.0),
+                                        ),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.5),
+                                            blurRadius: 5,
+                                            offset: Offset(0, 2),
+                                          ),
+                                        ],
+                                      ),
+                                      child: SfSignaturePad(
+                                        key: signatureKey,
+                                        backgroundColor: Colors.white,
+                                        onDrawEnd: () async {
+                                          final signatureImageData =
+                                              await signatureKey.currentState!
+                                                  .toImage();
+                                          final byteData =
+                                              await signatureImageData
+                                                  .toByteData(
+                                                      format:
+                                                          ImageByteFormat.png);
+                                          // if (byteData != null) {
+                                          //   setState(() {
+                                          //     widget.signatureImage = byteData.buffer.asUint8List();
+                                          //   });
+                                          // }
+                                        },
+                                      ),
+                                    ),
+                                    Container(
+                                      alignment: Alignment.topRight,
+                                      child: IconButton(
+                                        icon: const Icon(
+                                          Icons.delete_outline_outlined,
+                                          size: 32,
+                                          color: TsOneColor.primary,
+                                        ),
                                         onPressed: () {
                                           signatureKey.currentState?.clear();
                                         },
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: TsOneColor.primary,
-                                          minimumSize:
-                                              const Size(double.infinity, 50),
-                                        ),
-                                        child: const Text('Clear Signature',
-                                            style:
-                                                TextStyle(color: Colors.white)),
                                       ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 20.0),
-                                  ElevatedButton(
-                                    onPressed: () async {
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                Row(
+                                  children: [
+                                    StatefulBuilder(
+                                      builder: (context, setState) {
+                                        return Checkbox(
+                                          value: agree,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              agree = value!;
+                                            });
+                                          },
+                                        );
+                                      },
+                                    ),
+                                    Text('I agree with all of the results',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w300)),
+                                  ],
+                                ),
+
+                                // Column(
+                                //   children: [
+                                //     Container(
+                                //       width: double.infinity,
+                                //       height: 400.0,
+                                //       decoration: BoxDecoration(
+                                //         boxShadow: [
+                                //           BoxShadow(
+                                //             color: Colors.grey.withOpacity(0.3),
+                                //             spreadRadius: 5,
+                                //             blurRadius: 7,
+                                //             offset: Offset(0, 3),
+                                //           ),
+                                //         ],
+                                //       ),
+                                //       child: SfSignaturePad(
+                                //         key: signatureKey,
+                                //         backgroundColor: Colors.white,
+                                //       ),
+                                //     ),
+                                //     SizedBox(height: 10.0),
+                                //     ElevatedButton(
+                                //       onPressed: () {
+                                //         signatureKey.currentState?.clear();
+                                //       },
+                                //       style: ElevatedButton.styleFrom(
+                                //         backgroundColor: TsOneColor.primary,
+                                //         minimumSize: const Size(double.infinity, 50),
+                                //       ),
+                                //       child: const Text('Clear Signature', style: TextStyle(color: Colors.white)),
+                                //     ),
+                                //   ],
+                                // ),
+                                SizedBox(height: 20.0),
+                                ElevatedButton(
+                                  onPressed: () async {
+                                    // final ImagePicker _picker = ImagePicker();
+                                    // XFile? pickedFile = await _picker.pickImage(source: ImageSource.camera);
+                                    final signatureData = await signatureKey
+                                        .currentState!
+                                        .toImage();
+
+                                    if (!agree) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: const Text(
+                                              "Please checklist consent"),
+                                          duration: const Duration(
+                                              milliseconds: 1000),
+                                          action: SnackBarAction(
+                                            label: 'Close',
+                                            onPressed: () {
+                                              ScaffoldMessenger.of(context)
+                                                  .hideCurrentSnackBar();
+                                            },
+                                          ),
+                                        ),
+                                      );
+                                    } else if (signatureKey
+                                                .currentState?.clear ==
+                                            null ||
+                                        signatureData == null) {
+                                      //widget._signaturePadKey.currentState!.clear();
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: const Text(
+                                              "Please provide signature"),
+                                          duration: const Duration(
+                                              milliseconds: 1000),
+                                          action: SnackBarAction(
+                                            label: 'Close',
+                                            onPressed: () {
+                                              ScaffoldMessenger.of(context)
+                                                  .hideCurrentSnackBar();
+                                            },
+                                          ),
+                                        ),
+                                      );
+                                    } else {
                                       final ImagePicker _picker = ImagePicker();
                                       XFile? pickedFile =
                                           await _picker.pickImage(
                                               source: ImageSource.camera);
-
                                       if (pickedFile != null) {
                                         showDialog(
                                           context: context,
@@ -1661,18 +1811,21 @@ class _ConfirmReturnBackPilotViewState
                                       } else {
                                         print('No image selected.');
                                       }
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: TsOneColor.greenColor,
-                                      minimumSize:
-                                          const Size(double.infinity, 50),
+                                    }
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: TsOneColor.greenColor,
+                                    minimumSize:
+                                        const Size(double.infinity, 50),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(4),
                                     ),
-                                    child: const Text('Take Picture To Approve',
-                                        style: TextStyle(color: Colors.white)),
                                   ),
-                                  SizedBox(height: 20.0),
-                                ],
-                              ),
+                                  child: const Text('Take Picture To Approve',
+                                      style: TextStyle(color: Colors.white)),
+                                ),
+                                SizedBox(height: 20.0),
+                              ],
                             ),
                           ),
                         ],

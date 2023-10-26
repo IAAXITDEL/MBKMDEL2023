@@ -274,7 +274,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                         Row(
                           children: [
                             Expanded(flex: 7, child: Text("Device Number")),
-                            Expanded(flex: 1, child: Text(":")),
+                            Expanded(flex: 2, child: Text(":")),
                             Expanded(
                               flex: 6,
                               child: Text('${selectedDevice!.deviceno}'),
@@ -284,7 +284,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                         Row(
                           children: [
                             Expanded(flex: 7, child: Text("IOS Version")),
-                            Expanded(flex: 1, child: Text(":")),
+                            Expanded(flex: 2, child: Text(":")),
                             Expanded(
                               flex: 6,
                               child: Text('${selectedDevice!.iosver}'),
@@ -294,7 +294,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                         Row(
                           children: [
                             Expanded(flex: 7, child: Text("FlySmart Version")),
-                            Expanded(flex: 1, child: Text(":")),
+                            Expanded(flex: 2, child: Text(":")),
                             Expanded(
                               flex: 6,
                               child: Text('${selectedDevice!.flysmart}'),
@@ -304,7 +304,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                         Row(
                           children: [
                             Expanded(flex: 7, child: Text("Docunet Version")),
-                            Expanded(flex: 1, child: Text(":")),
+                            Expanded(flex: 2, child: Text(":")),
                             Expanded(
                               flex: 6,
                               child: Text('${selectedDevice!.docuversion}'),
@@ -314,7 +314,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                         Row(
                           children: [
                             Expanded(flex: 7, child: Text("Lido mPilot Version")),
-                            Expanded(flex: 1, child: Text(":")),
+                            Expanded(flex: 2, child: Text(":")),
                             Expanded(
                               flex: 6,
                               child: Text('${selectedDevice!.lidoversion}'),
@@ -324,7 +324,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                         Row(
                           children: [
                             Expanded(flex: 7, child: Text("HUB")),
-                            Expanded(flex: 1, child: Text(":")),
+                            Expanded(flex: 2, child: Text(":")),
                             Expanded(
                               flex: 6,
                               child: Text('${selectedDevice!.hub}'),
@@ -334,7 +334,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                         Row(
                           children: [
                             Expanded(flex: 7, child: Text("Condition")),
-                            Expanded(flex: 1, child: Text(":")),
+                            Expanded(flex: 2, child: Text(":")),
                             Expanded(
                               flex: 6,
                               child: Text('${selectedDevice!.condition}'),

@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ts_one/app/modules/efb/pilot/views/PilotFeedback.dart';
 import 'package:ts_one/app/modules/efb/pilot/views/pilotsignature_view.dart';
 import 'package:ts_one/app/modules/efb/pilot/views/return_other_pilot_view.dart';
 import 'package:ts_one/presentation/shared_components/TitleText.dart';
@@ -134,6 +135,7 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                         pilotDeviceData['occ-on-duty'] as String? ?? 'N/A';
 
                     final userUid = pilotDeviceData['user_uid'];
+
 
                     return FutureBuilder<DocumentSnapshot>(
                       future: FirebaseFirestore.instance
@@ -343,6 +345,26 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                     ),
                   ],
                 ),
+              ),
+
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ElevatedButton(
+                      onPressed: () async {
+                        String documentId = await getDocumentIdForDevice(widget.deviceId);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => PilotFeedBack(
+                              documentId: documentId,
+                              deviceId: widget.deviceId,
+                            ),
+                          ),
+                        );
+                      },
+                      child: Text("FeedBack"))
+                ],
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
