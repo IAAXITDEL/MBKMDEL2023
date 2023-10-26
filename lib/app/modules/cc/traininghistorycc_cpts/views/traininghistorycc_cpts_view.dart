@@ -48,6 +48,7 @@ class TraininghistoryccCptsView extends GetView<TraininghistoryccCptsController>
                   }
 
                   if (snapshot.hasError) {
+                    print("test ${snapshot.error}");
                     return ErrorScreen();
                   }
 
@@ -61,11 +62,8 @@ class TraininghistoryccCptsView extends GetView<TraininghistoryccCptsController>
                       itemCount: listAttendance.length,
                       physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
-                        String dateString = listAttendance[index]["date"];
-
-                        DateTime date = DateFormat('dd-MM-yyyy').parse(dateString);
-
-                        String formattedDate = DateFormat('dd MMMM yyyy').format(date);
+                        DateTime? dates = listAttendance[index]["date"].toDate();
+                        String dateC = DateFormat('dd MMMM yyyy').format(dates!);
                         return InkWell(
                           onTap: () {
                             var idTrainingType = controller.idTrainingType.value;
@@ -124,7 +122,7 @@ class TraininghistoryccCptsView extends GetView<TraininghistoryccCptsController>
                                       Expanded(
                                           flex: 8,
                                           child: Text(
-                                            formattedDate,
+                                            dateC,
                                             style: tsOneTextTheme.labelMedium,
                                           )),
                                     ],

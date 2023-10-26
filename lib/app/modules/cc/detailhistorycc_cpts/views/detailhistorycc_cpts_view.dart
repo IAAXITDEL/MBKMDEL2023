@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import '../../../../../presentation/theme.dart';
 import '../../../../../util/empty_screen.dart';
 import '../../../../../util/error_screen.dart';
@@ -60,7 +61,8 @@ class DetailhistoryccCptsView extends GetView<DetailhistoryccCptsController> {
                       if (listAttendance.isEmpty) {
                         return EmptyScreen();
                       }
-
+                      DateTime? dates = listAttendance[0]["date"].toDate();
+                      String dateC = DateFormat('dd MMMM yyyy').format(dates!);
                       return Column(
                         children: [
                           SizedBox(height: 20),
@@ -121,7 +123,7 @@ class DetailhistoryccCptsView extends GetView<DetailhistoryccCptsController> {
                                 Expanded(
                                     flex: 4,
                                     child: Text(
-                                        listAttendance[0]["date"] ?? "N/A")),
+                                        dateC ?? "N/A")),
                               ],
                             ),
                           ),
@@ -231,8 +233,7 @@ class DetailhistoryccCptsView extends GetView<DetailhistoryccCptsController> {
                       Get.toNamed(
                         Routes.LIST_ABSENTCPTSCC,
                         arguments: {
-                          /*"id": controller.idAttendance.value,
-                        "status": "donescoring"*/
+                          "id": controller.idAttendance.value
                         },
                       );
                     }
