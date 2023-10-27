@@ -279,11 +279,12 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                        backgroundColor: TsOneColor.greenColor,
-                        minimumSize: const Size(double.infinity, 50),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4),
-                        )),
+                      backgroundColor: TsOneColor.greenColor,
+                      minimumSize: const Size(double.infinity, 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                    ),
                     child: const Text('Submit', style: TextStyle(color: Colors.white)),
                   ),
                 ],

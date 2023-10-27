@@ -21,10 +21,41 @@ class ConfirmReturnBackPilotView extends GetView {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   bool isImageUploading = false;
+  bool agree = false;
 
   ConfirmReturnBackPilotView({Key? key, required this.dataId}) : super(key: key);
 
-  GlobalKey<SfSignaturePadState> signatureKey = GlobalKey();
+  //GlobalKey<SfSignaturePadState> signatureKey = GlobalKey();
+  final GlobalKey<SfSignaturePadState> signatureKey = GlobalKey<SfSignaturePadState>();
+  Uint8List? signatureImage;
+
+  String getMonthText(int month) {
+    const List<String> months = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'Desember'
+    ];
+    return months[month - 1]; // Index 0-11 for Januari-Desember
+  }
+
+  String _formatTimestamp(Timestamp? timestamp) {
+    if (timestamp == null) return 'No Data';
+
+    DateTime dateTime = timestamp.toDate();
+    String formattedDateTime = '${dateTime.day} ${getMonthText(dateTime.month)} ${dateTime.year}'
+        ' ; '
+        '${dateTime.hour}:${dateTime.minute}';
+    return formattedDateTime;
+  }
 
   Future<void> _uploadImageAndShowDialog(XFile pickedFile, BuildContext context) async {
     final Uint8List imageBytes = await pickedFile.readAsBytes();
@@ -57,7 +88,10 @@ class ConfirmReturnBackPilotView extends GetView {
         barrierDismissible: false,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Confirmation'),
+            title: Text(
+              'Confirmation',
+              style: tsOneTextTheme.headlineLarge,
+            ),
             content: SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[
@@ -286,510 +320,707 @@ class ConfirmReturnBackPilotView extends GetView {
                                   children: [
                                     Container(
                                       margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                                      child: Padding(
-                                        padding: EdgeInsets.all(10),
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          children: [
-                                            SizedBox(height: 10.0),
-                                            Align(
-                                              alignment: Alignment.centerLeft,
-                                              child: Text(
-                                                "CREW INFO",
-                                                style: tsOneTextTheme.titleLarge,
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          // SizedBox(height: 10.0),
+                                          // Align(
+                                          //   alignment: Alignment.centerLeft,
+                                          //   child: Text(
+                                          //     "CREW INFO",
+                                          //     style: tsOneTextTheme.titleLarge,
+                                          //   ),
+                                          // ),
+                                          // SizedBox(height: 5.0),
+                                          SizedBox(height: 10.0),
+                                          Align(
+                                            alignment: Alignment.centerRight,
+                                            child: Text(_formatTimestamp(data['timestamp']), style: tsOneTextTheme.labelSmall),
+                                          ),
+                                          SizedBox(height: 10.0),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                  flex: 6,
+                                                  child: Text(
+                                                    "ID NO",
+                                                    style: tsOneTextTheme.bodySmall,
+                                                  )),
+                                              Expanded(
+                                                  flex: 1,
+                                                  child: Text(
+                                                    ":",
+                                                    style: tsOneTextTheme.bodySmall,
+                                                  )),
+                                              Expanded(
+                                                flex: 6,
+                                                child: Text(
+                                                  '${userData['ID NO'] ?? 'No Data'}',
+                                                  style: tsOneTextTheme.bodySmall,
+                                                ),
                                               ),
-                                            ),
-                                            SizedBox(height: 5.0),
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                    flex: 6,
-                                                    child: Text(
-                                                      "ID NO",
-                                                      style: tsOneTextTheme.bodySmall,
-                                                    )),
-                                                Expanded(
-                                                    flex: 1,
-                                                    child: Text(
-                                                      ":",
-                                                      style: tsOneTextTheme.bodySmall,
-                                                    )),
-                                                Expanded(
+                                            ],
+                                          ),
+                                          SizedBox(height: 5.0),
+                                          Row(
+                                            children: [
+                                              Expanded(
                                                   flex: 6,
                                                   child: Text(
-                                                    '${userData['ID NO'] ?? 'No Data'}',
+                                                    "Name",
                                                     style: tsOneTextTheme.bodySmall,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            SizedBox(height: 5.0),
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                    flex: 6,
-                                                    child: Text(
-                                                      "Name",
-                                                      style: tsOneTextTheme.bodySmall,
-                                                    )),
-                                                Expanded(
-                                                    flex: 1,
-                                                    child: Text(
-                                                      ":",
-                                                      style: tsOneTextTheme.bodySmall,
-                                                    )),
-                                                Expanded(
-                                                  flex: 6,
+                                                  )),
+                                              Expanded(
+                                                  flex: 1,
                                                   child: Text(
-                                                    '${userData['NAME'] ?? 'No Data'}',
+                                                    ":",
                                                     style: tsOneTextTheme.bodySmall,
-                                                  ),
+                                                  )),
+                                              Expanded(
+                                                flex: 6,
+                                                child: Text(
+                                                  '${userData['NAME'] ?? 'No Data'}',
+                                                  style: tsOneTextTheme.bodySmall,
                                                 ),
-                                              ],
-                                            ),
-                                            SizedBox(height: 5.0),
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                    flex: 6,
-                                                    child: Text(
-                                                      "Rank",
-                                                      style: tsOneTextTheme.bodySmall,
-                                                    )),
-                                                Expanded(
-                                                    flex: 1,
-                                                    child: Text(
-                                                      ":",
-                                                      style: tsOneTextTheme.bodySmall,
-                                                    )),
-                                                Expanded(
-                                                  flex: 6,
-                                                  child: Text(
-                                                    '${userData['RANK'] ?? 'No Data'}',
-                                                    style: tsOneTextTheme.bodySmall,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            Padding(
-                                              padding: EdgeInsets.symmetric(vertical: 20),
-                                              child: Divider(
-                                                color: TsOneColor.secondaryContainer,
                                               ),
-                                            ),
-                                            Align(
-                                              alignment: Alignment.centerLeft,
-                                              child: Text(
-                                                "DEVICE INFO 1",
-                                                style: tsOneTextTheme.titleLarge,
+                                            ],
+                                          ),
+                                          SizedBox(height: 5.0),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                  flex: 6,
+                                                  child: Text(
+                                                    "Rank",
+                                                    style: tsOneTextTheme.bodySmall,
+                                                  )),
+                                              Expanded(
+                                                  flex: 1,
+                                                  child: Text(
+                                                    ":",
+                                                    style: tsOneTextTheme.bodySmall,
+                                                  )),
+                                              Expanded(
+                                                flex: 6,
+                                                child: Text(
+                                                  '${userData['RANK'] ?? 'No Data'}',
+                                                  style: tsOneTextTheme.bodySmall,
+                                                ),
                                               ),
-                                            ),
-                                            SizedBox(height: 5.0),
-                                            Row(
-                                              children: [
+                                            ],
+                                          ),
+                                          // Padding(
+                                          //   padding: EdgeInsets.symmetric(vertical: 20),
+                                          //   child: Divider(
+                                          //     color: TsOneColor.secondaryContainer,
+                                          //   ),
+                                          // ),
+                                          // Align(
+                                          //   alignment: Alignment.centerLeft,
+                                          //   child: Text(
+                                          //     "DEVICE INFO 1",
+                                          //     style: tsOneTextTheme.titleLarge,
+                                          //   ),
+                                          // ),
+                                          // SizedBox(height: 5.0),
+                                          const SizedBox(height: 16),
+                                          const Padding(
+                                            padding: EdgeInsets.only(bottom: 16.0),
+                                            child: Row(
+                                              children: <Widget>[
                                                 Expanded(
-                                                    flex: 6,
-                                                    child: Text(
-                                                      "Device ID",
-                                                      style: tsOneTextTheme.bodySmall,
-                                                    )),
-                                                Expanded(
-                                                    flex: 1,
-                                                    child: Text(
-                                                      ":",
-                                                      style: tsOneTextTheme.bodySmall,
-                                                    )),
-                                                Expanded(
-                                                  flex: 6,
+                                                  child: Divider(
+                                                    color: Colors.grey,
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding: EdgeInsets.symmetric(horizontal: 8.0),
                                                   child: Text(
-                                                    '${data['device_name2'] ?? 'No Data'}',
-                                                    style: tsOneTextTheme.bodySmall,
+                                                    'Device Details',
+                                                    style: TextStyle(color: Colors.grey),
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  child: Divider(
+                                                    color: Colors.grey,
                                                   ),
                                                 ),
                                               ],
                                             ),
-                                            SizedBox(height: 5.0),
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                    flex: 6,
-                                                    child: Text(
-                                                      "iOS Version",
-                                                      style: tsOneTextTheme.bodySmall,
-                                                    )),
-                                                Expanded(
-                                                    flex: 1,
-                                                    child: Text(
-                                                      ":",
-                                                      style: tsOneTextTheme.bodySmall,
-                                                    )),
-                                                Expanded(
+                                          ),
+                                          Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Text(
+                                              "Device 2",
+                                              style: tsOneTextTheme.headlineMedium,
+                                            ),
+                                          ),
+                                          SizedBox(height: 5.0),
+                                          Row(
+                                            children: [
+                                              Expanded(
                                                   flex: 6,
                                                   child: Text(
-                                                    '${deviceData2['iosver'] ?? 'No Data'}',
+                                                    "Device ID",
                                                     style: tsOneTextTheme.bodySmall,
-                                                  ),
+                                                  )),
+                                              Expanded(
+                                                  flex: 1,
+                                                  child: Text(
+                                                    ":",
+                                                    style: tsOneTextTheme.bodySmall,
+                                                  )),
+                                              Expanded(
+                                                flex: 6,
+                                                child: Text(
+                                                  '${data['device_name2'] ?? 'No Data'}',
+                                                  style: tsOneTextTheme.bodySmall,
                                                 ),
-                                              ],
-                                            ),
-                                            SizedBox(height: 5.0),
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                    flex: 6,
-                                                    child: Text(
-                                                      "FlySmart Version",
-                                                      style: tsOneTextTheme.bodySmall,
-                                                    )),
-                                                Expanded(
-                                                    flex: 1,
-                                                    child: Text(
-                                                      ":",
-                                                      style: tsOneTextTheme.bodySmall,
-                                                    )),
-                                                Expanded(
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: 5.0),
+                                          Row(
+                                            children: [
+                                              Expanded(
                                                   flex: 6,
                                                   child: Text(
-                                                    '${deviceData2['flysmart'] ?? 'No Data'}',
+                                                    "iOS Version",
                                                     style: tsOneTextTheme.bodySmall,
-                                                  ),
+                                                  )),
+                                              Expanded(
+                                                  flex: 1,
+                                                  child: Text(
+                                                    ":",
+                                                    style: tsOneTextTheme.bodySmall,
+                                                  )),
+                                              Expanded(
+                                                flex: 6,
+                                                child: Text(
+                                                  '${deviceData2['iosver'] ?? 'No Data'}',
+                                                  style: tsOneTextTheme.bodySmall,
                                                 ),
-                                              ],
-                                            ),
-                                            SizedBox(height: 5.0),
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                    flex: 6,
-                                                    child: Text(
-                                                      "Docu Version",
-                                                      style: tsOneTextTheme.bodySmall,
-                                                    )),
-                                                Expanded(
-                                                    flex: 1,
-                                                    child: Text(
-                                                      ":",
-                                                      style: tsOneTextTheme.bodySmall,
-                                                    )),
-                                                Expanded(
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: 5.0),
+                                          Row(
+                                            children: [
+                                              Expanded(
                                                   flex: 6,
                                                   child: Text(
-                                                    '${deviceData2['docuversion'] ?? 'No Data'}',
+                                                    "FlySmart Version",
                                                     style: tsOneTextTheme.bodySmall,
-                                                  ),
+                                                  )),
+                                              Expanded(
+                                                  flex: 1,
+                                                  child: Text(
+                                                    ":",
+                                                    style: tsOneTextTheme.bodySmall,
+                                                  )),
+                                              Expanded(
+                                                flex: 6,
+                                                child: Text(
+                                                  '${deviceData2['flysmart'] ?? 'No Data'}',
+                                                  style: tsOneTextTheme.bodySmall,
                                                 ),
-                                              ],
-                                            ),
-                                            SizedBox(height: 5.0),
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                    flex: 6,
-                                                    child: Text(
-                                                      "Lido Version",
-                                                      style: tsOneTextTheme.bodySmall,
-                                                    )),
-                                                Expanded(
-                                                    flex: 1,
-                                                    child: Text(
-                                                      ":",
-                                                      style: tsOneTextTheme.bodySmall,
-                                                    )),
-                                                Expanded(
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: 5.0),
+                                          Row(
+                                            children: [
+                                              Expanded(
                                                   flex: 6,
                                                   child: Text(
-                                                    '${deviceData2['lidoversion'] ?? 'No Data'}',
+                                                    "Docu Version",
                                                     style: tsOneTextTheme.bodySmall,
-                                                  ),
+                                                  )),
+                                              Expanded(
+                                                  flex: 1,
+                                                  child: Text(
+                                                    ":",
+                                                    style: tsOneTextTheme.bodySmall,
+                                                  )),
+                                              Expanded(
+                                                flex: 6,
+                                                child: Text(
+                                                  '${deviceData2['docuversion'] ?? 'No Data'}',
+                                                  style: tsOneTextTheme.bodySmall,
                                                 ),
-                                              ],
-                                            ),
-                                            SizedBox(height: 5.0),
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                    flex: 6,
-                                                    child: Text(
-                                                      "HUB",
-                                                      style: tsOneTextTheme.bodySmall,
-                                                    )),
-                                                Expanded(
-                                                    flex: 1,
-                                                    child: Text(
-                                                      ":",
-                                                      style: tsOneTextTheme.bodySmall,
-                                                    )),
-                                                Expanded(
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: 5.0),
+                                          Row(
+                                            children: [
+                                              Expanded(
                                                   flex: 6,
                                                   child: Text(
-                                                    '${deviceData2['hub'] ?? 'No Data'}',
+                                                    "Lido Version",
                                                     style: tsOneTextTheme.bodySmall,
-                                                  ),
+                                                  )),
+                                              Expanded(
+                                                  flex: 1,
+                                                  child: Text(
+                                                    ":",
+                                                    style: tsOneTextTheme.bodySmall,
+                                                  )),
+                                              Expanded(
+                                                flex: 6,
+                                                child: Text(
+                                                  '${deviceData2['lidoversion'] ?? 'No Data'}',
+                                                  style: tsOneTextTheme.bodySmall,
                                                 ),
-                                              ],
-                                            ),
-                                            SizedBox(height: 5.0),
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                    flex: 6,
-                                                    child: Text(
-                                                      "Condition",
-                                                      style: tsOneTextTheme.bodySmall,
-                                                    )),
-                                                Expanded(
-                                                    flex: 1,
-                                                    child: Text(
-                                                      ":",
-                                                      style: tsOneTextTheme.bodySmall,
-                                                    )),
-                                                Expanded(
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: 5.0),
+                                          Row(
+                                            children: [
+                                              Expanded(
                                                   flex: 6,
                                                   child: Text(
-                                                    '${deviceData2['condition'] ?? 'No Data'}',
+                                                    "HUB",
                                                     style: tsOneTextTheme.bodySmall,
-                                                  ),
+                                                  )),
+                                              Expanded(
+                                                  flex: 1,
+                                                  child: Text(
+                                                    ":",
+                                                    style: tsOneTextTheme.bodySmall,
+                                                  )),
+                                              Expanded(
+                                                flex: 6,
+                                                child: Text(
+                                                  '${deviceData2['hub'] ?? 'No Data'}',
+                                                  style: tsOneTextTheme.bodySmall,
                                                 ),
-                                              ],
-                                            ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: 5.0),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                  flex: 6,
+                                                  child: Text(
+                                                    "Condition",
+                                                    style: tsOneTextTheme.bodySmall,
+                                                  )),
+                                              Expanded(
+                                                  flex: 1,
+                                                  child: Text(
+                                                    ":",
+                                                    style: tsOneTextTheme.bodySmall,
+                                                  )),
+                                              Expanded(
+                                                flex: 6,
+                                                child: Text(
+                                                  '${deviceData2['condition'] ?? 'No Data'}',
+                                                  style: tsOneTextTheme.bodySmall,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
 
-                                            //DEVICE INFO 2
-                                            SizedBox(height: 10.0),
-                                            Align(
-                                              alignment: Alignment.centerLeft,
-                                              child: Text(
-                                                "DEVICE INFO 2",
-                                                style: tsOneTextTheme.titleLarge,
+                                          //DEVICE INFO 2
+                                          SizedBox(height: 10.0),
+                                          // Align(
+                                          //   alignment: Alignment.centerLeft,
+                                          //   child: Text(
+                                          //     "DEVICE INFO 2",
+                                          //     style: tsOneTextTheme.titleLarge,
+                                          //   ),
+                                          // ),
+                                          Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Text(
+                                              "Device 3",
+                                              style: tsOneTextTheme.headlineMedium,
+                                            ),
+                                          ),
+                                          SizedBox(height: 5.0),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                  flex: 6,
+                                                  child: Text(
+                                                    "Device ID",
+                                                    style: tsOneTextTheme.bodySmall,
+                                                  )),
+                                              Expanded(
+                                                  flex: 1,
+                                                  child: Text(
+                                                    ":",
+                                                    style: tsOneTextTheme.bodySmall,
+                                                  )),
+                                              Expanded(
+                                                flex: 6,
+                                                child: Text(
+                                                  '${data['device_name3'] ?? 'No Data'}',
+                                                  style: tsOneTextTheme.bodySmall,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: 5.0),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                  flex: 6,
+                                                  child: Text(
+                                                    "iOS Version",
+                                                    style: tsOneTextTheme.bodySmall,
+                                                  )),
+                                              Expanded(
+                                                  flex: 1,
+                                                  child: Text(
+                                                    ":",
+                                                    style: tsOneTextTheme.bodySmall,
+                                                  )),
+                                              Expanded(
+                                                flex: 6,
+                                                child: Text(
+                                                  '${deviceData3['iosver'] ?? 'No Data'}',
+                                                  style: tsOneTextTheme.bodySmall,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: 5.0),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                  flex: 6,
+                                                  child: Text(
+                                                    "FlySmart Version",
+                                                    style: tsOneTextTheme.bodySmall,
+                                                  )),
+                                              Expanded(
+                                                  flex: 1,
+                                                  child: Text(
+                                                    ":",
+                                                    style: tsOneTextTheme.bodySmall,
+                                                  )),
+                                              Expanded(
+                                                flex: 6,
+                                                child: Text(
+                                                  '${deviceData3['flysmart'] ?? 'No Data'}',
+                                                  style: tsOneTextTheme.bodySmall,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: 5.0),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                  flex: 6,
+                                                  child: Text(
+                                                    "Docu Version",
+                                                    style: tsOneTextTheme.bodySmall,
+                                                  )),
+                                              Expanded(
+                                                  flex: 1,
+                                                  child: Text(
+                                                    ":",
+                                                    style: tsOneTextTheme.bodySmall,
+                                                  )),
+                                              Expanded(
+                                                flex: 6,
+                                                child: Text(
+                                                  '${deviceData3['docuversion'] ?? 'No Data'}',
+                                                  style: tsOneTextTheme.bodySmall,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: 5.0),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                  flex: 6,
+                                                  child: Text(
+                                                    "Lido Version",
+                                                    style: tsOneTextTheme.bodySmall,
+                                                  )),
+                                              Expanded(
+                                                  flex: 1,
+                                                  child: Text(
+                                                    ":",
+                                                    style: tsOneTextTheme.bodySmall,
+                                                  )),
+                                              Expanded(
+                                                flex: 6,
+                                                child: Text(
+                                                  '${deviceData3['lidoversion'] ?? 'No Data'}',
+                                                  style: tsOneTextTheme.bodySmall,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: 5.0),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                  flex: 6,
+                                                  child: Text(
+                                                    "HUB",
+                                                    style: tsOneTextTheme.bodySmall,
+                                                  )),
+                                              Expanded(
+                                                  flex: 1,
+                                                  child: Text(
+                                                    ":",
+                                                    style: tsOneTextTheme.bodySmall,
+                                                  )),
+                                              Expanded(
+                                                flex: 6,
+                                                child: Text(
+                                                  '${deviceData3['hub'] ?? 'No Data'}',
+                                                  style: tsOneTextTheme.bodySmall,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                  flex: 6,
+                                                  child: Text(
+                                                    "Condition",
+                                                    style: tsOneTextTheme.bodySmall,
+                                                  )),
+                                              Expanded(
+                                                  flex: 1,
+                                                  child: Text(
+                                                    ":",
+                                                    style: tsOneTextTheme.bodySmall,
+                                                  )),
+                                              Expanded(
+                                                flex: 6,
+                                                child: Text(
+                                                  '${deviceData3['condition'] ?? 'No Data'}',
+                                                  style: tsOneTextTheme.bodySmall,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+
+                                          // Padding(
+                                          //   padding: EdgeInsets.symmetric(vertical: 20),
+                                          //   child: Divider(
+                                          //     color: TsOneColor.secondaryContainer,
+                                          //   ),
+                                          // ),
+                                          // Text(
+                                          //   "SIGNATURE",
+                                          //   style: tsOneTextTheme.headlineLarge,
+                                          // ),
+
+                                          // Text(
+                                          //   'Please sign in the section provided.',
+                                          //   style: TextStyle(
+                                          //     color: Colors.red, // Mengatur warna teks menjadi merah
+                                          //     fontStyle: FontStyle.italic, // Mengatur teks menjadi italic
+                                          //   ),
+                                          // ),
+
+                                          // SizedBox(height: 7.0),
+                                          SizedBox(height: 20.0),
+                                          const Padding(
+                                            padding: EdgeInsets.only(bottom: 16.0),
+                                            child: Row(
+                                              children: <Widget>[
+                                                Expanded(
+                                                  child: Divider(
+                                                    color: Colors.grey,
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding: EdgeInsets.symmetric(horizontal: 8.0),
+                                                  child: Text(
+                                                    'Please sign in the provided section',
+                                                    style: TextStyle(color: Colors.grey),
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  child: Divider(
+                                                    color: Colors.grey,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Align(
+                                            alignment: Alignment.center,
+                                            child: Text(
+                                              "Signature",
+                                              style: tsOneTextTheme.headlineMedium,
+                                            ),
+                                          ),
+                                          SizedBox(height: 15.0),
+
+                                          ConstrainedBox(
+                                            constraints: BoxConstraints(
+                                              minHeight: 40,
+                                              minWidth: 400,
+                                            ),
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                color: tsOneColorScheme.primary,
+                                                borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(25.0),
+                                                  topRight: Radius.circular(25.0),
+                                                ),
+                                              ),
+                                              child: Align(
+                                                alignment: Alignment.center,
+                                                child: Text("Draw", style: TextStyle(color: tsOneColorScheme.secondary, fontWeight: FontWeight.w600)),
                                               ),
                                             ),
-                                            SizedBox(height: 5.0),
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                    flex: 6,
-                                                    child: Text(
-                                                      "Device ID",
-                                                      style: tsOneTextTheme.bodySmall,
-                                                    )),
-                                                Expanded(
-                                                    flex: 1,
-                                                    child: Text(
-                                                      ":",
-                                                      style: tsOneTextTheme.bodySmall,
-                                                    )),
-                                                Expanded(
-                                                  flex: 6,
-                                                  child: Text(
-                                                    '${data['device_name3'] ?? 'No Data'}',
-                                                    style: tsOneTextTheme.bodySmall,
+                                          ),
+                                          Stack(
+                                            children: [
+                                              Container(
+                                                height: 480,
+                                                decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.only(
+                                                    topLeft: Radius.circular(10.0),
+                                                    topRight: Radius.circular(10.0),
+                                                    bottomLeft: Radius.circular(25.0),
+                                                    bottomRight: Radius.circular(25.0),
                                                   ),
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color: Colors.grey.withOpacity(0.5),
+                                                      blurRadius: 5,
+                                                      offset: Offset(0, 2),
+                                                    ),
+                                                  ],
                                                 ),
-                                              ],
-                                            ),
-                                            SizedBox(height: 5.0),
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                    flex: 6,
-                                                    child: Text(
-                                                      "iOS Version",
-                                                      style: tsOneTextTheme.bodySmall,
-                                                    )),
-                                                Expanded(
-                                                    flex: 1,
-                                                    child: Text(
-                                                      ":",
-                                                      style: tsOneTextTheme.bodySmall,
-                                                    )),
-                                                Expanded(
-                                                  flex: 6,
-                                                  child: Text(
-                                                    '${deviceData3['iosver'] ?? 'No Data'}',
-                                                    style: tsOneTextTheme.bodySmall,
-                                                  ),
+                                                child: SfSignaturePad(
+                                                  key: signatureKey,
+                                                  backgroundColor: Colors.white,
+                                                  onDrawEnd: () async {
+                                                    final signatureImageData = await signatureKey.currentState!.toImage();
+                                                    final byteData = await signatureImageData.toByteData(format: ImageByteFormat.png);
+                                                    // if (byteData != null) {
+                                                    //   setState(() {
+                                                    //     widget.signatureImage = byteData.buffer.asUint8List();
+                                                    //   });
+                                                    // }
+                                                  },
                                                 ),
-                                              ],
-                                            ),
-                                            SizedBox(height: 5.0),
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                    flex: 6,
-                                                    child: Text(
-                                                      "FlySmart Version",
-                                                      style: tsOneTextTheme.bodySmall,
-                                                    )),
-                                                Expanded(
-                                                    flex: 1,
-                                                    child: Text(
-                                                      ":",
-                                                      style: tsOneTextTheme.bodySmall,
-                                                    )),
-                                                Expanded(
-                                                  flex: 6,
-                                                  child: Text(
-                                                    '${deviceData3['flysmart'] ?? 'No Data'}',
-                                                    style: tsOneTextTheme.bodySmall,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            SizedBox(height: 5.0),
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                    flex: 6,
-                                                    child: Text(
-                                                      "Docu Version",
-                                                      style: tsOneTextTheme.bodySmall,
-                                                    )),
-                                                Expanded(
-                                                    flex: 1,
-                                                    child: Text(
-                                                      ":",
-                                                      style: tsOneTextTheme.bodySmall,
-                                                    )),
-                                                Expanded(
-                                                  flex: 6,
-                                                  child: Text(
-                                                    '${deviceData3['docuversion'] ?? 'No Data'}',
-                                                    style: tsOneTextTheme.bodySmall,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            SizedBox(height: 5.0),
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                    flex: 6,
-                                                    child: Text(
-                                                      "Lido Version",
-                                                      style: tsOneTextTheme.bodySmall,
-                                                    )),
-                                                Expanded(
-                                                    flex: 1,
-                                                    child: Text(
-                                                      ":",
-                                                      style: tsOneTextTheme.bodySmall,
-                                                    )),
-                                                Expanded(
-                                                  flex: 6,
-                                                  child: Text(
-                                                    '${deviceData3['lidoversion'] ?? 'No Data'}',
-                                                    style: tsOneTextTheme.bodySmall,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            SizedBox(height: 5.0),
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                    flex: 6,
-                                                    child: Text(
-                                                      "HUB",
-                                                      style: tsOneTextTheme.bodySmall,
-                                                    )),
-                                                Expanded(
-                                                    flex: 1,
-                                                    child: Text(
-                                                      ":",
-                                                      style: tsOneTextTheme.bodySmall,
-                                                    )),
-                                                Expanded(
-                                                  flex: 6,
-                                                  child: Text(
-                                                    '${deviceData3['hub'] ?? 'No Data'}',
-                                                    style: tsOneTextTheme.bodySmall,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                    flex: 6,
-                                                    child: Text(
-                                                      "Condition",
-                                                      style: tsOneTextTheme.bodySmall,
-                                                    )),
-                                                Expanded(
-                                                    flex: 1,
-                                                    child: Text(
-                                                      ":",
-                                                      style: tsOneTextTheme.bodySmall,
-                                                    )),
-                                                Expanded(
-                                                  flex: 6,
-                                                  child: Text(
-                                                    '${deviceData3['condition'] ?? 'No Data'}',
-                                                    style: tsOneTextTheme.bodySmall,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-
-                                            Padding(
-                                              padding: EdgeInsets.symmetric(vertical: 20),
-                                              child: Divider(
-                                                color: TsOneColor.secondaryContainer,
                                               ),
-                                            ),
-                                            Text(
-                                              "SIGNATURE",
-                                              style: tsOneTextTheme.headlineLarge,
-                                            ),
-
-                                            Text(
-                                              'Please sign in the section provided.',
-                                              style: TextStyle(
-                                                color: Colors.red, // Mengatur warna teks menjadi merah
-                                                fontStyle: FontStyle.italic, // Mengatur teks menjadi italic
-                                              ),
-                                            ),
-
-                                            SizedBox(height: 7.0),
-                                            Column(
-                                              children: [
-                                                Container(
-                                                  width: double.infinity,
-                                                  height: 400.0,
-                                                  decoration: BoxDecoration(
-                                                    boxShadow: [
-                                                      BoxShadow(
-                                                        color: Colors.grey.withOpacity(0.3),
-                                                        spreadRadius: 5,
-                                                        blurRadius: 7,
-                                                        offset: Offset(0, 3),
-                                                      ),
-                                                    ],
+                                              Container(
+                                                alignment: Alignment.topRight,
+                                                child: IconButton(
+                                                  icon: const Icon(
+                                                    Icons.delete_outline_outlined,
+                                                    size: 32,
+                                                    color: TsOneColor.primary,
                                                   ),
-                                                  child: SfSignaturePad(
-                                                    key: signatureKey,
-                                                    backgroundColor: Colors.white,
-                                                  ),
-                                                ),
-                                                SizedBox(height: 10.0),
-                                                ElevatedButton(
                                                   onPressed: () {
                                                     signatureKey.currentState?.clear();
                                                   },
-                                                  style: ElevatedButton.styleFrom(
-                                                    backgroundColor: TsOneColor.primary,
-                                                    minimumSize: const Size(double.infinity, 50),
-                                                  ),
-                                                  child: const Text('Clear Signature', style: TextStyle(color: Colors.white)),
                                                 ),
-                                              ],
-                                            ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 15,
+                                          ),
+                                          Row(
+                                            children: [
+                                              StatefulBuilder(
+                                                builder: (context, setState) {
+                                                  return Checkbox(
+                                                    value: agree,
+                                                    onChanged: (value) {
+                                                      setState(() {
+                                                        agree = value!;
+                                                      });
+                                                    },
+                                                  );
+                                                },
+                                              ),
+                                              Text('I agree with all of the results', style: TextStyle(fontWeight: FontWeight.w300)),
+                                            ],
+                                          ),
 
-                                            SizedBox(height: 20.0),
-                                            ElevatedButton(
-                                              onPressed: () async {
+                                          // Column(
+                                          //   children: [
+                                          //     Container(
+                                          //       width: double.infinity,
+                                          //       height: 400.0,
+                                          //       decoration: BoxDecoration(
+                                          //         boxShadow: [
+                                          //           BoxShadow(
+                                          //             color: Colors.grey.withOpacity(0.3),
+                                          //             spreadRadius: 5,
+                                          //             blurRadius: 7,
+                                          //             offset: Offset(0, 3),
+                                          //           ),
+                                          //         ],
+                                          //       ),
+                                          //       child: SfSignaturePad(
+                                          //         key: signatureKey,
+                                          //         backgroundColor: Colors.white,
+                                          //       ),
+                                          //     ),
+                                          //     SizedBox(height: 10.0),
+                                          //     ElevatedButton(
+                                          //       onPressed: () {
+                                          //         signatureKey.currentState?.clear();
+                                          //       },
+                                          //       style: ElevatedButton.styleFrom(
+                                          //         backgroundColor: TsOneColor.primary,
+                                          //         minimumSize: const Size(double.infinity, 50),
+                                          //       ),
+                                          //       child: const Text('Clear Signature', style: TextStyle(color: Colors.white)),
+                                          //     ),
+                                          //   ],
+                                          // ),
+
+                                          SizedBox(height: 20.0),
+                                          ElevatedButton(
+                                            onPressed: () async {
+                                              // final ImagePicker _picker = ImagePicker();
+                                              // XFile? pickedFile = await _picker.pickImage(source: ImageSource.camera);
+                                              final signatureData = await signatureKey.currentState!.toImage();
+
+                                              if (!agree) {
+                                                ScaffoldMessenger.of(context).showSnackBar(
+                                                  SnackBar(
+                                                    content: const Text("Please checklist consent"),
+                                                    duration: const Duration(milliseconds: 1000),
+                                                    action: SnackBarAction(
+                                                      label: 'Close',
+                                                      onPressed: () {
+                                                        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                                      },
+                                                    ),
+                                                  ),
+                                                );
+                                              } else if (signatureKey.currentState?.clear == null || signatureData == null) {
+                                                //widget._signaturePadKey.currentState!.clear();
+                                                ScaffoldMessenger.of(context).showSnackBar(
+                                                  SnackBar(
+                                                    content: const Text("Please provide signature"),
+                                                    duration: const Duration(milliseconds: 1000),
+                                                    action: SnackBarAction(
+                                                      label: 'Close',
+                                                      onPressed: () {
+                                                        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                                      },
+                                                    ),
+                                                  ),
+                                                );
+                                              } else {
                                                 final ImagePicker _picker = ImagePicker();
                                                 XFile? pickedFile = await _picker.pickImage(source: ImageSource.camera);
-
                                                 if (pickedFile != null) {
                                                   showDialog(
                                                     context: context,
@@ -819,15 +1050,18 @@ class ConfirmReturnBackPilotView extends GetView {
                                                 } else {
                                                   print('No image selected.');
                                                 }
-                                              },
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor: TsOneColor.greenColor,
-                                                minimumSize: const Size(double.infinity, 50),
+                                              }
+                                            },
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: TsOneColor.greenColor,
+                                              minimumSize: const Size(double.infinity, 50),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(4),
                                               ),
-                                              child: const Text('Take Picture To Approve', style: TextStyle(color: Colors.white)),
                                             ),
-                                          ],
-                                        ),
+                                            child: const Text('Take Picture To Approve', style: TextStyle(color: Colors.white)),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ],
@@ -847,313 +1081,489 @@ class ConfirmReturnBackPilotView extends GetView {
                         children: [
                           Container(
                             margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                            child: Padding(
-                              padding: EdgeInsets.all(10),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(height: 5),
-                                  Text(
-                                    "CREW INFO",
-                                    style: tsOneTextTheme.headlineLarge,
-                                  ),
-                                  SizedBox(height: 7.0),
-                                  Row(
-                                    children: [
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // SizedBox(height: 5),
+                                // Text(
+                                //   "CREW INFO",
+                                //   style: tsOneTextTheme.headlineLarge,
+                                // ),
+                                // SizedBox(height: 7.0),
+                                SizedBox(height: 10.0),
+                                Align(
+                                  alignment: Alignment.centerRight,
+                                  child: Text(_formatTimestamp(data['timestamp']), style: tsOneTextTheme.labelSmall),
+                                ),
+                                SizedBox(height: 10.0),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                          "ID NO",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        flex: 1,
+                                        child: Text(
+                                          ":",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                          '${userData['ID NO'] ?? 'No Data'}',
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                  ],
+                                ),
+                                SizedBox(height: 5.0),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                          "Name",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        flex: 1,
+                                        child: Text(
+                                          ":",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                          '${userData['NAME'] ?? 'No Data'}',
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                  ],
+                                ),
+                                SizedBox(height: 5.0),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                          "Rank",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        flex: 1,
+                                        child: Text(
+                                          ":",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                          '${userData['RANK'] ?? 'No Data'}',
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                  ],
+                                ),
+                                const SizedBox(height: 16),
+                                const Padding(
+                                  padding: EdgeInsets.only(bottom: 16.0),
+                                  child: Row(
+                                    children: <Widget>[
                                       Expanded(
-                                          flex: 6,
-                                          child: Text(
-                                            "ID NO",
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                      Expanded(
-                                          flex: 1,
-                                          child: Text(
-                                            ":",
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                      Expanded(
-                                          flex: 6,
-                                          child: Text(
-                                            '${userData['ID NO'] ?? 'No Data'}',
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                    ],
-                                  ),
-                                  SizedBox(height: 5.0),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                          flex: 6,
-                                          child: Text(
-                                            "Name",
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                      Expanded(
-                                          flex: 1,
-                                          child: Text(
-                                            ":",
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                      Expanded(
-                                          flex: 6,
-                                          child: Text(
-                                            '${userData['NAME'] ?? 'No Data'}',
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                    ],
-                                  ),
-                                  SizedBox(height: 5.0),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                          flex: 6,
-                                          child: Text(
-                                            "Rank",
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                      Expanded(
-                                          flex: 1,
-                                          child: Text(
-                                            ":",
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                      Expanded(
-                                          flex: 6,
-                                          child: Text(
-                                            '${userData['RANK'] ?? 'No Data'}',
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                    ],
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(vertical: 20),
-                                    child: Divider(
-                                      color: TsOneColor.secondaryContainer,
-                                    ),
-                                  ),
-                                  Text(
-                                    "DEVICE INFO",
-                                    style: tsOneTextTheme.headlineLarge,
-                                  ),
-                                  SizedBox(height: 5.0),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                          flex: 6,
-                                          child: Text(
-                                            "Device ID",
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                      Expanded(
-                                          flex: 1,
-                                          child: Text(
-                                            ":",
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                      Expanded(
-                                          flex: 6,
-                                          child: Text(
-                                            '${data['device_name'] ?? 'No Data'}',
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                    ],
-                                  ),
-                                  SizedBox(height: 5.0),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                          flex: 6,
-                                          child: Text(
-                                            "iOS Version",
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                      Expanded(
-                                          flex: 1,
-                                          child: Text(
-                                            ":",
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                      Expanded(
-                                          flex: 6,
-                                          child: Text(
-                                            '${deviceData['iosver'] ?? 'No Data'}',
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                    ],
-                                  ),
-                                  SizedBox(height: 5.0),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                          flex: 6,
-                                          child: Text(
-                                            "FlySmart Version",
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                      Expanded(
-                                          flex: 1,
-                                          child: Text(
-                                            ":",
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                      Expanded(
-                                          flex: 6,
-                                          child: Text(
-                                            '${deviceData['flysmart'] ?? 'No Data'}',
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                    ],
-                                  ),
-                                  SizedBox(height: 5.0),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                          flex: 6,
-                                          child: Text(
-                                            "Docu Version",
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                      Expanded(
-                                          flex: 1,
-                                          child: Text(
-                                            ":",
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                      Expanded(
-                                          flex: 6,
-                                          child: Text(
-                                            '${deviceData['docuversion'] ?? 'No Data'}',
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                    ],
-                                  ),
-                                  SizedBox(height: 5.0),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                          flex: 6,
-                                          child: Text(
-                                            "Lido Version",
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                      Expanded(
-                                          flex: 1,
-                                          child: Text(
-                                            ":",
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                      Expanded(
-                                          flex: 6,
-                                          child: Text(
-                                            '${deviceData['lidoversion'] ?? 'No Data'}',
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                    ],
-                                  ),
-                                  SizedBox(height: 5.0),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                          flex: 6,
-                                          child: Text(
-                                            "HUB",
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                      Expanded(
-                                          flex: 1,
-                                          child: Text(
-                                            ":",
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                      Expanded(
-                                          flex: 6,
-                                          child: Text(
-                                            '${deviceData['hub'] ?? 'No Data'}',
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                    ],
-                                  ),
-                                  SizedBox(height: 5.0),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                          flex: 6,
-                                          child: Text(
-                                            "Condition",
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                      Expanded(
-                                          flex: 1,
-                                          child: Text(
-                                            ":",
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                      Expanded(
-                                          flex: 6,
-                                          child: Text(
-                                            '${deviceData['condition'] ?? 'No Data'}',
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
-                                    ],
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(vertical: 20),
-                                    child: Divider(
-                                      color: TsOneColor.secondaryContainer,
-                                    ),
-                                  ),
-                                  Text(
-                                    "SIGNATURE",
-                                    style: tsOneTextTheme.headlineLarge,
-                                  ),
-                                  Text(
-                                    'Please sign in the section provided.',
-                                    style: TextStyle(
-                                      color: Colors.red, // Mengatur warna teks menjadi merah
-                                      fontStyle: FontStyle.italic, // Mengatur teks menjadi italic
-                                    ),
-                                  ),
-                                  SizedBox(height: 7.0),
-                                  Column(
-                                    children: [
-                                      Container(
-                                        width: double.infinity,
-                                        height: 400.0,
-                                        decoration: BoxDecoration(
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Colors.grey.withOpacity(0.3),
-                                              spreadRadius: 5,
-                                              blurRadius: 7,
-                                              offset: Offset(0, 3),
-                                            ),
-                                          ],
-                                        ),
-                                        child: SfSignaturePad(
-                                          key: signatureKey,
-                                          backgroundColor: Colors.white,
+                                        child: Divider(
+                                          color: Colors.grey,
                                         ),
                                       ),
-                                      SizedBox(height: 10.0),
-                                      ElevatedButton(
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(horizontal: 8.0),
+                                        child: Text(
+                                          'Device Details',
+                                          style: TextStyle(color: Colors.grey),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Divider(
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Text(
+                                  "Device 1",
+                                  style: tsOneTextTheme.headlineMedium,
+                                ),
+                                SizedBox(height: 5.0),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                          "Device ID",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        flex: 1,
+                                        child: Text(
+                                          ":",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                          '${data['device_name'] ?? 'No Data'}',
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                  ],
+                                ),
+                                SizedBox(height: 5.0),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                          "iOS Version",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        flex: 1,
+                                        child: Text(
+                                          ":",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                          '${deviceData['iosver'] ?? 'No Data'}',
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                  ],
+                                ),
+                                SizedBox(height: 5.0),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                          "FlySmart Version",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        flex: 1,
+                                        child: Text(
+                                          ":",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                          '${deviceData['flysmart'] ?? 'No Data'}',
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                  ],
+                                ),
+                                SizedBox(height: 5.0),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                          "Docu Version",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        flex: 1,
+                                        child: Text(
+                                          ":",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                          '${deviceData['docuversion'] ?? 'No Data'}',
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                  ],
+                                ),
+                                SizedBox(height: 5.0),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                          "Lido Version",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        flex: 1,
+                                        child: Text(
+                                          ":",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                          '${deviceData['lidoversion'] ?? 'No Data'}',
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                  ],
+                                ),
+                                SizedBox(height: 5.0),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                          "HUB",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        flex: 1,
+                                        child: Text(
+                                          ":",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                          '${deviceData['hub'] ?? 'No Data'}',
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                  ],
+                                ),
+                                SizedBox(height: 5.0),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                          "Condition",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        flex: 1,
+                                        child: Text(
+                                          ":",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                          '${deviceData['condition'] ?? 'No Data'}',
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                  ],
+                                ),
+                                // Padding(
+                                //   padding: EdgeInsets.symmetric(vertical: 20),
+                                //   child: Divider(
+                                //     color: TsOneColor.secondaryContainer,
+                                //   ),
+                                // ),
+                                // Text(
+                                //   "SIGNATURE",
+                                //   style: tsOneTextTheme.headlineLarge,
+                                // ),
+                                // Text(
+                                //   'Please sign in the section provided.',
+                                //   style: TextStyle(
+                                //     color: Colors.red, // Mengatur warna teks menjadi merah
+                                //     fontStyle: FontStyle.italic, // Mengatur teks menjadi italic
+                                //   ),
+                                // ),
+                                // SizedBox(height: 7.0),
+                                SizedBox(height: 20.0),
+                                const Padding(
+                                  padding: EdgeInsets.only(bottom: 16.0),
+                                  child: Row(
+                                    children: <Widget>[
+                                      Expanded(
+                                        child: Divider(
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(horizontal: 8.0),
+                                        child: Text(
+                                          'Please sign in the provided section',
+                                          style: TextStyle(color: Colors.grey),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Divider(
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    "Signature",
+                                    style: tsOneTextTheme.headlineMedium,
+                                  ),
+                                ),
+                                SizedBox(height: 15.0),
+
+                                ConstrainedBox(
+                                  constraints: BoxConstraints(
+                                    minHeight: 40,
+                                    minWidth: 400,
+                                  ),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: tsOneColorScheme.primary,
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(25.0),
+                                        topRight: Radius.circular(25.0),
+                                      ),
+                                    ),
+                                    child: Align(
+                                      alignment: Alignment.center,
+                                      child: Text("Draw", style: TextStyle(color: tsOneColorScheme.secondary, fontWeight: FontWeight.w600)),
+                                    ),
+                                  ),
+                                ),
+                                Stack(
+                                  children: [
+                                    Container(
+                                      height: 480,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(10.0),
+                                          topRight: Radius.circular(10.0),
+                                          bottomLeft: Radius.circular(25.0),
+                                          bottomRight: Radius.circular(25.0),
+                                        ),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.5),
+                                            blurRadius: 5,
+                                            offset: Offset(0, 2),
+                                          ),
+                                        ],
+                                      ),
+                                      child: SfSignaturePad(
+                                        key: signatureKey,
+                                        backgroundColor: Colors.white,
+                                        onDrawEnd: () async {
+                                          final signatureImageData = await signatureKey.currentState!.toImage();
+                                          final byteData = await signatureImageData.toByteData(format: ImageByteFormat.png);
+                                          // if (byteData != null) {
+                                          //   setState(() {
+                                          //     widget.signatureImage = byteData.buffer.asUint8List();
+                                          //   });
+                                          // }
+                                        },
+                                      ),
+                                    ),
+                                    Container(
+                                      alignment: Alignment.topRight,
+                                      child: IconButton(
+                                        icon: const Icon(
+                                          Icons.delete_outline_outlined,
+                                          size: 32,
+                                          color: TsOneColor.primary,
+                                        ),
                                         onPressed: () {
                                           signatureKey.currentState?.clear();
                                         },
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: TsOneColor.primary,
-                                          minimumSize: const Size(double.infinity, 50),
-                                        ),
-                                        child: const Text('Clear Signature', style: TextStyle(color: Colors.white)),
                                       ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 20.0),
-                                  ElevatedButton(
-                                    onPressed: () async {
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                Row(
+                                  children: [
+                                    StatefulBuilder(
+                                      builder: (context, setState) {
+                                        return Checkbox(
+                                          value: agree,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              agree = value!;
+                                            });
+                                          },
+                                        );
+                                      },
+                                    ),
+                                    Text('I agree with all of the results', style: TextStyle(fontWeight: FontWeight.w300)),
+                                  ],
+                                ),
+
+                                // Column(
+                                //   children: [
+                                //     Container(
+                                //       width: double.infinity,
+                                //       height: 400.0,
+                                //       decoration: BoxDecoration(
+                                //         boxShadow: [
+                                //           BoxShadow(
+                                //             color: Colors.grey.withOpacity(0.3),
+                                //             spreadRadius: 5,
+                                //             blurRadius: 7,
+                                //             offset: Offset(0, 3),
+                                //           ),
+                                //         ],
+                                //       ),
+                                //       child: SfSignaturePad(
+                                //         key: signatureKey,
+                                //         backgroundColor: Colors.white,
+                                //       ),
+                                //     ),
+                                //     SizedBox(height: 10.0),
+                                //     ElevatedButton(
+                                //       onPressed: () {
+                                //         signatureKey.currentState?.clear();
+                                //       },
+                                //       style: ElevatedButton.styleFrom(
+                                //         backgroundColor: TsOneColor.primary,
+                                //         minimumSize: const Size(double.infinity, 50),
+                                //       ),
+                                //       child: const Text('Clear Signature', style: TextStyle(color: Colors.white)),
+                                //     ),
+                                //   ],
+                                // ),
+                                SizedBox(height: 20.0),
+                                ElevatedButton(
+                                  onPressed: () async {
+                                    // final ImagePicker _picker = ImagePicker();
+                                    // XFile? pickedFile = await _picker.pickImage(source: ImageSource.camera);
+                                    final signatureData = await signatureKey.currentState!.toImage();
+
+                                    if (!agree) {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                          content: const Text("Please checklist consent"),
+                                          duration: const Duration(milliseconds: 1000),
+                                          action: SnackBarAction(
+                                            label: 'Close',
+                                            onPressed: () {
+                                              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                            },
+                                          ),
+                                        ),
+                                      );
+                                    } else if (signatureKey.currentState?.clear == null || signatureData == null) {
+                                      //widget._signaturePadKey.currentState!.clear();
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                          content: const Text("Please provide signature"),
+                                          duration: const Duration(milliseconds: 1000),
+                                          action: SnackBarAction(
+                                            label: 'Close',
+                                            onPressed: () {
+                                              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                            },
+                                          ),
+                                        ),
+                                      );
+                                    } else {
                                       final ImagePicker _picker = ImagePicker();
                                       XFile? pickedFile = await _picker.pickImage(source: ImageSource.camera);
-
                                       if (pickedFile != null) {
                                         showDialog(
                                           context: context,
@@ -1183,16 +1593,19 @@ class ConfirmReturnBackPilotView extends GetView {
                                       } else {
                                         print('No image selected.');
                                       }
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: TsOneColor.greenColor,
-                                      minimumSize: const Size(double.infinity, 50),
+                                    }
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: TsOneColor.greenColor,
+                                    minimumSize: const Size(double.infinity, 50),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(4),
                                     ),
-                                    child: const Text('Take Picture To Approve', style: TextStyle(color: Colors.white)),
                                   ),
-                                  SizedBox(height: 20.0),
-                                ],
-                              ),
+                                  child: const Text('Take Picture To Approve', style: TextStyle(color: Colors.white)),
+                                ),
+                                SizedBox(height: 20.0),
+                              ],
                             ),
                           ),
                         ],

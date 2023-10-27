@@ -372,6 +372,7 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
+        surfaceTintColor: tsOneColorScheme.secondary,
         child: ElevatedButton(
           onPressed: () async {
             if (isReturnToOCC) {

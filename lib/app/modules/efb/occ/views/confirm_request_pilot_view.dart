@@ -6,7 +6,7 @@ import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:ts_one/app/routes/app_pages.dart';
 import 'package:ts_one/presentation/shared_components/TitleText.dart';
-//sssss
+//sss
 import '../../../../../presentation/theme.dart';
 import '../../../../routes/app_pages.dart';
 
@@ -287,7 +287,7 @@ class ConfirmRequestPilotView extends GetView {
                                       ),
                                       Align(
                                         alignment: Alignment.centerLeft,
-                                        child: Text("Device 1", style: tsOneTextTheme.displaySmall),
+                                        child: Text("Device 2", style: tsOneTextTheme.displaySmall),
                                       ),
                                       SizedBox(height: 10.0),
                                       Row(

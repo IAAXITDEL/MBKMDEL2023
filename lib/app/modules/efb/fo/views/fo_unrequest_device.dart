@@ -198,6 +198,7 @@ class FOUnRequestDeviceView extends GetView {
                           }
 
                           final deviceData3 = deviceUid3Snapshot.data!.data() as Map<String, dynamic>;
+                          final userData = userSnapshot.data!.data() as Map<String, dynamic>;
 
                           return Center(
                             child: Column(
