@@ -19,8 +19,8 @@ class PilotUnReturnToOtherCrewView extends GetView {
 
   String getMonthText(int month) {
     const List<String> months = [
-      'January',
-      'February',
+      'Januar7',
+      'Februar7',
       'March',
       'April',
       'May',
@@ -238,7 +238,7 @@ class PilotUnReturnToOtherCrewView extends GetView {
                                   Padding(
                                     padding: EdgeInsets.symmetric(horizontal: 8.0),
                                     child: Text(
-                                      'Device Details',
+                                      'Loan Details',
                                       style: TextStyle(color: Colors.grey),
                                     ),
                                   ),
@@ -250,11 +250,7 @@ class PilotUnReturnToOtherCrewView extends GetView {
                                 ],
                               ),
                             ),
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text("Device 1", style: tsOneTextTheme.displaySmall),
-                            ),
-                            SizedBox(height: 7),
+                            SizedBox(height: 5.0),
                             Row(
                               children: [
                                 Expanded(

@@ -108,6 +108,7 @@ class ConfirmReturnBackPilotView extends GetView {
                       child: Text('No', style: TextStyle(color: TsOneColor.secondaryContainer)),
                       onPressed: () {
                         Navigator.of(context).pop();
+                        Navigator.of(context).pop();
                       },
                     ),
                   ),

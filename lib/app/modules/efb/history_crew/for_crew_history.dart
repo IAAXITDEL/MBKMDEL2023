@@ -8,8 +8,10 @@ import 'package:ts_one/app/modules/efb/occ/views/history/detail_history_device_v
 import '../../../../presentation/theme.dart';
 import '../occ/views/history/detailhistorydeviceFo.dart';
 
+
 class HistoryEachCrewView extends StatefulWidget {
   const HistoryEachCrewView({Key? key}) : super(key: key);
+
 
   @override
   _HistoryEachCrewViewState createState() => _HistoryEachCrewViewState();
@@ -46,7 +48,10 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
       String userEmail = user.email ?? "";
 
       // Query the 'users' collection to find the document with the matching email
-      QuerySnapshot userSnapshot = await _firestore.collection('users').where('EMAIL', isEqualTo: userEmail).get();
+      QuerySnapshot userSnapshot = await _firestore
+          .collection('users')
+          .where('EMAIL', isEqualTo: userEmail)
+          .get();
 
       if (userSnapshot.docs.isNotEmpty) {
         // Get the user's document ID (user_id)
@@ -65,7 +70,8 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
         throw Exception('User not found in the "users" collection');
       }
     } else {
-      throw Exception('User not logged in'); // You can handle this case as needed.
+      throw Exception(
+          'User not logged in'); // You can handle this case as needed.
     }
   }
 
@@ -73,8 +79,7 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.white, // Set background color to white
+        backgroundColor: Colors.white,
         title: Text(
           'History',
           style: tsOneTextTheme.headlineLarge,
@@ -88,7 +93,7 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
         // ],
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
         child: Column(
           children: [
             Padding(
@@ -102,7 +107,7 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
                         hintText: 'Search by Device No',
                         prefixIcon: Icon(Icons.search),
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                          borderRadius: BorderRadius.all(Radius.circular(16.0)),
                         ),
                       ),
                       onChanged: (value) {
@@ -113,7 +118,7 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
                   IconButton(
                     icon: Icon(
                       Icons.filter_list,
-                      size: 32.0,
+                      size: 36,
                     ),
                     onPressed: _showFilterBottomSheet,
                   ),
@@ -122,7 +127,7 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
             ),
             Expanded(
               child: FutureBuilder<QuerySnapshot>(
-                future: getFODevices(),
+                    future: getFODevices(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());
@@ -144,13 +149,10 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
                     final userName = data['NAME'].toString().toLowerCase();
                     final deviceName = data['device_name'].toString().toLowerCase();
                     final deviceName2 = data['device_name2'].toString().toLowerCase();
-                    final deviceName3 = data['device_name3'].toString().toLowerCase();
+                    final deviceName3 = data['device_nam3'].toString().toLowerCase();
                     final searchTerm = _searchController.text.toLowerCase();
 
-                    return userName.contains(searchTerm) ||
-                        deviceName.contains(searchTerm) ||
-                        deviceName2.contains(searchTerm) ||
-                        deviceName3.contains(searchTerm);
+                    return userName.contains(searchTerm) || deviceName.contains(searchTerm) || deviceName2.contains(searchTerm) || deviceName3.contains(searchTerm);
                   }).toList();
 
                   return ListView.builder(
@@ -164,9 +166,12 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
                       final timestamp = data['timestamp'];
 
                       return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 4.0),
+                        padding: const EdgeInsets.only(top: 7),
                         child: FutureBuilder<DocumentSnapshot>(
-                          future: FirebaseFirestore.instance.collection('users').doc(userUid).get(),
+                          future: FirebaseFirestore.instance
+                              .collection('users')
+                              .doc(userUid)
+                              .get(),
                           builder: (context, userSnapshot) {
                             if (userSnapshot.connectionState == ConnectionState.waiting) {
                               return CircularProgressIndicator();
@@ -187,7 +192,10 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
                             final photoUrl = userData['PHOTOURL'] as String?; // Get the profile photo URL
 
                             return FutureBuilder<DocumentSnapshot>(
-                              future: FirebaseFirestore.instance.collection('Device').doc(deviceUid).get(),
+                              future: FirebaseFirestore.instance
+                                  .collection('Device')
+                                  .doc(deviceUid)
+                                  .get(),
                               builder: (context, deviceSnapshot) {
                                 if (deviceSnapshot.connectionState == ConnectionState.waiting) {
                                   return CircularProgressIndicator();
@@ -204,7 +212,10 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
                                   final deviceUid3 = data['device_uid3'];
 
                                   return FutureBuilder<DocumentSnapshot>(
-                                    future: FirebaseFirestore.instance.collection('Device').doc(deviceUid2).get(),
+                                    future: FirebaseFirestore.instance
+                                        .collection('Device')
+                                        .doc(deviceUid2)
+                                        .get(),
                                     builder: (context, deviceUid2Snapshot) {
                                       if (deviceUid2Snapshot.connectionState == ConnectionState.waiting) {
                                         return CircularProgressIndicator();
@@ -223,7 +234,10 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
                                       final deviceno2 = deviceData2?['deviceno'];
 
                                       return FutureBuilder<DocumentSnapshot>(
-                                        future: FirebaseFirestore.instance.collection('Device').doc(deviceUid3).get(),
+                                        future: FirebaseFirestore.instance
+                                            .collection('Device')
+                                            .doc(deviceUid3)
+                                            .get(),
                                         builder: (context, deviceUid3Snapshot) {
                                           if (deviceUid3Snapshot.connectionState == ConnectionState.waiting) {
                                             return CircularProgressIndicator();
@@ -240,6 +254,7 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
                                           }
 
                                           final deviceno3 = deviceData3?['deviceno'];
+
 
                                           return Padding(
                                             padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -328,6 +343,7 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
 
                                 final deviceno = deviceData?['deviceno'];
 
+
                                 return Padding(
                                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                                   child: Card(
@@ -353,14 +369,13 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
                                         padding: const EdgeInsets.all(10.0), // Adjust padding as needed
                                         child: Row(
                                           children: [
-                                            SizedBox(width: 8.0),
                                             CircleAvatar(
                                               backgroundImage: photoUrl != null
                                                   ? NetworkImage(photoUrl as String)
                                                   : AssetImage('assets/default_profile_image.png') as ImageProvider,
                                               radius: 25.0,
                                             ),
-                                            SizedBox(width: 17.0),
+                                            SizedBox(width: 12.0),
                                             Expanded(
                                               child: Column(
                                                 crossAxisAlignment: CrossAxisAlignment.start,

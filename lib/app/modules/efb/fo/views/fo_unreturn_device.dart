@@ -18,8 +18,8 @@ class FOUnReturnDeviceView extends GetView {
 
   String getMonthText(int month) {
     const List<String> months = [
-      'January',
-      'February',
+      'Januar7',
+      'Februar7',
       'March',
       'April',
       'May',
@@ -610,6 +610,7 @@ class FOUnReturnDeviceView extends GetView {
                                     ),
                                   ],
                                 ),
+                                SizedBox(height: 70.0),
                               ],
                             ),
                           );

@@ -6,7 +6,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:open_file/open_file.dart';
-import 'detail_history_device_view.dart';
+import '../../../occ/views/history/detail_history_device_view.dart';
 import 'package:http/http.dart' as http;
 
 String _formatTimestamp(Timestamp? timestamp) {
@@ -498,6 +498,7 @@ Future<void> generateLogPdfDevice23({
                         width: 150,
                         height: 90,
                       ),
+                      pw.Text('ttd image'),
                       pw.SizedBox(height: 5.0),
                       pw.Text(
                         '$handoverName',

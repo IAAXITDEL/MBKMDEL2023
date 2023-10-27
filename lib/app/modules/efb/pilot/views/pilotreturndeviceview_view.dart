@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ts_one/app/modules/efb/pilot/views/PilotFeedback.dart';
 import 'package:ts_one/app/modules/efb/pilot/views/pilotsignature_view.dart';
 import 'package:ts_one/app/modules/efb/pilot/views/return_other_pilot_view.dart';
 import 'package:ts_one/presentation/shared_components/TitleText.dart';
@@ -38,8 +39,8 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
 
   String getMonthText(int month) {
     const List<String> months = [
-      'January',
-      'February',
+      'Januar7',
+      'Februar7',
       'March',
       'April',
       'May',
@@ -111,6 +112,7 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                     final occOnDuty = pilotDeviceData['occ-on-duty'] as String? ?? 'N/A';
 
                     final userUid = pilotDeviceData['user_uid'];
+
 
                     return FutureBuilder<DocumentSnapshot>(
                       future: FirebaseFirestore.instance.collection("users").doc(userUid).get(),
@@ -270,16 +272,7 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                                       Expanded(flex: 5, child: Text(condition)),
                                     ],
                                   ),
-                                  // SizedBox(
-                                  //   height: 8,
-                                  // ),
-                                  // Row(
-                                  //   children: [
-                                  //     Expanded(flex: 5, child: Text("OCC On Duty")),
-                                  //     Expanded(flex: 1, child: Text(":")),
-                                  //     Expanded(flex: 5, child: Text(occOnDuty)),
-                                  //   ],
-                                  // ),
+
                                   const SizedBox(
                                     height: 15,
                                   ),
@@ -316,6 +309,26 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                     ),
                   ],
                 ),
+              ),
+
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ElevatedButton(
+                      onPressed: () async {
+                        String documentId = await getDocumentIdForDevice(widget.deviceId);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => PilotFeedBack(
+                              documentId: documentId,
+                              deviceId: widget.deviceId,
+                            ),
+                          ),
+                        );
+                      },
+                      child: Text("FeedBack"))
+                ],
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

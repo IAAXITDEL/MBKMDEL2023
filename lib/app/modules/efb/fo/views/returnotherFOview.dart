@@ -541,13 +541,13 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                                               if (idNumber.isNotEmpty) {
                                                 User? user = _auth.currentUser;
                                                 QuerySnapshot userQuery =
-                                                    await _firestore.collection('users').where('EMAIL', isEqualTo: user?.email).get();
+                                                await _firestore.collection('users').where('EMAIL', isEqualTo: user?.email).get();
                                                 String userUid = userQuery.docs.first.id;
                                                 final image = await _signaturePadKey.currentState?.toImage(pixelRatio: 3.0);
                                                 final ByteData? byteData = await image?.toByteData(format: ImageByteFormat.png);
                                                 final Uint8List? uint8List = byteData?.buffer.asUint8List();
                                                 final Reference storageReference =
-                                                    FirebaseStorage.instance.ref().child('signatures/${DateTime.now()}.png');
+                                                FirebaseStorage.instance.ref().child('signatures/${DateTime.now()}.png');
                                                 final UploadTask uploadTask = storageReference.putData(uint8List!);
 
                                                 await uploadTask.whenComplete(() async {
