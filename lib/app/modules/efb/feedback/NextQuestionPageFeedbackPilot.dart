@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ts_one/app/modules/efb/pilot/views/ConfirmPageFeedbackPilot.dart';
+import 'package:ts_one/app/modules/efb/feedback/ConfirmPageFeedbackPilot.dart';
 
-import '../../../../../presentation/theme.dart';
+import '../../../../presentation/theme.dart';
 
 class NextQuestionPageFeedbackPilot extends StatefulWidget {
   final String documentId;
