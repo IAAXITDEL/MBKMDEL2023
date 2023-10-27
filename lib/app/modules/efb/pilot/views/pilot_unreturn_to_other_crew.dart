@@ -19,8 +19,8 @@ class PilotUnReturnToOtherCrewView extends GetView {
 
   String getMonthText(int month) {
     const List<String> months = [
-      'Januar7',
-      'Februar7',
+      'January',
+      'February',
       'March',
       'April',
       'May',

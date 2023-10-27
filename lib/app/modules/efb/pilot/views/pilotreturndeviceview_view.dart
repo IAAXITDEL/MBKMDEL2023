@@ -39,8 +39,8 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
 
   String getMonthText(int month) {
     const List<String> months = [
-      'Januar7',
-      'Februar7',
+      'January',
+      'February',
       'March',
       'April',
       'May',
@@ -112,7 +112,6 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                     final occOnDuty = pilotDeviceData['occ-on-duty'] as String? ?? 'N/A';
 
                     final userUid = pilotDeviceData['user_uid'];
-
 
                     return FutureBuilder<DocumentSnapshot>(
                       future: FirebaseFirestore.instance.collection("users").doc(userUid).get(),
@@ -272,7 +271,6 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                                       Expanded(flex: 5, child: Text(condition)),
                                     ],
                                   ),
-
                                   const SizedBox(
                                     height: 15,
                                   ),
@@ -310,7 +308,6 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                   ],
                 ),
               ),
-
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
