@@ -176,14 +176,33 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                                     ],
                                   ),
                                   SizedBox(height: 15),
-                                  Text(
-                                    "Loan Details",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w600,
-                                      color: tsOneColorScheme.onBackground,
-                                      fontFamily: 'Poppins',
+                                  const Padding(
+                                    padding: EdgeInsets.only(bottom: 16.0),
+                                    child: Row(
+                                      children: <Widget>[
+                                        Expanded(
+                                          child: Divider(
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.symmetric(horizontal: 8.0),
+                                          child: Text(
+                                            'Device Details',
+                                            style: TextStyle(color: Colors.grey),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Divider(
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                      ],
                                     ),
+                                  ),
+                                  Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text("Device 1", style: tsOneTextTheme.displaySmall),
                                   ),
                                   SizedBox(height: 7.0),
                                   Row(
@@ -253,16 +272,7 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                                       Expanded(flex: 5, child: Text(condition)),
                                     ],
                                   ),
-                                  SizedBox(
-                                    height: 8,
-                                  ),
-                                  Row(
-                                    children: [
-                                      Expanded(flex: 5, child: Text("OCC On Duty")),
-                                      Expanded(flex: 1, child: Text(":")),
-                                      Expanded(flex: 5, child: Text(occOnDuty)),
-                                    ],
-                                  ),
+
                                   const SizedBox(
                                     height: 15,
                                   ),

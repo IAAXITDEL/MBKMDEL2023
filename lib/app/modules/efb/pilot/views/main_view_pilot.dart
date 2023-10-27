@@ -111,11 +111,11 @@ class HomePilotView extends GetView<HomePilotController> {
                       // Filter the data for 'in-use-pilot' and 'waiting-confirmation-1'
                       final inUsePilotDocs = pilotDevicesSnapshot.docs.where((doc) => doc['statusDevice'] == 'in-use-pilot').toList();
                       final waitingConfirmationDocs =
-                          pilotDevicesSnapshot.docs.where((doc) => doc['statusDevice'] == 'waiting-confirmation-1').toList();
+                      pilotDevicesSnapshot.docs.where((doc) => doc['statusDevice'] == 'waiting-confirmation-1').toList();
                       final needConfirmationOccDocs =
-                          pilotDevicesSnapshot.docs.where((doc) => doc['statusDevice'] == 'need-confirmation-occ').toList();
+                      pilotDevicesSnapshot.docs.where((doc) => doc['statusDevice'] == 'need-confirmation-occ').toList();
                       final needConfirmationPilotDocs =
-                          pilotDevicesSnapshot.docs.where((doc) => doc['statusDevice'] == 'waiting-handover-to-other-crew').toList();
+                      pilotDevicesSnapshot.docs.where((doc) => doc['statusDevice'] == 'waiting-handover-to-other-crew').toList();
                       return Column(
                         children: [
                           // Display 'in-use-pilot' data
@@ -189,11 +189,11 @@ class HomePilotView extends GetView<HomePilotController> {
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
                                                   const Text(
-                                                    '1st Device',
+                                                    'Device 1',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
                                                   const Text(
-                                                    'FO ID',
+                                                    'CAPT ID',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
                                                   const Text(
@@ -226,13 +226,13 @@ class HomePilotView extends GetView<HomePilotController> {
                                               ),
                                               Expanded(
                                                   child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(deviceName, style: TextStyle(color: TsOneColor.secondary)),
-                                                  Text(userId, style: TextStyle(color: TsOneColor.secondary)),
-                                                  Text(_formatTimestamp(doc['timestamp']), style: TextStyle(color: TsOneColor.secondary)),
-                                                ],
-                                              )),
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Text(deviceName, style: TextStyle(color: TsOneColor.secondary)),
+                                                      Text(userId, style: TextStyle(color: TsOneColor.secondary)),
+                                                      Text(_formatTimestamp(doc['timestamp']), style: TextStyle(color: TsOneColor.secondary)),
+                                                    ],
+                                                  )),
                                               const Icon(
                                                 Icons.chevron_right,
                                                 color: TsOneColor.secondary,
@@ -290,11 +290,11 @@ class HomePilotView extends GetView<HomePilotController> {
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
                                                   const Text(
-                                                    '1st Device',
+                                                    'Device 1',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
                                                   const Text(
-                                                    'FO ID',
+                                                    'CAPT ID',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
                                                   const Text(
@@ -327,13 +327,13 @@ class HomePilotView extends GetView<HomePilotController> {
                                               ),
                                               Expanded(
                                                   child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(deviceName, style: TextStyle(color: TsOneColor.secondary)),
-                                                  Text(userId, style: TextStyle(color: TsOneColor.secondary)),
-                                                  Text(_formatTimestamp(doc['timestamp']), style: TextStyle(color: TsOneColor.secondary)),
-                                                ],
-                                              )),
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Text(deviceName, style: TextStyle(color: TsOneColor.secondary)),
+                                                      Text(userId, style: TextStyle(color: TsOneColor.secondary)),
+                                                      Text(_formatTimestamp(doc['timestamp']), style: TextStyle(color: TsOneColor.secondary)),
+                                                    ],
+                                                  )),
                                               const Icon(
                                                 Icons.chevron_right,
                                                 color: TsOneColor.secondary,
@@ -435,11 +435,11 @@ class HomePilotView extends GetView<HomePilotController> {
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
                                                   const Text(
-                                                    '1st Device',
+                                                    'Device 1',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
                                                   const Text(
-                                                    'FO ID',
+                                                    'CAPT ID',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
                                                   const Text(
@@ -472,13 +472,13 @@ class HomePilotView extends GetView<HomePilotController> {
                                               ),
                                               Expanded(
                                                   child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(deviceName, style: TextStyle(color: TsOneColor.secondary)),
-                                                  Text(userId, style: TextStyle(color: TsOneColor.secondary)),
-                                                  Text(_formatTimestamp(doc['timestamp']), style: TextStyle(color: TsOneColor.secondary)),
-                                                ],
-                                              )),
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Text(deviceName, style: TextStyle(color: TsOneColor.secondary)),
+                                                      Text(userId, style: TextStyle(color: TsOneColor.secondary)),
+                                                      Text(_formatTimestamp(doc['timestamp']), style: TextStyle(color: TsOneColor.secondary)),
+                                                    ],
+                                                  )),
                                               const Icon(
                                                 Icons.chevron_right,
                                                 color: TsOneColor.secondary,
@@ -556,11 +556,11 @@ class HomePilotView extends GetView<HomePilotController> {
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
                                                   const Text(
-                                                    '1st Device',
+                                                    'Device 1',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
                                                   const Text(
-                                                    'FO ID',
+                                                    'CAPT ID',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
                                                   const Text(
@@ -593,13 +593,13 @@ class HomePilotView extends GetView<HomePilotController> {
                                               ),
                                               Expanded(
                                                   child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(deviceName, style: TextStyle(color: TsOneColor.secondary)),
-                                                  Text(userId, style: TextStyle(color: TsOneColor.secondary)),
-                                                  Text(_formatTimestamp(doc['timestamp']), style: TextStyle(color: TsOneColor.secondary)),
-                                                ],
-                                              )),
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Text(deviceName, style: TextStyle(color: TsOneColor.secondary)),
+                                                      Text(userId, style: TextStyle(color: TsOneColor.secondary)),
+                                                      Text(_formatTimestamp(doc['timestamp']), style: TextStyle(color: TsOneColor.secondary)),
+                                                    ],
+                                                  )),
                                               const Icon(
                                                 Icons.chevron_right,
                                                 color: TsOneColor.secondary,
@@ -664,7 +664,7 @@ class HomePilotView extends GetView<HomePilotController> {
                                 if (pilotDevicesSnapshot != null && pilotDevicesSnapshot.docs.isNotEmpty) {
                                   // Filter the data for 'in-use-pilot' and 'waiting-confirmation-1'
                                   final inConfirmationPilotDocs =
-                                      pilotDevicesSnapshot.docs.where((doc) => doc['statusDevice'] == 'waiting-handover-to-other-crew').toList();
+                                  pilotDevicesSnapshot.docs.where((doc) => doc['statusDevice'] == 'waiting-handover-to-other-crew').toList();
 
                                   return Column(
                                     children: [
@@ -717,11 +717,11 @@ class HomePilotView extends GetView<HomePilotController> {
                                                             crossAxisAlignment: CrossAxisAlignment.start,
                                                             children: [
                                                               const Text(
-                                                                "Device 2",
+                                                                "Device 1",
                                                                 style: TextStyle(color: TsOneColor.secondary),
                                                               ),
                                                               const Text(
-                                                                'FO ID',
+                                                                'CAPT ID',
                                                                 style: TextStyle(color: TsOneColor.secondary),
                                                               ),
                                                               const Text(
@@ -754,13 +754,13 @@ class HomePilotView extends GetView<HomePilotController> {
                                                           ),
                                                           Expanded(
                                                               child: Column(
-                                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                                            children: [
-                                                              Text(deviceName, style: TextStyle(color: TsOneColor.secondary)),
-                                                              Text(userId, style: TextStyle(color: TsOneColor.secondary)),
-                                                              Text(_formatTimestamp(doc['timestamp']), style: TextStyle(color: TsOneColor.secondary)),
-                                                            ],
-                                                          )),
+                                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                                children: [
+                                                                  Text(deviceName, style: TextStyle(color: TsOneColor.secondary)),
+                                                                  Text(userId, style: TextStyle(color: TsOneColor.secondary)),
+                                                                  Text(_formatTimestamp(doc['timestamp']), style: TextStyle(color: TsOneColor.secondary)),
+                                                                ],
+                                                              )),
                                                           const Icon(
                                                             Icons.chevron_right,
                                                             color: TsOneColor.secondary,

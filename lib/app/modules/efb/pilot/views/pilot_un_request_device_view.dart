@@ -18,8 +18,8 @@ class PilotUnRequestDeviceView extends GetView {
 
   String getMonthText(int month) {
     const List<String> months = [
-      'Januar7',
-      'Februar7',
+      'January',
+      'February',
       'March',
       'April',
       'May',
@@ -119,11 +119,8 @@ class PilotUnRequestDeviceView extends GetView {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Text('Reject', style: tsOneTextTheme.headlineLarge),
         backgroundColor: Colors.white,
-        title: Text(
-          'Reject Request',
-          style: tsOneTextTheme.headlineLarge,
-        ),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -228,7 +225,7 @@ class PilotUnRequestDeviceView extends GetView {
                             // Align(
                             //   alignment: Alignment.centerLeft,
                             //   child: Text(
-                            //     "Loan Details",
+                            //     "Device Details",
                             //     style: TextStyle(
                             //       fontSize: 18,
                             //       fontWeight: FontWeight.w600,
@@ -249,7 +246,7 @@ class PilotUnRequestDeviceView extends GetView {
                                   Padding(
                                     padding: EdgeInsets.symmetric(horizontal: 8.0),
                                     child: Text(
-                                      'Loan Details',
+                                      'Device Details',
                                       style: TextStyle(color: Colors.grey),
                                     ),
                                   ),
@@ -260,6 +257,11 @@ class PilotUnRequestDeviceView extends GetView {
                                   ),
                                 ],
                               ),
+                            ),
+                            SizedBox(height: 10.0),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text("Device 1", style: tsOneTextTheme.displaySmall),
                             ),
                             SizedBox(height: 5.0),
                             Row(

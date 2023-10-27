@@ -432,10 +432,9 @@ class DetailHistoryDeviceView extends GetView {
                                                 Text(
                                                   "Return Documentation",
                                                   style: TextStyle(
-                                                    fontSize: 18,
-                                                    fontWeight: FontWeight.w600,
-                                                    color: tsOneColorScheme
-                                                        .onBackground,
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight. w600,
+                                                    color: tsOneColorScheme.onBackground,
                                                     fontFamily: 'Poppins',
                                                   ),
                                                 ),
@@ -527,18 +526,7 @@ class DetailHistoryDeviceView extends GetView {
                                                   ],
                                                 ),
 
-                                                SizedBox(height: 7.0),
-                                              SizedBox(height: 10.0),
-                                              if (status == 'handover-to-other-crew')
-                                                Text(
-                                                  "Return Documentation",
-                                                  style: TextStyle(
-                                                    fontSize: 20,
-                                                    fontWeight: FontWeight.w600,
-                                                    color: tsOneColorScheme.onBackground,
-                                                    fontFamily: 'Poppins',
-                                                  ),
-                                                ),
+
                                               SizedBox(height: 7.0),
                                               if (status == 'handover-to-other-crew')
                                                 Row(
@@ -748,23 +736,18 @@ class DetailHistoryDeviceView extends GetView {
                                                             );
                                                           } else if (feedbackId == null || feedbackId == '-') {
                                                             // Tindakan alternatif jika feedbackId tidak ada atau kosong
-                                                            showDialog(
-                                                              context: context,
-                                                              builder: (context) {
-                                                                return AlertDialog(
-                                                                  title: Text('Feedback Not Found'),
-                                                                  content: Text('The selected feedback was not found.'),
-                                                                  actions: [
-                                                                    TextButton(
-                                                                      onPressed: () {
-                                                                        Navigator.pop(context);
-                                                                      },
-                                                                      child: Text('OK'),
-                                                                    ),
-                                                                  ],
-                                                                );
-                                                              },
+                                                            ScaffoldMessenger.of(context).showSnackBar(
+                                                              SnackBar(
+                                                                content: Text('Feedback Not Found'),
+                                                                action: SnackBarAction(
+                                                                  label: 'OK',
+                                                                  onPressed: () {
+                                                                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                                                  },
+                                                                ),
+                                                              ),
                                                             );
+
                                                           }
                                                           print(feedbackId);
                                                         },
