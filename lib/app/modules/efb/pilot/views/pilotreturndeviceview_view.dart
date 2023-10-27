@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ts_one/app/modules/efb/pilot/views/PilotFeedback.dart';
+import 'package:ts_one/app/modules/efb/feedback/PilotFeedback.dart';
 import 'package:ts_one/app/modules/efb/pilot/views/pilotsignature_view.dart';
 import 'package:ts_one/app/modules/efb/pilot/views/return_other_pilot_view.dart';
 import 'package:ts_one/presentation/shared_components/TitleText.dart';

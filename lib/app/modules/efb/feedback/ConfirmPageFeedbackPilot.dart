@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 
-import '../../../../../presentation/theme.dart';
+import '../../../../presentation/theme.dart';
 
 class ConfirmPageFeedbackPilot extends StatefulWidget {
   final String documentId;
@@ -78,6 +78,7 @@ class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
 
     // Membuat dokumen baru dalam koleksi feedback-device
     DocumentReference feedbackDoc = await feedbackCollection.add({
+      'timestamp': FieldValue.serverTimestamp(),
       'handover-id': widget.deviceId,
       'q1': widget.Q1,
       'q2': widget.Q2,
