@@ -21,9 +21,9 @@ class PilottraininghistorydetailccView
     return Scaffold(
       appBar: AppBar(
         title: //--------------KELAS TRAINING-------------
-            RedTitleText(
-          text: "${controller.trainingName.value} TRAINING",
-        ),
+           Obx(() =>  RedTitleText(
+             text: "${controller.trainingName.value} TRAINING",
+           ),)
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -32,7 +32,7 @@ class PilottraininghistorydetailccView
             child: Column(
               children: [
                 controller.isTrainee.value ?
-                Row(
+                Column(
                   children: [
                     Text(
                       "Congratulations!",
@@ -45,43 +45,47 @@ class PilottraininghistorydetailccView
                     SizedBox(
                       height: 30,
                     ),
-                    Expanded(
-                      child: ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 5.0, horizontal: 1.0),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(20.0),
-                                bottomLeft: Radius.circular(20.0),
-                                topRight: controller.isTrainee.value ? Radius.zero :  Radius.circular(20.0) ,
-                                bottomRight: controller.isTrainee.value ? Radius.zero :  Radius.circular(20.0) ,
-                              ),
-                            ),
-                          ),
-                          child: Text("Download Certificate")),
-                    ),
+                   Row(
+                     children: [
+                       Expanded(
+                         child: ElevatedButton(
+                             onPressed: () {},
+                             style: ElevatedButton.styleFrom(
+                               padding: EdgeInsets.symmetric(
+                                   vertical: 5.0, horizontal: 1.0),
+                               shape: RoundedRectangleBorder(
+                                 borderRadius: BorderRadius.only(
+                                   topLeft: Radius.circular(20.0),
+                                   bottomLeft: Radius.circular(20.0),
+                                   topRight: controller.isTrainee.value ? Radius.zero :  Radius.circular(20.0) ,
+                                   bottomRight: controller.isTrainee.value ? Radius.zero :  Radius.circular(20.0) ,
+                                 ),
+                               ),
+                             ),
+                             child: Text("Download Certificate")),
+                       ),
 
-                    Expanded(
-                      child: ElevatedButton(
-                          onPressed: () {
-                            Get.toNamed(Routes.PILOTFEEDBACKFORMCC, arguments: {
-                              "idAttendance": controller.idAttendance.value,
-                            });
-                          },
-                          style: ElevatedButton.styleFrom(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 5.0, horizontal: 1.0),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(20.0),
-                                bottomRight: Radius.circular(20.0),
-                              ),
-                            ),
-                          ),
-                          child: Text("Give Feedback")),
-                    ),
+                       Expanded(
+                         child: ElevatedButton(
+                             onPressed: () {
+                               Get.toNamed(Routes.PILOTFEEDBACKFORMCC, arguments: {
+                                 "idAttendance": controller.idAttendance.value,
+                               });
+                             },
+                             style: ElevatedButton.styleFrom(
+                               padding: EdgeInsets.symmetric(
+                                   vertical: 5.0, horizontal: 1.0),
+                               shape: RoundedRectangleBorder(
+                                 borderRadius: BorderRadius.only(
+                                   topRight: Radius.circular(20.0),
+                                   bottomRight: Radius.circular(20.0),
+                                 ),
+                               ),
+                             ),
+                             child: Text("Give Feedback")),
+                       ),
+                     ],
+                   )
                   ],
                 ) : SizedBox(),
 

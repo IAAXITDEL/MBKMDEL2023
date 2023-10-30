@@ -1,11 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:custom_date_range_picker/custom_date_range_picker.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:ts_one/app/modules/pa/navadmin/views/navadmin_view.dart';
 import 'package:ts_one/presentation/shared_components/TitleText.dart';
 
+import '../../../../../../presentation/shared_components/formdatefield.dart';
 import '../../../../../../presentation/theme.dart';
 import '../../../../../../util/empty_screen.dart';
 import '../../../../../../util/error_screen.dart';
@@ -37,15 +40,36 @@ class _TrainingtypeccViewState extends State<TrainingtypeccView>
     super.dispose();
   }
 
+  final _formPendingKey = GlobalKey<FormState>();
+  final _formConfirmationKey = GlobalKey<FormState>();
+  final _formDoneKey = GlobalKey<FormState>();
+
+
   @override
   Widget build(BuildContext context) {
     TrainingtypeccController controller = Get.find<TrainingtypeccController>();
-    return Scaffold(
+    var fromPendingC = TextEditingController();
+    var toPendingC = TextEditingController();
+
+    var fromConfirmationC = TextEditingController();
+    var toConfirmationC = TextEditingController();
+
+    var fromDoneC = TextEditingController();
+    var toDoneC = TextEditingController();
+
+
+    Future<bool> onWillPop() async {
+      controller.resetDate();
+      return true;
+    }
+
+    return WillPopScope( onWillPop: onWillPop , child: Scaffold(
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
             Get.to(()=>NavadminView(initialIndex: 1,));
+            controller.resetDate();
           },
         ),
         title: Text("Back"),
@@ -69,21 +93,21 @@ class _TrainingtypeccViewState extends State<TrainingtypeccView>
                     itemBuilder: (BuildContext context) {
                       return [
                         PopupMenuItem(
-                          child: TextButton(
-                            onPressed: () {
-                              Get.toNamed(Routes.ADD_ATTENDANCECC, arguments: {
-                                "id" : controller.argumentid.value,
-                                "name" : controller.argumentname.value
-                              });
-                            },
-                            child: Row(
-                              children: [
-                                Icon(Icons.add, size: 16),
-                                SizedBox(width: 5,),
-                                Text("Add Attendance",)
-                              ],
-                            ),
-                          )
+                            child: TextButton(
+                              onPressed: () {
+                                Get.toNamed(Routes.ADD_ATTENDANCECC, arguments: {
+                                  "id" : controller.argumentid.value,
+                                  "name" : controller.argumentname.value
+                                });
+                              },
+                              child: Row(
+                                children: [
+                                  Icon(Icons.add, size: 16),
+                                  SizedBox(width: 5,),
+                                  Text("Add Attendance",)
+                                ],
+                              ),
+                            )
                         ),
                         PopupMenuItem(
                           child: TextButton(
@@ -115,53 +139,6 @@ class _TrainingtypeccViewState extends State<TrainingtypeccView>
             SizedBox(
               height: 10,
             ),
-           // Text("REDUCED VERTICAL SEPARATION MINIMA"),
-           //  Row(
-           //    mainAxisAlignment: MainAxisAlignment.end,
-           //    crossAxisAlignment: CrossAxisAlignment.end,
-           //    children: [
-           //      InkWell(
-           //        onTap: () {
-           //          Get.toNamed(Routes.ADD_ATTENDANCECC, arguments: {
-           //            "id" : controller.argumentid.value,
-           //            "name" : controller.argumentname.value
-           //          });
-           //        },
-           //        child: Container(
-           //          padding: EdgeInsets.all(5),
-           //          decoration: BoxDecoration(
-           //            borderRadius: BorderRadius.circular(10.0),
-           //            color: TsOneColor.greenColor,
-           //            boxShadow: [
-           //              BoxShadow(
-           //                color: Colors.grey.withOpacity(0.3),
-           //                spreadRadius: 2,
-           //                blurRadius: 3,
-           //                offset: const Offset(0, 2),
-           //              ),
-           //            ],
-           //          ),
-           //          child: Row(
-           //            children: [
-           //              Icon(
-           //                Icons.add_box_outlined,
-           //                color: Colors.white,
-           //              ),
-           //              SizedBox(
-           //                width: 5,
-           //              ),
-           //              Text(
-           //                "Add Attendance",
-           //                style: TextStyle(color: Colors.white),
-           //              )
-           //            ],
-           //          ),
-           //        ),
-           //      )
-           //    ],
-           //  ),
-
-            //-------------------- TAB BAR ------------------------
             Container(
               child: TabBar(
                 labelPadding: EdgeInsets.symmetric(horizontal: 1.0),
@@ -181,60 +158,14 @@ class _TrainingtypeccViewState extends State<TrainingtypeccView>
               child: TabBarView(
                 controller: _tabController,
                 children: [
-                  StreamBuilder<List<Map<String, dynamic>>>(
-                    stream: controller.getCombinedAttendanceStream(controller.argumentid.value, "pending"),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return LoadingScreen(); // Placeholder while loading
-                      }
-                      if (snapshot.hasError) {
-                        print("cccc ${snapshot.error.toString()}");
-                        return ErrorScreen();
-                      }
-
-                      var listAttendance= snapshot.data!;
-
-                      if(listAttendance.isEmpty){
-                        return EmptyScreen();
-                      }
-
-                      return ListView.builder(
-                          itemCount: listAttendance.length,
-                          itemBuilder: (context, index) {
-                            Timestamp? timestamp = listAttendance[index]["date"];
-                            DateTime? dateTime = timestamp?.toDate();
-                            String dateC = DateFormat('dd MMMM yyyy').format(dateTime!);
-                            return ListTile(
-                              onTap: () => Get.toNamed(Routes.ATTENDANCE_PENDINGCC,  arguments: {
-                                "id" : listAttendance[index]["id"],
-                              }),
-                              leading: CircleAvatar(
-                                radius: 20,
-                                backgroundColor: Colors.black26,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(100),
-                                  child : listAttendance[index]["photoURL"] == null ?  Image.asset(
-                                    "assets/images/placeholder_person.png",
-                                    fit: BoxFit.cover,
-                                  ) : Image.network("${listAttendance[index]["photoURL"]}", fit: BoxFit.cover),),
-                              ),
-                              title: Text(listAttendance[index]["name"].toString()),
-                              subtitle: Text(dateC),
-                              trailing: Icon(Icons.navigate_next),
-                            );
-                          }
-                      );
-                    },
-                  ),
-                  StreamBuilder<List<Map<String, dynamic>>>(
-                    stream: controller.getCombinedAttendanceStream(controller.argumentid.value, "confirmation"),
+                  Obx(() =>  StreamBuilder<List<Map<String, dynamic>>>(
+                    stream: controller.getCombinedAttendanceStream(controller.argumentid.value, "pending", from: controller.fromPending.value, to:controller.toPending.value),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return LoadingScreen(); // Placeholder while loading
                       }
 
                       if (snapshot.hasError) {
-                        print("Error: ${snapshot.error}");
                         return ErrorScreen();
                       }
 
@@ -243,44 +174,156 @@ class _TrainingtypeccViewState extends State<TrainingtypeccView>
                         return EmptyScreen();
                       }
 
-                      return ListView.builder(
-                          itemCount: listAttendance.length,
-                          itemBuilder: (context, index) {
-                            Timestamp? timestamp = listAttendance[index]["date"];
-                            DateTime? dateTime = timestamp?.toDate();
-                            String dateC = DateFormat('dd MMMM yyyy').format(dateTime!);
-                            return ListTile(
-                              leading: CircleAvatar(
-                                radius: 20,
-                                backgroundColor: Colors.black26,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(100),
-                                  child : listAttendance[index]["photoURL"] == "noimage" ?  Image.asset(
-                                    "assets/images/placeholder_person.png",
-                                    fit: BoxFit.cover,
-                                  ) : Image.network("${listAttendance[index]["photoURL"]}", fit: BoxFit.cover),),
+                      return Column(
+                        children: [
+                          SizedBox(height: 10),
+                          Form(
+                            key: _formPendingKey,
+                            child: Container(
+                              child:   Row(
+                                children: [
+                                  Expanded(
+                                    flex: 3,
+                                    child: TextFormField(
+                                      controller: fromPendingC,
+                                      obscureText: false,
+                                      readOnly: false,
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {   // Validation Logic
+                                          return 'Please enter the From Date';
+                                        }
+                                        return null;
+                                      },
+                                      decoration: InputDecoration(
+                                          contentPadding: const EdgeInsets.symmetric(vertical: 0,horizontal: 10),
+                                          prefixIcon: const Icon(Icons.calendar_month, color: TsOneColor.primary,),
+                                          enabledBorder: const OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color: TsOneColor.primary,
+                                            ),
+                                          ),
+                                          border: const OutlineInputBorder(
+                                              borderSide: BorderSide(color: TsOneColor.secondaryContainer)
+                                          ),
+                                          focusedBorder: const OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color: Colors.green,
+                                            ),
+                                          ),
+                                          labelText: "From Date"
+                                      ),
+                                      onTap: () async {
+                                        DateTime? pickedDate = await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(1945), lastDate: DateTime(2300));
+                                        if(pickedDate != null){
+                                          String formattedDate = DateFormat('dd-MM-yyyy').format(pickedDate);
+                                          fromPendingC.text = formattedDate;
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                  Expanded(flex: 1,child: Icon(Icons.compare_arrows_rounded)),
+                                  Expanded(
+                                    flex: 3,
+                                    child: TextFormField(
+                                      controller: toPendingC,
+                                      obscureText: false,
+                                      readOnly: false,
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {   // Validation Logic
+                                          return 'Please enter the To Date';
+                                        }
+                                        return null;
+                                      },
+                                      decoration: InputDecoration(
+                                          contentPadding: const EdgeInsets.symmetric(vertical: 0,horizontal: 10),
+                                          prefixIcon: const Icon(Icons.calendar_month, color: TsOneColor.primary,),
+                                          enabledBorder: const OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color: TsOneColor.primary,
+                                            ),
+                                          ),
+                                          border: const OutlineInputBorder(
+                                              borderSide: BorderSide(color: TsOneColor.secondaryContainer)
+                                          ),
+                                          focusedBorder: const OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color: Colors.green,
+                                            ),
+                                          ),
+                                          labelText: "To Date"
+                                      ),
+                                      onTap: () async {
+                                        DateTime? pickedDate = await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(1945), lastDate: DateTime(2300));
+                                        if(pickedDate != null){
+                                          String formattedDate = DateFormat('dd-MM-yyyy').format(pickedDate);
+                                          toPendingC.text = formattedDate;
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                  Expanded(flex: 1,child:
+                                  InkWell(
+                                    onTap: (){
+                                      DateTime from = DateFormat('dd-MM-yyyy').parse(fromPendingC.text);
+                                      DateTime to = DateFormat('dd-MM-yyyy').parse(toPendingC.text);
+
+                                      if (_formPendingKey.currentState != null && _formPendingKey.currentState!.validate()  != 0) {
+                                        if (from.isBefore(to)) {
+                                          controller.fromPending.value = from;
+                                          controller.toPending.value = to;
+                                        } else {
+
+                                        }
+                                      }
+                                    },
+                                    child: Icon(Icons.filter_list, color: TsOneColor.primary,),
+                                  )
+                                  ),
+                                ],
                               ),
-                              title: Text(listAttendance[index]["name"].toString()),
-                              subtitle: Text(dateC),
-                              trailing: Icon(Icons.navigate_next),
-                              onTap: () => Get.toNamed(Routes.ATTENDANCE_CONFIRCC,  arguments: {
-                                "id" : listAttendance[index]["id"],
-                              }),
-                            );
-                          }
+                            ),
+                          ),
+                          ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: listAttendance.length,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemBuilder: (context, index) {
+
+                                Timestamp? timestamp = listAttendance[index]["date"];
+                                DateTime? dateTime = timestamp?.toDate();
+                                String dateC = DateFormat('dd MMMM yyyy').format(dateTime!);
+                                return ListTile(
+                                  leading: CircleAvatar(
+                                    radius: 20,
+                                    backgroundColor: Colors.black26,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(100),
+                                      child : listAttendance[index]["photoURL"] == null ?  Image.asset(
+                                        "assets/images/placeholder_person.png",
+                                        fit: BoxFit.cover,
+                                      ) : Image.network("${listAttendance[index]["photoURL"]}", fit: BoxFit.cover),),
+                                  ),
+                                  title: Text(listAttendance[index]["name"].toString()),
+                                  subtitle: Text(dateC),
+                                  trailing: Icon(Icons.navigate_next),
+                                  onTap: () => Get.toNamed(Routes.ATTENDANCE_CONFIRCC,  arguments: {
+                                    "id" : listAttendance[index]["id"],
+                                  }),
+                                );
+                              }
+                          )
+                        ],
                       );
                     },
-                  ),
-                  StreamBuilder<List<Map<String, dynamic>>>(
-                    stream: controller.getCombinedAttendanceStream(controller.argumentid.value, "done"),
+                  ),),
+                  Obx(() =>  StreamBuilder<List<Map<String, dynamic>>>(
+                    stream: controller.getCombinedAttendanceStream(controller.argumentid.value, "confirmation", from: controller.fromConfirmation.value, to:controller.toConfirmation.value),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return LoadingScreen(); // Placeholder while loading
                       }
 
                       if (snapshot.hasError) {
-
-                        print("cccc ${snapshot.error.toString()}");
                         return ErrorScreen();
                       }
 
@@ -289,41 +332,312 @@ class _TrainingtypeccViewState extends State<TrainingtypeccView>
                         return EmptyScreen();
                       }
 
-                      return ListView.builder(
-                          itemCount: listAttendance.length,
-                          itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          SizedBox(height: 10),
+                          Form(
+                            key: _formConfirmationKey,
+                            child: Container(
+                              child:   Row(
+                                children: [
+                                  Expanded(
+                                    flex: 3,
+                                    child: TextFormField(
+                                      controller: fromConfirmationC,
+                                      obscureText: false,
+                                      readOnly: false,
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {   // Validation Logic
+                                          return 'Please enter the From Date';
+                                        }
+                                        return null;
+                                      },
+                                      decoration: InputDecoration(
+                                          contentPadding: const EdgeInsets.symmetric(vertical: 0,horizontal: 10),
+                                          prefixIcon: const Icon(Icons.calendar_month, color: TsOneColor.primary,),
+                                          enabledBorder: const OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color: TsOneColor.primary,
+                                            ),
+                                          ),
+                                          border: const OutlineInputBorder(
+                                              borderSide: BorderSide(color: TsOneColor.secondaryContainer)
+                                          ),
+                                          focusedBorder: const OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color: Colors.green,
+                                            ),
+                                          ),
+                                          labelText: "From Date"
+                                      ),
+                                      onTap: () async {
+                                        DateTime? pickedDate = await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(1945), lastDate: DateTime(2300));
+                                        if(pickedDate != null){
+                                          String formattedDate = DateFormat('dd-MM-yyyy').format(pickedDate);
+                                          fromConfirmationC.text = formattedDate;
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                  Expanded(flex: 1,child: Icon(Icons.compare_arrows_rounded)),
+                                  Expanded(
+                                    flex: 3,
+                                    child: TextFormField(
+                                      controller: toConfirmationC,
+                                      obscureText: false,
+                                      readOnly: false,
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {   // Validation Logic
+                                          return 'Please enter the To Date';
+                                        }
+                                        return null;
+                                      },
+                                      decoration: InputDecoration(
+                                          contentPadding: const EdgeInsets.symmetric(vertical: 0,horizontal: 10),
+                                          prefixIcon: const Icon(Icons.calendar_month, color: TsOneColor.primary,),
+                                          enabledBorder: const OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color: TsOneColor.primary,
+                                            ),
+                                          ),
+                                          border: const OutlineInputBorder(
+                                              borderSide: BorderSide(color: TsOneColor.secondaryContainer)
+                                          ),
+                                          focusedBorder: const OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color: Colors.green,
+                                            ),
+                                          ),
+                                          labelText: "To Date"
+                                      ),
+                                      onTap: () async {
+                                        DateTime? pickedDate = await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(1945), lastDate: DateTime(2300));
+                                        if(pickedDate != null){
+                                          String formattedDate = DateFormat('dd-MM-yyyy').format(pickedDate);
+                                          toConfirmationC.text = formattedDate;
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                  Expanded(flex: 1,child:
+                                  InkWell(
+                                    onTap: (){
+                                      DateTime from = DateFormat('dd-MM-yyyy').parse(fromConfirmationC.text);
+                                      DateTime to = DateFormat('dd-MM-yyyy').parse(toConfirmationC.text);
 
-                            Timestamp? timestamp = listAttendance[index]["date"];
-                            DateTime? dateTime = timestamp?.toDate();
-                            String dateC = DateFormat('dd MMMM yyyy').format(dateTime!);
-                            return ListTile(
-                              leading: CircleAvatar(
-                                radius: 20,
-                                backgroundColor: Colors.black26,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(100),
-                                  child : listAttendance[index]["photoURL"] == null ?  Image.asset(
-                                    "assets/images/placeholder_person.png",
-                                    fit: BoxFit.cover,
-                                  ) : Image.network("${listAttendance[index]["photoURL"]}", fit: BoxFit.cover),),
+                                      if (_formConfirmationKey.currentState != null && _formConfirmationKey.currentState!.validate()  != 0) {
+                                        if (from.isBefore(to)) {
+                                          controller.fromConfirmation.value = from;
+                                          controller.toConfirmation.value = to;
+                                        } else {
+
+                                        }
+                                      }
+                                    },
+                                    child: Icon(Icons.filter_list, color: TsOneColor.primary,),
+                                  )
+                                  ),
+                                ],
                               ),
-                              title: Text(listAttendance[index]["name"].toString()),
-                              subtitle: Text(dateC),
-                              trailing: Icon(Icons.navigate_next),
-                              onTap: () => Get.toNamed(Routes.ATTENDANCE_CONFIRCC,  arguments: {
-                                "id" : listAttendance[index]["id"],
-                              }),
-                            );
-                          }
+                            ),
+                          ),
+                          ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: listAttendance.length,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemBuilder: (context, index) {
+
+                                Timestamp? timestamp = listAttendance[index]["date"];
+                                DateTime? dateTime = timestamp?.toDate();
+                                String dateC = DateFormat('dd MMMM yyyy').format(dateTime!);
+                                return ListTile(
+                                  leading: CircleAvatar(
+                                    radius: 20,
+                                    backgroundColor: Colors.black26,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(100),
+                                      child : listAttendance[index]["photoURL"] == null ?  Image.asset(
+                                        "assets/images/placeholder_person.png",
+                                        fit: BoxFit.cover,
+                                      ) : Image.network("${listAttendance[index]["photoURL"]}", fit: BoxFit.cover),),
+                                  ),
+                                  title: Text(listAttendance[index]["name"].toString()),
+                                  subtitle: Text(dateC),
+                                  trailing: Icon(Icons.navigate_next),
+                                  onTap: () => Get.toNamed(Routes.ATTENDANCE_CONFIRCC,  arguments: {
+                                    "id" : listAttendance[index]["id"],
+                                  }),
+                                );
+                              }
+                          )
+                        ],
                       );
                     },
-                  ),
+                  ),),
+                  Obx(() =>  StreamBuilder<List<Map<String, dynamic>>>(
+                    stream: controller.getCombinedAttendanceStream(controller.argumentid.value, "done", from: controller.fromDone.value, to:controller.toDone.value),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return LoadingScreen(); // Placeholder while loading
+                      }
+
+                      if (snapshot.hasError) {
+                        return ErrorScreen();
+                      }
+
+                      var listAttendance= snapshot.data!;
+                      if(listAttendance.isEmpty){
+                        return EmptyScreen();
+                      }
+
+                      return Column(
+                        children: [
+                          SizedBox(height: 10),
+                          Form(
+                            key: _formDoneKey,
+                            child: Container(
+                              child:   Row(
+                                children: [
+                                  Expanded(
+                                    flex: 3,
+                                    child: TextFormField(
+                                      controller: fromDoneC,
+                                      obscureText: false,
+                                      readOnly: false,
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {   // Validation Logic
+                                          return 'Please enter the From Date';
+                                        }
+                                        return null;
+                                      },
+                                      decoration: InputDecoration(
+                                          contentPadding: const EdgeInsets.symmetric(vertical: 0,horizontal: 10),
+                                          prefixIcon: const Icon(Icons.calendar_month, color: TsOneColor.primary,),
+                                          enabledBorder: const OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color: TsOneColor.primary,
+                                            ),
+                                          ),
+                                          border: const OutlineInputBorder(
+                                              borderSide: BorderSide(color: TsOneColor.secondaryContainer)
+                                          ),
+                                          focusedBorder: const OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color: Colors.green,
+                                            ),
+                                          ),
+                                          labelText: "From Date"
+                                      ),
+                                      onTap: () async {
+                                        DateTime? pickedDate = await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(1945), lastDate: DateTime(2300));
+                                        if(pickedDate != null){
+                                          String formattedDate = DateFormat('dd-MM-yyyy').format(pickedDate);
+                                          fromDoneC.text = formattedDate;
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                  Expanded(flex: 1,child: Icon(Icons.compare_arrows_rounded)),
+                                  Expanded(
+                                    flex: 3,
+                                    child: TextFormField(
+                                      controller: toDoneC,
+                                      obscureText: false,
+                                      readOnly: false,
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {   // Validation Logic
+                                          return 'Please enter the To Date';
+                                        }
+                                        return null;
+                                      },
+                                      decoration: InputDecoration(
+                                          contentPadding: const EdgeInsets.symmetric(vertical: 0,horizontal: 10),
+                                          prefixIcon: const Icon(Icons.calendar_month, color: TsOneColor.primary,),
+                                          enabledBorder: const OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color: TsOneColor.primary,
+                                            ),
+                                          ),
+                                          border: const OutlineInputBorder(
+                                              borderSide: BorderSide(color: TsOneColor.secondaryContainer)
+                                          ),
+                                          focusedBorder: const OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color: Colors.green,
+                                            ),
+                                          ),
+                                          labelText: "To Date"
+                                      ),
+                                      onTap: () async {
+                                        DateTime? pickedDate = await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(1945), lastDate: DateTime(2300));
+                                        if(pickedDate != null){
+                                          String formattedDate = DateFormat('dd-MM-yyyy').format(pickedDate);
+                                          toDoneC.text = formattedDate;
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                  Expanded(flex: 1,child:
+                                  InkWell(
+                                    onTap: (){
+                                      DateTime from = DateFormat('dd-MM-yyyy').parse(fromDoneC.text);
+                                      DateTime to = DateFormat('dd-MM-yyyy').parse(toDoneC.text);
+
+                                      if (_formDoneKey.currentState != null && _formDoneKey.currentState!.validate()  != 0) {
+                                        if (from.isBefore(to)) {
+                                          controller.fromDone.value = from;
+                                          controller.toDone.value = to;
+                                        } else {
+
+                                        }
+                                      }
+                                    },
+                                    child: Icon(Icons.filter_list, color: TsOneColor.primary,),
+                                  )
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: listAttendance.length,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemBuilder: (context, index) {
+
+                                Timestamp? timestamp = listAttendance[index]["date"];
+                                DateTime? dateTime = timestamp?.toDate();
+                                String dateC = DateFormat('dd MMMM yyyy').format(dateTime!);
+                                return ListTile(
+                                  leading: CircleAvatar(
+                                    radius: 20,
+                                    backgroundColor: Colors.black26,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(100),
+                                      child : listAttendance[index]["photoURL"] == null ?  Image.asset(
+                                        "assets/images/placeholder_person.png",
+                                        fit: BoxFit.cover,
+                                      ) : Image.network("${listAttendance[index]["photoURL"]}", fit: BoxFit.cover),),
+                                  ),
+                                  title: Text(listAttendance[index]["name"].toString()),
+                                  subtitle: Text(dateC),
+                                  trailing: Icon(Icons.navigate_next),
+                                  onTap: () => Get.toNamed(Routes.ATTENDANCE_CONFIRCC,  arguments: {
+                                    "id" : listAttendance[index]["id"],
+                                  }),
+                                );
+                              }
+                          )
+                        ],
+                      );
+                    },
+                  ),)
                 ],
               ),
             ),
           ],
         ),
       ),
-    );
+    ));
   }
 }

@@ -32,6 +32,7 @@ class ProfileccController extends GetxController {
   RxString instructorType = "".obs;
 
   RxInt idTraining = 0.obs;
+  RxInt idTrainee = 0.obs;
   GoogleSignIn _googleSignIn = GoogleSignIn();
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
@@ -43,8 +44,9 @@ class ProfileccController extends GetxController {
   @override
   void onInit() {
     userPreferences = getItLocator<UserPreferences>();
+    idTrainee.value = userPreferences.getIDNo();
     cekRole();
-    fetchAttendanceData();
+    fetchAttendanceData(userPreferences.getIDNo());
     super.onInit();
   }
 
@@ -128,9 +130,8 @@ class ProfileccController extends GetxController {
   }
 
 
-  Future<void> fetchAttendanceData() async {
+  Future<bool> fetchAttendanceData(int idCrew) async {
     try {
-      userPreferences = getItLocator<UserPreferences>();
       QuerySnapshot attendanceQuery = await firestore
           .collection('attendance')
           .where("expiry", isEqualTo: "VALID")
@@ -138,46 +139,59 @@ class ProfileccController extends GetxController {
           .where("is_delete", isEqualTo: 0)
           .get();
 
+      print("test 1");
       if (attendanceQuery.docs.isNotEmpty) {
-        final attendanceDetailQuery = await firestore.collection('attendance-detail').where("idtraining", isEqualTo: userPreferences.getIDNo()).where("status", isEqualTo: "donescoring").get();
+        final attendanceDetailQuery = await firestore.collection('attendance-detail').where("idtraining", isEqualTo: idCrew).where("status", isEqualTo: "donescoring").get();
         final attendanceDetailData = attendanceDetailQuery.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
         if (attendanceDetailData.isEmpty) {
-          return;
+          return false;
         }
-
         final attendanceData = await Future.wait(
           attendanceQuery.docs.map((doc) async {
-            final attendanceModel = AttendanceModel.fromJson(doc.data() as Map<String, dynamic>);
-            final matchingDetail = attendanceDetailData.where((attendanceDetail) => attendanceDetail['idattendance'] == attendanceModel.id);
-
-            if (matchingDetail.isNotEmpty) {
-              return attendanceModel.toJson();
-            }
-
-            return null;
+            final data = doc.data() as Map<String, dynamic>;
+            final matchingDetail = attendanceDetailData.where((attendanceDetail) => attendanceDetail['idattendance'] == data['id']);
+            return matchingDetail.isNotEmpty
+                ? {
+              'id': data['id'],
+              'expiry': data['expiry'],
+              'subject': data['subject'],
+              'valid_to': data['valid_to'],
+            } : null;
           }),
         );
 
-        // Remove null values from attendanceData
         final filteredAttendanceData = attendanceData.where((item) => item != null).toList();
 
         final groupedAttendanceData = <String, Map<String, dynamic>>{};
         for (var attendance in filteredAttendanceData) {
-          final subject = attendance?['subject'];
-          if (!groupedAttendanceData.containsKey(subject) ||
-              attendance?['valid_to'].compareTo(groupedAttendanceData[subject]!['valid_to']) > 0) {
-            groupedAttendanceData[subject] = attendance!;
+          final subject = attendance?['subject'] as String?;
+          if (subject != null) {
+            final validTo = attendance?['valid_to'];
+            if (validTo != null) {
+              if (!groupedAttendanceData.containsKey(subject) ||
+                  validTo.compareTo(groupedAttendanceData[subject]?['valid_to']  ?? DateTime(0)) > 0) {
+                groupedAttendanceData[subject] = attendance!;
+              }
+            }
           }
         }
 
+
+        print("groupedAttendanceData");
+        print(groupedAttendanceData);
         // Sort the grouped attendance data by valid_to
         final sortedAttendanceData = groupedAttendanceData.values.toList()
           ..sort((a, b) {
             Timestamp timestampA = a['valid_to'];
             Timestamp timestampB = b['valid_to'];
-            return timestampB.compareTo(timestampA);
+            DateTime dateTimeA = timestampA.toDate(); // Convert Timestamp to DateTime
+            DateTime dateTimeB = timestampB.toDate(); // Convert Timestamp to DateTime
+            return dateTimeB.compareTo(dateTimeA);
           });
 
+
+        print("sorted");
+        print(sortedAttendanceData);
         QuerySnapshot trainingQuery = await firestore
             .collection('trainingType')
             .get();
@@ -187,6 +201,8 @@ class ProfileccController extends GetxController {
           return data != null ? data['training']?.toString() : null;
         }).toList();
 
+        print("trainingNames");
+        print(trainingNames);
         // Create a map with keys from trainingNames and values from sortedAttendanceData
         Map<String?, List<Map<String, dynamic>>> attendanceMap = {};
 
@@ -211,19 +227,23 @@ class ProfileccController extends GetxController {
         if(trainingNames.length > attendanceMap.length){
           print("NOT VALID");
           isReady.value = false;
+          return false;
         }else{
           print("VALID");
           isReady.value = true;
+          await getHistoryData(idCrew, "ALAR / CFIT", 5);
+          print("test 2");
+          return true;
         }
 
-        await getHistoryData("ALAR / CFIT", 5);
-        print("test 2");
+
       } else {
-        return;
+        return false;
       }
     } catch (error) {
-      print('Error fetching attendance data: $error');
+      print('Error fetching attendance: $error');
       // Handle the error accordingly
+      return false;
     }
   }
 
@@ -239,9 +259,8 @@ class ProfileccController extends GetxController {
   }
 
 
-  Future<List<Map<String, dynamic>>?> getHistoryData(String subject, int longlist) async {
+  Future<List<Map<String, dynamic>>?> getHistoryData(int idTrainee, String subject, int longlist) async {
     try {
-      userPreferences = getItLocator<UserPreferences>();
       QuerySnapshot attendanceQuery = await firestore
           .collection('attendance')
           .where("expiry", isEqualTo: "VALID")
@@ -254,7 +273,7 @@ class ProfileccController extends GetxController {
         print(subject);
         final attendanceDetailQuery = await firestore.collection(
             'attendance-detail').where(
-            "idtraining", isEqualTo: userPreferences.getIDNo()).where(
+            "idtraining", isEqualTo: idTrainee).where(
             "status", isEqualTo: "donescoring").get();
         final attendanceDetailData = attendanceDetailQuery.docs.map((doc) =>
         doc.data() as Map<String, dynamic>).toList();
@@ -280,12 +299,16 @@ class ProfileccController extends GetxController {
 
         List<Map<String, dynamic>> relevantData = [];
         for (var attendanceModel in attendanceData) {
-          final date = attendanceModel?['date'];
+          // final date = attendanceModel?['date'];
+          // Timestamp? timestamp = attendanceModel?['date'];
+          // DateTime? dateTime = timestamp?.toDate();
           final validTo = attendanceModel?['valid_to'];
-
-          if (date != null) {
+          final dates = attendanceModel?['date'];
+          if (dates != null) {
+            print(dates);
+            print(validTo);
             relevantData.add({
-              'date': date,
+              'date': dates,
               'valid_to': validTo,
             });
           }
@@ -309,8 +332,13 @@ class ProfileccController extends GetxController {
             final DateTime validTo = relevantData[index]['valid_to'].toDate();
             String formattedValidTo = dateFormat.format(validTo);
 
+            final DateTime dates = relevantData[index]['date'].toDate();
+            String formatteddates = dateFormat.format(dates);
+
+            Timestamp? timestamp = relevantData[index]['date'];
+            DateTime? dateTime = timestamp?.toDate();
             return {
-              'date': relevantData[index]['date'],
+              'date': formatteddates,
               'valid_to': formattedValidTo,
             };
           } else {
@@ -349,7 +377,7 @@ class ProfileccController extends GetxController {
     }
   }
 
-  Future<Uint8List> getPDFTrainingCard() async {
+  Future<Uint8List> getPDFTrainingCard(int idCrew) async {
     try {
       final font = await rootBundle.load("assets/fonts/Poppins-Regular.ttf");
       final ttf = pw.Font.ttf(font);
@@ -364,8 +392,7 @@ class ProfileccController extends GetxController {
           .asUint8List();
       final pw.ImageProvider backgroundImageProvider = pw.MemoryImage(backgroundImageData);
 
-      userPreferences = getItLocator<UserPreferences>();
-      List<UserModel>? usersData = await getProfileData(userPreferences.getIDNo());
+      List<UserModel>? usersData = await getProfileData(idCrew);
 
       String userName = "";
       String userLicense = "";
@@ -382,25 +409,25 @@ class ProfileccController extends GetxController {
       }
 
 
-      final List<Map<String, dynamic>>? historyDataBasicIndoc = await getHistoryData("BASIC INDOC", 1);
-      final List<Map<String, dynamic>>? historyDataLSWB = await getHistoryData("LOAD SHEET / WEIGHT & BALANCE", 1);
-      final List<Map<String, dynamic>>? historyDataRVSM = await getHistoryData("RVSM", 1);
-      final List<Map<String, dynamic>>? historyDataWNDSHEAR = await getHistoryData("WNDSHEAR", 8);
-      final List<Map<String, dynamic>>? historyDataAlarCfit = await getHistoryData("ALAR / CFIT", 4);
-      final List<Map<String, dynamic>>? historyDataSEP = await getHistoryData("SEP", 4);
-      final List<Map<String, dynamic>>? historyDataSEPDRILL = await getHistoryData("SEP DRILL", 2);
-      final List<Map<String, dynamic>>? historyDataDGR = await getHistoryData("DGR & AVSEC", 2);
-      final List<Map<String, dynamic>>? historyDataSMS = await getHistoryData("SMS", 4);
-      final List<Map<String, dynamic>>? historyDataCRM = await getHistoryData("CRM", 4);
-      final List<Map<String, dynamic>>? historyDataPBN = await getHistoryData("PBN", 2);
-      final List<Map<String, dynamic>>? historyDataRGT = await getHistoryData("RGT", 8);
-      final List<Map<String, dynamic>>? historyDataRHS = await getHistoryData("RHS CHECK (SIM)", 8);
-      final List<Map<String, dynamic>>? historyDataUPRT = await getHistoryData("UPRT", 2);
-      final List<Map<String, dynamic>>? historyDataRNP = await getHistoryData("RNP (GNSS)", 4);
-      final List<Map<String, dynamic>>? historyDataLINECHECK = await getHistoryData("LINE CHECK", 4);
-      final List<Map<String, dynamic>>? historyDataLVO = await getHistoryData("LVO", 2);
-      final List<Map<String, dynamic>>? historyDataETOPSSIM = await getHistoryData("ETOPS SIM", 2);
-      final List<Map<String, dynamic>>? historyDataETOPSFLT = await getHistoryData("ETOPS FLT", 2);
+      final List<Map<String, dynamic>>? historyDataBasicIndoc = await getHistoryData(idCrew, "BASIC INDOC", 1);
+      final List<Map<String, dynamic>>? historyDataLSWB = await getHistoryData(idCrew, "LOAD SHEET / WEIGHT & BALANCE", 1);
+      final List<Map<String, dynamic>>? historyDataRVSM = await getHistoryData(idCrew, "RVSM", 1);
+      final List<Map<String, dynamic>>? historyDataWNDSHEAR = await getHistoryData(idCrew, "WNDSHEAR", 8);
+      final List<Map<String, dynamic>>? historyDataAlarCfit = await getHistoryData(idCrew, "ALAR / CFIT", 4);
+      final List<Map<String, dynamic>>? historyDataSEP = await getHistoryData(idCrew, "SEP", 4);
+      final List<Map<String, dynamic>>? historyDataSEPDRILL = await getHistoryData(idCrew, "SEP DRILL", 2);
+      final List<Map<String, dynamic>>? historyDataDGR = await getHistoryData(idCrew, "DGR & AVSEC", 2);
+      final List<Map<String, dynamic>>? historyDataSMS = await getHistoryData(idCrew, "SMS", 4);
+      final List<Map<String, dynamic>>? historyDataCRM = await getHistoryData(idCrew, "CRM", 4);
+      final List<Map<String, dynamic>>? historyDataPBN = await getHistoryData(idCrew, "PBN", 2);
+      final List<Map<String, dynamic>>? historyDataRGT = await getHistoryData(idCrew, "RGT", 8);
+      final List<Map<String, dynamic>>? historyDataRHS = await getHistoryData(idCrew, "RHS CHECK (SIM)", 8);
+      final List<Map<String, dynamic>>? historyDataUPRT = await getHistoryData(idCrew, "UPRT", 2);
+      final List<Map<String, dynamic>>? historyDataRNP = await getHistoryData(idCrew, "RNP (GNSS)", 4);
+      final List<Map<String, dynamic>>? historyDataLINECHECK = await getHistoryData(idCrew, "LINE CHECK", 4);
+      final List<Map<String, dynamic>>? historyDataLVO = await getHistoryData(idCrew, "LVO", 2);
+      final List<Map<String, dynamic>>? historyDataETOPSSIM = await getHistoryData(idCrew, "ETOPS SIM", 2);
+      final List<Map<String, dynamic>>? historyDataETOPSFLT = await getHistoryData(idCrew, "ETOPS FLT", 2);
 
 
       // ------------------- PAGE 1 ------------------

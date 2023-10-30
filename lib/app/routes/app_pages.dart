@@ -400,7 +400,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.PILOTTRAININGHISTORYCC,
-      page: () => const PilottraininghistoryccView(),
+      page: () => PilottraininghistoryccView(),
       binding: PilottraininghistoryccBinding(),
     ),
     GetPage(
@@ -425,7 +425,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.TRAININGHISTORYCC_CPTS,
-      page: () => const TraininghistoryccCptsView(),
+      page: () => TraininghistoryccCptsView(),
       binding: TraininghistoryccCptsBinding(),
     ),
     GetPage(

@@ -9,6 +9,7 @@ import '../../../../../../presentation/theme.dart';
 import '../../../../../../util/error_screen.dart';
 import '../../../../../../util/loading_screen.dart';
 import '../../../../../routes/app_pages.dart';
+import '../../../profilecc/controllers/profilecc_controller.dart';
 import '../controllers/pilotcrewdetailcc_controller.dart';
 
 class PilotcrewdetailccView extends GetView<PilotcrewdetailccController> {
@@ -141,9 +142,68 @@ class PilotcrewdetailccView extends GetView<PilotcrewdetailccController> {
                 ),
               ),
               SizedBox(height: 20,),
-              Row(children: [
-                RedTitleText(text:"TRAINING"),
-              ],),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("TRAINING", style: tsOneTextTheme.headlineLarge,),
+                  Obx(() {
+                    return  controller.isReady.value ?
+                    InkWell(
+                      onTap: () async {
+                        try {
+                          // Tampilkan LoadingScreen
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return LoadingScreen();
+                            },
+                          );
+
+                          await Get.find<ProfileccController>().savePdfFile(
+                              await Get.find<ProfileccController>()
+                                  .getPDFTrainingCard(controller.argumentid.value));
+                        } catch (e) {
+                          print('Error: $e');
+                        } finally {
+                          // Tutup dialog saat selesai
+                          Navigator.pop(context);
+                        }
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          borderRadius:
+                          BorderRadius.circular(10.0),
+                          color: Colors.blue,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey
+                                  .withOpacity(0.3),
+                              spreadRadius: 2,
+                              blurRadius: 3,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.picture_as_pdf,
+                              size: 16,
+                              color: Colors.white,
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Text(
+                              "Save PDF",
+                              style: TextStyle(
+                                  color: Colors.white),
+                            ),],),) ,
+                    ):  SizedBox();
+                  })
+                ],
+              ),
               StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
                 stream: controller.trainingStream(),
                 builder: (context, snapshot) {

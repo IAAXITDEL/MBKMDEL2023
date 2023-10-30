@@ -308,8 +308,6 @@ class ProfileccView extends GetView<ProfileccController> {
                                    // Tampilkan LoadingScreen
                                    showDialog(
                                      context: context,
-                                     barrierDismissible:
-                                     false, // Tidak bisa menutup dialog dengan tap di luar
                                      builder: (BuildContext context) {
                                        return LoadingScreen();
                                      },
@@ -317,7 +315,7 @@ class ProfileccView extends GetView<ProfileccController> {
 
                                    await controller.savePdfFile(
                                        await controller
-                                           .getPDFTrainingCard());
+                                           .getPDFTrainingCard(controller.idTrainee.value));
                                  } catch (e) {
                                    print('Error: $e');
                                  } finally {

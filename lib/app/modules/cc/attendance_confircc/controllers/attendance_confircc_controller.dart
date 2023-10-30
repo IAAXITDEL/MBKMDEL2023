@@ -625,6 +625,8 @@ class AttendanceConfirccController extends GetxController {
 
                       pw.SizedBox(height: 10),
                       ...attendanceModels.map((attendanceModel) {
+                        Timestamp? timestamp = attendanceModel.date;
+                        DateTime? dateTime = timestamp?.toDate();
                         return pw.Column(children: [
                           //--------------------------------------- SECTION 2 --------------------------------
                           pw.Container(
@@ -737,7 +739,7 @@ class AttendanceConfirccController extends GetxController {
                                     children: [
                                       TextFieldPdf(title: "DATE"),
                                       TextFieldPdf(
-                                          title: attendanceModel.date.toString() ?? ''),
+                                          title: DateFormat('dd MMMM yyyy').format(dateTime!) ?? ''),
                                     ],
                                   ),
 
