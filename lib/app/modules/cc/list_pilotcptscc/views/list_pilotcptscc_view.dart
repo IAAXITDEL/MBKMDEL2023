@@ -70,7 +70,7 @@ class ListPilotcptsccView extends GetView<ListPilotcptsccController> {
                 controller: controller.searchC,
                 onChanged: (value) => controller.nameS.value = value,
                 decoration: InputDecoration(
-                  hintText: "Search",
+                  hintText: "Type name...",
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(4.0),
                   ),
