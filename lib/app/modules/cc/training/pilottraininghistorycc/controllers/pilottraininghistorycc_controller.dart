@@ -11,11 +11,15 @@ class PilottraininghistoryccController extends GetxController {
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
+  late final Rx<DateTime> from= DateTime(1900, 1, 1).obs;
+  late final Rx<DateTime> to = DateTime.now().add(Duration(days: 4 * 365)).obs;
+
   @override
   void onInit() {
     super.onInit();
     idTrainingType.value = Get.arguments["idTrainingType"];
     idTraining.value = Get.arguments["idTraining"];
+    print(to.value);
   }
 
   //Mendapatkan Training
@@ -27,7 +31,7 @@ class PilottraininghistoryccController extends GetxController {
   }
 
   // List Training History
-  Stream<List<Map<String, dynamic>>> historyStream() {
+  Stream<List<Map<String, dynamic>>> historyStream({DateTime? from, DateTime? to}) {
     return firestore
         .collection('attendance')
         .where("idTrainingType", isEqualTo: idTrainingType.value)
@@ -115,6 +119,22 @@ class PilottraininghistoryccController extends GetxController {
         Timestamp.fromMillisecondsSinceEpoch(b['valid_to'].millisecondsSinceEpoch);
         return timestampB.compareTo(timestampA);
       });
+
+      if (from != null && to != null) {
+        final filteredAttendance = attendanceData.where((attendance) {
+          DateTime attendanceDate = attendance["valid_to"].toDate();
+
+          // Compare dates only, ignoring the time component
+          DateTime fromDate = DateTime(from.year, from.month, from.day);
+          DateTime toDate = DateTime(to.year, to.month, to.day);
+          DateTime attendanceDateOnly = DateTime(attendanceDate.year, attendanceDate.month, attendanceDate.day);
+
+          return attendanceDateOnly.isAtSameMomentAs(fromDate) ||
+              (attendanceDateOnly.isAfter(fromDate) && attendanceDateOnly.isBefore(toDate)) ||
+              attendanceDateOnly.isAtSameMomentAs(toDate);
+        }).toList();
+        return filteredAttendance;
+      }
 
       if (attendanceData.isNotEmpty) {
         expiryC.value = attendanceData[0]["expiry"];

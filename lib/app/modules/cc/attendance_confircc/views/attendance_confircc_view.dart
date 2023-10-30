@@ -166,8 +166,8 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                                             // Tampilkan LoadingScreen
                                             showDialog(
                                               context: context,
-                                              barrierDismissible:
-                                                  false, // Tidak bisa menutup dialog dengan tap di luar
+                                              // barrierDismissible:
+                                              //     false, // Tidak bisa menutup dialog dengan tap di luar
                                               builder: (BuildContext context) {
                                                 return LoadingScreen();
                                               },
