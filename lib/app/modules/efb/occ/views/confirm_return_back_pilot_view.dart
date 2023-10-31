@@ -92,7 +92,7 @@ class ConfirmReturnBackPilotView extends GetView {
               'Confirmation',
               style: tsOneTextTheme.headlineLarge,
             ),
-            content: SingleChildScrollView(
+            content: const SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[
                   Text('Are you sure you want to submit this data?'),
@@ -105,14 +105,14 @@ class ConfirmReturnBackPilotView extends GetView {
                   Expanded(
                     flex: 5,
                     child: TextButton(
-                      child: Text('No', style: TextStyle(color: TsOneColor.secondaryContainer)),
+                      child: const Text('No', style: TextStyle(color: TsOneColor.secondaryContainer)),
                       onPressed: () {
                         Navigator.of(context).pop();
                         Navigator.of(context).pop();
                       },
                     ),
                   ),
-                  Spacer(flex: 1),
+                  const Spacer(flex: 1),
                   Expanded(
                     flex: 5,
                     child: ElevatedButton(
@@ -192,7 +192,7 @@ class ConfirmReturnBackPilotView extends GetView {
                   'Confirmation',
                   style: tsOneTextTheme.headlineLarge,
                 ),
-                content: SingleChildScrollView(
+                content: const SingleChildScrollView(
                   child: ListBody(
                     children: <Widget>[
                       Text('Data has been successfully updated.'),
@@ -201,7 +201,7 @@ class ConfirmReturnBackPilotView extends GetView {
                 ),
                 actions: <Widget>[
                   TextButton(
-                    child: Text('OK'),
+                    child: const Text('OK'),
                     onPressed: () {
                       Navigator.of(context).pop(); // Close the dialog
                     },
@@ -233,7 +233,7 @@ class ConfirmReturnBackPilotView extends GetView {
           future: FirebaseFirestore.instance.collection("pilot-device-1").doc(dataId).get(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             }
 
             if (snapshot.hasError) {
@@ -241,7 +241,7 @@ class ConfirmReturnBackPilotView extends GetView {
             }
 
             if (!snapshot.hasData || !snapshot.data!.exists) {
-              return Center(child: Text('Data not found'));
+              return const Center(child: Text('Data not found'));
             }
 
             final data = snapshot.data!.data() as Map<String, dynamic>;
@@ -253,7 +253,7 @@ class ConfirmReturnBackPilotView extends GetView {
               future: FirebaseFirestore.instance.collection("users").doc(userUid).get(),
               builder: (context, userSnapshot) {
                 if (userSnapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 }
 
                 if (userSnapshot.hasError) {
@@ -261,7 +261,7 @@ class ConfirmReturnBackPilotView extends GetView {
                 }
 
                 if (!userSnapshot.hasData || !userSnapshot.data!.exists) {
-                  return Center(child: Text('User data not found'));
+                  return const Center(child: Text('User data not found'));
                 }
 
                 final userData = userSnapshot.data!.data() as Map<String, dynamic>;
@@ -270,7 +270,7 @@ class ConfirmReturnBackPilotView extends GetView {
                   future: FirebaseFirestore.instance.collection("Device").doc(deviceUid).get(),
                   builder: (context, deviceSnapshot) {
                     if (deviceSnapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
+                      return const Center(child: CircularProgressIndicator());
                     }
 
                     if (deviceSnapshot.hasError) {
@@ -285,7 +285,7 @@ class ConfirmReturnBackPilotView extends GetView {
                         future: FirebaseFirestore.instance.collection("Device").doc(deviceUid2).get(),
                         builder: (context, deviceSnapshot) {
                           if (deviceSnapshot.connectionState == ConnectionState.waiting) {
-                            return Center(child: CircularProgressIndicator());
+                            return const Center(child: CircularProgressIndicator());
                           }
 
                           if (deviceSnapshot.hasError) {
@@ -293,7 +293,7 @@ class ConfirmReturnBackPilotView extends GetView {
                           }
 
                           if (!deviceSnapshot.hasData || !deviceSnapshot.data!.exists) {
-                            return Center(child: Text('Device data 2 not found'));
+                            return const Center(child: Text('Device data 2 not found'));
                           }
 
                           final deviceData2 = deviceSnapshot.data!.data() as Map<String, dynamic>;
@@ -302,7 +302,7 @@ class ConfirmReturnBackPilotView extends GetView {
                             future: FirebaseFirestore.instance.collection("Device").doc(deviceUid3).get(),
                             builder: (context, deviceSnapshot) {
                               if (deviceSnapshot.connectionState == ConnectionState.waiting) {
-                                return Center(child: CircularProgressIndicator());
+                                return const Center(child: CircularProgressIndicator());
                               }
 
                               if (deviceSnapshot.hasError) {
@@ -310,7 +310,7 @@ class ConfirmReturnBackPilotView extends GetView {
                               }
 
                               if (!deviceSnapshot.hasData || !deviceSnapshot.data!.exists) {
-                                return Center(child: Text('Device data 2 not found'));
+                                return const Center(child: Text('Device data 2 not found'));
                               }
 
                               final deviceData3 = deviceSnapshot.data!.data() as Map<String, dynamic>;
@@ -320,7 +320,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     Container(
-                                      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                                      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                                       child: Column(
                                         mainAxisAlignment: MainAxisAlignment.start,
                                         children: [
@@ -333,12 +333,12 @@ class ConfirmReturnBackPilotView extends GetView {
                                           //   ),
                                           // ),
                                           // SizedBox(height: 5.0),
-                                          SizedBox(height: 10.0),
+                                          const SizedBox(height: 10.0),
                                           Align(
                                             alignment: Alignment.centerRight,
                                             child: Text(_formatTimestamp(data['timestamp']), style: tsOneTextTheme.labelSmall),
                                           ),
-                                          SizedBox(height: 10.0),
+                                          const SizedBox(height: 10.0),
                                           Row(
                                             children: [
                                               Expanded(
@@ -348,7 +348,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                                     style: tsOneTextTheme.bodySmall,
                                                   )),
                                               Expanded(
-                                                  flex: 1,
+                                                  
                                                   child: Text(
                                                     ":",
                                                     style: tsOneTextTheme.bodySmall,
@@ -362,7 +362,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                               ),
                                             ],
                                           ),
-                                          SizedBox(height: 5.0),
+                                          const SizedBox(height: 5.0),
                                           Row(
                                             children: [
                                               Expanded(
@@ -372,7 +372,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                                     style: tsOneTextTheme.bodySmall,
                                                   )),
                                               Expanded(
-                                                  flex: 1,
+                                                  
                                                   child: Text(
                                                     ":",
                                                     style: tsOneTextTheme.bodySmall,
@@ -386,7 +386,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                               ),
                                             ],
                                           ),
-                                          SizedBox(height: 5.0),
+                                          const SizedBox(height: 5.0),
                                           Row(
                                             children: [
                                               Expanded(
@@ -396,7 +396,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                                     style: tsOneTextTheme.bodySmall,
                                                   )),
                                               Expanded(
-                                                  flex: 1,
+                                                  
                                                   child: Text(
                                                     ":",
                                                     style: tsOneTextTheme.bodySmall,
@@ -456,7 +456,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                               style: tsOneTextTheme.headlineMedium,
                                             ),
                                           ),
-                                          SizedBox(height: 5.0),
+                                          const SizedBox(height: 5.0),
                                           Row(
                                             children: [
                                               Expanded(
@@ -466,7 +466,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                                     style: tsOneTextTheme.bodySmall,
                                                   )),
                                               Expanded(
-                                                  flex: 1,
+                                                  
                                                   child: Text(
                                                     ":",
                                                     style: tsOneTextTheme.bodySmall,
@@ -480,7 +480,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                               ),
                                             ],
                                           ),
-                                          SizedBox(height: 5.0),
+                                          const SizedBox(height: 5.0),
                                           Row(
                                             children: [
                                               Expanded(
@@ -490,7 +490,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                                     style: tsOneTextTheme.bodySmall,
                                                   )),
                                               Expanded(
-                                                  flex: 1,
+                                                  
                                                   child: Text(
                                                     ":",
                                                     style: tsOneTextTheme.bodySmall,
@@ -504,7 +504,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                               ),
                                             ],
                                           ),
-                                          SizedBox(height: 5.0),
+                                          const SizedBox(height: 5.0),
                                           Row(
                                             children: [
                                               Expanded(
@@ -514,7 +514,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                                     style: tsOneTextTheme.bodySmall,
                                                   )),
                                               Expanded(
-                                                  flex: 1,
+                                                  
                                                   child: Text(
                                                     ":",
                                                     style: tsOneTextTheme.bodySmall,
@@ -528,7 +528,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                               ),
                                             ],
                                           ),
-                                          SizedBox(height: 5.0),
+                                          const SizedBox(height: 5.0),
                                           Row(
                                             children: [
                                               Expanded(
@@ -538,7 +538,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                                     style: tsOneTextTheme.bodySmall,
                                                   )),
                                               Expanded(
-                                                  flex: 1,
+                                                  
                                                   child: Text(
                                                     ":",
                                                     style: tsOneTextTheme.bodySmall,
@@ -552,7 +552,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                               ),
                                             ],
                                           ),
-                                          SizedBox(height: 5.0),
+                                          const SizedBox(height: 5.0),
                                           Row(
                                             children: [
                                               Expanded(
@@ -562,7 +562,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                                     style: tsOneTextTheme.bodySmall,
                                                   )),
                                               Expanded(
-                                                  flex: 1,
+                                                  
                                                   child: Text(
                                                     ":",
                                                     style: tsOneTextTheme.bodySmall,
@@ -576,7 +576,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                               ),
                                             ],
                                           ),
-                                          SizedBox(height: 5.0),
+                                          const SizedBox(height: 5.0),
                                           Row(
                                             children: [
                                               Expanded(
@@ -586,7 +586,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                                     style: tsOneTextTheme.bodySmall,
                                                   )),
                                               Expanded(
-                                                  flex: 1,
+                                                  
                                                   child: Text(
                                                     ":",
                                                     style: tsOneTextTheme.bodySmall,
@@ -600,7 +600,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                               ),
                                             ],
                                           ),
-                                          SizedBox(height: 5.0),
+                                          const SizedBox(height: 5.0),
                                           Row(
                                             children: [
                                               Expanded(
@@ -610,7 +610,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                                     style: tsOneTextTheme.bodySmall,
                                                   )),
                                               Expanded(
-                                                  flex: 1,
+                                                  
                                                   child: Text(
                                                     ":",
                                                     style: tsOneTextTheme.bodySmall,
@@ -626,7 +626,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                           ),
 
                                           //DEVICE INFO 2
-                                          SizedBox(height: 10.0),
+                                          const SizedBox(height: 10.0),
                                           // Align(
                                           //   alignment: Alignment.centerLeft,
                                           //   child: Text(
@@ -641,7 +641,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                               style: tsOneTextTheme.headlineMedium,
                                             ),
                                           ),
-                                          SizedBox(height: 5.0),
+                                          const SizedBox(height: 5.0),
                                           Row(
                                             children: [
                                               Expanded(
@@ -651,7 +651,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                                     style: tsOneTextTheme.bodySmall,
                                                   )),
                                               Expanded(
-                                                  flex: 1,
+                                                  
                                                   child: Text(
                                                     ":",
                                                     style: tsOneTextTheme.bodySmall,
@@ -665,7 +665,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                               ),
                                             ],
                                           ),
-                                          SizedBox(height: 5.0),
+                                          const SizedBox(height: 5.0),
                                           Row(
                                             children: [
                                               Expanded(
@@ -675,7 +675,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                                     style: tsOneTextTheme.bodySmall,
                                                   )),
                                               Expanded(
-                                                  flex: 1,
+                                                  
                                                   child: Text(
                                                     ":",
                                                     style: tsOneTextTheme.bodySmall,
@@ -689,7 +689,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                               ),
                                             ],
                                           ),
-                                          SizedBox(height: 5.0),
+                                          const SizedBox(height: 5.0),
                                           Row(
                                             children: [
                                               Expanded(
@@ -699,7 +699,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                                     style: tsOneTextTheme.bodySmall,
                                                   )),
                                               Expanded(
-                                                  flex: 1,
+                                                  
                                                   child: Text(
                                                     ":",
                                                     style: tsOneTextTheme.bodySmall,
@@ -713,7 +713,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                               ),
                                             ],
                                           ),
-                                          SizedBox(height: 5.0),
+                                          const SizedBox(height: 5.0),
                                           Row(
                                             children: [
                                               Expanded(
@@ -723,7 +723,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                                     style: tsOneTextTheme.bodySmall,
                                                   )),
                                               Expanded(
-                                                  flex: 1,
+                                                  
                                                   child: Text(
                                                     ":",
                                                     style: tsOneTextTheme.bodySmall,
@@ -737,7 +737,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                               ),
                                             ],
                                           ),
-                                          SizedBox(height: 5.0),
+                                          const SizedBox(height: 5.0),
                                           Row(
                                             children: [
                                               Expanded(
@@ -747,7 +747,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                                     style: tsOneTextTheme.bodySmall,
                                                   )),
                                               Expanded(
-                                                  flex: 1,
+                                                  
                                                   child: Text(
                                                     ":",
                                                     style: tsOneTextTheme.bodySmall,
@@ -761,7 +761,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                               ),
                                             ],
                                           ),
-                                          SizedBox(height: 5.0),
+                                          const SizedBox(height: 5.0),
                                           Row(
                                             children: [
                                               Expanded(
@@ -771,7 +771,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                                     style: tsOneTextTheme.bodySmall,
                                                   )),
                                               Expanded(
-                                                  flex: 1,
+                                                  
                                                   child: Text(
                                                     ":",
                                                     style: tsOneTextTheme.bodySmall,
@@ -794,7 +794,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                                     style: tsOneTextTheme.bodySmall,
                                                   )),
                                               Expanded(
-                                                  flex: 1,
+                                                  
                                                   child: Text(
                                                     ":",
                                                     style: tsOneTextTheme.bodySmall,
@@ -829,7 +829,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                           // ),
 
                                           // SizedBox(height: 7.0),
-                                          SizedBox(height: 20.0),
+                                          const SizedBox(height: 20.0),
                                           const Padding(
                                             padding: EdgeInsets.only(bottom: 16.0),
                                             child: Row(
@@ -861,17 +861,17 @@ class ConfirmReturnBackPilotView extends GetView {
                                               style: tsOneTextTheme.headlineMedium,
                                             ),
                                           ),
-                                          SizedBox(height: 15.0),
+                                          const SizedBox(height: 15.0),
 
                                           ConstrainedBox(
-                                            constraints: BoxConstraints(
+                                            constraints: const BoxConstraints(
                                               minHeight: 40,
                                               minWidth: 400,
                                             ),
                                             child: Container(
                                               decoration: BoxDecoration(
                                                 color: tsOneColorScheme.primary,
-                                                borderRadius: BorderRadius.only(
+                                                borderRadius: const BorderRadius.only(
                                                   topLeft: Radius.circular(25.0),
                                                   topRight: Radius.circular(25.0),
                                                 ),
@@ -887,7 +887,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                               Container(
                                                 height: 480,
                                                 decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.only(
+                                                  borderRadius: const BorderRadius.only(
                                                     topLeft: Radius.circular(10.0),
                                                     topRight: Radius.circular(10.0),
                                                     bottomLeft: Radius.circular(25.0),
@@ -897,7 +897,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                                     BoxShadow(
                                                       color: Colors.grey.withOpacity(0.5),
                                                       blurRadius: 5,
-                                                      offset: Offset(0, 2),
+                                                      offset: const Offset(0, 2),
                                                     ),
                                                   ],
                                                 ),
@@ -930,7 +930,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                               ),
                                             ],
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
                                             height: 15,
                                           ),
                                           Row(
@@ -947,7 +947,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                                   );
                                                 },
                                               ),
-                                              Text('I agree with all of the results', style: TextStyle(fontWeight: FontWeight.w300)),
+                                              const Text('I agree with all of the results', style: TextStyle(fontWeight: FontWeight.w300)),
                                             ],
                                           ),
 
@@ -985,7 +985,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                           //   ],
                                           // ),
 
-                                          SizedBox(height: 20.0),
+                                          const SizedBox(height: 20.0),
                                           ElevatedButton(
                                             onPressed: () async {
                                               // final ImagePicker _picker = ImagePicker();
@@ -1031,7 +1031,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                                         future: _uploadImageAndShowDialog(pickedFile, context),
                                                         builder: (context, snapshot) {
                                                           if (snapshot.connectionState == ConnectionState.waiting) {
-                                                            return AlertDialog(
+                                                            return const AlertDialog(
                                                               content: Column(
                                                                 mainAxisSize: MainAxisSize.min,
                                                                 children: [
@@ -1081,7 +1081,7 @@ class ConfirmReturnBackPilotView extends GetView {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Container(
-                            margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -1091,12 +1091,12 @@ class ConfirmReturnBackPilotView extends GetView {
                                 //   style: tsOneTextTheme.headlineLarge,
                                 // ),
                                 // SizedBox(height: 7.0),
-                                SizedBox(height: 10.0),
+                                const SizedBox(height: 10.0),
                                 Align(
                                   alignment: Alignment.centerRight,
                                   child: Text(_formatTimestamp(data['timestamp']), style: tsOneTextTheme.labelSmall),
                                 ),
-                                SizedBox(height: 10.0),
+                                const SizedBox(height: 10.0),
                                 Row(
                                   children: [
                                     Expanded(
@@ -1106,7 +1106,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
-                                        flex: 1,
+                                        
                                         child: Text(
                                           ":",
                                           style: tsOneTextTheme.bodySmall,
@@ -1119,7 +1119,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                         )),
                                   ],
                                 ),
-                                SizedBox(height: 5.0),
+                                const SizedBox(height: 5.0),
                                 Row(
                                   children: [
                                     Expanded(
@@ -1129,7 +1129,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
-                                        flex: 1,
+                                        
                                         child: Text(
                                           ":",
                                           style: tsOneTextTheme.bodySmall,
@@ -1142,7 +1142,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                         )),
                                   ],
                                 ),
-                                SizedBox(height: 5.0),
+                                const SizedBox(height: 5.0),
                                 Row(
                                   children: [
                                     Expanded(
@@ -1152,7 +1152,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
-                                        flex: 1,
+                                        
                                         child: Text(
                                           ":",
                                           style: tsOneTextTheme.bodySmall,
@@ -1194,7 +1194,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                   "Device 1",
                                   style: tsOneTextTheme.headlineMedium,
                                 ),
-                                SizedBox(height: 5.0),
+                                const SizedBox(height: 5.0),
                                 Row(
                                   children: [
                                     Expanded(
@@ -1204,7 +1204,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
-                                        flex: 1,
+                                        
                                         child: Text(
                                           ":",
                                           style: tsOneTextTheme.bodySmall,
@@ -1217,7 +1217,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                         )),
                                   ],
                                 ),
-                                SizedBox(height: 5.0),
+                                const SizedBox(height: 5.0),
                                 Row(
                                   children: [
                                     Expanded(
@@ -1227,7 +1227,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
-                                        flex: 1,
+                                        
                                         child: Text(
                                           ":",
                                           style: tsOneTextTheme.bodySmall,
@@ -1240,7 +1240,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                         )),
                                   ],
                                 ),
-                                SizedBox(height: 5.0),
+                                const SizedBox(height: 5.0),
                                 Row(
                                   children: [
                                     Expanded(
@@ -1250,7 +1250,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
-                                        flex: 1,
+                                        
                                         child: Text(
                                           ":",
                                           style: tsOneTextTheme.bodySmall,
@@ -1263,7 +1263,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                         )),
                                   ],
                                 ),
-                                SizedBox(height: 5.0),
+                                const SizedBox(height: 5.0),
                                 Row(
                                   children: [
                                     Expanded(
@@ -1273,7 +1273,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
-                                        flex: 1,
+                                        
                                         child: Text(
                                           ":",
                                           style: tsOneTextTheme.bodySmall,
@@ -1286,7 +1286,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                         )),
                                   ],
                                 ),
-                                SizedBox(height: 5.0),
+                                const SizedBox(height: 5.0),
                                 Row(
                                   children: [
                                     Expanded(
@@ -1296,7 +1296,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
-                                        flex: 1,
+                                        
                                         child: Text(
                                           ":",
                                           style: tsOneTextTheme.bodySmall,
@@ -1309,7 +1309,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                         )),
                                   ],
                                 ),
-                                SizedBox(height: 5.0),
+                                const SizedBox(height: 5.0),
                                 Row(
                                   children: [
                                     Expanded(
@@ -1319,7 +1319,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
-                                        flex: 1,
+                                        
                                         child: Text(
                                           ":",
                                           style: tsOneTextTheme.bodySmall,
@@ -1332,7 +1332,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                         )),
                                   ],
                                 ),
-                                SizedBox(height: 5.0),
+                                const SizedBox(height: 5.0),
                                 Row(
                                   children: [
                                     Expanded(
@@ -1342,7 +1342,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
-                                        flex: 1,
+                                        
                                         child: Text(
                                           ":",
                                           style: tsOneTextTheme.bodySmall,
@@ -1373,7 +1373,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                 //   ),
                                 // ),
                                 // SizedBox(height: 7.0),
-                                SizedBox(height: 20.0),
+                                const SizedBox(height: 20.0),
                                 const Padding(
                                   padding: EdgeInsets.only(bottom: 16.0),
                                   child: Row(
@@ -1405,17 +1405,17 @@ class ConfirmReturnBackPilotView extends GetView {
                                     style: tsOneTextTheme.headlineMedium,
                                   ),
                                 ),
-                                SizedBox(height: 15.0),
+                                const SizedBox(height: 15.0),
 
                                 ConstrainedBox(
-                                  constraints: BoxConstraints(
+                                  constraints: const BoxConstraints(
                                     minHeight: 40,
                                     minWidth: 400,
                                   ),
                                   child: Container(
                                     decoration: BoxDecoration(
                                       color: tsOneColorScheme.primary,
-                                      borderRadius: BorderRadius.only(
+                                      borderRadius: const BorderRadius.only(
                                         topLeft: Radius.circular(25.0),
                                         topRight: Radius.circular(25.0),
                                       ),
@@ -1431,7 +1431,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                     Container(
                                       height: 480,
                                       decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.only(
+                                        borderRadius: const BorderRadius.only(
                                           topLeft: Radius.circular(10.0),
                                           topRight: Radius.circular(10.0),
                                           bottomLeft: Radius.circular(25.0),
@@ -1441,7 +1441,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                           BoxShadow(
                                             color: Colors.grey.withOpacity(0.5),
                                             blurRadius: 5,
-                                            offset: Offset(0, 2),
+                                            offset: const Offset(0, 2),
                                           ),
                                         ],
                                       ),
@@ -1474,7 +1474,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                     ),
                                   ],
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 15,
                                 ),
                                 Row(
@@ -1491,7 +1491,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                         );
                                       },
                                     ),
-                                    Text('I agree with all of the results', style: TextStyle(fontWeight: FontWeight.w300)),
+                                    const Text('I agree with all of the results', style: TextStyle(fontWeight: FontWeight.w300)),
                                   ],
                                 ),
 
@@ -1528,7 +1528,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                 //     ),
                                 //   ],
                                 // ),
-                                SizedBox(height: 20.0),
+                                const SizedBox(height: 20.0),
                                 ElevatedButton(
                                   onPressed: () async {
                                     // final ImagePicker _picker = ImagePicker();
@@ -1574,7 +1574,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                               future: _uploadImageAndShowDialog(pickedFile, context),
                                               builder: (context, snapshot) {
                                                 if (snapshot.connectionState == ConnectionState.waiting) {
-                                                  return AlertDialog(
+                                                  return const AlertDialog(
                                                     content: Column(
                                                       mainAxisSize: MainAxisSize.min,
                                                       children: [
@@ -1605,7 +1605,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                   ),
                                   child: const Text('Take Picture To Approve', style: TextStyle(color: Colors.white)),
                                 ),
-                                SizedBox(height: 20.0),
+                                const SizedBox(height: 20.0),
                               ],
                             ),
                           ),

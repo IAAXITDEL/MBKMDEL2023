@@ -439,7 +439,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                 Row(
                                   children: [
                                     Expanded(
-                                      flex: 1,
+                                      
                                       child: TextFormField(
                                         decoration: const InputDecoration(
                                           border: OutlineInputBorder(),
@@ -467,7 +467,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                       width: 5,
                                     ),
                                     Expanded(
-                                      flex: 1,
+                                      
                                       child: TextFormField(
                                         decoration: const InputDecoration(
                                           border: OutlineInputBorder(),
@@ -877,7 +877,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                     Row(
                                       children: [
                                         Expanded(
-                                          flex: 1,
+                                          
                                           child: TextFormField(
                                             decoration: const InputDecoration(
                                               border: OutlineInputBorder(),
@@ -905,7 +905,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                           width: 5,
                                         ),
                                         Expanded(
-                                          flex: 1,
+                                          
                                           child: TextFormField(
                                             decoration: const InputDecoration(
                                               border: OutlineInputBorder(),

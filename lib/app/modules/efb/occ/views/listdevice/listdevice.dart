@@ -82,7 +82,7 @@ class _ListDeviceState extends State<ListDevice> {
         }
       },
       itemBuilder: (context) => [
-        PopupMenuItem(
+        const PopupMenuItem(
           value: 'show',
           child: Row(
             children: [
@@ -92,7 +92,7 @@ class _ListDeviceState extends State<ListDevice> {
             ],
           ),
         ),
-        PopupMenuItem(
+        const PopupMenuItem(
           value: 'edit',
           child: Row(
             children: [
@@ -102,7 +102,7 @@ class _ListDeviceState extends State<ListDevice> {
             ],
           ),
         ),
-        PopupMenuItem(
+        const PopupMenuItem(
           value: 'delete',
           child: Row(
             children: [
@@ -190,12 +190,12 @@ class _ListDeviceState extends State<ListDevice> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Color(0xFFE6E6E6),
+          backgroundColor: const Color(0xFFE6E6E6),
           title: Text(
             'Delete Device',
             style: tsOneTextTheme.headlineLarge,
           ),
-          content: Text(
+          content: const Text(
             'Are you sure you want to delete this device?',
           ),
           actions: <Widget>[
@@ -205,14 +205,14 @@ class _ListDeviceState extends State<ListDevice> {
                   style: TextButton.styleFrom(
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20.0),
-                          side: BorderSide(color: TsOneColor.onSecondary))),
+                          side: const BorderSide(color: TsOneColor.onSecondary))),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text('No',
+                  child: const Text('No',
                       style: TextStyle(color: TsOneColor.onSecondary))),
             ),
-            SizedBox(
+            const SizedBox(
               width: 15,
             ),
             Container(
@@ -235,7 +235,7 @@ class _ListDeviceState extends State<ListDevice> {
                           text: 'Device successfully delete');
                     }
                   },
-                  child: Text('Yes',
+                  child: const Text('Yes',
                       style: TextStyle(color: TsOneColor.onPrimary))),
             ),
           ],
@@ -270,7 +270,7 @@ class _ListDeviceState extends State<ListDevice> {
           Tooltip(
             message: 'Export to Sheet',
             child: IconButton(
-              icon: Icon(
+              icon: const Icon(
                 Icons.table_chart_rounded,
               ),
               onPressed: () async {
@@ -295,7 +295,7 @@ class _ListDeviceState extends State<ListDevice> {
                     searchQuery = value;
                   });
                 },
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: "Search Device Name",
                   hintStyle: TextStyle(
                     color: TsOneColor.onSecondary,
@@ -307,7 +307,7 @@ class _ListDeviceState extends State<ListDevice> {
                 ),
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Container(
               alignment: Alignment.centerRight,
               padding: const EdgeInsets.only(right: 10),
@@ -316,7 +316,7 @@ class _ListDeviceState extends State<ListDevice> {
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator();
+                    return const CircularProgressIndicator();
                   }
 
                   if (snapshot.hasError) {
@@ -340,7 +340,7 @@ class _ListDeviceState extends State<ListDevice> {
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
+                    return const Center(child: CircularProgressIndicator());
                   }
 
                   if (snapshot.hasError) {
@@ -411,7 +411,7 @@ class _ListDeviceState extends State<ListDevice> {
                                 ),
                               ),
                               child: Padding(
-                                padding: EdgeInsets.symmetric(vertical: 7),
+                                padding: const EdgeInsets.symmetric(vertical: 7),
                                 child: Row(
                                   children: [
                                     Expanded(
@@ -444,10 +444,10 @@ class _ListDeviceState extends State<ListDevice> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (BuildContext context) => AddDevice()),
+              MaterialPageRoute(builder: (BuildContext context) => const AddDevice()),
             );
           },
-          child: Icon(Icons.add),
+          child: const Icon(Icons.add),
           backgroundColor: TsOneColor.primary,
         ),
       ),

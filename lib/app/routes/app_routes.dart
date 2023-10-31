@@ -117,6 +117,8 @@ abstract class _Paths {
   static const HOMEOCC = '/homeocc';
   static const LISTDEVICEOCC = '/listdeviceocc';
   static const ANALYTICS = '/analytics';
+  static const CAPTRETURNDEVICE = '/CaptReturnDevice';
+  static const FORETURNDEVICE = '/FoReturnDevice';
 
   //PILOT EFB
   static const HOMEPILOT = '/homepilot';

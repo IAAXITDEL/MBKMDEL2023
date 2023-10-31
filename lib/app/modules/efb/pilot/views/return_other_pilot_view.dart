@@ -87,7 +87,7 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
       });
       // Show a snackbar with the "No Data In Database" message
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('No Data In Database')),
+        const SnackBar(content: Text('No Data In Database')),
       );
     }
   }
@@ -115,7 +115,7 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
                   style: tsOneTextTheme.headlineMedium,
                 ),
               ),
-              SizedBox(height: 10.0),
+              const SizedBox(height: 10.0),
               // Row(
               //   children: [
               //     Expanded(
@@ -155,7 +155,7 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: TsOneColor.primary,
-                  minimumSize: Size(double.infinity, 50),
+                  minimumSize: const Size(double.infinity, 50),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15.0),
                   ),
@@ -170,7 +170,7 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
                     });
                   }
                 },
-                child: Row(
+                child: const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(
@@ -186,7 +186,7 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
                   ],
                 ),
               ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
               if (selectedUser != null)
                 Container(
                   decoration: BoxDecoration(
@@ -196,11 +196,11 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
                     ),
                   ),
                   child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Align(
+                        const Align(
                           alignment: Alignment.center,
                           child: Text(
                             "Crew Info",
@@ -221,7 +221,7 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
                         //           style: tsOneTextTheme.bodySmall,
                         //         )),
                         //     Expanded(
-                        //         flex: 1,
+                        //         
                         //         child: Text(
                         //           ":",
                         //           style: tsOneTextTheme.bodySmall,
@@ -235,7 +235,7 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
                         //     ),
                         //   ],
                         // ),
-                        SizedBox(height: 5.0),
+                        const SizedBox(height: 5.0),
                         Row(
                           children: [
                             Expanded(
@@ -245,7 +245,7 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
                                   style: tsOneTextTheme.bodySmall,
                                 )),
                             Expanded(
-                                flex: 1,
+                                
                                 child: Text(
                                   ":",
                                   style: tsOneTextTheme.bodySmall,
@@ -268,7 +268,7 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
                                   style: tsOneTextTheme.bodySmall,
                                 )),
                             Expanded(
-                                flex: 1,
+                                
                                 child: Text(
                                   ":",
                                   style: tsOneTextTheme.bodySmall,
@@ -291,7 +291,7 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
                                   style: tsOneTextTheme.bodySmall,
                                 )),
                             Expanded(
-                                flex: 1,
+                                
                                 child: Text(
                                   ":",
                                   style: tsOneTextTheme.bodySmall,
@@ -309,7 +309,7 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
                     ),
                   ),
                 ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               if (selectedUser != null)
                 Align(
                   alignment: Alignment.center,
@@ -323,14 +323,14 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
               ),
               if (selectedUser != null)
                 ConstrainedBox(
-                  constraints: BoxConstraints(
+                  constraints: const BoxConstraints(
                     minHeight: 40,
                     minWidth: 400,
                   ),
                   child: Container(
                     decoration: BoxDecoration(
                       color: tsOneColorScheme.primary,
-                      borderRadius: BorderRadius.only(
+                      borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(25.0),
                         topRight: Radius.circular(25.0),
                       ),
@@ -347,7 +347,7 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
                     Container(
                       height: 480,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
+                        borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(10.0),
                           topRight: Radius.circular(10.0),
                           bottomLeft: Radius.circular(25.0),
@@ -357,7 +357,7 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
                           BoxShadow(
                             color: Colors.grey.withOpacity(0.5),
                             blurRadius: 5,
-                            offset: Offset(0, 2),
+                            offset: const Offset(0, 2),
                           ),
                         ],
                       ),
@@ -390,7 +390,7 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
                     ),
                   ],
                 ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               if (selectedUser != null)
                 Column(
                   children: [
@@ -404,10 +404,10 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
                             });
                           },
                         ),
-                        Text('I agree with all of the results', style: TextStyle(fontWeight: FontWeight.w300)),
+                        const Text('I agree with all of the results', style: TextStyle(fontWeight: FontWeight.w300)),
                       ],
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     ElevatedButton(
                       onPressed: () async {
                         final signatureData = signatureImage;
@@ -493,13 +493,13 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
                                       Expanded(
                                         flex: 5,
                                         child: TextButton(
-                                          child: Text('No', style: TextStyle(color: TsOneColor.secondaryContainer)),
+                                          child: const Text('No', style: TextStyle(color: TsOneColor.secondaryContainer)),
                                           onPressed: () {
                                             Navigator.of(context).pop();
                                           },
                                         ),
                                       ),
-                                      Spacer(flex: 1),
+                                      const Spacer(flex: 1),
                                       Expanded(
                                         flex: 5,
                                         child: ElevatedButton(
@@ -580,7 +580,7 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
                           )),
                       child: const Text('Submit', style: TextStyle(color: Colors.white)),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     )
                   ],

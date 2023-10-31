@@ -2203,7 +2203,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                                     : Container(),
                                 !isSearchingByUser
                                     ? Expanded(
-                                        flex: 1,
+                                        
                                         child: Container(),
                                       )
                                     : Container(),

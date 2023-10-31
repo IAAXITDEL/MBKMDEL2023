@@ -50,7 +50,7 @@ class HomeFOView extends GetView<HomeFOController> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 50),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
           child: Column(
             children: [
               Row(
@@ -97,12 +97,12 @@ class HomeFOView extends GetView<HomeFOController> {
                   ],
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               FutureBuilder<QuerySnapshot>(
                 future: requestdeviceController.getFODevices(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator();
+                    return const CircularProgressIndicator();
                   } else if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   } else {
@@ -121,38 +121,38 @@ class HomeFOView extends GetView<HomeFOController> {
                         children: [
                           // Display 'in-use-pilot' data
                           if (inUsePilotDocs.isNotEmpty) ...[
-                            Align(
+                            const Align(
                               alignment: Alignment.centerLeft,
                               child: BlackTitleText(text: "Waiting Confirmation"),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 15.0,
                             ),
-                            Text(
+                            const Text(
                               "There is no data that needs to wait",
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 20.0,
                             ),
 
-                            Align(
+                            const Align(
                               alignment: Alignment.centerLeft,
                               child: BlackTitleText(text: "Need Confirmation"),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 15.0,
                             ),
-                            Text(
+                            const Text(
                               "There is no data that needs confirmation",
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 20.0,
                             ),
-                            Align(
+                            const Align(
                               alignment: Alignment.centerLeft,
                               child: BlackTitleText(text: "In Use"),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
 
@@ -195,22 +195,22 @@ class HomeFOView extends GetView<HomeFOController> {
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Column(
+                                              const Column(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
-                                                  const Text(
+                                                  Text(
                                                     "Device 2",
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
-                                                  const Text(
+                                                  Text(
                                                     "Device 3",
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
-                                                  const Text(
+                                                  Text(
                                                     'FO ID',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
-                                                  const Text(
+                                                  Text(
                                                     'Date',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
@@ -219,21 +219,21 @@ class HomeFOView extends GetView<HomeFOController> {
                                               const SizedBox(
                                                 width: 5,
                                               ),
-                                              Column(
+                                              const Column(
                                                 children: [
-                                                  const Text(
+                                                  Text(
                                                     ':',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
-                                                  const Text(
+                                                  Text(
                                                     ':',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
-                                                  const Text(
+                                                  Text(
                                                     ':',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
-                                                  const Text(
+                                                  Text(
                                                     ':',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
@@ -246,10 +246,10 @@ class HomeFOView extends GetView<HomeFOController> {
                                                   child: Column(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
-                                                  Text(deviceName2, style: TextStyle(color: TsOneColor.secondary)),
-                                                  Text(deviceName3, style: TextStyle(color: TsOneColor.secondary)),
-                                                  Text(userId, style: TextStyle(color: TsOneColor.secondary)),
-                                                  Text(_formatTimestamp(doc['timestamp']), style: TextStyle(color: TsOneColor.secondary)),
+                                                  Text(deviceName2, style: const TextStyle(color: TsOneColor.secondary)),
+                                                  Text(deviceName3, style: const TextStyle(color: TsOneColor.secondary)),
+                                                  Text(userId, style: const TextStyle(color: TsOneColor.secondary)),
+                                                  Text(_formatTimestamp(doc['timestamp']), style: const TextStyle(color: TsOneColor.secondary)),
                                                 ],
                                               )),
                                               const Icon(
@@ -266,16 +266,16 @@ class HomeFOView extends GetView<HomeFOController> {
                                 );
                               }).toList(),
                             ),
-                            SizedBox(height: 10),
+                            const SizedBox(height: 10),
                           ],
 
                           // Display 'waiting-confirmation-1' data
                           if (waitingConfirmationDocs.isNotEmpty) ...[
-                            Align(
+                            const Align(
                               alignment: Alignment.centerLeft,
                               child: BlackTitleText(text: "Waiting For OCC To Confirm"),
                             ),
-                            SizedBox(height: 10),
+                            const SizedBox(height: 10),
                             Column(
                               children: waitingConfirmationDocs.map((doc) {
                                 String deviceName2 = doc['device_name2'];
@@ -310,22 +310,22 @@ class HomeFOView extends GetView<HomeFOController> {
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Column(
+                                              const Column(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
-                                                  const Text(
+                                                  Text(
                                                     "Device 2",
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
-                                                  const Text(
+                                                  Text(
                                                     "Device 3",
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
-                                                  const Text(
+                                                  Text(
                                                     'FO ID',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
-                                                  const Text(
+                                                  Text(
                                                     'Date',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
@@ -334,21 +334,21 @@ class HomeFOView extends GetView<HomeFOController> {
                                               const SizedBox(
                                                 width: 5,
                                               ),
-                                              Column(
+                                              const Column(
                                                 children: [
-                                                  const Text(
+                                                  Text(
                                                     ':',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
-                                                  const Text(
+                                                  Text(
                                                     ':',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
-                                                  const Text(
+                                                  Text(
                                                     ':',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
-                                                  const Text(
+                                                  Text(
                                                     ':',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
@@ -361,10 +361,10 @@ class HomeFOView extends GetView<HomeFOController> {
                                                   child: Column(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
-                                                  Text(deviceName2, style: TextStyle(color: TsOneColor.secondary)),
-                                                  Text(deviceName3, style: TextStyle(color: TsOneColor.secondary)),
-                                                  Text(userId, style: TextStyle(color: TsOneColor.secondary)),
-                                                  Text(_formatTimestamp(doc['timestamp']), style: TextStyle(color: TsOneColor.secondary)),
+                                                  Text(deviceName2, style: const TextStyle(color: TsOneColor.secondary)),
+                                                  Text(deviceName3, style: const TextStyle(color: TsOneColor.secondary)),
+                                                  Text(userId, style: const TextStyle(color: TsOneColor.secondary)),
+                                                  Text(_formatTimestamp(doc['timestamp']), style: const TextStyle(color: TsOneColor.secondary)),
                                                 ],
                                               )),
                                               const Icon(
@@ -381,55 +381,55 @@ class HomeFOView extends GetView<HomeFOController> {
                                 );
                               }).toList(),
                             ),
-                            SizedBox(height: 10),
-                            Align(
+                            const SizedBox(height: 10),
+                            const Align(
                               alignment: Alignment.centerLeft,
                               child: BlackTitleText(text: "Need Confirmation"),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 15.0,
                             ),
-                            Text(
+                            const Text(
                               "There is no data that needs confirmation",
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 20.0,
                             ),
-                            Align(
+                            const Align(
                               alignment: Alignment.centerLeft,
                               child: BlackTitleText(text: "In Use"),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 15.0,
                             ),
-                            Text(
+                            const Text(
                               "There is no data in use",
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 20.0,
                             ),
                           ],
 
                           // Display 'waiting-confirmation-other-pilot' data
                           if (needConfirmationPilotDocs.isNotEmpty) ...[
-                            Align(
+                            const Align(
                               alignment: Alignment.centerLeft,
                               child: BlackTitleText(text: "Waiting Confirmation"),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 15.0,
                             ),
-                            Text(
+                            const Text(
                               "There is no data that needs confirmation",
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 20.0,
                             ),
-                            Align(
+                            const Align(
                               alignment: Alignment.centerLeft,
                               child: BlackTitleText(text: "Wait For Confirmation!"),
                             ),
-                            SizedBox(height: 15),
+                            const SizedBox(height: 15),
                             Column(
                               children: needConfirmationPilotDocs.map((doc) {
                                 String deviceName2 = doc['device_name2'];
@@ -465,22 +465,22 @@ class HomeFOView extends GetView<HomeFOController> {
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Column(
+                                              const Column(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
-                                                  const Text(
+                                                  Text(
                                                     "Device 2",
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
-                                                  const Text(
+                                                  Text(
                                                     "Device 3",
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
-                                                  const Text(
+                                                  Text(
                                                     'FO ID',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
-                                                  const Text(
+                                                  Text(
                                                     'Date',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
@@ -489,21 +489,21 @@ class HomeFOView extends GetView<HomeFOController> {
                                               const SizedBox(
                                                 width: 5,
                                               ),
-                                              Column(
+                                              const Column(
                                                 children: [
-                                                  const Text(
+                                                  Text(
                                                     ':',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
-                                                  const Text(
+                                                  Text(
                                                     ':',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
-                                                  const Text(
+                                                  Text(
                                                     ':',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
-                                                  const Text(
+                                                  Text(
                                                     ':',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
@@ -516,10 +516,10 @@ class HomeFOView extends GetView<HomeFOController> {
                                                   child: Column(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
-                                                  Text(deviceName2, style: TextStyle(color: TsOneColor.secondary)),
-                                                  Text(deviceName3, style: TextStyle(color: TsOneColor.secondary)),
-                                                  Text(userId, style: TextStyle(color: TsOneColor.secondary)),
-                                                  Text(_formatTimestamp(doc['timestamp']), style: TextStyle(color: TsOneColor.secondary)),
+                                                  Text(deviceName2, style: const TextStyle(color: TsOneColor.secondary)),
+                                                  Text(deviceName3, style: const TextStyle(color: TsOneColor.secondary)),
+                                                  Text(userId, style: const TextStyle(color: TsOneColor.secondary)),
+                                                  Text(_formatTimestamp(doc['timestamp']), style: const TextStyle(color: TsOneColor.secondary)),
                                                 ],
                                               )),
                                               const Icon(
@@ -536,28 +536,28 @@ class HomeFOView extends GetView<HomeFOController> {
                                 );
                               }).toList(),
                             ),
-                            SizedBox(height: 10),
-                            Align(
+                            const SizedBox(height: 10),
+                            const Align(
                               alignment: Alignment.centerLeft,
                               child: BlackTitleText(text: "In Use"),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 15.0,
                             ),
-                            Text(
+                            const Text(
                               "There is no data in use",
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 20.0,
                             ),
                           ],
 
                           if (needConfirmationOccDocs.isNotEmpty) ...[
-                            Align(
+                            const Align(
                               alignment: Alignment.centerLeft,
                               child: BlackTitleText(text: "Waiting OCC To Confirm!"),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
                             Column(
@@ -593,22 +593,22 @@ class HomeFOView extends GetView<HomeFOController> {
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Column(
+                                              const Column(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
-                                                  const Text(
+                                                  Text(
                                                     "Device 2",
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
-                                                  const Text(
+                                                  Text(
                                                     "Device 3",
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
-                                                  const Text(
+                                                  Text(
                                                     'FO ID',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
-                                                  const Text(
+                                                  Text(
                                                     'Date',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
@@ -617,21 +617,21 @@ class HomeFOView extends GetView<HomeFOController> {
                                               const SizedBox(
                                                 width: 5,
                                               ),
-                                              Column(
+                                              const Column(
                                                 children: [
-                                                  const Text(
+                                                  Text(
                                                     ':',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
-                                                  const Text(
+                                                  Text(
                                                     ':',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
-                                                  const Text(
+                                                  Text(
                                                     ':',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
-                                                  const Text(
+                                                  Text(
                                                     ':',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
@@ -644,10 +644,10 @@ class HomeFOView extends GetView<HomeFOController> {
                                                   child: Column(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
-                                                  Text(deviceName2, style: TextStyle(color: TsOneColor.secondary)),
-                                                  Text(deviceName3, style: TextStyle(color: TsOneColor.secondary)),
-                                                  Text(userId, style: TextStyle(color: TsOneColor.secondary)),
-                                                  Text(_formatTimestamp(doc['timestamp']), style: TextStyle(color: TsOneColor.secondary)),
+                                                  Text(deviceName2, style: const TextStyle(color: TsOneColor.secondary)),
+                                                  Text(deviceName3, style: const TextStyle(color: TsOneColor.secondary)),
+                                                  Text(userId, style: const TextStyle(color: TsOneColor.secondary)),
+                                                  Text(_formatTimestamp(doc['timestamp']), style: const TextStyle(color: TsOneColor.secondary)),
                                                 ],
                                               )),
                                               const Icon(
@@ -664,27 +664,27 @@ class HomeFOView extends GetView<HomeFOController> {
                                 );
                               }).toList(),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 15.0,
                             ),
-                            Align(
+                            const Align(
                               alignment: Alignment.centerLeft,
                               child: BlackTitleText(text: "Need Confirmation"),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 15.0,
                             ),
-                            Text(
+                            const Text(
                               "There is no data that needs confirmation",
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 20.0,
                             ),
-                            Align(alignment: Alignment.centerLeft, child: BlackTitleText(text: 'In Use')),
-                            SizedBox(
+                            const Align(alignment: Alignment.centerLeft, child: BlackTitleText(text: 'In Use')),
+                            const SizedBox(
                               height: 15.0,
                             ),
-                            Text(
+                            const Text(
                               "There is no device you are using, ",
                             ),
                           ],
@@ -699,7 +699,7 @@ class HomeFOView extends GetView<HomeFOController> {
                             future: requestdeviceController.getFODevicesHandover(),
                             builder: (context, snapshot) {
                               if (snapshot.connectionState == ConnectionState.waiting) {
-                                return CircularProgressIndicator();
+                                return const CircularProgressIndicator();
                               } else if (snapshot.hasError) {
                                 return Text('Error: ${snapshot.error}');
                               } else {
@@ -713,11 +713,11 @@ class HomeFOView extends GetView<HomeFOController> {
                                     children: [
                                       // Display 'in-use-pilot' data
                                       if (inConfirmationPilotDocs.isNotEmpty) ...[
-                                        Align(
+                                        const Align(
                                           alignment: Alignment.centerLeft,
                                           child: BlackTitleText(text: "Confirm From Other Crew"),
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 10,
                                         ),
 
@@ -760,22 +760,22 @@ class HomeFOView extends GetView<HomeFOController> {
                                                       child: Row(
                                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                         children: [
-                                                          Column(
+                                                          const Column(
                                                             crossAxisAlignment: CrossAxisAlignment.start,
                                                             children: [
-                                                              const Text(
+                                                              Text(
                                                                 "Device 2",
                                                                 style: TextStyle(color: TsOneColor.secondary),
                                                               ),
-                                                              const Text(
+                                                              Text(
                                                                 "Device 3",
                                                                 style: TextStyle(color: TsOneColor.secondary),
                                                               ),
-                                                              const Text(
+                                                              Text(
                                                                 'FO ID',
                                                                 style: TextStyle(color: TsOneColor.secondary),
                                                               ),
-                                                              const Text(
+                                                              Text(
                                                                 'Date',
                                                                 style: TextStyle(color: TsOneColor.secondary),
                                                               ),
@@ -784,21 +784,21 @@ class HomeFOView extends GetView<HomeFOController> {
                                                           const SizedBox(
                                                             width: 5,
                                                           ),
-                                                          Column(
+                                                          const Column(
                                                             children: [
-                                                              const Text(
+                                                              Text(
                                                                 ':',
                                                                 style: TextStyle(color: TsOneColor.secondary),
                                                               ),
-                                                              const Text(
+                                                              Text(
                                                                 ':',
                                                                 style: TextStyle(color: TsOneColor.secondary),
                                                               ),
-                                                              const Text(
+                                                              Text(
                                                                 ':',
                                                                 style: TextStyle(color: TsOneColor.secondary),
                                                               ),
-                                                              const Text(
+                                                              Text(
                                                                 ':',
                                                                 style: TextStyle(color: TsOneColor.secondary),
                                                               ),
@@ -811,10 +811,10 @@ class HomeFOView extends GetView<HomeFOController> {
                                                               child: Column(
                                                             crossAxisAlignment: CrossAxisAlignment.start,
                                                             children: [
-                                                              Text(deviceName2, style: TextStyle(color: TsOneColor.secondary)),
-                                                              Text(deviceName3, style: TextStyle(color: TsOneColor.secondary)),
-                                                              Text(userId, style: TextStyle(color: TsOneColor.secondary)),
-                                                              Text(_formatTimestamp(doc['timestamp']), style: TextStyle(color: TsOneColor.secondary)),
+                                                              Text(deviceName2, style: const TextStyle(color: TsOneColor.secondary)),
+                                                              Text(deviceName3, style: const TextStyle(color: TsOneColor.secondary)),
+                                                              Text(userId, style: const TextStyle(color: TsOneColor.secondary)),
+                                                              Text(_formatTimestamp(doc['timestamp']), style: const TextStyle(color: TsOneColor.secondary)),
                                                             ],
                                                           )),
                                                           const Icon(
@@ -831,28 +831,28 @@ class HomeFOView extends GetView<HomeFOController> {
                                             );
                                           }).toList(),
                                         ),
-                                        SizedBox(height: 10),
-                                        SizedBox(
+                                        const SizedBox(height: 10),
+                                        const SizedBox(
                                           height: 20.0,
                                         ),
-                                        Align(
+                                        const Align(
                                           alignment: Alignment.centerLeft,
                                           child: BlackTitleText(text: "Waiting Confirmation"),
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 15.0,
                                         ),
-                                        Text(
+                                        const Text(
                                           "There is no data that need to confirm",
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 20.0,
                                         ),
-                                        Align(alignment: Alignment.centerLeft, child: BlackTitleText(text: 'In Use')),
-                                        SizedBox(
+                                        const Align(alignment: Alignment.centerLeft, child: BlackTitleText(text: 'In Use')),
+                                        const SizedBox(
                                           height: 15.0,
                                         ),
-                                        Text(
+                                        const Text(
                                           "There is data In Use ",
                                         ),
                                       ],
@@ -865,7 +865,7 @@ class HomeFOView extends GetView<HomeFOController> {
                                       ElevatedButton(
                                         style: ElevatedButton.styleFrom(
                                             backgroundColor: TsOneColor.primary,
-                                            minimumSize: Size(double.infinity, 50),
+                                            minimumSize: const Size(double.infinity, 50),
                                             shape: RoundedRectangleBorder(
                                               borderRadius: BorderRadius.circular(15.0),
                                             )),
@@ -873,11 +873,11 @@ class HomeFOView extends GetView<HomeFOController> {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => FOrequestdeviceView(),
+                                              builder: (context) => const FOrequestdeviceView(),
                                             ),
                                           );
                                         },
-                                        child: Row(
+                                        child: const Row(
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           children: [
                                             Icon(
@@ -894,40 +894,40 @@ class HomeFOView extends GetView<HomeFOController> {
                                           ],
                                         ),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 20.0,
                                       ),
-                                      Align(
+                                      const Align(
                                         alignment: Alignment.centerLeft,
                                         child: BlackTitleText(text: "Waiting Confirmation"),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 15.0,
                                       ),
-                                      Text(
+                                      const Text(
                                         "There is no data that need to confirm",
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 20.0,
                                       ),
-                                      Align(
+                                      const Align(
                                         alignment: Alignment.centerLeft,
                                         child: BlackTitleText(text: "Need Confirmation"),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 15.0,
                                       ),
-                                      Text(
+                                      const Text(
                                         "There is no data that wait for confirmation",
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 20.0,
                                       ),
-                                      Align(alignment: Alignment.centerLeft, child: BlackTitleText(text: 'In Use')),
-                                      SizedBox(
+                                      const Align(alignment: Alignment.centerLeft, child: BlackTitleText(text: 'In Use')),
+                                      const SizedBox(
                                         height: 15.0,
                                       ),
-                                      Text(
+                                      const Text(
                                         "There is data In Use ",
                                       ),
                                     ],

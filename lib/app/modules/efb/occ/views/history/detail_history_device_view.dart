@@ -257,7 +257,7 @@ class DetailHistoryDeviceView extends GetView {
                                                       flex: 6,
                                                       child: Text("ID NO")),
                                                   Expanded(
-                                                      flex: 1,
+                                                      
                                                       child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
@@ -273,7 +273,7 @@ class DetailHistoryDeviceView extends GetView {
                                                       flex: 6,
                                                       child: Text("Name")),
                                                   Expanded(
-                                                      flex: 1,
+                                                      
                                                       child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
@@ -289,7 +289,7 @@ class DetailHistoryDeviceView extends GetView {
                                                       flex: 6,
                                                       child: Text("Rank")),
                                                   Expanded(
-                                                      flex: 1,
+                                                      
                                                       child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
@@ -318,7 +318,7 @@ class DetailHistoryDeviceView extends GetView {
                                                       flex: 6,
                                                       child: Text("Device No")),
                                                   Expanded(
-                                                      flex: 1,
+                                                      
                                                       child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
@@ -335,7 +335,7 @@ class DetailHistoryDeviceView extends GetView {
                                                       child:
                                                           Text("IOS Version")),
                                                   Expanded(
-                                                      flex: 1,
+                                                      
                                                       child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
@@ -352,7 +352,7 @@ class DetailHistoryDeviceView extends GetView {
                                                       child: Text(
                                                           "FlySmart Version")),
                                                   Expanded(
-                                                      flex: 1,
+                                                      
                                                       child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
@@ -369,7 +369,7 @@ class DetailHistoryDeviceView extends GetView {
                                                       child: Text(
                                                           "Docunet Version")),
                                                   Expanded(
-                                                      flex: 1,
+                                                      
                                                       child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
@@ -386,7 +386,7 @@ class DetailHistoryDeviceView extends GetView {
                                                       child: Text(
                                                           "Lido mPilot Version")),
                                                   Expanded(
-                                                      flex: 1,
+                                                      
                                                       child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
@@ -402,7 +402,7 @@ class DetailHistoryDeviceView extends GetView {
                                                       flex: 6,
                                                       child: Text("HUB")),
                                                   Expanded(
-                                                      flex: 1,
+                                                      
                                                       child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
@@ -418,7 +418,7 @@ class DetailHistoryDeviceView extends GetView {
                                                       flex: 6,
                                                       child: Text("Condition")),
                                                   Expanded(
-                                                      flex: 1,
+                                                      
                                                       child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
@@ -449,7 +449,7 @@ class DetailHistoryDeviceView extends GetView {
                                                         child: Text(
                                                             "Proof Back To Base")),
                                                     Expanded(
-                                                        flex: 1,
+                                                        
                                                         child: Text(":")),
                                                     Expanded(
                                                       flex: 6,
@@ -532,7 +532,7 @@ class DetailHistoryDeviceView extends GetView {
                                                 Row(
                                                   children: [
                                                     Expanded(flex: 6, child: Text("Remarks")),
-                                                    Expanded(flex: 1, child: Text(":")),
+                                                    Expanded( child: Text(":")),
                                                     Expanded(
                                                       flex: 6,
                                                       child:
@@ -545,7 +545,7 @@ class DetailHistoryDeviceView extends GetView {
                                                 Row(
                                                   children: [
                                                     Expanded(flex: 6, child: Text("Proof of Remarks")),
-                                                    Expanded(flex: 1, child: Text(":")),
+                                                    Expanded( child: Text(":")),
                                                     Expanded(
                                                       flex: 6,
                                                       child: Column(
@@ -617,7 +617,7 @@ class DetailHistoryDeviceView extends GetView {
                                                         flex: 6,
                                                         child: Text("ID NO")),
                                                     Expanded(
-                                                        flex: 1,
+                                                        
                                                         child: Text(":")),
                                                     Expanded(
                                                       flex: 6,
@@ -638,7 +638,7 @@ class DetailHistoryDeviceView extends GetView {
                                                         flex: 6,
                                                         child: Text("NAME")),
                                                     Expanded(
-                                                        flex: 1,
+                                                        
                                                         child: Text(":")),
                                                     Expanded(
                                                       flex: 6,
@@ -659,7 +659,7 @@ class DetailHistoryDeviceView extends GetView {
                                                         flex: 6,
                                                         child: Text("RANK")),
                                                     Expanded(
-                                                        flex: 1,
+                                                        
                                                         child: Text(":")),
                                                     Expanded(
                                                       flex: 6,
@@ -693,7 +693,7 @@ class DetailHistoryDeviceView extends GetView {
                                                         child: Text(
                                                             "OCC (Given)")),
                                                     Expanded(
-                                                        flex: 1,
+                                                        
                                                         child: Text(":")),
                                                     Expanded(
                                                       flex: 6,
@@ -711,7 +711,7 @@ class DetailHistoryDeviceView extends GetView {
                                                         child: Text(
                                                             "OCC (Received)")),
                                                     Expanded(
-                                                        flex: 1,
+                                                        
                                                         child: Text(":")),
                                                     Expanded(
                                                       flex: 6,

@@ -112,13 +112,14 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                     final occOnDuty = pilotDeviceData['occ-on-duty'] as String? ?? 'N/A';
 
                     final userUid = pilotDeviceData['user_uid'];
+                    final feedbackId = pilotDeviceData['feedbackId'];
 
 
                     return FutureBuilder<DocumentSnapshot>(
                       future: FirebaseFirestore.instance.collection("users").doc(userUid).get(),
                       builder: (context, userSnapshot) {
                         if (userSnapshot.connectionState == ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator());
+                          return const Center(child: CircularProgressIndicator());
                         }
 
                         if (userSnapshot.hasError) {
@@ -126,7 +127,7 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                         }
 
                         if (!userSnapshot.hasData || !userSnapshot.data!.exists) {
-                          return Center(child: Text('User data not found'));
+                          return const Center(child: Text('User data not found'));
                         }
 
                         final userData = userSnapshot.data!.data() as Map<String, dynamic>;
@@ -142,40 +143,40 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                                     alignment: Alignment.centerRight,
                                     child: Text(_formatTimestamp(pilotDeviceData['timestamp']), style: tsOneTextTheme.labelSmall),
                                   ),
-                                  SizedBox(height: 15),
+                                  const SizedBox(height: 15),
                                   Row(
                                     children: [
-                                      Expanded(flex: 6, child: Text("ID NO")),
-                                      Expanded(flex: 1, child: Text(":")),
+                                      const Expanded(flex: 6, child: Text("ID NO")),
+                                      const Expanded( child: Text(":")),
                                       Expanded(
                                         flex: 6,
                                         child: Text('${userData['ID NO'] ?? 'No Data'}'),
                                       ),
                                     ],
                                   ),
-                                  SizedBox(height: 5.0),
+                                  const SizedBox(height: 5.0),
                                   Row(
                                     children: [
-                                      Expanded(flex: 6, child: Text("Name")),
-                                      Expanded(flex: 1, child: Text(":")),
+                                      const Expanded(flex: 6, child: Text("Name")),
+                                      const Expanded( child: Text(":")),
                                       Expanded(
                                         flex: 6,
                                         child: Text('${userData['NAME'] ?? 'No Data'}'),
                                       ),
                                     ],
                                   ),
-                                  SizedBox(height: 5.0),
+                                  const SizedBox(height: 5.0),
                                   Row(
                                     children: [
-                                      Expanded(flex: 6, child: Text("Rank")),
-                                      Expanded(flex: 1, child: Text(":")),
+                                      const Expanded(flex: 6, child: Text("Rank")),
+                                      const Expanded( child: Text(":")),
                                       Expanded(
                                         flex: 6,
                                         child: Text('${userData['RANK'] ?? 'No Data'}'),
                                       ),
                                     ],
                                   ),
-                                  SizedBox(height: 15),
+                                  const SizedBox(height: 15),
                                   const Padding(
                                     padding: EdgeInsets.only(bottom: 16.0),
                                     child: Row(
@@ -204,71 +205,71 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                                     alignment: Alignment.centerLeft,
                                     child: Text("Device 1", style: tsOneTextTheme.displaySmall),
                                   ),
-                                  SizedBox(height: 7.0),
+                                  const SizedBox(height: 7.0),
                                   Row(
                                     children: [
-                                      Expanded(flex: 5, child: Text("Device No")),
-                                      Expanded(flex: 1, child: Text(":")),
+                                      const Expanded(flex: 5, child: Text("Device No")),
+                                      const Expanded( child: Text(":")),
                                       Expanded(flex: 5, child: Text(deviceno)),
                                     ],
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 8,
                                   ),
                                   Row(
                                     children: [
-                                      Expanded(flex: 5, child: Text("IOS Version")),
-                                      Expanded(flex: 1, child: Text(":")),
+                                      const Expanded(flex: 5, child: Text("IOS Version")),
+                                      const Expanded( child: Text(":")),
                                       Expanded(flex: 5, child: Text(iosver)),
                                     ],
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 8,
                                   ),
                                   Row(
                                     children: [
-                                      Expanded(flex: 5, child: Text("Flysmart Ver")),
-                                      Expanded(flex: 1, child: Text(":")),
+                                      const Expanded(flex: 5, child: Text("Flysmart Ver")),
+                                      const Expanded( child: Text(":")),
                                       Expanded(flex: 5, child: Text(flysmart)),
                                     ],
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 8,
                                   ),
                                   Row(
                                     children: [
-                                      Expanded(flex: 5, child: Text("Docunet Version")),
-                                      Expanded(flex: 1, child: Text(":")),
+                                      const Expanded(flex: 5, child: Text("Docunet Version")),
+                                      const Expanded( child: Text(":")),
                                       Expanded(flex: 5, child: Text(docuversion)),
                                     ],
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 8,
                                   ),
                                   Row(
                                     children: [
-                                      Expanded(flex: 5, child: Text("Lido mPilot Version")),
-                                      Expanded(flex: 1, child: Text(":")),
+                                      const Expanded(flex: 5, child: Text("Lido mPilot Version")),
+                                      const Expanded( child: Text(":")),
                                       Expanded(flex: 5, child: Text(lidoversion)),
                                     ],
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 8,
                                   ),
                                   Row(
                                     children: [
-                                      Expanded(flex: 5, child: Text("HUB")),
-                                      Expanded(flex: 1, child: Text(":")),
+                                      const Expanded(flex: 5, child: Text("HUB")),
+                                      const Expanded( child: Text(":")),
                                       Expanded(flex: 5, child: Text(hub)),
                                     ],
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 8,
                                   ),
                                   Row(
                                     children: [
-                                      Expanded(flex: 5, child: Text("Condition")),
-                                      Expanded(flex: 1, child: Text(":")),
+                                      const Expanded(flex: 5, child: Text("Condition")),
+                                      const Expanded( child: Text(":")),
                                       Expanded(flex: 5, child: Text(condition)),
                                     ],
                                   ),
@@ -278,6 +279,34 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                                   ),
                                 ],
                               ),
+                              if (feedbackId == null)
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    ElevatedButton(
+                                        onPressed: () async {
+                                          String documentId = await getDocumentIdForDevice(widget.deviceId);
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => PilotFeedBack(
+                                                documentId: documentId,
+                                                deviceId: widget.deviceId,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        child: const Text("FeedBack"))
+                                  ],
+                                ),
+                              if (feedbackId != null)
+                                const Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text("Your feedback has been recorded")
+                                  ],
+                                )
+                              
                             ],
                           ),
                         );
@@ -310,27 +339,7 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                   ],
                 ),
               ),
-
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ElevatedButton(
-                      onPressed: () async {
-                        String documentId = await getDocumentIdForDevice(widget.deviceId);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => PilotFeedBack(
-                              documentId: documentId,
-                              deviceId: widget.deviceId,
-                            ),
-                          ),
-                        );
-                      },
-                      child: Text("FeedBack"))
-                ],
-              ),
-              Column(
+              const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(

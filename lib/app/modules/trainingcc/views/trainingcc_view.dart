@@ -125,7 +125,7 @@ class TrainingccView extends GetView<TrainingccController> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Expanded(
-                              flex: 1,
+                              
                               child: Text(
                                 listTrainingRemark[index]["training_code"],
                                 style: const TextStyle(fontWeight: FontWeight.bold),

@@ -50,7 +50,7 @@ class _AddDevice extends State<AddDevice> {
         contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         labelText: 'Device Number',
         labelStyle: tsOneTextTheme.labelMedium,
-        border: OutlineInputBorder(),
+        border: const OutlineInputBorder(),
       ),
       onEditingComplete: () {
         FocusScope.of(context)
@@ -74,7 +74,7 @@ class _AddDevice extends State<AddDevice> {
         contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         labelText: 'IOS Version',
         labelStyle: tsOneTextTheme.labelMedium,
-        border: OutlineInputBorder(),
+        border: const OutlineInputBorder(),
       ),
       onEditingComplete: () {
         FocusScope.of(context)
@@ -98,7 +98,7 @@ class _AddDevice extends State<AddDevice> {
         contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         labelText: 'Fly Smart Version',
         labelStyle: tsOneTextTheme.labelMedium,
-        border: OutlineInputBorder(),
+        border: const OutlineInputBorder(),
       ),
       onEditingComplete: () {
         FocusScope.of(context)
@@ -119,7 +119,7 @@ class _AddDevice extends State<AddDevice> {
         contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         labelText: 'Lido mPilot Version',
         labelStyle: tsOneTextTheme.labelMedium,
-        border: OutlineInputBorder(),
+        border: const OutlineInputBorder(),
       ),
       onEditingComplete: () {
         FocusScope.of(context)
@@ -143,7 +143,7 @@ class _AddDevice extends State<AddDevice> {
         contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         labelText: 'Docunet Version',
         labelStyle: tsOneTextTheme.labelMedium,
-        border: OutlineInputBorder(),
+        border: const OutlineInputBorder(),
       ),
       onEditingComplete: () {
         FocusScope.of(context)
@@ -165,7 +165,7 @@ class _AddDevice extends State<AddDevice> {
         contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         labelText: 'Device Condition',
         labelStyle: tsOneTextTheme.labelMedium,
-        border: OutlineInputBorder(),
+        border: const OutlineInputBorder(),
       ),
     );
 
@@ -186,7 +186,7 @@ class _AddDevice extends State<AddDevice> {
         contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         labelText: 'Device Condition',
         labelStyle: tsOneTextTheme.labelMedium,
-        border: OutlineInputBorder(),
+        border: const OutlineInputBorder(),
       ),
     );
 
@@ -207,7 +207,7 @@ class _AddDevice extends State<AddDevice> {
         contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         labelText: 'Device HUB',
         labelStyle: tsOneTextTheme.labelMedium,
-        border: OutlineInputBorder(),
+        border: const OutlineInputBorder(),
       ),
     );
 
@@ -261,8 +261,8 @@ class _AddDevice extends State<AddDevice> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 255, 255, 255),
-        title: Text(
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+        title: const Text(
           'Add Device',
           style: TextStyle(
             color: Colors.black, // Set text color to red
@@ -305,11 +305,11 @@ class _AddDevice extends State<AddDevice> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 10),
+              padding: const EdgeInsets.symmetric(vertical: 10),
               child: SaveButton,
             ),
             // Expanded(
-            //   flex: 1,
+            //   
             //   child: Padding(
             //     padding: EdgeInsets.symmetric(vertical: 10),
             //     child: SaveButton,

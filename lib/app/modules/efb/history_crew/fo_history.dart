@@ -173,7 +173,7 @@ class DetailHistoryFOView extends GetView {
                                                   Row(
                                                     children: [
                                                       Expanded(flex: 6, child: Text("Loan Date")),
-                                                      Expanded(flex: 1, child: Text(":")),
+                                                      Expanded( child: Text(":")),
                                                       Expanded(
                                                         flex: 6,
                                                         child: Text(_formatTimestamp(data['timestamp'])),
@@ -189,7 +189,7 @@ class DetailHistoryFOView extends GetView {
                                                   Row(
                                                     children: [
                                                       Expanded(flex: 6, child: Text("ID NO")),
-                                                      Expanded(flex: 1, child: Text(":")),
+                                                      Expanded( child: Text(":")),
                                                       Expanded(
                                                         flex: 6,
                                                         child: Text('${userData['ID NO'] ?? 'No Data'}'),
@@ -200,7 +200,7 @@ class DetailHistoryFOView extends GetView {
                                                   Row(
                                                     children: [
                                                       Expanded(flex: 6, child: Text("Name")),
-                                                      Expanded(flex: 1, child: Text(":")),
+                                                      Expanded( child: Text(":")),
                                                       Expanded(
                                                         flex: 6,
                                                         child: Text('${userData['NAME'] ?? 'No Data'}'),
@@ -211,7 +211,7 @@ class DetailHistoryFOView extends GetView {
                                                   Row(
                                                     children: [
                                                       Expanded(flex: 6, child: Text("Rank")),
-                                                      Expanded(flex: 1, child: Text(":")),
+                                                      Expanded( child: Text(":")),
                                                       Expanded(
                                                         flex: 6,
                                                         child: Text('${userData['RANK'] ?? 'No Data'}'),
@@ -227,7 +227,7 @@ class DetailHistoryFOView extends GetView {
                                                   Row(
                                                     children: [
                                                       Expanded(flex: 6, child: Text("Device No")),
-                                                      Expanded(flex: 1, child: Text(":")),
+                                                      Expanded( child: Text(":")),
                                                       Expanded(
                                                         flex: 6,
                                                         child: Text('${data['device_nam2'] ?? 'No Data'}'),
@@ -238,7 +238,7 @@ class DetailHistoryFOView extends GetView {
                                                   Row(
                                                     children: [
                                                       Expanded(flex: 6, child: Text("IOS Version")),
-                                                      Expanded(flex: 1, child: Text(":")),
+                                                      Expanded( child: Text(":")),
                                                       Expanded(
                                                         flex: 6,
                                                         child: Text('${deviceData2['iosver'] ?? 'No Data'}'),
@@ -249,7 +249,7 @@ class DetailHistoryFOView extends GetView {
                                                   Row(
                                                     children: [
                                                       Expanded(flex: 6, child: Text("FlySmart Version")),
-                                                      Expanded(flex: 1, child: Text(":")),
+                                                      Expanded( child: Text(":")),
                                                       Expanded(
                                                         flex: 6,
                                                         child: Text('${deviceData2['flysmart'] ?? 'No Data'}'),
@@ -260,7 +260,7 @@ class DetailHistoryFOView extends GetView {
                                                   Row(
                                                     children: [
                                                       Expanded(flex: 6, child: Text("Docunet Version")),
-                                                      Expanded(flex: 1, child: Text(":")),
+                                                      Expanded( child: Text(":")),
                                                       Expanded(
                                                         flex: 6,
                                                         child: Text('${deviceData2['docuversion'] ?? 'No Data'}'),
@@ -271,7 +271,7 @@ class DetailHistoryFOView extends GetView {
                                                   Row(
                                                     children: [
                                                       Expanded(flex: 6, child: Text("Lido mPilot Version")),
-                                                      Expanded(flex: 1, child: Text(":")),
+                                                      Expanded( child: Text(":")),
                                                       Expanded(
                                                         flex: 6,
                                                         child: Text('${deviceData2['lidoversion'] ?? 'No Data'}'),
@@ -282,7 +282,7 @@ class DetailHistoryFOView extends GetView {
                                                   Row(
                                                     children: [
                                                       Expanded(flex: 6, child: Text("HUB")),
-                                                      Expanded(flex: 1, child: Text(":")),
+                                                      Expanded( child: Text(":")),
                                                       Expanded(
                                                         flex: 6,
                                                         child: Text('${deviceData2['hub'] ?? 'No Data'}'),
@@ -293,7 +293,7 @@ class DetailHistoryFOView extends GetView {
                                                   Row(
                                                     children: [
                                                       Expanded(flex: 6, child: Text("Condition")),
-                                                      Expanded(flex: 1, child: Text(":")),
+                                                      Expanded( child: Text(":")),
                                                       Expanded(
                                                         flex: 6,
                                                         child: Text('${deviceData2['condition'] ?? 'No Data'}'),
@@ -309,7 +309,7 @@ class DetailHistoryFOView extends GetView {
                                                   Row(
                                                     children: [
                                                       Expanded(flex: 6, child: Text("Device No")),
-                                                      Expanded(flex: 1, child: Text(":")),
+                                                      Expanded( child: Text(":")),
                                                       Expanded(
                                                         flex: 6,
                                                         child: Text('${data['device_name3'] ?? 'No Data'}'),
@@ -320,7 +320,7 @@ class DetailHistoryFOView extends GetView {
                                                   Row(
                                                     children: [
                                                       Expanded(flex: 6, child: Text("IOS Version")),
-                                                      Expanded(flex: 1, child: Text(":")),
+                                                      Expanded( child: Text(":")),
                                                       Expanded(
                                                         flex: 6,
                                                         child: Text('${deviceData3['iosver'] ?? 'No Data'}'),
@@ -331,7 +331,7 @@ class DetailHistoryFOView extends GetView {
                                                   Row(
                                                     children: [
                                                       Expanded(flex: 6, child: Text("FlySmart Version")),
-                                                      Expanded(flex: 1, child: Text(":")),
+                                                      Expanded( child: Text(":")),
                                                       Expanded(
                                                         flex: 6,
                                                         child: Text('${deviceData3['flysmart'] ?? 'No Data'}'),
@@ -342,7 +342,7 @@ class DetailHistoryFOView extends GetView {
                                                   Row(
                                                     children: [
                                                       Expanded(flex: 6, child: Text("Docunet Version")),
-                                                      Expanded(flex: 1, child: Text(":")),
+                                                      Expanded( child: Text(":")),
                                                       Expanded(
                                                         flex: 6,
                                                         child: Text('${deviceData3['docuversion'] ?? 'No Data'}'),
@@ -353,7 +353,7 @@ class DetailHistoryFOView extends GetView {
                                                   Row(
                                                     children: [
                                                       Expanded(flex: 6, child: Text("Lido mPilot Version")),
-                                                      Expanded(flex: 1, child: Text(":")),
+                                                      Expanded( child: Text(":")),
                                                       Expanded(
                                                         flex: 6,
                                                         child: Text('${deviceData3['lidoversion'] ?? 'No Data'}'),
@@ -364,7 +364,7 @@ class DetailHistoryFOView extends GetView {
                                                   Row(
                                                     children: [
                                                       Expanded(flex: 6, child: Text("HUB")),
-                                                      Expanded(flex: 1, child: Text(":")),
+                                                      Expanded( child: Text(":")),
                                                       Expanded(
                                                         flex: 6,
                                                         child: Text('${deviceData3['hub'] ?? 'No Data'}'),
@@ -375,7 +375,7 @@ class DetailHistoryFOView extends GetView {
                                                   Row(
                                                     children: [
                                                       Expanded(flex: 6, child: Text("Condition")),
-                                                      Expanded(flex: 1, child: Text(":")),
+                                                      Expanded( child: Text(":")),
                                                       Expanded(
                                                         flex: 6,
                                                         child: Text('${deviceData3['condition'] ?? 'No Data'}'),
@@ -409,7 +409,7 @@ class DetailHistoryFOView extends GetView {
                                                   Row(
                                                     children: [
                                                       Expanded(flex: 6, child: Text("Image Proof")),
-                                                      Expanded(flex: 1, child: Text(":")),
+                                                      Expanded( child: Text(":")),
                                                       Expanded(
                                                         flex: 6,
                                                         child: Column(
@@ -444,7 +444,7 @@ class DetailHistoryFOView extends GetView {
                                                     Row(
                                                       children: [
                                                         Expanded(flex: 6, child: Text("OCC That Gives")),
-                                                        Expanded(flex: 1, child: Text(":")),
+                                                        Expanded( child: Text(":")),
                                                         Expanded(
                                                           flex: 6,
                                                           child: Text('${occOnDutyuserData?['NAME'] ?? 'No Data'}'),
@@ -456,7 +456,7 @@ class DetailHistoryFOView extends GetView {
                                                     Row(
                                                       children: [
                                                         Expanded(flex: 6, child: Text("OCC Who Received")),
-                                                        Expanded(flex: 1, child: Text(":")),
+                                                        Expanded( child: Text(":")),
                                                         Expanded(
                                                           flex: 6,
                                                           child: Text('${occAccepteduserData?['NAME'] ?? 'No Data'}'),
@@ -469,7 +469,7 @@ class DetailHistoryFOView extends GetView {
                                                     Row(
                                                       children: [
                                                         Expanded(flex: 6, child: Text("Image Proof")),
-                                                        Expanded(flex: 1, child: Text(":")),
+                                                        Expanded( child: Text(":")),
                                                         Expanded(
                                                           flex: 6,
                                                           child: Column(
@@ -517,7 +517,7 @@ class DetailHistoryFOView extends GetView {
                                                     Row(
                                                       children: [
                                                         Expanded(flex: 6, child: Text("ID NO")),
-                                                        Expanded(flex: 1, child: Text(":")),
+                                                        Expanded( child: Text(":")),
                                                         Expanded(
                                                           flex: 6,
                                                           child: handoverTouserData != null
@@ -531,7 +531,7 @@ class DetailHistoryFOView extends GetView {
                                                     Row(
                                                       children: [
                                                         Expanded(flex: 6, child: Text("NAME")),
-                                                        Expanded(flex: 1, child: Text(":")),
+                                                        Expanded( child: Text(":")),
                                                         Expanded(
                                                           flex: 6,
                                                           child: handoverTouserData != null
@@ -545,7 +545,7 @@ class DetailHistoryFOView extends GetView {
                                                     Row(
                                                       children: [
                                                         Expanded(flex: 6, child: Text("RANK")),
-                                                        Expanded(flex: 1, child: Text(":")),
+                                                        Expanded( child: Text(":")),
                                                         Expanded(
                                                           flex: 6,
                                                           child: handoverTouserData != null

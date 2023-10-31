@@ -111,8 +111,8 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
       barrierDismissible: false, // Dialog cannot be dismissed by tapping outside
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Confirmation Return'),
-          content: SingleChildScrollView(
+          title: const Text('Confirmation Return'),
+          content: const SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
                 Text('Are you sure you want to confirm the return of this device?'),
@@ -125,13 +125,13 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                 Expanded(
                   flex: 5,
                   child: TextButton(
-                    child: Text('No', style: TextStyle(color: TsOneColor.secondaryContainer)),
+                    child: const Text('No', style: TextStyle(color: TsOneColor.secondaryContainer)),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
                   ),
                 ),
-                Spacer(flex: 1),
+                const Spacer(flex: 1),
                 Expanded(
                   flex: 5,
                   child: TextButton(
@@ -141,7 +141,7 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                         borderRadius: BorderRadius.circular(20.0),
                       ),
                     ),
-                    child: Text('Yes', style: TextStyle(color: TsOneColor.onPrimary)),
+                    child: const Text('Yes', style: TextStyle(color: TsOneColor.onPrimary)),
                     onPressed: () async {
                       updateStatusToInUsePilot(widget.deviceId);
                       _showQuickAlert(context);
@@ -182,12 +182,12 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20), // Adjust the padding here
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20), // Adjust the padding here
           child: FutureBuilder<DocumentSnapshot>(
             future: FirebaseFirestore.instance.collection("pilot-device-1").doc(widget.deviceId).get(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
+                return const Center(child: CircularProgressIndicator());
               }
 
               if (snapshot.hasError) {
@@ -195,7 +195,7 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
               }
 
               if (!snapshot.hasData || !snapshot.data!.exists) {
-                return Center(child: Text('Data not found'));
+                return const Center(child: Text('Data not found'));
               }
 
               final data = snapshot.data!.data() as Map<String, dynamic>;
@@ -204,7 +204,7 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                 future: FirebaseFirestore.instance.collection("users").doc(data['handover-to-crew']).get(),
                 builder: (context, userSnapshot) {
                   if (userSnapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
+                    return const Center(child: CircularProgressIndicator());
                   }
 
                   if (userSnapshot.hasError) {
@@ -212,7 +212,7 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                   }
 
                   if (!userSnapshot.hasData || !userSnapshot.data!.exists) {
-                    return Center(child: Text('User data not found'));
+                    return const Center(child: Text('User data not found'));
                   }
 
                   final userData = userSnapshot.data!.data() as Map<String, dynamic>;
@@ -221,7 +221,7 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                     future: FirebaseFirestore.instance.collection("users").doc(data['user_uid']).get(),
                     builder: (context, otheruserSnapshot) {
                       if (otheruserSnapshot.connectionState == ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator());
+                        return const Center(child: CircularProgressIndicator());
                       }
 
                       if (otheruserSnapshot.hasError) {
@@ -229,7 +229,7 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                       }
 
                       if (!otheruserSnapshot.hasData || !otheruserSnapshot.data!.exists) {
-                        return Center(child: Text('Other Crew From data not found'));
+                        return const Center(child: Text('Other Crew From data not found'));
                       }
 
                       final otheruserData = otheruserSnapshot.data!.data() as Map<String, dynamic>;
@@ -238,7 +238,7 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                         future: FirebaseFirestore.instance.collection("Device").doc(data['device_uid']).get(),
                         builder: (context, deviceSnapshot) {
                           if (deviceSnapshot.connectionState == ConnectionState.waiting) {
-                            return Center(child: CircularProgressIndicator());
+                            return const Center(child: CircularProgressIndicator());
                           }
 
                           if (deviceSnapshot.hasError) {
@@ -246,7 +246,7 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                           }
 
                           if (!deviceSnapshot.hasData || !deviceSnapshot.data!.exists) {
-                            return Center(child: Text('Device data not found'));
+                            return const Center(child: Text('Device data not found'));
                           }
 
                           final deviceData = deviceSnapshot.data!.data() as Map<String, dynamic>;
@@ -255,12 +255,12 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                SizedBox(height: 10.0),
+                                const SizedBox(height: 10.0),
                                 Align(
                                   alignment: Alignment.centerRight,
                                   child: Text(_formatTimestamp(data['timestamp']), style: tsOneTextTheme.labelSmall),
                                 ),
-                                SizedBox(height: 10.0),
+                                const SizedBox(height: 10.0),
                                 Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
@@ -268,40 +268,40 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                                     style: tsOneTextTheme.headlineMedium,
                                   ),
                                 ),
-                                SizedBox(height: 10.0),
+                                const SizedBox(height: 10.0),
                                 Row(
                                   children: [
-                                    Expanded(flex: 6, child: Text("ID NO")),
-                                    Expanded(flex: 1, child: Text(":")),
+                                    const Expanded(flex: 6, child: Text("ID NO")),
+                                    const Expanded( child: Text(":")),
                                     Expanded(
                                       flex: 6,
                                       child: Text('${otheruserData['ID NO'] ?? 'No Data'}'),
                                     ),
                                   ],
                                 ),
-                                SizedBox(height: 5.0),
+                                const SizedBox(height: 5.0),
                                 Row(
                                   children: [
-                                    Expanded(flex: 6, child: Text("Name")),
-                                    Expanded(flex: 1, child: Text(":")),
+                                    const Expanded(flex: 6, child: Text("Name")),
+                                    const Expanded( child: Text(":")),
                                     Expanded(
                                       flex: 6,
                                       child: Text('${otheruserData['NAME'] ?? 'No Data'}'),
                                     ),
                                   ],
                                 ),
-                                SizedBox(height: 5.0),
+                                const SizedBox(height: 5.0),
                                 Row(
                                   children: [
-                                    Expanded(flex: 6, child: Text("RANK")),
-                                    Expanded(flex: 1, child: Text(":")),
+                                    const Expanded(flex: 6, child: Text("RANK")),
+                                    const Expanded( child: Text(":")),
                                     Expanded(
                                       flex: 6,
                                       child: Text('${otheruserData['RANK'] ?? 'No Data'}'),
                                     ),
                                   ],
                                 ),
-                                SizedBox(height: 16.0),
+                                const SizedBox(height: 16.0),
                                 Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
@@ -309,7 +309,7 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                                     style: tsOneTextTheme.headlineMedium,
                                   ),
                                 ),
-                                SizedBox(height: 10.0),
+                                const SizedBox(height: 10.0),
                                 Row(
                                   children: [
                                     Expanded(
@@ -319,7 +319,7 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
-                                        flex: 1,
+                                        
                                         child: Text(
                                           ":",
                                           style: tsOneTextTheme.bodySmall,
@@ -333,7 +333,7 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                                     ),
                                   ],
                                 ),
-                                SizedBox(height: 5.0),
+                                const SizedBox(height: 5.0),
                                 Row(
                                   children: [
                                     Expanded(
@@ -343,7 +343,7 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
-                                        flex: 1,
+                                        
                                         child: Text(
                                           ":",
                                           style: tsOneTextTheme.bodySmall,
@@ -357,7 +357,7 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                                     ),
                                   ],
                                 ),
-                                SizedBox(height: 5.0),
+                                const SizedBox(height: 5.0),
                                 Row(
                                   children: [
                                     Expanded(
@@ -367,7 +367,7 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
-                                        flex: 1,
+                                        
                                         child: Text(
                                           ":",
                                           style: tsOneTextTheme.bodySmall,
@@ -413,7 +413,7 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                                     style: tsOneTextTheme.headlineMedium,
                                   ),
                                 ),
-                                SizedBox(height: 7.0),
+                                const SizedBox(height: 7.0),
                                 Row(
                                   children: [
                                     Expanded(
@@ -423,7 +423,7 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
-                                        flex: 1,
+                                        
                                         child: Text(
                                           ":",
                                           style: tsOneTextTheme.bodySmall,
@@ -437,7 +437,7 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                                     ),
                                   ],
                                 ),
-                                SizedBox(height: 5.0),
+                                const SizedBox(height: 5.0),
                                 Row(
                                   children: [
                                     Expanded(
@@ -447,7 +447,7 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
-                                        flex: 1,
+                                        
                                         child: Text(
                                           ":",
                                           style: tsOneTextTheme.bodySmall,
@@ -461,7 +461,7 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                                     ),
                                   ],
                                 ),
-                                SizedBox(height: 5.0),
+                                const SizedBox(height: 5.0),
                                 Row(
                                   children: [
                                     Expanded(
@@ -471,7 +471,7 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
-                                        flex: 1,
+                                        
                                         child: Text(
                                           ":",
                                           style: tsOneTextTheme.bodySmall,
@@ -485,7 +485,7 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                                     ),
                                   ],
                                 ),
-                                SizedBox(height: 5.0),
+                                const SizedBox(height: 5.0),
                                 Row(
                                   children: [
                                     Expanded(
@@ -495,7 +495,7 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
-                                        flex: 1,
+                                        
                                         child: Text(
                                           ":",
                                           style: tsOneTextTheme.bodySmall,
@@ -509,7 +509,7 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                                     ),
                                   ],
                                 ),
-                                SizedBox(height: 5.0),
+                                const SizedBox(height: 5.0),
                                 Row(
                                   children: [
                                     Expanded(
@@ -519,7 +519,7 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
-                                        flex: 1,
+                                        
                                         child: Text(
                                           ":",
                                           style: tsOneTextTheme.bodySmall,
@@ -533,7 +533,7 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                                     ),
                                   ],
                                 ),
-                                SizedBox(height: 5.0),
+                                const SizedBox(height: 5.0),
                                 Row(
                                   children: [
                                     Expanded(
@@ -543,7 +543,7 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
-                                        flex: 1,
+                                        
                                         child: Text(
                                           ":",
                                           style: tsOneTextTheme.bodySmall,
@@ -557,7 +557,7 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                                     ),
                                   ],
                                 ),
-                                SizedBox(height: 5.0),
+                                const SizedBox(height: 5.0),
                                 Row(
                                   children: [
                                     Expanded(
@@ -567,7 +567,7 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
-                                        flex: 1,
+                                        
                                         child: Text(
                                           ":",
                                           style: tsOneTextTheme.bodySmall,
@@ -581,7 +581,7 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                                     ),
                                   ],
                                 ),
-                                SizedBox(height: 5.0),
+                                const SizedBox(height: 5.0),
                               ],
                             ),
                           );
@@ -597,26 +597,24 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
       ),
       bottomNavigationBar: BottomAppBar(
         surfaceTintColor: tsOneColorScheme.secondary,
-        child: Expanded(
-          child: ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ConfirmSignatureReturnOtherPilotView(
-                    deviceName: deviceName,
-                    deviceId: widget.deviceId,
-                  ),
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ConfirmSignatureReturnOtherPilotView(
+                  deviceName: deviceName,
+                  deviceId: widget.deviceId,
                 ),
-              );
-            },
-            style: ElevatedButton.styleFrom(
-                backgroundColor: TsOneColor.greenColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(4.0),
-                )),
-            child: const Text('Next', style: TextStyle(color: Colors.white)),
-          ),
+              ),
+            );
+          },
+          style: ElevatedButton.styleFrom(
+              backgroundColor: TsOneColor.greenColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4.0),
+              )),
+          child: const Text('Next', style: TextStyle(color: Colors.white)),
         ),
       ),
     );
