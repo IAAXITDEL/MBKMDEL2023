@@ -61,20 +61,20 @@ class PilotUnReturnToOtherCrewView extends GetView {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Confirmation', style: tsOneTextTheme.headlineLarge),
-          content: Text('Are you sure you want to confirm the usage?'),
+          content: const Text('Are you sure you want to confirm the usage?'),
           actions: <Widget>[
             Row(
               children: [
                 Expanded(
                   flex: 5,
                   child: TextButton(
-                    child: Text('No', style: TextStyle(color: TsOneColor.secondaryContainer)),
+                    child: const Text('No', style: TextStyle(color: TsOneColor.secondaryContainer)),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
                   ),
                 ),
-                Spacer(flex: 1),
+                const Spacer(flex: 1),
                 Expanded(
                   flex: 5,
                   child: TextButton(
@@ -84,7 +84,7 @@ class PilotUnReturnToOtherCrewView extends GetView {
                         borderRadius: BorderRadius.circular(20.0),
                       ),
                     ),
-                    child: Text('Yes', style: TextStyle(color: TsOneColor.onPrimary)),
+                    child: const Text('Yes', style: TextStyle(color: TsOneColor.onPrimary)),
                     onPressed: () async {
                       User? user = _auth.currentUser;
 
@@ -134,7 +134,7 @@ class PilotUnReturnToOtherCrewView extends GetView {
             future: FirebaseFirestore.instance.collection("pilot-device-1").doc(deviceId).get(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
+                return const Center(child: CircularProgressIndicator());
               }
 
               if (snapshot.hasError) {
@@ -142,7 +142,7 @@ class PilotUnReturnToOtherCrewView extends GetView {
               }
 
               if (!snapshot.hasData || !snapshot.data!.exists) {
-                return Center(child: Text('Data not found'));
+                return const Center(child: Text('Data not found'));
               }
 
               final data = snapshot.data!.data() as Map<String, dynamic>;
@@ -154,7 +154,7 @@ class PilotUnReturnToOtherCrewView extends GetView {
                 future: FirebaseFirestore.instance.collection("users").doc(userUid).get(),
                 builder: (context, userSnapshot) {
                   if (userSnapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
+                    return const Center(child: CircularProgressIndicator());
                   }
 
                   if (userSnapshot.hasError) {
@@ -162,7 +162,7 @@ class PilotUnReturnToOtherCrewView extends GetView {
                   }
 
                   if (!userSnapshot.hasData || !userSnapshot.data!.exists) {
-                    return Center(child: Text('User data not found'));
+                    return const Center(child: Text('User data not found'));
                   }
 
                   final userData = userSnapshot.data!.data() as Map<String, dynamic>;
@@ -171,7 +171,7 @@ class PilotUnReturnToOtherCrewView extends GetView {
                     future: FirebaseFirestore.instance.collection("Device").doc(deviceUid).get(),
                     builder: (context, deviceSnapshot) {
                       if (deviceSnapshot.connectionState == ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator());
+                        return const Center(child: CircularProgressIndicator());
                       }
 
                       if (deviceSnapshot.hasError) {
@@ -179,7 +179,7 @@ class PilotUnReturnToOtherCrewView extends GetView {
                       }
 
                       if (!deviceSnapshot.hasData || !deviceSnapshot.data!.exists) {
-                        return Center(child: Text('Device data not found'));
+                        return const Center(child: Text('Device data not found'));
                       }
 
                       final deviceData = deviceSnapshot.data!.data() as Map<String, dynamic>;
@@ -192,40 +192,40 @@ class PilotUnReturnToOtherCrewView extends GetView {
                               alignment: Alignment.centerRight,
                               child: Text(_formatTimestamp(data['timestamp']), style: tsOneTextTheme.labelSmall),
                             ),
-                            SizedBox(height: 15),
+                            const SizedBox(height: 15),
                             Row(
                               children: [
-                                Expanded(flex: 6, child: Text("ID NO")),
-                                Expanded(flex: 1, child: Text(":")),
+                                const Expanded(flex: 6, child: Text("ID NO")),
+                                const Expanded( child: Text(":")),
                                 Expanded(
                                   flex: 6,
                                   child: Text('${userData['ID NO'] ?? 'No Data'}'),
                                 ),
                               ],
                             ),
-                            SizedBox(height: 5.0),
+                            const SizedBox(height: 5.0),
                             Row(
                               children: [
-                                Expanded(flex: 6, child: Text("Name")),
-                                Expanded(flex: 1, child: Text(":")),
+                                const Expanded(flex: 6, child: Text("Name")),
+                                const Expanded( child: Text(":")),
                                 Expanded(
                                   flex: 6,
                                   child: Text('${userData['NAME'] ?? 'No Data'}'),
                                 ),
                               ],
                             ),
-                            SizedBox(height: 5.0),
+                            const SizedBox(height: 5.0),
                             Row(
                               children: [
-                                Expanded(flex: 6, child: Text("Rank")),
-                                Expanded(flex: 1, child: Text(":")),
+                                const Expanded(flex: 6, child: Text("Rank")),
+                                const Expanded( child: Text(":")),
                                 Expanded(
                                   flex: 6,
                                   child: Text('${userData['RANK'] ?? 'No Data'}'),
                                 ),
                               ],
                             ),
-                            SizedBox(height: 20),
+                            const SizedBox(height: 20),
                             const Padding(
                               padding: EdgeInsets.only(bottom: 16.0),
                               child: Row(
@@ -250,7 +250,7 @@ class PilotUnReturnToOtherCrewView extends GetView {
                                 ],
                               ),
                             ),
-                            SizedBox(height: 5.0),
+                            const SizedBox(height: 5.0),
                             Row(
                               children: [
                                 Expanded(
@@ -260,7 +260,7 @@ class PilotUnReturnToOtherCrewView extends GetView {
                                       style: tsOneTextTheme.bodySmall,
                                     )),
                                 Expanded(
-                                    flex: 1,
+                                    
                                     child: Text(
                                       ":",
                                       style: tsOneTextTheme.bodySmall,
@@ -274,7 +274,7 @@ class PilotUnReturnToOtherCrewView extends GetView {
                                 ),
                               ],
                             ),
-                            SizedBox(height: 5.0),
+                            const SizedBox(height: 5.0),
                             Row(
                               children: [
                                 Expanded(
@@ -284,7 +284,7 @@ class PilotUnReturnToOtherCrewView extends GetView {
                                       style: tsOneTextTheme.bodySmall,
                                     )),
                                 Expanded(
-                                    flex: 1,
+                                    
                                     child: Text(
                                       ":",
                                       style: tsOneTextTheme.bodySmall,
@@ -298,7 +298,7 @@ class PilotUnReturnToOtherCrewView extends GetView {
                                 ),
                               ],
                             ),
-                            SizedBox(height: 5.0),
+                            const SizedBox(height: 5.0),
                             Row(
                               children: [
                                 Expanded(
@@ -308,7 +308,7 @@ class PilotUnReturnToOtherCrewView extends GetView {
                                       style: tsOneTextTheme.bodySmall,
                                     )),
                                 Expanded(
-                                    flex: 1,
+                                    
                                     child: Text(
                                       ":",
                                       style: tsOneTextTheme.bodySmall,
@@ -322,7 +322,7 @@ class PilotUnReturnToOtherCrewView extends GetView {
                                 ),
                               ],
                             ),
-                            SizedBox(height: 5.0),
+                            const SizedBox(height: 5.0),
                             Row(
                               children: [
                                 Expanded(
@@ -332,7 +332,7 @@ class PilotUnReturnToOtherCrewView extends GetView {
                                       style: tsOneTextTheme.bodySmall,
                                     )),
                                 Expanded(
-                                    flex: 1,
+                                    
                                     child: Text(
                                       ":",
                                       style: tsOneTextTheme.bodySmall,
@@ -346,7 +346,7 @@ class PilotUnReturnToOtherCrewView extends GetView {
                                 ),
                               ],
                             ),
-                            SizedBox(height: 5.0),
+                            const SizedBox(height: 5.0),
                             Row(
                               children: [
                                 Expanded(
@@ -356,7 +356,7 @@ class PilotUnReturnToOtherCrewView extends GetView {
                                       style: tsOneTextTheme.bodySmall,
                                     )),
                                 Expanded(
-                                    flex: 1,
+                                    
                                     child: Text(
                                       ":",
                                       style: tsOneTextTheme.bodySmall,
@@ -370,7 +370,7 @@ class PilotUnReturnToOtherCrewView extends GetView {
                                 ),
                               ],
                             ),
-                            SizedBox(height: 5.0),
+                            const SizedBox(height: 5.0),
                             Row(
                               children: [
                                 Expanded(
@@ -380,7 +380,7 @@ class PilotUnReturnToOtherCrewView extends GetView {
                                       style: tsOneTextTheme.bodySmall,
                                     )),
                                 Expanded(
-                                    flex: 1,
+                                    
                                     child: Text(
                                       ":",
                                       style: tsOneTextTheme.bodySmall,
@@ -394,7 +394,7 @@ class PilotUnReturnToOtherCrewView extends GetView {
                                 ),
                               ],
                             ),
-                            SizedBox(height: 5.0),
+                            const SizedBox(height: 5.0),
                             Row(
                               children: [
                                 Expanded(
@@ -404,7 +404,7 @@ class PilotUnReturnToOtherCrewView extends GetView {
                                       style: tsOneTextTheme.bodySmall,
                                     )),
                                 Expanded(
-                                    flex: 1,
+                                    
                                     child: Text(
                                       ":",
                                       style: tsOneTextTheme.bodySmall,
@@ -431,18 +431,16 @@ class PilotUnReturnToOtherCrewView extends GetView {
       ),
       bottomNavigationBar: BottomAppBar(
         surfaceTintColor: tsOneColorScheme.secondary,
-        child: Expanded(
-          child: ElevatedButton(
-            onPressed: () {
-              rejectedReturn(context);
-            },
-            style: ElevatedButton.styleFrom(
-                backgroundColor: TsOneColor.primary,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(4.0),
-                )),
-            child: const Text('Reject', style: TextStyle(color: Colors.white)),
-          ),
+        child: ElevatedButton(
+          onPressed: () {
+            rejectedReturn(context);
+          },
+          style: ElevatedButton.styleFrom(
+              backgroundColor: TsOneColor.primary,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4.0),
+              )),
+          child: const Text('Reject', style: TextStyle(color: Colors.white)),
         ),
       ),
     );

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ts_one/app/modules/efb/occ/views/feedbackDetail/feedbackDetailPage.dart';
 
 import '../../../../../../presentation/theme.dart';
 import '../../../occ/views/history/handover_attachment23.dart';
@@ -68,6 +69,7 @@ class DetailHistoryDeviceFOView extends GetView {
             final handoverTo = data['handover-to-crew'];
             final occOnDuty = data['occ-on-duty'];
             final occAccepted = data['occ-accepted-device'];
+            final feedbackId = data['feedbackId'];
 
             return FutureBuilder<DocumentSnapshot>(
               future: FirebaseFirestore.instance.collection("users").doc(userUid).get(),

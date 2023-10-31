@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:ts_one/app/modules/efb/pilot/views/pilotreturndeviceview_view.dart';
 
 import '../../data/assessments/assessment_results.dart';
 import '../../data/assessments/new_assessment.dart';
@@ -250,13 +251,12 @@ class AppPages {
       page: () => HomePilotView(),
       binding: HomePilotBinding(),
     ),
-
-    //FO EFB
     GetPage(
-      name: _Paths.HOMEFO,
-      page: () => HomeFOView(),
-      binding: HomeFOBinding(),
+      name: _Paths.NAVOCC,
+      page: () => const NavOCCView(),
+      binding: NavOCCBinding(),
     ),
+
     GetPage(
       name: _Paths.TRAININGCC,
       page: () => const TrainingccView(),
@@ -332,4 +332,5 @@ class AppPages {
       binding: ProfileBinding(),
     ),
   ];
+
 }

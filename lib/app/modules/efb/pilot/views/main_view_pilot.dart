@@ -49,7 +49,7 @@ class HomePilotView extends GetView<HomePilotController> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 50),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
           child: Column(
             children: [
               Row(
@@ -96,12 +96,12 @@ class HomePilotView extends GetView<HomePilotController> {
                   ],
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               FutureBuilder<QuerySnapshot>(
                 future: requestDeviceController.getPilotDevices(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator();
+                    return const CircularProgressIndicator();
                   } else if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   } else {
@@ -120,34 +120,34 @@ class HomePilotView extends GetView<HomePilotController> {
                         children: [
                           // Display 'in-use-pilot' data
                           if (inUsePilotDocs.isNotEmpty) ...[
-                            Align(
+                            const Align(
                               alignment: Alignment.centerLeft,
                               child: BlackTitleText(text: "Waiting Confirmation"),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 15.0,
                             ),
-                            Text(
+                            const Text(
                               "There is no data that wait for confirmation",
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 20.0,
                             ),
-                            Align(
+                            const Align(
                               alignment: Alignment.centerLeft,
                               child: BlackTitleText(text: "Need Your Confirmation"),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 15.0,
                             ),
-                            Text(
+                            const Text(
                               "There is no data that needs confirmation",
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 20.0,
                             ),
-                            Align(alignment: Alignment.centerLeft, child: BlackTitleText(text: "In Use Pilot")),
-                            SizedBox(
+                            const Align(alignment: Alignment.centerLeft, child: BlackTitleText(text: "In Use Pilot")),
+                            const SizedBox(
                               height: 10,
                             ),
                             Column(
@@ -185,18 +185,18 @@ class HomePilotView extends GetView<HomePilotController> {
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Column(
+                                              const Column(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
-                                                  const Text(
+                                                  Text(
                                                     'Device 1',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
-                                                  const Text(
+                                                  Text(
                                                     'CAPT ID',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
-                                                  const Text(
+                                                  Text(
                                                     'Date',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
@@ -205,17 +205,17 @@ class HomePilotView extends GetView<HomePilotController> {
                                               const SizedBox(
                                                 width: 5,
                                               ),
-                                              Column(
+                                              const Column(
                                                 children: [
-                                                  const Text(
+                                                  Text(
                                                     ':',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
-                                                  const Text(
+                                                  Text(
                                                     ':',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
-                                                  const Text(
+                                                  Text(
                                                     ':',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
@@ -228,9 +228,9 @@ class HomePilotView extends GetView<HomePilotController> {
                                                   child: Column(
                                                     crossAxisAlignment: CrossAxisAlignment.start,
                                                     children: [
-                                                      Text(deviceName, style: TextStyle(color: TsOneColor.secondary)),
-                                                      Text(userId, style: TextStyle(color: TsOneColor.secondary)),
-                                                      Text(_formatTimestamp(doc['timestamp']), style: TextStyle(color: TsOneColor.secondary)),
+                                                      Text(deviceName, style: const TextStyle(color: TsOneColor.secondary)),
+                                                      Text(userId, style: const TextStyle(color: TsOneColor.secondary)),
+                                                      Text(_formatTimestamp(doc['timestamp']), style: const TextStyle(color: TsOneColor.secondary)),
                                                     ],
                                                   )),
                                               const Icon(
@@ -247,13 +247,13 @@ class HomePilotView extends GetView<HomePilotController> {
                                 );
                               }).toList(),
                             ),
-                            SizedBox(height: 10),
+                            const SizedBox(height: 10),
                           ],
 
                           // Display 'waiting-confirmation-1' data
                           if (waitingConfirmationDocs.isNotEmpty) ...[
-                            Align(alignment: Alignment.centerLeft, child: BlackTitleText(text: "Waiting OCC To Confirm")),
-                            SizedBox(height: 10),
+                            const Align(alignment: Alignment.centerLeft, child: BlackTitleText(text: "Waiting OCC To Confirm")),
+                            const SizedBox(height: 10),
                             Column(
                               children: waitingConfirmationDocs.map((doc) {
                                 String deviceName = doc['device_name'];
@@ -286,18 +286,18 @@ class HomePilotView extends GetView<HomePilotController> {
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Column(
+                                              const Column(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
-                                                  const Text(
+                                                  Text(
                                                     'Device 1',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
-                                                  const Text(
+                                                  Text(
                                                     'CAPT ID',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
-                                                  const Text(
+                                                  Text(
                                                     'Date',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
@@ -306,17 +306,17 @@ class HomePilotView extends GetView<HomePilotController> {
                                               const SizedBox(
                                                 width: 5,
                                               ),
-                                              Column(
+                                              const Column(
                                                 children: [
-                                                  const Text(
+                                                  Text(
                                                     ':',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
-                                                  const Text(
+                                                  Text(
                                                     ':',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
-                                                  const Text(
+                                                  Text(
                                                     ':',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
@@ -329,9 +329,9 @@ class HomePilotView extends GetView<HomePilotController> {
                                                   child: Column(
                                                     crossAxisAlignment: CrossAxisAlignment.start,
                                                     children: [
-                                                      Text(deviceName, style: TextStyle(color: TsOneColor.secondary)),
-                                                      Text(userId, style: TextStyle(color: TsOneColor.secondary)),
-                                                      Text(_formatTimestamp(doc['timestamp']), style: TextStyle(color: TsOneColor.secondary)),
+                                                      Text(deviceName, style: const TextStyle(color: TsOneColor.secondary)),
+                                                      Text(userId, style: const TextStyle(color: TsOneColor.secondary)),
+                                                      Text(_formatTimestamp(doc['timestamp']), style: const TextStyle(color: TsOneColor.secondary)),
                                                     ],
                                                   )),
                                               const Icon(
@@ -348,57 +348,57 @@ class HomePilotView extends GetView<HomePilotController> {
                                 );
                               }).toList(),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 20.0,
                             ),
-                            Align(
+                            const Align(
                               alignment: Alignment.centerLeft,
                               child: BlackTitleText(text: "Need Your Confirmation"),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 15.0,
                             ),
-                            Text(
+                            const Text(
                               "There is no data that needs confirmation",
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 20.0,
                             ),
-                            Align(
+                            const Align(
                               alignment: Alignment.centerLeft,
                               child: BlackTitleText(text: "In Use"),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 15.0,
                             ),
-                            Text(
+                            const Text(
                               "There is no data that In Use",
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 20.0,
                             ),
                           ],
 
                           // Display 'waiting-confirmation-other-pilot' data
                           if (needConfirmationPilotDocs.isNotEmpty) ...[
-                            Align(
+                            const Align(
                               alignment: Alignment.centerLeft,
                               child: BlackTitleText(text: "Waiting Confirmation"),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 15.0,
                             ),
-                            Text(
+                            const Text(
                               "There is no data that wait for confirmation",
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 20.0,
                             ),
-                            Align(
+                            const Align(
                               alignment: Alignment.centerLeft,
                               child: BlackTitleText(text: "Waiting For Confirmation!"),
                             ),
-                            SizedBox(height: 15),
+                            const SizedBox(height: 15),
                             Column(
                               children: needConfirmationPilotDocs.map((doc) {
                                 String deviceName = doc['device_name'];
@@ -431,18 +431,18 @@ class HomePilotView extends GetView<HomePilotController> {
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Column(
+                                              const Column(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
-                                                  const Text(
+                                                  Text(
                                                     'Device 1',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
-                                                  const Text(
+                                                  Text(
                                                     'CAPT ID',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
-                                                  const Text(
+                                                  Text(
                                                     'Date',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
@@ -451,17 +451,17 @@ class HomePilotView extends GetView<HomePilotController> {
                                               const SizedBox(
                                                 width: 5,
                                               ),
-                                              Column(
+                                              const Column(
                                                 children: [
-                                                  const Text(
+                                                  Text(
                                                     ':',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
-                                                  const Text(
+                                                  Text(
                                                     ':',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
-                                                  const Text(
+                                                  Text(
                                                     ':',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
@@ -474,9 +474,9 @@ class HomePilotView extends GetView<HomePilotController> {
                                                   child: Column(
                                                     crossAxisAlignment: CrossAxisAlignment.start,
                                                     children: [
-                                                      Text(deviceName, style: TextStyle(color: TsOneColor.secondary)),
-                                                      Text(userId, style: TextStyle(color: TsOneColor.secondary)),
-                                                      Text(_formatTimestamp(doc['timestamp']), style: TextStyle(color: TsOneColor.secondary)),
+                                                      Text(deviceName, style: const TextStyle(color: TsOneColor.secondary)),
+                                                      Text(userId, style: const TextStyle(color: TsOneColor.secondary)),
+                                                      Text(_formatTimestamp(doc['timestamp']), style: const TextStyle(color: TsOneColor.secondary)),
                                                     ],
                                                   )),
                                               const Icon(
@@ -493,31 +493,31 @@ class HomePilotView extends GetView<HomePilotController> {
                                 );
                               }).toList(),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 20.0,
                             ),
-                            Align(
+                            const Align(
                               alignment: Alignment.centerLeft,
                               child: BlackTitleText(text: "In Use"),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 15.0,
                             ),
-                            Text(
+                            const Text(
                               "There is no data In Use",
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 20.0,
                             ),
-                            SizedBox(height: 10),
+                            const SizedBox(height: 10),
                           ],
 
                           if (needConfirmationOccDocs.isNotEmpty) ...[
-                            Align(
+                            const Align(
                               alignment: Alignment.centerLeft,
                               child: BlackTitleText(text: "Waiting For OCC To Confirm"),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
                             Column(
@@ -552,18 +552,18 @@ class HomePilotView extends GetView<HomePilotController> {
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Column(
+                                              const Column(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
-                                                  const Text(
+                                                  Text(
                                                     'Device 1',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
-                                                  const Text(
+                                                  Text(
                                                     'CAPT ID',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
-                                                  const Text(
+                                                  Text(
                                                     'Date',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
@@ -572,17 +572,17 @@ class HomePilotView extends GetView<HomePilotController> {
                                               const SizedBox(
                                                 width: 5,
                                               ),
-                                              Column(
+                                              const Column(
                                                 children: [
-                                                  const Text(
+                                                  Text(
                                                     ':',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
-                                                  const Text(
+                                                  Text(
                                                     ':',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
-                                                  const Text(
+                                                  Text(
                                                     ':',
                                                     style: TextStyle(color: TsOneColor.secondary),
                                                   ),
@@ -595,9 +595,9 @@ class HomePilotView extends GetView<HomePilotController> {
                                                   child: Column(
                                                     crossAxisAlignment: CrossAxisAlignment.start,
                                                     children: [
-                                                      Text(deviceName, style: TextStyle(color: TsOneColor.secondary)),
-                                                      Text(userId, style: TextStyle(color: TsOneColor.secondary)),
-                                                      Text(_formatTimestamp(doc['timestamp']), style: TextStyle(color: TsOneColor.secondary)),
+                                                      Text(deviceName, style: const TextStyle(color: TsOneColor.secondary)),
+                                                      Text(userId, style: const TextStyle(color: TsOneColor.secondary)),
+                                                      Text(_formatTimestamp(doc['timestamp']), style: const TextStyle(color: TsOneColor.secondary)),
                                                     ],
                                                   )),
                                               const Icon(
@@ -614,33 +614,33 @@ class HomePilotView extends GetView<HomePilotController> {
                                 );
                               }).toList(),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 20.0,
                             ),
-                            Align(
+                            const Align(
                               alignment: Alignment.centerLeft,
                               child: BlackTitleText(text: "Need Your Confirmation"),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 15.0,
                             ),
-                            Text(
+                            const Text(
                               "There is no data that needs confirmation",
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 20.0,
                             ),
-                            Align(
+                            const Align(
                               alignment: Alignment.centerLeft,
                               child: BlackTitleText(text: "In Use"),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 15.0,
                             ),
-                            Text(
+                            const Text(
                               "There is no data that In Use",
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 20.0,
                             ),
                           ],
@@ -656,7 +656,7 @@ class HomePilotView extends GetView<HomePilotController> {
                             future: requestDeviceController.getPilotDevicesHandover(),
                             builder: (context, snapshot) {
                               if (snapshot.connectionState == ConnectionState.waiting) {
-                                return CircularProgressIndicator();
+                                return const CircularProgressIndicator();
                               } else if (snapshot.hasError) {
                                 return Text('Error: ${snapshot.error}');
                               } else {
@@ -670,11 +670,11 @@ class HomePilotView extends GetView<HomePilotController> {
                                     children: [
                                       // Display 'in-use-pilot' data
                                       if (inConfirmationPilotDocs.isNotEmpty) ...[
-                                        Align(
+                                        const Align(
                                           alignment: Alignment.centerLeft,
                                           child: BlackTitleText(text: "Confirm From Other Crew"),
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 10,
                                         ),
 
@@ -713,18 +713,18 @@ class HomePilotView extends GetView<HomePilotController> {
                                                       child: Row(
                                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                         children: [
-                                                          Column(
+                                                          const Column(
                                                             crossAxisAlignment: CrossAxisAlignment.start,
                                                             children: [
-                                                              const Text(
+                                                              Text(
                                                                 "Device 1",
                                                                 style: TextStyle(color: TsOneColor.secondary),
                                                               ),
-                                                              const Text(
+                                                              Text(
                                                                 'CAPT ID',
                                                                 style: TextStyle(color: TsOneColor.secondary),
                                                               ),
-                                                              const Text(
+                                                              Text(
                                                                 'Date',
                                                                 style: TextStyle(color: TsOneColor.secondary),
                                                               ),
@@ -733,17 +733,17 @@ class HomePilotView extends GetView<HomePilotController> {
                                                           const SizedBox(
                                                             width: 5,
                                                           ),
-                                                          Column(
+                                                          const Column(
                                                             children: [
-                                                              const Text(
+                                                              Text(
                                                                 ':',
                                                                 style: TextStyle(color: TsOneColor.secondary),
                                                               ),
-                                                              const Text(
+                                                              Text(
                                                                 ':',
                                                                 style: TextStyle(color: TsOneColor.secondary),
                                                               ),
-                                                              const Text(
+                                                              Text(
                                                                 ':',
                                                                 style: TextStyle(color: TsOneColor.secondary),
                                                               ),
@@ -756,9 +756,9 @@ class HomePilotView extends GetView<HomePilotController> {
                                                               child: Column(
                                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                                 children: [
-                                                                  Text(deviceName, style: TextStyle(color: TsOneColor.secondary)),
-                                                                  Text(userId, style: TextStyle(color: TsOneColor.secondary)),
-                                                                  Text(_formatTimestamp(doc['timestamp']), style: TextStyle(color: TsOneColor.secondary)),
+                                                                  Text(deviceName, style: const TextStyle(color: TsOneColor.secondary)),
+                                                                  Text(userId, style: const TextStyle(color: TsOneColor.secondary)),
+                                                                  Text(_formatTimestamp(doc['timestamp']), style: const TextStyle(color: TsOneColor.secondary)),
                                                                 ],
                                                               )),
                                                           const Icon(
@@ -775,28 +775,28 @@ class HomePilotView extends GetView<HomePilotController> {
                                             );
                                           }).toList(),
                                         ),
-                                        SizedBox(height: 10),
-                                        SizedBox(
+                                        const SizedBox(height: 10),
+                                        const SizedBox(
                                           height: 20.0,
                                         ),
-                                        Align(
+                                        const Align(
                                           alignment: Alignment.centerLeft,
                                           child: BlackTitleText(text: "Waiting Confirmation"),
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 15.0,
                                         ),
-                                        Text(
+                                        const Text(
                                           "There is no data that need to confirm",
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 20.0,
                                         ),
-                                        Align(alignment: Alignment.centerLeft, child: BlackTitleText(text: 'In Use')),
-                                        SizedBox(
+                                        const Align(alignment: Alignment.centerLeft, child: BlackTitleText(text: 'In Use')),
+                                        const SizedBox(
                                           height: 15.0,
                                         ),
-                                        Text(
+                                        const Text(
                                           "There is data In Use ",
                                         ),
                                       ],
@@ -809,7 +809,7 @@ class HomePilotView extends GetView<HomePilotController> {
                                       ElevatedButton(
                                         style: ElevatedButton.styleFrom(
                                             backgroundColor: TsOneColor.primary,
-                                            minimumSize: Size(double.infinity, 50),
+                                            minimumSize: const Size(double.infinity, 50),
                                             shape: RoundedRectangleBorder(
                                               borderRadius: BorderRadius.circular(15.0),
                                             )),
@@ -817,11 +817,11 @@ class HomePilotView extends GetView<HomePilotController> {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => PilotrequestdeviceView(),
+                                              builder: (context) => const PilotrequestdeviceView(),
                                             ),
                                           );
                                         },
-                                        child: Row(
+                                        child: const Row(
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           children: [
                                             Icon(
@@ -838,40 +838,40 @@ class HomePilotView extends GetView<HomePilotController> {
                                           ],
                                         ),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 20.0,
                                       ),
-                                      Align(
+                                      const Align(
                                         alignment: Alignment.centerLeft,
                                         child: BlackTitleText(text: "Waiting Confirmation"),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 15.0,
                                       ),
-                                      Text(
+                                      const Text(
                                         "There is no data that need to confirm",
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 20.0,
                                       ),
-                                      Align(
+                                      const Align(
                                         alignment: Alignment.centerLeft,
                                         child: BlackTitleText(text: "Need Confirmation"),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 15.0,
                                       ),
-                                      Text(
+                                      const Text(
                                         "There is no data that wait for confirmation",
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 20.0,
                                       ),
-                                      Align(alignment: Alignment.centerLeft, child: BlackTitleText(text: 'In Use')),
-                                      SizedBox(
+                                      const Align(alignment: Alignment.centerLeft, child: BlackTitleText(text: 'In Use')),
+                                      const SizedBox(
                                         height: 15.0,
                                       ),
-                                      Text(
+                                      const Text(
                                         "There is data In Use ",
                                       ),
                                     ],

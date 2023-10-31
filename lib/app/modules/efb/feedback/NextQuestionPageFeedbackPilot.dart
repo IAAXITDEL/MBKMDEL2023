@@ -41,7 +41,7 @@ class _NextQuestionPageFeedbackPilotState extends State<NextQuestionPageFeedback
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('BATTERY LEVEL AFTER ENGINE SHUTDOWN (with or without charging)'),
+        title: const Text('BATTERY LEVEL AFTER ENGINE SHUTDOWN (with or without charging)'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -49,55 +49,77 @@ class _NextQuestionPageFeedbackPilotState extends State<NextQuestionPageFeedback
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Center(
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "BATTERY LEVEL AFTER ENGINE SHUTDOWN (with or without charging)",
+                    style: tsOneTextTheme.titleMedium?.copyWith(color: Colors.red), // Mengubah warna teks menjadi hijau
+                  ),
+                ),
+              ),
+              Divider(
+                color: Colors.grey,
+              ),
+              SizedBox(height: 8),
+              Text('1st sector', style: tsOneTextTheme.labelLarge?.copyWith(fontWeight: FontWeight.bold)),
               TextFormField(
                 controller: oneSectorController,
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                decoration: const InputDecoration(
+                  contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                   labelText: 'First Sector',
                   border: OutlineInputBorder(),
                 ),
               ),
               const SizedBox(height: 15.0),
+              Text('2nd sector', style: tsOneTextTheme.labelLarge?.copyWith(fontWeight: FontWeight.bold)),
               TextFormField(
                 controller: twoSectorController,
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                decoration: const InputDecoration(
+                  contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                   labelText: 'Second Sector',
                   border: OutlineInputBorder(),
                 ),
               ),
               const SizedBox(height: 15.0),
+              Text('3rd sector', style: tsOneTextTheme.labelLarge?.copyWith(fontWeight: FontWeight.bold)),
               TextFormField(
                 controller: threeSectorController,
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                decoration: const InputDecoration(
+                  contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                   labelText: 'Third Sector',
                   border: OutlineInputBorder(),
                 ),
               ),
               const SizedBox(height: 15.0),
+              Text('4th sector', style: tsOneTextTheme.labelLarge?.copyWith(fontWeight: FontWeight.bold)),
               TextFormField(
                 controller: fourSectorController,
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                decoration: const InputDecoration(
+                  contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                   labelText: 'Fourth Sector',
                   border: OutlineInputBorder(),
                 ),
               ),
               const SizedBox(height: 15.0),
+              Text(
+                '5th sector',
+                style: tsOneTextTheme.labelLarge?.copyWith(fontWeight: FontWeight.bold),
+              ),
               TextFormField(
                 controller: fiveSectorController,
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                decoration: const InputDecoration(
+                  contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                   labelText: 'Fifth Sector',
                   border: OutlineInputBorder(),
                 ),
               ),
               const SizedBox(height: 15.0),
+              Text('6th sector', style: tsOneTextTheme.labelLarge?.copyWith(fontWeight: FontWeight.bold)),
               TextFormField(
                 controller: sixSectorController,
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                decoration: const InputDecoration(
+                  contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                   labelText: 'Sixth Sector',
                   border: OutlineInputBorder(),
                 ),

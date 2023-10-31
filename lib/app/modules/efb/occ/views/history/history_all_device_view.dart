@@ -31,7 +31,7 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
+        return const AlertDialog(
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -45,7 +45,7 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
     );
 
     // Delay execution for demonstration purposes (you can remove this in your actual code)
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 2));
 
     final CollectionReference deviceCollection = FirebaseFirestore.instance.collection('pilot-device-1');
     QuerySnapshot deviceSnapshot = await deviceCollection.where('statusDevice', whereIn: ['Done', 'handover-to-other-crew']).get();
@@ -329,7 +329,7 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
           Tooltip(
             message: 'Export to Sheet',
             child: IconButton(
-              icon: Icon(
+              icon: const Icon(
                 Icons.table_chart_rounded,
               ),
               onPressed: () async {
@@ -352,7 +352,7 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                   Expanded(
                     child: TextField(
                       controller: _searchController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         hintText: 'Search by Device No',
                         prefixIcon: Icon(Icons.search),
                         border: OutlineInputBorder(
@@ -365,7 +365,7 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                     ),
                   ),
                   IconButton(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.filter_list,
                       size: 32.0,
                     ),
@@ -384,7 +384,7 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
+                    return const Center(child: CircularProgressIndicator());
                   }
 
                   print(userHub);
@@ -396,7 +396,7 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                   final documents = snapshot.data?.docs;
 
                   if (documents == null || documents.isEmpty) {
-                    return Center(child: Text('No data available.'));
+                    return const Center(child: Text('No data available.'));
                   }
 
                   // Filter documents based on search
@@ -450,7 +450,7 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                           future: FirebaseFirestore.instance.collection('users').doc(userUid).get(),
                           builder: (context, userSnapshot) {
                             if (userSnapshot.connectionState == ConnectionState.waiting) {
-                              return CircularProgressIndicator();
+                              return const CircularProgressIndicator();
                             }
 
                             if (userSnapshot.hasError) {
@@ -460,7 +460,7 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                             final userData = userSnapshot.data?.data() as Map<String, dynamic>?;
 
                             if (userData == null) {
-                              return Text('User data not found');
+                              return const Text('User data not found');
                             }
 
                             final userName = userData['NAME'];
@@ -471,7 +471,7 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                               future: FirebaseFirestore.instance.collection('Device').doc(deviceUid).get(),
                               builder: (context, deviceSnapshot) {
                                 if (deviceSnapshot.connectionState == ConnectionState.waiting) {
-                                  return CircularProgressIndicator();
+                                  return const CircularProgressIndicator();
                                 }
 
                                 if (deviceSnapshot.hasError) {
@@ -488,7 +488,7 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                                     future: FirebaseFirestore.instance.collection('Device').doc(deviceUid2).get(),
                                     builder: (context, deviceUid2Snapshot) {
                                       if (deviceUid2Snapshot.connectionState == ConnectionState.waiting) {
-                                        return CircularProgressIndicator();
+                                        return const CircularProgressIndicator();
                                       }
 
                                       if (deviceUid2Snapshot.hasError) {
@@ -498,7 +498,7 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                                       final deviceData2 = deviceUid2Snapshot.data?.data() as Map<String, dynamic>?;
 
                                       if (!deviceUid2Snapshot.hasData || !deviceUid2Snapshot.data!.exists) {
-                                        return Text('Device Not Found');
+                                        return const Text('Device Not Found');
                                       }
 
                                       final deviceno2 = deviceData2?['deviceno'];
@@ -507,7 +507,7 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                                         future: FirebaseFirestore.instance.collection('Device').doc(deviceUid3).get(),
                                         builder: (context, deviceUid3Snapshot) {
                                           if (deviceUid3Snapshot.connectionState == ConnectionState.waiting) {
-                                            return CircularProgressIndicator();
+                                            return const CircularProgressIndicator();
                                           }
 
                                           if (deviceUid3Snapshot.hasError) {
@@ -517,7 +517,7 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                                           final deviceData3 = deviceUid3Snapshot.data?.data() as Map<String, dynamic>?;
 
                                           if (!deviceUid2Snapshot.hasData || !deviceUid3Snapshot.data!.exists) {
-                                            return Text('Device Not Found');
+                                            return const Text('Device Not Found');
                                           }
 
                                           final deviceno3 = deviceData3?['deviceno'];
@@ -554,14 +554,14 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                                                         mainAxisAlignment: MainAxisAlignment.center,
                                                         crossAxisAlignment: CrossAxisAlignment.center,
                                                         children: [
-                                                          SizedBox(width: 8.0),
+                                                          const SizedBox(width: 8.0),
                                                           CircleAvatar(
                                                             backgroundImage: photoUrl != null
                                                                 ? NetworkImage(photoUrl as String)
-                                                                : AssetImage('assets/default_profile_image.png') as ImageProvider,
+                                                                : const AssetImage('assets/default_profile_image.png') as ImageProvider,
                                                             radius: 25.0,
                                                           ),
-                                                          SizedBox(width: 12.0),
+                                                          const SizedBox(width: 12.0),
                                                           Flexible(
                                                             child: Column(
                                                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -634,14 +634,14 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                                         padding: const EdgeInsets.all(10.0), // Adjust padding as needed
                                         child: Row(
                                           children: [
-                                            SizedBox(width: 8.0),
+                                            const SizedBox(width: 8.0),
                                             CircleAvatar(
                                               backgroundImage: photoUrl != null
                                                   ? NetworkImage(photoUrl as String)
-                                                  : AssetImage('assets/default_profile_image.png') as ImageProvider,
+                                                  : const AssetImage('assets/default_profile_image.png') as ImageProvider,
                                               radius: 25.0,
                                             ),
-                                            SizedBox(width: 17.0),
+                                            const SizedBox(width: 17.0),
                                             Expanded(
                                               child: Column(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -765,29 +765,29 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                     child: InkWell(
                       onTap: () => _selectStartDate(context),
                       child: InputDecorator(
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'From',
                           border: OutlineInputBorder(),
                         ),
                         child: Text(
                           startDate.toLocal().toString().split(' ')[0],
-                          style: TextStyle(fontSize: 16),
+                          style: const TextStyle(fontSize: 16),
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(width: 16),
+                  const SizedBox(width: 16),
                   Expanded(
                     child: InkWell(
                       onTap: () => _selectEndDate(context),
                       child: InputDecorator(
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'To',
                           border: OutlineInputBorder(),
                         ),
                         child: Text(
                           endDate.toLocal().toString().split(' ')[0],
-                          style: TextStyle(fontSize: 16),
+                          style: const TextStyle(fontSize: 16),
                         ),
                       ),
                     ),
@@ -813,8 +813,8 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                     48,
                   ),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.all(15.0),
+                child: const Padding(
+                  padding: EdgeInsets.all(15.0),
                   child: Text(
                     'Apply',
                     style: TextStyle(

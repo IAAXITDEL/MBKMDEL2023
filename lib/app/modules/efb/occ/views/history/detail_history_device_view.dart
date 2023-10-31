@@ -375,7 +375,7 @@ class DetailHistoryDeviceView extends GetView {
                                                 Row(
                                                   children: [
                                                     Expanded(flex: 6, child: Text("Remarks")),
-                                                    Expanded(flex: 1, child: Text(":")),
+                                                    Expanded(child: Text(":")),
                                                     Expanded(
                                                       flex: 6,
                                                       child:
@@ -388,7 +388,7 @@ class DetailHistoryDeviceView extends GetView {
                                                 Row(
                                                   children: [
                                                     Expanded(flex: 6, child: Text("Proof of Remarks")),
-                                                    Expanded(flex: 1, child: Text(":")),
+                                                    Expanded(child: Text(":")),
                                                     Expanded(
                                                       flex: 6,
                                                       child: Column(
