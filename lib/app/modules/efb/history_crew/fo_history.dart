@@ -220,7 +220,7 @@ class DetailHistoryFOView extends GetView {
                                                   ),
                                                   SizedBox(height: 10.0),
                                                   Text(
-                                                    "DEVICE INFO 1",
+                                                    "Device 2",
                                                     style: tsOneTextTheme.headlineLarge,
                                                   ),
                                                   SizedBox(height: 7.0),
@@ -302,7 +302,7 @@ class DetailHistoryFOView extends GetView {
                                                   ),
 
                                                   Text(
-                                                    "DEVICE INFO 2",
+                                                    "Device 3",
                                                     style: tsOneTextTheme.headlineLarge,
                                                   ),
                                                   SizedBox(height: 7.0),
@@ -499,7 +499,7 @@ class DetailHistoryFOView extends GetView {
                                                                     },
                                                                   );
                                                                 },
-                                                                child: Text('See Picture'),
+                                                                child: Text('Open Picture'),
                                                               ),
                                                             ],
                                                           ),

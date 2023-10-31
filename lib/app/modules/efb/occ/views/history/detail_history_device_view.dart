@@ -67,6 +67,8 @@ class DetailHistoryDeviceView extends GetView {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: Colors.white,
         title: Text(
           'Device Usage History',
           style: tsOneTextTheme.headlineLarge,
@@ -232,15 +234,7 @@ class DetailHistoryDeviceView extends GetView {
                                               SizedBox(height: 15.0),
 
                                               //device info
-                                              Text(
-                                                "Device Info",
-                                                style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: tsOneColorScheme.onBackground,
-                                                  fontFamily: 'Poppins',
-                                                ),
-                                              ),
+                                              Text("Device 1", style: tsOneTextTheme.headlineMedium),
                                               SizedBox(height: 7.0),
                                               Row(
                                                 children: [
@@ -320,17 +314,9 @@ class DetailHistoryDeviceView extends GetView {
                                               ),
 
                                               SizedBox(height: 15),
-                                              Text(
-                                                "Return Documentation",
-                                                style: TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: tsOneColorScheme.onBackground,
-                                                  fontFamily: 'Poppins',
-                                                ),
-                                              ),
+                                              Text("Return Documentation", style: tsOneTextTheme.headlineMedium),
 
-                                              SizedBox(height: 5.0),
+                                              if (status == 'Done') SizedBox(height: 5.0),
                                               if (status == 'Done')
                                                 Row(
                                                   children: [
@@ -368,7 +354,7 @@ class DetailHistoryDeviceView extends GetView {
                                                               child: Align(
                                                                 alignment: Alignment.centerLeft,
                                                                 child: Text(
-                                                                  'See Picture',
+                                                                  'Open Picture',
                                                                   style: TextStyle(
                                                                     color: TsOneColor.primary,
                                                                     fontWeight: FontWeight.bold,
@@ -384,7 +370,7 @@ class DetailHistoryDeviceView extends GetView {
                                                   ],
                                                 ),
 
-                                              SizedBox(height: 7.0),
+                                              if (status == 'handover-to-other-crew') SizedBox(height: 7.0),
                                               if (status == 'handover-to-other-crew')
                                                 Row(
                                                   children: [
@@ -397,7 +383,7 @@ class DetailHistoryDeviceView extends GetView {
                                                     ),
                                                   ],
                                                 ),
-                                              SizedBox(height: 7.0),
+                                              if (status == 'handover-to-other-crew') SizedBox(height: 7.0),
                                               if (status == 'handover-to-other-crew')
                                                 Row(
                                                   children: [
@@ -435,7 +421,7 @@ class DetailHistoryDeviceView extends GetView {
                                                               child: Align(
                                                                 alignment: Alignment.centerLeft,
                                                                 child: Text(
-                                                                  'See Picture',
+                                                                  'Open Picture',
                                                                   style: TextStyle(
                                                                     color: TsOneColor.primary,
                                                                     fontWeight: FontWeight.bold,
@@ -453,17 +439,8 @@ class DetailHistoryDeviceView extends GetView {
 
                                               SizedBox(height: 5.0),
 
-                                              if (status == 'handover-to-other-crew')
-                                                Text(
-                                                  "Given To",
-                                                  style: TextStyle(
-                                                    fontSize: 20,
-                                                    fontWeight: FontWeight.w600,
-                                                    color: tsOneColorScheme.onBackground,
-                                                    fontFamily: 'Poppins',
-                                                  ),
-                                                ),
-                                              SizedBox(height: 7.0),
+                                              if (status == 'handover-to-other-crew') Text("Given To", style: tsOneTextTheme.headlineMedium),
+                                              if (status == 'handover-to-other-crew') SizedBox(height: 7.0),
                                               if (status == 'handover-to-other-crew')
                                                 Row(
                                                   children: [
@@ -477,7 +454,7 @@ class DetailHistoryDeviceView extends GetView {
                                                     ),
                                                   ],
                                                 ),
-                                              SizedBox(height: 5.0),
+                                              if (status == 'handover-to-other-crew') SizedBox(height: 5.0),
                                               if (status == 'handover-to-other-crew')
                                                 Row(
                                                   children: [
@@ -491,7 +468,7 @@ class DetailHistoryDeviceView extends GetView {
                                                     ),
                                                   ],
                                                 ),
-                                              SizedBox(height: 5.0),
+                                              if (status == 'handover-to-other-crew') SizedBox(height: 5.0),
                                               if (status == 'handover-to-other-crew')
                                                 Row(
                                                   children: [
@@ -507,16 +484,7 @@ class DetailHistoryDeviceView extends GetView {
                                                 ),
 
                                               SizedBox(height: 10),
-                                              if (status == 'Done')
-                                                Text(
-                                                  "OCC On Duty",
-                                                  style: TextStyle(
-                                                    fontSize: 18,
-                                                    fontWeight: FontWeight.w600,
-                                                    color: tsOneColorScheme.onBackground,
-                                                    fontFamily: 'Poppins',
-                                                  ),
-                                                ),
+                                              if (status == 'Done') Text("OCC On Duty", style: tsOneTextTheme.headlineMedium),
                                               SizedBox(height: 7.0),
                                               if (status == 'Done')
                                                 Row(
@@ -541,10 +509,18 @@ class DetailHistoryDeviceView extends GetView {
                                                     ),
                                                   ],
                                                 ),
+
+                                              SizedBox(height: 15.0),
                                               Row(
                                                 children: [
                                                   Expanded(
-                                                    child: ElevatedButton(
+                                                    flex: 6,
+                                                    child: Text("Feedback Form", style: tsOneTextTheme.headlineMedium),
+                                                  ),
+                                                  Expanded(child: Text(":")),
+                                                  Expanded(
+                                                    flex: 6,
+                                                    child: TextButton(
                                                       onPressed: () async {
                                                         if (feedbackId != null && feedbackId.isNotEmpty) {
                                                           // Menggunakan Navigator untuk berpindah ke halaman FeedbackDetailPage
@@ -555,31 +531,103 @@ class DetailHistoryDeviceView extends GetView {
                                                           );
                                                         } else if (feedbackId == null || feedbackId == '-') {
                                                           // Tindakan alternatif jika feedbackId tidak ada atau kosong
-                                                          ScaffoldMessenger.of(context).showSnackBar(
-                                                            SnackBar(
-                                                              content: Text('Feedback Not Found'),
-                                                              action: SnackBarAction(
-                                                                label: 'OK',
-                                                                onPressed: () {
-                                                                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                                                                },
-                                                              ),
-                                                            ),
+                                                          Builder(
+                                                            builder: (context) {
+                                                              // Menampilkan Snackbar "Data Not Found" selama 1 detik
+                                                              Future.delayed(Duration(seconds: 1), () {
+                                                                ScaffoldMessenger.of(context).showSnackBar(
+                                                                  SnackBar(
+                                                                    content: Text('Not Found'),
+                                                                    action: SnackBarAction(
+                                                                      label: 'OK',
+                                                                      onPressed: () {
+                                                                        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                                                      },
+                                                                    ),
+                                                                  ),
+                                                                );
+                                                              });
+
+                                                              return Container();
+                                                            },
                                                           );
                                                         }
                                                         print(feedbackId);
                                                       },
-                                                      child: Padding(
-                                                        padding: EdgeInsets.all(15),
+                                                      // style: ButtonStyle(
+                                                      //   foregroundColor: MaterialStateProperty.all(TsOneColor.primary),
+                                                      //   textStyle: MaterialStateProperty.all(TextStyle(
+                                                      //     fontWeight: FontWeight.bold,
+                                                      //     decoration: TextDecoration.underline,
+                                                      //     decorationColor: TsOneColor.primary,
+                                                      //   )),
+                                                      // ),
+                                                      child: Align(
+                                                        alignment: Alignment.centerLeft,
                                                         child: Text(
                                                           'Open Feedback',
-                                                          style: TextStyle(color: Colors.white),
+                                                          style: TextStyle(
+                                                            color: TsOneColor.primary,
+                                                            fontWeight: FontWeight.bold,
+                                                            decoration: TextDecoration.underline,
+                                                            decorationColor: TsOneColor.primary,
+                                                          ),
                                                         ),
                                                       ),
                                                     ),
                                                   ),
                                                 ],
                                               ),
+                                              // Row(
+                                              //   children: [
+                                              //     Expanded(
+                                              //       child: ElevatedButton(
+                                              //         onPressed: () async {
+                                              //           if (feedbackId != null && feedbackId.isNotEmpty) {
+                                              //             // Menggunakan Navigator untuk berpindah ke halaman FeedbackDetailPage
+                                              //             // Navigator.of(context).push(
+                                              //             //   MaterialPageRoute(
+                                              //             //     builder: (context) => FeedbackDetailPage(feedbackId: feedbackId),
+                                              //             //   ),
+                                              //             // );
+                                              //             //navigateToFeedbackDetailPage(context, feedbackId);
+                                              //             //final pdf = await generateFeedbackForm();
+                                              //           } else if (feedbackId == null || feedbackId == '-') {
+                                              //             // Tindakan alternatif jika feedbackId tidak ada atau kosong
+                                              //             Builder(
+                                              //               builder: (context) {
+                                              //                 // Menampilkan Snackbar "Data Not Found" selama 1 detik
+                                              //                 Future.delayed(Duration(seconds: 1), () {
+                                              //                   ScaffoldMessenger.of(context).showSnackBar(
+                                              //                     SnackBar(
+                                              //                       content: Text('Not Found'),
+                                              //                       action: SnackBarAction(
+                                              //                         label: 'OK',
+                                              //                         onPressed: () {
+                                              //                           ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                              //                         },
+                                              //                       ),
+                                              //                     ),
+                                              //                   );
+                                              //                 });
+
+                                              //                 return Container();
+                                              //               },
+                                              //             );
+                                              //           }
+                                              //           print(feedbackId);
+                                              //         },
+                                              //         child: Padding(
+                                              //           padding: EdgeInsets.all(15),
+                                              //           child: Text(
+                                              //             'Open Feedback',
+                                              //             style: TextStyle(color: Colors.white),
+                                              //           ),
+                                              //         ),
+                                              //       ),
+                                              //     ),
+                                              //   ],
+                                              // ),
 
                                               SizedBox(height: 80.0),
                                               Row(
@@ -640,7 +688,7 @@ class DetailHistoryDeviceView extends GetView {
                                                         child: Padding(
                                                           padding: EdgeInsets.all(15),
                                                           child: Text(
-                                                            'Download History',
+                                                            'Open Attachment History',
                                                             style: TextStyle(color: Colors.white),
                                                           ),
                                                         )),

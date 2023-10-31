@@ -198,7 +198,7 @@ class DetailHistoryPilotView extends GetView {
                                               ),
                                               SizedBox(height: 10.0),
                                               Text(
-                                                "DEVICE INFO",
+                                                "device 1",
                                                 style: tsOneTextTheme.headlineLarge,
                                               ),
                                               SizedBox(height: 7.0),
@@ -395,7 +395,7 @@ class DetailHistoryPilotView extends GetView {
                                                                 },
                                                               );
                                                             },
-                                                            child: Text('See Picture'),
+                                                            child: Text('Open Picture'),
                                                           ),
                                                         ],
                                                       ),

@@ -6,7 +6,7 @@ import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:ts_one/app/routes/app_pages.dart';
 import 'package:ts_one/presentation/shared_components/TitleText.dart';
-//sss
+//sssssss
 import '../../../../../presentation/theme.dart';
 import '../../../../routes/app_pages.dart';
 
@@ -458,7 +458,7 @@ class ConfirmRequestPilotView extends GetView {
                                         ],
                                       ),
 
-                                      //DEVICE INFO 2
+                                      //Device 3
                                       SizedBox(height: 20.0),
                                       Align(
                                         alignment: Alignment.centerLeft,

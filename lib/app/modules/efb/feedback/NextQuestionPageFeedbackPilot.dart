@@ -37,8 +37,6 @@ class _NextQuestionPageFeedbackPilotState extends State<NextQuestionPageFeedback
   TextEditingController? fiveSectorController = TextEditingController();
   TextEditingController? sixSectorController = TextEditingController();
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -128,7 +126,6 @@ class _NextQuestionPageFeedbackPilotState extends State<NextQuestionPageFeedback
                   fourSectorController: fourSectorController,
                   fiveSectorController: fiveSectorController,
                   sixSectorController: sixSectorController,
-
                 ),
               ),
             );

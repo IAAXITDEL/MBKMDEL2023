@@ -419,7 +419,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                           // Align(
                                           //   alignment: Alignment.centerLeft,
                                           //   child: Text(
-                                          //     "DEVICE INFO 1",
+                                          //     "Device 2",
                                           //     style: tsOneTextTheme.titleLarge,
                                           //   ),
                                           // ),
@@ -625,12 +625,12 @@ class ConfirmReturnBackPilotView extends GetView {
                                             ],
                                           ),
 
-                                          //DEVICE INFO 2
+                                          //Device 3
                                           SizedBox(height: 10.0),
                                           // Align(
                                           //   alignment: Alignment.centerLeft,
                                           //   child: Text(
-                                          //     "DEVICE INFO 2",
+                                          //     "Device 3",
                                           //     style: tsOneTextTheme.titleLarge,
                                           //   ),
                                           // ),

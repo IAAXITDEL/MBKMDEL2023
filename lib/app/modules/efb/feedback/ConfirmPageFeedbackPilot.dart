@@ -94,6 +94,16 @@ class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
       '6-sector': sixSector,
       'additionalComment': additionalComment,
       'ifHigh': ifHigh,
+      'q7': Q7,
+      'q8': Q8,
+      'q9': Q9,
+      'q10': Q10,
+      'q11': Q11,
+      'q12': Q12,
+      'q13': Q13,
+      'q14': Q14,
+      'q15': Q15,
+      'q16': Q16,
     });
 
     String feedbackId = feedbackDoc.id;

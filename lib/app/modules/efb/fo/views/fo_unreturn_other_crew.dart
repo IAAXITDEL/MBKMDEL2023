@@ -349,7 +349,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                     Align(
                                       alignment: Alignment.centerLeft,
                                       child: Text(
-                                        "DEVICE INFO 1",
+                                        "Device 2",
                                         style: tsOneTextTheme.titleLarge,
                                       ),
                                     ),
@@ -490,7 +490,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                     Align(
                                       alignment: Alignment.centerLeft,
                                       child: Text(
-                                        "DEVICE INFO 2",
+                                        "Device 3",
                                         style: tsOneTextTheme.titleLarge,
                                       ),
                                     ),
