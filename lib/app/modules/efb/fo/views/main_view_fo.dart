@@ -61,107 +61,97 @@ class HomeFOView extends GetView<HomeFOController> {
 
     return Scaffold(
         body: LiquidPullToRefresh(
-            key: _refreshIndicatorKey,
-            onRefresh: _handleRefresh,
-            showChildOpacityTransition: false,
-            child: ListView(
-              children: [
-                Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 50),
-                    child: Column(
+      key: _refreshIndicatorKey,
+      onRefresh: _handleRefresh,
+      showChildOpacityTransition: false,
+      child: ListView(children: [
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 50),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Hi, ${controller.titleToGreet}",
+                    style: tsOneTextTheme.headlineLarge,
+                  ),
+                ],
+              ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Good ${controller.timeToGreet}',
+                  style: tsOneTextTheme.labelMedium,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                child: Row(
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.only(right: 4.0),
+                      child: Icon(
+                        Icons.calendar_month_outlined,
+                        color: TsOneColor.onSecondary,
+                        size: 32,
+                      ),
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Hi, ${controller.titleToGreet}",
-                              style: tsOneTextTheme.headlineLarge,
-                            ),
-                          ],
-                        ),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'Good ${controller.timeToGreet}',
-                            style: tsOneTextTheme.labelMedium,
+                        Text(
+                          Util.convertDateTimeDisplay(
+                            DateTime.now().toString(),
+                            "EEEE",
                           ),
+                          style: tsOneTextTheme.labelSmall,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 20),
-                          child: Row(
-                            children: [
-                              const Padding(
-                                padding: EdgeInsets.only(right: 4.0),
-                                child: Icon(
-                                  Icons.calendar_month_outlined,
-                                  color: TsOneColor.onSecondary,
-                                  size: 32,
-                                ),
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    Util.convertDateTimeDisplay(
-                                      DateTime.now().toString(),
-                                      "EEEE",
-                                    ),
-                                    style: tsOneTextTheme.labelSmall,
-                                  ),
-                                  Text(
-                                    Util.convertDateTimeDisplay(
-                                      DateTime.now().toString(),
-                                      "dd MMMM yyyy",
-                                    ),
-                                    style: tsOneTextTheme.labelSmall,
-                                  ),
-                                ],
-                              ),
-                            ],
+                        Text(
+                          Util.convertDateTimeDisplay(
+                            DateTime.now().toString(),
+                            "dd MMMM yyyy",
                           ),
+                          style: tsOneTextTheme.labelSmall,
                         ),
-                        SizedBox(
-                            height:
-                                20), // Tambahkan SizedBox di sini untuk memberikan jarak
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                  height:
+                      20), // Tambahkan SizedBox di sini untuk memberikan jarak
 
-                        FutureBuilder<QuerySnapshot>(
-                          future: requestdeviceController.getFODevices(),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return CircularProgressIndicator();
-                            } else if (snapshot.hasError) {
-                              return Text('Error: ${snapshot.error}');
-                            } else {
-                              QuerySnapshot? pilotDevicesSnapshot =
-                                  snapshot.data;
-                              if (pilotDevicesSnapshot != null &&
-                                  pilotDevicesSnapshot.docs.isNotEmpty) {
-                                // Filter the data for 'in-use-pilot' and 'waiting-confirmation-1'
-                                final inUsePilotDocs = pilotDevicesSnapshot.docs
-                                    .where((doc) =>
-                                        doc['statusDevice'] == 'in-use-pilot')
-                                    .toList();
-                                final waitingConfirmationDocs =
-                                    pilotDevicesSnapshot
-                                        .docs
-                                        .where((doc) =>
-                                            doc['statusDevice'] ==
-                                            'waiting-confirmation-1')
-                                        .toList();
-                                final needConfirmationOccDocs =
-                                    pilotDevicesSnapshot
-                                        .docs
-                                        .where((doc) =>
-                                            doc['statusDevice'] ==
-                                            'need-confirmation-occ')
-                                        .toList();
-                                final needConfirmationPilotDocs =
-                                    pilotDevicesSnapshot.docs
-                                        .where((doc) =>
-                                            doc['statusDevice'] ==
-                                            'waiting-handover-to-other-crew')
-                                        .toList();
+              FutureBuilder<QuerySnapshot>(
+                future: requestdeviceController.getFODevices(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else {
+                    QuerySnapshot? pilotDevicesSnapshot = snapshot.data;
+                    if (pilotDevicesSnapshot != null &&
+                        pilotDevicesSnapshot.docs.isNotEmpty) {
+                      // Filter the data for 'in-use-pilot' and 'waiting-confirmation-1'
+                      final inUsePilotDocs = pilotDevicesSnapshot.docs
+                          .where((doc) => doc['statusDevice'] == 'in-use-pilot')
+                          .toList();
+                      final waitingConfirmationDocs = pilotDevicesSnapshot.docs
+                          .where((doc) =>
+                              doc['statusDevice'] == 'waiting-confirmation-1')
+                          .toList();
+                      final needConfirmationOccDocs = pilotDevicesSnapshot.docs
+                          .where((doc) =>
+                              doc['statusDevice'] == 'need-confirmation-occ')
+                          .toList();
+                      final needConfirmationPilotDocs = pilotDevicesSnapshot
+                          .docs
+                          .where((doc) =>
+                              doc['statusDevice'] ==
+                              'waiting-handover-to-other-crew')
+                          .toList();
 
                       return Column(
                         children: [
@@ -169,7 +159,8 @@ class HomeFOView extends GetView<HomeFOController> {
                           if (inUsePilotDocs.isNotEmpty) ...[
                             const Align(
                               alignment: Alignment.centerLeft,
-                              child: BlackTitleText(text: "Waiting Confirmation"),
+                              child:
+                                  BlackTitleText(text: "Waiting Confirmation"),
                             ),
                             const SizedBox(
                               height: 15.0,
@@ -181,212 +172,199 @@ class HomeFOView extends GetView<HomeFOController> {
                               height: 20.0,
                             ),
 
-                                      Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: BlackTitleText(
-                                            text: "Need Confirmation"),
-                                      ),
-                                      SizedBox(
-                                        height: 15.0,
-                                      ),
-                                      Text(
-                                        "There is no data that needs confirmation",
-                                      ),
-                                      SizedBox(
-                                        height: 20.0,
-                                      ),
-                                      Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: BlackTitleText(text: "In Use"),
-                                      ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: BlackTitleText(text: "Need Confirmation"),
+                            ),
+                            SizedBox(
+                              height: 15.0,
+                            ),
+                            Text(
+                              "There is no data that needs confirmation",
+                            ),
+                            SizedBox(
+                              height: 20.0,
+                            ),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: BlackTitleText(text: "In Use"),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
 
-                                      //IN USE PILOT HERE
-                                      Column(
-                                        children: inUsePilotDocs.map((doc) {
-                                          // Your existing code for displaying 'in-use-pilot' data
-                                          String deviceName2 =
-                                              doc['device_name2'];
-                                          String deviceName3 =
-                                              doc['device_name3'];
-                                          String OccOnDuty = doc['occ-on-duty'];
-                                          String userId = doc['user_uid'];
-                                          String deviceId = doc.id;
-
-                                          return Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: Container(
-                                              width: double
-                                                  .infinity, // Set lebar kartu ke seluruh lebar tampilan
-                                              child: Card(
-                                                color: tsOneColorScheme
-                                                    .primary, // Mengatur warna latar belakang kartu menjadi merah
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(15),
-                                                ),
-                                                child: InkWell(
-                                                  onTap: () {
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            FOreturndeviceviewView(
-                                                          deviceName2:
-                                                              deviceName2,
-                                                          deviceName3:
-                                                              deviceName3,
-                                                          deviceId: deviceId,
-                                                          OccOnDuty: OccOnDuty,
-                                                        ),
-                                                      ),
-                                                    );
-                                                    print(deviceId);
-                                                  },
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            16.0),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            const Text(
-                                                              "Device 2",
-                                                              style: TextStyle(
-                                                                  color: TsOneColor
-                                                                      .secondary),
-                                                            ),
-                                                            const Text(
-                                                              "Device 3",
-                                                              style: TextStyle(
-                                                                  color: TsOneColor
-                                                                      .secondary),
-                                                            ),
-                                                            const Text(
-                                                              'FO ID',
-                                                              style: TextStyle(
-                                                                  color: TsOneColor
-                                                                      .secondary),
-                                                            ),
-                                                            const Text(
-                                                              'Date',
-                                                              style: TextStyle(
-                                                                  color: TsOneColor
-                                                                      .secondary),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        const SizedBox(
-                                                          width: 5,
-                                                        ),
-                                                        Column(
-                                                          children: [
-                                                            const Text(
-                                                              ':',
-                                                              style: TextStyle(
-                                                                  color: TsOneColor
-                                                                      .secondary),
-                                                            ),
-                                                            const Text(
-                                                              ':',
-                                                              style: TextStyle(
-                                                                  color: TsOneColor
-                                                                      .secondary),
-                                                            ),
-                                                            const Text(
-                                                              ':',
-                                                              style: TextStyle(
-                                                                  color: TsOneColor
-                                                                      .secondary),
-                                                            ),
-                                                            const Text(
-                                                              ':',
-                                                              style: TextStyle(
-                                                                  color: TsOneColor
-                                                                      .secondary),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        const SizedBox(
-                                                          width: 5,
-                                                        ),
-                                                        Expanded(
-                                                            child: Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Text(deviceName2,
-                                                                style: TextStyle(
-                                                                    color: TsOneColor
-                                                                        .secondary)),
-                                                            Text(deviceName3,
-                                                                style: TextStyle(
-                                                                    color: TsOneColor
-                                                                        .secondary)),
-                                                            Text(userId,
-                                                                style: TextStyle(
-                                                                    color: TsOneColor
-                                                                        .secondary)),
-                                                            Text(
-                                                                _formatTimestamp(doc[
-                                                                    'timestamp']),
-                                                                style: TextStyle(
-                                                                    color: TsOneColor
-                                                                        .secondary)),
-                                                          ],
-                                                        )),
-                                                        const Icon(
-                                                          Icons.chevron_right,
-                                                          color: TsOneColor
-                                                              .secondary,
-                                                          size: 48,
-                                                        )
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          );
-                                        }).toList(),
-                                      ),
-                                      SizedBox(height: 10),
-                                    ],
-
-                                    // Display 'waiting-confirmation-1' data
-                                    if (waitingConfirmationDocs.isNotEmpty) ...[
-                                      Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: BlackTitleText(
-                                            text: "Waiting For OCC To Confirm"),
-                                      ),
-                                      SizedBox(height: 10),
-                                      Column(
-                                        children:
-                                            waitingConfirmationDocs.map((doc) {
-                                          String deviceName2 =
-                                              doc['device_name2'];
-                                          String deviceName3 =
-                                              doc['device_name3'];
-                                          String userId = doc['user_uid'];
-                                          String deviceId = doc.id;
+                            //IN USE PILOT HERE
+                            Column(
+                              children: inUsePilotDocs.map((doc) {
+                                // Your existing code for displaying 'in-use-pilot' data
+                                String deviceName2 = doc['device_name2'];
+                                String deviceName3 = doc['device_name3'];
+                                String OccOnDuty = doc['occ-on-duty'];
+                                String userId = doc['user_uid'];
+                                String deviceId = doc.id;
 
                                 return Align(
                                   alignment: Alignment.centerLeft,
                                   child: Container(
-                                    width: double.infinity, // Set lebar kartu ke seluruh lebar tampilan
+                                    width: double
+                                        .infinity, // Set lebar kartu ke seluruh lebar tampilan
                                     child: Card(
-                                      color: tsOneColorScheme.primary, // Mengatur warna latar belakang kartu menjadi merah
+                                      color: tsOneColorScheme
+                                          .primary, // Mengatur warna latar belakang kartu menjadi merah
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(15),
+                                      ),
+                                      child: InkWell(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  FOreturndeviceviewView(
+                                                deviceName2: deviceName2,
+                                                deviceName3: deviceName3,
+                                                deviceId: deviceId,
+                                                OccOnDuty: OccOnDuty,
+                                              ),
+                                            ),
+                                          );
+                                          print(deviceId);
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(16.0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  const Text(
+                                                    "Device 2",
+                                                    style: TextStyle(
+                                                        color: TsOneColor
+                                                            .secondary),
+                                                  ),
+                                                  const Text(
+                                                    "Device 3",
+                                                    style: TextStyle(
+                                                        color: TsOneColor
+                                                            .secondary),
+                                                  ),
+                                                  const Text(
+                                                    'FO ID',
+                                                    style: TextStyle(
+                                                        color: TsOneColor
+                                                            .secondary),
+                                                  ),
+                                                  const Text(
+                                                    'Date',
+                                                    style: TextStyle(
+                                                        color: TsOneColor
+                                                            .secondary),
+                                                  ),
+                                                ],
+                                              ),
+                                              const SizedBox(
+                                                width: 5,
+                                              ),
+                                              Column(
+                                                children: [
+                                                  const Text(
+                                                    ':',
+                                                    style: TextStyle(
+                                                        color: TsOneColor
+                                                            .secondary),
+                                                  ),
+                                                  const Text(
+                                                    ':',
+                                                    style: TextStyle(
+                                                        color: TsOneColor
+                                                            .secondary),
+                                                  ),
+                                                  const Text(
+                                                    ':',
+                                                    style: TextStyle(
+                                                        color: TsOneColor
+                                                            .secondary),
+                                                  ),
+                                                  const Text(
+                                                    ':',
+                                                    style: TextStyle(
+                                                        color: TsOneColor
+                                                            .secondary),
+                                                  ),
+                                                ],
+                                              ),
+                                              const SizedBox(
+                                                width: 5,
+                                              ),
+                                              Expanded(
+                                                  child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(deviceName2,
+                                                      style: TextStyle(
+                                                          color: TsOneColor
+                                                              .secondary)),
+                                                  Text(deviceName3,
+                                                      style: TextStyle(
+                                                          color: TsOneColor
+                                                              .secondary)),
+                                                  Text(userId,
+                                                      style: TextStyle(
+                                                          color: TsOneColor
+                                                              .secondary)),
+                                                  Text(
+                                                      _formatTimestamp(
+                                                          doc['timestamp']),
+                                                      style: TextStyle(
+                                                          color: TsOneColor
+                                                              .secondary)),
+                                                ],
+                                              )),
+                                              const Icon(
+                                                Icons.chevron_right,
+                                                color: TsOneColor.secondary,
+                                                size: 48,
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+                            SizedBox(height: 10),
+                          ],
+
+                          // Display 'waiting-confirmation-1' data
+                          if (waitingConfirmationDocs.isNotEmpty) ...[
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: BlackTitleText(
+                                  text: "Waiting For OCC To Confirm"),
+                            ),
+                            SizedBox(height: 10),
+                            Column(
+                              children: waitingConfirmationDocs.map((doc) {
+                                String deviceName2 = doc['device_name2'];
+                                String deviceName3 = doc['device_name3'];
+                                String userId = doc['user_uid'];
+                                String deviceId = doc.id;
+
+                                return Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Container(
+                                    width: double
+                                        .infinity, // Set lebar kartu ke seluruh lebar tampilan
+                                    child: Card(
+                                      color: tsOneColorScheme
+                                          .primary, // Mengatur warna latar belakang kartu menjadi merah
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(15),
                                       ),
@@ -396,7 +374,8 @@ class HomeFOView extends GetView<HomeFOController> {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => FOUnRequestDeviceView(
+                                              builder: (context) =>
+                                                  FOUnRequestDeviceView(
                                                 deviceId: deviceId,
                                                 deviceName: '',
                                               ),
@@ -406,26 +385,36 @@ class HomeFOView extends GetView<HomeFOController> {
                                         child: Padding(
                                           padding: const EdgeInsets.all(16.0),
                                           child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
                                             children: [
                                               const Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
                                                     "Device 2",
-                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                    style: TextStyle(
+                                                        color: TsOneColor
+                                                            .secondary),
                                                   ),
                                                   Text(
                                                     "Device 3",
-                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                    style: TextStyle(
+                                                        color: TsOneColor
+                                                            .secondary),
                                                   ),
                                                   Text(
                                                     'FO ID',
-                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                    style: TextStyle(
+                                                        color: TsOneColor
+                                                            .secondary),
                                                   ),
                                                   Text(
                                                     'Date',
-                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                    style: TextStyle(
+                                                        color: TsOneColor
+                                                            .secondary),
                                                   ),
                                                 ],
                                               ),
@@ -436,19 +425,27 @@ class HomeFOView extends GetView<HomeFOController> {
                                                 children: [
                                                   Text(
                                                     ':',
-                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                    style: TextStyle(
+                                                        color: TsOneColor
+                                                            .secondary),
                                                   ),
                                                   Text(
                                                     ':',
-                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                    style: TextStyle(
+                                                        color: TsOneColor
+                                                            .secondary),
                                                   ),
                                                   Text(
                                                     ':',
-                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                    style: TextStyle(
+                                                        color: TsOneColor
+                                                            .secondary),
                                                   ),
                                                   Text(
                                                     ':',
-                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                    style: TextStyle(
+                                                        color: TsOneColor
+                                                            .secondary),
                                                   ),
                                                 ],
                                               ),
@@ -457,12 +454,27 @@ class HomeFOView extends GetView<HomeFOController> {
                                               ),
                                               Expanded(
                                                   child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
-                                                  Text(deviceName2, style: const TextStyle(color: TsOneColor.secondary)),
-                                                  Text(deviceName3, style: const TextStyle(color: TsOneColor.secondary)),
-                                                  Text(userId, style: const TextStyle(color: TsOneColor.secondary)),
-                                                  Text(_formatTimestamp(doc['timestamp']), style: const TextStyle(color: TsOneColor.secondary)),
+                                                  Text(deviceName2,
+                                                      style: const TextStyle(
+                                                          color: TsOneColor
+                                                              .secondary)),
+                                                  Text(deviceName3,
+                                                      style: const TextStyle(
+                                                          color: TsOneColor
+                                                              .secondary)),
+                                                  Text(userId,
+                                                      style: const TextStyle(
+                                                          color: TsOneColor
+                                                              .secondary)),
+                                                  Text(
+                                                      _formatTimestamp(
+                                                          doc['timestamp']),
+                                                      style: const TextStyle(
+                                                          color: TsOneColor
+                                                              .secondary)),
                                                 ],
                                               )),
                                               const Icon(
@@ -512,7 +524,8 @@ class HomeFOView extends GetView<HomeFOController> {
                           if (needConfirmationPilotDocs.isNotEmpty) ...[
                             const Align(
                               alignment: Alignment.centerLeft,
-                              child: BlackTitleText(text: "Waiting Confirmation"),
+                              child:
+                                  BlackTitleText(text: "Waiting Confirmation"),
                             ),
                             const SizedBox(
                               height: 15.0,
@@ -525,7 +538,8 @@ class HomeFOView extends GetView<HomeFOController> {
                             ),
                             const Align(
                               alignment: Alignment.centerLeft,
-                              child: BlackTitleText(text: "Wait For Confirmation!"),
+                              child: BlackTitleText(
+                                  text: "Wait For Confirmation!"),
                             ),
                             const SizedBox(height: 15),
                             Column(
@@ -538,9 +552,11 @@ class HomeFOView extends GetView<HomeFOController> {
                                 return Align(
                                   alignment: Alignment.centerLeft,
                                   child: Container(
-                                    width: double.infinity, // Set lebar kartu ke seluruh lebar tampilan
+                                    width: double
+                                        .infinity, // Set lebar kartu ke seluruh lebar tampilan
                                     child: Card(
-                                      color: tsOneColorScheme.primary, // Mengatur warna latar belakang kartu menjadi merah
+                                      color: tsOneColorScheme
+                                          .primary, // Mengatur warna latar belakang kartu menjadi merah
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(15),
                                       ),
@@ -550,7 +566,8 @@ class HomeFOView extends GetView<HomeFOController> {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => FOUnReturnOtherCrew(
+                                              builder: (context) =>
+                                                  FOUnReturnOtherCrew(
                                                 deviceName2: deviceName2,
                                                 deviceName3: deviceName3,
                                                 deviceId: deviceId,
@@ -561,26 +578,36 @@ class HomeFOView extends GetView<HomeFOController> {
                                         child: Padding(
                                           padding: const EdgeInsets.all(16.0),
                                           child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
                                             children: [
                                               const Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
                                                     "Device 2",
-                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                    style: TextStyle(
+                                                        color: TsOneColor
+                                                            .secondary),
                                                   ),
                                                   Text(
                                                     "Device 3",
-                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                    style: TextStyle(
+                                                        color: TsOneColor
+                                                            .secondary),
                                                   ),
                                                   Text(
                                                     'FO ID',
-                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                    style: TextStyle(
+                                                        color: TsOneColor
+                                                            .secondary),
                                                   ),
                                                   Text(
                                                     'Date',
-                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                    style: TextStyle(
+                                                        color: TsOneColor
+                                                            .secondary),
                                                   ),
                                                 ],
                                               ),
@@ -591,19 +618,27 @@ class HomeFOView extends GetView<HomeFOController> {
                                                 children: [
                                                   Text(
                                                     ':',
-                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                    style: TextStyle(
+                                                        color: TsOneColor
+                                                            .secondary),
                                                   ),
                                                   Text(
                                                     ':',
-                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                    style: TextStyle(
+                                                        color: TsOneColor
+                                                            .secondary),
                                                   ),
                                                   Text(
                                                     ':',
-                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                    style: TextStyle(
+                                                        color: TsOneColor
+                                                            .secondary),
                                                   ),
                                                   Text(
                                                     ':',
-                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                    style: TextStyle(
+                                                        color: TsOneColor
+                                                            .secondary),
                                                   ),
                                                 ],
                                               ),
@@ -612,12 +647,27 @@ class HomeFOView extends GetView<HomeFOController> {
                                               ),
                                               Expanded(
                                                   child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
-                                                  Text(deviceName2, style: const TextStyle(color: TsOneColor.secondary)),
-                                                  Text(deviceName3, style: const TextStyle(color: TsOneColor.secondary)),
-                                                  Text(userId, style: const TextStyle(color: TsOneColor.secondary)),
-                                                  Text(_formatTimestamp(doc['timestamp']), style: const TextStyle(color: TsOneColor.secondary)),
+                                                  Text(deviceName2,
+                                                      style: const TextStyle(
+                                                          color: TsOneColor
+                                                              .secondary)),
+                                                  Text(deviceName3,
+                                                      style: const TextStyle(
+                                                          color: TsOneColor
+                                                              .secondary)),
+                                                  Text(userId,
+                                                      style: const TextStyle(
+                                                          color: TsOneColor
+                                                              .secondary)),
+                                                  Text(
+                                                      _formatTimestamp(
+                                                          doc['timestamp']),
+                                                      style: const TextStyle(
+                                                          color: TsOneColor
+                                                              .secondary)),
                                                 ],
                                               )),
                                               const Icon(
@@ -653,7 +703,8 @@ class HomeFOView extends GetView<HomeFOController> {
                           if (needConfirmationOccDocs.isNotEmpty) ...[
                             const Align(
                               alignment: Alignment.centerLeft,
-                              child: BlackTitleText(text: "Waiting OCC To Confirm!"),
+                              child: BlackTitleText(
+                                  text: "Waiting OCC To Confirm!"),
                             ),
                             const SizedBox(
                               height: 10,
@@ -668,9 +719,11 @@ class HomeFOView extends GetView<HomeFOController> {
                                 return Align(
                                   alignment: Alignment.centerLeft,
                                   child: Container(
-                                    width: double.infinity, // Set lebar kartu ke seluruh lebar tampilan
+                                    width: double
+                                        .infinity, // Set lebar kartu ke seluruh lebar tampilan
                                     child: Card(
-                                      color: tsOneColorScheme.primary, // Mengatur warna latar belakang kartu menjadi merah
+                                      color: tsOneColorScheme
+                                          .primary, // Mengatur warna latar belakang kartu menjadi merah
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(15),
                                       ),
@@ -680,7 +733,8 @@ class HomeFOView extends GetView<HomeFOController> {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => FOUnReturnDeviceView(
+                                              builder: (context) =>
+                                                  FOUnReturnDeviceView(
                                                 deviceId: deviceId,
                                               ),
                                             ),
@@ -689,26 +743,36 @@ class HomeFOView extends GetView<HomeFOController> {
                                         child: Padding(
                                           padding: const EdgeInsets.all(16.0),
                                           child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
                                             children: [
                                               const Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
                                                     "Device 2",
-                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                    style: TextStyle(
+                                                        color: TsOneColor
+                                                            .secondary),
                                                   ),
                                                   Text(
                                                     "Device 3",
-                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                    style: TextStyle(
+                                                        color: TsOneColor
+                                                            .secondary),
                                                   ),
                                                   Text(
                                                     'FO ID',
-                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                    style: TextStyle(
+                                                        color: TsOneColor
+                                                            .secondary),
                                                   ),
                                                   Text(
                                                     'Date',
-                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                    style: TextStyle(
+                                                        color: TsOneColor
+                                                            .secondary),
                                                   ),
                                                 ],
                                               ),
@@ -719,19 +783,27 @@ class HomeFOView extends GetView<HomeFOController> {
                                                 children: [
                                                   Text(
                                                     ':',
-                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                    style: TextStyle(
+                                                        color: TsOneColor
+                                                            .secondary),
                                                   ),
                                                   Text(
                                                     ':',
-                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                    style: TextStyle(
+                                                        color: TsOneColor
+                                                            .secondary),
                                                   ),
                                                   Text(
                                                     ':',
-                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                    style: TextStyle(
+                                                        color: TsOneColor
+                                                            .secondary),
                                                   ),
                                                   Text(
                                                     ':',
-                                                    style: TextStyle(color: TsOneColor.secondary),
+                                                    style: TextStyle(
+                                                        color: TsOneColor
+                                                            .secondary),
                                                   ),
                                                 ],
                                               ),
@@ -740,12 +812,27 @@ class HomeFOView extends GetView<HomeFOController> {
                                               ),
                                               Expanded(
                                                   child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
-                                                  Text(deviceName2, style: const TextStyle(color: TsOneColor.secondary)),
-                                                  Text(deviceName3, style: const TextStyle(color: TsOneColor.secondary)),
-                                                  Text(userId, style: const TextStyle(color: TsOneColor.secondary)),
-                                                  Text(_formatTimestamp(doc['timestamp']), style: const TextStyle(color: TsOneColor.secondary)),
+                                                  Text(deviceName2,
+                                                      style: const TextStyle(
+                                                          color: TsOneColor
+                                                              .secondary)),
+                                                  Text(deviceName3,
+                                                      style: const TextStyle(
+                                                          color: TsOneColor
+                                                              .secondary)),
+                                                  Text(userId,
+                                                      style: const TextStyle(
+                                                          color: TsOneColor
+                                                              .secondary)),
+                                                  Text(
+                                                      _formatTimestamp(
+                                                          doc['timestamp']),
+                                                      style: const TextStyle(
+                                                          color: TsOneColor
+                                                              .secondary)),
                                                 ],
                                               )),
                                               const Icon(
@@ -778,7 +865,9 @@ class HomeFOView extends GetView<HomeFOController> {
                             const SizedBox(
                               height: 20.0,
                             ),
-                            const Align(alignment: Alignment.centerLeft, child: BlackTitleText(text: 'In Use')),
+                            const Align(
+                                alignment: Alignment.centerLeft,
+                                child: BlackTitleText(text: 'In Use')),
                             const SizedBox(
                               height: 15.0,
                             ),
@@ -794,93 +883,121 @@ class HomeFOView extends GetView<HomeFOController> {
                         children: [
                           //Untuk Handover
                           FutureBuilder<QuerySnapshot>(
-                            future: requestdeviceController.getFODevicesHandover(),
+                            future:
+                                requestdeviceController.getFODevicesHandover(),
                             builder: (context, snapshot) {
-                              if (snapshot.connectionState == ConnectionState.waiting) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
                                 return const CircularProgressIndicator();
                               } else if (snapshot.hasError) {
                                 return Text('Error: ${snapshot.error}');
                               } else {
-                                QuerySnapshot? pilotDevicesSnapshot = snapshot.data;
-                                if (pilotDevicesSnapshot != null && pilotDevicesSnapshot.docs.isNotEmpty) {
+                                QuerySnapshot? pilotDevicesSnapshot =
+                                    snapshot.data;
+                                if (pilotDevicesSnapshot != null &&
+                                    pilotDevicesSnapshot.docs.isNotEmpty) {
                                   // Filter the data for 'in-use-pilot' and 'waiting-confirmation-1'
                                   final inConfirmationPilotDocs =
-                                      pilotDevicesSnapshot.docs.where((doc) => doc['statusDevice'] == 'waiting-handover-to-other-crew').toList();
+                                      pilotDevicesSnapshot.docs
+                                          .where((doc) =>
+                                              doc['statusDevice'] ==
+                                              'waiting-handover-to-other-crew')
+                                          .toList();
 
                                   return Column(
                                     children: [
                                       // Display 'in-use-pilot' data
-                                      if (inConfirmationPilotDocs.isNotEmpty) ...[
+                                      if (inConfirmationPilotDocs
+                                          .isNotEmpty) ...[
                                         const Align(
                                           alignment: Alignment.centerLeft,
-                                          child: BlackTitleText(text: "Confirm From Other Crew"),
+                                          child: BlackTitleText(
+                                              text: "Confirm From Other Crew"),
                                         ),
                                         const SizedBox(
                                           height: 10,
                                         ),
 
-                                                  //IN USE PILOT HERE
-                                                  Column(
-                                                    children:
-                                                        inConfirmationPilotDocs
-                                                            .map((doc) {
-                                                      // Your existing code for displaying 'in-use-pilot' data
-                                                      String deviceName2 =
-                                                          doc['device_name2'];
-                                                      String deviceName3 =
-                                                          doc['device_name3'];
-                                                      String userId =
-                                                          doc['user_uid'];
-                                                      String deviceId = doc.id;
+                                        //IN USE PILOT HERE
+                                        Column(
+                                          children: inConfirmationPilotDocs
+                                              .map((doc) {
+                                            // Your existing code for displaying 'in-use-pilot' data
+                                            String deviceName2 =
+                                                doc['device_name2'];
+                                            String deviceName3 =
+                                                doc['device_name3'];
+                                            String userId = doc['user_uid'];
+                                            String deviceId = doc.id;
 
                                             return Align(
                                               alignment: Alignment.centerLeft,
                                               child: Container(
-                                                width: double.infinity, // Set lebar kartu ke seluruh lebar tampilan
+                                                width: double
+                                                    .infinity, // Set lebar kartu ke seluruh lebar tampilan
                                                 child: Card(
-                                                  color: tsOneColorScheme.primary, // Mengatur warna latar belakang kartu menjadi merah
+                                                  color: tsOneColorScheme
+                                                      .primary, // Mengatur warna latar belakang kartu menjadi merah
                                                   shape: RoundedRectangleBorder(
-                                                    borderRadius: BorderRadius.circular(15),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15),
                                                   ),
                                                   child: InkWell(
                                                     onTap: () {
                                                       Navigator.push(
                                                         context,
                                                         MaterialPageRoute(
-                                                          builder: (context) => ConfirmReturnOtherFOView(
-                                                            deviceName2: deviceName2,
-                                                            deviceName3: deviceName3,
+                                                          builder: (context) =>
+                                                              ConfirmReturnOtherFOView(
+                                                            deviceName2:
+                                                                deviceName2,
+                                                            deviceName3:
+                                                                deviceName3,
                                                             deviceId: deviceId,
                                                           ),
                                                         ),
                                                       );
                                                       print(deviceName2);
                                                       print(deviceId);
-
                                                     },
                                                     child: Padding(
-                                                      padding: const EdgeInsets.all(16.0),
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              16.0),
                                                       child: Row(
-                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
                                                         children: [
                                                           const Column(
-                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
                                                             children: [
                                                               Text(
                                                                 "Device 2",
-                                                                style: TextStyle(color: TsOneColor.secondary),
+                                                                style: TextStyle(
+                                                                    color: TsOneColor
+                                                                        .secondary),
                                                               ),
                                                               Text(
                                                                 "Device 3",
-                                                                style: TextStyle(color: TsOneColor.secondary),
+                                                                style: TextStyle(
+                                                                    color: TsOneColor
+                                                                        .secondary),
                                                               ),
                                                               Text(
                                                                 'FO ID',
-                                                                style: TextStyle(color: TsOneColor.secondary),
+                                                                style: TextStyle(
+                                                                    color: TsOneColor
+                                                                        .secondary),
                                                               ),
                                                               Text(
                                                                 'Date',
-                                                                style: TextStyle(color: TsOneColor.secondary),
+                                                                style: TextStyle(
+                                                                    color: TsOneColor
+                                                                        .secondary),
                                                               ),
                                                             ],
                                                           ),
@@ -891,19 +1008,27 @@ class HomeFOView extends GetView<HomeFOController> {
                                                             children: [
                                                               Text(
                                                                 ':',
-                                                                style: TextStyle(color: TsOneColor.secondary),
+                                                                style: TextStyle(
+                                                                    color: TsOneColor
+                                                                        .secondary),
                                                               ),
                                                               Text(
                                                                 ':',
-                                                                style: TextStyle(color: TsOneColor.secondary),
+                                                                style: TextStyle(
+                                                                    color: TsOneColor
+                                                                        .secondary),
                                                               ),
                                                               Text(
                                                                 ':',
-                                                                style: TextStyle(color: TsOneColor.secondary),
+                                                                style: TextStyle(
+                                                                    color: TsOneColor
+                                                                        .secondary),
                                                               ),
                                                               Text(
                                                                 ':',
-                                                                style: TextStyle(color: TsOneColor.secondary),
+                                                                style: TextStyle(
+                                                                    color: TsOneColor
+                                                                        .secondary),
                                                               ),
                                                             ],
                                                           ),
@@ -912,17 +1037,34 @@ class HomeFOView extends GetView<HomeFOController> {
                                                           ),
                                                           Expanded(
                                                               child: Column(
-                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
                                                             children: [
-                                                              Text(deviceName2, style: const TextStyle(color: TsOneColor.secondary)),
-                                                              Text(deviceName3, style: const TextStyle(color: TsOneColor.secondary)),
-                                                              Text(userId, style: const TextStyle(color: TsOneColor.secondary)),
-                                                              Text(_formatTimestamp(doc['timestamp']), style: const TextStyle(color: TsOneColor.secondary)),
+                                                              Text(deviceName2,
+                                                                  style: const TextStyle(
+                                                                      color: TsOneColor
+                                                                          .secondary)),
+                                                              Text(deviceName3,
+                                                                  style: const TextStyle(
+                                                                      color: TsOneColor
+                                                                          .secondary)),
+                                                              Text(userId,
+                                                                  style: const TextStyle(
+                                                                      color: TsOneColor
+                                                                          .secondary)),
+                                                              Text(
+                                                                  _formatTimestamp(doc[
+                                                                      'timestamp']),
+                                                                  style: const TextStyle(
+                                                                      color: TsOneColor
+                                                                          .secondary)),
                                                             ],
                                                           )),
                                                           const Icon(
                                                             Icons.chevron_right,
-                                                            color: TsOneColor.secondary,
+                                                            color: TsOneColor
+                                                                .secondary,
                                                             size: 48,
                                                           )
                                                         ],
@@ -940,7 +1082,8 @@ class HomeFOView extends GetView<HomeFOController> {
                                         ),
                                         const Align(
                                           alignment: Alignment.centerLeft,
-                                          child: BlackTitleText(text: "Waiting Confirmation"),
+                                          child: BlackTitleText(
+                                              text: "Waiting Confirmation"),
                                         ),
                                         const SizedBox(
                                           height: 15.0,
@@ -951,7 +1094,10 @@ class HomeFOView extends GetView<HomeFOController> {
                                         const SizedBox(
                                           height: 20.0,
                                         ),
-                                        const Align(alignment: Alignment.centerLeft, child: BlackTitleText(text: 'In Use')),
+                                        const Align(
+                                            alignment: Alignment.centerLeft,
+                                            child:
+                                                BlackTitleText(text: 'In Use')),
                                         const SizedBox(
                                           height: 15.0,
                                         ),
@@ -968,20 +1114,24 @@ class HomeFOView extends GetView<HomeFOController> {
                                       ElevatedButton(
                                         style: ElevatedButton.styleFrom(
                                             backgroundColor: TsOneColor.primary,
-                                            minimumSize: const Size(double.infinity, 50),
+                                            minimumSize:
+                                                const Size(double.infinity, 50),
                                             shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(15.0),
+                                              borderRadius:
+                                                  BorderRadius.circular(15.0),
                                             )),
                                         onPressed: () {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => const FOrequestdeviceView(),
+                                              builder: (context) =>
+                                                  const FOrequestdeviceView(),
                                             ),
                                           );
                                         },
                                         child: const Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
                                           children: [
                                             Icon(
                                               Icons.touch_app_rounded,
@@ -992,7 +1142,8 @@ class HomeFOView extends GetView<HomeFOController> {
                                             SizedBox(width: 10),
                                             Text(
                                               "Request Device",
-                                              style: TextStyle(color: TsOneColor.onPrimary),
+                                              style: TextStyle(
+                                                  color: TsOneColor.onPrimary),
                                             ),
                                           ],
                                         ),
@@ -1002,7 +1153,8 @@ class HomeFOView extends GetView<HomeFOController> {
                                       ),
                                       const Align(
                                         alignment: Alignment.centerLeft,
-                                        child: BlackTitleText(text: "Waiting Confirmation"),
+                                        child: BlackTitleText(
+                                            text: "Waiting Confirmation"),
                                       ),
                                       const SizedBox(
                                         height: 15.0,
@@ -1015,7 +1167,8 @@ class HomeFOView extends GetView<HomeFOController> {
                                       ),
                                       const Align(
                                         alignment: Alignment.centerLeft,
-                                        child: BlackTitleText(text: "Need Confirmation"),
+                                        child: BlackTitleText(
+                                            text: "Need Confirmation"),
                                       ),
                                       const SizedBox(
                                         height: 15.0,
@@ -1026,7 +1179,10 @@ class HomeFOView extends GetView<HomeFOController> {
                                       const SizedBox(
                                         height: 20.0,
                                       ),
-                                      const Align(alignment: Alignment.centerLeft, child: BlackTitleText(text: 'In Use')),
+                                      const Align(
+                                          alignment: Alignment.centerLeft,
+                                          child:
+                                              BlackTitleText(text: 'In Use')),
                                       const SizedBox(
                                         height: 15.0,
                                       ),
@@ -1048,7 +1204,7 @@ class HomeFOView extends GetView<HomeFOController> {
             ],
           ),
         ),
-      ),
-    );
+      ]),
+    ));
   }
 }
