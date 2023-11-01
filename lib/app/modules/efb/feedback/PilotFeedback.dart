@@ -159,7 +159,7 @@ class _PilotFeedBackState extends State<PilotFeedBack> {
                             alignment: Alignment.centerLeft,
                             child: Text(
                               "If charging the device is REQUIRED.",
-                              style: tsOneTextTheme.titleMedium?.copyWith(color: Colors.red), // Mengubah warna teks menjadi hijau
+                              style: tsOneTextTheme.titleSmall?.copyWith(color: Colors.red), // Mengubah warna teks menjadi hijau
                             ),
                           ),
                         ),

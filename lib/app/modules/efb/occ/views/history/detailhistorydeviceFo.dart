@@ -32,6 +32,22 @@ class DetailHistoryDeviceFOView extends GetView {
     return formattedDateTime;
   }
 
+  Future<String> getDocumentIdForFeedback(String feedbackId) async {
+    // Ambil semua dokumen dari koleksi 'pilot-feedback'
+    QuerySnapshot feedbackQuerySnapshot = await FirebaseFirestore.instance.collection('pilot-feedback').get();
+
+    for (QueryDocumentSnapshot doc in feedbackQuerySnapshot.docs) {
+      // Untuk setiap dokumen, periksa apakah 'id' sesuai dengan 'feedbackId'
+      if (doc['feedback_id'] == feedbackId) {
+        // Jika cocok, kembalikan id dokumen yang sesuai
+        return feedbackId;
+      }
+    }
+
+    // Jika tidak ada yang cocok, kembalikan 'N/A' atau nilai default lainnya
+    return 'N/A';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -558,6 +574,66 @@ class DetailHistoryDeviceFOView extends GetView {
                                                       Expanded(flex: 6, child: Text('${occAccepteduserData?['NAME'] ?? 'No Data'}')),
                                                     ],
                                                   ),
+
+                                                SizedBox(height: 15.0),
+                                                Row(
+                                                  children: [
+                                                    Expanded(
+                                                      flex: 6,
+                                                      child: Text("Feedback Form", style: tsOneTextTheme.headlineMedium),
+                                                    ),
+                                                    Expanded(child: Text(":")),
+                                                    Expanded(
+                                                      flex: 6,
+                                                      child: TextButton(
+                                                        onPressed: () async {
+                                                          if (feedbackId != null && feedbackId.isNotEmpty) {
+                                                            // Menggunakan Navigator untuk berpindah ke halaman FeedbackDetailPage
+                                                            Navigator.of(context).push(
+                                                              MaterialPageRoute(
+                                                                builder: (context) => FeedbackDetailPage(feedbackId: feedbackId),
+                                                              ),
+                                                            );
+                                                          } else {
+                                                            // Tindakan alternatif jika feedbackId tidak ada atau kosong
+                                                            ScaffoldMessenger.of(context).showSnackBar(
+                                                              SnackBar(
+                                                                content: Text('Feedback Not Found'),
+                                                                action: SnackBarAction(
+                                                                  label: 'OK',
+                                                                  onPressed: () {
+                                                                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                                                  },
+                                                                ),
+                                                              ),
+                                                            );
+                                                          }
+                                                          print(feedbackId);
+                                                        },
+                                                        // style: ButtonStyle(
+                                                        //   foregroundColor: MaterialStateProperty.all(TsOneColor.primary),
+                                                        //   textStyle: MaterialStateProperty.all(TextStyle(
+                                                        //     fontWeight: FontWeight.bold,
+                                                        //     decoration: TextDecoration.underline,
+                                                        //     decorationColor: TsOneColor.primary,
+                                                        //   )),
+                                                        // ),
+                                                        child: Align(
+                                                          alignment: Alignment.centerLeft,
+                                                          child: Text(
+                                                            'Open Feedback',
+                                                            style: TextStyle(
+                                                              color: TsOneColor.primary,
+                                                              fontWeight: FontWeight.bold,
+                                                              decoration: TextDecoration.underline,
+                                                              decorationColor: TsOneColor.primary,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
 
                                                 SizedBox(height: 10.0),
                                                 if (status == 'handover-to-other-crew') Text("Given To", style: tsOneTextTheme.headlineMedium),
