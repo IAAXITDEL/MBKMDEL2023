@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 
-import '../../../../../presentation/theme.dart';
+import '../../../../presentation/theme.dart';
 
 class ConfirmPageFeedbackPilot extends StatefulWidget {
   final String documentId;
@@ -78,6 +78,7 @@ class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
 
     // Membuat dokumen baru dalam koleksi feedback-device
     DocumentReference feedbackDoc = await feedbackCollection.add({
+      'timestamp': FieldValue.serverTimestamp(),
       'handover-id': widget.deviceId,
       'q1': widget.Q1,
       'q2': widget.Q2,
@@ -93,6 +94,16 @@ class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
       '6-sector': sixSector,
       'additionalComment': additionalComment,
       'ifHigh': ifHigh,
+      'q7': Q7,
+      'q8': Q8,
+      'q9': Q9,
+      'q10': Q10,
+      'q11': Q11,
+      'q12': Q12,
+      'q13': Q13,
+      'q14': Q14,
+      'q15': Q15,
+      'q16': Q16,
     });
 
     String feedbackId = feedbackDoc.id;
@@ -134,6 +145,14 @@ class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "BRACKET (RAM-MOUNT) INTEGRITY",
+                    style: tsOneTextTheme.titleMedium,
+                  ),
+                ),
+                SizedBox(height: 5,),
                 Text('Strong Mechanical Integrity During Flight', style: tsOneTextTheme.labelLarge),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0), // Mengatur jarak antara radio buttons
@@ -295,8 +314,8 @@ class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
                   child: Column(
                     children: [
                       RadioListTile<String?>(
-                        title: Text('Yes'),
-                        value: 'Yes',
+                        title: Text('Low'),
+                        value: 'Low',
                         groupValue: Q12,
                         onChanged: (value) {
                           setState(() {
@@ -306,8 +325,8 @@ class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
                         activeColor: Colors.red,
                       ),
                       RadioListTile<String?>(
-                        title: Text('No'),
-                        value: 'No',
+                        title: Text('High'),
+                        value: 'High',
                         groupValue: Q12,
                         onChanged: (value) {
                           setState(() {
@@ -319,13 +338,27 @@ class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
                     ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextField(
-                    controller: ifHighController,
-                    decoration: InputDecoration(labelText: 'Enter remarks'),
+                SizedBox(height: 5,),
+                Text("If high please write down your concern in the comment box below"),
+
+                TextFormField(
+                  controller: ifHighController,
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                    labelText: 'Write Here',
+                    border: OutlineInputBorder(),
                   ),
                 ),
+                SizedBox(height: 5,),
+
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "EFB SOFTWARE INTEGRITY",
+                    style: tsOneTextTheme.titleMedium,
+                  ),
+                ),
+                SizedBox(height: 5,),
 
 
                 Text('Airbus Flysmart (Performance)', style: tsOneTextTheme.labelLarge),
@@ -416,6 +449,16 @@ class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
                         activeColor: Colors.red,
                       )
                     ],
+                  ),
+                ),
+                SizedBox(height: 5,),
+                Text("Additional comment on all observation"),
+                TextFormField(
+                  controller: addionalComentController,
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                    labelText: 'Write Here',
+                    border: OutlineInputBorder(),
                   ),
                 ),
               ],

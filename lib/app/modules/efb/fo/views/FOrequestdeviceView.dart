@@ -87,21 +87,21 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(
-            'Confirmation Request',
+            'Confirm Request',
             style: tsOneTextTheme.headlineLarge,
           ),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                if (deviceInUse2)
-                  const Text(
-                    'The device is already in use',
-                    style: TextStyle(
-                      color: Colors.red,
-                      fontWeight: FontWeight.normal,
-                      fontFamily: 'Poppins',
-                    ),
-                  ),
+                // if (deviceInUse2)
+                //   const Text(
+                //     'The device is already in use',
+                //     style: TextStyle(
+                //       color: Colors.red,
+                //       fontWeight: FontWeight.normal,
+                //       fontFamily: 'Poppins',
+                //     ),
+                //   ),
                 const Text('Are you sure you want to request this device?'),
               ],
             ),
@@ -119,25 +119,25 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                   ),
                 ),
                 Spacer(flex: 1),
-                if (!deviceInUse2 && !deviceInUse3)
-                  Expanded(
-                    flex: 5,
-                    child: TextButton(
-                      style: TextButton.styleFrom(
-                        backgroundColor: TsOneColor.greenColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
+                //if (!deviceInUse2 && !deviceInUse3)
+                Expanded(
+                  flex: 5,
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      backgroundColor: TsOneColor.greenColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
                       ),
-                      child: Text('Yes', style: TextStyle(color: TsOneColor.onPrimary)),
-                      onPressed: () {
-                        if (!deviceInUse2 && !deviceInUse3) _saveBooking();
-                        if (!deviceInUse2 && !deviceInUse3) _showQuickAlert(context);
-
-                        if (deviceInUse2 || deviceInUse3) _showInfo(context);
-                      },
                     ),
+                    child: Text('Yes', style: TextStyle(color: TsOneColor.onPrimary)),
+                    onPressed: () {
+                      if (!deviceInUse2 && !deviceInUse3) _saveBooking();
+                      if (!deviceInUse2 && !deviceInUse3) _showQuickAlert(context);
+
+                      if (deviceInUse2 || deviceInUse3) _showInfo(context);
+                    },
                   ),
+                ),
               ],
             ),
             // if (!deviceInUse2 && !deviceInUse3)

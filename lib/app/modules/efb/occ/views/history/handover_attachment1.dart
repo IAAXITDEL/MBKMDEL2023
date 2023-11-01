@@ -20,7 +20,8 @@ String _formatTimestamp(Timestamp? timestamp) {
 
   DateTime dateTime = timestamp.toDate();
   // Format the date and time as desired, e.g., 'dd/MM/yyyy HH:mm:ss'
-  String formattedDateTime = '${dateTime.day}/${dateTime.month}/${dateTime.year}'
+  String formattedDateTime =
+      '${dateTime.day}/${dateTime.month}/${dateTime.year}'
       ' at '
       '${dateTime.hour}:${dateTime.minute}';
   return formattedDateTime;
@@ -51,7 +52,8 @@ Future<void> generateLogPdfDevice1({
   final output = await getTemporaryDirectory();
   final file = File("${output.path}/log_device1.pdf");
 
-  final ByteData logo = await rootBundle.load('assets/images/airasia_logo_circle.png');
+  final ByteData logo =
+      await rootBundle.load('assets/images/airasia_logo_circle.png');
   final Uint8List uint8list = logo.buffer.asUint8List();
 
   final font = await rootBundle.load("assets/fonts/Poppins-Regular.ttf");
@@ -337,7 +339,8 @@ Future<void> generateLogPdfDevice1({
           ),
 
           //Handover to other crew
-          if ('$statusdevice' == 'handover-to-other-crew') pw.SizedBox(height: 10.0),
+          if ('$statusdevice' == 'handover-to-other-crew')
+            pw.SizedBox(height: 10.0),
           pw.Table(
             tableWidth: pw.TableWidth.min,
             border: pw.TableBorder.all(),
@@ -508,7 +511,8 @@ Future<void> generateLogPdfDevice1({
               ],
             ),
 
-          if ('$statusdevice' == 'handover-to-other-crew') pw.SizedBox(height: 50),
+          if ('$statusdevice' == 'handover-to-other-crew')
+            pw.SizedBox(height: 50),
           if ('$statusdevice' == 'handover-to-other-crew')
             pw.Column(
               children: [footer],

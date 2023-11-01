@@ -9,7 +9,7 @@ import 'package:ts_one/presentation/view_model/loading_viewmodel.dart';
 import 'package:ts_one/util/util.dart';
 
 class UserViewModel extends LoadingViewModel {
-  UserViewModel({required this.repo, required this.userPreferences});
+  UserViewModel({required this.repo,  required this.userPreferences});
 
   final UserRepo repo;
   final UserPreferences userPreferences;
@@ -24,7 +24,7 @@ class UserViewModel extends LoadingViewModel {
     UserAuth userAuth = UserAuth();
     try {
       userAuth = await repo.login(email, password);
-      if (userAuth.userModel != null) {
+      if(userAuth.userModel != null) {
         userPreferences.saveUser(userAuth);
       }
       isLoading = false;
@@ -40,7 +40,7 @@ class UserViewModel extends LoadingViewModel {
     UserAuth userAuth = UserAuth();
     try {
       userAuth = await repo.loginWithGoogle();
-      if (userAuth.userModel != null) {
+      if(userAuth.userModel != null) {
         userPreferences.saveUser(userAuth);
       }
       isLoading = false;
@@ -64,13 +64,12 @@ class UserViewModel extends LoadingViewModel {
     isLoading = true;
 
     try {
-      if (isAllUsersLoaded) {
+      if(isAllUsersLoaded) {
         isLoading = false;
         return users;
       }
 
-      final List<UserModel> newUsers =
-          await repo.getUsersPaginated(limit, lastUser);
+      final List<UserModel> newUsers = await repo.getUsersPaginated(limit, lastUser);
       users.addAll(newUsers);
 
       if (newUsers.isNotEmpty) {
@@ -102,8 +101,7 @@ class UserViewModel extends LoadingViewModel {
     return userModel;
   }
 
-  Future<List<UserModel>> getUsersBySearchName(
-      String searchName, int searchLimit) async {
+  Future<List<UserModel>> getUsersBySearchName(String searchName, int searchLimit) async {
     isLoading = true;
     List<UserModel> users = [];
     try {
@@ -168,13 +166,11 @@ class UserViewModel extends LoadingViewModel {
     }
   }
 
-  Future<String> uploadSignature(
-      int idUser, DateTime assessmentDate, Uint8List? signatureBytes) async {
+  Future<String> uploadSignature(int idUser, DateTime assessmentDate, Uint8List? signatureBytes) async {
     isLoading = true;
     String downloadURL = "";
     try {
-      downloadURL =
-          await repo.uploadSignature(idUser, assessmentDate, signatureBytes);
+      downloadURL = await repo.uploadSignature(idUser, assessmentDate, signatureBytes);
       isLoading = false;
     } catch (e) {
       log("Exception in UserViewModel on uploadSignature: $e");

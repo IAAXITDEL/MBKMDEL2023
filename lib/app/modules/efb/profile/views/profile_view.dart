@@ -52,10 +52,7 @@ class ProfileView extends GetView<ProfileccController> {
     final userEmail = user.email;
     if (userEmail == null) return null;
 
-    final userSnapshot = await FirebaseFirestore.instance
-        .collection('users')
-        .where('EMAIL', isEqualTo: userEmail)
-        .get();
+    final userSnapshot = await FirebaseFirestore.instance.collection('users').where('EMAIL', isEqualTo: userEmail).get();
 
     if (userSnapshot.docs.isNotEmpty) {
       final userDoc = userSnapshot.docs.first;
@@ -69,8 +66,7 @@ class ProfileView extends GetView<ProfileccController> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding:
-            const EdgeInsets.only(top: 70, left: 20, bottom: 10, right: 20),
+        padding: const EdgeInsets.only(top: 70, left: 20, bottom: 10, right: 20),
         child: Center(
           child: Column(
             children: [
@@ -92,8 +88,7 @@ class ProfileView extends GetView<ProfileccController> {
                         height: 175,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(200),
-                          child: Image.network(
-                              controller.userPreferences.getPhotoURL()),
+                          child: Image.network(controller.userPreferences.getPhotoURL()),
                         ),
                       ),
                     ),
@@ -125,30 +120,24 @@ class ProfileView extends GetView<ProfileccController> {
                     const SizedBox(
                       height: 20,
                     ),
-                    if (controller.userPreferences.getRank().toString() ==
-                        "OCC")
+                    if (controller.userPreferences.getRank().toString() == "OCC")
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10),
                         child: FutureBuilder<String?>(
                           future: _getUserHub(),
                           builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
+                            if (snapshot.connectionState == ConnectionState.waiting) {
                               return CircularProgressIndicator();
                             } else if (snapshot.hasError) {
                               return Text('Error: ${snapshot.error}');
                             } else {
                               String? userHub = snapshot.data;
-                              return GreenTitleText(
-                                  text:
-                                      "HUB : ${userHub ?? 'Data tidak tersedia'}");
+                              return GreenTitleText(text: "HUB : ${userHub ?? 'Data tidak tersedia'}");
                             }
                           },
                         ),
                       ),
-                    if (controller.userPreferences.getRank().toString() ==
-                            "CAPT" ||
-                        controller.userPreferences.getRank().toString() == "FO")
+                    if (controller.userPreferences.getRank().toString() == "CAPT" || controller.userPreferences.getRank().toString() == "FO")
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: tsOneColorScheme.secondary,
@@ -167,8 +156,7 @@ class ProfileView extends GetView<ProfileccController> {
                               return SingleChildScrollView(
                                 child: Container(
                                   width: Get.width,
-                                  padding: EdgeInsets.only(
-                                      top: 20, right: 20, left: 20),
+                                  padding: EdgeInsets.only(top: 20, right: 20, left: 20),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.only(
                                       topLeft: Radius.circular(20.0),
@@ -178,8 +166,7 @@ class ProfileView extends GetView<ProfileccController> {
                                   ),
                                   child: Column(
                                     children: [
-                                      Text("My QR",
-                                          style: tsOneTextTheme.labelMedium),
+                                      Text("My QR", style: tsOneTextTheme.labelMedium),
                                       SizedBox(height: 5),
                                       RedTitleText(text: "SCAN ME"),
                                       SizedBox(height: 10),

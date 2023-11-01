@@ -57,7 +57,6 @@ class RequestdeviceController extends GetxController {
           'handover-from': '-',
           'handover-to-crew': '-',
           'remarks': '',
-          'feedbackId': '',
           'prove_image_url': '',
           'occ-accepted-device': '-',
           'signature_url_other_crew': '-',

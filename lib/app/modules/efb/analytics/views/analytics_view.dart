@@ -14,6 +14,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fl_chart/fl_chart.dart';
 // import 'package:ts_one/data/users/users.dart';
 import 'package:animations/animations.dart';
+import 'package:ts_one/presentation/shared_components/legend_widget.dart';
 
 DateTime? selectedStartDate;
 DateTime? selectedEndDate;
@@ -22,33 +23,9 @@ String selectedHub = 'ALL';
 class AnalyticsView extends GetView<AnalyticsController> {
   const AnalyticsView({Key? key}) : super(key: key);
 
-  Future<Map<String, int>> countDevicesHub() async {
-    final firestore = FirebaseFirestore.instance;
-    final QuerySnapshot querySnapshot =
-        await firestore.collection('Device').get();
-
-    final Map<String, int> deviceCountByHub = {
-      'CGK': 0,
-      'KNO': 0,
-      'DPS': 0,
-      'SUB': 0,
-    };
-
-    querySnapshot.docs.forEach((doc) {
-      final hub = doc['hub'] as String;
-
-      if (deviceCountByHub.containsKey(hub)) {
-        deviceCountByHub[hub] = (deviceCountByHub[hub] ?? 0) + 1;
-      }
-    });
-
-    return deviceCountByHub;
-  }
-
   Future<void> exportToExcel(List<Map<String, dynamic>> data) async {
     final excel = Excel.createExcel();
     final sheet = excel['Main Data'];
-
     // Menentukan judul kolom
     sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: 2)).value =
         'Crew ID';
@@ -213,10 +190,9 @@ class AnalyticsView extends GetView<AnalyticsController> {
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           child: Column(
             children: [
-              RedTitleText(text: "EFB Handover Monthly Report"),
+              RedTitleText(text: "EFB Handover Monthly"),
+              RedTitleText(text: "Report"),
               AnalyticsHub(),
-              // RedTitleText(text: "Device Distribution"),
-              // Pass the deviceCounts data here
             ],
           ),
         ),
@@ -408,7 +384,7 @@ class _AnalyticsHubState extends State<AnalyticsHub>
           percentageDevicesInUse('CGK'),
           percentageDevices23InUse('CGK'),
           percentageDevices23InUsed('CGK'),
-          SizedBox(height: 16),
+          SizedBox(height: 20),
           Padding(
             padding: EdgeInsets.only(bottom: 8.0),
             child: Row(
@@ -434,47 +410,21 @@ class _AnalyticsHubState extends State<AnalyticsHub>
             ),
           ),
           SizedBox(
-            height: 10,
+            height: 20,
           ),
-          Container(
-            height: MediaQuery.of(context).size.height * 0.4,
-            child: ListView(
-              children: [
-                // Widgets for the content of the single "tab"
-                SizedBox(height: 10),
-                PieChartWidget(totalDeviceCounts),
-                SizedBox(height: 10),
-              ],
-            ),
-          ),
-          SizedBox(height: 16),
           Padding(
-            padding: EdgeInsets.only(bottom: 8.0),
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                  child: Divider(
-                    color: Colors.grey,
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Text(
-                    'Return & Acknowledgment',
-                    style: TextStyle(color: Colors.grey),
-                  ),
-                ),
-                Expanded(
-                  child: Divider(
-                    color: Colors.grey,
-                  ),
-                ),
+            padding: const EdgeInsets.only(top: 16.0, right: 16.0, left: 16.0),
+            child: LegendsListWidget(
+              legends: [
+                Legend('CGK', Color.fromARGB(255, 255, 243, 226)),
+                Legend('KNO', Color.fromARGB(255, 255, 229, 202)),
+                Legend('DPS', Color.fromARGB(250, 250, 152, 132)),
+                Legend('SUB', Color.fromARGB(231, 231, 70, 70)),
               ],
             ),
           ),
-          SizedBox(
-            height: 10,
-          ),
+          PieChartWidget(totalDeviceCounts),
+          SizedBox(height: 16),
         ],
       ),
     );
@@ -1253,7 +1203,24 @@ class _AnalyticsHubState extends State<AnalyticsHub>
   }
 }
 
-// Pie Chart
+Future<int> countDevicesInUse() async {
+  final firestore = FirebaseFirestore.instance;
+  final QuerySnapshot querySnapshot = await firestore
+      .collection('pilot-device-1')
+      .where('timestamp',
+          isGreaterThanOrEqualTo: selectedStartDate,
+          isLessThanOrEqualTo: selectedEndDate)
+      .where('statusDevice', isEqualTo: 'in-use-pilot')
+      .where('field_hub',
+          isEqualTo: (selectedHub == 'ALL' ? null : selectedHub))
+      .get();
+
+  final int deviceCountInUse = querySnapshot.docs.length;
+
+  return deviceCountInUse;
+}
+
+// Pie Chart Device Distribution
 class PieChartWidget extends StatefulWidget {
   final Map<String, int> deviceCounts;
 
@@ -1267,92 +1234,50 @@ class _PieChartWidgetState extends State<PieChartWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 1,
-      child: PieChart(
-        PieChartData(
-          sectionsSpace: 2,
-          centerSpaceRadius: 30,
-          sections: _getChartSections(),
-          borderData: FlBorderData(show: false),
-          startDegreeOffset: 180,
-        ),
-      ),
+    return FutureBuilder<int>(
+      future: countDevicesInUse(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return CircularProgressIndicator(); // Display a loading indicator while fetching data.
+        } else if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        } else {
+          final deviceCountInUse = snapshot.data;
+          return AspectRatio(
+            aspectRatio: 1,
+            child: PieChart(
+              PieChartData(
+                sectionsSpace: 2,
+                centerSpaceRadius: 30,
+                sections: _getChartSections(deviceCountInUse),
+                borderData: FlBorderData(show: false),
+                startDegreeOffset: 180,
+              ),
+            ),
+          );
+        }
+      },
     );
   }
+//Color myColor = Color.fromARGB(255, 255, 0, 0); // Membuat warna merah (RGB: 255, 0, 0)
 
-  Future<Map<String, int>> calculateDeviceCountsByStatus() async {
-    final firestore = FirebaseFirestore.instance;
-    final QuerySnapshot querySnapshot = await firestore
-        .collection('pilot-device-1')
-        .where('timestamp',
-            isGreaterThanOrEqualTo: selectedStartDate,
-            isLessThanOrEqualTo: selectedEndDate)
-        .where('statusDevice',
-            whereIn: ['Done', 'in-use-pilot', 'handover-to-other-crew']).get();
-
-    final Map<String, int> deviceCountsByStatus = {
-      'Done': 0,
-      'in-use-pilot': 0,
-      'handover-to-other-crew': 0,
-    };
-
-    querySnapshot.docs.forEach((doc) {
-      final data = doc.data() as Map<String, dynamic>;
-      final status = data['statusDevice'] as String;
-      deviceCountsByStatus[status] = (deviceCountsByStatus[status] ?? 0) + 1;
-    });
-
-    return deviceCountsByStatus;
-  }
-
-  Future<Map<String, int>> calculateDeviceCountsByHub() async {
-    final firestore = FirebaseFirestore.instance;
-    final QuerySnapshot querySnapshot = await firestore
-        .collection('pilot-device-1')
-        .where('timestamp',
-            isGreaterThanOrEqualTo: selectedStartDate,
-            isLessThanOrEqualTo: selectedEndDate)
-        .where('statusDevice',
-            whereIn: ['Done', 'in-use-pilot', 'handover-to-other-crew']).get();
-
-    final Map<String, int> deviceCountsByHub = {
-      'CGK': 0,
-      'KNO': 0,
-      'DPS': 0,
-      'SUB': 0,
-    };
-
-    querySnapshot.docs.forEach((doc) {
-      final data = doc.data() as Map<String, dynamic>;
-      final hub = data['field_hub'] as String;
-      final status = data['statusDevice'] as String;
-
-      if (deviceCountsByHub.containsKey(hub) && status != null) {
-        deviceCountsByHub[hub] = (deviceCountsByHub[hub] ?? 0) + 1;
-      }
-    });
-
-    return deviceCountsByHub;
-  }
-
-  List<PieChartSectionData> _getChartSections() {
+  List<PieChartSectionData> _getChartSections(int? deviceCountInUse) {
     final List<Color> colors = [
-      Colors.blue,
-      Colors.orange,
-      Colors.green,
-      Colors.red,
+      Color.fromARGB(255, 255, 243, 226),
+      Color.fromARGB(255, 255, 229, 202),
+      Color.fromARGB(250, 250, 152, 132),
+      Color.fromARGB(231, 231, 70, 70),
     ];
 
-    return List.generate(widget.deviceCounts.length, (i) {
-      final status = widget.deviceCounts.keys.toList()[i];
-      final count = widget.deviceCounts[status] ?? 0;
+    final otherSections = List.generate(widget.deviceCounts.length, (i) {
+      final hub = widget.deviceCounts.keys.toList()[i];
+      final count = widget.deviceCounts[hub] ?? 0;
 
       return PieChartSectionData(
-        title: '$status\n$count',
+        title: '$count', // Update the title
         value: count.toDouble(),
         color: colors[i % colors.length],
-        radius: 90,
+        radius: 80,
         titleStyle: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w500,
@@ -1361,5 +1286,6 @@ class _PieChartWidgetState extends State<PieChartWidget> {
         ),
       );
     });
+    return otherSections;
   }
 }

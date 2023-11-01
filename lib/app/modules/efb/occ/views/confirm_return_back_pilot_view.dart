@@ -23,12 +23,10 @@ class ConfirmReturnBackPilotView extends GetView {
   bool isImageUploading = false;
   bool agree = false;
 
-  ConfirmReturnBackPilotView({Key? key, required this.dataId})
-      : super(key: key);
+  ConfirmReturnBackPilotView({Key? key, required this.dataId}) : super(key: key);
 
   //GlobalKey<SfSignaturePadState> signatureKey = GlobalKey();
-  final GlobalKey<SfSignaturePadState> signatureKey =
-      GlobalKey<SfSignaturePadState>();
+  final GlobalKey<SfSignaturePadState> signatureKey = GlobalKey<SfSignaturePadState>();
   Uint8List? signatureImage;
 
   String getMonthText(int month) {
@@ -53,15 +51,13 @@ class ConfirmReturnBackPilotView extends GetView {
     if (timestamp == null) return 'No Data';
 
     DateTime dateTime = timestamp.toDate();
-    String formattedDateTime =
-        '${dateTime.day} ${getMonthText(dateTime.month)} ${dateTime.year}'
+    String formattedDateTime = '${dateTime.day} ${getMonthText(dateTime.month)} ${dateTime.year}'
         ' ; '
         '${dateTime.hour}:${dateTime.minute}';
     return formattedDateTime;
   }
 
-  Future<void> _uploadImageAndShowDialog(
-      XFile pickedFile, BuildContext context) async {
+  Future<void> _uploadImageAndShowDialog(XFile pickedFile, BuildContext context) async {
     final Uint8List imageBytes = await pickedFile.readAsBytes();
 
     // Load the image using the image package
@@ -72,15 +68,12 @@ class ConfirmReturnBackPilotView extends GetView {
     int maxHeight = 1024;
 
     // Resize the image while maintaining its aspect ratio
-    img.Image resizedImage =
-        img.copyResize(originalImage!, width: maxWidth, height: maxHeight);
+    img.Image resizedImage = img.copyResize(originalImage!, width: maxWidth, height: maxHeight);
 
     // Encode the resized image to Uint8List with JPEG format and adjustable quality
-    Uint8List compressedImageBytes =
-        img.encodeJpg(resizedImage, quality: 75); // Adjust quality as needed
+    Uint8List compressedImageBytes = img.encodeJpg(resizedImage, quality: 75); // Adjust quality as needed
 
-    final Reference storageReference = FirebaseStorage.instance.ref().child(
-        'camera_images/${Path.basename(dataId)} at ${DateTime.now()}.jpg');
+    final Reference storageReference = FirebaseStorage.instance.ref().child('camera_images/${Path.basename(dataId)} at ${DateTime.now()}.jpg');
 
     try {
       // Upload the compressed image
@@ -112,10 +105,9 @@ class ConfirmReturnBackPilotView extends GetView {
                   Expanded(
                     flex: 5,
                     child: TextButton(
-                      child: Text('No',
-                          style:
-                              TextStyle(color: TsOneColor.secondaryContainer)),
+                      child: Text('No', style: TextStyle(color: TsOneColor.secondaryContainer)),
                       onPressed: () {
+                        Navigator.of(context).pop();
                         Navigator.of(context).pop();
                       },
                     ),
@@ -128,8 +120,7 @@ class ConfirmReturnBackPilotView extends GetView {
                         confirmInUse(context, cameraImageUrl);
                         _showQuickAlert(context);
                       },
-                      child: const Text('Yes',
-                          style: TextStyle(color: TsOneColor.onPrimary)),
+                      child: const Text('Yes', style: TextStyle(color: TsOneColor.onPrimary)),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: TsOneColor.greenColor,
                         shape: RoundedRectangleBorder(
@@ -163,29 +154,22 @@ class ConfirmReturnBackPilotView extends GetView {
     User? user = _auth.currentUser;
 
     if (user != null) {
-      QuerySnapshot userQuery = await _firestore
-          .collection('users')
-          .where('EMAIL', isEqualTo: user.email)
-          .get();
+      QuerySnapshot userQuery = await _firestore.collection('users').where('EMAIL', isEqualTo: user.email).get();
       String userUid = userQuery.docs.first.id;
 
       final signatureKey = this.signatureKey.currentState!;
       final image = await signatureKey.toImage(pixelRatio: 3.0);
-      final ByteData? byteData =
-          await image.toByteData(format: ImageByteFormat.png);
+      final ByteData? byteData = await image.toByteData(format: ImageByteFormat.png);
       final Uint8List? uint8List = byteData?.buffer.asUint8List();
 
-      final Reference storageReference = FirebaseStorage.instance
-          .ref()
-          .child('signatures/${Path.basename(dataId)}.png');
+      final Reference storageReference = FirebaseStorage.instance.ref().child('signatures/${Path.basename(dataId)}.png');
 
       final UploadTask uploadTask = storageReference.putData(uint8List!);
 
       await uploadTask.whenComplete(() async {
         String signatureURL = await storageReference.getDownloadURL();
 
-        DocumentReference pilotDeviceRef =
-            FirebaseFirestore.instance.collection("pilot-device-1").doc(dataId);
+        DocumentReference pilotDeviceRef = FirebaseFirestore.instance.collection("pilot-device-1").doc(dataId);
 
         try {
           await pilotDeviceRef.update({
@@ -246,10 +230,7 @@ class ConfirmReturnBackPilotView extends GetView {
       ),
       body: SingleChildScrollView(
         child: FutureBuilder<DocumentSnapshot>(
-          future: FirebaseFirestore.instance
-              .collection("pilot-device-1")
-              .doc(dataId)
-              .get(),
+          future: FirebaseFirestore.instance.collection("pilot-device-1").doc(dataId).get(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(child: CircularProgressIndicator());
@@ -269,10 +250,7 @@ class ConfirmReturnBackPilotView extends GetView {
             final deviceUid = data['device_uid'];
 
             return FutureBuilder<DocumentSnapshot>(
-              future: FirebaseFirestore.instance
-                  .collection("users")
-                  .doc(userUid)
-                  .get(),
+              future: FirebaseFirestore.instance.collection("users").doc(userUid).get(),
               builder: (context, userSnapshot) {
                 if (userSnapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());
@@ -286,92 +264,65 @@ class ConfirmReturnBackPilotView extends GetView {
                   return Center(child: Text('User data not found'));
                 }
 
-                final userData =
-                    userSnapshot.data!.data() as Map<String, dynamic>;
+                final userData = userSnapshot.data!.data() as Map<String, dynamic>;
 
                 return FutureBuilder<DocumentSnapshot>(
-                  future: FirebaseFirestore.instance
-                      .collection("Device")
-                      .doc(deviceUid)
-                      .get(),
+                  future: FirebaseFirestore.instance.collection("Device").doc(deviceUid).get(),
                   builder: (context, deviceSnapshot) {
-                    if (deviceSnapshot.connectionState ==
-                        ConnectionState.waiting) {
+                    if (deviceSnapshot.connectionState == ConnectionState.waiting) {
                       return Center(child: CircularProgressIndicator());
                     }
 
                     if (deviceSnapshot.hasError) {
-                      return Center(
-                          child: Text('Error: ${deviceSnapshot.error}'));
+                      return Center(child: Text('Error: ${deviceSnapshot.error}'));
                     }
 
-                    if (!deviceSnapshot.hasData ||
-                        !deviceSnapshot.data!.exists) {
+                    if (!deviceSnapshot.hasData || !deviceSnapshot.data!.exists) {
                       final deviceUid2 = data['device_uid2'];
                       final deviceUid3 = data['device_uid3'];
 
                       return FutureBuilder<DocumentSnapshot>(
-                        future: FirebaseFirestore.instance
-                            .collection("Device")
-                            .doc(deviceUid2)
-                            .get(),
+                        future: FirebaseFirestore.instance.collection("Device").doc(deviceUid2).get(),
                         builder: (context, deviceSnapshot) {
-                          if (deviceSnapshot.connectionState ==
-                              ConnectionState.waiting) {
+                          if (deviceSnapshot.connectionState == ConnectionState.waiting) {
                             return Center(child: CircularProgressIndicator());
                           }
 
                           if (deviceSnapshot.hasError) {
-                            return Center(
-                                child: Text('Error: ${deviceSnapshot.error}'));
+                            return Center(child: Text('Error: ${deviceSnapshot.error}'));
                           }
 
-                          if (!deviceSnapshot.hasData ||
-                              !deviceSnapshot.data!.exists) {
-                            return Center(
-                                child: Text('Device data 2 not found'));
+                          if (!deviceSnapshot.hasData || !deviceSnapshot.data!.exists) {
+                            return Center(child: Text('Device data 2 not found'));
                           }
 
-                          final deviceData2 = deviceSnapshot.data!.data()
-                              as Map<String, dynamic>;
+                          final deviceData2 = deviceSnapshot.data!.data() as Map<String, dynamic>;
 
                           return FutureBuilder<DocumentSnapshot>(
-                            future: FirebaseFirestore.instance
-                                .collection("Device")
-                                .doc(deviceUid3)
-                                .get(),
+                            future: FirebaseFirestore.instance.collection("Device").doc(deviceUid3).get(),
                             builder: (context, deviceSnapshot) {
-                              if (deviceSnapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return Center(
-                                    child: CircularProgressIndicator());
+                              if (deviceSnapshot.connectionState == ConnectionState.waiting) {
+                                return Center(child: CircularProgressIndicator());
                               }
 
                               if (deviceSnapshot.hasError) {
-                                return Center(
-                                    child:
-                                        Text('Error: ${deviceSnapshot.error}'));
+                                return Center(child: Text('Error: ${deviceSnapshot.error}'));
                               }
 
-                              if (!deviceSnapshot.hasData ||
-                                  !deviceSnapshot.data!.exists) {
-                                return Center(
-                                    child: Text('Device data 2 not found'));
+                              if (!deviceSnapshot.hasData || !deviceSnapshot.data!.exists) {
+                                return Center(child: Text('Device data 2 not found'));
                               }
 
-                              final deviceData3 = deviceSnapshot.data!.data()
-                                  as Map<String, dynamic>;
+                              final deviceData3 = deviceSnapshot.data!.data() as Map<String, dynamic>;
 
                               return Center(
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     Container(
-                                      margin: EdgeInsets.symmetric(
-                                          horizontal: 20, vertical: 10),
+                                      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                                       child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.start,
                                         children: [
                                           // SizedBox(height: 10.0),
                                           // Align(
@@ -385,11 +336,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                           SizedBox(height: 10.0),
                                           Align(
                                             alignment: Alignment.centerRight,
-                                            child: Text(
-                                                _formatTimestamp(
-                                                    data['timestamp']),
-                                                style:
-                                                    tsOneTextTheme.labelSmall),
+                                            child: Text(_formatTimestamp(data['timestamp']), style: tsOneTextTheme.labelSmall),
                                           ),
                                           SizedBox(height: 10.0),
                                           Row(
@@ -398,22 +345,19 @@ class ConfirmReturnBackPilotView extends GetView {
                                                   flex: 6,
                                                   child: Text(
                                                     "ID NO",
-                                                    style: tsOneTextTheme
-                                                        .bodySmall,
+                                                    style: tsOneTextTheme.bodySmall,
                                                   )),
                                               Expanded(
                                                   flex: 1,
                                                   child: Text(
                                                     ":",
-                                                    style: tsOneTextTheme
-                                                        .bodySmall,
+                                                    style: tsOneTextTheme.bodySmall,
                                                   )),
                                               Expanded(
                                                 flex: 6,
                                                 child: Text(
                                                   '${userData['ID NO'] ?? 'No Data'}',
-                                                  style:
-                                                      tsOneTextTheme.bodySmall,
+                                                  style: tsOneTextTheme.bodySmall,
                                                 ),
                                               ),
                                             ],
@@ -425,22 +369,19 @@ class ConfirmReturnBackPilotView extends GetView {
                                                   flex: 6,
                                                   child: Text(
                                                     "Name",
-                                                    style: tsOneTextTheme
-                                                        .bodySmall,
+                                                    style: tsOneTextTheme.bodySmall,
                                                   )),
                                               Expanded(
                                                   flex: 1,
                                                   child: Text(
                                                     ":",
-                                                    style: tsOneTextTheme
-                                                        .bodySmall,
+                                                    style: tsOneTextTheme.bodySmall,
                                                   )),
                                               Expanded(
                                                 flex: 6,
                                                 child: Text(
                                                   '${userData['NAME'] ?? 'No Data'}',
-                                                  style:
-                                                      tsOneTextTheme.bodySmall,
+                                                  style: tsOneTextTheme.bodySmall,
                                                 ),
                                               ),
                                             ],
@@ -452,22 +393,19 @@ class ConfirmReturnBackPilotView extends GetView {
                                                   flex: 6,
                                                   child: Text(
                                                     "Rank",
-                                                    style: tsOneTextTheme
-                                                        .bodySmall,
+                                                    style: tsOneTextTheme.bodySmall,
                                                   )),
                                               Expanded(
                                                   flex: 1,
                                                   child: Text(
                                                     ":",
-                                                    style: tsOneTextTheme
-                                                        .bodySmall,
+                                                    style: tsOneTextTheme.bodySmall,
                                                   )),
                                               Expanded(
                                                 flex: 6,
                                                 child: Text(
                                                   '${userData['RANK'] ?? 'No Data'}',
-                                                  style:
-                                                      tsOneTextTheme.bodySmall,
+                                                  style: tsOneTextTheme.bodySmall,
                                                 ),
                                               ),
                                             ],
@@ -488,8 +426,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                           // SizedBox(height: 5.0),
                                           const SizedBox(height: 16),
                                           const Padding(
-                                            padding:
-                                                EdgeInsets.only(bottom: 16.0),
+                                            padding: EdgeInsets.only(bottom: 16.0),
                                             child: Row(
                                               children: <Widget>[
                                                 Expanded(
@@ -498,12 +435,10 @@ class ConfirmReturnBackPilotView extends GetView {
                                                   ),
                                                 ),
                                                 Padding(
-                                                  padding: EdgeInsets.symmetric(
-                                                      horizontal: 8.0),
+                                                  padding: EdgeInsets.symmetric(horizontal: 8.0),
                                                   child: Text(
                                                     'Device Details',
-                                                    style: TextStyle(
-                                                        color: Colors.grey),
+                                                    style: TextStyle(color: Colors.grey),
                                                   ),
                                                 ),
                                                 Expanded(
@@ -518,8 +453,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                             alignment: Alignment.centerLeft,
                                             child: Text(
                                               "Device 2",
-                                              style:
-                                                  tsOneTextTheme.headlineMedium,
+                                              style: tsOneTextTheme.headlineMedium,
                                             ),
                                           ),
                                           SizedBox(height: 5.0),
@@ -529,22 +463,19 @@ class ConfirmReturnBackPilotView extends GetView {
                                                   flex: 6,
                                                   child: Text(
                                                     "Device ID",
-                                                    style: tsOneTextTheme
-                                                        .bodySmall,
+                                                    style: tsOneTextTheme.bodySmall,
                                                   )),
                                               Expanded(
                                                   flex: 1,
                                                   child: Text(
                                                     ":",
-                                                    style: tsOneTextTheme
-                                                        .bodySmall,
+                                                    style: tsOneTextTheme.bodySmall,
                                                   )),
                                               Expanded(
                                                 flex: 6,
                                                 child: Text(
                                                   '${data['device_name2'] ?? 'No Data'}',
-                                                  style:
-                                                      tsOneTextTheme.bodySmall,
+                                                  style: tsOneTextTheme.bodySmall,
                                                 ),
                                               ),
                                             ],
@@ -556,22 +487,19 @@ class ConfirmReturnBackPilotView extends GetView {
                                                   flex: 6,
                                                   child: Text(
                                                     "iOS Version",
-                                                    style: tsOneTextTheme
-                                                        .bodySmall,
+                                                    style: tsOneTextTheme.bodySmall,
                                                   )),
                                               Expanded(
                                                   flex: 1,
                                                   child: Text(
                                                     ":",
-                                                    style: tsOneTextTheme
-                                                        .bodySmall,
+                                                    style: tsOneTextTheme.bodySmall,
                                                   )),
                                               Expanded(
                                                 flex: 6,
                                                 child: Text(
                                                   '${deviceData2['iosver'] ?? 'No Data'}',
-                                                  style:
-                                                      tsOneTextTheme.bodySmall,
+                                                  style: tsOneTextTheme.bodySmall,
                                                 ),
                                               ),
                                             ],
@@ -583,22 +511,19 @@ class ConfirmReturnBackPilotView extends GetView {
                                                   flex: 6,
                                                   child: Text(
                                                     "FlySmart Version",
-                                                    style: tsOneTextTheme
-                                                        .bodySmall,
+                                                    style: tsOneTextTheme.bodySmall,
                                                   )),
                                               Expanded(
                                                   flex: 1,
                                                   child: Text(
                                                     ":",
-                                                    style: tsOneTextTheme
-                                                        .bodySmall,
+                                                    style: tsOneTextTheme.bodySmall,
                                                   )),
                                               Expanded(
                                                 flex: 6,
                                                 child: Text(
                                                   '${deviceData2['flysmart'] ?? 'No Data'}',
-                                                  style:
-                                                      tsOneTextTheme.bodySmall,
+                                                  style: tsOneTextTheme.bodySmall,
                                                 ),
                                               ),
                                             ],
@@ -610,22 +535,19 @@ class ConfirmReturnBackPilotView extends GetView {
                                                   flex: 6,
                                                   child: Text(
                                                     "Docu Version",
-                                                    style: tsOneTextTheme
-                                                        .bodySmall,
+                                                    style: tsOneTextTheme.bodySmall,
                                                   )),
                                               Expanded(
                                                   flex: 1,
                                                   child: Text(
                                                     ":",
-                                                    style: tsOneTextTheme
-                                                        .bodySmall,
+                                                    style: tsOneTextTheme.bodySmall,
                                                   )),
                                               Expanded(
                                                 flex: 6,
                                                 child: Text(
                                                   '${deviceData2['docuversion'] ?? 'No Data'}',
-                                                  style:
-                                                      tsOneTextTheme.bodySmall,
+                                                  style: tsOneTextTheme.bodySmall,
                                                 ),
                                               ),
                                             ],
@@ -637,22 +559,19 @@ class ConfirmReturnBackPilotView extends GetView {
                                                   flex: 6,
                                                   child: Text(
                                                     "Lido Version",
-                                                    style: tsOneTextTheme
-                                                        .bodySmall,
+                                                    style: tsOneTextTheme.bodySmall,
                                                   )),
                                               Expanded(
                                                   flex: 1,
                                                   child: Text(
                                                     ":",
-                                                    style: tsOneTextTheme
-                                                        .bodySmall,
+                                                    style: tsOneTextTheme.bodySmall,
                                                   )),
                                               Expanded(
                                                 flex: 6,
                                                 child: Text(
                                                   '${deviceData2['lidoversion'] ?? 'No Data'}',
-                                                  style:
-                                                      tsOneTextTheme.bodySmall,
+                                                  style: tsOneTextTheme.bodySmall,
                                                 ),
                                               ),
                                             ],
@@ -664,22 +583,19 @@ class ConfirmReturnBackPilotView extends GetView {
                                                   flex: 6,
                                                   child: Text(
                                                     "HUB",
-                                                    style: tsOneTextTheme
-                                                        .bodySmall,
+                                                    style: tsOneTextTheme.bodySmall,
                                                   )),
                                               Expanded(
                                                   flex: 1,
                                                   child: Text(
                                                     ":",
-                                                    style: tsOneTextTheme
-                                                        .bodySmall,
+                                                    style: tsOneTextTheme.bodySmall,
                                                   )),
                                               Expanded(
                                                 flex: 6,
                                                 child: Text(
                                                   '${deviceData2['hub'] ?? 'No Data'}',
-                                                  style:
-                                                      tsOneTextTheme.bodySmall,
+                                                  style: tsOneTextTheme.bodySmall,
                                                 ),
                                               ),
                                             ],
@@ -691,22 +607,19 @@ class ConfirmReturnBackPilotView extends GetView {
                                                   flex: 6,
                                                   child: Text(
                                                     "Condition",
-                                                    style: tsOneTextTheme
-                                                        .bodySmall,
+                                                    style: tsOneTextTheme.bodySmall,
                                                   )),
                                               Expanded(
                                                   flex: 1,
                                                   child: Text(
                                                     ":",
-                                                    style: tsOneTextTheme
-                                                        .bodySmall,
+                                                    style: tsOneTextTheme.bodySmall,
                                                   )),
                                               Expanded(
                                                 flex: 6,
                                                 child: Text(
                                                   '${deviceData2['condition'] ?? 'No Data'}',
-                                                  style:
-                                                      tsOneTextTheme.bodySmall,
+                                                  style: tsOneTextTheme.bodySmall,
                                                 ),
                                               ),
                                             ],
@@ -725,8 +638,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                             alignment: Alignment.centerLeft,
                                             child: Text(
                                               "Device 3",
-                                              style:
-                                                  tsOneTextTheme.headlineMedium,
+                                              style: tsOneTextTheme.headlineMedium,
                                             ),
                                           ),
                                           SizedBox(height: 5.0),
@@ -736,22 +648,19 @@ class ConfirmReturnBackPilotView extends GetView {
                                                   flex: 6,
                                                   child: Text(
                                                     "Device ID",
-                                                    style: tsOneTextTheme
-                                                        .bodySmall,
+                                                    style: tsOneTextTheme.bodySmall,
                                                   )),
                                               Expanded(
                                                   flex: 1,
                                                   child: Text(
                                                     ":",
-                                                    style: tsOneTextTheme
-                                                        .bodySmall,
+                                                    style: tsOneTextTheme.bodySmall,
                                                   )),
                                               Expanded(
                                                 flex: 6,
                                                 child: Text(
                                                   '${data['device_name3'] ?? 'No Data'}',
-                                                  style:
-                                                      tsOneTextTheme.bodySmall,
+                                                  style: tsOneTextTheme.bodySmall,
                                                 ),
                                               ),
                                             ],
@@ -763,22 +672,19 @@ class ConfirmReturnBackPilotView extends GetView {
                                                   flex: 6,
                                                   child: Text(
                                                     "iOS Version",
-                                                    style: tsOneTextTheme
-                                                        .bodySmall,
+                                                    style: tsOneTextTheme.bodySmall,
                                                   )),
                                               Expanded(
                                                   flex: 1,
                                                   child: Text(
                                                     ":",
-                                                    style: tsOneTextTheme
-                                                        .bodySmall,
+                                                    style: tsOneTextTheme.bodySmall,
                                                   )),
                                               Expanded(
                                                 flex: 6,
                                                 child: Text(
                                                   '${deviceData3['iosver'] ?? 'No Data'}',
-                                                  style:
-                                                      tsOneTextTheme.bodySmall,
+                                                  style: tsOneTextTheme.bodySmall,
                                                 ),
                                               ),
                                             ],
@@ -790,22 +696,19 @@ class ConfirmReturnBackPilotView extends GetView {
                                                   flex: 6,
                                                   child: Text(
                                                     "FlySmart Version",
-                                                    style: tsOneTextTheme
-                                                        .bodySmall,
+                                                    style: tsOneTextTheme.bodySmall,
                                                   )),
                                               Expanded(
                                                   flex: 1,
                                                   child: Text(
                                                     ":",
-                                                    style: tsOneTextTheme
-                                                        .bodySmall,
+                                                    style: tsOneTextTheme.bodySmall,
                                                   )),
                                               Expanded(
                                                 flex: 6,
                                                 child: Text(
                                                   '${deviceData3['flysmart'] ?? 'No Data'}',
-                                                  style:
-                                                      tsOneTextTheme.bodySmall,
+                                                  style: tsOneTextTheme.bodySmall,
                                                 ),
                                               ),
                                             ],
@@ -817,22 +720,19 @@ class ConfirmReturnBackPilotView extends GetView {
                                                   flex: 6,
                                                   child: Text(
                                                     "Docu Version",
-                                                    style: tsOneTextTheme
-                                                        .bodySmall,
+                                                    style: tsOneTextTheme.bodySmall,
                                                   )),
                                               Expanded(
                                                   flex: 1,
                                                   child: Text(
                                                     ":",
-                                                    style: tsOneTextTheme
-                                                        .bodySmall,
+                                                    style: tsOneTextTheme.bodySmall,
                                                   )),
                                               Expanded(
                                                 flex: 6,
                                                 child: Text(
                                                   '${deviceData3['docuversion'] ?? 'No Data'}',
-                                                  style:
-                                                      tsOneTextTheme.bodySmall,
+                                                  style: tsOneTextTheme.bodySmall,
                                                 ),
                                               ),
                                             ],
@@ -844,22 +744,19 @@ class ConfirmReturnBackPilotView extends GetView {
                                                   flex: 6,
                                                   child: Text(
                                                     "Lido Version",
-                                                    style: tsOneTextTheme
-                                                        .bodySmall,
+                                                    style: tsOneTextTheme.bodySmall,
                                                   )),
                                               Expanded(
                                                   flex: 1,
                                                   child: Text(
                                                     ":",
-                                                    style: tsOneTextTheme
-                                                        .bodySmall,
+                                                    style: tsOneTextTheme.bodySmall,
                                                   )),
                                               Expanded(
                                                 flex: 6,
                                                 child: Text(
                                                   '${deviceData3['lidoversion'] ?? 'No Data'}',
-                                                  style:
-                                                      tsOneTextTheme.bodySmall,
+                                                  style: tsOneTextTheme.bodySmall,
                                                 ),
                                               ),
                                             ],
@@ -871,22 +768,19 @@ class ConfirmReturnBackPilotView extends GetView {
                                                   flex: 6,
                                                   child: Text(
                                                     "HUB",
-                                                    style: tsOneTextTheme
-                                                        .bodySmall,
+                                                    style: tsOneTextTheme.bodySmall,
                                                   )),
                                               Expanded(
                                                   flex: 1,
                                                   child: Text(
                                                     ":",
-                                                    style: tsOneTextTheme
-                                                        .bodySmall,
+                                                    style: tsOneTextTheme.bodySmall,
                                                   )),
                                               Expanded(
                                                 flex: 6,
                                                 child: Text(
                                                   '${deviceData3['hub'] ?? 'No Data'}',
-                                                  style:
-                                                      tsOneTextTheme.bodySmall,
+                                                  style: tsOneTextTheme.bodySmall,
                                                 ),
                                               ),
                                             ],
@@ -897,22 +791,19 @@ class ConfirmReturnBackPilotView extends GetView {
                                                   flex: 6,
                                                   child: Text(
                                                     "Condition",
-                                                    style: tsOneTextTheme
-                                                        .bodySmall,
+                                                    style: tsOneTextTheme.bodySmall,
                                                   )),
                                               Expanded(
                                                   flex: 1,
                                                   child: Text(
                                                     ":",
-                                                    style: tsOneTextTheme
-                                                        .bodySmall,
+                                                    style: tsOneTextTheme.bodySmall,
                                                   )),
                                               Expanded(
                                                 flex: 6,
                                                 child: Text(
                                                   '${deviceData3['condition'] ?? 'No Data'}',
-                                                  style:
-                                                      tsOneTextTheme.bodySmall,
+                                                  style: tsOneTextTheme.bodySmall,
                                                 ),
                                               ),
                                             ],
@@ -940,8 +831,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                           // SizedBox(height: 7.0),
                                           SizedBox(height: 20.0),
                                           const Padding(
-                                            padding:
-                                                EdgeInsets.only(bottom: 16.0),
+                                            padding: EdgeInsets.only(bottom: 16.0),
                                             child: Row(
                                               children: <Widget>[
                                                 Expanded(
@@ -950,12 +840,10 @@ class ConfirmReturnBackPilotView extends GetView {
                                                   ),
                                                 ),
                                                 Padding(
-                                                  padding: EdgeInsets.symmetric(
-                                                      horizontal: 8.0),
+                                                  padding: EdgeInsets.symmetric(horizontal: 8.0),
                                                   child: Text(
                                                     'Please sign in the provided section',
-                                                    style: TextStyle(
-                                                        color: Colors.grey),
+                                                    style: TextStyle(color: Colors.grey),
                                                   ),
                                                 ),
                                                 Expanded(
@@ -970,8 +858,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                             alignment: Alignment.center,
                                             child: Text(
                                               "Signature",
-                                              style:
-                                                  tsOneTextTheme.headlineMedium,
+                                              style: tsOneTextTheme.headlineMedium,
                                             ),
                                           ),
                                           SizedBox(height: 15.0),
@@ -985,20 +872,13 @@ class ConfirmReturnBackPilotView extends GetView {
                                               decoration: BoxDecoration(
                                                 color: tsOneColorScheme.primary,
                                                 borderRadius: BorderRadius.only(
-                                                  topLeft:
-                                                      Radius.circular(25.0),
-                                                  topRight:
-                                                      Radius.circular(25.0),
+                                                  topLeft: Radius.circular(25.0),
+                                                  topRight: Radius.circular(25.0),
                                                 ),
                                               ),
                                               child: Align(
                                                 alignment: Alignment.center,
-                                                child: Text("Draw",
-                                                    style: TextStyle(
-                                                        color: tsOneColorScheme
-                                                            .secondary,
-                                                        fontWeight:
-                                                            FontWeight.w600)),
+                                                child: Text("Draw", style: TextStyle(color: tsOneColorScheme.secondary, fontWeight: FontWeight.w600)),
                                               ),
                                             ),
                                           ),
@@ -1007,21 +887,15 @@ class ConfirmReturnBackPilotView extends GetView {
                                               Container(
                                                 height: 480,
                                                 decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.only(
-                                                    topLeft:
-                                                        Radius.circular(10.0),
-                                                    topRight:
-                                                        Radius.circular(10.0),
-                                                    bottomLeft:
-                                                        Radius.circular(25.0),
-                                                    bottomRight:
-                                                        Radius.circular(25.0),
+                                                  borderRadius: BorderRadius.only(
+                                                    topLeft: Radius.circular(10.0),
+                                                    topRight: Radius.circular(10.0),
+                                                    bottomLeft: Radius.circular(25.0),
+                                                    bottomRight: Radius.circular(25.0),
                                                   ),
                                                   boxShadow: [
                                                     BoxShadow(
-                                                      color: Colors.grey
-                                                          .withOpacity(0.5),
+                                                      color: Colors.grey.withOpacity(0.5),
                                                       blurRadius: 5,
                                                       offset: Offset(0, 2),
                                                     ),
@@ -1031,16 +905,8 @@ class ConfirmReturnBackPilotView extends GetView {
                                                   key: signatureKey,
                                                   backgroundColor: Colors.white,
                                                   onDrawEnd: () async {
-                                                    final signatureImageData =
-                                                        await signatureKey
-                                                            .currentState!
-                                                            .toImage();
-                                                    final byteData =
-                                                        await signatureImageData
-                                                            .toByteData(
-                                                                format:
-                                                                    ImageByteFormat
-                                                                        .png);
+                                                    final signatureImageData = await signatureKey.currentState!.toImage();
+                                                    final byteData = await signatureImageData.toByteData(format: ImageByteFormat.png);
                                                     // if (byteData != null) {
                                                     //   setState(() {
                                                     //     widget.signatureImage = byteData.buffer.asUint8List();
@@ -1053,14 +919,12 @@ class ConfirmReturnBackPilotView extends GetView {
                                                 alignment: Alignment.topRight,
                                                 child: IconButton(
                                                   icon: const Icon(
-                                                    Icons
-                                                        .delete_outline_outlined,
+                                                    Icons.delete_outline_outlined,
                                                     size: 32,
                                                     color: TsOneColor.primary,
                                                   ),
                                                   onPressed: () {
-                                                    signatureKey.currentState
-                                                        ?.clear();
+                                                    signatureKey.currentState?.clear();
                                                   },
                                                 ),
                                               ),
@@ -1083,11 +947,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                                   );
                                                 },
                                               ),
-                                              Text(
-                                                  'I agree with all of the results',
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w300)),
+                                              Text('I agree with all of the results', style: TextStyle(fontWeight: FontWeight.w300)),
                                             ],
                                           ),
 
@@ -1130,89 +990,54 @@ class ConfirmReturnBackPilotView extends GetView {
                                             onPressed: () async {
                                               // final ImagePicker _picker = ImagePicker();
                                               // XFile? pickedFile = await _picker.pickImage(source: ImageSource.camera);
-                                              final signatureData =
-                                                  await signatureKey
-                                                      .currentState!
-                                                      .toImage();
+                                              final signatureData = await signatureKey.currentState!.toImage();
 
                                               if (!agree) {
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(
+                                                ScaffoldMessenger.of(context).showSnackBar(
                                                   SnackBar(
-                                                    content: const Text(
-                                                        "Please checklist consent"),
-                                                    duration: const Duration(
-                                                        milliseconds: 1000),
+                                                    content: const Text("Please checklist consent"),
+                                                    duration: const Duration(milliseconds: 1000),
                                                     action: SnackBarAction(
                                                       label: 'Close',
                                                       onPressed: () {
-                                                        ScaffoldMessenger.of(
-                                                                context)
-                                                            .hideCurrentSnackBar();
+                                                        ScaffoldMessenger.of(context).hideCurrentSnackBar();
                                                       },
                                                     ),
                                                   ),
                                                 );
-                                              } else if (signatureKey
-                                                          .currentState
-                                                          ?.clear ==
-                                                      null ||
-                                                  signatureData == null) {
+                                              } else if (signatureKey.currentState?.clear == null || signatureData == null) {
                                                 //widget._signaturePadKey.currentState!.clear();
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(
+                                                ScaffoldMessenger.of(context).showSnackBar(
                                                   SnackBar(
-                                                    content: const Text(
-                                                        "Please provide signature"),
-                                                    duration: const Duration(
-                                                        milliseconds: 1000),
+                                                    content: const Text("Please provide signature"),
+                                                    duration: const Duration(milliseconds: 1000),
                                                     action: SnackBarAction(
                                                       label: 'Close',
                                                       onPressed: () {
-                                                        ScaffoldMessenger.of(
-                                                                context)
-                                                            .hideCurrentSnackBar();
+                                                        ScaffoldMessenger.of(context).hideCurrentSnackBar();
                                                       },
                                                     ),
                                                   ),
                                                 );
                                               } else {
-                                                final ImagePicker _picker =
-                                                    ImagePicker();
-                                                XFile? pickedFile =
-                                                    await _picker.pickImage(
-                                                        source:
-                                                            ImageSource.camera);
+                                                final ImagePicker _picker = ImagePicker();
+                                                XFile? pickedFile = await _picker.pickImage(source: ImageSource.camera);
                                                 if (pickedFile != null) {
                                                   showDialog(
                                                     context: context,
                                                     barrierDismissible: false,
-                                                    builder:
-                                                        (BuildContext context) {
-                                                      return FutureBuilder<
-                                                          void>(
-                                                        future:
-                                                            _uploadImageAndShowDialog(
-                                                                pickedFile,
-                                                                context),
-                                                        builder: (context,
-                                                            snapshot) {
-                                                          if (snapshot
-                                                                  .connectionState ==
-                                                              ConnectionState
-                                                                  .waiting) {
+                                                    builder: (BuildContext context) {
+                                                      return FutureBuilder<void>(
+                                                        future: _uploadImageAndShowDialog(pickedFile, context),
+                                                        builder: (context, snapshot) {
+                                                          if (snapshot.connectionState == ConnectionState.waiting) {
                                                             return AlertDialog(
                                                               content: Column(
-                                                                mainAxisSize:
-                                                                    MainAxisSize
-                                                                        .min,
+                                                                mainAxisSize: MainAxisSize.min,
                                                                 children: [
                                                                   CircularProgressIndicator(),
-                                                                  SizedBox(
-                                                                      height:
-                                                                          10.0),
-                                                                  Text(
-                                                                      "This might take a second..."),
+                                                                  SizedBox(height: 10.0),
+                                                                  Text("This might take a second..."),
                                                                 ],
                                                               ),
                                                             );
@@ -1229,19 +1054,13 @@ class ConfirmReturnBackPilotView extends GetView {
                                               }
                                             },
                                             style: ElevatedButton.styleFrom(
-                                              backgroundColor:
-                                                  TsOneColor.greenColor,
-                                              minimumSize: const Size(
-                                                  double.infinity, 50),
+                                              backgroundColor: TsOneColor.greenColor,
+                                              minimumSize: const Size(double.infinity, 50),
                                               shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(4),
+                                                borderRadius: BorderRadius.circular(4),
                                               ),
                                             ),
-                                            child: const Text(
-                                                'Take Picture To Approve',
-                                                style: TextStyle(
-                                                    color: Colors.white)),
+                                            child: const Text('Take Picture To Approve', style: TextStyle(color: Colors.white)),
                                           ),
                                         ],
                                       ),
@@ -1255,16 +1074,14 @@ class ConfirmReturnBackPilotView extends GetView {
                       );
                     }
 
-                    final deviceData =
-                        deviceSnapshot.data!.data() as Map<String, dynamic>;
+                    final deviceData = deviceSnapshot.data!.data() as Map<String, dynamic>;
 
                     return Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Container(
-                            margin: EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 10),
+                            margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -1277,9 +1094,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                 SizedBox(height: 10.0),
                                 Align(
                                   alignment: Alignment.centerRight,
-                                  child: Text(
-                                      _formatTimestamp(data['timestamp']),
-                                      style: tsOneTextTheme.labelSmall),
+                                  child: Text(_formatTimestamp(data['timestamp']), style: tsOneTextTheme.labelSmall),
                                 ),
                                 SizedBox(height: 10.0),
                                 Row(
@@ -1361,8 +1176,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                         ),
                                       ),
                                       Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 8.0),
+                                        padding: EdgeInsets.symmetric(horizontal: 8.0),
                                         child: Text(
                                           'Device Details',
                                           style: TextStyle(color: Colors.grey),
@@ -1570,8 +1384,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                         ),
                                       ),
                                       Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 8.0),
+                                        padding: EdgeInsets.symmetric(horizontal: 8.0),
                                         child: Text(
                                           'Please sign in the provided section',
                                           style: TextStyle(color: Colors.grey),
@@ -1609,10 +1422,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                     ),
                                     child: Align(
                                       alignment: Alignment.center,
-                                      child: Text("Draw",
-                                          style: TextStyle(
-                                              color: tsOneColorScheme.secondary,
-                                              fontWeight: FontWeight.w600)),
+                                      child: Text("Draw", style: TextStyle(color: tsOneColorScheme.secondary, fontWeight: FontWeight.w600)),
                                     ),
                                   ),
                                 ),
@@ -1639,14 +1449,8 @@ class ConfirmReturnBackPilotView extends GetView {
                                         key: signatureKey,
                                         backgroundColor: Colors.white,
                                         onDrawEnd: () async {
-                                          final signatureImageData =
-                                              await signatureKey.currentState!
-                                                  .toImage();
-                                          final byteData =
-                                              await signatureImageData
-                                                  .toByteData(
-                                                      format:
-                                                          ImageByteFormat.png);
+                                          final signatureImageData = await signatureKey.currentState!.toImage();
+                                          final byteData = await signatureImageData.toByteData(format: ImageByteFormat.png);
                                           // if (byteData != null) {
                                           //   setState(() {
                                           //     widget.signatureImage = byteData.buffer.asUint8List();
@@ -1687,9 +1491,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                         );
                                       },
                                     ),
-                                    Text('I agree with all of the results',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w300)),
+                                    Text('I agree with all of the results', style: TextStyle(fontWeight: FontWeight.w300)),
                                   ],
                                 ),
 
@@ -1731,73 +1533,54 @@ class ConfirmReturnBackPilotView extends GetView {
                                   onPressed: () async {
                                     // final ImagePicker _picker = ImagePicker();
                                     // XFile? pickedFile = await _picker.pickImage(source: ImageSource.camera);
-                                    final signatureData = await signatureKey
-                                        .currentState!
-                                        .toImage();
+                                    final signatureData = await signatureKey.currentState!.toImage();
 
                                     if (!agree) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
+                                      ScaffoldMessenger.of(context).showSnackBar(
                                         SnackBar(
-                                          content: const Text(
-                                              "Please checklist consent"),
-                                          duration: const Duration(
-                                              milliseconds: 1000),
+                                          content: const Text("Please checklist consent"),
+                                          duration: const Duration(milliseconds: 1000),
                                           action: SnackBarAction(
                                             label: 'Close',
                                             onPressed: () {
-                                              ScaffoldMessenger.of(context)
-                                                  .hideCurrentSnackBar();
+                                              ScaffoldMessenger.of(context).hideCurrentSnackBar();
                                             },
                                           ),
                                         ),
                                       );
-                                    } else if (signatureKey
-                                                .currentState?.clear ==
-                                            null ||
-                                        signatureData == null) {
+                                    } else if (signatureKey.currentState?.clear == null || signatureData == null) {
                                       //widget._signaturePadKey.currentState!.clear();
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
+                                      ScaffoldMessenger.of(context).showSnackBar(
                                         SnackBar(
-                                          content: const Text(
-                                              "Please provide signature"),
-                                          duration: const Duration(
-                                              milliseconds: 1000),
+                                          content: const Text("Please provide signature"),
+                                          duration: const Duration(milliseconds: 1000),
                                           action: SnackBarAction(
                                             label: 'Close',
                                             onPressed: () {
-                                              ScaffoldMessenger.of(context)
-                                                  .hideCurrentSnackBar();
+                                              ScaffoldMessenger.of(context).hideCurrentSnackBar();
                                             },
                                           ),
                                         ),
                                       );
                                     } else {
                                       final ImagePicker _picker = ImagePicker();
-                                      XFile? pickedFile =
-                                          await _picker.pickImage(
-                                              source: ImageSource.camera);
+                                      XFile? pickedFile = await _picker.pickImage(source: ImageSource.camera);
                                       if (pickedFile != null) {
                                         showDialog(
                                           context: context,
                                           barrierDismissible: false,
                                           builder: (BuildContext context) {
                                             return FutureBuilder<void>(
-                                              future: _uploadImageAndShowDialog(
-                                                  pickedFile, context),
+                                              future: _uploadImageAndShowDialog(pickedFile, context),
                                               builder: (context, snapshot) {
-                                                if (snapshot.connectionState ==
-                                                    ConnectionState.waiting) {
+                                                if (snapshot.connectionState == ConnectionState.waiting) {
                                                   return AlertDialog(
                                                     content: Column(
-                                                      mainAxisSize:
-                                                          MainAxisSize.min,
+                                                      mainAxisSize: MainAxisSize.min,
                                                       children: [
                                                         CircularProgressIndicator(),
                                                         SizedBox(height: 10.0),
-                                                        Text(
-                                                            "This might take a second..."),
+                                                        Text("This might take a second..."),
                                                       ],
                                                     ),
                                                   );
@@ -1815,14 +1598,12 @@ class ConfirmReturnBackPilotView extends GetView {
                                   },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: TsOneColor.greenColor,
-                                    minimumSize:
-                                        const Size(double.infinity, 50),
+                                    minimumSize: const Size(double.infinity, 50),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(4),
                                     ),
                                   ),
-                                  child: const Text('Take Picture To Approve',
-                                      style: TextStyle(color: Colors.white)),
+                                  child: const Text('Take Picture To Approve', style: TextStyle(color: Colors.white)),
                                 ),
                                 SizedBox(height: 20.0),
                               ],

@@ -13,7 +13,10 @@ class FeedbackDetailPage extends StatelessWidget {
         title: Text('Feedback Detail'),
       ),
       body: FutureBuilder<DocumentSnapshot>(
-        future: FirebaseFirestore.instance.collection('feedback-device').doc(feedbackId).get(),
+        future: FirebaseFirestore.instance
+            .collection('feedback-device')
+            .doc(feedbackId)
+            .get(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());

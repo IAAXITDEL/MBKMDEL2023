@@ -41,7 +41,10 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
   }
 
   List<Device> getMatchingDevices(String input) {
-    return devices.where((device) => device.deviceno.toLowerCase().contains(input.toLowerCase())).toList();
+    return devices
+        .where((device) =>
+            device.deviceno.toLowerCase().contains(input.toLowerCase()))
+        .toList();
   }
 
   //QuickAlert Success
@@ -92,7 +95,8 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                 Expanded(
                   flex: 5,
                   child: TextButton(
-                    child: Text('No', style: TextStyle(color: TsOneColor.secondaryContainer)),
+                    child: Text('No',
+                        style: TextStyle(color: TsOneColor.secondaryContainer)),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
@@ -108,7 +112,8 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                         borderRadius: BorderRadius.circular(20.0),
                       ),
                     ),
-                    child: Text('Yes', style: TextStyle(color: TsOneColor.onPrimary)),
+                    child: Text('Yes',
+                        style: TextStyle(color: TsOneColor.onPrimary)),
                     onPressed: () {
                       if (!deviceInUse) _saveBooking();
                       if (!deviceInUse) _showQuickAlert(context);
@@ -143,7 +148,8 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
   }
 
   Future<Widget> getUserPhoto(String userUid) async {
-    final userSnapshot = await FirebaseFirestore.instance.collection("users").doc(userUid).get();
+    final userSnapshot =
+        await FirebaseFirestore.instance.collection("users").doc(userUid).get();
 
     if (userSnapshot.exists) {
       final userData = userSnapshot.data() as Map<String, dynamic>;
@@ -164,7 +170,8 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
   }
 
   Future<String> getUserName(String userUid) async {
-    final userSnapshot = await FirebaseFirestore.instance.collection("users").doc(userUid).get();
+    final userSnapshot =
+        await FirebaseFirestore.instance.collection("users").doc(userUid).get();
 
     if (userSnapshot.exists) {
       final userData = userSnapshot.data() as Map<String, dynamic>;
@@ -179,7 +186,8 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
 
   @override
   Widget build(BuildContext context) {
-    bool isDeviceNotFound = deviceNoController.text.isNotEmpty && getMatchingDevices(deviceNoController.text).isEmpty;
+    bool isDeviceNotFound = deviceNoController.text.isNotEmpty &&
+        getMatchingDevices(deviceNoController.text).isEmpty;
 
     return Scaffold(
       appBar: AppBar(
@@ -211,7 +219,8 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                         });
                       },
                       decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                        contentPadding:
+                            const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                         labelText: 'Device No',
                         labelStyle: tsOneTextTheme.labelMedium,
                         border: OutlineInputBorder(),
@@ -231,7 +240,8 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                       if (qrCode != '-1') {
                         setState(() {
                           deviceNoController.text = qrCode;
-                          selectedDevice = getMatchingDevices(qrCode).firstOrNull;
+                          selectedDevice =
+                              getMatchingDevices(qrCode).firstOrNull;
                         });
                       }
                     },
@@ -313,7 +323,8 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                         ),
                         Row(
                           children: [
-                            Expanded(flex: 7, child: Text("Lido mPilot Version")),
+                            Expanded(
+                                flex: 7, child: Text("Lido mPilot Version")),
                             Expanded(flex: 2, child: Text(":")),
                             Expanded(
                               flex: 6,

@@ -250,11 +250,7 @@ class PilotUnReturnToOtherCrewView extends GetView {
                                 ],
                               ),
                             ),
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text("Device 1", style: tsOneTextTheme.displaySmall),
-                            ),
-                            SizedBox(height: 7),
+                            SizedBox(height: 5.0),
                             Row(
                               children: [
                                 Expanded(

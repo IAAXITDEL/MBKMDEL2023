@@ -252,11 +252,12 @@ class PilotUnReturnDeviceView extends GetView {
                                 ],
                               ),
                             ),
+                            SizedBox(height: 15.0),
                             Align(
                               alignment: Alignment.centerLeft,
                               child: Text("Device 1", style: tsOneTextTheme.displaySmall),
                             ),
-                            SizedBox(height: 7.0),
+                            SizedBox(height: 5.0),
                             Row(
                               children: [
                                 Expanded(

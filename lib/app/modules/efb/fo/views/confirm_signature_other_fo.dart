@@ -21,6 +21,9 @@ class ConfirmSignatureReturnOtherFOView extends StatefulWidget {
   final String deviceName2;
   final String deviceName3;
   final String deviceId;
+  final GlobalKey<SfSignaturePadState> _signaturePadKey =
+      GlobalKey<SfSignaturePadState>();
+  Uint8List? signatureImage;
 
   ConfirmSignatureReturnOtherFOView({
     required this.deviceName2,
@@ -48,6 +51,7 @@ class _ConfirmSignatureReturnOtherFOViewState
   final GlobalKey<SfSignaturePadState> _signaturePadKey =
       GlobalKey<SfSignaturePadState>();
   bool isSignatureEmpty = true;
+  bool agree = false;
 
   @override
   void initState() {
@@ -95,8 +99,9 @@ class _ConfirmSignatureReturnOtherFOViewState
       context: context,
       type: QuickAlertType.success,
       text: 'You have successfully added a device',
-    );
-    Get.offAllNamed(Routes.NAVOCC);
+    ).then((value) {
+      Get.offAllNamed(Routes.NAVOCC);
+    });
   }
 
   Future<void> _showConfirmationDialog() async {
@@ -106,150 +111,179 @@ class _ConfirmSignatureReturnOtherFOViewState
           false, // Dialog cannot be dismissed by tapping outside
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Confirm Return'),
+          title: Text(
+            'Confirmation Return',
+            style: tsOneTextTheme.headlineLarge,
+          ),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
                 Text(
-                    'Are you sure you want to confirm the return of this device?'),
+                    'Are you sure you want to confirm the return of this device and retain this signature?'),
               ],
             ),
           ),
           actions: <Widget>[
-            TextButton(
-              child: Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-              },
-            ),
-            TextButton(
-              child: Text('Confirm'),
-              onPressed: () async {
-                // Show a circular button with "Please Wait" message
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      content: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          CircularProgressIndicator(),
-                          SizedBox(height: 16.0),
-                          Text('Please Wait'),
-                        ],
-                      ),
-                    );
-                  },
-                );
-
-                // Delay execution for demonstration purposes (you can remove this in your actual code)
-                await Future.delayed(Duration(seconds: 2));
-
-                final remarks = remarksController.text;
-                // Check if the signature is empty
-
-                // Upload the signature to Firebase Storage
-                final image = await _signaturePadKey.currentState
-                    ?.toImage(pixelRatio: 3.0);
-                final ByteData? byteData =
-                    await image?.toByteData(format: ImageByteFormat.png);
-                final Uint8List? uint8List = byteData?.buffer.asUint8List();
-                final Reference storageReference = FirebaseStorage.instance
-                    .ref()
-                    .child('signatures/${DateTime.now()}.png');
-                final UploadTask uploadTask =
-                    storageReference.putData(uint8List!);
-
-                // Upload the selected image to Firebase Storage (if an image is selected)
-                String imageUrl = '';
-                if (selectedImage != null) {
-                  final storageRef = FirebaseStorage.instance
-                      .ref()
-                      .child('images/${widget.deviceId}.jpg');
-                  await storageRef.putFile(selectedImage!);
-                  imageUrl = await storageRef.getDownloadURL();
-                }
-
-                if (_signaturePadKey == null) {
-                  // Show alert if the signature is empty
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: Text('Signature Required'),
-                        content: Text('Please provide your signature.'),
-                        actions: <Widget>[
-                          TextButton(
-                            child: Text('OK'),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                        ],
-                      );
+            Row(
+              children: [
+                Expanded(
+                  flex: 5,
+                  child: TextButton(
+                    child: Text('No',
+                        style: TextStyle(color: TsOneColor.secondaryContainer)),
+                    onPressed: () {
+                      Navigator.of(context).pop();
                     },
-                  );
-                  return; // Do not proceed with confirmation
-                }
-                await uploadTask.whenComplete(() async {
-                  String signatureUrl = await storageReference.getDownloadURL();
-                  // Update Firestore
-                  await FirebaseFirestore.instance
-                      .collection('pilot-device-1')
-                      .doc(widget.deviceId)
-                      .update({
-                    'statusDevice': 'handover-to-other-crew',
-                    'remarks': remarks,
-                    'prove_image_url': imageUrl,
-                    'signature_url_other_crew': signatureUrl,
-                  });
-                });
+                  ),
+                ),
+                Spacer(flex: 1),
+                Expanded(
+                  flex: 5,
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      backgroundColor: TsOneColor.greenColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                    ),
+                    child: Text('Yes',
+                        style: TextStyle(color: TsOneColor.onPrimary)),
+                    onPressed: () async {
+                      // Show a circular button with "Please Wait" message
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            content: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                CircularProgressIndicator(),
+                                SizedBox(height: 16.0),
+                                Text('Please Wait'),
+                              ],
+                            ),
+                          );
+                        },
+                      );
 
-                User? user = _auth.currentUser;
-                QuerySnapshot userQuery = await _firestore
-                    .collection('users')
-                    .where('EMAIL', isEqualTo: user?.email)
-                    .get();
-                String userUid = userQuery.docs.first.id;
+                      // Delay execution for demonstration purposes (you can remove this in your actual code)
+                      await Future.delayed(Duration(seconds: 2));
 
-                String hubField =
-                    await getHubFromDeviceName(deviceName2, deviceName3) ??
-                        "Unknown Hub";
+                      final remarks = remarksController.text;
+                      // Check if the signature is empty
 
-                // Membuat referensi koleksi 'pilot-device-1' tanpa menambahkan dokumen
-                CollectionReference pilotDeviceCollection =
-                    _firestore.collection('pilot-device-1');
+                      // Upload the signature to Firebase Storage
+                      final image = await _signaturePadKey.currentState
+                          ?.toImage(pixelRatio: 3.0);
+                      final ByteData? byteData =
+                          await image?.toByteData(format: ImageByteFormat.png);
+                      final Uint8List? uint8List =
+                          byteData?.buffer.asUint8List();
+                      final Reference storageReference = FirebaseStorage
+                          .instance
+                          .ref()
+                          .child('signatures/${DateTime.now()}.png');
+                      final UploadTask uploadTask =
+                          storageReference.putData(uint8List!);
 
-                // Mendapatkan ID dokumen yang baru akan dibuat
-                String newDeviceId = pilotDeviceCollection.doc().id;
+                      // Upload the selected image to Firebase Storage (if an image is selected)
+                      String imageUrl = '';
+                      if (selectedImage != null) {
+                        final storageRef = FirebaseStorage.instance
+                            .ref()
+                            .child('images/${widget.deviceId}.jpg');
+                        await storageRef.putFile(selectedImage!);
+                        imageUrl = await storageRef.getDownloadURL();
+                      }
 
-                await pilotDeviceCollection.doc(newDeviceId).set({
-                  'user_uid': userUid,
-                  'device_uid': '-',
-                  'device_name': '-',
-                  'document_id': newDeviceId, // Tambahkan document_id di sini
-                  'device_uid2': deviceId2,
-                  'device_name2': deviceName2,
-                  'device_uid3': deviceId3,
-                  'device_name3': deviceName3,
-                  'occ-on-duty': OccOnDuty,
-                  'handover-from': '-',
-                  'statusDevice': 'in-use-pilot',
-                  'timestamp': FieldValue.serverTimestamp(),
-                  'remarks': '',
-                  'prove_image_url': '',
-                  'handover-to-crew': '-',
-                  'occ-accepted-device': '-',
-                  'field_hub': hubField, // Add 'hub' field
-                });
+                      if (_signaturePadKey == null) {
+                        // Show alert if the signature is empty
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text(
+                                'Signature Required',
+                                style: tsOneTextTheme.headlineLarge,
+                              ),
+                              content: Text('Please provide your signature.'),
+                              actions: <Widget>[
+                                TextButton(
+                                  child: Text('OK'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                        return; // Do not proceed with confirmation
+                      }
+                      await uploadTask.whenComplete(() async {
+                        String signatureUrl =
+                            await storageReference.getDownloadURL();
+                        // Update Firestore
+                        await FirebaseFirestore.instance
+                            .collection('pilot-device-1')
+                            .doc(widget.deviceId)
+                            .update({
+                          'statusDevice': 'handover-to-other-crew',
+                          'remarks': remarks,
+                          'prove_image_url': imageUrl,
+                          'signature_url_other_crew': signatureUrl,
+                        });
+                      });
 
-                // Call the _showQuickAlert function
-                _showQuickAlert(context);
+                      User? user = _auth.currentUser;
+                      QuerySnapshot userQuery = await _firestore
+                          .collection('users')
+                          .where('EMAIL', isEqualTo: user?.email)
+                          .get();
+                      String userUid = userQuery.docs.first.id;
 
-                // Return to the previous page
+                      String hubField = await getHubFromDeviceName(
+                              deviceName2, deviceName3) ??
+                          "Unknown Hub";
 
-                print(newDeviceId);
-              },
+                      // Membuat referensi koleksi 'pilot-device-1' tanpa menambahkan dokumen
+                      CollectionReference pilotDeviceCollection =
+                          _firestore.collection('pilot-device-1');
+
+                      // Mendapatkan ID dokumen yang baru akan dibuat
+                      String newDeviceId = pilotDeviceCollection.doc().id;
+
+                      await pilotDeviceCollection.doc(newDeviceId).set({
+                        'user_uid': userUid,
+                        'device_uid': '-',
+                        'device_name': '-',
+                        'document_id':
+                            newDeviceId, // Tambahkan document_id di sini
+                        'device_uid2': deviceId2,
+                        'device_name2': deviceName2,
+                        'device_uid3': deviceId3,
+                        'device_name3': deviceName3,
+                        'occ-on-duty': OccOnDuty,
+                        'handover-from': '-',
+                        'statusDevice': 'in-use-pilot',
+                        'timestamp': FieldValue.serverTimestamp(),
+                        'remarks': '',
+                        'prove_image_url': '',
+                        'handover-to-crew': '-',
+                        'occ-accepted-device': '-',
+                        'field_hub': hubField, // Add 'hub' field
+                      });
+
+                      // Call the _showQuickAlert function
+                      _showQuickAlert(context);
+
+                      // Return to the previous page
+
+                      print(newDeviceId);
+                    },
+                  ),
+                ),
+              ],
             ),
           ],
         );
@@ -257,15 +291,44 @@ class _ConfirmSignatureReturnOtherFOViewState
     );
   }
 
+  // Widget _buildSelectedImage() {
+  //   if (selectedImage == null) {
+  //     return Container();
+  //   } else {
+  //     return Image.file(
+  //       selectedImage!,
+  //       width: 330,
+  //       height: 300,
+  //       fit: BoxFit.cover,
+  //     );
+  //   }
+  // }
+
   Widget _buildSelectedImage() {
     if (selectedImage == null) {
       return Container();
     } else {
-      return Image.file(
-        selectedImage!,
-        width: 150,
-        height: 150,
-        fit: BoxFit.cover,
+      return Container(
+        width: 330,
+        height: 300,
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: Colors.green,
+            width: 1,
+            style: BorderStyle.solid,
+          ),
+        ),
+        child: Expanded(
+          child: Padding(
+            padding: EdgeInsets.all(10),
+            child: Image.file(
+              selectedImage!,
+              width: 330,
+              height: 300,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
       );
     }
   }
@@ -274,12 +337,16 @@ class _ConfirmSignatureReturnOtherFOViewState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Confirmation'),
+        backgroundColor: Colors.white,
+        centerTitle: true,
+        title: Text(
+          'Confirmation',
+          style: tsOneTextTheme.headlineLarge,
+        ),
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding:
-              EdgeInsets.symmetric(horizontal: 16.0), // Adjust the padding here
+          padding: EdgeInsets.symmetric(horizontal: 20.0),
           child: FutureBuilder<DocumentSnapshot>(
             future: FirebaseFirestore.instance
                 .collection("pilot-device-1")
@@ -401,54 +468,53 @@ class _ConfirmSignatureReturnOtherFOViewState
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    SizedBox(height: 20.0),
+                                    SizedBox(height: 10.0),
                                     Align(
-                                      alignment: Alignment.centerLeft,
+                                      alignment: Alignment.center,
                                       child: Text(
-                                        "PROOF",
-                                        style: tsOneTextTheme.titleLarge,
+                                        "Report Any Damage",
+                                        style: tsOneTextTheme.headlineMedium,
                                       ),
                                     ),
-                                    Text('If something doesn'
-                                        't match, please inform us!'),
+                                    //Text('If something doesn' 't match, please inform us!'),
 
-                                    SizedBox(height: 20.0),
-
+                                    SizedBox(height: 10.0),
+                                    Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text("Remarks",
+                                          style: tsOneTextTheme.bodyMedium),
+                                    ),
+                                    SizedBox(height: 5.0),
+                                    // TextField(
+                                    //   controller: remarksController,
+                                    //   decoration: InputDecoration(
+                                    //     labelText: 'Remarks',
+                                    //     hintText: 'Enter your remarks here',
+                                    //     border: OutlineInputBorder(
+                                    //       borderSide: const BorderSide(color: Colors.green),
+                                    //     ),
+                                    //     contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 15), // Adjust vertical padding
+                                    //   ),
+                                    //   maxLines: null, // Allows multiple lines of text
+                                    // ),
                                     TextField(
                                       controller: remarksController,
                                       decoration: InputDecoration(
-                                        labelText: 'Remarks',
-                                        border:
-                                            OutlineInputBorder(), // Add a border
-                                        hintText:
-                                            'Enter your remarks here', // Optional hint text
-                                        contentPadding: EdgeInsets.symmetric(
-                                            vertical: 20,
-                                            horizontal:
-                                                12), // Adjust vertical padding
-                                      ),
-                                      maxLines:
-                                          null, // Allows multiple lines of text
-                                    ),
-
-                                    SizedBox(height: 20.0),
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        "PICK AN IMAGE",
-                                        style: tsOneTextTheme.titleLarge,
+                                        border: OutlineInputBorder(),
+                                        hintText: 'Enter your remarks',
                                       ),
                                     ),
-                                    Text('If something doesn'
-                                        't match, please take pictures of the damage!'),
-                                    SizedBox(height: 5.0),
-
-                                    // Button to open the image picker
-                                    // Button to open the image picker
+                                    SizedBox(height: 10.0),
                                     ElevatedButton(
                                       onPressed: _pickImage,
                                       style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.white,
+                                        backgroundColor:
+                                            tsOneColorScheme.secondaryContainer,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                          //side: BorderSide(color: TsOneColor.onSecondary, width: 1),
+                                        ),
                                         minimumSize:
                                             const Size(double.infinity, 50),
                                       ),
@@ -457,69 +523,221 @@ class _ConfirmSignatureReturnOtherFOViewState
                                             MainAxisAlignment.center,
                                         children: [
                                           Icon(
-                                            Icons
-                                                .camera_alt, // Use the camera icon
-                                            color: Colors
-                                                .red, // Set the icon color
+                                            Icons.camera_alt,
+                                            color: TsOneColor.secondary,
+                                            size: 28,
                                           ),
                                           SizedBox(
-                                              width:
-                                                  8), // Add some space between the icon and text
-                                          Text(
-                                            'Camera',
-                                            style: TextStyle(color: Colors.red),
+                                            width: 10,
                                           ),
+                                          Text("Take a photo of the damage",
+                                              style: TextStyle(
+                                                  color: Colors.white))
                                         ],
                                       ),
                                     ),
 
-                                    SizedBox(height: 7.0),
+                                    SizedBox(height: 5.0),
+                                    // ElevatedButton(
+                                    //   onPressed: _pickImage,
+                                    //   style: ElevatedButton.styleFrom(
+                                    //     backgroundColor: tsOneColorScheme.primary,
+                                    //     shape: RoundedRectangleBorder(
+                                    //       borderRadius: BorderRadius.circular(8.0),
+                                    //       //side: BorderSide(color: TsOneColor.onSecondary, width: 1),
+                                    //     ),
+                                    //     //minimumSize: const Size(double.infinity, 50),
+                                    //   ),
+                                    //   child: Row(
+                                    //     mainAxisAlignment: MainAxisAlignment.center,
+                                    //     children: [
+                                    //       Icon(
+                                    //         Icons.camera_alt,
+                                    //         color: TsOneColor.secondary,
+                                    //         size: 28,
+                                    //       ),
+                                    //       SizedBox(width: 8),
+                                    //       Text(
+                                    //         'Camera',
+                                    //         style: TextStyle(color: TsOneColor.secondary),
+                                    //       ),
+                                    //     ],
+                                    //   ),
+                                    // ),
+                                    SizedBox(height: 10.0),
+
                                     // Display the selected image
                                     _buildSelectedImage(),
                                     // Add the SignaturePad widget
                                     SizedBox(height: 20.0),
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        "SIGNATURE",
-                                        style: tsOneTextTheme.titleLarge,
-                                      ),
-                                    ),
-                                    SizedBox(height: 5.0),
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(
-                                            10.0), // Menambahkan lengkungan pada ujung box
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.grey.withOpacity(0.5),
-                                            spreadRadius: 5,
-                                            blurRadius: 8,
-                                            offset: Offset(0,
-                                                3), // Mengatur offset bayangan
+                                    const Padding(
+                                      padding: EdgeInsets.only(bottom: 16.0),
+                                      child: Row(
+                                        children: <Widget>[
+                                          Expanded(
+                                            child: Divider(
+                                              color: Colors.grey,
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 8.0),
+                                            child: Text(
+                                              'Please sign in the provided section',
+                                              style:
+                                                  TextStyle(color: Colors.grey),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: Divider(
+                                              color: Colors.grey,
+                                            ),
                                           ),
                                         ],
                                       ),
-                                      child: SfSignaturePad(
-                                        key: _signaturePadKey,
-                                        backgroundColor: Colors.white,
+                                    ),
+                                    Align(
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        "Signature",
+                                        style: tsOneTextTheme.headlineMedium,
                                       ),
                                     ),
+                                    SizedBox(height: 15.0),
 
-                                    SizedBox(height: 10.0),
-
-                                    // Button to clear the signature
-                                    ElevatedButton(
-                                      onPressed: _clearSignature,
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: TsOneColor.primary,
-                                        minimumSize:
-                                            const Size(double.infinity, 50),
+                                    ConstrainedBox(
+                                      constraints: BoxConstraints(
+                                        minHeight: 40,
+                                        minWidth: 400,
                                       ),
-                                      child: const Text('Clear Signature',
-                                          style:
-                                              TextStyle(color: Colors.white)),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: tsOneColorScheme.primary,
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(25.0),
+                                            topRight: Radius.circular(25.0),
+                                          ),
+                                        ),
+                                        child: Align(
+                                          alignment: Alignment.center,
+                                          child: Text("Draw",
+                                              style: TextStyle(
+                                                  color: tsOneColorScheme
+                                                      .secondary,
+                                                  fontWeight: FontWeight.w600)),
+                                        ),
+                                      ),
                                     ),
+                                    Stack(
+                                      children: [
+                                        Container(
+                                          height: 480,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(10.0),
+                                              topRight: Radius.circular(10.0),
+                                              bottomLeft: Radius.circular(25.0),
+                                              bottomRight:
+                                                  Radius.circular(25.0),
+                                            ),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.grey
+                                                    .withOpacity(0.5),
+                                                blurRadius: 5,
+                                                offset: Offset(0, 2),
+                                              ),
+                                            ],
+                                          ),
+                                          child: SfSignaturePad(
+                                            key: _signaturePadKey,
+                                            backgroundColor: Colors.white,
+                                            onDrawEnd: () async {
+                                              final signatureImageData =
+                                                  await _signaturePadKey
+                                                      .currentState!
+                                                      .toImage();
+                                              final byteData =
+                                                  await signatureImageData
+                                                      .toByteData(
+                                                          format:
+                                                              ImageByteFormat
+                                                                  .png);
+                                              // if (byteData != null) {
+                                              //   setState(() {
+                                              //     widget.signatureImage = byteData.buffer.asUint8List();
+                                              //   });
+                                              // }
+                                            },
+                                          ),
+                                        ),
+                                        Container(
+                                          alignment: Alignment.topRight,
+                                          child: IconButton(
+                                            icon: const Icon(
+                                              Icons.delete_outline_outlined,
+                                              size: 32,
+                                              color: TsOneColor.primary,
+                                            ),
+                                            onPressed: () {
+                                              _clearSignature();
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    Row(
+                                      children: [
+                                        StatefulBuilder(
+                                          builder: (context, setState) {
+                                            return Checkbox(
+                                              value: agree,
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  agree = value!;
+                                                });
+                                              },
+                                            );
+                                          },
+                                        ),
+                                        Text('I agree with all of the results',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w300)),
+                                      ],
+                                    ),
+
+                                    // Container(
+                                    //   decoration: BoxDecoration(
+                                    //     borderRadius: BorderRadius.circular(10.0), // Menambahkan lengkungan pada ujung box
+                                    //     boxShadow: [
+                                    //       BoxShadow(
+                                    //         color: Colors.grey.withOpacity(0.5),
+                                    //         spreadRadius: 5,
+                                    //         blurRadius: 8,
+                                    //         offset: Offset(0, 3), // Mengatur offset bayangan
+                                    //       ),
+                                    //     ],
+                                    //   ),
+                                    //   child: SfSignaturePad(
+                                    //     key: _signaturePadKey,
+                                    //     backgroundColor: Colors.white,
+                                    //   ),
+                                    // ),
+
+                                    // SizedBox(height: 10.0),
+
+                                    // // Button to clear the signature
+                                    // ElevatedButton(
+                                    //   onPressed: _clearSignature,
+                                    //   style: ElevatedButton.styleFrom(
+                                    //     backgroundColor: TsOneColor.primary,
+                                    //     minimumSize: const Size(double.infinity, 50),
+                                    //   ),
+                                    //   child: const Text('Clear Signature', style: TextStyle(color: Colors.white)),
+                                    // ),
                                   ],
                                 ),
                               );
@@ -539,10 +757,42 @@ class _ConfirmSignatureReturnOtherFOViewState
         surfaceTintColor: tsOneColorScheme.secondary,
         child: Expanded(
           child: ElevatedButton(
-            onPressed: () {
-              // Call the function to update status and upload image
-              _showConfirmationDialog();
-              print('device name: ' + widget.deviceName2);
+            onPressed: () async {
+              final signatureData =
+                  await _signaturePadKey.currentState!.toImage();
+              if (!agree) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: const Text("Please checklist consent"),
+                    duration: const Duration(milliseconds: 1000),
+                    action: SnackBarAction(
+                      label: 'Close',
+                      onPressed: () {
+                        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                      },
+                    ),
+                  ),
+                );
+              } else if (_signaturePadKey.currentState?.clear == null) {
+                //widget._signaturePadKey.currentState!.clear();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: const Text("Please provide signature"),
+                    duration: const Duration(milliseconds: 1000),
+                    action: SnackBarAction(
+                      label: 'Close',
+                      onPressed: () {
+                        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                      },
+                    ),
+                  ),
+                );
+              } else {
+                _showConfirmationDialog();
+                print('device name: ' + widget.deviceName2);
+              }
+              // _showConfirmationDialog();
+              // print('device name: ' + widget.deviceName2);
             },
             style: ElevatedButton.styleFrom(
                 backgroundColor: TsOneColor.greenColor,

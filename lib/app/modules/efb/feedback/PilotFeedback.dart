@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ts_one/app/modules/efb/feedback/NextQuestionPageFeedbackPilot.dart';
 
-import '../../../../../presentation/theme.dart';
-import 'NextQuestionPageFeedbackPilot.dart';
+import '../../../../presentation/theme.dart';
 
 class PilotFeedBack extends StatefulWidget {
   final String documentId;
@@ -26,13 +26,14 @@ class _PilotFeedBackState extends State<PilotFeedBack> {
   void submitFeedback(BuildContext context) async {
     String? remarks = remarksController.text;
 
-    final CollectionReference feedbackCollection = FirebaseFirestore.instance.collection('feedback-device');
+    final CollectionReference feedbackCollection =
+        FirebaseFirestore.instance.collection('feedback-device');
 
     final DocumentReference feedbackDoc = await feedbackCollection.add({
       'handover-id': widget.deviceId,
       'remarks': remarks,
       'q1': Q1,
-      'q2' : Q2,
+      'q2': Q2,
       'q3': Q3,
       'q4': Q4,
       'q5': Q5,
@@ -41,7 +42,9 @@ class _PilotFeedBackState extends State<PilotFeedBack> {
 
     String feedbackId = feedbackDoc.id;
 
-    final DocumentReference pilotDeviceRef = FirebaseFirestore.instance.collection('pilot-device-1').doc(widget.documentId);
+    final DocumentReference pilotDeviceRef = FirebaseFirestore.instance
+        .collection('pilot-device-1')
+        .doc(widget.documentId);
     await pilotDeviceRef.update({
       'feedbackId': feedbackId,
     });
@@ -58,76 +61,98 @@ class _PilotFeedBackState extends State<PilotFeedBack> {
       body: Center(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 5),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Do you Charge the device during your duty?', style: tsOneTextTheme.labelLarge),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Batery Integrity",
+                    style: tsOneTextTheme.titleMedium,
+                  ),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Text('Do you Charge the device during your duty?',
+                    style: tsOneTextTheme.labelLarge),
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0), // Mengatur jarak antara radio buttons
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 8.0), // Mengatur jarak antara radio buttons
                   child: Column(
                     children: [
                       RadioListTile<String?>(
-                      title: Text('Yes'),
-                      value: 'Yes',
-                      groupValue: Q1,
-                      onChanged: (value) {
-                        setState(() {
-                          Q1 = value;
-                        });
-                      },
-                      activeColor: Colors.red,
-                    ),
-                    RadioListTile<String?>(
-                      title: Text('No'),
-                      value: 'No',
-                      groupValue: Q1,
-                      onChanged: (value) {
-                        setState(() {
-                          Q1 = value;
-                        });
-                      },
-                      activeColor: Colors.red,
-                    )
-
-            ],
+                        title: Text('Yes'),
+                        value: 'Yes',
+                        groupValue: Q1,
+                        onChanged: (value) {
+                          setState(() {
+                            Q1 = value;
+                          });
+                        },
+                        activeColor: Colors.red,
+                      ),
+                      RadioListTile<String?>(
+                        title: Text('No'),
+                        value: 'No',
+                        groupValue: Q1,
+                        onChanged: (value) {
+                          setState(() {
+                            Q1 = value;
+                          });
+                        },
+                        activeColor: Colors.red,
+                      )
+                    ],
                   ),
                 ),
-                SizedBox(height: 10), // Spasi tambahan antara teks dan radio buttons
-                Text('Do you find any risk or concern on the cabling?', style: tsOneTextTheme.labelLarge),
+                Text('Do you find any risk or concern on the cabling?',
+                    style: tsOneTextTheme.labelLarge),
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0), // Mengatur jarak antara radio buttons
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 8.0), // Mengatur jarak antara radio buttons
                   child: Column(
                     children: [
                       RadioListTile<String?>(
-                      title: Text('Yes'),
-                      value: 'Yes',
-                      groupValue: Q2,
-                      onChanged: (value) {
-                        setState(() {
-                          Q2 = value;
-                        });
-                      },
-                      activeColor: Colors.red,
-                    ),
-                    RadioListTile<String?>(
-                      title: Text('No'),
-                      value: 'No',
-                      groupValue: Q2,
-                      onChanged: (value) {
-                        setState(() {
-                          Q2 = value;
-                        });
-                      },
-                      activeColor: Colors.red,
-                    ),
-                  ],
+                        title: Text('Yes'),
+                        value: 'Yes',
+                        groupValue: Q2,
+                        onChanged: (value) {
+                          setState(() {
+                            Q2 = value;
+                          });
+                        },
+                        activeColor: Colors.red,
+                      ),
+                      RadioListTile<String?>(
+                        title: Text('No'),
+                        value: 'No',
+                        groupValue: Q2,
+                        onChanged: (value) {
+                          setState(() {
+                            Q2 = value;
+                          });
+                        },
+                        activeColor: Colors.red,
+                      ),
+                    ],
                   ),
                 ),
-                SizedBox(height: 10), // Spasi tambahan antara teks dan radio buttons
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "If charging the device is REQUIRED.",
+                    style: tsOneTextTheme.titleMedium,
+                  ),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
                 Text('Flight Phase', style: tsOneTextTheme.labelLarge),
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0), // Mengatur jarak antara radio buttons
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 8.0), // Mengatur jarak antara radio buttons
                   child: Column(
                     children: [
                       RadioListTile<String?>(
@@ -155,10 +180,12 @@ class _PilotFeedBackState extends State<PilotFeedBack> {
                     ],
                   ),
                 ),
-                SizedBox(height: 10), // Spasi tambahan antara teks dan radio buttons
+                SizedBox(
+                    height: 10), // Spasi tambahan antara teks dan radio buttons
                 Text('Charging duration', style: tsOneTextTheme.labelLarge),
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0), // Mengatur jarak antara radio buttons
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 8.0), // Mengatur jarak antara radio buttons
                   child: Column(
                     children: [
                       RadioListTile<String?>(
@@ -230,10 +257,21 @@ class _PilotFeedBackState extends State<PilotFeedBack> {
                     ],
                   ),
                 ),
-                SizedBox(height: 10), // Spasi tambahan antara teks dan radio buttons
-                Text('Did you utilize ALL EFB software during your duty?', style: tsOneTextTheme.labelLarge),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "If charging the device is NOT REQUIRED.",
+                    style: tsOneTextTheme.titleMedium,
+                  ),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Text('Did you utilize ALL EFB software during your duty?',
+                    style: tsOneTextTheme.labelLarge),
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0), // Mengatur jarak antara radio buttons
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 8.0), // Mengatur jarak antara radio buttons
                   child: Column(
                     children: [
                       RadioListTile<String?>(
@@ -262,10 +300,13 @@ class _PilotFeedBackState extends State<PilotFeedBack> {
                   ),
                 ),
 
-                SizedBox(height: 10), // Spasi tambahan antara teks dan radio buttons
-                Text('Which software did you utilize the most?', style: tsOneTextTheme.labelLarge),
+                SizedBox(
+                    height: 10), // Spasi tambahan antara teks dan radio buttons
+                Text('Which software did you utilize the most?',
+                    style: tsOneTextTheme.labelLarge),
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0), // Mengatur jarak antara radio buttons
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 8.0), // Mengatur jarak antara radio buttons
                   child: Column(
                     children: [
                       RadioListTile<String?>(
@@ -306,10 +347,8 @@ class _PilotFeedBackState extends State<PilotFeedBack> {
                 ),
               ],
             ),
-
           ),
         ),
-
       ),
       bottomNavigationBar: BottomAppBar(
         surfaceTintColor: tsOneColorScheme.secondary,

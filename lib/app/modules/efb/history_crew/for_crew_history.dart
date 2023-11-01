@@ -93,34 +93,37 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
         // ],
       ),
       body: Padding(
-        padding: const EdgeInsets.only(top: 20, right: 20, left: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
         child: Column(
           children: [
-            Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _searchController,
-                    decoration: InputDecoration(
-                      hintText: 'Search by Device No',
-                      prefixIcon: Icon(Icons.search),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(16.0)),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: _searchController,
+                      decoration: InputDecoration(
+                        hintText: 'Search by Device No',
+                        prefixIcon: Icon(Icons.search),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                        ),
                       ),
+                      onChanged: (value) {
+                        setState(() {});
+                      },
                     ),
-                    onChanged: (value) {
-                      setState(() {});
-                    },
                   ),
-                ),
-                IconButton(
-                  icon: Icon(
-                    Icons.filter_list,
-                    size: 36,
+                  IconButton(
+                    icon: Icon(
+                      Icons.filter_list,
+                      size: 36,
+                    ),
+                    onPressed: _showFilterBottomSheet,
                   ),
-                  onPressed: _showFilterBottomSheet,
-                ),
-              ],
+                ],
+              ),
             ),
             Expanded(
               child: FutureBuilder<QuerySnapshot>(
@@ -278,97 +281,112 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
                                           final deviceno3 =
                                               deviceData3?['deviceno'];
 
-                                          return SizedBox(
-                                            width: MediaQuery.of(context)
-                                                .size
-                                                .width,
-                                            child: Align(
-                                              alignment: Alignment.centerLeft,
-                                              child: Card(
-                                                surfaceTintColor:
-                                                    TsOneColor.surface,
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(15),
-                                                ),
-                                                elevation:
-                                                    2, // You can adjust the elevation as needed
-                                                child: InkWell(
-                                                  onTap: () {
-                                                    Navigator.of(context)
-                                                        .push(MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          DetailHistoryDeviceFOView(
-                                                        dataId: dataId,
-                                                        userName: userName,
-                                                        deviceno2: deviceno2,
-                                                        deviceno3: deviceno3,
-                                                      ),
-                                                    ));
-                                                  },
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            10.0),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        CircleAvatar(
-                                                          backgroundImage: photoUrl !=
-                                                                  null
-                                                              ? NetworkImage(
-                                                                  photoUrl
-                                                                      as String)
-                                                              : AssetImage(
-                                                                      'assets/default_profile_image.png')
-                                                                  as ImageProvider,
-                                                          radius: 25.0,
-                                                        ),
-                                                        SizedBox(width: 12.0),
-                                                        Flexible(
-                                                          child: Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              Container(
-                                                                width: double
-                                                                    .infinity,
-                                                                child: Text(
-                                                                  '$userRank' +
-                                                                      ' ' +
-                                                                      '$userName',
-                                                                  style: tsOneTextTheme
-                                                                      .titleMedium,
-                                                                ),
-                                                              ),
-                                                              Text(
-                                                                '$deviceno2' +
-                                                                    ' & ' +
-                                                                    '$deviceno3',
-                                                                style: tsOneTextTheme
-                                                                    .labelSmall,
-                                                              ),
-                                                              Text(
-                                                                '${DateFormat('yyyy-MM-dd HH:mm a').format(timestamp.toDate())}',
-                                                                style: tsOneTextTheme
-                                                                    .labelSmall,
-                                                              ),
-                                                            ],
+                                          return Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 10.0),
+                                            child: SizedBox(
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
+                                              child: Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: Card(
+                                                  color: tsOneColorScheme
+                                                      .secondary,
+                                                  surfaceTintColor:
+                                                      TsOneColor.surface,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15),
+                                                  ),
+                                                  elevation:
+                                                      3, // You can adjust the elevation as needed
+                                                  child: InkWell(
+                                                    onTap: () {
+                                                      Navigator.of(context)
+                                                          .push(
+                                                        MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              DetailHistoryDeviceFOView(
+                                                            dataId: dataId,
+                                                            userName: userName,
+                                                            deviceno2:
+                                                                deviceno2,
+                                                            deviceno3:
+                                                                deviceno3,
                                                           ),
                                                         ),
-                                                        const Icon(
-                                                          Icons.chevron_right,
-                                                          color: TsOneColor
-                                                              .secondaryContainer,
-                                                          size: 30,
-                                                        )
-                                                      ],
+                                                      );
+                                                    },
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              10.0),
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          SizedBox(width: 8.0),
+                                                          CircleAvatar(
+                                                            backgroundImage: photoUrl !=
+                                                                    null
+                                                                ? NetworkImage(
+                                                                    photoUrl
+                                                                        as String)
+                                                                : AssetImage(
+                                                                        'assets/default_profile_image.png')
+                                                                    as ImageProvider,
+                                                            radius: 25.0,
+                                                          ),
+                                                          SizedBox(width: 12.0),
+                                                          Flexible(
+                                                            child: Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                Container(
+                                                                  width: double
+                                                                      .infinity,
+                                                                  child: Text(
+                                                                    '$userName',
+                                                                    style: tsOneTextTheme
+                                                                        .titleMedium,
+                                                                  ),
+                                                                ),
+                                                                Text(
+                                                                  '$userRank',
+                                                                  style: tsOneTextTheme
+                                                                      .labelSmall,
+                                                                ),
+                                                                Text(
+                                                                  '$deviceno2' +
+                                                                      ' & ' +
+                                                                      '$deviceno3',
+                                                                  style: tsOneTextTheme
+                                                                      .labelSmall,
+                                                                ),
+                                                                Text(
+                                                                  '${DateFormat('yyyy-MM-dd HH:mm a').format(timestamp.toDate())}',
+                                                                  style: tsOneTextTheme
+                                                                      .labelSmall,
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          const Icon(
+                                                            Icons.chevron_right,
+                                                            color: TsOneColor
+                                                                .onSecondary,
+                                                            size: 30,
+                                                          )
+                                                        ],
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
@@ -387,12 +405,14 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10.0),
                                   child: Card(
+                                    color: tsOneColorScheme.secondary,
+
                                     surfaceTintColor: TsOneColor.surface,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(15),
                                     ),
                                     elevation:
-                                        2, // You can adjust the elevation as needed
+                                        3, // You can adjust the elevation as needed
                                     child: InkWell(
                                       borderRadius: BorderRadius.circular(15.0),
                                       onTap: () {
@@ -429,12 +449,15 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
                                                   Container(
                                                     width: double.infinity,
                                                     child: Text(
-                                                      '$userRank' +
-                                                          ' ' +
-                                                          '$userName',
+                                                      '$userName',
                                                       style: tsOneTextTheme
                                                           .titleMedium,
                                                     ),
+                                                  ),
+                                                  Text(
+                                                    '$userRank',
+                                                    style: tsOneTextTheme
+                                                        .labelSmall,
                                                   ),
                                                   Text(
                                                     '$deviceno',
@@ -451,8 +474,7 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
                                             ),
                                             const Icon(
                                               Icons.chevron_right,
-                                              color:
-                                                  TsOneColor.secondaryContainer,
+                                              color: TsOneColor.onSecondary,
                                               size: 30,
                                             )
                                           ],
@@ -520,44 +542,53 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 200,
+      height: 250,
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            AppBar(
+              title: Text(
+                'Filter',
+                style: tsOneTextTheme.headlineLarge,
+              ),
+              backgroundColor: Colors.white,
+              centerTitle: true,
+            ),
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Text(
-                'Filter',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    'Start Date: ${startDate.toLocal().toString().split(' ')[0]}',
+                  Expanded(
+                    child: InkWell(
+                      onTap: () => _selectStartDate(context),
+                      child: InputDecorator(
+                        decoration: InputDecoration(
+                          labelText: 'From',
+                          border: OutlineInputBorder(),
+                        ),
+                        child: Text(
+                          startDate.toLocal().toString().split(' ')[0],
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ),
+                    ),
                   ),
-                  ElevatedButton(
-                    onPressed: () => _selectStartDate(context),
-                    child: Text('Pick'),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'End Date: ${endDate.toLocal().toString().split(' ')[0]}',
-                  ),
-                  ElevatedButton(
-                    onPressed: () => _selectEndDate(context),
-                    child: Text('Pick'),
+                  SizedBox(width: 16),
+                  Expanded(
+                    child: InkWell(
+                      onTap: () => _selectEndDate(context),
+                      child: InputDecorator(
+                        decoration: InputDecoration(
+                          labelText: 'To',
+                          border: OutlineInputBorder(),
+                        ),
+                        child: Text(
+                          endDate.toLocal().toString().split(' ')[0],
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -569,7 +600,28 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                   widget.onDateRangeSelected(startDate, endDate);
                   Navigator.pop(context);
                 },
-                child: Text('Apply'),
+                style: ElevatedButton.styleFrom(
+                  elevation: 5.0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(4.0),
+                  ),
+                  primary: TsOneColor.primary,
+                  minimumSize: Size(
+                    MediaQuery.of(context).size.width,
+                    48,
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Text(
+                    'Apply',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16.0,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
               ),
             ),
           ],

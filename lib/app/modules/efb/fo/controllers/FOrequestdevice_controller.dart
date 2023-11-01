@@ -170,7 +170,6 @@ class FORequestdeviceController extends GetxController {
           'handover-from': '-',
           'handover-to-crew': '-',
           'remarks': '',
-          'feedbackId': '-',
           'prove_image_url': '',
           'occ-accepted-device': '-',
           'field_hub': fieldHub2, // Include the field hub in the data

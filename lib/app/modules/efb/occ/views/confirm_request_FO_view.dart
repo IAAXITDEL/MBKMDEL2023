@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
-import 'package:ts_one/app/routes/app_pages.dart';
 import 'package:ts_one/presentation/shared_components/TitleText.dart';
 
 import '../../../../../presentation/theme.dart';
@@ -21,9 +20,8 @@ class ConfirmRequestFOView extends GetView {
       context: context,
       type: QuickAlertType.success,
       text: 'You have succesfully Confirm The Request',
-    ).then((value) {
-      Get.offAllNamed(Routes.NAVOCC);
-    });
+    );
+    Navigator.of(context).pop();
   }
 
   void confirmInUse(BuildContext context) async {
@@ -34,57 +32,40 @@ class ConfirmRequestFOView extends GetView {
           title: Text('Confirmation'),
           content: Text('Are you sure you want to confirm the usage?'),
           actions: <Widget>[
-            Row(
-              children: [
-                Expanded(
-                  flex: 5,
-                  child: TextButton(
-                    child: Text('No', style: TextStyle(color: TsOneColor.secondaryContainer)),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ),
-                Spacer(flex: 1),
-                Expanded(
-                  flex: 5,
-                  child: TextButton(
-                    style: TextButton.styleFrom(
-                      backgroundColor: TsOneColor.greenColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                    ),
-                    child: Text('Yes', style: TextStyle(color: TsOneColor.onPrimary)),
-                    onPressed: () async {
-                      User? user = _auth.currentUser;
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Confirm'),
+              onPressed: () async {
+                User? user = _auth.currentUser;
 
-                      if (user != null) {
-                        // Get the user's ID
-                        QuerySnapshot userQuery = await _firestore.collection('users').where('EMAIL', isEqualTo: user.email).get();
-                        String userUid = userQuery.docs.first.id;
+                if (user != null) {
+                  // Get the user's ID
+                  QuerySnapshot userQuery = await _firestore.collection('users').where('EMAIL', isEqualTo: user.email).get();
+                  String userUid = userQuery.docs.first.id;
 
-                        DocumentReference pilotDeviceRef = FirebaseFirestore.instance.collection("pilot-device-1").doc(dataId);
+                  DocumentReference pilotDeviceRef = FirebaseFirestore.instance.collection("pilot-device-1").doc(dataId);
 
-                        try {
-                          await pilotDeviceRef.update({
-                            'statusDevice': 'in-use-fo',
-                            'occ-on-duty': userUid, // Store the user's ID as occ-on-duty
-                          });
+                  try {
+                    await pilotDeviceRef.update({
+                      'statusDevice': 'in-use-fo',
+                      'occ-on-duty': userUid, // Store the user's ID as occ-on-duty
+                    });
 
-                          _showQuickAlert(context);
-                        } catch (error) {
-                          print('Error updating data: $error');
-                        }
-                      }
-                      _showQuickAlert(context);
-                      // Navigator.of(context).pop(); // Close the dialog
-                      // Navigator.of(context).pop(); // Close the dialog
-                      // Navigator.of(context).pop(); // Close the dialog
-                    },
-                  ),
-                ),
-              ],
+                    _showQuickAlert(context);
+                  } catch (error) {
+                    print('Error updating data: $error');
+                  }
+                }
+                _showQuickAlert(context);
+                Navigator.of(context).pop(); // Close the dialog
+                Navigator.of(context).pop(); // Close the dialog
+                Navigator.of(context).pop(); // Close the dialog
+              },
             ),
           ],
         );

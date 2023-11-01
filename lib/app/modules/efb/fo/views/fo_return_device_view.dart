@@ -32,34 +32,6 @@ Future<String> getDocumentIdForDevice(String deviceId) async {
   }
 }
 
-String getMonthText(int month) {
-  const List<String> months = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'Desember'
-  ];
-  return months[month - 1]; // Index 0-11 for Januari-Desember
-}
-
-String _formatTimestamp(Timestamp? timestamp) {
-  if (timestamp == null) return 'No Data';
-
-  DateTime dateTime = timestamp.toDate();
-  String formattedDateTime = '${dateTime.day} ${getMonthText(dateTime.month)} ${dateTime.year}'
-      ' ; '
-      '${dateTime.hour}:${dateTime.minute}';
-  return formattedDateTime;
-}
-
 class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
   bool isReturnToOCC = false;
   bool isReturnToOtherPilot = false;
@@ -125,466 +97,383 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                     final pilotDeviceData = pilotDeviceSnapshot.docs.isNotEmpty ? pilotDeviceSnapshot.docs.first.data() : <String, dynamic>{};
                     final occOnDuty = pilotDeviceData['occ-on-duty'] as String? ?? 'N/A';
 
-                    final userUid = pilotDeviceData['user_uid'];
-
-                    return FutureBuilder<DocumentSnapshot>(
-                      future: FirebaseFirestore.instance.collection("users").doc(userUid).get(),
-                      builder: (context, userSnapshot) {
-                        if (userSnapshot.connectionState == ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator());
-                        }
-
-                        if (userSnapshot.hasError) {
-                          return Center(child: Text('Error: ${userSnapshot.error}'));
-                        }
-
-                        if (!userSnapshot.hasData || !userSnapshot.data!.exists) {
-                          return Center(child: Text('User data not found'));
-                        }
-
-                        final userData = userSnapshot.data!.data() as Map<String, dynamic>;
-
-                        return Column(
+                    return Column(
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text("Device 2", style: tsOneTextTheme.displaySmall),
+                            ),
+                            SizedBox(height: 7),
+                            Row(
                               children: [
-                                Align(
-                                  alignment: Alignment.centerRight,
-                                  child: Text(_formatTimestamp(pilotDeviceData['timestamp']), style: tsOneTextTheme.labelSmall),
-                                ),
-                                SizedBox(height: 15),
-                                Row(
-                                  children: [
-                                    Expanded(flex: 6, child: Text("ID NO")),
-                                    Expanded(flex: 1, child: Text(":")),
-                                    Expanded(
-                                      flex: 6,
-                                      child: Text('${userData['ID NO'] ?? 'No Data'}'),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 5.0),
-                                Row(
-                                  children: [
-                                    Expanded(flex: 6, child: Text("Name")),
-                                    Expanded(flex: 1, child: Text(":")),
-                                    Expanded(
-                                      flex: 6,
-                                      child: Text('${userData['NAME'] ?? 'No Data'}'),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 5.0),
-                                Row(
-                                  children: [
-                                    Expanded(flex: 6, child: Text("Rank")),
-                                    Expanded(flex: 1, child: Text(":")),
-                                    Expanded(
-                                      flex: 6,
-                                      child: Text('${userData['RANK'] ?? 'No Data'}'),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 15),
-                                const Padding(
-                                  padding: EdgeInsets.only(bottom: 16.0),
-                                  child: Row(
-                                    children: <Widget>[
-                                      Expanded(
-                                        child: Divider(
-                                          color: Colors.grey,
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.symmetric(horizontal: 8.0),
-                                        child: Text(
-                                          'Device Details',
-                                          style: TextStyle(color: Colors.grey),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: Divider(
-                                          color: Colors.grey,
-                                        ),
-                                      ),
-                                    ],
+                                Expanded(
+                                    flex: 6,
+                                    child: Text(
+                                      "Device No",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
+                                Expanded(
+                                    flex: 1,
+                                    child: Text(
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
+                                Expanded(
+                                  flex: 6,
+                                  child: Text(
+                                    deviceno2,
+                                    style: tsOneTextTheme.bodySmall,
                                   ),
-                                ),
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text("Device 2", style: tsOneTextTheme.displaySmall),
-                                ),
-                                SizedBox(height: 7),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                        flex: 6,
-                                        child: Text(
-                                          "Device No",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
-                                    Expanded(
-                                        flex: 1,
-                                        child: Text(
-                                          ":",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
-                                    Expanded(
-                                      flex: 6,
-                                      child: Text(
-                                        deviceno2,
-                                        style: tsOneTextTheme.bodySmall,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                        flex: 6,
-                                        child: Text(
-                                          "IOS Version",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
-                                    Expanded(
-                                        flex: 1,
-                                        child: Text(
-                                          ":",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
-                                    Expanded(
-                                      flex: 6,
-                                      child: Text(
-                                        iosver2,
-                                        style: tsOneTextTheme.bodySmall,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                        flex: 6,
-                                        child: Text(
-                                          "Flysmart Ver",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
-                                    Expanded(
-                                        flex: 1,
-                                        child: Text(
-                                          ":",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
-                                    Expanded(
-                                      flex: 6,
-                                      child: Text(
-                                        flysmart2,
-                                        style: tsOneTextTheme.bodySmall,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                        flex: 6,
-                                        child: Text(
-                                          "Docunet Version",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
-                                    Expanded(
-                                        flex: 1,
-                                        child: Text(
-                                          ":",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
-                                    Expanded(
-                                      flex: 6,
-                                      child: Text(
-                                        docuversion2,
-                                        style: tsOneTextTheme.bodySmall,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                        flex: 6,
-                                        child: Text(
-                                          "Lido mPilot Version",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
-                                    Expanded(
-                                        flex: 1,
-                                        child: Text(
-                                          ":",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
-                                    Expanded(
-                                      flex: 6,
-                                      child: Text(
-                                        lidoversion2,
-                                        style: tsOneTextTheme.bodySmall,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                        flex: 6,
-                                        child: Text(
-                                          "Hub",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
-                                    Expanded(
-                                        flex: 1,
-                                        child: Text(
-                                          ":",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
-                                    Expanded(
-                                      flex: 6,
-                                      child: Text(
-                                        hub2,
-                                        style: tsOneTextTheme.bodySmall,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                        flex: 6,
-                                        child: Text(
-                                          "Condition",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
-                                    Expanded(
-                                        flex: 1,
-                                        child: Text(
-                                          ":",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
-                                    Expanded(
-                                      flex: 6,
-                                      child: Text(
-                                        condition2,
-                                        style: tsOneTextTheme.bodySmall,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 15.0),
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text("Device 3", style: tsOneTextTheme.displaySmall),
-                                ),
-                                SizedBox(height: 7),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                        flex: 6,
-                                        child: Text(
-                                          "Device No",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
-                                    Expanded(
-                                        flex: 1,
-                                        child: Text(
-                                          ":",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
-                                    Expanded(
-                                      flex: 6,
-                                      child: Text(
-                                        deviceno3,
-                                        style: tsOneTextTheme.bodySmall,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 8,
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                        flex: 6,
-                                        child: Text(
-                                          "IOS Version",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
-                                    Expanded(
-                                        flex: 1,
-                                        child: Text(
-                                          ":",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
-                                    Expanded(
-                                      flex: 6,
-                                      child: Text(
-                                        iosver3,
-                                        style: tsOneTextTheme.bodySmall,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 8,
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                        flex: 6,
-                                        child: Text(
-                                          "Flysmart Ver",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
-                                    Expanded(
-                                        flex: 1,
-                                        child: Text(
-                                          ":",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
-                                    Expanded(
-                                      flex: 6,
-                                      child: Text(
-                                        flysmart3,
-                                        style: tsOneTextTheme.bodySmall,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 8,
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                        flex: 6,
-                                        child: Text(
-                                          "Docunet Version",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
-                                    Expanded(
-                                        flex: 1,
-                                        child: Text(
-                                          ":",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
-                                    Expanded(
-                                      flex: 6,
-                                      child: Text(docuversion3),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 8,
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                        flex: 6,
-                                        child: Text(
-                                          "Lido mPilot Version",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
-                                    Expanded(
-                                        flex: 1,
-                                        child: Text(
-                                          ":",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
-                                    Expanded(
-                                      flex: 6,
-                                      child: Text(
-                                        lidoversion3,
-                                        style: tsOneTextTheme.bodySmall,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 8,
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                        flex: 6,
-                                        child: Text(
-                                          "HUB",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
-                                    Expanded(
-                                        flex: 1,
-                                        child: Text(
-                                          ":",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
-                                    Expanded(
-                                      flex: 6,
-                                      child: Text(
-                                        hub3,
-                                        style: tsOneTextTheme.bodySmall,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 8,
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                        flex: 6,
-                                        child: Text(
-                                          "Condition",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
-                                    Expanded(
-                                        flex: 1,
-                                        child: Text(
-                                          ":",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
-                                    Expanded(
-                                      flex: 6,
-                                      child: Text(
-                                        condition3,
-                                        style: tsOneTextTheme.bodySmall,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 15,
                                 ),
                               ],
                             ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Row(
+                              children: [
+                                Expanded(
+                                    flex: 6,
+                                    child: Text(
+                                      "IOS Version",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
+                                Expanded(
+                                    flex: 1,
+                                    child: Text(
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
+                                Expanded(
+                                  flex: 6,
+                                  child: Text(
+                                    iosver2,
+                                    style: tsOneTextTheme.bodySmall,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Row(
+                              children: [
+                                Expanded(
+                                    flex: 6,
+                                    child: Text(
+                                      "Flysmart Ver",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
+                                Expanded(
+                                    flex: 1,
+                                    child: Text(
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
+                                Expanded(
+                                  flex: 6,
+                                  child: Text(
+                                    flysmart2,
+                                    style: tsOneTextTheme.bodySmall,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Row(
+                              children: [
+                                Expanded(
+                                    flex: 6,
+                                    child: Text(
+                                      "Docunet Version",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
+                                Expanded(
+                                    flex: 1,
+                                    child: Text(
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
+                                Expanded(
+                                  flex: 6,
+                                  child: Text(
+                                    docuversion2,
+                                    style: tsOneTextTheme.bodySmall,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Row(
+                              children: [
+                                Expanded(
+                                    flex: 6,
+                                    child: Text(
+                                      "Lido mPilot Version",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
+                                Expanded(
+                                    flex: 1,
+                                    child: Text(
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
+                                Expanded(
+                                  flex: 6,
+                                  child: Text(
+                                    lidoversion2,
+                                    style: tsOneTextTheme.bodySmall,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Row(
+                              children: [
+                                Expanded(
+                                    flex: 6,
+                                    child: Text(
+                                      "Hub",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
+                                Expanded(
+                                    flex: 1,
+                                    child: Text(
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
+                                Expanded(
+                                  flex: 6,
+                                  child: Text(
+                                    hub2,
+                                    style: tsOneTextTheme.bodySmall,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Row(
+                              children: [
+                                Expanded(
+                                    flex: 6,
+                                    child: Text(
+                                      "Condition",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
+                                Expanded(
+                                    flex: 1,
+                                    child: Text(
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
+                                Expanded(
+                                  flex: 6,
+                                  child: Text(
+                                    condition2,
+                                    style: tsOneTextTheme.bodySmall,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 15.0),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text("Device 3", style: tsOneTextTheme.displaySmall),
+                            ),
+                            SizedBox(height: 7),
+                            Row(
+                              children: [
+                                Expanded(
+                                    flex: 6,
+                                    child: Text(
+                                      "Device No",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
+                                Expanded(
+                                    flex: 1,
+                                    child: Text(
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
+                                Expanded(
+                                  flex: 6,
+                                  child: Text(
+                                    deviceno3,
+                                    style: tsOneTextTheme.bodySmall,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 8,
+                            ),
+                            Row(
+                              children: [
+                                Expanded(
+                                    flex: 6,
+                                    child: Text(
+                                      "IOS Version",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
+                                Expanded(
+                                    flex: 1,
+                                    child: Text(
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
+                                Expanded(
+                                  flex: 6,
+                                  child: Text(
+                                    iosver3,
+                                    style: tsOneTextTheme.bodySmall,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 8,
+                            ),
+                            Row(
+                              children: [
+                                Expanded(
+                                    flex: 6,
+                                    child: Text(
+                                      "Flysmart Ver",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
+                                Expanded(
+                                    flex: 1,
+                                    child: Text(
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
+                                Expanded(
+                                  flex: 6,
+                                  child: Text(
+                                    flysmart3,
+                                    style: tsOneTextTheme.bodySmall,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 8,
+                            ),
+                            Row(
+                              children: [
+                                Expanded(
+                                    flex: 6,
+                                    child: Text(
+                                      "Docunet Version",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
+                                Expanded(
+                                    flex: 1,
+                                    child: Text(
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
+                                Expanded(
+                                  flex: 6,
+                                  child: Text(docuversion3),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 8,
+                            ),
+                            Row(
+                              children: [
+                                Expanded(
+                                    flex: 6,
+                                    child: Text(
+                                      "Lido mPilot Version",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
+                                Expanded(
+                                    flex: 1,
+                                    child: Text(
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
+                                Expanded(
+                                  flex: 6,
+                                  child: Text(
+                                    lidoversion3,
+                                    style: tsOneTextTheme.bodySmall,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 8,
+                            ),
+                            Row(
+                              children: [
+                                Expanded(
+                                    flex: 6,
+                                    child: Text(
+                                      "HUB",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
+                                Expanded(
+                                    flex: 1,
+                                    child: Text(
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
+                                Expanded(
+                                  flex: 6,
+                                  child: Text(
+                                    hub3,
+                                    style: tsOneTextTheme.bodySmall,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 8,
+                            ),
+                            Row(
+                              children: [
+                                Expanded(
+                                    flex: 6,
+                                    child: Text(
+                                      "Condition",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
+                                Expanded(
+                                    flex: 1,
+                                    child: Text(
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
+                                Expanded(
+                                  flex: 6,
+                                  child: Text(
+                                    condition3,
+                                    style: tsOneTextTheme.bodySmall,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 15,
+                            ),
                           ],
-                        );
-                      },
+                        ),
+                      ],
                     );
                   }
                 },
