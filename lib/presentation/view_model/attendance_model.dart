@@ -23,6 +23,7 @@ class AttendanceModel {
   String? photoURL;
   String? loano;
   String? expiry;
+  String? formatNo;
 
   AttendanceModel({
     this.id,
@@ -46,7 +47,8 @@ class AttendanceModel {
     this.name,
     this.photoURL,
     this.loano,
-    this.expiry
+    this.expiry,
+    this.formatNo
   });
 
   factory AttendanceModel.fromJson(Map<String, dynamic> json) {
@@ -73,6 +75,7 @@ class AttendanceModel {
         photoURL: json['photoURL'],
         loano: json['loano'],
         expiry: json['expiry'],
+        formatNo: json['formatNo']
     );
   }
 
@@ -100,6 +103,7 @@ class AttendanceModel {
     data['photoURL'] = this.photoURL;
     data['loano'] = this.loano;
     data['expiry'] = this.expiry;
+    data['formatNo'] = this.formatNo;
     return data;
   }
 }

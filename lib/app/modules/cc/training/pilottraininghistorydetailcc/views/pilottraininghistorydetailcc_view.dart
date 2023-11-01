@@ -49,7 +49,27 @@ class PilottraininghistorydetailccView
                      children: [
                        Expanded(
                          child: ElevatedButton(
-                             onPressed: () {},
+                             onPressed: () async {
+                               try {
+                                 // Tampilkan LoadingScreen
+                                 showDialog(
+                                   context: context,
+                                   // barrierDismissible:
+                                   //     false, // Tidak bisa menutup dialog dengan tap di luar
+                                   builder: (BuildContext context) {
+                                     return LoadingScreen();
+                                   },
+                                 );
+
+                                 await controller.savePdfFile(
+                                     await controller
+                                     .createCertificate());
+                               } catch (e) {
+                               print('Error: $e');
+                               } finally {
+                               Navigator.pop(context);
+                               }
+                             },
                              style: ElevatedButton.styleFrom(
                                padding: EdgeInsets.symmetric(
                                    vertical: 5.0, horizontal: 1.0),

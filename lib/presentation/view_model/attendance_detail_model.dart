@@ -18,6 +18,7 @@ class AttendanceDetailModel {
   String? hub;
   double? rating;
   String? feedbackforinstructor;
+  String? formatNo;
 
 
   AttendanceDetailModel({
@@ -38,6 +39,7 @@ class AttendanceDetailModel {
     this.hub,
     this.rating,
     this.feedbackforinstructor,
+    this.formatNo,
   });
 
   factory AttendanceDetailModel.fromJson(Map<String, dynamic> json) {
@@ -58,7 +60,8 @@ class AttendanceDetailModel {
         license: json['license'],
         hub: json['hub'],
         rating: json['rating']?.toDouble(),
-        feedbackforinstructor: json['feedbackforinstructor']
+        feedbackforinstructor: json['feedbackforinstructor'],
+        formatNo: json['formatNo']
     );
   }
 
@@ -81,6 +84,7 @@ class AttendanceDetailModel {
     data['hub'] = this.hub;
     data['rating'] = this.rating;
     data['feedbackforinstructor'] = this.feedbackforinstructor;
+    data['formatNo'] = this.formatNo;
     return data;
   }
 }
