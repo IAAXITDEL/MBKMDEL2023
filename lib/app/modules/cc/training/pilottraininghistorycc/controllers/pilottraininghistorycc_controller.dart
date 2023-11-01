@@ -133,11 +133,20 @@ class PilottraininghistoryccController extends GetxController {
               (attendanceDateOnly.isAfter(fromDate) && attendanceDateOnly.isBefore(toDate)) ||
               attendanceDateOnly.isAtSameMomentAs(toDate);
         }).toList();
+
+        if (attendanceData.isNotEmpty) {
+          expiryC.value = attendanceData[0]["expiry"];
+          print("test");
+          print(expiryC.value);
+        }
+
         return filteredAttendance;
       }
 
       if (attendanceData.isNotEmpty) {
         expiryC.value = attendanceData[0]["expiry"];
+        print("test");
+        print(expiryC.value);
       }
 
       return attendanceData;

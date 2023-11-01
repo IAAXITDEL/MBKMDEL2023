@@ -46,12 +46,20 @@ class ListAttendanceccView extends GetView<ListAttendanceccController> {
                   Expanded(
                       child: Container(
                         margin: EdgeInsets.symmetric(vertical: 5),
+                        decoration: BoxDecoration(
+                          color: TsOneColor.primaryFaded,
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
                         child: TextFormField(
                           controller: controller.searchC,
                           onChanged: (value) => controller.nameS.value = value,
                           decoration: InputDecoration(
                             hintText: "Search",
-                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(4.0)),
+                            hintStyle: TextStyle(
+                              color: Colors.red,
+                              fontStyle: FontStyle.italic,
+                            ),
+                            border: InputBorder.none,
                             focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
                             prefixIcon: Icon(Icons.search,),
                             suffixIcon: IconButton(

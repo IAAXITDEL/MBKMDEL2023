@@ -82,6 +82,33 @@ class PilotcrewdetailccView extends GetView<PilotcrewdetailccController> {
                             children: [
                               Row(
                                 children: [
+                                  Expanded(flex: 3, child: Text("STATUS")),
+                                  Expanded(flex: 1, child: Text(":")),
+                                  Expanded(flex: 6, child:
+                                      Obx(() {
+                                      return Container(
+                                          height: 30.0,
+                                          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                                        decoration: BoxDecoration(
+                                        color: controller.isReady.value ?  Colors.green.withOpacity(0.4) : Colors.red.withOpacity(0.4),
+                                        borderRadius: BorderRadius.circular(10),
+                                        ),
+
+                                        child : Text(
+                                          controller.isReady.value ?  "READY": "NOT READY",
+                                          textAlign: TextAlign.center,
+                                          style: tsOneTextTheme.bodyMedium,
+                                        ),
+                                      );
+                                    })
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Row(
+                                children: [
                                   Expanded(flex: 3, child: Text("RANK")),
                                   Expanded(flex: 1, child: Text(":")),
                                   Expanded(flex: 6, child: Text(documentData["RANK"] ?? "N/A")),

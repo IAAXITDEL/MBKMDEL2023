@@ -64,7 +64,7 @@ class HomeInstructorccController extends GetxController {
           return attendanceModel.toJson();
         }),
       );
-
+      attendanceData.sort((a, b) => b['date'].compareTo(a['date']));
       return attendanceData;
     });
   }
