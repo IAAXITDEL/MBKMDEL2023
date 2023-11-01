@@ -6,7 +6,7 @@ import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:ts_one/app/routes/app_pages.dart';
 import 'package:ts_one/presentation/shared_components/TitleText.dart';
-
+//sssssss
 import '../../../../../presentation/theme.dart';
 import '../../../../routes/app_pages.dart';
 
@@ -70,13 +70,13 @@ class ConfirmRequestPilotView extends GetView {
               Expanded(
                 flex: 5,
                 child: TextButton(
-                  child: Text('No', style: TextStyle(color: TsOneColor.secondaryContainer)),
+                  child: const Text('No', style: TextStyle(color: TsOneColor.secondaryContainer)),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
                 ),
               ),
-              Spacer(flex: 1),
+              const Spacer(flex: 1),
               Expanded(
                 flex: 5,
                 child: TextButton(
@@ -86,7 +86,7 @@ class ConfirmRequestPilotView extends GetView {
                       borderRadius: BorderRadius.circular(20.0),
                     ),
                   ),
-                  child: Text('Yes', style: TextStyle(color: TsOneColor.onPrimary)),
+                  child: const Text('Yes', style: TextStyle(color: TsOneColor.onPrimary)),
                   onPressed: () async {
                     User? user = _auth.currentUser;
 
@@ -133,7 +133,7 @@ class ConfirmRequestPilotView extends GetView {
           future: FirebaseFirestore.instance.collection("pilot-device-1").doc(dataId).get(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             }
 
             if (snapshot.hasError) {
@@ -141,7 +141,7 @@ class ConfirmRequestPilotView extends GetView {
             }
 
             if (!snapshot.hasData || !snapshot.data!.exists) {
-              return Center(child: Text('Data not found'));
+              return const Center(child: Text('Data not found'));
             }
 
             final data = snapshot.data!.data() as Map<String, dynamic>;
@@ -153,7 +153,7 @@ class ConfirmRequestPilotView extends GetView {
               future: FirebaseFirestore.instance.collection("users").doc(userUid).get(),
               builder: (context, userSnapshot) {
                 if (userSnapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 }
 
                 if (userSnapshot.hasError) {
@@ -161,7 +161,7 @@ class ConfirmRequestPilotView extends GetView {
                 }
 
                 if (!userSnapshot.hasData || !userSnapshot.data!.exists) {
-                  return Center(child: Text('User data not found'));
+                  return const Center(child: Text('User data not found'));
                 }
 
                 final userData = userSnapshot.data!.data() as Map<String, dynamic>;
@@ -170,7 +170,7 @@ class ConfirmRequestPilotView extends GetView {
                   future: FirebaseFirestore.instance.collection("Device").doc(deviceUid).get(),
                   builder: (context, deviceSnapshot) {
                     if (deviceSnapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
+                      return const Center(child: CircularProgressIndicator());
                     }
 
                     if (deviceSnapshot.hasError) {
@@ -186,7 +186,7 @@ class ConfirmRequestPilotView extends GetView {
                         future: FirebaseFirestore.instance.collection("Device").doc(deviceUid2).get(),
                         builder: (context, deviceSnapshot) {
                           if (deviceSnapshot.connectionState == ConnectionState.waiting) {
-                            return Center(child: CircularProgressIndicator());
+                            return const Center(child: CircularProgressIndicator());
                           }
 
                           if (deviceSnapshot.hasError) {
@@ -194,7 +194,7 @@ class ConfirmRequestPilotView extends GetView {
                           }
 
                           if (!deviceSnapshot.hasData || !deviceSnapshot.data!.exists) {
-                            return Center(child: Text('Device data not found'));
+                            return const Center(child: Text('Device data not found'));
                           }
 
                           final deviceData2 = deviceSnapshot.data!.data() as Map<String, dynamic>;
@@ -203,7 +203,7 @@ class ConfirmRequestPilotView extends GetView {
                             future: FirebaseFirestore.instance.collection("Device").doc(deviceUid3).get(),
                             builder: (context, deviceSnapshot) {
                               if (deviceSnapshot.connectionState == ConnectionState.waiting) {
-                                return Center(child: CircularProgressIndicator());
+                                return const Center(child: CircularProgressIndicator());
                               }
 
                               if (deviceSnapshot.hasError) {
@@ -229,37 +229,37 @@ class ConfirmRequestPilotView extends GetView {
                                       const SizedBox(height: 15.0),
                                       Row(
                                         children: [
-                                          Expanded(flex: 7, child: Text("ID NO")),
-                                          Expanded(flex: 1, child: Text(":")),
+                                          const Expanded(flex: 7, child: Text("ID NO")),
+                                          const Expanded(child: Text(":")),
                                           Expanded(
                                             flex: 6,
                                             child: Text('${userData['ID NO'] ?? 'No Data'}'),
                                           ),
                                         ],
                                       ),
-                                      SizedBox(height: 5.0),
+                                      const SizedBox(height: 5.0),
                                       Row(
                                         children: [
-                                          Expanded(flex: 7, child: Text("Name")),
-                                          Expanded(flex: 1, child: Text(":")),
+                                          const Expanded(flex: 7, child: Text("Name")),
+                                          const Expanded(child: Text(":")),
                                           Expanded(
                                             flex: 6,
                                             child: Text('${userData['NAME'] ?? 'No Data'}'),
                                           ),
                                         ],
                                       ),
-                                      SizedBox(height: 5.0),
+                                      const SizedBox(height: 5.0),
                                       Row(
                                         children: [
-                                          Expanded(flex: 7, child: Text("Rank")),
-                                          Expanded(flex: 1, child: Text(":")),
+                                          const Expanded(flex: 7, child: Text("Rank")),
+                                          const Expanded(child: Text(":")),
                                           Expanded(
                                             flex: 6,
                                             child: Text('${userData['RANK'] ?? 'No Data'}'),
                                           ),
                                         ],
                                       ),
-                                      SizedBox(height: 15.0),
+                                      const SizedBox(height: 15.0),
 
                                       const Padding(
                                         padding: EdgeInsets.only(bottom: 16.0),
@@ -289,7 +289,7 @@ class ConfirmRequestPilotView extends GetView {
                                         alignment: Alignment.centerLeft,
                                         child: Text("Device 2", style: tsOneTextTheme.displaySmall),
                                       ),
-                                      SizedBox(height: 10.0),
+                                      const SizedBox(height: 10.0),
                                       Row(
                                         children: [
                                           Expanded(
@@ -299,11 +299,10 @@ class ConfirmRequestPilotView extends GetView {
                                                 style: tsOneTextTheme.bodySmall,
                                               )),
                                           Expanded(
-                                              flex: 1,
                                               child: Text(
-                                                ":",
-                                                style: tsOneTextTheme.bodySmall,
-                                              )),
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
                                           Expanded(
                                             flex: 6,
                                             child: Text(
@@ -313,7 +312,7 @@ class ConfirmRequestPilotView extends GetView {
                                           ),
                                         ],
                                       ),
-                                      SizedBox(height: 5.0),
+                                      const SizedBox(height: 5.0),
                                       Row(
                                         children: [
                                           Expanded(
@@ -323,11 +322,10 @@ class ConfirmRequestPilotView extends GetView {
                                                 style: tsOneTextTheme.bodySmall,
                                               )),
                                           Expanded(
-                                              flex: 1,
                                               child: Text(
-                                                ":",
-                                                style: tsOneTextTheme.bodySmall,
-                                              )),
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
                                           Expanded(
                                             flex: 6,
                                             child: Text(
@@ -337,7 +335,7 @@ class ConfirmRequestPilotView extends GetView {
                                           ),
                                         ],
                                       ),
-                                      SizedBox(height: 5.0),
+                                      const SizedBox(height: 5.0),
                                       Row(
                                         children: [
                                           Expanded(
@@ -347,11 +345,10 @@ class ConfirmRequestPilotView extends GetView {
                                                 style: tsOneTextTheme.bodySmall,
                                               )),
                                           Expanded(
-                                              flex: 1,
                                               child: Text(
-                                                ":",
-                                                style: tsOneTextTheme.bodySmall,
-                                              )),
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
                                           Expanded(
                                             flex: 6,
                                             child: Text(
@@ -361,7 +358,7 @@ class ConfirmRequestPilotView extends GetView {
                                           ),
                                         ],
                                       ),
-                                      SizedBox(height: 5.0),
+                                      const SizedBox(height: 5.0),
                                       Row(
                                         children: [
                                           Expanded(
@@ -371,11 +368,10 @@ class ConfirmRequestPilotView extends GetView {
                                                 style: tsOneTextTheme.bodySmall,
                                               )),
                                           Expanded(
-                                              flex: 1,
                                               child: Text(
-                                                ":",
-                                                style: tsOneTextTheme.bodySmall,
-                                              )),
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
                                           Expanded(
                                             flex: 6,
                                             child: Text(
@@ -385,7 +381,7 @@ class ConfirmRequestPilotView extends GetView {
                                           ),
                                         ],
                                       ),
-                                      SizedBox(height: 5.0),
+                                      const SizedBox(height: 5.0),
                                       Row(
                                         children: [
                                           Expanded(
@@ -395,11 +391,10 @@ class ConfirmRequestPilotView extends GetView {
                                                 style: tsOneTextTheme.bodySmall,
                                               )),
                                           Expanded(
-                                              flex: 1,
                                               child: Text(
-                                                ":",
-                                                style: tsOneTextTheme.bodySmall,
-                                              )),
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
                                           Expanded(
                                             flex: 6,
                                             child: Text(
@@ -409,7 +404,7 @@ class ConfirmRequestPilotView extends GetView {
                                           ),
                                         ],
                                       ),
-                                      SizedBox(height: 5.0),
+                                      const SizedBox(height: 5.0),
                                       Row(
                                         children: [
                                           Expanded(
@@ -419,11 +414,10 @@ class ConfirmRequestPilotView extends GetView {
                                                 style: tsOneTextTheme.bodySmall,
                                               )),
                                           Expanded(
-                                              flex: 1,
                                               child: Text(
-                                                ":",
-                                                style: tsOneTextTheme.bodySmall,
-                                              )),
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
                                           Expanded(
                                             flex: 6,
                                             child: Text(
@@ -433,7 +427,7 @@ class ConfirmRequestPilotView extends GetView {
                                           ),
                                         ],
                                       ),
-                                      SizedBox(height: 5.0),
+                                      const SizedBox(height: 5.0),
                                       Row(
                                         children: [
                                           Expanded(
@@ -443,11 +437,10 @@ class ConfirmRequestPilotView extends GetView {
                                                 style: tsOneTextTheme.bodySmall,
                                               )),
                                           Expanded(
-                                              flex: 1,
                                               child: Text(
-                                                ":",
-                                                style: tsOneTextTheme.bodySmall,
-                                              )),
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
                                           Expanded(
                                             flex: 6,
                                             child: Text(
@@ -458,13 +451,13 @@ class ConfirmRequestPilotView extends GetView {
                                         ],
                                       ),
 
-                                      //DEVICE INFO 2
+                                      //Device 3
                                       SizedBox(height: 20.0),
                                       Align(
                                         alignment: Alignment.centerLeft,
                                         child: Text("Device 3", style: tsOneTextTheme.displaySmall),
                                       ),
-                                      SizedBox(height: 10.0),
+                                      const SizedBox(height: 10.0),
                                       Row(
                                         children: [
                                           Expanded(
@@ -474,11 +467,10 @@ class ConfirmRequestPilotView extends GetView {
                                                 style: tsOneTextTheme.bodySmall,
                                               )),
                                           Expanded(
-                                              flex: 1,
                                               child: Text(
-                                                ":",
-                                                style: tsOneTextTheme.bodySmall,
-                                              )),
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
                                           Expanded(
                                             flex: 6,
                                             child: Text(
@@ -488,7 +480,7 @@ class ConfirmRequestPilotView extends GetView {
                                           ),
                                         ],
                                       ),
-                                      SizedBox(height: 5.0),
+                                      const SizedBox(height: 5.0),
                                       Row(
                                         children: [
                                           Expanded(
@@ -498,11 +490,10 @@ class ConfirmRequestPilotView extends GetView {
                                                 style: tsOneTextTheme.bodySmall,
                                               )),
                                           Expanded(
-                                              flex: 1,
                                               child: Text(
-                                                ":",
-                                                style: tsOneTextTheme.bodySmall,
-                                              )),
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
                                           Expanded(
                                             flex: 6,
                                             child: Text(
@@ -512,7 +503,7 @@ class ConfirmRequestPilotView extends GetView {
                                           ),
                                         ],
                                       ),
-                                      SizedBox(height: 5.0),
+                                      const SizedBox(height: 5.0),
                                       Row(
                                         children: [
                                           Expanded(
@@ -522,11 +513,10 @@ class ConfirmRequestPilotView extends GetView {
                                                 style: tsOneTextTheme.bodySmall,
                                               )),
                                           Expanded(
-                                              flex: 1,
                                               child: Text(
-                                                ":",
-                                                style: tsOneTextTheme.bodySmall,
-                                              )),
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
                                           Expanded(
                                             flex: 6,
                                             child: Text(
@@ -536,7 +526,7 @@ class ConfirmRequestPilotView extends GetView {
                                           ),
                                         ],
                                       ),
-                                      SizedBox(height: 5.0),
+                                      const SizedBox(height: 5.0),
                                       Row(
                                         children: [
                                           Expanded(
@@ -546,11 +536,10 @@ class ConfirmRequestPilotView extends GetView {
                                                 style: tsOneTextTheme.bodySmall,
                                               )),
                                           Expanded(
-                                              flex: 1,
                                               child: Text(
-                                                ":",
-                                                style: tsOneTextTheme.bodySmall,
-                                              )),
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
                                           Expanded(
                                             flex: 6,
                                             child: Text(
@@ -560,7 +549,7 @@ class ConfirmRequestPilotView extends GetView {
                                           ),
                                         ],
                                       ),
-                                      SizedBox(height: 5.0),
+                                      const SizedBox(height: 5.0),
                                       Row(
                                         children: [
                                           Expanded(
@@ -570,11 +559,10 @@ class ConfirmRequestPilotView extends GetView {
                                                 style: tsOneTextTheme.bodySmall,
                                               )),
                                           Expanded(
-                                              flex: 1,
                                               child: Text(
-                                                ":",
-                                                style: tsOneTextTheme.bodySmall,
-                                              )),
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
                                           Expanded(
                                             flex: 6,
                                             child: Text(
@@ -584,7 +572,7 @@ class ConfirmRequestPilotView extends GetView {
                                           ),
                                         ],
                                       ),
-                                      SizedBox(height: 5.0),
+                                      const SizedBox(height: 5.0),
                                       Row(
                                         children: [
                                           Expanded(
@@ -594,11 +582,10 @@ class ConfirmRequestPilotView extends GetView {
                                                 style: tsOneTextTheme.bodySmall,
                                               )),
                                           Expanded(
-                                              flex: 1,
                                               child: Text(
-                                                ":",
-                                                style: tsOneTextTheme.bodySmall,
-                                              )),
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
                                           Expanded(
                                             flex: 6,
                                             child: Text(
@@ -608,7 +595,7 @@ class ConfirmRequestPilotView extends GetView {
                                           ),
                                         ],
                                       ),
-                                      SizedBox(height: 5.0),
+                                      const SizedBox(height: 5.0),
                                       Row(
                                         children: [
                                           Expanded(
@@ -618,11 +605,10 @@ class ConfirmRequestPilotView extends GetView {
                                                 style: tsOneTextTheme.bodySmall,
                                               )),
                                           Expanded(
-                                              flex: 1,
                                               child: Text(
-                                                ":",
-                                                style: tsOneTextTheme.bodySmall,
-                                              )),
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
                                           Expanded(
                                             flex: 6,
                                             child: Text(
@@ -645,49 +631,49 @@ class ConfirmRequestPilotView extends GetView {
                     final deviceData = deviceSnapshot.data!.data() as Map<String, dynamic>;
 
                     return Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                       child: Column(
                         children: [
                           Align(
                             alignment: Alignment.centerRight,
                             child: Text(_formatTimestamp(data['timestamp']), style: tsOneTextTheme.labelSmall),
                           ),
-                          SizedBox(height: 15.0),
+                          const SizedBox(height: 15.0),
                           Row(
                             children: [
-                              Expanded(flex: 6, child: Text("ID NO")),
-                              Expanded(flex: 1, child: Text(":")),
+                              const Expanded(flex: 6, child: Text("ID NO")),
+                              const Expanded(child: Text(":")),
                               Expanded(
                                 flex: 6,
                                 child: Text('${userData['ID NO'] ?? 'No Data'}'),
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 5.0,
                           ),
                           Row(
                             children: [
-                              Expanded(flex: 6, child: Text("Name")),
-                              Expanded(flex: 1, child: Text(":")),
+                              const Expanded(flex: 6, child: Text("Name")),
+                              const Expanded(child: Text(":")),
                               Expanded(
                                 flex: 6,
                                 child: Text('${userData['NAME'] ?? 'No Data'}'),
                               ),
                             ],
                           ),
-                          SizedBox(height: 5.0),
+                          const SizedBox(height: 5.0),
                           Row(
                             children: [
-                              Expanded(flex: 6, child: Text("Rank")),
-                              Expanded(flex: 1, child: Text(":")),
+                              const Expanded(flex: 6, child: Text("Rank")),
+                              const Expanded(child: Text(":")),
                               Expanded(
                                 flex: 6,
                                 child: Text('${userData['RANK'] ?? 'No Data'}'),
                               ),
                             ],
                           ),
-                          SizedBox(height: 15.0),
+                          const SizedBox(height: 15.0),
                           const Padding(
                             padding: EdgeInsets.only(bottom: 16.0),
                             child: Row(
@@ -712,12 +698,12 @@ class ConfirmRequestPilotView extends GetView {
                               ],
                             ),
                           ),
-                          SizedBox(height: 5.0),
+                          const SizedBox(height: 5.0),
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Text("Device 1", style: tsOneTextTheme.displaySmall),
                           ),
-                          SizedBox(height: 10.0),
+                          const SizedBox(height: 10.0),
                           Row(
                             children: [
                               Expanded(
@@ -727,11 +713,10 @@ class ConfirmRequestPilotView extends GetView {
                                     style: tsOneTextTheme.bodySmall,
                                   )),
                               Expanded(
-                                  flex: 1,
                                   child: Text(
-                                    ":",
-                                    style: tsOneTextTheme.bodySmall,
-                                  )),
+                                ":",
+                                style: tsOneTextTheme.bodySmall,
+                              )),
                               Expanded(
                                 flex: 7,
                                 child: Text(
@@ -741,7 +726,7 @@ class ConfirmRequestPilotView extends GetView {
                               ),
                             ],
                           ),
-                          SizedBox(height: 5.0),
+                          const SizedBox(height: 5.0),
                           Row(
                             children: [
                               Expanded(
@@ -751,11 +736,10 @@ class ConfirmRequestPilotView extends GetView {
                                     style: tsOneTextTheme.bodySmall,
                                   )),
                               Expanded(
-                                  flex: 1,
                                   child: Text(
-                                    ":",
-                                    style: tsOneTextTheme.bodySmall,
-                                  )),
+                                ":",
+                                style: tsOneTextTheme.bodySmall,
+                              )),
                               Expanded(
                                 flex: 6,
                                 child: Text(
@@ -765,7 +749,7 @@ class ConfirmRequestPilotView extends GetView {
                               ),
                             ],
                           ),
-                          SizedBox(height: 5.0),
+                          const SizedBox(height: 5.0),
                           Row(
                             children: [
                               Expanded(
@@ -775,11 +759,10 @@ class ConfirmRequestPilotView extends GetView {
                                     style: tsOneTextTheme.bodySmall,
                                   )),
                               Expanded(
-                                  flex: 1,
                                   child: Text(
-                                    ":",
-                                    style: tsOneTextTheme.bodySmall,
-                                  )),
+                                ":",
+                                style: tsOneTextTheme.bodySmall,
+                              )),
                               Expanded(
                                 flex: 6,
                                 child: Text(
@@ -789,7 +772,7 @@ class ConfirmRequestPilotView extends GetView {
                               ),
                             ],
                           ),
-                          SizedBox(height: 5.0),
+                          const SizedBox(height: 5.0),
                           Row(
                             children: [
                               Expanded(
@@ -799,11 +782,10 @@ class ConfirmRequestPilotView extends GetView {
                                     style: tsOneTextTheme.bodySmall,
                                   )),
                               Expanded(
-                                  flex: 1,
                                   child: Text(
-                                    ":",
-                                    style: tsOneTextTheme.bodySmall,
-                                  )),
+                                ":",
+                                style: tsOneTextTheme.bodySmall,
+                              )),
                               Expanded(
                                 flex: 6,
                                 child: Text(
@@ -813,7 +795,7 @@ class ConfirmRequestPilotView extends GetView {
                               ),
                             ],
                           ),
-                          SizedBox(height: 5.0),
+                          const SizedBox(height: 5.0),
                           Row(
                             children: [
                               Expanded(
@@ -823,11 +805,10 @@ class ConfirmRequestPilotView extends GetView {
                                     style: tsOneTextTheme.bodySmall,
                                   )),
                               Expanded(
-                                  flex: 1,
                                   child: Text(
-                                    ":",
-                                    style: tsOneTextTheme.bodySmall,
-                                  )),
+                                ":",
+                                style: tsOneTextTheme.bodySmall,
+                              )),
                               Expanded(
                                 flex: 6,
                                 child: Text(
@@ -837,7 +818,7 @@ class ConfirmRequestPilotView extends GetView {
                               ),
                             ],
                           ),
-                          SizedBox(height: 5.0),
+                          const SizedBox(height: 5.0),
                           Row(
                             children: [
                               Expanded(
@@ -847,11 +828,10 @@ class ConfirmRequestPilotView extends GetView {
                                     style: tsOneTextTheme.bodySmall,
                                   )),
                               Expanded(
-                                  flex: 1,
                                   child: Text(
-                                    ":",
-                                    style: tsOneTextTheme.bodySmall,
-                                  )),
+                                ":",
+                                style: tsOneTextTheme.bodySmall,
+                              )),
                               Expanded(
                                 flex: 6,
                                 child: Text(
@@ -861,7 +841,7 @@ class ConfirmRequestPilotView extends GetView {
                               ),
                             ],
                           ),
-                          SizedBox(height: 5.0),
+                          const SizedBox(height: 5.0),
                           Row(
                             children: [
                               Expanded(
@@ -871,11 +851,10 @@ class ConfirmRequestPilotView extends GetView {
                                     style: tsOneTextTheme.bodySmall,
                                   )),
                               Expanded(
-                                  flex: 1,
                                   child: Text(
-                                    ":",
-                                    style: tsOneTextTheme.bodySmall,
-                                  )),
+                                ":",
+                                style: tsOneTextTheme.bodySmall,
+                              )),
                               Expanded(
                                 flex: 6,
                                 child: Text(
@@ -897,18 +876,16 @@ class ConfirmRequestPilotView extends GetView {
       ),
       bottomNavigationBar: BottomAppBar(
         surfaceTintColor: tsOneColorScheme.secondary,
-        child: Expanded(
-          child: ElevatedButton(
-            onPressed: () {
-              confirmInUseCrew(context); // Pass the context to the function
-            },
-            style: ElevatedButton.styleFrom(
-                backgroundColor: TsOneColor.greenColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(4.0),
-                )),
-            child: const Text('Confirm', style: TextStyle(color: Colors.white)),
-          ),
+        child: ElevatedButton(
+          onPressed: () {
+            confirmInUseCrew(context); // Pass the context to the function
+          },
+          style: ElevatedButton.styleFrom(
+              backgroundColor: TsOneColor.greenColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4.0),
+              )),
+          child: const Text('Confirm', style: TextStyle(color: Colors.white)),
         ),
       ),
     );

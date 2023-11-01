@@ -76,8 +76,8 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
       barrierDismissible: false, // Dialog cannot be dismissed by tapping outside
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Confirm Return'),
-          content: SingleChildScrollView(
+          title: const Text('Confirm Return'),
+          content: const SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
                 Text('Are you sure you want to confirm the return of this device?'),
@@ -86,13 +86,13 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
               },
             ),
             TextButton(
-              child: Text('Confirm'),
+              child: const Text('Confirm'),
               onPressed: () {
                 // Call the function to update status and upload image
                 updateStatusToInUsePilot(widget.deviceId);
@@ -121,16 +121,16 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Confirmation'),
+        title: const Text('Confirmation'),
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.0), // Adjust the padding here
+          padding: const EdgeInsets.symmetric(horizontal: 16.0), // Adjust the padding here
           child: FutureBuilder<DocumentSnapshot>(
             future: FirebaseFirestore.instance.collection("pilot-device-1").doc(widget.deviceId).get(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
+                return const Center(child: CircularProgressIndicator());
               }
 
               if (snapshot.hasError) {
@@ -138,7 +138,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
               }
 
               if (!snapshot.hasData || !snapshot.data!.exists) {
-                return Center(child: Text('Data not found'));
+                return const Center(child: Text('Data not found'));
               }
 
               final data = snapshot.data!.data() as Map<String, dynamic>;
@@ -147,7 +147,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                 future: FirebaseFirestore.instance.collection("users").doc(data['handover-to-crew']).get(),
                 builder: (context, userSnapshot) {
                   if (userSnapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
+                    return const Center(child: CircularProgressIndicator());
                   }
 
                   if (userSnapshot.hasError) {
@@ -155,7 +155,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                   }
 
                   if (!userSnapshot.hasData || !userSnapshot.data!.exists) {
-                    return Center(child: Text('User data not found'));
+                    return const Center(child: Text('User data not found'));
                   }
 
                   final userData = userSnapshot.data!.data() as Map<String, dynamic>;
@@ -164,7 +164,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                     future: FirebaseFirestore.instance.collection("users").doc(data['user_uid']).get(),
                     builder: (context, otheruserSnapshot) {
                       if (otheruserSnapshot.connectionState == ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator());
+                        return const Center(child: CircularProgressIndicator());
                       }
 
                       if (otheruserSnapshot.hasError) {
@@ -172,7 +172,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                       }
 
                       if (!otheruserSnapshot.hasData || !otheruserSnapshot.data!.exists) {
-                        return Center(child: Text('Other Crew data not found'));
+                        return const Center(child: Text('Other Crew data not found'));
                       }
 
                       final otheruserData = otheruserSnapshot.data!.data() as Map<String, dynamic>;
@@ -181,7 +181,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                         future: FirebaseFirestore.instance.collection("Device").doc(data['device_uid2']).get(),
                         builder: (context, device2Snapshot) {
                           if (device2Snapshot.connectionState == ConnectionState.waiting) {
-                            return Center(child: CircularProgressIndicator());
+                            return const Center(child: CircularProgressIndicator());
                           }
 
                           if (device2Snapshot.hasError) {
@@ -189,7 +189,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                           }
 
                           if (!device2Snapshot.hasData || !device2Snapshot.data!.exists) {
-                            return Center(child: Text('Device data 2 not found'));
+                            return const Center(child: Text('Device data 2 not found'));
                           }
 
                           final deviceData2 = device2Snapshot.data!.data() as Map<String, dynamic>;
@@ -198,7 +198,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                             future: FirebaseFirestore.instance.collection("Device").doc(data['device_uid3']).get(),
                             builder: (context, device3Snapshot) {
                               if (device3Snapshot.connectionState == ConnectionState.waiting) {
-                                return Center(child: CircularProgressIndicator());
+                                return const Center(child: CircularProgressIndicator());
                               }
 
                               if (device3Snapshot.hasError) {
@@ -206,7 +206,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                               }
 
                               if (!device3Snapshot.hasData || !device3Snapshot.data!.exists) {
-                                return Center(child: Text('Device data not found'));
+                                return const Center(child: Text('Device data not found'));
                               }
 
                               final deviceData3 = device3Snapshot.data!.data() as Map<String, dynamic>;
@@ -215,7 +215,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    SizedBox(height: 10.0),
+                                    const SizedBox(height: 10.0),
                                     Align(
                                       alignment: Alignment.centerLeft,
                                       child: Text(
@@ -223,7 +223,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                         style: tsOneTextTheme.titleLarge,
                                       ),
                                     ),
-                                    SizedBox(height: 5.0),
+                                    const SizedBox(height: 5.0),
                                     Row(
                                       children: [
                                         Expanded(
@@ -232,7 +232,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                               "ID NO",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        Expanded(flex: 1, child: Text(":")),
+                                        const Expanded( child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -242,7 +242,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 5.0),
+                                    const SizedBox(height: 5.0),
                                     Row(
                                       children: [
                                         Expanded(
@@ -251,7 +251,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                               "Name",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        Expanded(flex: 1, child: Text(":")),
+                                        const Expanded( child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -261,7 +261,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 5.0),
+                                    const SizedBox(height: 5.0),
                                     Row(
                                       children: [
                                         Expanded(
@@ -270,7 +270,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                               "RANK",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        Expanded(flex: 1, child: Text(":")),
+                                        const Expanded( child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -280,7 +280,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 20.0),
+                                    const SizedBox(height: 20.0),
                                     Align(
                                       alignment: Alignment.centerLeft,
                                       child: Text(
@@ -288,7 +288,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                         style: tsOneTextTheme.titleLarge,
                                       ),
                                     ),
-                                    SizedBox(height: 5.0),
+                                    const SizedBox(height: 5.0),
                                     Row(
                                       children: [
                                         Expanded(
@@ -297,7 +297,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                               "ID NO",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        Expanded(flex: 1, child: Text(":")),
+                                        const Expanded( child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -307,7 +307,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 5.0),
+                                    const SizedBox(height: 5.0),
                                     Row(
                                       children: [
                                         Expanded(
@@ -316,7 +316,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                               "Name",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        Expanded(flex: 1, child: Text(":")),
+                                        const Expanded( child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -326,7 +326,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 5.0),
+                                    const SizedBox(height: 5.0),
                                     Row(
                                       children: [
                                         Expanded(
@@ -335,7 +335,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                               "Rank",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        Expanded(flex: 1, child: Text(":")),
+                                        const Expanded( child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -345,15 +345,15 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 20.0),
+                                    const SizedBox(height: 20.0),
                                     Align(
                                       alignment: Alignment.centerLeft,
                                       child: Text(
-                                        "DEVICE INFO 1",
+                                        "Device 2",
                                         style: tsOneTextTheme.titleLarge,
                                       ),
                                     ),
-                                    SizedBox(height: 5.0),
+                                    const SizedBox(height: 5.0),
                                     Row(
                                       children: [
                                         Expanded(
@@ -362,7 +362,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                               "Device No",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        Expanded(flex: 1, child: Text(":")),
+                                        const Expanded( child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -372,7 +372,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 5.0),
+                                    const SizedBox(height: 5.0),
                                     Row(
                                       children: [
                                         Expanded(
@@ -381,7 +381,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                               "IOS Version",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        Expanded(flex: 1, child: Text(":")),
+                                        const Expanded( child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -391,7 +391,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 5.0),
+                                    const SizedBox(height: 5.0),
                                     Row(
                                       children: [
                                         Expanded(
@@ -400,7 +400,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                               "FlySmart Version",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        Expanded(flex: 1, child: Text(":")),
+                                        const Expanded( child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -410,7 +410,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 5.0),
+                                    const SizedBox(height: 5.0),
                                     Row(
                                       children: [
                                         Expanded(
@@ -419,7 +419,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                               "Docunet Version",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        Expanded(flex: 1, child: Text(":")),
+                                        const Expanded( child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -429,7 +429,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 5.0),
+                                    const SizedBox(height: 5.0),
                                     Row(
                                       children: [
                                         Expanded(
@@ -438,7 +438,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                               "Lido mPilot Version",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        Expanded(flex: 1, child: Text(":")),
+                                        const Expanded( child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -448,7 +448,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 5.0),
+                                    const SizedBox(height: 5.0),
                                     Row(
                                       children: [
                                         Expanded(
@@ -457,7 +457,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                               "HUB",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        Expanded(flex: 1, child: Text(":")),
+                                        const Expanded( child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -467,7 +467,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 5.0),
+                                    const SizedBox(height: 5.0),
                                     Row(
                                       children: [
                                         Expanded(
@@ -476,7 +476,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                               "Condition",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        Expanded(flex: 1, child: Text(":")),
+                                        const Expanded( child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -486,15 +486,15 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 20.0),
+                                    const SizedBox(height: 20.0),
                                     Align(
                                       alignment: Alignment.centerLeft,
                                       child: Text(
-                                        "DEVICE INFO 2",
+                                        "Device 3",
                                         style: tsOneTextTheme.titleLarge,
                                       ),
                                     ),
-                                    SizedBox(height: 5.0),
+                                    const SizedBox(height: 5.0),
                                     Row(
                                       children: [
                                         Expanded(
@@ -503,7 +503,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                               "Device No",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        Expanded(flex: 1, child: Text(":")),
+                                        const Expanded( child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -513,7 +513,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 5.0),
+                                    const SizedBox(height: 5.0),
                                     Row(
                                       children: [
                                         Expanded(
@@ -522,7 +522,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                               "IOS Version",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        Expanded(flex: 1, child: Text(":")),
+                                        const Expanded( child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -532,7 +532,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 5.0),
+                                    const SizedBox(height: 5.0),
                                     Row(
                                       children: [
                                         Expanded(
@@ -541,7 +541,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                               "FlySmart Version",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        Expanded(flex: 1, child: Text(":")),
+                                        const Expanded( child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -551,7 +551,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 5.0),
+                                    const SizedBox(height: 5.0),
                                     Row(
                                       children: [
                                         Expanded(
@@ -560,7 +560,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                               "Docunet Version",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        Expanded(flex: 1, child: Text(":")),
+                                        const Expanded( child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -570,7 +570,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 5.0),
+                                    const SizedBox(height: 5.0),
                                     Row(
                                       children: [
                                         Expanded(
@@ -579,7 +579,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                               "Lido mPilot Version",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        Expanded(flex: 1, child: Text(":")),
+                                        const Expanded( child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -589,7 +589,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 5.0),
+                                    const SizedBox(height: 5.0),
                                     Row(
                                       children: [
                                         Expanded(
@@ -598,7 +598,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                               "HUB",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        Expanded(flex: 1, child: Text(":")),
+                                        const Expanded( child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -608,7 +608,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 5.0),
+                                    const SizedBox(height: 5.0),
                                     Row(
                                       children: [
                                         Expanded(
@@ -617,7 +617,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                               "Condition",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        Expanded(flex: 1, child: Text(":")),
+                                        const Expanded( child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -644,19 +644,17 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
       ),
       bottomNavigationBar: BottomAppBar(
         surfaceTintColor: tsOneColorScheme.secondary,
-        child: Expanded(
-          child: ElevatedButton(
-            onPressed: () {
-              // Call the function to update status and upload image
-              _showConfirmationDialog();
-            },
-            style: ElevatedButton.styleFrom(
-                backgroundColor: TsOneColor.primary,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(4.0),
-                )),
-            child: const Text('Reject', style: TextStyle(color: Colors.white)),
-          ),
+        child: ElevatedButton(
+          onPressed: () {
+            // Call the function to update status and upload image
+            _showConfirmationDialog();
+          },
+          style: ElevatedButton.styleFrom(
+              backgroundColor: TsOneColor.primary,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4.0),
+              )),
+          child: const Text('Reject', style: TextStyle(color: Colors.white)),
         ),
       ),
     );

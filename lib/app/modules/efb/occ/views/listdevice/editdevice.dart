@@ -182,7 +182,7 @@ class _EditDevice extends State<EditDevice> {
               'Confirmation',
               style: tsOneTextTheme.headlineLarge,
             ),
-            content: Text('Are you sure you want to update this device?'),
+            content: const Text('Are you sure you want to update this device?'),
             actions: <Widget>[
               Container(
                 width: 115,
@@ -190,19 +190,19 @@ class _EditDevice extends State<EditDevice> {
                   style: TextButton.styleFrom(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20.0),
-                      side: BorderSide(color: TsOneColor.onSecondary),
+                      side: const BorderSide(color: TsOneColor.onSecondary),
                     ),
                   ),
                   onPressed: () {
                     Navigator.of(context).pop(false);
                   },
-                  child: Text(
+                  child: const Text(
                     'No',
                     style: TextStyle(color: TsOneColor.onSecondary),
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 15,
               ),
               Container(
@@ -217,7 +217,7 @@ class _EditDevice extends State<EditDevice> {
                   onPressed: () {
                     Navigator.of(context).pop(true);
                   },
-                  child: Text(
+                  child: const Text(
                     'Yes',
                     style: TextStyle(color: TsOneColor.onPrimary),
                   ),
@@ -256,7 +256,7 @@ class _EditDevice extends State<EditDevice> {
             _showConfirmationDialog(context);
           }
         },
-        child: Text(
+        child: const Text(
           "Update",
           style: TextStyle(color: Colors.white),
           textAlign: TextAlign.center,
@@ -266,8 +266,8 @@ class _EditDevice extends State<EditDevice> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 255, 255, 255),
-        title: Text(
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+        title: const Text(
           'Edit Device',
           style: TextStyle(
             color: Colors.black, // Set text color to red
@@ -310,11 +310,11 @@ class _EditDevice extends State<EditDevice> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 20),
+              padding: const EdgeInsets.symmetric(vertical: 20),
               child: UpdateButton,
             ),
             // Expanded(
-            //   flex: 1,
+            //   
             //   child: Padding(
             //     padding: EdgeInsets.symmetric(vertical: 10),
             //     child: UpdateButton,

@@ -90,7 +90,7 @@ class ProfileccView extends GetView<ProfileccController> {
                   Row(
                     children: [
                       Expanded(flex: 3, child: const Text("Email")),
-                      Expanded(flex: 1, child: const Text(":")),
+                      Expanded( child: const Text(":")),
                       Expanded(flex: 6, child: const Text("noel@airasia.com")),
                     ],
                   ),
@@ -100,7 +100,7 @@ class ProfileccView extends GetView<ProfileccController> {
                   Row(
                     children: [
                       Expanded(flex: 3, child: const Text("ID NO")),
-                      Expanded(flex: 1, child: const Text(":")),
+                      Expanded( child: const Text(":")),
                       Expanded(flex: 6, child: const Text("1007074")),
                     ],
                   ),
@@ -110,7 +110,7 @@ class ProfileccView extends GetView<ProfileccController> {
                   Row(
                     children: [
                       Expanded(flex: 3, child: const Text("LOA NO")),
-                      Expanded(flex: 1, child: const Text(":")),
+                      Expanded( child: const Text(":")),
                       Expanded(flex: 6, child: const Text("2345/KAPEL/VIII/2022")),
                     ],
                   ),

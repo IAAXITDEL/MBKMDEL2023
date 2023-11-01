@@ -45,7 +45,10 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
   }
 
   List<Device> getMatchingDevices(String input) {
-    return devices.where((device) => device.deviceno.toLowerCase().contains(input.toLowerCase())).toList();
+    return devices
+        .where((device) =>
+            device.deviceno.toLowerCase().contains(input.toLowerCase()))
+        .toList();
   }
 
   Future<void> _showQuickAlert(BuildContext context) async {
@@ -59,11 +62,23 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
   }
 
   //QuickAlert Info
-  Future<void> _showInfo(BuildContext context) async {
+  Future<void> _showInfo2(BuildContext context) async {
     await QuickAlert.show(
       context: context,
       type: QuickAlertType.info,
-      text: 'The device is already in use',
+      text: 'The device 2 is already in use',
+      textColor: tsOneColorScheme.primary,
+    ).then((value) {
+      Navigator.of(context).pop();
+    });
+  }
+
+  //QuickAlert Info
+  Future<void> _showInfo3(BuildContext context) async {
+    await QuickAlert.show(
+      context: context,
+      type: QuickAlertType.info,
+      text: 'The device 3 is already in use',
       textColor: tsOneColorScheme.primary,
     ).then((value) {
       Navigator.of(context).pop();
@@ -71,13 +86,15 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
   }
 
   Future<void> _showConfirmationDialog() async {
-    bool deviceInUse2 = await _bookingService.isDeviceInUse(selectedDevice2!.uid, selectedDevice3!.uid);
-    bool deviceInUse3 = await _bookingService.isDeviceInUse(selectedDevice3!.uid, selectedDevice2!.uid);
+    bool deviceInUse2 = await _bookingService.isDeviceInUse(
+        selectedDevice2!.uid, selectedDevice3!.uid);
+    bool deviceInUse3 = await _bookingService.isDeviceInUse(
+        selectedDevice3!.uid, selectedDevice2!.uid);
 
     if (selectedDevice2!.deviceno == selectedDevice3!.deviceno) {
       // Show an error message or handle it accordingly
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Device No cannot be the same.')),
+        const SnackBar(content: Text('Device No cannot be the same.')),
       );
       return;
     }
@@ -90,7 +107,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
             'Confirm Request',
             style: tsOneTextTheme.headlineLarge,
           ),
-          content: SingleChildScrollView(
+          content: const SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
                 // if (deviceInUse2)
@@ -102,7 +119,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                 //       fontFamily: 'Poppins',
                 //     ),
                 //   ),
-                const Text('Are you sure you want to request this device?'),
+                Text('Are you sure you want to request this device?'),
               ],
             ),
           ),
@@ -112,13 +129,14 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                 Expanded(
                   flex: 5,
                   child: TextButton(
-                    child: Text('No', style: TextStyle(color: TsOneColor.secondaryContainer)),
+                    child: const Text('No',
+                        style: TextStyle(color: TsOneColor.secondaryContainer)),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
                   ),
                 ),
-                Spacer(flex: 1),
+                const Spacer(flex: 1),
                 //if (!deviceInUse2 && !deviceInUse3)
                 Expanded(
                   flex: 5,
@@ -129,12 +147,15 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                         borderRadius: BorderRadius.circular(20.0),
                       ),
                     ),
-                    child: Text('Yes', style: TextStyle(color: TsOneColor.onPrimary)),
+                    child: const Text('Yes',
+                        style: TextStyle(color: TsOneColor.onPrimary)),
                     onPressed: () {
                       if (!deviceInUse2 && !deviceInUse3) _saveBooking();
-                      if (!deviceInUse2 && !deviceInUse3) _showQuickAlert(context);
+                      if (!deviceInUse2 && !deviceInUse3)
+                        _showQuickAlert(context);
 
-                      if (deviceInUse2 || deviceInUse3) _showInfo(context);
+                      if (deviceInUse2) _showInfo2(context);
+                      if (deviceInUse3) _showInfo3(context);
                     },
                   ),
                 ),
@@ -187,7 +208,8 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
   }
 
   Future<Widget> getUserPhoto(String userUid) async {
-    final userSnapshot = await FirebaseFirestore.instance.collection("users").doc(userUid).get();
+    final userSnapshot =
+        await FirebaseFirestore.instance.collection("users").doc(userUid).get();
 
     if (userSnapshot.exists) {
       final userData = userSnapshot.data() as Map<String, dynamic>;
@@ -208,7 +230,8 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
   }
 
   Future<String> getUserName(String userUid) async {
-    final userSnapshot = await FirebaseFirestore.instance.collection("users").doc(userUid).get();
+    final userSnapshot =
+        await FirebaseFirestore.instance.collection("users").doc(userUid).get();
 
     if (userSnapshot.exists) {
       final userData = userSnapshot.data() as Map<String, dynamic>;
@@ -250,7 +273,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                   )
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 7,
               ),
               Row(
@@ -264,10 +287,11 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                         });
                       },
                       decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                        contentPadding:
+                            const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                         labelText: 'Device No',
                         labelStyle: tsOneTextTheme.labelMedium,
-                        border: OutlineInputBorder(),
+                        border: const OutlineInputBorder(),
                       ),
                     ),
                   ),
@@ -284,7 +308,8 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                       if (qrCode != '-1') {
                         setState(() {
                           deviceNoController2.text = qrCode;
-                          selectedDevice2 = getMatchingDevices(qrCode).firstOrNull;
+                          selectedDevice2 =
+                              getMatchingDevices(qrCode).firstOrNull;
                         });
                       }
                     },
@@ -311,7 +336,8 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                       .toList(),
                 ),
               const SizedBox(height: 16.0),
-              if (selectedDevice2 != null) // Show attributes if a device is selected
+              if (selectedDevice2 !=
+                  null) // Show attributes if a device is selected
                 Container(
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(4.0),
@@ -319,16 +345,17 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                         color: tsOneColorScheme.onSecondary,
                       )),
                   child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        RedTitleText(text: 'Device Details'),
-                        SizedBox(height: 5.0),
+                        const RedTitleText(text: 'Device Details'),
+                        const SizedBox(height: 5.0),
                         Row(
                           children: [
-                            Expanded(flex: 7, child: Text("Device No")),
-                            Expanded(flex: 1, child: Text(":")),
+                            const Expanded(flex: 7, child: Text("Device No")),
+                            const Expanded(child: Text(":")),
                             Expanded(
                               flex: 6,
                               child: Text('${selectedDevice2!.deviceno}'),
@@ -337,8 +364,8 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                         ),
                         Row(
                           children: [
-                            Expanded(flex: 7, child: Text("IOS Version")),
-                            Expanded(flex: 1, child: Text(":")),
+                            const Expanded(flex: 7, child: Text("IOS Version")),
+                            const Expanded(child: Text(":")),
                             Expanded(
                               flex: 6,
                               child: Text('${selectedDevice2!.iosver}'),
@@ -347,8 +374,9 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                         ),
                         Row(
                           children: [
-                            Expanded(flex: 7, child: Text("FlySmart Version")),
-                            Expanded(flex: 1, child: Text(":")),
+                            const Expanded(
+                                flex: 7, child: Text("FlySmart Version")),
+                            const Expanded(child: Text(":")),
                             Expanded(
                               flex: 6,
                               child: Text('${selectedDevice2!.flysmart}'),
@@ -357,8 +385,9 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                         ),
                         Row(
                           children: [
-                            Expanded(flex: 7, child: Text("Docunet Version")),
-                            Expanded(flex: 1, child: Text(":")),
+                            const Expanded(
+                                flex: 7, child: Text("Docunet Version")),
+                            const Expanded(child: Text(":")),
                             Expanded(
                               flex: 6,
                               child: Text('${selectedDevice2!.docuversion}'),
@@ -367,8 +396,9 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                         ),
                         Row(
                           children: [
-                            Expanded(flex: 7, child: Text("Lido mPilot Version")),
-                            Expanded(flex: 1, child: Text(":")),
+                            const Expanded(
+                                flex: 7, child: Text("Lido mPilot Version")),
+                            const Expanded(child: Text(":")),
                             Expanded(
                               flex: 6,
                               child: Text('${selectedDevice2!.lidoversion}'),
@@ -377,8 +407,8 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                         ),
                         Row(
                           children: [
-                            Expanded(flex: 7, child: Text("Hub")),
-                            Expanded(flex: 1, child: Text(":")),
+                            const Expanded(flex: 7, child: Text("Hub")),
+                            const Expanded(child: Text(":")),
                             Expanded(
                               flex: 6,
                               child: Text('${selectedDevice2!.hub}'),
@@ -387,8 +417,8 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                         ),
                         Row(
                           children: [
-                            Expanded(flex: 7, child: Text("Condition")),
-                            Expanded(flex: 1, child: Text(":")),
+                            const Expanded(flex: 7, child: Text("Condition")),
+                            const Expanded(child: Text(":")),
                             Expanded(
                               flex: 6,
                               child: Text('${selectedDevice2!.condition}'),
@@ -408,7 +438,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                   )
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 7,
               ),
               Row(
@@ -422,10 +452,11 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                         });
                       },
                       decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                        contentPadding:
+                            const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                         labelText: 'Device No',
                         labelStyle: tsOneTextTheme.labelMedium,
-                        border: OutlineInputBorder(),
+                        border: const OutlineInputBorder(),
                       ),
                     ),
                   ),
@@ -442,7 +473,8 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                       if (qrCode != '-1') {
                         setState(() {
                           deviceNoController3.text = qrCode;
-                          selectedDevice3 = getMatchingDevices(qrCode).firstOrNull;
+                          selectedDevice3 =
+                              getMatchingDevices(qrCode).firstOrNull;
                         });
                       }
                     },
@@ -469,7 +501,8 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                       .toList(),
                 ),
               const SizedBox(height: 16.0),
-              if (selectedDevice3 != null) // Show attributes if a device is selected
+              if (selectedDevice3 !=
+                  null) // Show attributes if a device is selected
                 Container(
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(4.0),
@@ -477,16 +510,17 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                         color: tsOneColorScheme.onSecondary,
                       )),
                   child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        RedTitleText(text: 'Device Details'),
-                        SizedBox(height: 5.0),
+                        const RedTitleText(text: 'Device Details'),
+                        const SizedBox(height: 5.0),
                         Row(
                           children: [
-                            Expanded(flex: 7, child: Text("Device No")),
-                            Expanded(flex: 1, child: Text(":")),
+                            const Expanded(flex: 7, child: Text("Device No")),
+                            const Expanded(child: Text(":")),
                             Expanded(
                               flex: 6,
                               child: Text('${selectedDevice3!.deviceno}'),
@@ -495,8 +529,8 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                         ),
                         Row(
                           children: [
-                            Expanded(flex: 7, child: Text("IOS Version")),
-                            Expanded(flex: 1, child: Text(":")),
+                            const Expanded(flex: 7, child: Text("IOS Version")),
+                            const Expanded(child: Text(":")),
                             Expanded(
                               flex: 6,
                               child: Text('${selectedDevice3!.iosver}'),
@@ -505,8 +539,9 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                         ),
                         Row(
                           children: [
-                            Expanded(flex: 7, child: Text("FlySmart Version")),
-                            Expanded(flex: 1, child: Text(":")),
+                            const Expanded(
+                                flex: 7, child: Text("FlySmart Version")),
+                            const Expanded(child: Text(":")),
                             Expanded(
                               flex: 6,
                               child: Text('${selectedDevice3!.flysmart}'),
@@ -515,8 +550,9 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                         ),
                         Row(
                           children: [
-                            Expanded(flex: 7, child: Text("Docunet Version")),
-                            Expanded(flex: 1, child: Text(":")),
+                            const Expanded(
+                                flex: 7, child: Text("Docunet Version")),
+                            const Expanded(child: Text(":")),
                             Expanded(
                               flex: 6,
                               child: Text('${selectedDevice3!.docuversion}'),
@@ -525,8 +561,9 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                         ),
                         Row(
                           children: [
-                            Expanded(flex: 7, child: Text("Lido mPilot Version")),
-                            Expanded(flex: 1, child: Text(":")),
+                            const Expanded(
+                                flex: 7, child: Text("Lido mPilot Version")),
+                            const Expanded(child: Text(":")),
                             Expanded(
                               flex: 6,
                               child: Text('${selectedDevice3!.lidoversion}'),
@@ -535,8 +572,8 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                         ),
                         Row(
                           children: [
-                            Expanded(flex: 7, child: Text("Hub")),
-                            Expanded(flex: 1, child: Text(":")),
+                            const Expanded(flex: 7, child: Text("Hub")),
+                            const Expanded(child: Text(":")),
                             Expanded(
                               flex: 6,
                               child: Text('${selectedDevice3!.hub}'),
@@ -545,8 +582,8 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                         ),
                         Row(
                           children: [
-                            Expanded(flex: 7, child: Text("Condition")),
-                            Expanded(flex: 1, child: Text(":")),
+                            const Expanded(flex: 7, child: Text("Condition")),
+                            const Expanded(child: Text(":")),
                             Expanded(
                               flex: 6,
                               child: Text('${selectedDevice3!.condition}'),

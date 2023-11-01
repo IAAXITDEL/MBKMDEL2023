@@ -55,14 +55,14 @@ class _FOSignaturePadPageState extends State<FOSignaturePadPage> {
                 height: 15,
               ),
               ConstrainedBox(
-                constraints: BoxConstraints(
+                constraints: const BoxConstraints(
                   minHeight: 40,
                   minWidth: 400,
                 ),
                 child: Container(
                   decoration: BoxDecoration(
                     color: tsOneColorScheme.primary,
-                    borderRadius: BorderRadius.only(
+                    borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(25.0),
                       topRight: Radius.circular(25.0),
                     ),
@@ -78,7 +78,7 @@ class _FOSignaturePadPageState extends State<FOSignaturePadPage> {
                   Container(
                     height: 480,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(
+                      borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(10.0),
                         topRight: Radius.circular(10.0),
                         bottomLeft: Radius.circular(25.0),
@@ -88,7 +88,7 @@ class _FOSignaturePadPageState extends State<FOSignaturePadPage> {
                         BoxShadow(
                           color: Colors.grey.withOpacity(0.5),
                           blurRadius: 5,
-                          offset: Offset(0, 2),
+                          offset: const Offset(0, 2),
                         ),
                       ],
                     ),
@@ -121,7 +121,7 @@ class _FOSignaturePadPageState extends State<FOSignaturePadPage> {
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               Column(
@@ -136,10 +136,10 @@ class _FOSignaturePadPageState extends State<FOSignaturePadPage> {
                           });
                         },
                       ),
-                      Text('I agree with all of the results', style: TextStyle(fontWeight: FontWeight.w300)),
+                      const Text('I agree with all of the results', style: TextStyle(fontWeight: FontWeight.w300)),
                     ],
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   ElevatedButton(
                     onPressed: () async {
                       final signatureData = widget.signatureImage;
@@ -225,13 +225,13 @@ class _FOSignaturePadPageState extends State<FOSignaturePadPage> {
                                     Expanded(
                                       flex: 5,
                                       child: TextButton(
-                                        child: Text('No', style: TextStyle(color: TsOneColor.secondaryContainer)),
+                                        child: const Text('No', style: TextStyle(color: TsOneColor.secondaryContainer)),
                                         onPressed: () {
                                           Navigator.of(context).pop();
                                         },
                                       ),
                                     ),
-                                    Spacer(flex: 1),
+                                    const Spacer(flex: 1),
                                     Expanded(
                                       flex: 5,
                                       child: ElevatedButton(

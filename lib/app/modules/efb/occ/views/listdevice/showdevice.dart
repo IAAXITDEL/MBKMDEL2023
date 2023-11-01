@@ -48,7 +48,7 @@ class _ShowDeviceState extends State<ShowDevice> {
   Future<void> _captureAndSave() async {
     screenshotController
         .capture(
-      delay: Duration(milliseconds: 100),
+      delay: const Duration(milliseconds: 100),
       pixelRatio: 3,
     )
         .then((capturedImage) async {
@@ -72,7 +72,7 @@ class _ShowDeviceState extends State<ShowDevice> {
               content: Image.memory(buffer),
             ),
           );
-          await Future.delayed(Duration(seconds: 1));
+          await Future.delayed(const Duration(seconds: 1));
           Navigator.of(context).pop();
 
           Fluttertoast.showToast(
@@ -83,7 +83,7 @@ class _ShowDeviceState extends State<ShowDevice> {
             textColor: Colors.white,
           );
 
-          Future.delayed(Duration(seconds: 1), () {
+          Future.delayed(const Duration(seconds: 1), () {
             Fluttertoast.cancel(); // Tutup toast
           });
         } else {
@@ -120,8 +120,8 @@ class _ShowDeviceState extends State<ShowDevice> {
                     children: [
                       Row(
                         children: [
-                          Expanded(flex: 6, child: const Text('Device Number')),
-                          Expanded(flex: 1, child: const Text(':')),
+                          const Expanded(flex: 6, child: Text('Device Number')),
+                          const Expanded( child: Text(':')),
                           Expanded(
                               flex: 6,
                               child: Text('${widget.device.deviceno}')),
@@ -132,8 +132,8 @@ class _ShowDeviceState extends State<ShowDevice> {
                       ),
                       Row(
                         children: [
-                          Expanded(flex: 6, child: const Text('IOS Version')),
-                          Expanded(flex: 1, child: const Text(':')),
+                          const Expanded(flex: 6, child: Text('IOS Version')),
+                          const Expanded( child: Text(':')),
                           Expanded(
                               flex: 6, child: Text('${widget.device.iosver}')),
                         ],
@@ -143,9 +143,9 @@ class _ShowDeviceState extends State<ShowDevice> {
                       ),
                       Row(
                         children: [
-                          Expanded(
-                              flex: 6, child: const Text('FlySmart Version')),
-                          Expanded(flex: 1, child: const Text(':')),
+                          const Expanded(
+                              flex: 6, child: Text('FlySmart Version')),
+                          const Expanded( child: Text(':')),
                           Expanded(
                               flex: 6,
                               child: Text('${widget.device.flysmart}')),
@@ -156,10 +156,10 @@ class _ShowDeviceState extends State<ShowDevice> {
                       ),
                       Row(
                         children: [
-                          Expanded(
+                          const Expanded(
                               flex: 6,
-                              child: const Text('Lido mPilot Version')),
-                          Expanded(flex: 1, child: const Text(':')),
+                              child: Text('Lido mPilot Version')),
+                          const Expanded( child: Text(':')),
                           Expanded(
                               flex: 6,
                               child: Text('${widget.device.lidoversion}')),
@@ -170,9 +170,9 @@ class _ShowDeviceState extends State<ShowDevice> {
                       ),
                       Row(
                         children: [
-                          Expanded(
-                              flex: 6, child: const Text('Docunet Version')),
-                          Expanded(flex: 1, child: const Text(':')),
+                          const Expanded(
+                              flex: 6, child: Text('Docunet Version')),
+                          const Expanded( child: Text(':')),
                           Expanded(
                               flex: 6,
                               child: Text('${widget.device.docuversion}')),
@@ -183,8 +183,8 @@ class _ShowDeviceState extends State<ShowDevice> {
                       ),
                       Row(
                         children: [
-                          Expanded(flex: 6, child: const Text('Hub')),
-                          Expanded(flex: 1, child: const Text(':')),
+                          const Expanded(flex: 6, child: Text('Hub')),
+                          const Expanded( child: Text(':')),
                           Expanded(
                               flex: 6, child: Text('${widget.device.hub}')),
                         ],
@@ -194,9 +194,9 @@ class _ShowDeviceState extends State<ShowDevice> {
                       ),
                       Row(
                         children: [
-                          Expanded(
-                              flex: 6, child: const Text('Device Condition')),
-                          Expanded(flex: 1, child: const Text(':')),
+                          const Expanded(
+                              flex: 6, child: Text('Device Condition')),
+                          const Expanded( child: Text(':')),
                           Expanded(
                               flex: 6,
                               child: Text('${widget.device.condition}')),
@@ -233,7 +233,7 @@ class _ShowDeviceState extends State<ShowDevice> {
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Screenshot(
@@ -245,13 +245,13 @@ class _ShowDeviceState extends State<ShowDevice> {
                       if (imageData != null)
                         Image.memory(Uint8List.sublistView(
                             imageData!.buffer.asUint8List())),
-                      if (imageData == null) CircularProgressIndicator(),
+                      if (imageData == null) const CircularProgressIndicator(),
                       Center(
                         child: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 50.0),
                           child: Column(
                             children: [
-                              SizedBox(height: 20),
+                              const SizedBox(height: 20),
                               Text(
                                 'EFB - IPAD',
                                 style: TextStyle(
@@ -270,7 +270,7 @@ class _ShowDeviceState extends State<ShowDevice> {
                                   fontFamily: 'Poppins',
                                 ),
                               ),
-                              SizedBox(height: 5.0),
+                              const SizedBox(height: 5.0),
                               QrImageView(
                                 data: deviceNo,
                                 version: QrVersions.auto,
@@ -291,19 +291,17 @@ class _ShowDeviceState extends State<ShowDevice> {
       ),
       bottomNavigationBar: BottomAppBar(
         surfaceTintColor: tsOneColorScheme.secondary,
-        child: Expanded(
-          child: ElevatedButton(
-            onPressed: () {
-              _captureAndSave();
-            },
-            style: ElevatedButton.styleFrom(
-                backgroundColor: TsOneColor.greenColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(4.0),
-                )),
-            child: const Text('Download Image',
-                style: TextStyle(color: Colors.white)),
-          ),
+        child: ElevatedButton(
+          onPressed: () {
+            _captureAndSave();
+          },
+          style: ElevatedButton.styleFrom(
+              backgroundColor: TsOneColor.greenColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4.0),
+              )),
+          child: const Text('Download Image',
+              style: TextStyle(color: Colors.white)),
         ),
       ),
     );

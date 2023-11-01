@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:ts_one/app/modules/efb/occ/views/confirm_request_FO_view.dart';
 import 'package:ts_one/app/modules/efb/occ/views/confirm_request_pilot_view.dart';
 import 'package:ts_one/app/modules/efb/occ/views/confirm_return_back_pilot_view.dart';
 import 'package:ts_one/presentation/shared_components/TitleText.dart';
@@ -35,7 +34,8 @@ class HomeOCCView extends GetView<HomeOCCController> {
               child: Column(
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(top: 50, left: 20, right: 20),
+                    padding:
+                        const EdgeInsets.only(top: 50, left: 20, right: 20),
                     child: Column(
                       children: [
                         Row(
@@ -45,7 +45,7 @@ class HomeOCCView extends GetView<HomeOCCController> {
                               "Hi, ${controller.titleToGreet}",
                               style: tsOneTextTheme.headlineLarge,
                             ),
-                            Spacer(),
+                            const Spacer(),
                           ],
                         ),
                         Align(
@@ -95,7 +95,7 @@ class HomeOCCView extends GetView<HomeOCCController> {
                       decoration: BoxDecoration(
                         color: tsOneColorScheme.onPrimary,
                         borderRadius: BorderRadius.circular(15.0),
-                        boxShadow: [
+                        boxShadow: const [
                           BoxShadow(
                             color: Colors.black12,
                             blurRadius: 5,
@@ -119,7 +119,7 @@ class HomeOCCView extends GetView<HomeOCCController> {
                                     builder: (context, snapshot) {
                                       if (snapshot.connectionState ==
                                           ConnectionState.waiting) {
-                                        return CircularProgressIndicator();
+                                        return const CircularProgressIndicator();
                                       } else if (snapshot.hasError) {
                                         return Text('Error: ${snapshot.error}');
                                       } else {
@@ -157,7 +157,7 @@ class HomeOCCView extends GetView<HomeOCCController> {
                                     builder: (context, snapshot) {
                                       if (snapshot.connectionState ==
                                           ConnectionState.waiting) {
-                                        return CircularProgressIndicator();
+                                        return const CircularProgressIndicator();
                                       }
 
                                       if (snapshot.hasError) {
@@ -178,7 +178,7 @@ class HomeOCCView extends GetView<HomeOCCController> {
                                         builder: (context, snapshot) {
                                           if (snapshot.connectionState ==
                                               ConnectionState.waiting) {
-                                            return CircularProgressIndicator();
+                                            return const CircularProgressIndicator();
                                           }
 
                                           if (snapshot.hasError) {
@@ -198,7 +198,7 @@ class HomeOCCView extends GetView<HomeOCCController> {
                                             builder: (context, snapshot) {
                                               if (snapshot.connectionState ==
                                                   ConnectionState.waiting) {
-                                                return CircularProgressIndicator();
+                                                return const CircularProgressIndicator();
                                               }
 
                                               if (snapshot.hasError) {
@@ -218,7 +218,7 @@ class HomeOCCView extends GetView<HomeOCCController> {
                                                   if (snapshot
                                                           .connectionState ==
                                                       ConnectionState.waiting) {
-                                                    return CircularProgressIndicator();
+                                                    return const CircularProgressIndicator();
                                                   }
 
                                                   if (snapshot.hasError) {
@@ -279,7 +279,7 @@ class HomeOCCView extends GetView<HomeOCCController> {
                   const SizedBox(
                     height: 8,
                   ),
-                  TabBar(
+                  const TabBar(
                     tabs: [
                       Tab(text: "Confirm"),
                       Tab(text: "In Use"),
@@ -293,15 +293,15 @@ class HomeOCCView extends GetView<HomeOCCController> {
                     child: TabBarView(
                       children: [
                         FirebaseDataTab(
-                          statuses: ["waiting-confirmation-1"],
+                          statuses: const ["waiting-confirmation-1"],
                           userHub: userHub ?? '',
                         ),
                         FirebaseDataTab(
-                          statuses: ["in-use-pilot"],
+                          statuses: const ["in-use-pilot"],
                           userHub: userHub ?? '',
                         ),
                         FirebaseDataTab(
-                          statuses: ["need-confirmation-occ"],
+                          statuses: const ["need-confirmation-occ"],
                           userHub: userHub ?? '',
                         ),
                       ],
@@ -355,7 +355,7 @@ class FirebaseDataTab extends StatelessWidget {
           .snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return LoadingScreen();
+          return const LoadingScreen();
         }
 
         if (snapshot.hasError) {
@@ -381,7 +381,7 @@ class FirebaseDataTab extends StatelessWidget {
                   .get(),
               builder: (context, userSnapshot) {
                 if (userSnapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator();
+                  return const CircularProgressIndicator();
                 }
 
                 if (userSnapshot.hasError) {
@@ -389,7 +389,7 @@ class FirebaseDataTab extends StatelessWidget {
                 }
 
                 if (!userSnapshot.hasData || !userSnapshot.data!.exists) {
-                  return Text("User data not found");
+                  return const Text("User data not found");
                 }
 
                 final userData =
@@ -445,16 +445,16 @@ class FirebaseDataTab extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                SizedBox(width: 8.0),
+                                const SizedBox(width: 8.0),
                                 CircleAvatar(
                                   backgroundImage: photoUrl != null
                                       ? NetworkImage(photoUrl as String)
-                                      : AssetImage(
+                                      : const AssetImage(
                                               'assets/default_profile_image.png')
                                           as ImageProvider,
                                   radius: 25.0,
                                 ),
-                                SizedBox(width: 12.0),
+                                const SizedBox(width: 12.0),
                                 Flexible(
                                   child: Column(
                                     crossAxisAlignment:

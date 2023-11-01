@@ -37,11 +37,11 @@ class ConfirmPageFeedbackPilot extends StatefulWidget {
     this.fourSectorController,
     this.fiveSectorController,
     this.sixSectorController,
-
   });
 
   @override
-  _ConfirmPageFeedbackPilotState createState() => _ConfirmPageFeedbackPilotState();
+  _ConfirmPageFeedbackPilotState createState() =>
+      _ConfirmPageFeedbackPilotState();
 }
 
 class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
@@ -74,7 +74,8 @@ class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
     String? fiveSector = widget.fiveSectorController?.text;
     String? sixSector = widget.sixSectorController?.text;
 
-    final CollectionReference feedbackCollection = FirebaseFirestore.instance.collection('feedback-device');
+    final CollectionReference feedbackCollection =
+        FirebaseFirestore.instance.collection('feedback-device');
 
     // Membuat dokumen baru dalam koleksi feedback-device
     DocumentReference feedbackDoc = await feedbackCollection.add({
@@ -109,7 +110,9 @@ class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
     String feedbackId = feedbackDoc.id;
 
     // Update feedbackId pada dokumen pilot-device-1
-    final DocumentReference pilotDeviceRef = FirebaseFirestore.instance.collection('pilot-device-1').doc(widget.documentId);
+    final DocumentReference pilotDeviceRef = FirebaseFirestore.instance
+        .collection('pilot-device-1')
+        .doc(widget.documentId);
     await pilotDeviceRef.update({
       'feedbackId': feedbackId,
     });
@@ -117,7 +120,6 @@ class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
     // Call the _showQuickAlert function
     _showQuickAlert(context);
   }
-
 
   // Function to show a success message using QuickAlert
   Future<void> _showQuickAlert(BuildContext context) async {
@@ -129,7 +131,6 @@ class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
     Navigator.of(context).pop();
     Navigator.of(context).pop();
     Navigator.of(context).pop();
-
   }
 
   @override
@@ -152,10 +153,14 @@ class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
                     style: tsOneTextTheme.titleMedium,
                   ),
                 ),
-                SizedBox(height: 5,),
-                Text('Strong Mechanical Integrity During Flight', style: tsOneTextTheme.labelLarge),
+                SizedBox(
+                  height: 5,
+                ),
+                Text('Strong Mechanical Integrity During Flight',
+                    style: tsOneTextTheme.labelLarge),
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0), // Mengatur jarak antara radio buttons
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 8.0), // Mengatur jarak antara radio buttons
                   child: Column(
                     children: [
                       RadioListTile<String?>(
@@ -180,13 +185,13 @@ class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
                         },
                         activeColor: Colors.red,
                       )
-
                     ],
                   ),
                 ),
                 Text('Easy to use ', style: tsOneTextTheme.labelLarge),
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0), // Mengatur jarak antara radio buttons
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 8.0), // Mengatur jarak antara radio buttons
                   child: Column(
                     children: [
                       RadioListTile<String?>(
@@ -211,13 +216,14 @@ class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
                         },
                         activeColor: Colors.red,
                       )
-
                     ],
                   ),
                 ),
-                Text('Easy to detached during emergency, if required', style: tsOneTextTheme.labelLarge),
+                Text('Easy to detached during emergency, if required',
+                    style: tsOneTextTheme.labelLarge),
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0), // Mengatur jarak antara radio buttons
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 8.0), // Mengatur jarak antara radio buttons
                   child: Column(
                     children: [
                       RadioListTile<String?>(
@@ -242,13 +248,14 @@ class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
                         },
                         activeColor: Colors.red,
                       )
-
                     ],
                   ),
                 ),
-                Text('Obstruct emergency egress', style: tsOneTextTheme.labelLarge),
+                Text('Obstruct emergency egress',
+                    style: tsOneTextTheme.labelLarge),
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0), // Mengatur jarak antara radio buttons
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 8.0), // Mengatur jarak antara radio buttons
                   child: Column(
                     children: [
                       RadioListTile<String?>(
@@ -273,13 +280,14 @@ class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
                         },
                         activeColor: Colors.red,
                       )
-
                     ],
                   ),
                 ),
-                Text('Bracket position obstruct your vision', style: tsOneTextTheme.labelLarge),
+                Text('Bracket position obstruct your vision',
+                    style: tsOneTextTheme.labelLarge),
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0), // Mengatur jarak antara radio buttons
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 8.0), // Mengatur jarak antara radio buttons
                   child: Column(
                     children: [
                       RadioListTile<String?>(
@@ -304,13 +312,14 @@ class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
                         },
                         activeColor: Colors.red,
                       )
-
                     ],
                   ),
                 ),
-                Text('If Yes, How severe did it obstruct your vision?', style: tsOneTextTheme.labelLarge),
+                Text('If Yes, How severe did it obstruct your vision?',
+                    style: tsOneTextTheme.labelLarge),
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0), // Mengatur jarak antara radio buttons
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 8.0), // Mengatur jarak antara radio buttons
                   child: Column(
                     children: [
                       RadioListTile<String?>(
@@ -338,19 +347,23 @@ class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
                     ],
                   ),
                 ),
-                SizedBox(height: 5,),
-                Text("If high please write down your concern in the comment box below"),
-
+                SizedBox(
+                  height: 5,
+                ),
+                Text(
+                    "If high please write down your concern in the comment box below"),
                 TextFormField(
                   controller: ifHighController,
                   decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                    contentPadding:
+                        const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                     labelText: 'Write Here',
                     border: OutlineInputBorder(),
                   ),
                 ),
-                SizedBox(height: 5,),
-
+                SizedBox(
+                  height: 5,
+                ),
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
@@ -358,12 +371,14 @@ class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
                     style: tsOneTextTheme.titleMedium,
                   ),
                 ),
-                SizedBox(height: 5,),
-
-
-                Text('Airbus Flysmart (Performance)', style: tsOneTextTheme.labelLarge),
+                SizedBox(
+                  height: 5,
+                ),
+                Text('Airbus Flysmart (Performance)',
+                    style: tsOneTextTheme.labelLarge),
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0), // Mengatur jarak antara radio buttons
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 8.0), // Mengatur jarak antara radio buttons
                   child: Column(
                     children: [
                       RadioListTile<String?>(
@@ -372,7 +387,7 @@ class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
                         groupValue: Q13,
                         onChanged: (value) {
                           setState(() {
-                            Q13= value;
+                            Q13 = value;
                           });
                         },
                         activeColor: Colors.red,
@@ -393,7 +408,8 @@ class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
                 ),
                 Text('Lido (Navigation)', style: tsOneTextTheme.labelLarge),
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0), // Mengatur jarak antara radio buttons
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 8.0), // Mengatur jarak antara radio buttons
                   child: Column(
                     children: [
                       RadioListTile<String?>(
@@ -402,7 +418,7 @@ class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
                         groupValue: Q14,
                         onChanged: (value) {
                           setState(() {
-                            Q14= value;
+                            Q14 = value;
                           });
                         },
                         activeColor: Colors.red,
@@ -421,9 +437,11 @@ class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
                     ],
                   ),
                 ),
-                Text('Vistair Docunet (Library Document)', style: tsOneTextTheme.labelLarge),
+                Text('Vistair Docunet (Library Document)',
+                    style: tsOneTextTheme.labelLarge),
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0), // Mengatur jarak antara radio buttons
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 8.0), // Mengatur jarak antara radio buttons
                   child: Column(
                     children: [
                       RadioListTile<String?>(
@@ -432,7 +450,7 @@ class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
                         groupValue: Q15,
                         onChanged: (value) {
                           setState(() {
-                            Q15= value;
+                            Q15 = value;
                           });
                         },
                         activeColor: Colors.red,
@@ -451,12 +469,15 @@ class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
                     ],
                   ),
                 ),
-                SizedBox(height: 5,),
+                SizedBox(
+                  height: 5,
+                ),
                 Text("Additional comment on all observation"),
                 TextFormField(
                   controller: addionalComentController,
                   decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                    contentPadding:
+                        const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                     labelText: 'Write Here',
                     border: OutlineInputBorder(),
                   ),

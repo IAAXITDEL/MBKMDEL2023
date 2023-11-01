@@ -60,7 +60,7 @@ Future<void> generateLogPdfDevice1({
   final ttf = pw.Font.ttf(font);
 
   final footer = pw.Container(
-    padding: pw.EdgeInsets.all(5.0),
+    padding: const pw.EdgeInsets.all(5.0),
     child: pw.Row(
       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
       crossAxisAlignment: pw.CrossAxisAlignment.end,
@@ -166,7 +166,7 @@ Future<void> generateLogPdfDevice1({
               pw.Align(
                 child: pw.Text(
                   _formatTimestamp(loan),
-                  style: pw.TextStyle(
+                  style: const pw.TextStyle(
                     fontSize: 12,
                   ),
                 ),
@@ -178,7 +178,7 @@ Future<void> generateLogPdfDevice1({
             tableWidth: pw.TableWidth.min,
             border: pw.TableBorder.all(),
             columnWidths: {
-              0: pw.FlexColumnWidth(1),
+              0: const pw.FlexColumnWidth(1),
             },
             children: [
               pw.TableRow(
@@ -195,8 +195,8 @@ Future<void> generateLogPdfDevice1({
             tableWidth: pw.TableWidth.min,
             border: pw.TableBorder.all(),
             columnWidths: {
-              0: pw.FlexColumnWidth(2),
-              1: pw.FlexColumnWidth(3),
+              0: const pw.FlexColumnWidth(2),
+              1: const pw.FlexColumnWidth(3),
             },
             children: [
               pw.TableRow(
@@ -241,7 +241,7 @@ Future<void> generateLogPdfDevice1({
             tableWidth: pw.TableWidth.min,
             border: pw.TableBorder.all(),
             columnWidths: {
-              0: pw.FlexColumnWidth(1),
+              0: const pw.FlexColumnWidth(1),
             },
             children: [
               pw.TableRow(
@@ -258,8 +258,8 @@ Future<void> generateLogPdfDevice1({
             tableWidth: pw.TableWidth.min,
             border: pw.TableBorder.all(),
             columnWidths: {
-              0: pw.FlexColumnWidth(2),
-              1: pw.FlexColumnWidth(3),
+              0: const pw.FlexColumnWidth(2),
+              1: const pw.FlexColumnWidth(3),
             },
             children: [
               pw.TableRow(
@@ -316,14 +316,14 @@ Future<void> generateLogPdfDevice1({
             tableWidth: pw.TableWidth.min,
             border: pw.TableBorder.all(),
             columnWidths: {
-              0: pw.FlexColumnWidth(1),
+              0: const pw.FlexColumnWidth(1),
             },
             children: [
               pw.TableRow(
                 children: [
                   pw.Container(
                     height: 35.0,
-                    padding: pw.EdgeInsets.all(5.0),
+                    padding: const pw.EdgeInsets.all(5.0),
                     child: pw.Text(
                       'It is confirmed that all IAA Operation Manual in this EFB are updated and EFB device in good condition',
                       style: pw.TextStyle(
@@ -345,9 +345,9 @@ Future<void> generateLogPdfDevice1({
             tableWidth: pw.TableWidth.min,
             border: pw.TableBorder.all(),
             columnWidths: {
-              0: pw.FlexColumnWidth(4),
-              1: pw.FlexColumnWidth(4),
-              2: pw.FlexColumnWidth(4),
+              0: const pw.FlexColumnWidth(4),
+              1: const pw.FlexColumnWidth(4),
+              2: const pw.FlexColumnWidth(4),
             },
             children: [
               pw.TableRow(
@@ -540,7 +540,7 @@ pw.Widget _buildHeaderCell(String text, pw.Context context) {
     decoration: pw.BoxDecoration(
       border: pw.TableBorder.all(),
     ),
-    padding: pw.EdgeInsets.all(5.0),
+    padding: const pw.EdgeInsets.all(5.0),
     child: pw.Text(
       text,
       style: pw.TextStyle(
@@ -557,7 +557,7 @@ pw.Widget _buildHeaderCellLeft(String text, pw.Context context) {
     decoration: pw.BoxDecoration(
       border: pw.TableBorder.all(),
     ),
-    padding: pw.EdgeInsets.all(5.0),
+    padding: const pw.EdgeInsets.all(5.0),
     child: pw.Text(
       text,
       style: pw.TextStyle(
@@ -574,10 +574,10 @@ pw.Widget _buildHeaderCellRight(String text, pw.Context context) {
     decoration: pw.BoxDecoration(
       border: pw.TableBorder.all(),
     ),
-    padding: pw.EdgeInsets.all(5.0),
+    padding: const pw.EdgeInsets.all(5.0),
     child: pw.Text(
       text,
-      style: pw.TextStyle(
+      style: const pw.TextStyle(
         fontSize: 10,
       ),
     ),

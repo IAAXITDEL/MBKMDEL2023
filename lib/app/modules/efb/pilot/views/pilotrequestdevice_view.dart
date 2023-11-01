@@ -82,10 +82,10 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
             'Confirm Request',
             style: tsOneTextTheme.headlineLarge,
           ),
-          content: SingleChildScrollView(
+          content: const SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                const Text('Are you sure you want to request this device?'),
+                Text('Are you sure you want to request this device?'),
               ],
             ),
           ),
@@ -95,14 +95,14 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                 Expanded(
                   flex: 5,
                   child: TextButton(
-                    child: Text('No',
+                    child: const Text('No',
                         style: TextStyle(color: TsOneColor.secondaryContainer)),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
                   ),
                 ),
-                Spacer(flex: 1),
+                const Spacer(flex: 1),
                 Expanded(
                   flex: 5,
                   child: TextButton(
@@ -112,7 +112,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                         borderRadius: BorderRadius.circular(20.0),
                       ),
                     ),
-                    child: Text('Yes',
+                    child: const Text('Yes',
                         style: TextStyle(color: TsOneColor.onPrimary)),
                     onPressed: () {
                       if (!deviceInUse) _saveBooking();
@@ -207,7 +207,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                 alignment: Alignment.centerLeft,
                 child: Text("Device 1", style: tsOneTextTheme.displaySmall),
               ),
-              SizedBox(width: 7.0),
+              const SizedBox(width: 7.0),
               Row(
                 children: [
                   Expanded(
@@ -223,7 +223,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                             const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                         labelText: 'Device No',
                         labelStyle: tsOneTextTheme.labelMedium,
-                        border: OutlineInputBorder(),
+                        border: const OutlineInputBorder(),
                       ),
                     ),
                   ),
@@ -275,16 +275,18 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                         color: tsOneColorScheme.onSecondary,
                       )),
                   child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        RedTitleText(text: 'Device Details'),
-                        SizedBox(height: 5.0),
+                        const RedTitleText(text: 'Device Details'),
+                        const SizedBox(height: 5.0),
                         Row(
                           children: [
-                            Expanded(flex: 7, child: Text("Device Number")),
-                            Expanded(flex: 2, child: Text(":")),
+                            const Expanded(
+                                flex: 7, child: Text("Device Number")),
+                            const Expanded(flex: 2, child: Text(":")),
                             Expanded(
                               flex: 6,
                               child: Text('${selectedDevice!.deviceno}'),
@@ -293,8 +295,8 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                         ),
                         Row(
                           children: [
-                            Expanded(flex: 7, child: Text("IOS Version")),
-                            Expanded(flex: 2, child: Text(":")),
+                            const Expanded(flex: 7, child: Text("IOS Version")),
+                            const Expanded(flex: 2, child: Text(":")),
                             Expanded(
                               flex: 6,
                               child: Text('${selectedDevice!.iosver}'),
@@ -303,8 +305,9 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                         ),
                         Row(
                           children: [
-                            Expanded(flex: 7, child: Text("FlySmart Version")),
-                            Expanded(flex: 2, child: Text(":")),
+                            const Expanded(
+                                flex: 7, child: Text("FlySmart Version")),
+                            const Expanded(flex: 2, child: Text(":")),
                             Expanded(
                               flex: 6,
                               child: Text('${selectedDevice!.flysmart}'),
@@ -313,8 +316,9 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                         ),
                         Row(
                           children: [
-                            Expanded(flex: 7, child: Text("Docunet Version")),
-                            Expanded(flex: 2, child: Text(":")),
+                            const Expanded(
+                                flex: 7, child: Text("Docunet Version")),
+                            const Expanded(flex: 2, child: Text(":")),
                             Expanded(
                               flex: 6,
                               child: Text('${selectedDevice!.docuversion}'),
@@ -323,9 +327,9 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                         ),
                         Row(
                           children: [
-                            Expanded(
+                            const Expanded(
                                 flex: 7, child: Text("Lido mPilot Version")),
-                            Expanded(flex: 2, child: Text(":")),
+                            const Expanded(flex: 2, child: Text(":")),
                             Expanded(
                               flex: 6,
                               child: Text('${selectedDevice!.lidoversion}'),
@@ -334,8 +338,8 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                         ),
                         Row(
                           children: [
-                            Expanded(flex: 7, child: Text("HUB")),
-                            Expanded(flex: 2, child: Text(":")),
+                            const Expanded(flex: 7, child: Text("HUB")),
+                            const Expanded(flex: 2, child: Text(":")),
                             Expanded(
                               flex: 6,
                               child: Text('${selectedDevice!.hub}'),
@@ -344,8 +348,8 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                         ),
                         Row(
                           children: [
-                            Expanded(flex: 7, child: Text("Condition")),
-                            Expanded(flex: 2, child: Text(":")),
+                            const Expanded(flex: 7, child: Text("Condition")),
+                            const Expanded(flex: 2, child: Text(":")),
                             Expanded(
                               flex: 6,
                               child: Text('${selectedDevice!.condition}'),
@@ -363,22 +367,20 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
       ),
       bottomNavigationBar: BottomAppBar(
         surfaceTintColor: tsOneColorScheme.secondary,
-        child: Expanded(
-          child: ElevatedButton(
-            onPressed: () {
-              if (selectedDevice != null) {
-                _showConfirmationDialog();
-              }
-            },
-            style: ElevatedButton.styleFrom(
-                backgroundColor: TsOneColor.greenColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(4.0),
-                )),
-            child: const Text(
-              'Submit',
-              style: TextStyle(color: Colors.white),
-            ),
+        child: ElevatedButton(
+          onPressed: () {
+            if (selectedDevice != null) {
+              _showConfirmationDialog();
+            }
+          },
+          style: ElevatedButton.styleFrom(
+              backgroundColor: TsOneColor.greenColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4.0),
+              )),
+          child: const Text(
+            'Submit',
+            style: TextStyle(color: Colors.white),
           ),
         ),
       ),

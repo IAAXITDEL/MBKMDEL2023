@@ -124,7 +124,7 @@ class _NewAssessmentVariablesSecondState extends State<NewAssessmentVariablesSec
                         Row(
                           children: [
                             Flexible(
-                                flex: 1,
+                                
                                 child: DropdownButtonFormComponent(
                                   label: "PF",
                                   isDisabled: false,
@@ -135,7 +135,7 @@ class _NewAssessmentVariablesSecondState extends State<NewAssessmentVariablesSec
                               width: 10,
                             ),
                             Flexible(
-                              flex: 1,
+                              
                               child: Padding(
                                   padding: const EdgeInsets.symmetric(vertical: 10),
                                   child: DropdownButtonFormComponent(

@@ -47,13 +47,18 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
   DocumentSnapshot? selectedUser;
   Stream<QuerySnapshot>? usersStream;
   Uint8List? signatureImage;
-  final GlobalKey<SfSignaturePadState> _signaturePadKey = GlobalKey<SfSignaturePadState>();
+  final GlobalKey<SfSignaturePadState> _signaturePadKey =
+      GlobalKey<SfSignaturePadState>();
 
   @override
   void initState() {
     super.initState();
     // Fetch deviceUid, deviceName, and OCC On Duty from Firestore using widget.deviceId
-    FirebaseFirestore.instance.collection('pilot-device-1').doc(widget.deviceId).get().then((documentSnapshot) {
+    FirebaseFirestore.instance
+        .collection('pilot-device-1')
+        .doc(widget.deviceId)
+        .get()
+        .then((documentSnapshot) {
       if (documentSnapshot.exists) {
         setState(() {
           deviceId2 = documentSnapshot['device_uid2'];
@@ -72,7 +77,8 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
         usersStream = FirebaseFirestore.instance
             .collection('users')
             .where(FieldPath.documentId, isGreaterThanOrEqualTo: searchText)
-            .where(FieldPath.documentId, isLessThanOrEqualTo: searchText + '\uf8ff')
+            .where(FieldPath.documentId,
+                isLessThanOrEqualTo: searchText + '\uf8ff')
             .snapshots();
       } else {
         usersStream = null;
@@ -82,7 +88,8 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
   }
 
   Future<void> _fetchUserData(String id) async {
-    final documentSnapshot = await FirebaseFirestore.instance.collection('users').doc(id).get();
+    final documentSnapshot =
+        await FirebaseFirestore.instance.collection('users').doc(id).get();
 
     if (documentSnapshot.exists) {
       setState(() {
@@ -94,7 +101,7 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
       });
       // Show a snackbar with the "No Data In Database" message
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('No Data In Database')),
+        const SnackBar(content: Text('No Data In Database')),
       );
     }
   }
@@ -122,7 +129,7 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                   style: tsOneTextTheme.headlineMedium,
                 ),
               ),
-              SizedBox(height: 10.0),
+              const SizedBox(height: 10.0),
               // Row(
               //   children: [
               //     Expanded(
@@ -154,13 +161,15 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: TsOneColor.primary,
-                  minimumSize: Size(double.infinity, 50),
+                  minimumSize: const Size(double.infinity, 50),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15.0),
                   ),
                 ),
                 onPressed: () async {
-                  String barcodeScanResult = await FlutterBarcodeScanner.scanBarcode('#FF0000', 'Cancel', true, ScanMode.QR);
+                  String barcodeScanResult =
+                      await FlutterBarcodeScanner.scanBarcode(
+                          '#FF0000', 'Cancel', true, ScanMode.QR);
 
                   if (barcodeScanResult != '-1') {
                     setState(() {
@@ -169,7 +178,7 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                     });
                   }
                 },
-                child: Row(
+                child: const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(
@@ -185,7 +194,7 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                   ],
                 ),
               ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
 
               // if (usersStream != null)
               //   StreamBuilder<QuerySnapshot>(
@@ -217,7 +226,7 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
               //       );
               //     },
               //   ),
-              SizedBox(height: 10.0),
+              const SizedBox(height: 10.0),
               if (selectedUser != null)
                 Container(
                   decoration: BoxDecoration(
@@ -227,11 +236,12 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                     ),
                   ),
                   child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Align(
+                        const Align(
                           alignment: Alignment.center,
                           child: Text(
                             "Crew Info",
@@ -243,7 +253,7 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 10.0),
+                        const SizedBox(height: 10.0),
                         // Row(
                         //   children: [
                         //     Expanded(
@@ -253,7 +263,7 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                         //           style: tsOneTextTheme.bodySmall,
                         //         )),
                         //     Expanded(
-                        //         flex: 1,
+                        //
                         //         child: Text(
                         //           ":",
                         //           style: tsOneTextTheme.bodySmall,
@@ -267,7 +277,7 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                         //     ),
                         //   ],
                         // ),
-                        SizedBox(height: 5.0),
+                        const SizedBox(height: 5.0),
                         Row(
                           children: [
                             Expanded(
@@ -277,11 +287,10 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                                   style: tsOneTextTheme.bodySmall,
                                 )),
                             Expanded(
-                                flex: 1,
                                 child: Text(
-                                  ":",
-                                  style: tsOneTextTheme.bodySmall,
-                                )),
+                              ":",
+                              style: tsOneTextTheme.bodySmall,
+                            )),
                             Expanded(
                               flex: 6,
                               child: Text(
@@ -300,11 +309,10 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                                   style: tsOneTextTheme.bodySmall,
                                 )),
                             Expanded(
-                                flex: 1,
                                 child: Text(
-                                  ":",
-                                  style: tsOneTextTheme.bodySmall,
-                                )),
+                              ":",
+                              style: tsOneTextTheme.bodySmall,
+                            )),
                             Expanded(
                               flex: 6,
                               child: Text(
@@ -323,11 +331,10 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                                   style: tsOneTextTheme.bodySmall,
                                 )),
                             Expanded(
-                                flex: 1,
                                 child: Text(
-                                  ":",
-                                  style: tsOneTextTheme.bodySmall,
-                                )),
+                              ":",
+                              style: tsOneTextTheme.bodySmall,
+                            )),
                             Expanded(
                               flex: 6,
                               child: Text(
@@ -341,7 +348,7 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                     ),
                   ),
                 ),
-              SizedBox(height: 10.0),
+              const SizedBox(height: 10.0),
               if (selectedUser != null)
                 Align(
                   alignment: Alignment.center,
@@ -355,21 +362,24 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
               ),
               if (selectedUser != null)
                 ConstrainedBox(
-                  constraints: BoxConstraints(
+                  constraints: const BoxConstraints(
                     minHeight: 40,
                     minWidth: 400,
                   ),
                   child: Container(
                     decoration: BoxDecoration(
                       color: tsOneColorScheme.primary,
-                      borderRadius: BorderRadius.only(
+                      borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(25.0),
                         topRight: Radius.circular(25.0),
                       ),
                     ),
                     child: Align(
                       alignment: Alignment.center,
-                      child: Text("Draw", style: TextStyle(color: tsOneColorScheme.secondary, fontWeight: FontWeight.w600)),
+                      child: Text("Draw",
+                          style: TextStyle(
+                              color: tsOneColorScheme.secondary,
+                              fontWeight: FontWeight.w600)),
                     ),
                   ),
                 ),
@@ -379,7 +389,7 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                     Container(
                       height: 480,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
+                        borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(10.0),
                           topRight: Radius.circular(10.0),
                           bottomLeft: Radius.circular(25.0),
@@ -389,7 +399,7 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                           BoxShadow(
                             color: Colors.grey.withOpacity(0.5),
                             blurRadius: 5,
-                            offset: Offset(0, 2),
+                            offset: const Offset(0, 2),
                           ),
                         ],
                       ),
@@ -397,8 +407,10 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                         key: _signaturePadKey,
                         backgroundColor: Colors.white,
                         onDrawEnd: () async {
-                          final signatureImageData = await _signaturePadKey.currentState!.toImage();
-                          final byteData = await signatureImageData.toByteData(format: ImageByteFormat.png);
+                          final signatureImageData =
+                              await _signaturePadKey.currentState!.toImage();
+                          final byteData = await signatureImageData.toByteData(
+                              format: ImageByteFormat.png);
                           if (byteData != null) {
                             setState(() {
                               signatureImage = byteData.buffer.asUint8List();
@@ -422,7 +434,7 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                     ),
                   ],
                 ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               if (selectedUser != null)
                 Column(
                   children: [
@@ -436,22 +448,25 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                             });
                           },
                         ),
-                        Text('I agree with all of the results', style: TextStyle(fontWeight: FontWeight.w300)),
+                        const Text('I agree with all of the results',
+                            style: TextStyle(fontWeight: FontWeight.w300)),
                       ],
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     ElevatedButton(
                       onPressed: () async {
                         final signatureData = signatureImage;
                         if (signatureData == null && !agree) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: const Text("Please provide signature & consent"),
+                              content: const Text(
+                                  "Please provide signature & consent"),
                               duration: const Duration(milliseconds: 1000),
                               action: SnackBarAction(
                                 label: 'Close',
                                 onPressed: () {
-                                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                  ScaffoldMessenger.of(context)
+                                      .hideCurrentSnackBar();
                                 },
                               ),
                             ),
@@ -464,7 +479,8 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                               action: SnackBarAction(
                                 label: 'Close',
                                 onPressed: () {
-                                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                  ScaffoldMessenger.of(context)
+                                      .hideCurrentSnackBar();
                                 },
                               ),
                             ),
@@ -477,7 +493,8 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                               action: SnackBarAction(
                                 label: 'Close',
                                 onPressed: () {
-                                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                  ScaffoldMessenger.of(context)
+                                      .hideCurrentSnackBar();
                                 },
                               ),
                             ),
@@ -490,12 +507,14 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                               action: SnackBarAction(
                                 label: 'Close',
                                 onPressed: () {
-                                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                  ScaffoldMessenger.of(context)
+                                      .hideCurrentSnackBar();
                                 },
                               ),
                             ),
                           );
-                        } else if (_signaturePadKey.currentState?.clear == null) {
+                        } else if (_signaturePadKey.currentState?.clear ==
+                            null) {
                           //widget._signaturePadKey.currentState!.clear();
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
@@ -504,7 +523,8 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                               action: SnackBarAction(
                                 label: 'Close',
                                 onPressed: () {
-                                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                  ScaffoldMessenger.of(context)
+                                      .hideCurrentSnackBar();
                                 },
                               ),
                             ),
@@ -518,51 +538,90 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                                   'Confirmation',
                                   style: tsOneTextTheme.headlineLarge,
                                 ),
-                                content: const Text('Are you sure you want to save this signature?'),
+                                content: const Text(
+                                    'Are you sure you want to save this signature?'),
                                 actions: [
                                   Row(
                                     children: [
                                       Expanded(
                                         flex: 5,
                                         child: TextButton(
-                                          child: Text('No', style: TextStyle(color: TsOneColor.secondaryContainer)),
+                                          child: const Text('No',
+                                              style: TextStyle(
+                                                  color: TsOneColor
+                                                      .secondaryContainer)),
                                           onPressed: () {
                                             Navigator.of(context).pop();
                                           },
                                         ),
                                       ),
-                                      Spacer(flex: 1),
+                                      const Spacer(flex: 1),
                                       Expanded(
                                         flex: 5,
                                         child: ElevatedButton(
                                           onPressed: () async {
                                             try {
-                                              final idNumber = _idController.text.trim();
+                                              final idNumber =
+                                                  _idController.text.trim();
                                               if (idNumber.isNotEmpty) {
                                                 User? user = _auth.currentUser;
                                                 QuerySnapshot userQuery =
-                                                await _firestore.collection('users').where('EMAIL', isEqualTo: user?.email).get();
-                                                String userUid = userQuery.docs.first.id;
-                                                final image = await _signaturePadKey.currentState?.toImage(pixelRatio: 3.0);
-                                                final ByteData? byteData = await image?.toByteData(format: ImageByteFormat.png);
-                                                final Uint8List? uint8List = byteData?.buffer.asUint8List();
-                                                final Reference storageReference =
-                                                FirebaseStorage.instance.ref().child('signatures/${DateTime.now()}.png');
-                                                final UploadTask uploadTask = storageReference.putData(uint8List!);
+                                                    await _firestore
+                                                        .collection('users')
+                                                        .where('EMAIL',
+                                                            isEqualTo:
+                                                                user?.email)
+                                                        .get();
+                                                String userUid =
+                                                    userQuery.docs.first.id;
+                                                final image =
+                                                    await _signaturePadKey
+                                                        .currentState
+                                                        ?.toImage(
+                                                            pixelRatio: 3.0);
+                                                final ByteData? byteData =
+                                                    await image?.toByteData(
+                                                        format: ImageByteFormat
+                                                            .png);
+                                                final Uint8List? uint8List =
+                                                    byteData?.buffer
+                                                        .asUint8List();
+                                                final Reference
+                                                    storageReference =
+                                                    FirebaseStorage.instance
+                                                        .ref()
+                                                        .child(
+                                                            'signatures/${DateTime.now()}.png');
+                                                final UploadTask uploadTask =
+                                                    storageReference
+                                                        .putData(uint8List!);
 
-                                                await uploadTask.whenComplete(() async {
-                                                  String signatureUrl = await storageReference.getDownloadURL();
-                                                  await _fetchUserData(idNumber);
+                                                await uploadTask
+                                                    .whenComplete(() async {
+                                                  String signatureUrl =
+                                                      await storageReference
+                                                          .getDownloadURL();
+                                                  await _fetchUserData(
+                                                      idNumber);
 
-                                                  FirebaseFirestore.instance.collection('pilot-device-1').doc(widget.deviceId).update({
-                                                    'statusDevice': 'waiting-handover-to-other-crew',
-                                                    'handover-to-crew': idNumber,
-                                                    'signature_url': signatureUrl,
-                                                    'document_id': widget.deviceId,
+                                                  FirebaseFirestore.instance
+                                                      .collection(
+                                                          'pilot-device-1')
+                                                      .doc(widget.deviceId)
+                                                      .update({
+                                                    'statusDevice':
+                                                        'waiting-handover-to-other-crew',
+                                                    'handover-to-crew':
+                                                        idNumber,
+                                                    'signature_url':
+                                                        signatureUrl,
+                                                    'document_id':
+                                                        widget.deviceId,
                                                   });
                                                 });
 
-                                                Navigator.pop(context); // Close the ReturnOtherPilotView
+                                                Navigator.pop(
+                                                    context); // Close the ReturnOtherPilotView
                                               } else {
                                                 // Handle invalid input, show a message, or prevent submission
                                               }
@@ -572,11 +631,13 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                                                 builder: (context) {
                                                   return AlertDialog(
                                                     title: const Text('Error'),
-                                                    content: const Text('An error occurred while saving the signature.'),
+                                                    content: const Text(
+                                                        'An error occurred while saving the signature.'),
                                                     actions: [
                                                       ElevatedButton(
                                                         onPressed: () {
-                                                          Navigator.pop(context);
+                                                          Navigator.pop(
+                                                              context);
                                                         },
                                                         child: const Text('OK'),
                                                       ),
@@ -587,11 +648,15 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                                             }
                                             _showQuickAlert(context);
                                           },
-                                          child: const Text('Yes', style: TextStyle(color: TsOneColor.onPrimary)),
+                                          child: const Text('Yes',
+                                              style: TextStyle(
+                                                  color: TsOneColor.onPrimary)),
                                           style: ElevatedButton.styleFrom(
-                                            backgroundColor: TsOneColor.greenColor,
+                                            backgroundColor:
+                                                TsOneColor.greenColor,
                                             shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(20.0),
+                                              borderRadius:
+                                                  BorderRadius.circular(20.0),
                                             ),
                                           ),
                                         ),
@@ -610,9 +675,10 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(4),
                           )),
-                      child: const Text('Submit', style: TextStyle(color: Colors.white)),
+                      child: const Text('Submit',
+                          style: TextStyle(color: Colors.white)),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     )
                   ],
@@ -645,12 +711,15 @@ Future<void> _showQuickAlert(BuildContext context) async {
   Get.offAllNamed(Routes.NAVOCC);
 }
 
-Future<String> getHubFromDeviceName(String deviceName2, String deviceName3) async {
+Future<String> getHubFromDeviceName(
+    String deviceName2, String deviceName3) async {
   String hub = "Unknown Hub"; // Default value
 
   try {
     // Fetch the 'hub' field from the 'Device' collection based on deviceName
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Device').where('deviceno', whereIn: [deviceName2, deviceName3]).get();
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('Device')
+        .where('deviceno', whereIn: [deviceName2, deviceName3]).get();
 
     if (querySnapshot.docs.isNotEmpty) {
       hub = querySnapshot.docs.first['hub'];

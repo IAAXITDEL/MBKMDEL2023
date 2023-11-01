@@ -14,7 +14,9 @@ class PilotUnRequestDeviceView extends GetView {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  PilotUnRequestDeviceView({Key? key, required this.deviceId, required String deviceName}) : super(key: key);
+  PilotUnRequestDeviceView(
+      {Key? key, required this.deviceId, required String deviceName})
+      : super(key: key);
 
   String getMonthText(int month) {
     const List<String> months = [
@@ -38,7 +40,8 @@ class PilotUnRequestDeviceView extends GetView {
     if (timestamp == null) return 'No Data';
 
     DateTime dateTime = timestamp.toDate();
-    String formattedDateTime = '${dateTime.day} ${getMonthText(dateTime.month)} ${dateTime.year}'
+    String formattedDateTime =
+        '${dateTime.day} ${getMonthText(dateTime.month)} ${dateTime.year}'
         ' ; '
         '${dateTime.hour}:${dateTime.minute}';
     return formattedDateTime;
@@ -61,20 +64,21 @@ class PilotUnRequestDeviceView extends GetView {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Confirmation', style: tsOneTextTheme.headlineLarge),
-          content: Text('Are you sure you want to reject the usage?'),
+          content: const Text('Are you sure you want to reject the usage?'),
           actions: <Widget>[
             Row(
               children: [
                 Expanded(
                   flex: 5,
                   child: TextButton(
-                    child: Text('No', style: TextStyle(color: TsOneColor.secondaryContainer)),
+                    child: const Text('No',
+                        style: TextStyle(color: TsOneColor.secondaryContainer)),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
                   ),
                 ),
-                Spacer(flex: 1),
+                const Spacer(flex: 1),
                 Expanded(
                   flex: 5,
                   child: TextButton(
@@ -84,14 +88,21 @@ class PilotUnRequestDeviceView extends GetView {
                         borderRadius: BorderRadius.circular(20.0),
                       ),
                     ),
-                    child: Text('Yes', style: TextStyle(color: TsOneColor.onPrimary)),
+                    child: const Text('Yes',
+                        style: TextStyle(color: TsOneColor.onPrimary)),
                     onPressed: () async {
                       User? user = _auth.currentUser;
                       if (user != null) {
-                        QuerySnapshot userQuery = await _firestore.collection('users').where('EMAIL', isEqualTo: user.email).get();
+                        QuerySnapshot userQuery = await _firestore
+                            .collection('users')
+                            .where('EMAIL', isEqualTo: user.email)
+                            .get();
                         String userUid = userQuery.docs.first.id;
 
-                        DocumentReference pilotDeviceRef = FirebaseFirestore.instance.collection("pilot-device-1").doc(deviceId);
+                        DocumentReference pilotDeviceRef = FirebaseFirestore
+                            .instance
+                            .collection("pilot-device-1")
+                            .doc(deviceId);
 
                         try {
                           await pilotDeviceRef.update({
@@ -127,10 +138,13 @@ class PilotUnRequestDeviceView extends GetView {
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
           child: FutureBuilder<DocumentSnapshot>(
-            future: FirebaseFirestore.instance.collection("pilot-device-1").doc(deviceId).get(),
+            future: FirebaseFirestore.instance
+                .collection("pilot-device-1")
+                .doc(deviceId)
+                .get(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
+                return const Center(child: CircularProgressIndicator());
               }
 
               if (snapshot.hasError) {
@@ -138,7 +152,7 @@ class PilotUnRequestDeviceView extends GetView {
               }
 
               if (!snapshot.hasData || !snapshot.data!.exists) {
-                return Center(child: Text('Data not found'));
+                return const Center(child: Text('Data not found'));
               }
 
               final data = snapshot.data!.data() as Map<String, dynamic>;
@@ -147,10 +161,13 @@ class PilotUnRequestDeviceView extends GetView {
               final deviceUid = data['device_uid'];
 
               return FutureBuilder<DocumentSnapshot>(
-                future: FirebaseFirestore.instance.collection("users").doc(userUid).get(),
+                future: FirebaseFirestore.instance
+                    .collection("users")
+                    .doc(userUid)
+                    .get(),
                 builder: (context, userSnapshot) {
                   if (userSnapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
+                    return const Center(child: CircularProgressIndicator());
                   }
 
                   if (userSnapshot.hasError) {
@@ -158,27 +175,36 @@ class PilotUnRequestDeviceView extends GetView {
                   }
 
                   if (!userSnapshot.hasData || !userSnapshot.data!.exists) {
-                    return Center(child: Text('User data not found'));
+                    return const Center(child: Text('User data not found'));
                   }
 
-                  final userData = userSnapshot.data!.data() as Map<String, dynamic>;
+                  final userData =
+                      userSnapshot.data!.data() as Map<String, dynamic>;
 
                   return FutureBuilder<DocumentSnapshot>(
-                    future: FirebaseFirestore.instance.collection("Device").doc(deviceUid).get(),
+                    future: FirebaseFirestore.instance
+                        .collection("Device")
+                        .doc(deviceUid)
+                        .get(),
                     builder: (context, deviceSnapshot) {
-                      if (deviceSnapshot.connectionState == ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator());
+                      if (deviceSnapshot.connectionState ==
+                          ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
                       }
 
                       if (deviceSnapshot.hasError) {
-                        return Center(child: Text('Error: ${deviceSnapshot.error}'));
+                        return Center(
+                            child: Text('Error: ${deviceSnapshot.error}'));
                       }
 
-                      if (!deviceSnapshot.hasData || !deviceSnapshot.data!.exists) {
-                        return Center(child: Text('Device data not found'));
+                      if (!deviceSnapshot.hasData ||
+                          !deviceSnapshot.data!.exists) {
+                        return const Center(
+                            child: Text('Device data not found'));
                       }
 
-                      final deviceData = deviceSnapshot.data!.data() as Map<String, dynamic>;
+                      final deviceData =
+                          deviceSnapshot.data!.data() as Map<String, dynamic>;
 
                       return Center(
                         child: Column(
@@ -186,42 +212,46 @@ class PilotUnRequestDeviceView extends GetView {
                           children: [
                             Align(
                               alignment: Alignment.centerRight,
-                              child: Text(_formatTimestamp(data['timestamp']), style: tsOneTextTheme.labelSmall),
+                              child: Text(_formatTimestamp(data['timestamp']),
+                                  style: tsOneTextTheme.labelSmall),
                             ),
-                            SizedBox(height: 15),
+                            const SizedBox(height: 15),
                             Row(
                               children: [
-                                Expanded(flex: 6, child: Text("ID NO")),
-                                Expanded(flex: 1, child: Text(":")),
+                                const Expanded(flex: 6, child: Text("ID NO")),
+                                const Expanded(child: Text(":")),
                                 Expanded(
                                   flex: 6,
-                                  child: Text('${userData['ID NO'] ?? 'No Data'}'),
+                                  child:
+                                      Text('${userData['ID NO'] ?? 'No Data'}'),
                                 ),
                               ],
                             ),
-                            SizedBox(height: 5.0),
+                            const SizedBox(height: 5.0),
                             Row(
                               children: [
-                                Expanded(flex: 6, child: Text("Name")),
-                                Expanded(flex: 1, child: Text(":")),
+                                const Expanded(flex: 6, child: Text("Name")),
+                                const Expanded(child: Text(":")),
                                 Expanded(
                                   flex: 6,
-                                  child: Text('${userData['NAME'] ?? 'No Data'}'),
+                                  child:
+                                      Text('${userData['NAME'] ?? 'No Data'}'),
                                 ),
                               ],
                             ),
-                            SizedBox(height: 5.0),
+                            const SizedBox(height: 5.0),
                             Row(
                               children: [
-                                Expanded(flex: 6, child: Text("Rank")),
-                                Expanded(flex: 1, child: Text(":")),
+                                const Expanded(flex: 6, child: Text("Rank")),
+                                const Expanded(child: Text(":")),
                                 Expanded(
                                   flex: 6,
-                                  child: Text('${userData['RANK'] ?? 'No Data'}'),
+                                  child:
+                                      Text('${userData['RANK'] ?? 'No Data'}'),
                                 ),
                               ],
                             ),
-                            SizedBox(height: 20),
+                            const SizedBox(height: 20),
                             // Align(
                             //   alignment: Alignment.centerLeft,
                             //   child: Text(
@@ -244,7 +274,8 @@ class PilotUnRequestDeviceView extends GetView {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 8.0),
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 8.0),
                                     child: Text(
                                       'Device Details',
                                       style: TextStyle(color: Colors.grey),
@@ -258,12 +289,13 @@ class PilotUnRequestDeviceView extends GetView {
                                 ],
                               ),
                             ),
-                            SizedBox(height: 10.0),
+                            const SizedBox(height: 10.0),
                             Align(
                               alignment: Alignment.centerLeft,
-                              child: Text("Device 1", style: tsOneTextTheme.displaySmall),
+                              child: Text("Device 1",
+                                  style: tsOneTextTheme.displaySmall),
                             ),
-                            SizedBox(height: 5.0),
+                            const SizedBox(height: 5.0),
                             Row(
                               children: [
                                 Expanded(
@@ -273,11 +305,10 @@ class PilotUnRequestDeviceView extends GetView {
                                       style: tsOneTextTheme.bodySmall,
                                     )),
                                 Expanded(
-                                    flex: 1,
                                     child: Text(
-                                      ":",
-                                      style: tsOneTextTheme.bodySmall,
-                                    )),
+                                  ":",
+                                  style: tsOneTextTheme.bodySmall,
+                                )),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
@@ -287,7 +318,7 @@ class PilotUnRequestDeviceView extends GetView {
                                 ),
                               ],
                             ),
-                            SizedBox(height: 5.0),
+                            const SizedBox(height: 5.0),
                             Row(
                               children: [
                                 Expanded(
@@ -297,11 +328,10 @@ class PilotUnRequestDeviceView extends GetView {
                                       style: tsOneTextTheme.bodySmall,
                                     )),
                                 Expanded(
-                                    flex: 1,
                                     child: Text(
-                                      ":",
-                                      style: tsOneTextTheme.bodySmall,
-                                    )),
+                                  ":",
+                                  style: tsOneTextTheme.bodySmall,
+                                )),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
@@ -311,7 +341,7 @@ class PilotUnRequestDeviceView extends GetView {
                                 ),
                               ],
                             ),
-                            SizedBox(height: 5.0),
+                            const SizedBox(height: 5.0),
                             Row(
                               children: [
                                 Expanded(
@@ -321,11 +351,10 @@ class PilotUnRequestDeviceView extends GetView {
                                       style: tsOneTextTheme.bodySmall,
                                     )),
                                 Expanded(
-                                    flex: 1,
                                     child: Text(
-                                      ":",
-                                      style: tsOneTextTheme.bodySmall,
-                                    )),
+                                  ":",
+                                  style: tsOneTextTheme.bodySmall,
+                                )),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
@@ -335,7 +364,7 @@ class PilotUnRequestDeviceView extends GetView {
                                 ),
                               ],
                             ),
-                            SizedBox(height: 5.0),
+                            const SizedBox(height: 5.0),
                             Row(
                               children: [
                                 Expanded(
@@ -345,11 +374,10 @@ class PilotUnRequestDeviceView extends GetView {
                                       style: tsOneTextTheme.bodySmall,
                                     )),
                                 Expanded(
-                                    flex: 1,
                                     child: Text(
-                                      ":",
-                                      style: tsOneTextTheme.bodySmall,
-                                    )),
+                                  ":",
+                                  style: tsOneTextTheme.bodySmall,
+                                )),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
@@ -359,7 +387,7 @@ class PilotUnRequestDeviceView extends GetView {
                                 ),
                               ],
                             ),
-                            SizedBox(height: 5.0),
+                            const SizedBox(height: 5.0),
                             Row(
                               children: [
                                 Expanded(
@@ -369,11 +397,10 @@ class PilotUnRequestDeviceView extends GetView {
                                       style: tsOneTextTheme.bodySmall,
                                     )),
                                 Expanded(
-                                    flex: 1,
                                     child: Text(
-                                      ":",
-                                      style: tsOneTextTheme.bodySmall,
-                                    )),
+                                  ":",
+                                  style: tsOneTextTheme.bodySmall,
+                                )),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
@@ -383,7 +410,7 @@ class PilotUnRequestDeviceView extends GetView {
                                 ),
                               ],
                             ),
-                            SizedBox(height: 5.0),
+                            const SizedBox(height: 5.0),
                             Row(
                               children: [
                                 Expanded(
@@ -393,11 +420,10 @@ class PilotUnRequestDeviceView extends GetView {
                                       style: tsOneTextTheme.bodySmall,
                                     )),
                                 Expanded(
-                                    flex: 1,
                                     child: Text(
-                                      ":",
-                                      style: tsOneTextTheme.bodySmall,
-                                    )),
+                                  ":",
+                                  style: tsOneTextTheme.bodySmall,
+                                )),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
@@ -407,7 +433,7 @@ class PilotUnRequestDeviceView extends GetView {
                                 ),
                               ],
                             ),
-                            SizedBox(height: 5.0),
+                            const SizedBox(height: 5.0),
                             Row(
                               children: [
                                 Expanded(
@@ -417,11 +443,10 @@ class PilotUnRequestDeviceView extends GetView {
                                       style: tsOneTextTheme.bodySmall,
                                     )),
                                 Expanded(
-                                    flex: 1,
                                     child: Text(
-                                      ":",
-                                      style: tsOneTextTheme.bodySmall,
-                                    )),
+                                  ":",
+                                  style: tsOneTextTheme.bodySmall,
+                                )),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
@@ -444,18 +469,16 @@ class PilotUnRequestDeviceView extends GetView {
       ),
       bottomNavigationBar: BottomAppBar(
         surfaceTintColor: tsOneColorScheme.secondary,
-        child: Expanded(
-          child: ElevatedButton(
-            onPressed: () {
-              confirmRejected(context);
-            },
-            style: ElevatedButton.styleFrom(
-                backgroundColor: TsOneColor.primary,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(4.0),
-                )),
-            child: const Text('Reject', style: TextStyle(color: Colors.white)),
-          ),
+        child: ElevatedButton(
+          onPressed: () {
+            confirmRejected(context);
+          },
+          style: ElevatedButton.styleFrom(
+              backgroundColor: TsOneColor.primary,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4.0),
+              )),
+          child: const Text('Reject', style: TextStyle(color: Colors.white)),
         ),
       ),
     );

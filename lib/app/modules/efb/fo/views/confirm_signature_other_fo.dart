@@ -115,7 +115,7 @@ class _ConfirmSignatureReturnOtherFOViewState
             'Confirmation Return',
             style: tsOneTextTheme.headlineLarge,
           ),
-          content: SingleChildScrollView(
+          content: const SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
                 Text(
@@ -129,14 +129,14 @@ class _ConfirmSignatureReturnOtherFOViewState
                 Expanded(
                   flex: 5,
                   child: TextButton(
-                    child: Text('No',
+                    child: const Text('No',
                         style: TextStyle(color: TsOneColor.secondaryContainer)),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
                   ),
                 ),
-                Spacer(flex: 1),
+                const Spacer(flex: 1),
                 Expanded(
                   flex: 5,
                   child: TextButton(
@@ -146,14 +146,14 @@ class _ConfirmSignatureReturnOtherFOViewState
                         borderRadius: BorderRadius.circular(20.0),
                       ),
                     ),
-                    child: Text('Yes',
+                    child: const Text('Yes',
                         style: TextStyle(color: TsOneColor.onPrimary)),
                     onPressed: () async {
                       // Show a circular button with "Please Wait" message
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
-                          return AlertDialog(
+                          return const AlertDialog(
                             content: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
@@ -167,7 +167,7 @@ class _ConfirmSignatureReturnOtherFOViewState
                       );
 
                       // Delay execution for demonstration purposes (you can remove this in your actual code)
-                      await Future.delayed(Duration(seconds: 2));
+                      await Future.delayed(const Duration(seconds: 2));
 
                       final remarks = remarksController.text;
                       // Check if the signature is empty
@@ -206,10 +206,11 @@ class _ConfirmSignatureReturnOtherFOViewState
                                 'Signature Required',
                                 style: tsOneTextTheme.headlineLarge,
                               ),
-                              content: Text('Please provide your signature.'),
+                              content:
+                                  const Text('Please provide your signature.'),
                               actions: <Widget>[
                                 TextButton(
-                                  child: Text('OK'),
+                                  child: const Text('OK'),
                                   onPressed: () {
                                     Navigator.of(context).pop();
                                   },
@@ -320,7 +321,7 @@ class _ConfirmSignatureReturnOtherFOViewState
         ),
         child: Expanded(
           child: Padding(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             child: Image.file(
               selectedImage!,
               width: 330,
@@ -346,7 +347,7 @@ class _ConfirmSignatureReturnOtherFOViewState
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: FutureBuilder<DocumentSnapshot>(
             future: FirebaseFirestore.instance
                 .collection("pilot-device-1")
@@ -354,7 +355,7 @@ class _ConfirmSignatureReturnOtherFOViewState
                 .get(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
+                return const Center(child: CircularProgressIndicator());
               }
 
               if (snapshot.hasError) {
@@ -362,7 +363,7 @@ class _ConfirmSignatureReturnOtherFOViewState
               }
 
               if (!snapshot.hasData || !snapshot.data!.exists) {
-                return Center(child: Text('Data not found'));
+                return const Center(child: Text('Data not found'));
               }
 
               final data = snapshot.data!.data() as Map<String, dynamic>;
@@ -374,7 +375,7 @@ class _ConfirmSignatureReturnOtherFOViewState
                     .get(),
                 builder: (context, userSnapshot) {
                   if (userSnapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
+                    return const Center(child: CircularProgressIndicator());
                   }
 
                   if (userSnapshot.hasError) {
@@ -382,7 +383,7 @@ class _ConfirmSignatureReturnOtherFOViewState
                   }
 
                   if (!userSnapshot.hasData || !userSnapshot.data!.exists) {
-                    return Center(child: Text('User data not found'));
+                    return const Center(child: Text('User data not found'));
                   }
 
                   final userData =
@@ -396,7 +397,7 @@ class _ConfirmSignatureReturnOtherFOViewState
                     builder: (context, otheruserSnapshot) {
                       if (otheruserSnapshot.connectionState ==
                           ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator());
+                        return const Center(child: CircularProgressIndicator());
                       }
 
                       if (otheruserSnapshot.hasError) {
@@ -406,7 +407,8 @@ class _ConfirmSignatureReturnOtherFOViewState
 
                       if (!otheruserSnapshot.hasData ||
                           !otheruserSnapshot.data!.exists) {
-                        return Center(child: Text('Other Crew data not found'));
+                        return const Center(
+                            child: Text('Other Crew data not found'));
                       }
 
                       final otheruserData = otheruserSnapshot.data!.data()
@@ -420,7 +422,8 @@ class _ConfirmSignatureReturnOtherFOViewState
                         builder: (context, device2Snapshot) {
                           if (device2Snapshot.connectionState ==
                               ConnectionState.waiting) {
-                            return Center(child: CircularProgressIndicator());
+                            return const Center(
+                                child: CircularProgressIndicator());
                           }
 
                           if (device2Snapshot.hasError) {
@@ -430,7 +433,7 @@ class _ConfirmSignatureReturnOtherFOViewState
 
                           if (!device2Snapshot.hasData ||
                               !device2Snapshot.data!.exists) {
-                            return Center(
+                            return const Center(
                                 child: Text('Device data 2 not found'));
                           }
 
@@ -445,7 +448,7 @@ class _ConfirmSignatureReturnOtherFOViewState
                             builder: (context, device3Snapshot) {
                               if (device3Snapshot.connectionState ==
                                   ConnectionState.waiting) {
-                                return Center(
+                                return const Center(
                                     child: CircularProgressIndicator());
                               }
 
@@ -457,7 +460,7 @@ class _ConfirmSignatureReturnOtherFOViewState
 
                               if (!device3Snapshot.hasData ||
                                   !device3Snapshot.data!.exists) {
-                                return Center(
+                                return const Center(
                                     child: Text('Device data not found'));
                               }
 
@@ -468,7 +471,7 @@ class _ConfirmSignatureReturnOtherFOViewState
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    SizedBox(height: 10.0),
+                                    const SizedBox(height: 10.0),
                                     Align(
                                       alignment: Alignment.center,
                                       child: Text(
@@ -478,13 +481,13 @@ class _ConfirmSignatureReturnOtherFOViewState
                                     ),
                                     //Text('If something doesn' 't match, please inform us!'),
 
-                                    SizedBox(height: 10.0),
+                                    const SizedBox(height: 10.0),
                                     Align(
                                       alignment: Alignment.centerLeft,
                                       child: Text("Remarks",
                                           style: tsOneTextTheme.bodyMedium),
                                     ),
-                                    SizedBox(height: 5.0),
+                                    const SizedBox(height: 5.0),
                                     // TextField(
                                     //   controller: remarksController,
                                     //   decoration: InputDecoration(
@@ -499,12 +502,12 @@ class _ConfirmSignatureReturnOtherFOViewState
                                     // ),
                                     TextField(
                                       controller: remarksController,
-                                      decoration: InputDecoration(
+                                      decoration: const InputDecoration(
                                         border: OutlineInputBorder(),
                                         hintText: 'Enter your remarks',
                                       ),
                                     ),
-                                    SizedBox(height: 10.0),
+                                    const SizedBox(height: 10.0),
                                     ElevatedButton(
                                       onPressed: _pickImage,
                                       style: ElevatedButton.styleFrom(
@@ -518,7 +521,7 @@ class _ConfirmSignatureReturnOtherFOViewState
                                         minimumSize:
                                             const Size(double.infinity, 50),
                                       ),
-                                      child: Row(
+                                      child: const Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
@@ -537,7 +540,7 @@ class _ConfirmSignatureReturnOtherFOViewState
                                       ),
                                     ),
 
-                                    SizedBox(height: 5.0),
+                                    const SizedBox(height: 5.0),
                                     // ElevatedButton(
                                     //   onPressed: _pickImage,
                                     //   style: ElevatedButton.styleFrom(
@@ -564,12 +567,12 @@ class _ConfirmSignatureReturnOtherFOViewState
                                     //     ],
                                     //   ),
                                     // ),
-                                    SizedBox(height: 10.0),
+                                    const SizedBox(height: 10.0),
 
                                     // Display the selected image
                                     _buildSelectedImage(),
                                     // Add the SignaturePad widget
-                                    SizedBox(height: 20.0),
+                                    const SizedBox(height: 20.0),
                                     const Padding(
                                       padding: EdgeInsets.only(bottom: 16.0),
                                       child: Row(
@@ -603,17 +606,17 @@ class _ConfirmSignatureReturnOtherFOViewState
                                         style: tsOneTextTheme.headlineMedium,
                                       ),
                                     ),
-                                    SizedBox(height: 15.0),
+                                    const SizedBox(height: 15.0),
 
                                     ConstrainedBox(
-                                      constraints: BoxConstraints(
+                                      constraints: const BoxConstraints(
                                         minHeight: 40,
                                         minWidth: 400,
                                       ),
                                       child: Container(
                                         decoration: BoxDecoration(
                                           color: tsOneColorScheme.primary,
-                                          borderRadius: BorderRadius.only(
+                                          borderRadius: const BorderRadius.only(
                                             topLeft: Radius.circular(25.0),
                                             topRight: Radius.circular(25.0),
                                           ),
@@ -633,7 +636,8 @@ class _ConfirmSignatureReturnOtherFOViewState
                                         Container(
                                           height: 480,
                                           decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.only(
+                                            borderRadius:
+                                                const BorderRadius.only(
                                               topLeft: Radius.circular(10.0),
                                               topRight: Radius.circular(10.0),
                                               bottomLeft: Radius.circular(25.0),
@@ -645,7 +649,7 @@ class _ConfirmSignatureReturnOtherFOViewState
                                                 color: Colors.grey
                                                     .withOpacity(0.5),
                                                 blurRadius: 5,
-                                                offset: Offset(0, 2),
+                                                offset: const Offset(0, 2),
                                               ),
                                             ],
                                           ),
@@ -686,7 +690,7 @@ class _ConfirmSignatureReturnOtherFOViewState
                                         ),
                                       ],
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 15,
                                     ),
                                     Row(
@@ -703,7 +707,8 @@ class _ConfirmSignatureReturnOtherFOViewState
                                             );
                                           },
                                         ),
-                                        Text('I agree with all of the results',
+                                        const Text(
+                                            'I agree with all of the results',
                                             style: TextStyle(
                                                 fontWeight: FontWeight.w300)),
                                       ],
