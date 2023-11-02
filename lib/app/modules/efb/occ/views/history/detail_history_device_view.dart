@@ -79,7 +79,7 @@ class DetailHistoryDeviceView extends GetView {
           future: FirebaseFirestore.instance.collection("pilot-device-1").doc(dataId).get(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             }
 
             if (snapshot.hasError) {
@@ -87,7 +87,7 @@ class DetailHistoryDeviceView extends GetView {
             }
 
             if (!snapshot.hasData || !snapshot.data!.exists) {
-              return Center(child: Text('Data not found'));
+              return const Center(child: Text('Data not found'));
             }
 
             final data = snapshot.data!.data() as Map<String, dynamic>;
@@ -104,7 +104,7 @@ class DetailHistoryDeviceView extends GetView {
               future: FirebaseFirestore.instance.collection("users").doc(userUid).get(),
               builder: (context, userSnapshot) {
                 if (userSnapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 }
 
                 if (userSnapshot.hasError) {
@@ -112,7 +112,7 @@ class DetailHistoryDeviceView extends GetView {
                 }
 
                 if (!userSnapshot.hasData || !userSnapshot.data!.exists) {
-                  return Center(child: Text('User data not found'));
+                  return const Center(child: Text('User data not found'));
                 }
 
                 final userData = userSnapshot.data!.data() as Map<String, dynamic>;
@@ -122,7 +122,7 @@ class DetailHistoryDeviceView extends GetView {
                   future: handoverTo != null ? FirebaseFirestore.instance.collection("users").doc(handoverTo).get() : Future.value(null),
                   builder: (context, handoverToSnapshot) {
                     if (handoverToSnapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
+                      return const Center(child: CircularProgressIndicator());
                     }
 
                     if (handoverToSnapshot.hasError) {
@@ -135,7 +135,7 @@ class DetailHistoryDeviceView extends GetView {
                       future: FirebaseFirestore.instance.collection("Device").doc(deviceUid).get(),
                       builder: (context, deviceSnapshot) {
                         if (deviceSnapshot.connectionState == ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator());
+                          return const Center(child: CircularProgressIndicator());
                         }
 
                         if (deviceSnapshot.hasError) {
@@ -143,7 +143,7 @@ class DetailHistoryDeviceView extends GetView {
                         }
 
                         if (!deviceSnapshot.hasData || !deviceSnapshot.data!.exists) {
-                          return Center(child: Text('Device data not found'));
+                          return const Center(child: Text('Device data not found'));
                         }
 
                         final deviceData = deviceSnapshot.data!.data() as Map<String, dynamic>;
@@ -153,7 +153,7 @@ class DetailHistoryDeviceView extends GetView {
                           future: occOnDuty != null ? FirebaseFirestore.instance.collection("users").doc(occOnDuty).get() : Future.value(null),
                           builder: (context, occOnDutySnapshot) {
                             if (occOnDutySnapshot.connectionState == ConnectionState.waiting) {
-                              return Center(child: CircularProgressIndicator());
+                              return const Center(child: CircularProgressIndicator());
                             }
 
                             if (occOnDutySnapshot.hasError) {
@@ -168,7 +168,7 @@ class DetailHistoryDeviceView extends GetView {
                                   occAccepted != null ? FirebaseFirestore.instance.collection("users").doc(occAccepted).get() : Future.value(null),
                               builder: (context, occAcceptedSnapshot) {
                                 if (occAcceptedSnapshot.connectionState == ConnectionState.waiting) {
-                                  return Center(child: CircularProgressIndicator());
+                                  return const Center(child: CircularProgressIndicator());
                                 }
 
                                 if (occAcceptedSnapshot.hasError) {
@@ -183,7 +183,7 @@ class DetailHistoryDeviceView extends GetView {
                                     children: [
                                       Container(
                                         child: Padding(
-                                          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                                           child: Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
@@ -192,7 +192,7 @@ class DetailHistoryDeviceView extends GetView {
                                                 alignment: Alignment.centerRight,
                                                 child: Text(_formatTimestamp(data['timestamp']), style: tsOneTextTheme.labelSmall),
                                               ),
-                                              SizedBox(height: 15.0),
+                                              const SizedBox(height: 15.0),
 
                                               //show crew info
                                               // Text(
@@ -201,111 +201,111 @@ class DetailHistoryDeviceView extends GetView {
                                               // ),
                                               Row(
                                                 children: [
-                                                  Expanded(flex: 6, child: Text("ID NO")),
-                                                  Expanded(flex: 1, child: Text(":")),
+                                                  const Expanded(flex: 6, child: Text("ID NO")),
+                                                  const Expanded(flex: 1, child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
                                                     child: Text('${userData['ID NO'] ?? 'No Data'}'),
                                                   ),
                                                 ],
                                               ),
-                                              SizedBox(height: 5.0),
+                                              const SizedBox(height: 5.0),
                                               Row(
                                                 children: [
-                                                  Expanded(flex: 6, child: Text("Name")),
-                                                  Expanded(flex: 1, child: Text(":")),
+                                                  const Expanded(flex: 6, child: Text("Name")),
+                                                  const Expanded(flex: 1, child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
                                                     child: Text('${userData['NAME'] ?? 'No Data'}'),
                                                   ),
                                                 ],
                                               ),
-                                              SizedBox(height: 5.0),
+                                              const SizedBox(height: 5.0),
                                               Row(
                                                 children: [
-                                                  Expanded(flex: 6, child: Text("Rank")),
-                                                  Expanded(flex: 1, child: Text(":")),
+                                                  const Expanded(flex: 6, child: Text("Rank")),
+                                                  const Expanded(flex: 1, child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
                                                     child: Text('${userData['RANK'] ?? 'No Data'}'),
                                                   ),
                                                 ],
                                               ),
-                                              SizedBox(height: 15.0),
+                                              const SizedBox(height: 15.0),
 
                                               //device info
                                               Text("Device 1", style: tsOneTextTheme.headlineMedium),
-                                              SizedBox(height: 7.0),
+                                              const SizedBox(height: 7.0),
                                               Row(
                                                 children: [
-                                                  Expanded(flex: 6, child: Text("Device No")),
-                                                  Expanded(flex: 1, child: Text(":")),
+                                                  const Expanded(flex: 6, child: Text("Device No")),
+                                                  const Expanded(flex: 1, child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
                                                     child: Text('${data['device_name'] ?? 'No Data'}'),
                                                   ),
                                                 ],
                                               ),
-                                              SizedBox(height: 5.0),
+                                              const SizedBox(height: 5.0),
                                               Row(
                                                 children: [
-                                                  Expanded(flex: 6, child: Text("IOS Version")),
-                                                  Expanded(flex: 1, child: Text(":")),
+                                                  const Expanded(flex: 6, child: Text("IOS Version")),
+                                                  const Expanded(flex: 1, child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
                                                     child: Text('${deviceData['iosver'] ?? 'No Data'}'),
                                                   ),
                                                 ],
                                               ),
-                                              SizedBox(height: 5.0),
+                                              const SizedBox(height: 5.0),
                                               Row(
                                                 children: [
-                                                  Expanded(flex: 6, child: Text("FlySmart Version")),
-                                                  Expanded(flex: 1, child: Text(":")),
+                                                  const Expanded(flex: 6, child: Text("FlySmart Version")),
+                                                  const Expanded(flex: 1, child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
                                                     child: Text('${deviceData['flysmart'] ?? 'No Data'}'),
                                                   ),
                                                 ],
                                               ),
-                                              SizedBox(height: 5.0),
+                                              const SizedBox(height: 5.0),
                                               Row(
                                                 children: [
-                                                  Expanded(flex: 6, child: Text("Docunet Version")),
-                                                  Expanded(flex: 1, child: Text(":")),
+                                                  const Expanded(flex: 6, child: Text("Docunet Version")),
+                                                  const Expanded(flex: 1, child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
                                                     child: Text('${deviceData['docuversion'] ?? 'No Data'}'),
                                                   ),
                                                 ],
                                               ),
-                                              SizedBox(height: 5.0),
+                                              const SizedBox(height: 5.0),
                                               Row(
                                                 children: [
-                                                  Expanded(flex: 6, child: Text("Lido mPilot Version")),
-                                                  Expanded(flex: 1, child: Text(":")),
+                                                  const Expanded(flex: 6, child: Text("Lido mPilot Version")),
+                                                  const Expanded(flex: 1, child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
                                                     child: Text('${deviceData['lidoversion'] ?? 'No Data'}'),
                                                   ),
                                                 ],
                                               ),
-                                              SizedBox(height: 5.0),
+                                              const SizedBox(height: 5.0),
                                               Row(
                                                 children: [
-                                                  Expanded(flex: 6, child: Text("HUB")),
-                                                  Expanded(flex: 1, child: Text(":")),
+                                                  const Expanded(flex: 6, child: Text("HUB")),
+                                                  const Expanded(flex: 1, child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
                                                     child: Text('${deviceData['hub'] ?? 'No Data'}'),
                                                   ),
                                                 ],
                                               ),
-                                              SizedBox(height: 5.0),
+                                              const SizedBox(height: 5.0),
                                               Row(
                                                 children: [
-                                                  Expanded(flex: 6, child: Text("Condition")),
-                                                  Expanded(flex: 1, child: Text(":")),
+                                                  const Expanded(flex: 6, child: Text("Condition")),
+                                                  const Expanded(flex: 1, child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
                                                     child: Text('${deviceData['condition'] ?? 'No Data'}'),
@@ -313,22 +313,22 @@ class DetailHistoryDeviceView extends GetView {
                                                 ],
                                               ),
 
-                                              SizedBox(height: 15),
+                                              const SizedBox(height: 15),
                                               Text("Return Documentation", style: tsOneTextTheme.headlineMedium),
 
-                                              if (status == 'Done') SizedBox(height: 5.0),
+                                              if (status == 'Done') const SizedBox(height: 5.0),
                                               if (status == 'Done')
                                                 Row(
                                                   children: [
-                                                    Expanded(flex: 6, child: Text("Proof Back To Base")),
-                                                    Expanded(flex: 1, child: Text(":")),
+                                                    const Expanded(flex: 6, child: Text("Proof Back To Base")),
+                                                    const Expanded(flex: 1, child: Text(":")),
                                                     Expanded(
                                                       flex: 6,
                                                       child: Column(
                                                         children: [
                                                           if (status == 'Done' && data['prove_back_to_base'] == null ||
                                                               data['prove_back_to_base'].isEmpty)
-                                                            Text(
+                                                            const Text(
                                                               'There is no image',
                                                               style: TextStyle(color: Colors.black),
                                                             ),
@@ -351,7 +351,7 @@ class DetailHistoryDeviceView extends GetView {
                                                                   },
                                                                 );
                                                               },
-                                                              child: Align(
+                                                              child: const Align(
                                                                 alignment: Alignment.centerLeft,
                                                                 child: Text(
                                                                   'Open Picture',
@@ -370,32 +370,32 @@ class DetailHistoryDeviceView extends GetView {
                                                   ],
                                                 ),
 
-                                              if (status == 'handover-to-other-crew') SizedBox(height: 7.0),
+                                              if (status == 'handover-to-other-crew') const SizedBox(height: 7.0),
                                               if (status == 'handover-to-other-crew')
                                                 Row(
                                                   children: [
-                                                    Expanded(flex: 6, child: Text("Remarks")),
-                                                    Expanded(child: Text(":")),
+                                                    const Expanded(flex: 6, child: Text("Remarks")),
+                                                    const Expanded(child: Text(":")),
                                                     Expanded(
                                                       flex: 6,
                                                       child:
-                                                          handoverTouserData != null ? Text('${data['remarks'] ?? 'Not Found'}') : Text('Not Found'),
+                                                          handoverTouserData != null ? Text('${data['remarks'] ?? 'Not Found'}') : const Text('Not Found'),
                                                     ),
                                                   ],
                                                 ),
-                                              if (status == 'handover-to-other-crew') SizedBox(height: 7.0),
+                                              if (status == 'handover-to-other-crew') const SizedBox(height: 7.0),
                                               if (status == 'handover-to-other-crew')
                                                 Row(
                                                   children: [
-                                                    Expanded(flex: 6, child: Text("Proof of Remarks")),
-                                                    Expanded(child: Text(":")),
+                                                    const Expanded(flex: 6, child: Text("Proof of Remarks")),
+                                                    const Expanded(child: Text(":")),
                                                     Expanded(
                                                       flex: 6,
                                                       child: Column(
                                                         children: [
                                                           if (status == 'handover-to-other-crew' && data['prove_image_url'] == null ||
                                                               data['prove_image_url'].isEmpty)
-                                                            Text(
+                                                            const Text(
                                                               'There is no image',
                                                               style: TextStyle(color: Colors.black),
                                                             ),
@@ -418,7 +418,7 @@ class DetailHistoryDeviceView extends GetView {
                                                                   },
                                                                 );
                                                               },
-                                                              child: Align(
+                                                              child: const Align(
                                                                 alignment: Alignment.centerLeft,
                                                                 child: Text(
                                                                   'Open Picture',
@@ -437,72 +437,72 @@ class DetailHistoryDeviceView extends GetView {
                                                   ],
                                                 ),
 
-                                              SizedBox(height: 5.0),
+                                              const SizedBox(height: 5.0),
 
                                               if (status == 'handover-to-other-crew') Text("Given To", style: tsOneTextTheme.headlineMedium),
-                                              if (status == 'handover-to-other-crew') SizedBox(height: 7.0),
+                                              if (status == 'handover-to-other-crew') const SizedBox(height: 7.0),
                                               if (status == 'handover-to-other-crew')
                                                 Row(
                                                   children: [
-                                                    Expanded(flex: 6, child: Text("ID NO")),
-                                                    Expanded(flex: 1, child: Text(":")),
+                                                    const Expanded(flex: 6, child: Text("ID NO")),
+                                                    const Expanded(flex: 1, child: Text(":")),
                                                     Expanded(
                                                       flex: 6,
                                                       child: handoverTouserData != null
                                                           ? Text('${handoverTouserData['ID NO'] ?? 'Not Found'}')
-                                                          : Text('Not Found'),
+                                                          : const Text('Not Found'),
                                                     ),
                                                   ],
                                                 ),
-                                              if (status == 'handover-to-other-crew') SizedBox(height: 5.0),
+                                              if (status == 'handover-to-other-crew') const SizedBox(height: 5.0),
                                               if (status == 'handover-to-other-crew')
                                                 Row(
                                                   children: [
-                                                    Expanded(flex: 6, child: Text("NAME")),
-                                                    Expanded(flex: 1, child: Text(":")),
+                                                    const Expanded(flex: 6, child: Text("NAME")),
+                                                    const Expanded(flex: 1, child: Text(":")),
                                                     Expanded(
                                                       flex: 6,
                                                       child: handoverTouserData != null
                                                           ? Text('${handoverTouserData['NAME'] ?? 'Not Found'}')
-                                                          : Text('Not Found'),
+                                                          : const Text('Not Found'),
                                                     ),
                                                   ],
                                                 ),
-                                              if (status == 'handover-to-other-crew') SizedBox(height: 5.0),
+                                              if (status == 'handover-to-other-crew') const SizedBox(height: 5.0),
                                               if (status == 'handover-to-other-crew')
                                                 Row(
                                                   children: [
-                                                    Expanded(flex: 6, child: Text("RANK")),
-                                                    Expanded(flex: 1, child: Text(":")),
+                                                    const Expanded(flex: 6, child: Text("RANK")),
+                                                    const Expanded(flex: 1, child: Text(":")),
                                                     Expanded(
                                                       flex: 6,
                                                       child: handoverTouserData != null
                                                           ? Text('${handoverTouserData['RANK'] ?? 'Not Found'}')
-                                                          : Text('Not Found'),
+                                                          : const Text('Not Found'),
                                                     ),
                                                   ],
                                                 ),
 
-                                              SizedBox(height: 10),
+                                              const SizedBox(height: 10),
                                               if (status == 'Done') Text("OCC On Duty", style: tsOneTextTheme.headlineMedium),
-                                              SizedBox(height: 7.0),
+                                              const SizedBox(height: 7.0),
                                               if (status == 'Done')
                                                 Row(
                                                   children: [
-                                                    Expanded(flex: 6, child: Text("OCC (Given)")),
-                                                    Expanded(flex: 1, child: Text(":")),
+                                                    const Expanded(flex: 6, child: Text("OCC (Given)")),
+                                                    const Expanded(flex: 1, child: Text(":")),
                                                     Expanded(
                                                       flex: 6,
                                                       child: Text('${occOnDutyuserData?['NAME'] ?? 'No Data'}'),
                                                     ),
                                                   ],
                                                 ),
-                                              SizedBox(height: 5.0),
+                                              const SizedBox(height: 5.0),
                                               if (status == 'Done')
                                                 Row(
                                                   children: [
-                                                    Expanded(flex: 6, child: Text("OCC (Received)")),
-                                                    Expanded(flex: 1, child: Text(":")),
+                                                    const Expanded(flex: 6, child: Text("OCC (Received)")),
+                                                    const Expanded(flex: 1, child: Text(":")),
                                                     Expanded(
                                                       flex: 6,
                                                       child: Text('${occAccepteduserData?['NAME'] ?? 'No Data'}'),
@@ -510,14 +510,14 @@ class DetailHistoryDeviceView extends GetView {
                                                   ],
                                                 ),
 
-                                              SizedBox(height: 15.0),
+                                              const SizedBox(height: 15.0),
                                               Row(
                                                 children: [
                                                   Expanded(
                                                     flex: 6,
                                                     child: Text("Feedback Form", style: tsOneTextTheme.headlineMedium),
                                                   ),
-                                                  Expanded(child: Text(":")),
+                                                  const Expanded(child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
                                                     child: TextButton(
@@ -533,7 +533,7 @@ class DetailHistoryDeviceView extends GetView {
                                                           // Tindakan alternatif jika feedbackId tidak ada atau kosong
                                                           ScaffoldMessenger.of(context).showSnackBar(
                                                             SnackBar(
-                                                              content: Text('Feedback Not Found'),
+                                                              content: const Text('Feedback Not Found'),
                                                               action: SnackBarAction(
                                                                 label: 'OK',
                                                                 onPressed: () {
@@ -553,7 +553,7 @@ class DetailHistoryDeviceView extends GetView {
                                                       //     decorationColor: TsOneColor.primary,
                                                       //   )),
                                                       // ),
-                                                      child: Align(
+                                                      child: const Align(
                                                         alignment: Alignment.centerLeft,
                                                         child: Text(
                                                           'Open Feedback',
@@ -620,7 +620,7 @@ class DetailHistoryDeviceView extends GetView {
                                               //   ],
                                               // ),
 
-                                              SizedBox(height: 80.0),
+                                              const SizedBox(height: 80.0),
                                               Row(
                                                 children: [
                                                   Expanded(
@@ -630,7 +630,7 @@ class DetailHistoryDeviceView extends GetView {
                                                             context: context,
                                                             barrierDismissible: false,
                                                             builder: (context) {
-                                                              return AlertDialog(
+                                                              return const AlertDialog(
                                                                 content: Column(
                                                                   mainAxisSize: MainAxisSize.min,
                                                                   children: [
@@ -676,7 +676,7 @@ class DetailHistoryDeviceView extends GetView {
                                                             borderRadius: BorderRadius.circular(4.0),
                                                           ),
                                                         ),
-                                                        child: Padding(
+                                                        child: const Padding(
                                                           padding: EdgeInsets.all(15),
                                                           child: Text(
                                                             'Open Attachment History',
