@@ -551,16 +551,18 @@ class ConfirmRequestFOView extends GetView {
       ),
       bottomNavigationBar: BottomAppBar(
         surfaceTintColor: tsOneColorScheme.secondary,
-        child: ElevatedButton(
-          onPressed: () {
-            confirmInUse(context); // Pass the context to the function
-          },
-          style: ElevatedButton.styleFrom(
-              backgroundColor: TsOneColor.greenColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(4.0),
-              )),
-          child: const Text('Confirm', style: TextStyle(color: Colors.white)),
+        child: Expanded(
+          child: ElevatedButton(
+            onPressed: () {
+              confirmInUse(context); // Pass the context to the function
+            },
+            style: ElevatedButton.styleFrom(
+                backgroundColor: TsOneColor.greenColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4.0),
+                )),
+            child: const Text('Confirm', style: TextStyle(color: Colors.white)),
+          ),
         ),
       ),
     );

@@ -41,7 +41,8 @@ class DetailHistoryDeviceView extends GetView {
     if (timestamp == null) return 'No Data';
 
     DateTime dateTime = timestamp.toDate();
-    String formattedDateTime = '${dateTime.day} ${getMonthText(dateTime.month)} ${dateTime.year}'
+    String formattedDateTime =
+        '${dateTime.day} ${getMonthText(dateTime.month)} ${dateTime.year}'
         ' ; '
         '${dateTime.hour}:${dateTime.minute}';
     return formattedDateTime;
@@ -49,7 +50,8 @@ class DetailHistoryDeviceView extends GetView {
 
   Future<String> getDocumentIdForFeedback(String feedbackId) async {
     // Ambil semua dokumen dari koleksi 'pilot-feedback'
-    QuerySnapshot feedbackQuerySnapshot = await FirebaseFirestore.instance.collection('pilot-feedback').get();
+    QuerySnapshot feedbackQuerySnapshot =
+        await FirebaseFirestore.instance.collection('pilot-feedback').get();
 
     for (QueryDocumentSnapshot doc in feedbackQuerySnapshot.docs) {
       // Untuk setiap dokumen, periksa apakah 'id' sesuai dengan 'feedbackId'
@@ -76,7 +78,10 @@ class DetailHistoryDeviceView extends GetView {
       ),
       body: SingleChildScrollView(
         child: FutureBuilder<DocumentSnapshot>(
-          future: FirebaseFirestore.instance.collection("pilot-device-1").doc(dataId).get(),
+          future: FirebaseFirestore.instance
+              .collection("pilot-device-1")
+              .doc(dataId)
+              .get(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
@@ -101,7 +106,10 @@ class DetailHistoryDeviceView extends GetView {
             final feedbackId = data['feedbackId'];
 
             return FutureBuilder<DocumentSnapshot>(
-              future: FirebaseFirestore.instance.collection("users").doc(userUid).get(),
+              future: FirebaseFirestore.instance
+                  .collection("users")
+                  .doc(userUid)
+                  .get(),
               builder: (context, userSnapshot) {
                 if (userSnapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
@@ -115,67 +123,96 @@ class DetailHistoryDeviceView extends GetView {
                   return const Center(child: Text('User data not found'));
                 }
 
-                final userData = userSnapshot.data!.data() as Map<String, dynamic>;
+                final userData =
+                    userSnapshot.data!.data() as Map<String, dynamic>;
 
                 //handover from
                 return FutureBuilder<DocumentSnapshot>(
-                  future: handoverTo != null ? FirebaseFirestore.instance.collection("users").doc(handoverTo).get() : Future.value(null),
+                  future: handoverTo != null
+                      ? FirebaseFirestore.instance
+                          .collection("users")
+                          .doc(handoverTo)
+                          .get()
+                      : Future.value(null),
                   builder: (context, handoverToSnapshot) {
                     if (handoverToSnapshot.connectionState == ConnectionState.waiting) {
                       return const Center(child: CircularProgressIndicator());
                     }
 
                     if (handoverToSnapshot.hasError) {
-                      return Center(child: Text('Error: ${handoverToSnapshot.error}'));
+                      return Center(
+                          child: Text('Error: ${handoverToSnapshot.error}'));
                     }
 
-                    final handoverTouserData = handoverToSnapshot.data?.data() as Map<String, dynamic>?;
+                    final handoverTouserData = handoverToSnapshot.data?.data()
+                        as Map<String, dynamic>?;
 
                     return FutureBuilder<DocumentSnapshot>(
-                      future: FirebaseFirestore.instance.collection("Device").doc(deviceUid).get(),
+                      future: FirebaseFirestore.instance
+                          .collection("Device")
+                          .doc(deviceUid)
+                          .get(),
                       builder: (context, deviceSnapshot) {
                         if (deviceSnapshot.connectionState == ConnectionState.waiting) {
                           return const Center(child: CircularProgressIndicator());
                         }
 
                         if (deviceSnapshot.hasError) {
-                          return Center(child: Text('Error: ${deviceSnapshot.error}'));
+                          return Center(
+                              child: Text('Error: ${deviceSnapshot.error}'));
                         }
 
                         if (!deviceSnapshot.hasData || !deviceSnapshot.data!.exists) {
                           return const Center(child: Text('Device data not found'));
                         }
 
-                        final deviceData = deviceSnapshot.data!.data() as Map<String, dynamic>;
+                        final deviceData =
+                            deviceSnapshot.data!.data() as Map<String, dynamic>;
 
                         //occ on duty from
                         return FutureBuilder<DocumentSnapshot>(
-                          future: occOnDuty != null ? FirebaseFirestore.instance.collection("users").doc(occOnDuty).get() : Future.value(null),
+                          future: occOnDuty != null
+                              ? FirebaseFirestore.instance
+                                  .collection("users")
+                                  .doc(occOnDuty)
+                                  .get()
+                              : Future.value(null),
                           builder: (context, occOnDutySnapshot) {
                             if (occOnDutySnapshot.connectionState == ConnectionState.waiting) {
                               return const Center(child: CircularProgressIndicator());
                             }
 
                             if (occOnDutySnapshot.hasError) {
-                              return Center(child: Text('Error: ${occOnDutySnapshot.error}'));
+                              return Center(
+                                  child: Text(
+                                      'Error: ${occOnDutySnapshot.error}'));
                             }
 
-                            final occOnDutyuserData = occOnDutySnapshot.data?.data() as Map<String, dynamic>?;
+                            final occOnDutyuserData = occOnDutySnapshot.data
+                                ?.data() as Map<String, dynamic>?;
 
                             //occ accepted from
                             return FutureBuilder<DocumentSnapshot>(
-                              future:
-                                  occAccepted != null ? FirebaseFirestore.instance.collection("users").doc(occAccepted).get() : Future.value(null),
+                              future: occAccepted != null
+                                  ? FirebaseFirestore.instance
+                                      .collection("users")
+                                      .doc(occAccepted)
+                                      .get()
+                                  : Future.value(null),
                               builder: (context, occAcceptedSnapshot) {
                                 if (occAcceptedSnapshot.connectionState == ConnectionState.waiting) {
                                   return const Center(child: CircularProgressIndicator());
                                 }
 
                                 if (occAcceptedSnapshot.hasError) {
-                                  return Center(child: Text('Error: ${occAcceptedSnapshot.error}'));
+                                  return Center(
+                                      child: Text(
+                                          'Error: ${occAcceptedSnapshot.error}'));
                                 }
 
-                                final occAccepteduserData = occAcceptedSnapshot.data?.data() as Map<String, dynamic>?;
+                                final occAccepteduserData =
+                                    occAcceptedSnapshot.data?.data()
+                                        as Map<String, dynamic>?;
 
                                 return SingleChildScrollView(
                                   child: Column(
@@ -185,12 +222,18 @@ class DetailHistoryDeviceView extends GetView {
                                         child: Padding(
                                           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                                           child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
                                               //show date
                                               Align(
-                                                alignment: Alignment.centerRight,
-                                                child: Text(_formatTimestamp(data['timestamp']), style: tsOneTextTheme.labelSmall),
+                                                alignment:
+                                                    Alignment.centerRight,
+                                                child: Text(
+                                                    _formatTimestamp(
+                                                        data['timestamp']),
+                                                    style: tsOneTextTheme
+                                                        .labelSmall),
                                               ),
                                               const SizedBox(height: 15.0),
 
@@ -204,8 +247,15 @@ class DetailHistoryDeviceView extends GetView {
                                                   const Expanded(flex: 6, child: Text("ID NO")),
                                                   const Expanded(flex: 1, child: Text(":")),
                                                   Expanded(
+                                                      flex: 6,
+                                                      child: Text("ID NO")),
+                                                  Expanded(
+                                                      flex: 1,
+                                                      child: Text(":")),
+                                                  Expanded(
                                                     flex: 6,
-                                                    child: Text('${userData['ID NO'] ?? 'No Data'}'),
+                                                    child: Text(
+                                                        '${userData['ID NO'] ?? 'No Data'}'),
                                                   ),
                                                 ],
                                               ),
@@ -215,8 +265,15 @@ class DetailHistoryDeviceView extends GetView {
                                                   const Expanded(flex: 6, child: Text("Name")),
                                                   const Expanded(flex: 1, child: Text(":")),
                                                   Expanded(
+                                                      flex: 6,
+                                                      child: Text("Name")),
+                                                  Expanded(
+                                                      flex: 1,
+                                                      child: Text(":")),
+                                                  Expanded(
                                                     flex: 6,
-                                                    child: Text('${userData['NAME'] ?? 'No Data'}'),
+                                                    child: Text(
+                                                        '${userData['NAME'] ?? 'No Data'}'),
                                                   ),
                                                 ],
                                               ),
@@ -226,8 +283,15 @@ class DetailHistoryDeviceView extends GetView {
                                                   const Expanded(flex: 6, child: Text("Rank")),
                                                   const Expanded(flex: 1, child: Text(":")),
                                                   Expanded(
+                                                      flex: 6,
+                                                      child: Text("Rank")),
+                                                  Expanded(
+                                                      flex: 1,
+                                                      child: Text(":")),
+                                                  Expanded(
                                                     flex: 6,
-                                                    child: Text('${userData['RANK'] ?? 'No Data'}'),
+                                                    child: Text(
+                                                        '${userData['RANK'] ?? 'No Data'}'),
                                                   ),
                                                 ],
                                               ),
@@ -241,8 +305,15 @@ class DetailHistoryDeviceView extends GetView {
                                                   const Expanded(flex: 6, child: Text("Device No")),
                                                   const Expanded(flex: 1, child: Text(":")),
                                                   Expanded(
+                                                      flex: 6,
+                                                      child: Text("Device No")),
+                                                  Expanded(
+                                                      flex: 1,
+                                                      child: Text(":")),
+                                                  Expanded(
                                                     flex: 6,
-                                                    child: Text('${data['device_name'] ?? 'No Data'}'),
+                                                    child: Text(
+                                                        '${data['device_name'] ?? 'No Data'}'),
                                                   ),
                                                 ],
                                               ),
@@ -252,8 +323,16 @@ class DetailHistoryDeviceView extends GetView {
                                                   const Expanded(flex: 6, child: Text("IOS Version")),
                                                   const Expanded(flex: 1, child: Text(":")),
                                                   Expanded(
+                                                      flex: 6,
+                                                      child:
+                                                          Text("IOS Version")),
+                                                  Expanded(
+                                                      flex: 1,
+                                                      child: Text(":")),
+                                                  Expanded(
                                                     flex: 6,
-                                                    child: Text('${deviceData['iosver'] ?? 'No Data'}'),
+                                                    child: Text(
+                                                        '${deviceData['iosver'] ?? 'No Data'}'),
                                                   ),
                                                 ],
                                               ),
@@ -263,8 +342,16 @@ class DetailHistoryDeviceView extends GetView {
                                                   const Expanded(flex: 6, child: Text("FlySmart Version")),
                                                   const Expanded(flex: 1, child: Text(":")),
                                                   Expanded(
+                                                      flex: 6,
+                                                      child: Text(
+                                                          "FlySmart Version")),
+                                                  Expanded(
+                                                      flex: 1,
+                                                      child: Text(":")),
+                                                  Expanded(
                                                     flex: 6,
-                                                    child: Text('${deviceData['flysmart'] ?? 'No Data'}'),
+                                                    child: Text(
+                                                        '${deviceData['flysmart'] ?? 'No Data'}'),
                                                   ),
                                                 ],
                                               ),
@@ -274,8 +361,16 @@ class DetailHistoryDeviceView extends GetView {
                                                   const Expanded(flex: 6, child: Text("Docunet Version")),
                                                   const Expanded(flex: 1, child: Text(":")),
                                                   Expanded(
+                                                      flex: 6,
+                                                      child: Text(
+                                                          "Docunet Version")),
+                                                  Expanded(
+                                                      flex: 1,
+                                                      child: Text(":")),
+                                                  Expanded(
                                                     flex: 6,
-                                                    child: Text('${deviceData['docuversion'] ?? 'No Data'}'),
+                                                    child: Text(
+                                                        '${deviceData['docuversion'] ?? 'No Data'}'),
                                                   ),
                                                 ],
                                               ),
@@ -285,8 +380,16 @@ class DetailHistoryDeviceView extends GetView {
                                                   const Expanded(flex: 6, child: Text("Lido mPilot Version")),
                                                   const Expanded(flex: 1, child: Text(":")),
                                                   Expanded(
+                                                      flex: 6,
+                                                      child: Text(
+                                                          "Lido mPilot Version")),
+                                                  Expanded(
+                                                      flex: 1,
+                                                      child: Text(":")),
+                                                  Expanded(
                                                     flex: 6,
-                                                    child: Text('${deviceData['lidoversion'] ?? 'No Data'}'),
+                                                    child: Text(
+                                                        '${deviceData['lidoversion'] ?? 'No Data'}'),
                                                   ),
                                                 ],
                                               ),
@@ -296,8 +399,15 @@ class DetailHistoryDeviceView extends GetView {
                                                   const Expanded(flex: 6, child: Text("HUB")),
                                                   const Expanded(flex: 1, child: Text(":")),
                                                   Expanded(
+                                                      flex: 6,
+                                                      child: Text("HUB")),
+                                                  Expanded(
+                                                      flex: 1,
+                                                      child: Text(":")),
+                                                  Expanded(
                                                     flex: 6,
-                                                    child: Text('${deviceData['hub'] ?? 'No Data'}'),
+                                                    child: Text(
+                                                        '${deviceData['hub'] ?? 'No Data'}'),
                                                   ),
                                                 ],
                                               ),
@@ -307,8 +417,15 @@ class DetailHistoryDeviceView extends GetView {
                                                   const Expanded(flex: 6, child: Text("Condition")),
                                                   const Expanded(flex: 1, child: Text(":")),
                                                   Expanded(
+                                                      flex: 6,
+                                                      child: Text("Condition")),
+                                                  Expanded(
+                                                      flex: 1,
+                                                      child: Text(":")),
+                                                  Expanded(
                                                     flex: 6,
-                                                    child: Text('${deviceData['condition'] ?? 'No Data'}'),
+                                                    child: Text(
+                                                        '${deviceData['condition'] ?? 'No Data'}'),
                                                   ),
                                                 ],
                                               ),
@@ -330,21 +447,35 @@ class DetailHistoryDeviceView extends GetView {
                                                               data['prove_back_to_base'].isEmpty)
                                                             const Text(
                                                               'There is no image',
-                                                              style: TextStyle(color: Colors.black),
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .black),
                                                             ),
-                                                          if (data['prove_back_to_base'] != null && data['prove_back_to_base'].isNotEmpty)
+                                                          if (data['prove_back_to_base'] !=
+                                                                  null &&
+                                                              data['prove_back_to_base']
+                                                                  .isNotEmpty)
                                                             GestureDetector(
                                                               onTap: () {
                                                                 showDialog(
-                                                                  context: context,
-                                                                  builder: (BuildContext context) {
+                                                                  context:
+                                                                      context,
+                                                                  builder:
+                                                                      (BuildContext
+                                                                          context) {
                                                                     return AlertDialog(
-                                                                      content: Container(
-                                                                        width: 400,
-                                                                        height: 400,
-                                                                        child: Image.network(
-                                                                          data['prove_back_to_base']!,
-                                                                          fit: BoxFit.cover,
+                                                                      content:
+                                                                          Container(
+                                                                        width:
+                                                                            400,
+                                                                        height:
+                                                                            400,
+                                                                        child: Image
+                                                                            .network(
+                                                                          data[
+                                                                              'prove_back_to_base']!,
+                                                                          fit: BoxFit
+                                                                              .cover,
                                                                         ),
                                                                       ),
                                                                     );
@@ -355,11 +486,19 @@ class DetailHistoryDeviceView extends GetView {
                                                                 alignment: Alignment.centerLeft,
                                                                 child: Text(
                                                                   'Open Picture',
-                                                                  style: TextStyle(
-                                                                    color: TsOneColor.primary,
-                                                                    fontWeight: FontWeight.bold,
-                                                                    decoration: TextDecoration.underline,
-                                                                    decorationColor: TsOneColor.primary,
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color: TsOneColor
+                                                                        .primary,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    decoration:
+                                                                        TextDecoration
+                                                                            .underline,
+                                                                    decorationColor:
+                                                                        TsOneColor
+                                                                            .primary,
                                                                   ),
                                                                 ),
                                                               ),
@@ -397,21 +536,35 @@ class DetailHistoryDeviceView extends GetView {
                                                               data['prove_image_url'].isEmpty)
                                                             const Text(
                                                               'There is no image',
-                                                              style: TextStyle(color: Colors.black),
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .black),
                                                             ),
-                                                          if (data['prove_image_url'] != null && data['prove_image_url'].isNotEmpty)
+                                                          if (data['prove_image_url'] !=
+                                                                  null &&
+                                                              data['prove_image_url']
+                                                                  .isNotEmpty)
                                                             GestureDetector(
                                                               onTap: () {
                                                                 showDialog(
-                                                                  context: context,
-                                                                  builder: (BuildContext context) {
+                                                                  context:
+                                                                      context,
+                                                                  builder:
+                                                                      (BuildContext
+                                                                          context) {
                                                                     return AlertDialog(
-                                                                      content: Container(
-                                                                        width: 400,
-                                                                        height: 400,
-                                                                        child: Image.network(
-                                                                          data['prove_image_url'] ?? 'No Data',
-                                                                          fit: BoxFit.cover,
+                                                                      content:
+                                                                          Container(
+                                                                        width:
+                                                                            400,
+                                                                        height:
+                                                                            400,
+                                                                        child: Image
+                                                                            .network(
+                                                                          data['prove_image_url'] ??
+                                                                              'No Data',
+                                                                          fit: BoxFit
+                                                                              .cover,
                                                                         ),
                                                                       ),
                                                                     );
@@ -422,11 +575,19 @@ class DetailHistoryDeviceView extends GetView {
                                                                 alignment: Alignment.centerLeft,
                                                                 child: Text(
                                                                   'Open Picture',
-                                                                  style: TextStyle(
-                                                                    color: TsOneColor.primary,
-                                                                    fontWeight: FontWeight.bold,
-                                                                    decoration: TextDecoration.underline,
-                                                                    decorationColor: TsOneColor.primary,
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color: TsOneColor
+                                                                        .primary,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    decoration:
+                                                                        TextDecoration
+                                                                            .underline,
+                                                                    decorationColor:
+                                                                        TsOneColor
+                                                                            .primary,
                                                                   ),
                                                                 ),
                                                               ),
@@ -492,8 +653,16 @@ class DetailHistoryDeviceView extends GetView {
                                                     const Expanded(flex: 6, child: Text("OCC (Given)")),
                                                     const Expanded(flex: 1, child: Text(":")),
                                                     Expanded(
+                                                        flex: 6,
+                                                        child: Text(
+                                                            "OCC (Given)")),
+                                                    Expanded(
+                                                        flex: 1,
+                                                        child: Text(":")),
+                                                    Expanded(
                                                       flex: 6,
-                                                      child: Text('${occOnDutyuserData?['NAME'] ?? 'No Data'}'),
+                                                      child: Text(
+                                                          '${occOnDutyuserData?['NAME'] ?? 'No Data'}'),
                                                     ),
                                                   ],
                                                 ),
@@ -504,8 +673,16 @@ class DetailHistoryDeviceView extends GetView {
                                                     const Expanded(flex: 6, child: Text("OCC (Received)")),
                                                     const Expanded(flex: 1, child: Text(":")),
                                                     Expanded(
+                                                        flex: 6,
+                                                        child: Text(
+                                                            "OCC (Received)")),
+                                                    Expanded(
+                                                        flex: 1,
+                                                        child: Text(":")),
+                                                    Expanded(
                                                       flex: 6,
-                                                      child: Text('${occAccepteduserData?['NAME'] ?? 'No Data'}'),
+                                                      child: Text(
+                                                          '${occAccepteduserData?['NAME'] ?? 'No Data'}'),
                                                     ),
                                                   ],
                                                 ),
@@ -515,21 +692,32 @@ class DetailHistoryDeviceView extends GetView {
                                                 children: [
                                                   Expanded(
                                                     flex: 6,
-                                                    child: Text("Feedback Form", style: tsOneTextTheme.headlineMedium),
+                                                    child: Text("Feedback Form",
+                                                        style: tsOneTextTheme
+                                                            .headlineMedium),
                                                   ),
                                                   const Expanded(child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
                                                     child: TextButton(
                                                       onPressed: () async {
-                                                        if (feedbackId != null && feedbackId.isNotEmpty) {
+                                                        if (feedbackId !=
+                                                                null &&
+                                                            feedbackId
+                                                                .isNotEmpty) {
                                                           // Menggunakan Navigator untuk berpindah ke halaman FeedbackDetailPage
-                                                          Navigator.of(context).push(
+                                                          Navigator.of(context)
+                                                              .push(
                                                             MaterialPageRoute(
-                                                              builder: (context) => FeedbackDetailPage(feedbackId: feedbackId),
+                                                              builder: (context) =>
+                                                                  FeedbackDetailPage(
+                                                                      feedbackId:
+                                                                          feedbackId),
                                                             ),
                                                           );
-                                                        } else {
+                                                        } else if (feedbackId ==
+                                                                null ||
+                                                            feedbackId == '-') {
                                                           // Tindakan alternatif jika feedbackId tidak ada atau kosong
                                                           ScaffoldMessenger.of(context).showSnackBar(
                                                             SnackBar(
@@ -558,10 +746,16 @@ class DetailHistoryDeviceView extends GetView {
                                                         child: Text(
                                                           'Open Feedback',
                                                           style: TextStyle(
-                                                            color: TsOneColor.primary,
-                                                            fontWeight: FontWeight.bold,
-                                                            decoration: TextDecoration.underline,
-                                                            decorationColor: TsOneColor.primary,
+                                                            color: TsOneColor
+                                                                .primary,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            decoration:
+                                                                TextDecoration
+                                                                    .underline,
+                                                            decorationColor:
+                                                                TsOneColor
+                                                                    .primary,
                                                           ),
                                                         ),
                                                       ),
@@ -587,7 +781,7 @@ class DetailHistoryDeviceView extends GetView {
                                               //             // Tindakan alternatif jika feedbackId tidak ada atau kosong
                                               //             Builder(
                                               //               builder: (context) {
-                                               //                 // Menampilkan Snackbar "Data Not Found" selama 1 detik
+                                              //                 // Menampilkan Snackbar "Data Not Found" selama 1 detik
                                               //                 Future.delayed(Duration(seconds: 1), () {
                                               //                   ScaffoldMessenger.of(context).showSnackBar(
                                               //                     SnackBar(
@@ -628,15 +822,21 @@ class DetailHistoryDeviceView extends GetView {
                                                         onPressed: () {
                                                           showDialog(
                                                             context: context,
-                                                            barrierDismissible: false,
+                                                            barrierDismissible:
+                                                                false,
                                                             builder: (context) {
                                                               return const AlertDialog(
                                                                 content: Column(
-                                                                  mainAxisSize: MainAxisSize.min,
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .min,
                                                                   children: [
                                                                     CircularProgressIndicator(),
-                                                                    SizedBox(height: 20),
-                                                                    Text('Please Wait...'),
+                                                                    SizedBox(
+                                                                        height:
+                                                                            20),
+                                                                    Text(
+                                                                        'Please Wait...'),
                                                                   ],
                                                                 ),
                                                               );
@@ -644,43 +844,86 @@ class DetailHistoryDeviceView extends GetView {
                                                           );
 
                                                           generateLogPdfDevice1(
-                                                            userName: userData['NAME'],
-                                                            userRank: userData['RANK'],
-                                                            userID: userData['ID NO'].toString(),
-                                                            occAccept: occAccepteduserData?['NAME'],
-                                                            occGiven: occOnDutyuserData?['NAME'],
-                                                            deviceNo: data['device_name'],
-                                                            iosVer: deviceData['iosver'],
-                                                            flySmart: deviceData['flysmart'],
-                                                            lido: deviceData[' lidoversion'],
-                                                            docunet: deviceData['docuversion'],
-                                                            deviceCondition: deviceData['condition'],
-                                                            ttdUser: data['signature_url'],
-                                                            ttdOCC: data['signature_url_occ'],
-                                                            loan: data['timestamp'],
-                                                            statusdevice: data['statusDevice'],
-                                                            ttdOtherCrew: data != null ? data['signature_url_other_user'] : 'Not Found',
-                                                            handoverName: handoverTouserData != null ? handoverTouserData['NAME'] : 'Not Found',
-                                                            handoverID: data['handover-to-crew'],
+                                                            userName: userData[
+                                                                'NAME'],
+                                                            userRank: userData[
+                                                                'RANK'],
+                                                            userID: userData[
+                                                                    'ID NO']
+                                                                .toString(),
+                                                            occAccept:
+                                                                occAccepteduserData?[
+                                                                    'NAME'],
+                                                            occGiven:
+                                                                occOnDutyuserData?[
+                                                                    'NAME'],
+                                                            deviceNo: data[
+                                                                'device_name'],
+                                                            iosVer: deviceData[
+                                                                'iosver'],
+                                                            flySmart:
+                                                                deviceData[
+                                                                    'flysmart'],
+                                                            lido: deviceData[
+                                                                ' lidoversion'],
+                                                            docunet: deviceData[
+                                                                'docuversion'],
+                                                            deviceCondition:
+                                                                deviceData[
+                                                                    'condition'],
+                                                            ttdUser: data[
+                                                                'signature_url'],
+                                                            ttdOCC: data[
+                                                                'signature_url_occ'],
+                                                            loan: data[
+                                                                'timestamp'],
+                                                            statusdevice: data[
+                                                                'statusDevice'],
+                                                            ttdOtherCrew: data !=
+                                                                    null
+                                                                ? data[
+                                                                    'signature_url_other_user']
+                                                                : 'Not Found',
+                                                            handoverName:
+                                                                handoverTouserData !=
+                                                                        null
+                                                                    ? handoverTouserData[
+                                                                        'NAME']
+                                                                    : 'Not Found',
+                                                            handoverID: data[
+                                                                'handover-to-crew'],
                                                           ).then((_) {
-                                                            Navigator.pop(context);
-                                                          }).catchError((error) {
-                                                            print('Error generating PDF: $error');
-                                                            Navigator.pop(context);
+                                                            Navigator.pop(
+                                                                context);
+                                                          }).catchError(
+                                                              (error) {
+                                                            print(
+                                                                'Error generating PDF: $error');
+                                                            Navigator.pop(
+                                                                context);
                                                           });
                                                           //generateLogPdfDevice1();
                                                         },
-                                                        style: ElevatedButton.styleFrom(
-                                                          backgroundColor: TsOneColor.greenColor,
-                                                          shape: RoundedRectangleBorder(
-                                                            borderRadius: BorderRadius.circular(4.0),
+                                                        style: ElevatedButton
+                                                            .styleFrom(
+                                                          backgroundColor:
+                                                              TsOneColor
+                                                                  .greenColor,
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        4.0),
                                                           ),
                                                         ),
                                                         child: const Padding(
                                                           padding: EdgeInsets.all(15),
                                                           child: Text(
                                                             'Open Attachment History',
-                                                            style: TextStyle(color: Colors.white),
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white),
                                                           ),
                                                         )),
                                                   ),

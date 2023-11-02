@@ -26,10 +26,12 @@ class NextQuestionPageFeedbackPilot extends StatefulWidget {
   });
 
   @override
-  _NextQuestionPageFeedbackPilotState createState() => _NextQuestionPageFeedbackPilotState();
+  _NextQuestionPageFeedbackPilotState createState() =>
+      _NextQuestionPageFeedbackPilotState();
 }
 
-class _NextQuestionPageFeedbackPilotState extends State<NextQuestionPageFeedbackPilot> {
+class _NextQuestionPageFeedbackPilotState
+    extends State<NextQuestionPageFeedbackPilot> {
   TextEditingController? oneSectorController = TextEditingController();
   TextEditingController? twoSectorController = TextEditingController();
   TextEditingController? threeSectorController = TextEditingController();
@@ -41,7 +43,8 @@ class _NextQuestionPageFeedbackPilotState extends State<NextQuestionPageFeedback
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('BATTERY LEVEL AFTER ENGINE SHUTDOWN (with or without charging)'),
+        title: const Text(
+            'BATTERY LEVEL AFTER ENGINE SHUTDOWN (with or without charging)'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -54,7 +57,8 @@ class _NextQuestionPageFeedbackPilotState extends State<NextQuestionPageFeedback
                   alignment: Alignment.centerLeft,
                   child: Text(
                     "BATTERY LEVEL AFTER ENGINE SHUTDOWN (with or without charging)",
-                    style: tsOneTextTheme.titleMedium?.copyWith(color: Colors.red), // Mengubah warna teks menjadi hijau
+                    style: tsOneTextTheme.titleMedium?.copyWith(
+                        color: Colors.red), // Mengubah warna teks menjadi hijau
                   ),
                 ),
               ),
@@ -62,7 +66,9 @@ class _NextQuestionPageFeedbackPilotState extends State<NextQuestionPageFeedback
                 color: Colors.grey,
               ),
               SizedBox(height: 8),
-              Text('1st sector', style: tsOneTextTheme.labelLarge?.copyWith(fontWeight: FontWeight.bold)),
+              Text('1st sector',
+                  style: tsOneTextTheme.labelLarge
+                      ?.copyWith(fontWeight: FontWeight.bold)),
               TextFormField(
                 controller: oneSectorController,
                 decoration: const InputDecoration(
@@ -72,7 +78,9 @@ class _NextQuestionPageFeedbackPilotState extends State<NextQuestionPageFeedback
                 ),
               ),
               const SizedBox(height: 15.0),
-              Text('2nd sector', style: tsOneTextTheme.labelLarge?.copyWith(fontWeight: FontWeight.bold)),
+              Text('2nd sector',
+                  style: tsOneTextTheme.labelLarge
+                      ?.copyWith(fontWeight: FontWeight.bold)),
               TextFormField(
                 controller: twoSectorController,
                 decoration: const InputDecoration(
@@ -82,7 +90,9 @@ class _NextQuestionPageFeedbackPilotState extends State<NextQuestionPageFeedback
                 ),
               ),
               const SizedBox(height: 15.0),
-              Text('3rd sector', style: tsOneTextTheme.labelLarge?.copyWith(fontWeight: FontWeight.bold)),
+              Text('3rd sector',
+                  style: tsOneTextTheme.labelLarge
+                      ?.copyWith(fontWeight: FontWeight.bold)),
               TextFormField(
                 controller: threeSectorController,
                 decoration: const InputDecoration(
@@ -92,7 +102,9 @@ class _NextQuestionPageFeedbackPilotState extends State<NextQuestionPageFeedback
                 ),
               ),
               const SizedBox(height: 15.0),
-              Text('4th sector', style: tsOneTextTheme.labelLarge?.copyWith(fontWeight: FontWeight.bold)),
+              Text('4th sector',
+                  style: tsOneTextTheme.labelLarge
+                      ?.copyWith(fontWeight: FontWeight.bold)),
               TextFormField(
                 controller: fourSectorController,
                 decoration: const InputDecoration(
@@ -104,7 +116,8 @@ class _NextQuestionPageFeedbackPilotState extends State<NextQuestionPageFeedback
               const SizedBox(height: 15.0),
               Text(
                 '5th sector',
-                style: tsOneTextTheme.labelLarge?.copyWith(fontWeight: FontWeight.bold),
+                style: tsOneTextTheme.labelLarge
+                    ?.copyWith(fontWeight: FontWeight.bold),
               ),
               TextFormField(
                 controller: fiveSectorController,
@@ -115,7 +128,9 @@ class _NextQuestionPageFeedbackPilotState extends State<NextQuestionPageFeedback
                 ),
               ),
               const SizedBox(height: 15.0),
-              Text('6th sector', style: tsOneTextTheme.labelLarge?.copyWith(fontWeight: FontWeight.bold)),
+              Text('6th sector',
+                  style: tsOneTextTheme.labelLarge
+                      ?.copyWith(fontWeight: FontWeight.bold)),
               TextFormField(
                 controller: sixSectorController,
                 decoration: const InputDecoration(

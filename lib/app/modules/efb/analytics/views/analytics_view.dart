@@ -29,27 +29,21 @@ class AnalyticsView extends GetView<AnalyticsController> {
     final sheet = excel['Main Data'];
     // Menentukan judul kolom
     sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: 2)).value =
-    'Handover Date';
+        'Crew ID';
     sheet.cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: 2)).value =
-    'Crew ID';
+        'NAME';
     sheet.cell(CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: 2)).value =
-    'Crew Name';
+        'RANK';
     sheet.cell(CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: 2)).value =
-    'RANK';
+        'HUB';
     sheet.cell(CellIndex.indexByColumnRow(columnIndex: 4, rowIndex: 2)).value =
-    'HUB';
+        'Device 1';
     sheet.cell(CellIndex.indexByColumnRow(columnIndex: 5, rowIndex: 2)).value =
-    'Device 1';
+        'Device 2';
     sheet.cell(CellIndex.indexByColumnRow(columnIndex: 6, rowIndex: 2)).value =
-    'Device 2';
+        'Device 3';
     sheet.cell(CellIndex.indexByColumnRow(columnIndex: 7, rowIndex: 2)).value =
-    'Device 3';
-    sheet.cell(CellIndex.indexByColumnRow(columnIndex: 8, rowIndex: 2)).value =
-    'Status';
-    sheet.cell(CellIndex.indexByColumnRow(columnIndex: 9, rowIndex: 2)).value =
-    'Return';
-    sheet.cell(CellIndex.indexByColumnRow(columnIndex: 10, rowIndex: 2)).value =
-    'Not return';
+        'Status';
     final titleCellStyle = CellStyle(
       backgroundColorHex: '#FFFF00', // Warna latar belakang kuning
       horizontalAlign: HorizontalAlign.Center,
@@ -57,12 +51,12 @@ class AnalyticsView extends GetView<AnalyticsController> {
     );
     // Merge & center cell untuk judul Device
     sheet.merge(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: 0),
-        CellIndex.indexByColumnRow(columnIndex: 10, rowIndex: 0));
+        CellIndex.indexByColumnRow(columnIndex: 7, rowIndex: 0));
     sheet
         .cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: 0))
         .cellStyle = titleCellStyle;
     final deviceTitleCellHeader =
-    sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: 0));
+        sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: 0));
     deviceTitleCellHeader.value = 'Acknowledgment & Return Process';
 
     final centerAlignmentHeader = CellStyle(
@@ -70,10 +64,10 @@ class AnalyticsView extends GetView<AnalyticsController> {
     );
     deviceTitleCellHeader.cellStyle = centerAlignmentHeader;
 
-    sheet.merge(CellIndex.indexByColumnRow(columnIndex: 5, rowIndex: 1),
+    sheet.merge(CellIndex.indexByColumnRow(columnIndex: 4, rowIndex: 1),
         CellIndex.indexByColumnRow(columnIndex: 7, rowIndex: 1));
     final deviceTitleCell =
-    sheet.cell(CellIndex.indexByColumnRow(columnIndex: 7, rowIndex: 1));
+        sheet.cell(CellIndex.indexByColumnRow(columnIndex: 4, rowIndex: 1));
     deviceTitleCell.value = 'Device Used';
     final centerAlignment = CellStyle(
       horizontalAlign: HorizontalAlign.Center,
@@ -89,35 +83,27 @@ class AnalyticsView extends GetView<AnalyticsController> {
 
       if (userSnapshot.exists) {
         final userData = userSnapshot.data() as Map<String, dynamic>;
-        // Ubah Firestore Timestamp ke DateTime
-        final timestamp = (device['timestamp'] as Timestamp).toDate();
-        final formattedTimestamp =
-        DateFormat('dd-MM-yyyy HH:mm:ss').format(timestamp);
-
         sheet
             .cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: i + 3))
-            .value = formattedTimestamp;
-        sheet
-            .cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: i + 3))
             .value = userData['ID NO'];
         sheet
-            .cell(CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: i + 3))
+            .cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: i + 3))
             .value = userData['NAME'];
         sheet
-            .cell(CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: i + 3))
+            .cell(CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: i + 3))
             .value = userData['RANK'];
       }
       sheet
-          .cell(CellIndex.indexByColumnRow(columnIndex: 4, rowIndex: i + 3))
+          .cell(CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: i + 3))
           .value = device['field_hub'] ?? '-';
       sheet
-          .cell(CellIndex.indexByColumnRow(columnIndex: 5, rowIndex: i + 3))
+          .cell(CellIndex.indexByColumnRow(columnIndex: 4, rowIndex: i + 3))
           .value = device['device_name'] ?? '-';
       sheet
-          .cell(CellIndex.indexByColumnRow(columnIndex: 6, rowIndex: i + 3))
+          .cell(CellIndex.indexByColumnRow(columnIndex: 5, rowIndex: i + 3))
           .value = device['device_name2'] ?? '-';
       sheet
-          .cell(CellIndex.indexByColumnRow(columnIndex: 7, rowIndex: i + 3))
+          .cell(CellIndex.indexByColumnRow(columnIndex: 6, rowIndex: i + 3))
           .value = device['device_name3'] ?? '-';
 
       String statusDeviceAlias = device['statusDevice'];
@@ -143,25 +129,9 @@ class AnalyticsView extends GetView<AnalyticsController> {
             .value = 0;
       } else if (statusDeviceAlias == 'in-use-pilot') {
         statusDeviceAlias = 'Not Return';
-        // Tambahkan angka 0 ke kolom Return (kolom ke-9)
-        sheet
-            .cell(CellIndex.indexByColumnRow(columnIndex: 9, rowIndex: i + 3))
-            .value = 0;
-        // Tambahkan angka 1 ke kolom Not Return (kolom ke-10)
-        sheet
-            .cell(CellIndex.indexByColumnRow(columnIndex: 10, rowIndex: i + 3))
-            .value = 1;
-      } else {
-        // Jika tidak ada status yang cocok, tambahkan angka 0 ke kedua kolom
-        sheet
-            .cell(CellIndex.indexByColumnRow(columnIndex: 9, rowIndex: i + 3))
-            .value = 0;
-        sheet
-            .cell(CellIndex.indexByColumnRow(columnIndex: 10, rowIndex: i + 3))
-            .value = 0;
       }
       sheet
-          .cell(CellIndex.indexByColumnRow(columnIndex: 8, rowIndex: i + 3))
+          .cell(CellIndex.indexByColumnRow(columnIndex: 7, rowIndex: i + 3))
           .value = statusDeviceAlias;
     }
 
@@ -173,14 +143,14 @@ class AnalyticsView extends GetView<AnalyticsController> {
 
     await OpenFile.open(excelFile.path,
         type:
-        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
   }
 
   Future<List<Map<String, dynamic>>?> fetchDataFromFirebase() async {
     Query query = FirebaseFirestore.instance
         .collection('pilot-device-1')
         .where('statusDevice',
-        whereIn: ['in-use-pilot', 'Done', 'handover-to-other-crew'])
+            whereIn: ['in-use-pilot', 'Done', 'handover-to-other-crew'])
         .where('timestamp', isGreaterThanOrEqualTo: selectedStartDate)
         .where('timestamp', isLessThanOrEqualTo: selectedEndDate);
 
@@ -216,7 +186,7 @@ class AnalyticsView extends GetView<AnalyticsController> {
             onPressed: () async {
               if (selectedStartDate != null && selectedEndDate != null) {
                 List<Map<String, dynamic>>? data =
-                await fetchDataFromFirebase();
+                    await fetchDataFromFirebase();
 
                 // Export data to Excel
                 await exportToExcel(data!);
@@ -353,7 +323,7 @@ class _AnalyticsHubState extends State<AnalyticsHub>
                       child: Text(
                         selectedStartDate != null
                             ? Util.convertDateTimeDisplay(
-                            selectedStartDate.toString(), "dd MMM yyyy")
+                                selectedStartDate.toString(), "dd MMM yyyy")
                             : "Select Date",
                       ),
                     ),
@@ -383,7 +353,7 @@ class _AnalyticsHubState extends State<AnalyticsHub>
                       child: Text(
                         selectedEndDate != null
                             ? Util.convertDateTimeDisplay(
-                            selectedEndDate.toString(), "dd MMM yyyy")
+                                selectedEndDate.toString(), "dd MMM yyyy")
                             : "Select Date",
                       ),
                     ),
@@ -401,7 +371,7 @@ class _AnalyticsHubState extends State<AnalyticsHub>
                   borderRadius: BorderRadius.circular(5.0),
                 ),
                 contentPadding:
-                EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                    EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                 labelStyle: TextStyle(fontSize: 12, color: Colors.black),
               ),
               child: DropdownButton<String>(
@@ -593,9 +563,9 @@ class _AnalyticsHubState extends State<AnalyticsHub>
                               return Text('Error: ${snapshot.error}');
                             } else {
                               final double percentage =
-                              snapshot.data?[0] as double;
+                                  snapshot.data?[0] as double;
                               final int deviceNameCount =
-                              snapshot.data?[1] as int;
+                                  snapshot.data?[1] as int;
                               return Container(
                                 margin: EdgeInsets.all(6.0),
                                 padding: EdgeInsets.all(16.0),
@@ -609,7 +579,7 @@ class _AnalyticsHubState extends State<AnalyticsHub>
                                 child: Center(
                                   child: BlackTitleText(
                                     text:
-                                    "${percentage.toStringAsFixed(2)}%($deviceNameCount)",
+                                        "${percentage.toStringAsFixed(2)}%($deviceNameCount)",
                                     size: 14.0,
                                   ),
                                 ),
@@ -638,9 +608,9 @@ class _AnalyticsHubState extends State<AnalyticsHub>
                               return Text('Error: ${snapshot.error}');
                             } else {
                               final double percentage =
-                              snapshot.data?[0] as double;
+                                  snapshot.data?[0] as double;
                               final int deviceNameCountDone =
-                              snapshot.data?[1] as int;
+                                  snapshot.data?[1] as int;
                               return Container(
                                 margin: EdgeInsets.all(6.0),
                                 padding: EdgeInsets.all(16.0),
@@ -654,7 +624,7 @@ class _AnalyticsHubState extends State<AnalyticsHub>
                                 child: Center(
                                   child: BlackTitleText(
                                     text:
-                                    "${percentage.toStringAsFixed(2)}%($deviceNameCountDone)",
+                                        "${percentage.toStringAsFixed(2)}%($deviceNameCountDone)",
                                     size: 14.0,
                                   ),
                                 ),
@@ -709,9 +679,9 @@ class _AnalyticsHubState extends State<AnalyticsHub>
                               return Text('Error: ${snapshot.error}');
                             } else {
                               final double percentage =
-                              snapshot.data?[0] as double;
+                                  snapshot.data?[0] as double;
                               final int deviceNameCount23 =
-                              snapshot.data?[1] as int;
+                                  snapshot.data?[1] as int;
                               return Container(
                                 margin: EdgeInsets.all(6.0),
                                 padding: EdgeInsets.all(16.0),
@@ -725,7 +695,7 @@ class _AnalyticsHubState extends State<AnalyticsHub>
                                 child: Center(
                                   child: BlackTitleText(
                                     text:
-                                    "${percentage.toStringAsFixed(2)}%($deviceNameCount23)",
+                                        "${percentage.toStringAsFixed(2)}%($deviceNameCount23)",
                                     size: 14.0,
                                   ),
                                 ),
@@ -754,9 +724,9 @@ class _AnalyticsHubState extends State<AnalyticsHub>
                               return Text('Error: ${snapshot.error}');
                             } else {
                               final double percentages =
-                              snapshot.data?[0] as double;
+                                  snapshot.data?[0] as double;
                               final int deviceNameCount2and3 =
-                              snapshot.data?[1] as int;
+                                  snapshot.data?[1] as int;
                               return Container(
                                 margin: EdgeInsets.all(6.0),
                                 padding: EdgeInsets.all(16.0),
@@ -770,7 +740,7 @@ class _AnalyticsHubState extends State<AnalyticsHub>
                                 child: Center(
                                   child: BlackTitleText(
                                     text:
-                                    "${percentages.toStringAsFixed(2)}%($deviceNameCount2and3) ",
+                                        "${percentages.toStringAsFixed(2)}%($deviceNameCount2and3) ",
                                     size: 14.0,
                                   ),
                                 ),
@@ -825,7 +795,7 @@ class _AnalyticsHubState extends State<AnalyticsHub>
                               return Text('Error: ${snapshot.error}');
                             } else {
                               final int deviceNotReturn =
-                              snapshot.data?[1] as int;
+                                  snapshot.data?[1] as int;
                               return Center(
                                 child: TextButton(
                                   onPressed: () {},
@@ -863,7 +833,7 @@ class _AnalyticsHubState extends State<AnalyticsHub>
   Future<Map<String, int>> countDevicesHub(String hub) async {
     final firestore = FirebaseFirestore.instance;
     final QuerySnapshot querySnapshot =
-    await firestore.collection('Device').get();
+        await firestore.collection('Device').get();
 
     final Map<String, int> deviceCountByHub = {
       'CGK': 0,
@@ -885,12 +855,12 @@ class _AnalyticsHubState extends State<AnalyticsHub>
     final QuerySnapshot querySnapshot = await firestore
         .collection('pilot-device-1')
         .where('timestamp',
-        isGreaterThanOrEqualTo: selectedStartDate,
-        isLessThanOrEqualTo: selectedEndDate)
+            isGreaterThanOrEqualTo: selectedStartDate,
+            isLessThanOrEqualTo: selectedEndDate)
         .where('statusDevice',
-        whereIn: ['Done', 'in-use-pilot', 'handover-to-other-crew'])
+            whereIn: ['Done', 'in-use-pilot', 'handover-to-other-crew'])
         .where('field_hub',
-        isEqualTo: (selectedHub == 'ALL' ? null : selectedHub))
+            isEqualTo: (selectedHub == 'ALL' ? null : selectedHub))
         .get();
 
     final List<DocumentSnapshot> documents = querySnapshot.docs;
@@ -917,12 +887,12 @@ class _AnalyticsHubState extends State<AnalyticsHub>
     final QuerySnapshot querySnapshot = await firestore
         .collection('pilot-device-1')
         .where('timestamp',
-        isGreaterThanOrEqualTo: selectedStartDate,
-        isLessThanOrEqualTo: selectedEndDate)
+            isGreaterThanOrEqualTo: selectedStartDate,
+            isLessThanOrEqualTo: selectedEndDate)
         .where('statusDevice',
-        whereIn: ['Done', 'in-use-pilot', 'handover-to-other-crew'])
+            whereIn: ['Done', 'in-use-pilot', 'handover-to-other-crew'])
         .where('field_hub',
-        isEqualTo: (selectedHub == 'ALL' ? null : selectedHub))
+            isEqualTo: (selectedHub == 'ALL' ? null : selectedHub))
         .get();
 
     final List<DocumentSnapshot> documents = querySnapshot.docs;
@@ -943,12 +913,12 @@ class _AnalyticsHubState extends State<AnalyticsHub>
     final QuerySnapshot querySnapshot = await firestore
         .collection('pilot-device-1')
         .where('timestamp',
-        isGreaterThanOrEqualTo: selectedStartDate,
-        isLessThanOrEqualTo: selectedEndDate)
+            isGreaterThanOrEqualTo: selectedStartDate,
+            isLessThanOrEqualTo: selectedEndDate)
         .where('statusDevice',
-        whereIn: [statusDone, 'in-use-pilot', 'handover-to-other-crew'])
+            whereIn: [statusDone, 'in-use-pilot', 'handover-to-other-crew'])
         .where('field_hub',
-        isEqualTo: (selectedHub == 'ALL' ? null : selectedHub))
+            isEqualTo: (selectedHub == 'ALL' ? null : selectedHub))
         .get();
 
     final List<DocumentSnapshot> documents = querySnapshot.docs;
@@ -977,12 +947,12 @@ class _AnalyticsHubState extends State<AnalyticsHub>
     final QuerySnapshot querySnapshot = await firestore
         .collection('pilot-device-1')
         .where('timestamp',
-        isGreaterThanOrEqualTo: selectedStartDate,
-        isLessThanOrEqualTo: selectedEndDate)
+            isGreaterThanOrEqualTo: selectedStartDate,
+            isLessThanOrEqualTo: selectedEndDate)
         .where('statusDevice',
-        whereIn: ['Done', 'in-use-pilot', 'handover-to-other-crew'])
+            whereIn: ['Done', 'in-use-pilot', 'handover-to-other-crew'])
         .where('field_hub',
-        isEqualTo: (selectedHub == 'ALL' ? null : selectedHub))
+            isEqualTo: (selectedHub == 'ALL' ? null : selectedHub))
         .get();
 
     final List<DocumentSnapshot> documents = querySnapshot.docs;
@@ -1004,11 +974,11 @@ class _AnalyticsHubState extends State<AnalyticsHub>
     final QuerySnapshot querySnapshot = await firestore
         .collection('pilot-device-1')
         .where('timestamp',
-        isGreaterThanOrEqualTo: selectedStartDate,
-        isLessThanOrEqualTo: selectedEndDate)
+            isGreaterThanOrEqualTo: selectedStartDate,
+            isLessThanOrEqualTo: selectedEndDate)
         .where('statusDevice', isEqualTo: 'in-use-pilot')
         .where('field_hub',
-        isEqualTo: (selectedHub == 'ALL' ? null : selectedHub))
+            isEqualTo: (selectedHub == 'ALL' ? null : selectedHub))
         .get();
 
     final List<DocumentSnapshot> documents = querySnapshot.docs;
@@ -1042,11 +1012,11 @@ class _AnalyticsHubState extends State<AnalyticsHub>
     final QuerySnapshot querySnapshot = await firestore
         .collection('pilot-device-1')
         .where('timestamp',
-        isGreaterThanOrEqualTo: selectedStartDate,
-        isLessThanOrEqualTo: selectedEndDate)
+            isGreaterThanOrEqualTo: selectedStartDate,
+            isLessThanOrEqualTo: selectedEndDate)
         .where('statusDevice', isEqualTo: 'in-use-pilot')
         .where('field_hub',
-        isEqualTo: (selectedHub == 'ALL' ? null : selectedHub))
+            isEqualTo: (selectedHub == 'ALL' ? null : selectedHub))
         .get();
 
     final List<DocumentSnapshot> documents = querySnapshot.docs;
@@ -1073,11 +1043,11 @@ class _AnalyticsHubState extends State<AnalyticsHub>
     final QuerySnapshot querySnapshot = await firestore
         .collection('pilot-device-1')
         .where('timestamp',
-        isGreaterThanOrEqualTo: selectedStartDate,
-        isLessThanOrEqualTo: selectedEndDate)
+            isGreaterThanOrEqualTo: selectedStartDate,
+            isLessThanOrEqualTo: selectedEndDate)
         .where('statusDevice', whereIn: ['Done', 'handover-to-other-crew'])
         .where('field_hub',
-        isEqualTo: (selectedHub == 'ALL' ? null : selectedHub))
+            isEqualTo: (selectedHub == 'ALL' ? null : selectedHub))
         .get();
 
     final List<DocumentSnapshot> documents = querySnapshot.docs;
@@ -1104,11 +1074,11 @@ class _AnalyticsHubState extends State<AnalyticsHub>
     final QuerySnapshot querySnapshot = await firestore
         .collection('pilot-device-1')
         .where('timestamp',
-        isGreaterThanOrEqualTo: selectedStartDate,
-        isLessThanOrEqualTo: selectedEndDate)
+            isGreaterThanOrEqualTo: selectedStartDate,
+            isLessThanOrEqualTo: selectedEndDate)
         .where('statusDevice', whereIn: ['Done', 'handover-to-other-crew'])
         .where('field_hub',
-        isEqualTo: (selectedHub == 'ALL' ? null : selectedHub))
+            isEqualTo: (selectedHub == 'ALL' ? null : selectedHub))
         .get();
 
     final List<DocumentSnapshot> documents = querySnapshot.docs;
@@ -1128,11 +1098,11 @@ class _AnalyticsHubState extends State<AnalyticsHub>
     final QuerySnapshot querySnapshot = await firestore
         .collection('pilot-device-1')
         .where('timestamp',
-        isGreaterThanOrEqualTo: selectedStartDate,
-        isLessThanOrEqualTo: selectedEndDate)
+            isGreaterThanOrEqualTo: selectedStartDate,
+            isLessThanOrEqualTo: selectedEndDate)
         .where('statusDevice', whereIn: ['Done', 'handover-to-other-crew'])
         .where('field_hub',
-        isEqualTo: (selectedHub == 'ALL' ? null : selectedHub))
+            isEqualTo: (selectedHub == 'ALL' ? null : selectedHub))
         .get();
 
     final List<DocumentSnapshot> documents = querySnapshot.docs;
@@ -1161,11 +1131,11 @@ class _AnalyticsHubState extends State<AnalyticsHub>
     final QuerySnapshot querySnapshot = await firestore
         .collection('pilot-device-1')
         .where('timestamp',
-        isGreaterThanOrEqualTo: selectedStartDate,
-        isLessThanOrEqualTo: selectedEndDate)
+            isGreaterThanOrEqualTo: selectedStartDate,
+            isLessThanOrEqualTo: selectedEndDate)
         .where('statusDevice', whereIn: ['Done', 'handover-to-other-crew'])
         .where('field_hub',
-        isEqualTo: (selectedHub == 'ALL' ? null : selectedHub))
+            isEqualTo: (selectedHub == 'ALL' ? null : selectedHub))
         .get();
 
     final List<DocumentSnapshot> documents = querySnapshot.docs;
@@ -1203,12 +1173,12 @@ class _AnalyticsHubState extends State<AnalyticsHub>
     final QuerySnapshot querySnapshot = await firestore
         .collection('pilot-device-1')
         .where('timestamp',
-        isGreaterThanOrEqualTo: selectedStartDate,
-        isLessThanOrEqualTo: selectedEndDate)
+            isGreaterThanOrEqualTo: selectedStartDate,
+            isLessThanOrEqualTo: selectedEndDate)
         .where('statusDevice',
-        whereIn: [statusInUse, statusDone, statusHandover])
+            whereIn: [statusInUse, statusDone, statusHandover])
         .where('field_hub',
-        isEqualTo: (selectedHub == 'ALL' ? null : selectedHub))
+            isEqualTo: (selectedHub == 'ALL' ? null : selectedHub))
         .get();
 
     final int deviceCount_InUse_AllHubs = querySnapshot.docs.length;
@@ -1221,12 +1191,12 @@ class _AnalyticsHubState extends State<AnalyticsHub>
     final QuerySnapshot doneSnapshot = await firestore
         .collection('pilot-device-1')
         .where('timestamp',
-        isGreaterThanOrEqualTo: selectedStartDate,
-        isLessThanOrEqualTo: selectedEndDate)
+            isGreaterThanOrEqualTo: selectedStartDate,
+            isLessThanOrEqualTo: selectedEndDate)
         .where('statusDevice', whereIn: ['Done', 'handover-to-other-crew'])
-    // .where('field_hub', isEqualTo: hub)
+        // .where('field_hub', isEqualTo: hub)
         .where('field_hub',
-        isEqualTo: (selectedHub == 'ALL' ? null : selectedHub))
+            isEqualTo: (selectedHub == 'ALL' ? null : selectedHub))
         .get();
 
     final int deviceCountDone = doneSnapshot.docs.length;
@@ -1255,11 +1225,11 @@ Future<int> countDevicesInUse() async {
   final QuerySnapshot querySnapshot = await firestore
       .collection('pilot-device-1')
       .where('timestamp',
-      isGreaterThanOrEqualTo: selectedStartDate,
-      isLessThanOrEqualTo: selectedEndDate)
+          isGreaterThanOrEqualTo: selectedStartDate,
+          isLessThanOrEqualTo: selectedEndDate)
       .where('statusDevice', isEqualTo: 'in-use-pilot')
       .where('field_hub',
-      isEqualTo: (selectedHub == 'ALL' ? null : selectedHub))
+          isEqualTo: (selectedHub == 'ALL' ? null : selectedHub))
       .get();
 
   final int deviceCountInUse = querySnapshot.docs.length;

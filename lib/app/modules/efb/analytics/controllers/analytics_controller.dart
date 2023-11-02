@@ -6,20 +6,21 @@ class AnalyticsController extends GetxController {
   static String statusDone = "Done";
   static String statusHandover = "handover-to-other-crew";
   static String statusInUse = "in-use-pilot";
-
   Future<int> countDevicesHub_InUse_AllHubs() async {
     final firestore = FirebaseFirestore.instance;
     final QuerySnapshot querySnapshot = await firestore
         .collection('pilot-device-1')
         .where('timestamp',
-        isGreaterThanOrEqualTo: selectedStartDate,
-        isLessThanOrEqualTo: selectedEndDate)
+            isGreaterThanOrEqualTo: selectedStartDate,
+            isLessThanOrEqualTo: selectedEndDate)
         .where('statusDevice',
-        whereIn: [statusInUse, statusDone, statusHandover])
+            whereIn: [statusInUse, statusDone, statusHandover])
         .where('field_hub',
-        isEqualTo: (selectedHub == 'ALL' ? null : selectedHub))
+            isEqualTo: (selectedHub == 'ALL' ? null : selectedHub))
         .get();
+
     final int deviceCount_InUse_AllHubs = querySnapshot.docs.length;
+
     return deviceCount_InUse_AllHubs;
   }
 
@@ -28,12 +29,12 @@ class AnalyticsController extends GetxController {
     final QuerySnapshot querySnapshot = await firestore
         .collection('pilot-device-1')
         .where('timestamp',
-        isGreaterThanOrEqualTo: selectedStartDate,
-        isLessThanOrEqualTo: selectedEndDate)
+            isGreaterThanOrEqualTo: selectedStartDate,
+            isLessThanOrEqualTo: selectedEndDate)
         .where('statusDevice',
-        whereIn: ['Done', 'in-use-pilot', 'handover-to-other-crew'])
+            whereIn: ['Done', 'in-use-pilot', 'handover-to-other-crew'])
         .where('field_hub',
-        isEqualTo: (selectedHub == 'ALL' ? null : selectedHub))
+            isEqualTo: (selectedHub == 'ALL' ? null : selectedHub))
         .get();
 
     final List<DocumentSnapshot> documents = querySnapshot.docs;
@@ -60,12 +61,12 @@ class AnalyticsController extends GetxController {
     final QuerySnapshot querySnapshot = await firestore
         .collection('pilot-device-1')
         .where('timestamp',
-        isGreaterThanOrEqualTo: selectedStartDate,
-        isLessThanOrEqualTo: selectedEndDate)
+            isGreaterThanOrEqualTo: selectedStartDate,
+            isLessThanOrEqualTo: selectedEndDate)
         .where('statusDevice',
-        whereIn: ['Done', 'in-use-pilot', 'handover-to-other-crew'])
+            whereIn: ['Done', 'in-use-pilot', 'handover-to-other-crew'])
         .where('field_hub',
-        isEqualTo: (selectedHub == 'ALL' ? null : selectedHub))
+            isEqualTo: (selectedHub == 'ALL' ? null : selectedHub))
         .get();
 
     final List<DocumentSnapshot> documents = querySnapshot.docs;
@@ -86,12 +87,12 @@ class AnalyticsController extends GetxController {
     final QuerySnapshot querySnapshot = await firestore
         .collection('pilot-device-1')
         .where('timestamp',
-        isGreaterThanOrEqualTo: selectedStartDate,
-        isLessThanOrEqualTo: selectedEndDate)
+            isGreaterThanOrEqualTo: selectedStartDate,
+            isLessThanOrEqualTo: selectedEndDate)
         .where('statusDevice',
-        whereIn: [statusDone, 'in-use-pilot', 'handover-to-other-crew'])
+            whereIn: [statusDone, 'in-use-pilot', 'handover-to-other-crew'])
         .where('field_hub',
-        isEqualTo: (selectedHub == 'ALL' ? null : selectedHub))
+            isEqualTo: (selectedHub == 'ALL' ? null : selectedHub))
         .get();
 
     final List<DocumentSnapshot> documents = querySnapshot.docs;
