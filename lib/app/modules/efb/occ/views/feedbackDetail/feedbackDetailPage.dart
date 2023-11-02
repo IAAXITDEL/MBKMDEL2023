@@ -967,7 +967,7 @@ Future<void> generateFeedbackForm({
                             ),
                           ),
                           pw.SizedBox(height: 5),
-                          if ('$userRank' == 'CAPT')
+                          if (devicename1 != null && devicename2 == null)
                             pw.Text(
                               '$devicename1',
                               style: pw.TextStyle(
@@ -975,7 +975,7 @@ Future<void> generateFeedbackForm({
                                 fontSize: 12,
                               ),
                             ),
-                          if ('$userRank' == 'FO')
+                          if (devicename1 == '-')
                             pw.Text(
                               '$devicename2 & $devicename3',
                               style: pw.TextStyle(
@@ -1129,12 +1129,12 @@ Future<void> generateFeedbackForm({
                     height: 20.0,
                     child: reguler("Device No.", context),
                   ),
-                  if ('$userRank' == 'CAPT')
+                  if (devicename2 == null)
                     pw.Container(
                       height: 20.0,
                       child: reguler("$devicename1", context),
                     ),
-                  if ('$userRank' == 'FO')
+                  if (devicename1 == '-')
                     pw.Container(
                       height: 20.0,
                       child: reguler("$devicename2 & $devicename3", context),
