@@ -254,8 +254,6 @@ class PilotfeedbackformccView extends GetView<PilotfeedbackformccController> {
                                 }
 
                                 if (snapshot.hasError) {
-                                  print("asagda");
-                                  print("scs ${snapshot.error}");
                                   return ErrorScreen();
                                 }
 

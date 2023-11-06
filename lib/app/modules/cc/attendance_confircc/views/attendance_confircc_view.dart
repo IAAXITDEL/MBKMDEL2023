@@ -122,11 +122,10 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                     DateTime? dateTime = timestamp?.toDate();
 
                     subjectC.text = listAttendance[0]["subject"] ?? "N/A";
-                    dateC.text = DateFormat('dd MMMM yyyy').format(dateTime!) ?? "N/A";
+                    dateC.text = DateFormat('dd MMM yyyy').format(dateTime!) ?? "N/A";
                     departmentC.text = listAttendance[0]["department"] ?? "N/A";
                     vanueC.text = listAttendance[0]["vanue"] ?? "N/A";
-                    trainingtypeC.text =
-                        listAttendance[0]["trainingType"] ?? "N/A";
+                    trainingtypeC.text = listAttendance[0]["trainingType"] ?? "N/A";
                     roomC.text = listAttendance[0]["room"] ?? "N/A";
                     instructorC.text = listAttendance[0]["name"] ?? "N/A";
                     loaNoC.text = listAttendance[0]["loano"] ?? "";

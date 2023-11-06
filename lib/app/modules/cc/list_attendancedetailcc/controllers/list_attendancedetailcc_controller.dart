@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 
 import '../../../../../presentation/view_model/attendance_detail_model.dart';
+import '../../../../../presentation/view_model/attendance_model.dart';
 
 class ListAttendancedetailccController extends GetxController {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -62,14 +63,62 @@ class ListAttendancedetailccController extends GetxController {
 
   // Update score dan feedback dilakukan oleh instructor
   Future<void> updateScoring(String score, String feedback) async {
-    CollectionReference attendance = firestore.collection('attendance-detail');
+
+      CollectionReference attendance = firestore.collection('attendance-detail');
+
+      // Get attendance detail
+      final attendanceDetailQuery = await attendance
+          .where("id", isEqualTo: idattendancedetail.value)
+          .get();
+
+      if (attendanceDetailQuery.docs.isNotEmpty) {
+        final attendanceDetailData = AttendanceDetailModel.fromJson(attendanceDetailQuery.docs.first.data() as Map<String, dynamic>);
+
+
+        if (score == "SUCCESS") {
+          // Add Format No if it's not present
+          if (attendanceDetailData.formatNo == null) {
+
+            final attendanceQuery = await firestore
+                .collection('attendance')
+                .where("id", isEqualTo: attendanceDetailData.idattendance)
+                .get();
+
+            if (attendanceQuery.docs.isNotEmpty) {
+              final attendanceData = AttendanceModel.fromJson(attendanceQuery.docs.first.data());
+
+              // Get total successful attendance
+              final totalAttendanceQuery = await attendance
+                  .where("idattendance", isEqualTo: attendanceDetailData.idattendance)
+                  .where("score", isEqualTo: "SUCCESS")
+                  .get();
+
+              final totalAttendanceCount = totalAttendanceQuery.docs.length + 1;
+              final totalAttendanceCountString = totalAttendanceCount.toString().padLeft(3, '0');
+
+              // Update attendance detail
+              await attendance.doc(idattendancedetail.value).update({
+                "formatNo": "${attendanceData.subject}-${totalAttendanceCountString}",
+              });
+            }
+          }
+        }else if(score == "FAIL"){
+          if (attendanceDetailData.score == "SUCCESS") {
+            await attendance.doc(idattendancedetail.value).update({
+              "formatNo": null,
+            });
+          }
+        }
+      }
     await attendance.doc(idattendancedetail.value).update({
       "score": score,
       "feedback": feedback,
       "status": "donescoring",
       "updatedTime": DateTime.now().toIso8601String(),
     });
+
   }
+
 
   @override
   void onReady() {

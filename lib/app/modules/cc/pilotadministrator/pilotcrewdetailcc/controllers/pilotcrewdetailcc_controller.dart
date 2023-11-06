@@ -36,6 +36,8 @@ class PilotcrewdetailccController extends GetxController {
   Future<void> fetchAttendanceData(int idCrew) async {
     try {
       isReady.value = await Get.find<ProfileccController>().fetchAttendanceData(idCrew);
+      print("sidasdasd");
+      print(isReady.value);
     }catch (e) {
       print("Error generating PDF: $e");
       return ;
