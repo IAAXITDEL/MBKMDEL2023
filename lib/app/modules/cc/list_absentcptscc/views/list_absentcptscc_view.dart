@@ -14,10 +14,11 @@ class ListAbsentcptsccView extends GetView<ListAbsentcptsccController> {
 
   @override
   Widget build(BuildContext context) {
+    var nameC = TextEditingController();
     return Scaffold(
         appBar: AppBar(title: Text("Back")),
         body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20),
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -29,21 +30,65 @@ class ListAbsentcptsccView extends GetView<ListAbsentcptsccController> {
                 children: [
                   Expanded(
                       child: Container(
+                        margin: EdgeInsets.symmetric(vertical: 5),
+                        padding: EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5.0),
+
+                          color: Colors.white,
+                        ),
+                        child:Obx(()=>  Text("Absent : ${controller.total.value.toString()} person")),
+                      )
+                  )
+                ],
+              ),
+              Row(
+                children: [
+                  Expanded(
+                      child: Container(
                       margin: EdgeInsets.symmetric(vertical: 5),
-                        child: TextFormField(
-                          controller: controller.searchC,
-                          onChanged: (value) => controller.nameS.value = value,
-                          decoration: InputDecoration(
-                            hintText: "Search",
-                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(4.0)),
-                            focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
-                            prefixIcon: Icon(Icons.search,),
-                            suffixIcon: IconButton(
-                              icon: Icon(Icons.clear,), onPressed: () {
-                              controller.searchC.clear();
-                            },
+                        child: Container(
+                            decoration: BoxDecoration(
+                                color: TsOneColor.search,
+                                borderRadius: BorderRadius.circular(10.0),
+                                border: Border.all(
+                                  color: Colors.white54,
+                                  width: 0.5,
+                                )
                             ),
-                          ),
+                            child: ListTile(
+                              leading: Icon(
+                                Icons.search,
+                                color: Colors.blueGrey,
+                                size: 20,
+                              ),
+                              title: TextField(
+                                controller: nameC,
+                                onChanged: (value){
+                                  controller.nameS.value = value;
+                                  print(controller.nameS.value);
+                                },
+                                decoration: InputDecoration(
+                                  hintText: 'Type instructor name...',
+                                  hintStyle: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 12,
+                                    fontStyle: FontStyle.italic,
+                                  ),
+                                  border: InputBorder.none,
+                                ),
+                                style: TextStyle(
+                                  color: Colors.black,
+                                ),
+                              ),
+                              trailing: InkWell(
+                                onTap: (){
+                                  controller.nameS.value = "";
+                                  nameC.clear();
+                                },
+                                child: Icon(Icons.clear),
+                              ),
+                            )
                         ),
                       ),
                   ),
@@ -53,7 +98,7 @@ class ListAbsentcptsccView extends GetView<ListAbsentcptsccController> {
               Obx(() =>  Expanded(
                   child: SingleChildScrollView(child:
                   StreamBuilder<List<Map<String, dynamic>>>(
-                    stream: controller.getAttendanceById(controller.argumentid.value), //ini baru di update
+                    stream: controller.getCombinedAttendanceStream(controller.nameS.value), //ini baru di update
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return LoadingScreen();
@@ -76,12 +121,12 @@ class ListAbsentcptsccView extends GetView<ListAbsentcptsccController> {
                           itemBuilder: (context, index) {
                             return InkWell(
                               onTap: () {
-                                Get.toNamed(Routes.LIST_ATTENDANCEDETAILCC,
+                                Get.toNamed(Routes.PILOTCREWDETAILCC,
                                     arguments: {
-                                      "id": listAttendance[index]["idtraining"],
-                                      "status" : controller.argumentstatus.value,
-                                      "idattendance" : controller.argumentid.value
+                                      "id": listAttendance[index]
+                                      ["idtraining"],
                                     });
+                                print(listAttendance[index]["idtraining"]);
                               },
                               child: Container(
                                 margin: EdgeInsets.symmetric(vertical: 5),
