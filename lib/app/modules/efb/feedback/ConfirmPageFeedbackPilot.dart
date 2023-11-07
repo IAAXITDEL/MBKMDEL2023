@@ -59,7 +59,7 @@ class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
   String? Q13;
   String? Q14;
   String? Q15;
-  String? Q16;
+  //String? Q16;
   TextEditingController? ifHighController = TextEditingController();
   TextEditingController? addionalComentController = TextEditingController();
 
@@ -102,7 +102,7 @@ class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
       'q13': Q13,
       'q14': Q14,
       'q15': Q15,
-      'q16': Q16,
+      //'q16': Q16,
     });
 
     String feedbackId = feedbackDoc.id;

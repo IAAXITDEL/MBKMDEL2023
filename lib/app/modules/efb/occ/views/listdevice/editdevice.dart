@@ -271,8 +271,8 @@ class _EditDevice extends State<EditDevice> {
           'Edit Device',
           style: TextStyle(
             color: Colors.black, // Set text color to red
-            fontSize: 20.1,
-            fontWeight: FontWeight.bold,
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
           ),
         ),
         centerTitle: true,
@@ -314,7 +314,7 @@ class _EditDevice extends State<EditDevice> {
               child: UpdateButton,
             ),
             // Expanded(
-            //   
+            //
             //   child: Padding(
             //     padding: EdgeInsets.symmetric(vertical: 10),
             //     child: UpdateButton,
