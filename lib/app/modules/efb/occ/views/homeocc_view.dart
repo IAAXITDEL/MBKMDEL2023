@@ -34,7 +34,8 @@ class HomeOCCView extends GetView<HomeOCCController> {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(top: 50, left: 20, right: 20),
+                    padding:
+                        const EdgeInsets.only(top: 50, left: 20, right: 20),
                     child: Column(
                       children: [
                         Row(
@@ -70,11 +71,14 @@ class HomeOCCView extends GetView<HomeOCCController> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    Util.convertDateTimeDisplay(DateTime.now().toString(), "EEEE"),
+                                    Util.convertDateTimeDisplay(
+                                        DateTime.now().toString(), "EEEE"),
                                     style: tsOneTextTheme.labelSmall,
                                   ),
                                   Text(
-                                    Util.convertDateTimeDisplay(DateTime.now().toString(), "dd MMMM yyyy"),
+                                    Util.convertDateTimeDisplay(
+                                        DateTime.now().toString(),
+                                        "dd MMMM yyyy"),
                                     style: tsOneTextTheme.labelSmall,
                                   ),
                                 ],
@@ -108,113 +112,154 @@ class HomeOCCView extends GetView<HomeOCCController> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10),
                                   child: FutureBuilder<String?>(
                                     future: _getUserHub(),
                                     builder: (context, snapshot) {
-                                      if (snapshot.connectionState == ConnectionState.waiting) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
                                         return const CircularProgressIndicator();
                                       } else if (snapshot.hasError) {
                                         return Text('Error: ${snapshot.error}');
                                       } else {
                                         String? userHub = snapshot.data;
-                                        return BlackTitleText(text: "${userHub ?? 'Data tidak tersedia'}");
+                                        return BlackTitleText(
+                                            text:
+                                                "${userHub ?? 'Data tidak tersedia'}");
                                       }
                                     },
-                                  ),),
+                                  ),
+                                ),
                               ],
                             ),
                             Container(
                               width: 1,
                               height: 40,
                               color: tsOneColorScheme.primary,
-                              margin: const EdgeInsets.symmetric(horizontal: 20),
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 20),
                             ),
                             Expanded(
                               flex: 2,
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-
                                   StreamBuilder<QuerySnapshot>(
                                     stream: FirebaseFirestore.instance
                                         .collection("pilot-device-1")
-                                        .where("statusDevice", isEqualTo: "in-use-pilot")
-                                        .where("field_hub", isEqualTo: userHub) // Using the logged-in userHub
+                                        .where("statusDevice",
+                                            isEqualTo: "in-use-pilot")
+                                        .where("field_hub",
+                                            isEqualTo:
+                                                userHub) // Using the logged-in userHub
                                         .snapshots(),
                                     builder: (context, snapshot) {
-                                      if (snapshot.connectionState == ConnectionState.waiting) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
                                         return const CircularProgressIndicator();
                                       }
 
                                       if (snapshot.hasError) {
                                         return Text("Error: ${snapshot.error}");
                                       }
-                                      final inUseCount = snapshot.data?.docs.length ?? 0;
+                                      final inUseCount =
+                                          snapshot.data?.docs.length ?? 0;
 
                                       return StreamBuilder<QuerySnapshot>(
                                         stream: FirebaseFirestore.instance
                                             .collection("pilot-device-1")
-                                            .where("statusDevice", isEqualTo: "in-use-pilot")
-                                            .where("field_hub2", isEqualTo: userHub) // Using the logged-in userHub
+                                            .where("statusDevice",
+                                                isEqualTo: "in-use-pilot")
+                                            .where("field_hub2",
+                                                isEqualTo:
+                                                    userHub) // Using the logged-in userHub
                                             .snapshots(),
                                         builder: (context, snapshot) {
-                                          if (snapshot.connectionState == ConnectionState.waiting) {
+                                          if (snapshot.connectionState ==
+                                              ConnectionState.waiting) {
                                             return const CircularProgressIndicator();
                                           }
 
                                           if (snapshot.hasError) {
-                                            return Text("Error: ${snapshot.error}");
+                                            return Text(
+                                                "Error: ${snapshot.error}");
                                           }
-                                          final inUseCount2 = snapshot.data?.docs.length ?? 0;
-
+                                          final inUseCount2 =
+                                              snapshot.data?.docs.length ?? 0;
 
                                           return StreamBuilder<QuerySnapshot>(
                                             stream: FirebaseFirestore.instance
                                                 .collection("Device")
-                                                .where("hub", isEqualTo: userHub) // Using the logged-in userHub
+                                                .where("hub",
+                                                    isEqualTo:
+                                                        userHub) // Using the logged-in userHub
                                                 .snapshots(),
                                             builder: (context, snapshot) {
-                                              if (snapshot.connectionState == ConnectionState.waiting) {
+                                              if (snapshot.connectionState ==
+                                                  ConnectionState.waiting) {
                                                 return const CircularProgressIndicator();
                                               }
 
                                               if (snapshot.hasError) {
-                                                return Text("Error: ${snapshot.error}");
+                                                return Text(
+                                                    "Error: ${snapshot.error}");
                                               }
 
-                                              return StreamBuilder<QuerySnapshot>(
-                                                stream: FirebaseFirestore.instance.collection("Device").where("hub", isEqualTo: userHub).snapshots(),
+                                              return StreamBuilder<
+                                                  QuerySnapshot>(
+                                                stream: FirebaseFirestore
+                                                    .instance
+                                                    .collection("Device")
+                                                    .where("hub",
+                                                        isEqualTo: userHub)
+                                                    .snapshots(),
                                                 builder: (context, snapshot) {
-                                                  if (snapshot.connectionState == ConnectionState.waiting) {
+                                                  if (snapshot
+                                                          .connectionState ==
+                                                      ConnectionState.waiting) {
                                                     return const CircularProgressIndicator();
                                                   }
 
                                                   if (snapshot.hasError) {
-                                                    return Text("Error: ${snapshot.error}");
+                                                    return Text(
+                                                        "Error: ${snapshot.error}");
                                                   }
 
-                                                  final totalCount = snapshot.data?.docs.length ?? 0;
-                                                  final availableCount = totalCount - inUseCount;
-                                                  final deviceUsed = inUseCount + inUseCount2;
+                                                  final totalCount = snapshot
+                                                          .data?.docs.length ??
+                                                      0;
+                                                  final availableCount =
+                                                      totalCount - inUseCount;
+                                                  final deviceUsed =
+                                                      inUseCount + inUseCount2;
 
                                                   return Padding(
-                                                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                          horizontal: 10),
                                                       child: Column(
                                                         children: [
                                                           Row(
                                                             children: [
-                                                              Text('Available Devices: $availableCount', style: tsOneTextTheme.bodySmall,),
+                                                              Text(
+                                                                'Available Devices: $availableCount',
+                                                                style: tsOneTextTheme
+                                                                    .bodySmall,
+                                                              ),
                                                             ],
                                                           ),
                                                           Row(
                                                             children: [
-                                                              Text('Device Used: $deviceUsed', style: tsOneTextTheme.bodySmall,),
+                                                              Text(
+                                                                'Device Used: $deviceUsed',
+                                                                style: tsOneTextTheme
+                                                                    .bodySmall,
+                                                              ),
                                                             ],
                                                           ),
                                                         ],
-                                                      )
-                                                  );
+                                                      ));
                                                 },
                                               );
                                             },
@@ -242,7 +287,9 @@ class HomeOCCView extends GetView<HomeOCCController> {
                     ],
                   ),
                   Container(
-                    height: MediaQuery.of(context).size.height - kToolbarHeight - 40, // Adjust height as needed
+                    height: MediaQuery.of(context).size.height -
+                        kToolbarHeight -
+                        40, // Adjust height as needed
                     child: TabBarView(
                       children: [
                         FirebaseDataTab(
@@ -277,7 +324,10 @@ Future<String?> _getUserHub() async {
   final userEmail = user.email;
   if (userEmail == null) return null;
 
-  final userSnapshot = await FirebaseFirestore.instance.collection('users').where('EMAIL', isEqualTo: userEmail).get();
+  final userSnapshot = await FirebaseFirestore.instance
+      .collection('users')
+      .where('EMAIL', isEqualTo: userEmail)
+      .get();
 
   if (userSnapshot.docs.isNotEmpty) {
     final userDoc = userSnapshot.docs.first;
@@ -325,7 +375,10 @@ class FirebaseDataTab extends StatelessWidget {
             final userUid = data['user_uid'];
             // Get the user's name using a FutureBuilder
             return FutureBuilder<DocumentSnapshot>(
-              future: FirebaseFirestore.instance.collection("users").doc(userUid).get(),
+              future: FirebaseFirestore.instance
+                  .collection("users")
+                  .doc(userUid)
+                  .get(),
               builder: (context, userSnapshot) {
                 if (userSnapshot.connectionState == ConnectionState.waiting) {
                   return const CircularProgressIndicator();
@@ -339,10 +392,12 @@ class FirebaseDataTab extends StatelessWidget {
                   return const Text("User data not found");
                 }
 
-                final userData = userSnapshot.data!.data() as Map<String, dynamic>;
+                final userData =
+                    userSnapshot.data!.data() as Map<String, dynamic>;
                 final userName = userData['NAME'] ?? 'No Name';
                 final userRank = userData['RANK'] ?? 'No Rank';
-                final photoUrl = userData['PHOTOURL'] as String?; // Get the profile photo URL
+                final photoUrl = userData['PHOTOURL']
+                    as String?; // Get the profile photo URL
                 final dataId = documents[index].id; // Mendapatkan ID dokumen
                 final deviceName = data['device_name'] ?? 'No Data';
                 final deviceName2 = data['device_name2'] ?? '';
@@ -357,7 +412,7 @@ class FirebaseDataTab extends StatelessWidget {
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Card(
-                        color : tsOneColorScheme.secondary,
+                        color: tsOneColorScheme.secondary,
                         surfaceTintColor: TsOneColor.surface,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15),
@@ -368,14 +423,17 @@ class FirebaseDataTab extends StatelessWidget {
                             if (statuses.contains("waiting-confirmation-1")) {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (context) => ConfirmRequestPilotView(dataId: dataId),
+                                  builder: (context) =>
+                                      ConfirmRequestPilotView(dataId: dataId),
                                 ),
                               );
                             }
                             if (statuses.contains("need-confirmation-occ")) {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (context) => ConfirmReturnBackPilotView(dataId: dataId),
+                                  builder: (context) =>
+                                      ConfirmReturnBackPilotView(
+                                          dataId: dataId),
                                 ),
                               );
                             }
@@ -391,13 +449,16 @@ class FirebaseDataTab extends StatelessWidget {
                                 CircleAvatar(
                                   backgroundImage: photoUrl != null
                                       ? NetworkImage(photoUrl as String)
-                                      : const AssetImage('assets/default_profile_image.png') as ImageProvider,
+                                      : const AssetImage(
+                                              'assets/default_profile_image.png')
+                                          as ImageProvider,
                                   radius: 25.0,
                                 ),
                                 const SizedBox(width: 12.0),
                                 Flexible(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Container(
                                         width: double.infinity,
@@ -415,9 +476,13 @@ class FirebaseDataTab extends StatelessWidget {
                                           '$deviceName',
                                           style: tsOneTextTheme.labelSmall,
                                         ),
-                                      if (deviceName2.isNotEmpty && deviceName3.isNotEmpty && deviceName.contains('-'))
+                                      if (deviceName2.isNotEmpty &&
+                                          deviceName3.isNotEmpty &&
+                                          deviceName.contains('-'))
                                         Text(
-                                          '$deviceName2' + ' & ' + '$deviceName3',
+                                          '$deviceName2' +
+                                              ' & ' +
+                                              '$deviceName3',
                                           style: tsOneTextTheme.labelSmall,
                                         ),
                                       Text(
@@ -427,8 +492,9 @@ class FirebaseDataTab extends StatelessWidget {
                                     ],
                                   ),
                                 ),
-
-                                if (statuses.contains("waiting-confirmation-1") || statuses.contains("need-confirmation-occ"))
+                                if (statuses
+                                        .contains("waiting-confirmation-1") ||
+                                    statuses.contains("need-confirmation-occ"))
                                   const Icon(
                                     Icons.chevron_right,
                                     color: TsOneColor.onSecondary,

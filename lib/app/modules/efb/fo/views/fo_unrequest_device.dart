@@ -16,7 +16,9 @@ class FOUnRequestDeviceView extends GetView {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  FOUnRequestDeviceView({Key? key, required this.deviceId, required String deviceName}) : super(key: key);
+  FOUnRequestDeviceView(
+      {Key? key, required this.deviceId, required String deviceName})
+      : super(key: key);
 
   Future<void> _showQuickAlert(BuildContext context) async {
     await QuickAlert.show(
@@ -50,7 +52,8 @@ class FOUnRequestDeviceView extends GetView {
     if (timestamp == null) return 'No Data';
 
     DateTime dateTime = timestamp.toDate();
-    String formattedDateTime = '${dateTime.day} ${getMonthText(dateTime.month)} ${dateTime.year}'
+    String formattedDateTime =
+        '${dateTime.day} ${getMonthText(dateTime.month)} ${dateTime.year}'
         ' ; '
         '${dateTime.hour}:${dateTime.minute}';
     return formattedDateTime;
@@ -69,7 +72,8 @@ class FOUnRequestDeviceView extends GetView {
                 Expanded(
                   flex: 5,
                   child: TextButton(
-                    child: const Text('No', style: TextStyle(color: TsOneColor.secondaryContainer)),
+                    child: const Text('No',
+                        style: TextStyle(color: TsOneColor.secondaryContainer)),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
@@ -85,19 +89,29 @@ class FOUnRequestDeviceView extends GetView {
                         borderRadius: BorderRadius.circular(20.0),
                       ),
                     ),
-                    child: const Text('Yes', style: TextStyle(color: TsOneColor.onPrimary)),
+                    child: const Text('Yes',
+                        style: TextStyle(color: TsOneColor.onPrimary)),
                     onPressed: () async {
                       User? user = _auth.currentUser;
 
                       if (user != null) {
                         // Get the user's ID
-                        QuerySnapshot userQuery = await _firestore.collection('users').where('EMAIL', isEqualTo: user.email).get();
+                        QuerySnapshot userQuery = await _firestore
+                            .collection('users')
+                            .where('EMAIL', isEqualTo: user.email)
+                            .get();
                         String userUid = userQuery.docs.first.id;
 
-                        DocumentReference pilotDeviceRef = FirebaseFirestore.instance.collection("pilot-device-1").doc(deviceId);
+                        DocumentReference pilotDeviceRef = FirebaseFirestore
+                            .instance
+                            .collection("pilot-device-1")
+                            .doc(deviceId);
 
                         try {
-                          await FirebaseFirestore.instance.collection("pilot-device-1").doc(deviceId).delete();
+                          await FirebaseFirestore.instance
+                              .collection("pilot-device-1")
+                              .doc(deviceId)
+                              .delete();
 
                           print('Data updated successfully!');
                         } catch (error) {
@@ -128,7 +142,10 @@ class FOUnRequestDeviceView extends GetView {
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
           child: FutureBuilder<DocumentSnapshot>(
-            future: FirebaseFirestore.instance.collection("pilot-device-1").doc(deviceId).get(),
+            future: FirebaseFirestore.instance
+                .collection("pilot-device-1")
+                .doc(deviceId)
+                .get(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
@@ -149,7 +166,10 @@ class FOUnRequestDeviceView extends GetView {
               final deviceUid3 = data['device_uid3'];
 
               return FutureBuilder<DocumentSnapshot>(
-                future: FirebaseFirestore.instance.collection("users").doc(userUid).get(),
+                future: FirebaseFirestore.instance
+                    .collection("users")
+                    .doc(userUid)
+                    .get(),
                 builder: (context, userSnapshot) {
                   if (userSnapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
@@ -163,42 +183,62 @@ class FOUnRequestDeviceView extends GetView {
                     return const Center(child: Text('User data not found'));
                   }
 
-                  final userData = userSnapshot.data!.data() as Map<String, dynamic>;
+                  final userData =
+                      userSnapshot.data!.data() as Map<String, dynamic>;
 
                   return FutureBuilder<DocumentSnapshot>(
-                    future: FirebaseFirestore.instance.collection("Device").doc(deviceUid2).get(),
+                    future: FirebaseFirestore.instance
+                        .collection("Device")
+                        .doc(deviceUid2)
+                        .get(),
                     builder: (context, deviceUid2Snapshot) {
-                      if (deviceUid2Snapshot.connectionState == ConnectionState.waiting) {
+                      if (deviceUid2Snapshot.connectionState ==
+                          ConnectionState.waiting) {
                         return const Center(child: CircularProgressIndicator());
                       }
 
                       if (deviceUid2Snapshot.hasError) {
-                        return Center(child: Text('Error: ${deviceUid2Snapshot.error}'));
+                        return Center(
+                            child: Text('Error: ${deviceUid2Snapshot.error}'));
                       }
 
-                      if (!deviceUid2Snapshot.hasData || !deviceUid2Snapshot.data!.exists) {
-                        return const Center(child: Text('Device data not found'));
+                      if (!deviceUid2Snapshot.hasData ||
+                          !deviceUid2Snapshot.data!.exists) {
+                        return const Center(
+                            child: Text('Device data not found'));
                       }
 
-                      final deviceData2 = deviceUid2Snapshot.data!.data() as Map<String, dynamic>;
+                      final deviceData2 = deviceUid2Snapshot.data!.data()
+                          as Map<String, dynamic>;
 
                       return FutureBuilder<DocumentSnapshot>(
-                        future: FirebaseFirestore.instance.collection("Device").doc(deviceUid3).get(),
+                        future: FirebaseFirestore.instance
+                            .collection("Device")
+                            .doc(deviceUid3)
+                            .get(),
                         builder: (context, deviceUid3Snapshot) {
-                          if (deviceUid3Snapshot.connectionState == ConnectionState.waiting) {
-                            return const Center(child: CircularProgressIndicator());
+                          if (deviceUid3Snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                                child: CircularProgressIndicator());
                           }
 
                           if (deviceUid3Snapshot.hasError) {
-                            return Center(child: Text('Error: ${deviceUid3Snapshot.error}'));
+                            return Center(
+                                child:
+                                    Text('Error: ${deviceUid3Snapshot.error}'));
                           }
 
-                          if (!deviceUid3Snapshot.hasData || !deviceUid3Snapshot.data!.exists) {
-                            return const Center(child: Text('Device data not found'));
+                          if (!deviceUid3Snapshot.hasData ||
+                              !deviceUid3Snapshot.data!.exists) {
+                            return const Center(
+                                child: Text('Device data not found'));
                           }
 
-                          final deviceData3 = deviceUid3Snapshot.data!.data() as Map<String, dynamic>;
-                          final userData = userSnapshot.data!.data() as Map<String, dynamic>;
+                          final deviceData3 = deviceUid3Snapshot.data!.data()
+                              as Map<String, dynamic>;
+                          final userData =
+                              userSnapshot.data!.data() as Map<String, dynamic>;
 
                           return Center(
                             child: Column(
@@ -206,38 +246,46 @@ class FOUnRequestDeviceView extends GetView {
                               children: [
                                 Align(
                                   alignment: Alignment.centerRight,
-                                  child: Text(_formatTimestamp(data['timestamp']), style: tsOneTextTheme.labelSmall),
+                                  child: Text(
+                                      _formatTimestamp(data['timestamp']),
+                                      style: tsOneTextTheme.labelSmall),
                                 ),
                                 const SizedBox(height: 15),
                                 Row(
                                   children: [
-                                    const Expanded(flex: 6, child: Text("ID NO")),
-                                    const Expanded( child: Text(":")),
+                                    const Expanded(
+                                        flex: 6, child: Text("ID NO")),
+                                    const Expanded(child: Text(":")),
                                     Expanded(
                                       flex: 6,
-                                      child: Text('${userData['ID NO'] ?? 'No Data'}'),
+                                      child: Text(
+                                          '${userData['ID NO'] ?? 'No Data'}'),
                                     ),
                                   ],
                                 ),
                                 const SizedBox(height: 5.0),
                                 Row(
                                   children: [
-                                    const Expanded(flex: 6, child: Text("Name")),
-                                    const Expanded( child: Text(":")),
+                                    const Expanded(
+                                        flex: 6, child: Text("Name")),
+                                    const Expanded(child: Text(":")),
                                     Expanded(
                                       flex: 6,
-                                      child: Text('${userData['NAME'] ?? 'No Data'}'),
+                                      child: Text(
+                                          '${userData['NAME'] ?? 'No Data'}'),
                                     ),
                                   ],
                                 ),
                                 const SizedBox(height: 5.0),
                                 Row(
                                   children: [
-                                    const Expanded(flex: 6, child: Text("Rank")),
-                                    const Expanded( child: Text(":")),
+                                    const Expanded(
+                                        flex: 6, child: Text("Rank")),
+                                    const Expanded(child: Text(":")),
                                     Expanded(
                                       flex: 6,
-                                      child: Text('${userData['RANK'] ?? 'No Data'}'),
+                                      child: Text(
+                                          '${userData['RANK'] ?? 'No Data'}'),
                                     ),
                                   ],
                                 ),
@@ -252,7 +300,8 @@ class FOUnRequestDeviceView extends GetView {
                                         ),
                                       ),
                                       Padding(
-                                        padding: EdgeInsets.symmetric(horizontal: 8.0),
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 8.0),
                                         child: Text(
                                           'Device Details',
                                           style: TextStyle(color: Colors.grey),
@@ -268,7 +317,8 @@ class FOUnRequestDeviceView extends GetView {
                                 ),
                                 Align(
                                   alignment: Alignment.centerLeft,
-                                  child: Text("Device 2", style: tsOneTextTheme.displaySmall),
+                                  child: Text("Device 2",
+                                      style: tsOneTextTheme.displaySmall),
                                 ),
                                 const SizedBox(height: 5.0),
                                 Row(
@@ -280,14 +330,14 @@ class FOUnRequestDeviceView extends GetView {
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
-                                        
                                         child: Text(
-                                          ":",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
                                     Expanded(
                                       flex: 6,
-                                      child: Text('${data['device_name2'] ?? 'No Data'}'),
+                                      child: Text(
+                                          '${data['device_name2'] ?? 'No Data'}'),
                                     ),
                                   ],
                                 ),
@@ -301,11 +351,10 @@ class FOUnRequestDeviceView extends GetView {
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
-                                        
                                         child: Text(
-                                          ":",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
                                     Expanded(
                                       flex: 6,
                                       child: Text(
@@ -325,11 +374,10 @@ class FOUnRequestDeviceView extends GetView {
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
-                                        
                                         child: Text(
-                                          ":",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
                                     Expanded(
                                       flex: 6,
                                       child: Text(
@@ -349,11 +397,10 @@ class FOUnRequestDeviceView extends GetView {
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
-                                        
                                         child: Text(
-                                          ":",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
                                     Expanded(
                                       flex: 6,
                                       child: Text(
@@ -373,11 +420,10 @@ class FOUnRequestDeviceView extends GetView {
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
-                                        
                                         child: Text(
-                                          ":",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
                                     Expanded(
                                       flex: 6,
                                       child: Text(
@@ -397,11 +443,10 @@ class FOUnRequestDeviceView extends GetView {
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
-                                        
                                         child: Text(
-                                          ":",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
                                     Expanded(
                                       flex: 6,
                                       child: Text(
@@ -421,11 +466,10 @@ class FOUnRequestDeviceView extends GetView {
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
-                                        
                                         child: Text(
-                                          ":",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
                                     Expanded(
                                       flex: 6,
                                       child: Text(
@@ -438,7 +482,8 @@ class FOUnRequestDeviceView extends GetView {
                                 const SizedBox(height: 20.0),
                                 Align(
                                   alignment: Alignment.centerLeft,
-                                  child: Text("Device 3", style: tsOneTextTheme.displaySmall),
+                                  child: Text("Device 3",
+                                      style: tsOneTextTheme.displaySmall),
                                 ),
                                 const SizedBox(height: 5.0),
                                 Row(
@@ -450,11 +495,10 @@ class FOUnRequestDeviceView extends GetView {
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
-                                        
                                         child: Text(
-                                          ":",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
                                     Expanded(
                                       flex: 6,
                                       child: Text(
@@ -474,11 +518,10 @@ class FOUnRequestDeviceView extends GetView {
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
-                                        
                                         child: Text(
-                                          ":",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
                                     Expanded(
                                       flex: 6,
                                       child: Text(
@@ -498,11 +541,10 @@ class FOUnRequestDeviceView extends GetView {
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
-                                        
                                         child: Text(
-                                          ":",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
                                     Expanded(
                                       flex: 6,
                                       child: Text(
@@ -522,11 +564,10 @@ class FOUnRequestDeviceView extends GetView {
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
-                                        
                                         child: Text(
-                                          ":",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
                                     Expanded(
                                       flex: 6,
                                       child: Text(
@@ -546,11 +587,10 @@ class FOUnRequestDeviceView extends GetView {
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
-                                        
                                         child: Text(
-                                          ":",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
                                     Expanded(
                                       flex: 6,
                                       child: Text(
@@ -570,11 +610,10 @@ class FOUnRequestDeviceView extends GetView {
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
-                                        
                                         child: Text(
-                                          ":",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
                                     Expanded(
                                       flex: 6,
                                       child: Text(
@@ -594,11 +633,10 @@ class FOUnRequestDeviceView extends GetView {
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
-                                        
                                         child: Text(
-                                          ":",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
                                     Expanded(
                                       flex: 6,
                                       child: Text(

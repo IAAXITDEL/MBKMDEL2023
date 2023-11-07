@@ -363,7 +363,7 @@ class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
                 Container(
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey), // Atur warna dan tipe garis sesuai kebutuhan Anda
-                    borderRadius: BorderRadius.all(Radius.circular(10)), // Atur sudut border sesuai kebutuhan Anda
+                    borderRadius: const BorderRadius.all(Radius.circular(10)), // Atur sudut border sesuai kebutuhan Anda
                   ),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
@@ -379,7 +379,7 @@ class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
                             ),
                           ),
                         ),
-                        Divider(
+                        const Divider(
                           color: Colors.grey,
                         ),
                         const SizedBox(
@@ -490,18 +490,16 @@ class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
       ),
       bottomNavigationBar: BottomAppBar(
         surfaceTintColor: tsOneColorScheme.secondary,
-        child: Expanded(
-          child: ElevatedButton(
-            onPressed: () {
-              submitFeedback(context);
-            },
-            style: ElevatedButton.styleFrom(
-                backgroundColor: TsOneColor.greenColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(4.0),
-                )),
-            child: const Text('Submit', style: TextStyle(color: Colors.white)),
-          ),
+        child: ElevatedButton(
+          onPressed: () {
+            submitFeedback(context);
+          },
+          style: ElevatedButton.styleFrom(
+              backgroundColor: TsOneColor.greenColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4.0),
+              )),
+          child: const Text('Submit', style: TextStyle(color: Colors.white)),
         ),
       ),
     );

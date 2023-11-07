@@ -21,7 +21,8 @@ class ConfirmSignatureReturnOtherFOView extends StatefulWidget {
   final String deviceName2;
   final String deviceName3;
   final String deviceId;
-  final GlobalKey<SfSignaturePadState> _signaturePadKey = GlobalKey<SfSignaturePadState>();
+  final GlobalKey<SfSignaturePadState> _signaturePadKey =
+      GlobalKey<SfSignaturePadState>();
   Uint8List? signatureImage;
 
   ConfirmSignatureReturnOtherFOView({
@@ -31,10 +32,12 @@ class ConfirmSignatureReturnOtherFOView extends StatefulWidget {
   });
 
   @override
-  _ConfirmSignatureReturnOtherFOViewState createState() => _ConfirmSignatureReturnOtherFOViewState();
+  _ConfirmSignatureReturnOtherFOViewState createState() =>
+      _ConfirmSignatureReturnOtherFOViewState();
 }
 
-class _ConfirmSignatureReturnOtherFOViewState extends State<ConfirmSignatureReturnOtherFOView> {
+class _ConfirmSignatureReturnOtherFOViewState
+    extends State<ConfirmSignatureReturnOtherFOView> {
   final TextEditingController remarksController = TextEditingController();
   File? selectedImage; // File to store the selected image
   final ImagePicker _imagePicker = ImagePicker(); // ImagePicker instance
@@ -45,7 +48,8 @@ class _ConfirmSignatureReturnOtherFOViewState extends State<ConfirmSignatureRetu
   String OccOnDuty = "";
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final GlobalKey<SfSignaturePadState> _signaturePadKey = GlobalKey<SfSignaturePadState>();
+  final GlobalKey<SfSignaturePadState> _signaturePadKey =
+      GlobalKey<SfSignaturePadState>();
   bool isSignatureEmpty = true;
   bool agree = false;
 
@@ -53,7 +57,11 @@ class _ConfirmSignatureReturnOtherFOViewState extends State<ConfirmSignatureRetu
   void initState() {
     super.initState();
     // Fetch deviceUid, deviceName, and OCC On Duty from Firestore using widget.deviceId
-    FirebaseFirestore.instance.collection('pilot-device-1').doc(widget.deviceId).get().then((documentSnapshot) {
+    FirebaseFirestore.instance
+        .collection('pilot-device-1')
+        .doc(widget.deviceId)
+        .get()
+        .then((documentSnapshot) {
       if (documentSnapshot.exists) {
         setState(() {
           deviceId2 = documentSnapshot['device_uid2'];
@@ -75,7 +83,8 @@ class _ConfirmSignatureReturnOtherFOViewState extends State<ConfirmSignatureRetu
 
   // Function to open the image picker
   Future<void> _pickImage() async {
-    final pickedImageCamera = await _imagePicker.pickImage(source: ImageSource.camera);
+    final pickedImageCamera =
+        await _imagePicker.pickImage(source: ImageSource.camera);
 
     if (pickedImageCamera != null) {
       setState(() {
@@ -98,7 +107,8 @@ class _ConfirmSignatureReturnOtherFOViewState extends State<ConfirmSignatureRetu
   Future<void> _showConfirmationDialog() async {
     return showDialog<void>(
       context: context,
-      barrierDismissible: false, // Dialog cannot be dismissed by tapping outside
+      barrierDismissible:
+          false, // Dialog cannot be dismissed by tapping outside
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(
@@ -108,7 +118,8 @@ class _ConfirmSignatureReturnOtherFOViewState extends State<ConfirmSignatureRetu
           content: const SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('Are you sure you want to confirm the return of this device and retain this signature?'),
+                Text(
+                    'Are you sure you want to confirm the return of this device and retain this signature?'),
               ],
             ),
           ),
@@ -118,7 +129,8 @@ class _ConfirmSignatureReturnOtherFOViewState extends State<ConfirmSignatureRetu
                 Expanded(
                   flex: 5,
                   child: TextButton(
-                    child: const Text('No', style: TextStyle(color: TsOneColor.secondaryContainer)),
+                    child: const Text('No',
+                        style: TextStyle(color: TsOneColor.secondaryContainer)),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
@@ -134,7 +146,8 @@ class _ConfirmSignatureReturnOtherFOViewState extends State<ConfirmSignatureRetu
                         borderRadius: BorderRadius.circular(20.0),
                       ),
                     ),
-                    child: const Text('Yes', style: TextStyle(color: TsOneColor.onPrimary)),
+                    child: const Text('Yes',
+                        style: TextStyle(color: TsOneColor.onPrimary)),
                     onPressed: () async {
                       // Show a circular button with "Please Wait" message
                       showDialog(
@@ -160,16 +173,25 @@ class _ConfirmSignatureReturnOtherFOViewState extends State<ConfirmSignatureRetu
                       // Check if the signature is empty
 
                       // Upload the signature to Firebase Storage
-                      final image = await _signaturePadKey.currentState?.toImage(pixelRatio: 3.0);
-                      final ByteData? byteData = await image?.toByteData(format: ImageByteFormat.png);
-                      final Uint8List? uint8List = byteData?.buffer.asUint8List();
-                      final Reference storageReference = FirebaseStorage.instance.ref().child('signatures/${DateTime.now()}.png');
-                      final UploadTask uploadTask = storageReference.putData(uint8List!);
+                      final image = await _signaturePadKey.currentState
+                          ?.toImage(pixelRatio: 3.0);
+                      final ByteData? byteData =
+                          await image?.toByteData(format: ImageByteFormat.png);
+                      final Uint8List? uint8List =
+                          byteData?.buffer.asUint8List();
+                      final Reference storageReference = FirebaseStorage
+                          .instance
+                          .ref()
+                          .child('signatures/${DateTime.now()}.png');
+                      final UploadTask uploadTask =
+                          storageReference.putData(uint8List!);
 
                       // Upload the selected image to Firebase Storage (if an image is selected)
                       String imageUrl = '';
                       if (selectedImage != null) {
-                        final storageRef = FirebaseStorage.instance.ref().child('images/${widget.deviceId}.jpg');
+                        final storageRef = FirebaseStorage.instance
+                            .ref()
+                            .child('images/${widget.deviceId}.jpg');
                         await storageRef.putFile(selectedImage!);
                         imageUrl = await storageRef.getDownloadURL();
                       }
@@ -184,7 +206,8 @@ class _ConfirmSignatureReturnOtherFOViewState extends State<ConfirmSignatureRetu
                                 'Signature Required',
                                 style: tsOneTextTheme.headlineLarge,
                               ),
-                              content: const Text('Please provide your signature.'),
+                              content:
+                                  const Text('Please provide your signature.'),
                               actions: <Widget>[
                                 TextButton(
                                   child: const Text('OK'),
@@ -199,9 +222,13 @@ class _ConfirmSignatureReturnOtherFOViewState extends State<ConfirmSignatureRetu
                         return; // Do not proceed with confirmation
                       }
                       await uploadTask.whenComplete(() async {
-                        String signatureUrl = await storageReference.getDownloadURL();
+                        String signatureUrl =
+                            await storageReference.getDownloadURL();
                         // Update Firestore
-                        await FirebaseFirestore.instance.collection('pilot-device-1').doc(widget.deviceId).update({
+                        await FirebaseFirestore.instance
+                            .collection('pilot-device-1')
+                            .doc(widget.deviceId)
+                            .update({
                           'statusDevice': 'handover-to-other-crew',
                           'remarks': remarks,
                           'prove_image_url': imageUrl,
@@ -210,13 +237,19 @@ class _ConfirmSignatureReturnOtherFOViewState extends State<ConfirmSignatureRetu
                       });
 
                       User? user = _auth.currentUser;
-                      QuerySnapshot userQuery = await _firestore.collection('users').where('EMAIL', isEqualTo: user?.email).get();
+                      QuerySnapshot userQuery = await _firestore
+                          .collection('users')
+                          .where('EMAIL', isEqualTo: user?.email)
+                          .get();
                       String userUid = userQuery.docs.first.id;
 
-                      String hubField = await getHubFromDeviceName(deviceName2, deviceName3) ?? "Unknown Hub";
+                      String hubField = await getHubFromDeviceName(
+                              deviceName2, deviceName3) ??
+                          "Unknown Hub";
 
                       // Membuat referensi koleksi 'pilot-device-1' tanpa menambahkan dokumen
-                      CollectionReference pilotDeviceCollection = _firestore.collection('pilot-device-1');
+                      CollectionReference pilotDeviceCollection =
+                          _firestore.collection('pilot-device-1');
 
                       // Mendapatkan ID dokumen yang baru akan dibuat
                       String newDeviceId = pilotDeviceCollection.doc().id;
@@ -225,7 +258,8 @@ class _ConfirmSignatureReturnOtherFOViewState extends State<ConfirmSignatureRetu
                         'user_uid': userUid,
                         'device_uid': '-',
                         'device_name': '-',
-                        'document_id': newDeviceId, // Tambahkan document_id di sini
+                        'document_id':
+                            newDeviceId, // Tambahkan document_id di sini
                         'device_uid2': deviceId2,
                         'device_name2': deviceName2,
                         'device_uid3': deviceId3,
@@ -315,7 +349,10 @@ class _ConfirmSignatureReturnOtherFOViewState extends State<ConfirmSignatureRetu
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: FutureBuilder<DocumentSnapshot>(
-            future: FirebaseFirestore.instance.collection("pilot-device-1").doc(widget.deviceId).get(),
+            future: FirebaseFirestore.instance
+                .collection("pilot-device-1")
+                .doc(widget.deviceId)
+                .get(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
@@ -332,7 +369,10 @@ class _ConfirmSignatureReturnOtherFOViewState extends State<ConfirmSignatureRetu
               final data = snapshot.data!.data() as Map<String, dynamic>;
 
               return FutureBuilder<DocumentSnapshot>(
-                future: FirebaseFirestore.instance.collection("users").doc(data['handover-to-crew']).get(),
+                future: FirebaseFirestore.instance
+                    .collection("users")
+                    .doc(data['handover-to-crew'])
+                    .get(),
                 builder: (context, userSnapshot) {
                   if (userSnapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
@@ -346,58 +386,86 @@ class _ConfirmSignatureReturnOtherFOViewState extends State<ConfirmSignatureRetu
                     return const Center(child: Text('User data not found'));
                   }
 
-                  final userData = userSnapshot.data!.data() as Map<String, dynamic>;
+                  final userData =
+                      userSnapshot.data!.data() as Map<String, dynamic>;
 
                   return FutureBuilder<DocumentSnapshot>(
-                    future: FirebaseFirestore.instance.collection("users").doc(data['user_uid']).get(),
+                    future: FirebaseFirestore.instance
+                        .collection("users")
+                        .doc(data['user_uid'])
+                        .get(),
                     builder: (context, otheruserSnapshot) {
-                      if (otheruserSnapshot.connectionState == ConnectionState.waiting) {
+                      if (otheruserSnapshot.connectionState ==
+                          ConnectionState.waiting) {
                         return const Center(child: CircularProgressIndicator());
                       }
 
                       if (otheruserSnapshot.hasError) {
-                        return Center(child: Text('Error: ${otheruserSnapshot.error}'));
+                        return Center(
+                            child: Text('Error: ${otheruserSnapshot.error}'));
                       }
 
-                      if (!otheruserSnapshot.hasData || !otheruserSnapshot.data!.exists) {
-                        return const Center(child: Text('Other Crew data not found'));
+                      if (!otheruserSnapshot.hasData ||
+                          !otheruserSnapshot.data!.exists) {
+                        return const Center(
+                            child: Text('Other Crew data not found'));
                       }
 
-                      final otheruserData = otheruserSnapshot.data!.data() as Map<String, dynamic>;
+                      final otheruserData = otheruserSnapshot.data!.data()
+                          as Map<String, dynamic>;
 
                       return FutureBuilder<DocumentSnapshot>(
-                        future: FirebaseFirestore.instance.collection("Device").doc(data['device_uid2']).get(),
+                        future: FirebaseFirestore.instance
+                            .collection("Device")
+                            .doc(data['device_uid2'])
+                            .get(),
                         builder: (context, device2Snapshot) {
-                          if (device2Snapshot.connectionState == ConnectionState.waiting) {
-                            return const Center(child: CircularProgressIndicator());
+                          if (device2Snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                                child: CircularProgressIndicator());
                           }
 
                           if (device2Snapshot.hasError) {
-                            return Center(child: Text('Error: ${device2Snapshot.error}'));
+                            return Center(
+                                child: Text('Error: ${device2Snapshot.error}'));
                           }
 
-                          if (!device2Snapshot.hasData || !device2Snapshot.data!.exists) {
-                            return const Center(child: Text('Device data 2 not found'));
+                          if (!device2Snapshot.hasData ||
+                              !device2Snapshot.data!.exists) {
+                            return const Center(
+                                child: Text('Device data 2 not found'));
                           }
 
-                          final deviceData2 = device2Snapshot.data!.data() as Map<String, dynamic>;
+                          final deviceData2 = device2Snapshot.data!.data()
+                              as Map<String, dynamic>;
 
                           return FutureBuilder<DocumentSnapshot>(
-                            future: FirebaseFirestore.instance.collection("Device").doc(data['device_uid3']).get(),
+                            future: FirebaseFirestore.instance
+                                .collection("Device")
+                                .doc(data['device_uid3'])
+                                .get(),
                             builder: (context, device3Snapshot) {
-                              if (device3Snapshot.connectionState == ConnectionState.waiting) {
-                                return const Center(child: CircularProgressIndicator());
+                              if (device3Snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const Center(
+                                    child: CircularProgressIndicator());
                               }
 
                               if (device3Snapshot.hasError) {
-                                return Center(child: Text('Error: ${device3Snapshot.error}'));
+                                return Center(
+                                    child: Text(
+                                        'Error: ${device3Snapshot.error}'));
                               }
 
-                              if (!device3Snapshot.hasData || !device3Snapshot.data!.exists) {
-                                return const Center(child: Text('Device data not found'));
+                              if (!device3Snapshot.hasData ||
+                                  !device3Snapshot.data!.exists) {
+                                return const Center(
+                                    child: Text('Device data not found'));
                               }
 
-                              final deviceData3 = device3Snapshot.data!.data() as Map<String, dynamic>;
+                              final deviceData3 = device3Snapshot.data!.data()
+                                  as Map<String, dynamic>;
 
                               return Center(
                                 child: Column(
@@ -416,7 +484,8 @@ class _ConfirmSignatureReturnOtherFOViewState extends State<ConfirmSignatureRetu
                                     const SizedBox(height: 10.0),
                                     Align(
                                       alignment: Alignment.centerLeft,
-                                      child: Text("Remarks", style: tsOneTextTheme.bodyMedium),
+                                      child: Text("Remarks",
+                                          style: tsOneTextTheme.bodyMedium),
                                     ),
                                     const SizedBox(height: 5.0),
                                     // TextField(
@@ -442,15 +511,19 @@ class _ConfirmSignatureReturnOtherFOViewState extends State<ConfirmSignatureRetu
                                     ElevatedButton(
                                       onPressed: _pickImage,
                                       style: ElevatedButton.styleFrom(
-                                        backgroundColor: tsOneColorScheme.secondaryContainer,
+                                        backgroundColor:
+                                            tsOneColorScheme.secondaryContainer,
                                         shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(8.0),
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
                                           //side: BorderSide(color: TsOneColor.onSecondary, width: 1),
                                         ),
-                                        minimumSize: const Size(double.infinity, 50),
+                                        minimumSize:
+                                            const Size(double.infinity, 50),
                                       ),
                                       child: const Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
                                         children: [
                                           Icon(
                                             Icons.camera_alt,
@@ -460,7 +533,9 @@ class _ConfirmSignatureReturnOtherFOViewState extends State<ConfirmSignatureRetu
                                           SizedBox(
                                             width: 10,
                                           ),
-                                          Text("Take a photo of the damage", style: TextStyle(color: Colors.white))
+                                          Text("Take a photo of the damage",
+                                              style: TextStyle(
+                                                  color: Colors.white))
                                         ],
                                       ),
                                     ),
@@ -508,10 +583,12 @@ class _ConfirmSignatureReturnOtherFOViewState extends State<ConfirmSignatureRetu
                                             ),
                                           ),
                                           Padding(
-                                            padding: EdgeInsets.symmetric(horizontal: 8.0),
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 8.0),
                                             child: Text(
                                               'Please sign in the provided section',
-                                              style: TextStyle(color: Colors.grey),
+                                              style:
+                                                  TextStyle(color: Colors.grey),
                                             ),
                                           ),
                                           Expanded(
@@ -546,7 +623,11 @@ class _ConfirmSignatureReturnOtherFOViewState extends State<ConfirmSignatureRetu
                                         ),
                                         child: Align(
                                           alignment: Alignment.center,
-                                          child: Text("Draw", style: TextStyle(color: tsOneColorScheme.secondary, fontWeight: FontWeight.w600)),
+                                          child: Text("Draw",
+                                              style: TextStyle(
+                                                  color: tsOneColorScheme
+                                                      .secondary,
+                                                  fontWeight: FontWeight.w600)),
                                         ),
                                       ),
                                     ),
@@ -555,15 +636,18 @@ class _ConfirmSignatureReturnOtherFOViewState extends State<ConfirmSignatureRetu
                                         Container(
                                           height: 480,
                                           decoration: BoxDecoration(
-                                            borderRadius: const BorderRadius.only(
+                                            borderRadius:
+                                                const BorderRadius.only(
                                               topLeft: Radius.circular(10.0),
                                               topRight: Radius.circular(10.0),
                                               bottomLeft: Radius.circular(25.0),
-                                              bottomRight: Radius.circular(25.0),
+                                              bottomRight:
+                                                  Radius.circular(25.0),
                                             ),
                                             boxShadow: [
                                               BoxShadow(
-                                                color: Colors.grey.withOpacity(0.5),
+                                                color: Colors.grey
+                                                    .withOpacity(0.5),
                                                 blurRadius: 5,
                                                 offset: const Offset(0, 2),
                                               ),
@@ -573,8 +657,16 @@ class _ConfirmSignatureReturnOtherFOViewState extends State<ConfirmSignatureRetu
                                             key: _signaturePadKey,
                                             backgroundColor: Colors.white,
                                             onDrawEnd: () async {
-                                              final signatureImageData = await _signaturePadKey.currentState!.toImage();
-                                              final byteData = await signatureImageData.toByteData(format: ImageByteFormat.png);
+                                              final signatureImageData =
+                                                  await _signaturePadKey
+                                                      .currentState!
+                                                      .toImage();
+                                              final byteData =
+                                                  await signatureImageData
+                                                      .toByteData(
+                                                          format:
+                                                              ImageByteFormat
+                                                                  .png);
                                               // if (byteData != null) {
                                               //   setState(() {
                                               //     widget.signatureImage = byteData.buffer.asUint8List();
@@ -615,7 +707,10 @@ class _ConfirmSignatureReturnOtherFOViewState extends State<ConfirmSignatureRetu
                                             );
                                           },
                                         ),
-                                        const Text('I agree with all of the results', style: TextStyle(fontWeight: FontWeight.w300)),
+                                        const Text(
+                                            'I agree with all of the results',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w300)),
                                       ],
                                     ),
 
@@ -668,7 +763,8 @@ class _ConfirmSignatureReturnOtherFOViewState extends State<ConfirmSignatureRetu
         child: Expanded(
           child: ElevatedButton(
             onPressed: () async {
-              final signatureData = await _signaturePadKey.currentState!.toImage();
+              final signatureData =
+                  await _signaturePadKey.currentState!.toImage();
               if (!agree) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
@@ -716,12 +812,15 @@ class _ConfirmSignatureReturnOtherFOViewState extends State<ConfirmSignatureRetu
   }
 }
 
-Future<String> getHubFromDeviceName(String deviceName2, String deviceName3) async {
+Future<String> getHubFromDeviceName(
+    String deviceName2, String deviceName3) async {
   String hub = "Unknown Hub"; // Default value
 
   try {
     // Fetch the 'hub' field from the 'Device' collection based on deviceName
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Device').where('deviceno', whereIn: [deviceName2, deviceName3]).get();
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('Device')
+        .where('deviceno', whereIn: [deviceName2, deviceName3]).get();
 
     if (querySnapshot.docs.isNotEmpty) {
       hub = querySnapshot.docs.first['hub'];

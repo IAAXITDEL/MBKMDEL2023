@@ -58,10 +58,10 @@ class _NextQuestionPageFeedbackPilotState extends State<NextQuestionPageFeedback
                   ),
                 ),
               ),
-              Divider(
+              const Divider(
                 color: Colors.grey,
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Text('1st sector', style: tsOneTextTheme.labelLarge?.copyWith(fontWeight: FontWeight.bold)),
               TextFormField(
                 controller: oneSectorController,

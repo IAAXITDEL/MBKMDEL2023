@@ -14,7 +14,9 @@ class PilotUnRequestDeviceView extends GetView {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  PilotUnRequestDeviceView({Key? key, required this.deviceId, required String deviceName}) : super(key: key);
+  PilotUnRequestDeviceView(
+      {Key? key, required this.deviceId, required String deviceName})
+      : super(key: key);
 
   String getMonthText(int month) {
     const List<String> months = [
@@ -38,7 +40,8 @@ class PilotUnRequestDeviceView extends GetView {
     if (timestamp == null) return 'No Data';
 
     DateTime dateTime = timestamp.toDate();
-    String formattedDateTime = '${dateTime.day} ${getMonthText(dateTime.month)} ${dateTime.year}'
+    String formattedDateTime =
+        '${dateTime.day} ${getMonthText(dateTime.month)} ${dateTime.year}'
         ' ; '
         '${dateTime.hour}:${dateTime.minute}';
     return formattedDateTime;
@@ -68,7 +71,8 @@ class PilotUnRequestDeviceView extends GetView {
                 Expanded(
                   flex: 5,
                   child: TextButton(
-                    child: const Text('No', style: TextStyle(color: TsOneColor.secondaryContainer)),
+                    child: const Text('No',
+                        style: TextStyle(color: TsOneColor.secondaryContainer)),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
@@ -84,14 +88,21 @@ class PilotUnRequestDeviceView extends GetView {
                         borderRadius: BorderRadius.circular(20.0),
                       ),
                     ),
-                    child: const Text('Yes', style: TextStyle(color: TsOneColor.onPrimary)),
+                    child: const Text('Yes',
+                        style: TextStyle(color: TsOneColor.onPrimary)),
                     onPressed: () async {
                       User? user = _auth.currentUser;
                       if (user != null) {
-                        QuerySnapshot userQuery = await _firestore.collection('users').where('EMAIL', isEqualTo: user.email).get();
+                        QuerySnapshot userQuery = await _firestore
+                            .collection('users')
+                            .where('EMAIL', isEqualTo: user.email)
+                            .get();
                         String userUid = userQuery.docs.first.id;
 
-                        DocumentReference pilotDeviceRef = FirebaseFirestore.instance.collection("pilot-device-1").doc(deviceId);
+                        DocumentReference pilotDeviceRef = FirebaseFirestore
+                            .instance
+                            .collection("pilot-device-1")
+                            .doc(deviceId);
 
                         try {
                           await pilotDeviceRef.update({
@@ -127,7 +138,10 @@ class PilotUnRequestDeviceView extends GetView {
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
           child: FutureBuilder<DocumentSnapshot>(
-            future: FirebaseFirestore.instance.collection("pilot-device-1").doc(deviceId).get(),
+            future: FirebaseFirestore.instance
+                .collection("pilot-device-1")
+                .doc(deviceId)
+                .get(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
@@ -147,7 +161,10 @@ class PilotUnRequestDeviceView extends GetView {
               final deviceUid = data['device_uid'];
 
               return FutureBuilder<DocumentSnapshot>(
-                future: FirebaseFirestore.instance.collection("users").doc(userUid).get(),
+                future: FirebaseFirestore.instance
+                    .collection("users")
+                    .doc(userUid)
+                    .get(),
                 builder: (context, userSnapshot) {
                   if (userSnapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
@@ -161,24 +178,33 @@ class PilotUnRequestDeviceView extends GetView {
                     return const Center(child: Text('User data not found'));
                   }
 
-                  final userData = userSnapshot.data!.data() as Map<String, dynamic>;
+                  final userData =
+                      userSnapshot.data!.data() as Map<String, dynamic>;
 
                   return FutureBuilder<DocumentSnapshot>(
-                    future: FirebaseFirestore.instance.collection("Device").doc(deviceUid).get(),
+                    future: FirebaseFirestore.instance
+                        .collection("Device")
+                        .doc(deviceUid)
+                        .get(),
                     builder: (context, deviceSnapshot) {
-                      if (deviceSnapshot.connectionState == ConnectionState.waiting) {
+                      if (deviceSnapshot.connectionState ==
+                          ConnectionState.waiting) {
                         return const Center(child: CircularProgressIndicator());
                       }
 
                       if (deviceSnapshot.hasError) {
-                        return Center(child: Text('Error: ${deviceSnapshot.error}'));
+                        return Center(
+                            child: Text('Error: ${deviceSnapshot.error}'));
                       }
 
-                      if (!deviceSnapshot.hasData || !deviceSnapshot.data!.exists) {
-                        return const Center(child: Text('Device data not found'));
+                      if (!deviceSnapshot.hasData ||
+                          !deviceSnapshot.data!.exists) {
+                        return const Center(
+                            child: Text('Device data not found'));
                       }
 
-                      final deviceData = deviceSnapshot.data!.data() as Map<String, dynamic>;
+                      final deviceData =
+                          deviceSnapshot.data!.data() as Map<String, dynamic>;
 
                       return Center(
                         child: Column(
@@ -186,16 +212,18 @@ class PilotUnRequestDeviceView extends GetView {
                           children: [
                             Align(
                               alignment: Alignment.centerRight,
-                              child: Text(_formatTimestamp(data['timestamp']), style: tsOneTextTheme.labelSmall),
+                              child: Text(_formatTimestamp(data['timestamp']),
+                                  style: tsOneTextTheme.labelSmall),
                             ),
                             const SizedBox(height: 15),
                             Row(
                               children: [
                                 const Expanded(flex: 6, child: Text("ID NO")),
-                                const Expanded( child: Text(":")),
+                                const Expanded(child: Text(":")),
                                 Expanded(
                                   flex: 6,
-                                  child: Text('${userData['ID NO'] ?? 'No Data'}'),
+                                  child:
+                                      Text('${userData['ID NO'] ?? 'No Data'}'),
                                 ),
                               ],
                             ),
@@ -203,10 +231,11 @@ class PilotUnRequestDeviceView extends GetView {
                             Row(
                               children: [
                                 const Expanded(flex: 6, child: Text("Name")),
-                                const Expanded( child: Text(":")),
+                                const Expanded(child: Text(":")),
                                 Expanded(
                                   flex: 6,
-                                  child: Text('${userData['NAME'] ?? 'No Data'}'),
+                                  child:
+                                      Text('${userData['NAME'] ?? 'No Data'}'),
                                 ),
                               ],
                             ),
@@ -214,10 +243,11 @@ class PilotUnRequestDeviceView extends GetView {
                             Row(
                               children: [
                                 const Expanded(flex: 6, child: Text("Rank")),
-                                const Expanded( child: Text(":")),
+                                const Expanded(child: Text(":")),
                                 Expanded(
                                   flex: 6,
-                                  child: Text('${userData['RANK'] ?? 'No Data'}'),
+                                  child:
+                                      Text('${userData['RANK'] ?? 'No Data'}'),
                                 ),
                               ],
                             ),
@@ -244,7 +274,8 @@ class PilotUnRequestDeviceView extends GetView {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 8.0),
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 8.0),
                                     child: Text(
                                       'Device Details',
                                       style: TextStyle(color: Colors.grey),
@@ -261,7 +292,8 @@ class PilotUnRequestDeviceView extends GetView {
                             const SizedBox(height: 10.0),
                             Align(
                               alignment: Alignment.centerLeft,
-                              child: Text("Device 1", style: tsOneTextTheme.displaySmall),
+                              child: Text("Device 1",
+                                  style: tsOneTextTheme.displaySmall),
                             ),
                             const SizedBox(height: 5.0),
                             Row(
@@ -273,11 +305,10 @@ class PilotUnRequestDeviceView extends GetView {
                                       style: tsOneTextTheme.bodySmall,
                                     )),
                                 Expanded(
-                                    
                                     child: Text(
-                                      ":",
-                                      style: tsOneTextTheme.bodySmall,
-                                    )),
+                                  ":",
+                                  style: tsOneTextTheme.bodySmall,
+                                )),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
@@ -297,11 +328,10 @@ class PilotUnRequestDeviceView extends GetView {
                                       style: tsOneTextTheme.bodySmall,
                                     )),
                                 Expanded(
-                                    
                                     child: Text(
-                                      ":",
-                                      style: tsOneTextTheme.bodySmall,
-                                    )),
+                                  ":",
+                                  style: tsOneTextTheme.bodySmall,
+                                )),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
@@ -321,11 +351,10 @@ class PilotUnRequestDeviceView extends GetView {
                                       style: tsOneTextTheme.bodySmall,
                                     )),
                                 Expanded(
-                                    
                                     child: Text(
-                                      ":",
-                                      style: tsOneTextTheme.bodySmall,
-                                    )),
+                                  ":",
+                                  style: tsOneTextTheme.bodySmall,
+                                )),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
@@ -345,11 +374,10 @@ class PilotUnRequestDeviceView extends GetView {
                                       style: tsOneTextTheme.bodySmall,
                                     )),
                                 Expanded(
-                                    
                                     child: Text(
-                                      ":",
-                                      style: tsOneTextTheme.bodySmall,
-                                    )),
+                                  ":",
+                                  style: tsOneTextTheme.bodySmall,
+                                )),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
@@ -369,11 +397,10 @@ class PilotUnRequestDeviceView extends GetView {
                                       style: tsOneTextTheme.bodySmall,
                                     )),
                                 Expanded(
-                                    
                                     child: Text(
-                                      ":",
-                                      style: tsOneTextTheme.bodySmall,
-                                    )),
+                                  ":",
+                                  style: tsOneTextTheme.bodySmall,
+                                )),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
@@ -393,11 +420,10 @@ class PilotUnRequestDeviceView extends GetView {
                                       style: tsOneTextTheme.bodySmall,
                                     )),
                                 Expanded(
-                                    
                                     child: Text(
-                                      ":",
-                                      style: tsOneTextTheme.bodySmall,
-                                    )),
+                                  ":",
+                                  style: tsOneTextTheme.bodySmall,
+                                )),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
@@ -417,11 +443,10 @@ class PilotUnRequestDeviceView extends GetView {
                                       style: tsOneTextTheme.bodySmall,
                                     )),
                                 Expanded(
-                                    
                                     child: Text(
-                                      ":",
-                                      style: tsOneTextTheme.bodySmall,
-                                    )),
+                                  ":",
+                                  style: tsOneTextTheme.bodySmall,
+                                )),
                                 Expanded(
                                   flex: 6,
                                   child: Text(

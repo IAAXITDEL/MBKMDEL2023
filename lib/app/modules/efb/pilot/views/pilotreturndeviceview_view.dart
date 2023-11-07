@@ -337,25 +337,6 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ElevatedButton(
-                      onPressed: () async {
-                        String documentId = await getDocumentIdForDevice(widget.deviceId);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => PilotFeedBack(
-                              documentId: documentId,
-                              deviceId: widget.deviceId,
-                            ),
-                          ),
-                        );
-                      },
-                      child: Text("FeedBack"))
-                ],
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
                   Row(
                     children: [
                       Text('Choose who you want to return it to :', style: TextStyle(color: TsOneColor.primary, fontWeight: FontWeight.w500))

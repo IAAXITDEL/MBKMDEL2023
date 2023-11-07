@@ -107,7 +107,7 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                               alignment: Alignment.centerLeft,
                               child: Text("Device 2", style: tsOneTextTheme.displaySmall),
                             ),
-                            SizedBox(height: 7),
+                            const SizedBox(height: 7),
                             Row(
                               children: [
                                 Expanded(
@@ -131,7 +131,7 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                                 ),
                               ],
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 5,
                             ),
                             Row(
@@ -157,7 +157,7 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                                 ),
                               ],
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 5,
                             ),
                             Row(
@@ -183,7 +183,7 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                                 ),
                               ],
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 5,
                             ),
                             Row(
@@ -209,7 +209,7 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                                 ),
                               ],
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 5,
                             ),
                             Row(
@@ -235,7 +235,7 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                                 ),
                               ],
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 5,
                             ),
                             Row(
@@ -261,7 +261,7 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                                 ),
                               ],
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 5,
                             ),
                             Row(
@@ -287,12 +287,12 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                                 ),
                               ],
                             ),
-                            SizedBox(height: 15.0),
+                            const SizedBox(height: 15.0),
                             Align(
                               alignment: Alignment.centerLeft,
                               child: Text("Device 3", style: tsOneTextTheme.displaySmall),
                             ),
-                            SizedBox(height: 7),
+                            const SizedBox(height: 7),
                             Row(
                               children: [
                                 Expanded(
@@ -316,7 +316,7 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                                 ),
                               ],
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 8,
                             ),
                             Row(
@@ -342,7 +342,7 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                                 ),
                               ],
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 8,
                             ),
                             Row(
@@ -368,7 +368,7 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                                 ),
                               ],
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 8,
                             ),
                             Row(
@@ -391,7 +391,7 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                                 ),
                               ],
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 8,
                             ),
                             Row(
@@ -417,7 +417,7 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                                 ),
                               ],
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 8,
                             ),
                             Row(
@@ -443,7 +443,7 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                                 ),
                               ],
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 8,
                             ),
                             Row(
@@ -519,10 +519,10 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                           ),
                         );
                       },
-                      child: Text("FeedBack"))
+                      child: const Text("FeedBack"))
                 ],
               ),
-              Column(
+              const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
