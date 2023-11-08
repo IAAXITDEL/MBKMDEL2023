@@ -598,7 +598,7 @@ class DetailHistoryDeviceFOView extends GetView {
                                                             // Tindakan alternatif jika feedbackId tidak ada atau kosong
                                                             ScaffoldMessenger.of(context).showSnackBar(
                                                               SnackBar(
-                                                                content: Text('Feedback Not Found'),
+                                                                content: Text('No Feedback'),
                                                                 action: SnackBarAction(
                                                                   label: 'OK',
                                                                   onPressed: () {

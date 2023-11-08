@@ -783,7 +783,7 @@ class DetailHistoryDeviceView extends GetView {
                                                                         .showSnackBar(
                                                                       SnackBar(
                                                                         content: Text(
-                                                                            'Not Found'),
+                                                                            'No Feedback'),
                                                                         action:
                                                                         SnackBarAction(
                                                                           label:
@@ -796,7 +796,8 @@ class DetailHistoryDeviceView extends GetView {
                                                                         ),
                                                                       ),
                                                                     );
-                                                                  });
+                                                                  }
+                                                                  );
 
                                                               return Container();
                                                             },

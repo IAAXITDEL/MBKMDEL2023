@@ -124,20 +124,9 @@ class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
       type: QuickAlertType.success,
       text: 'You have successfully added a device',
     );
-
-    // Close the success message after a delay (e.g., 2 seconds)
-    Future.delayed(const Duration(seconds: 2), () {
-      Navigator.of(context).pop(); // Close the success message
-
-      // Refresh the previous page if possible
-      Navigator.of(context).pop(); // Go back to the previous page
-      // You can add code here to trigger a refresh on the previous page.
-      // How you refresh the previous page depends on the architecture of your app.
-
-      // Alternatively, if you want to refresh the previous page, you can use Navigator.popUntil
-      // For example:
-      // Navigator.of(context).popUntil((route) => route.isFirst);
-    });
+    Navigator.of(context).pop(); // Close the success message
+    Navigator.of(context).pop(); // Close the success message
+    Navigator.of(context).pop(); // Close the success message
   }
 
   @override
@@ -363,7 +352,7 @@ class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
                 Container(
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey), // Atur warna dan tipe garis sesuai kebutuhan Anda
-                    borderRadius: const BorderRadius.all(Radius.circular(10)), // Atur sudut border sesuai kebutuhan Anda
+                    borderRadius: BorderRadius.all(Radius.circular(10)), // Atur sudut border sesuai kebutuhan Anda
                   ),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
@@ -379,7 +368,7 @@ class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
                             ),
                           ),
                         ),
-                        const Divider(
+                        Divider(
                           color: Colors.grey,
                         ),
                         const SizedBox(
