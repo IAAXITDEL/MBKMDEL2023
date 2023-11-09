@@ -34,7 +34,7 @@ class _NavcptsState extends State<NavcptsView> {
 
   List<Widget> _buildScreens() {
     return [
-      const HomeCptsccView(),
+      HomeCptsccView(),
       const TrainingccView(),
       const ListPilotcptsccView(),
       const ProfileccView(),

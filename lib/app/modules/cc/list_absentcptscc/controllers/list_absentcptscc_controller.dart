@@ -11,7 +11,7 @@ class ListAbsentcptsccController extends GetxController {
   final RxString argumentid = "".obs;
   final RxString argumentstatus = "".obs;
   late TextEditingController searchC;
-  RxInt jumlah  = 0.obs;
+  RxInt total  = 0.obs;
   RxString nameS = "".obs;
 
   final Rx<List<Map<String, dynamic>>> streamData = Rx<List<Map<String, dynamic>>>([]);
@@ -21,7 +21,6 @@ class ListAbsentcptsccController extends GetxController {
   void onInit() {
     super.onInit();
     argumentid.value = Get.arguments["id"];
-    argumentstatus.value = Get.arguments["status"];
     searchC = TextEditingController();
     attendanceStream();
   }
@@ -37,14 +36,15 @@ class ListAbsentcptsccController extends GetxController {
       //sudah diberi nilai oleh instructor
       if( userPreferences.getRank().contains("Pilot Administrator")){
         return _firestore
-            .collection('attendance-detail')
+            .collection('absent')
             .where("idattendance", isEqualTo: argumentid.value)
-            .where("status", isEqualTo: "donescoring")
             .snapshots()
-            .asyncMap((attendanceQuery) async {
-          List<int?> traineeIds = attendanceQuery.docs
+            .asyncMap((absentQuery) async {
+          List<int?> traineeIds = absentQuery.docs
               .map<int?>((doc) => doc['idtraining'] as int?)
               .toList();
+          print("test");
+          print(traineeIds);
           final usersData = <Map<String, dynamic>>[];
           if (traineeIds.isNotEmpty) {
             final usersQuery = await _firestore.collection('users').where("ID NO", whereIn: traineeIds).get();
@@ -54,7 +54,7 @@ class ListAbsentcptsccController extends GetxController {
           }
 
           final attendanceData = await Future.wait(
-            attendanceQuery.docs.map((doc) async {
+            absentQuery.docs.map((doc) async {
               final attendanceModel = AttendanceDetailModel.fromJson(doc.data());
               final user = usersData.firstWhere(
                     (user) => user['ID NO'] == attendanceModel.idtraining,
@@ -64,7 +64,8 @@ class ListAbsentcptsccController extends GetxController {
               return attendanceModel.toJson();
             }),
           );
-
+print("hola");
+          print(attendanceData);
           if (name.isNotEmpty) {
             final filteredData = attendanceData.where(
                   (item) => item['name'].toString().toLowerCase().startsWith(name.toLowerCase()),
@@ -81,14 +82,13 @@ class ListAbsentcptsccController extends GetxController {
       //bukan pilot administrator, menampilkan list dengan status done dan donescoring
       //supaya dapat melakukan penilaian
       return _firestore
-          .collection('attendance-detail')
+          .collection('absent')
           .where("idattendance", isEqualTo: argumentid.value)
-          .where("status", whereIn: ["done", "donescoring"])
           .snapshots()
           .asyncMap((attendanceQuery) async {
         List<int?> traineeIds =
         attendanceQuery.docs.map((doc) => AttendanceDetailModel.fromJson(doc.data()).idtraining).toList();
-
+print("disini");
         final usersData = <Map<String, dynamic>>[];
 
         if (traineeIds.isNotEmpty) {
@@ -107,6 +107,9 @@ class ListAbsentcptsccController extends GetxController {
             return attendanceModel.toJson();
           }),
         );
+
+        print("hola");
+        print(attendanceData);
         if (name.isNotEmpty) {
           // Filter attendanceData by name
           final filteredData = attendanceData.where(
@@ -176,7 +179,7 @@ class ListAbsentcptsccController extends GetxController {
         .where("idattendance", isEqualTo: argumentid.value)
         .get();
 
-    jumlah.value = attendanceQuery.docs.length;
+    total.value = attendanceQuery.docs.length;
     return attendanceQuery.docs.length;
   }
 

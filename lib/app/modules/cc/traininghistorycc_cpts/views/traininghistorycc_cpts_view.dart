@@ -250,7 +250,9 @@ class TraininghistoryccCptsView
                                           ),
                                           child: Text(
                                             "Reset",
-                                            style: tsOneTextTheme.headlineMedium,
+                                            style: tsOneTextTheme.headlineMedium?.copyWith(
+                                              color: Colors.red,
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -288,7 +290,9 @@ class TraininghistoryccCptsView
                                           ),
                                           child: Text(
                                             "Apply",
-                                            style: tsOneTextTheme.headlineMedium,
+                                            style: tsOneTextTheme.headlineMedium?.copyWith(
+                                              color: Colors.white,
+                                            ),
                                           ),
                                         ),
                                       )
@@ -312,13 +316,17 @@ class TraininghistoryccCptsView
             children: [
               Container(
                   decoration: BoxDecoration(
-                    color: TsOneColor.primaryFaded,
-                    borderRadius: BorderRadius.circular(10.0),
+                      color: TsOneColor.search,
+                      borderRadius: BorderRadius.circular(10.0),
+                      border: Border.all(
+                        color: Colors.white54,
+                        width: 0.5,
+                      )
                   ),
                   child: ListTile(
                     leading: Icon(
                       Icons.search,
-                      color: Colors.red,
+                      color: Colors.blueGrey,
                       size: 20,
                     ),
                     title: TextField(
@@ -328,16 +336,16 @@ class TraininghistoryccCptsView
                         print(controller.nameS.value);
                       },
                       decoration: InputDecoration(
-                        hintText: 'type instructor name...',
+                        hintText: 'Type instructor name...',
                         hintStyle: TextStyle(
-                          color: Colors.red,
+                          color: Colors.grey,
                           fontSize: 12,
                           fontStyle: FontStyle.italic,
                         ),
                         border: InputBorder.none,
                       ),
                       style: TextStyle(
-                        color: Colors.red,
+                        color: Colors.black,
                       ),
                     ),
                     trailing: InkWell(

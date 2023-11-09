@@ -12,20 +12,19 @@ class ListPilotcptsccView extends GetView<ListPilotcptsccController> {
 
   @override
   Widget build(BuildContext context) {
+    var nameC = TextEditingController();
     Get.put(ListPilotcptsccController());
     return Scaffold(
-      appBar: AppBar(
-        title: const RedTitleText(
-          text: 'PILOT LIST',
-        ),
-        backgroundColor: Colors.white,
-        elevation: 0,
-      ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
+      appBar: AppBar(title: RedTitleText(
+        text: "PILOT LIST",
+      ),),
+        body: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+
               //FILTER DROPDOWN
               // Row(
               //   children: [
@@ -66,28 +65,59 @@ class ListPilotcptsccView extends GetView<ListPilotcptsccController> {
 
               SizedBox(height: 10,),
 
-              TextFormField(
-                controller: controller.searchC,
-                onChanged: (value) => controller.nameS.value = value,
-                decoration: InputDecoration(
-                  hintText: "Type name...",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(4.0),
+              Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      margin: EdgeInsets.symmetric(vertical: 5),
+                      child: Container(
+                          decoration: BoxDecoration(
+                              color: TsOneColor.search,
+                              borderRadius: BorderRadius.circular(10.0),
+                              border: Border.all(
+                                color: Colors.white54,
+                                width: 0.5,
+                              )
+                          ),
+                          child: ListTile(
+                            leading: Icon(
+                              Icons.search,
+                              color: Colors.blueGrey,
+                              size: 20,
+                            ),
+                            title: TextField(
+                              controller: nameC,
+                              onChanged: (value){
+                                controller.nameS.value = value;
+                                print(controller.nameS.value);
+                              },
+                              decoration: InputDecoration(
+                                hintText: 'Type instructor name...',
+                                hintStyle: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 12,
+                                  fontStyle: FontStyle.italic,
+                                ),
+                                border: InputBorder.none,
+                              ),
+                              style: TextStyle(
+                                color: Colors.black,
+                              ),
+                            ),
+                            trailing: InkWell(
+                              onTap: (){
+                                controller.nameS.value = "";
+                                nameC.clear();
+                              },
+                              child: Icon(Icons.clear),
+                            ),
+                          )
+                      ),
+                    ),
                   ),
-                  focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black),
-                  ),
-                  prefixIcon: const Icon(Icons.search),
-                  suffixIcon: IconButton(
-                    icon: const Icon(Icons.clear),
-                    onPressed: () {
-                      controller.nameS.value = "";
-                      controller.getFilteredStream();
-                      controller.searchC.clear();
-                    },
-                  ),
-                ),
+                ],
               ),
+
               const SizedBox(
                 height: 20,
               ),
@@ -210,8 +240,7 @@ class ListPilotcptsccView extends GetView<ListPilotcptsccController> {
               ),
             ],
           ),
-        ),
-      ),
+      )
     );
   }
 }

@@ -371,6 +371,45 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                       SizedBox(
                         height: 20,
                       ),
+                      //LIST ABSENT
+                      InkWell(
+                        onTap: () {
+                          if (controller.jumlah.value > 0) {
+                            print(controller.jumlah.value);
+                            Get.toNamed(
+                              Routes.LIST_ABSENTCPTSCC,
+                              arguments: {
+                                "id": controller.argumentid.value
+                              },
+                            );
+                          }
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: TsOneColor.secondaryContainer,
+                              width: 1,
+                            ),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: ListTile(
+                            title: Text(
+                              "Absent",
+                              style: tsOneTextTheme.labelSmall,
+                            ),
+                            subtitle: Obx(() {
+                              return Text(
+                                "${controller.total.value.toString()} person",
+                                style: tsOneTextTheme.headlineMedium,
+                              );
+                            }),
+                            trailing: Icon(Icons.navigate_next),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
                       Text("Attendance"),
                       Row(
                         children: [
@@ -379,6 +418,7 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                               SizedBox(
                                 width: 10,
                               ),
+
                               Obx(
                                 () => Radio<String>(
                                   value: listAttendance[0]["attendanceType"] ?? "N/A",
@@ -399,6 +439,8 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                       SizedBox(
                         height: 10,
                       ),
+
+
 
                       // Jika status masih konfirmasi
                       ((listAttendance[0]["status"] == "confirmation") &&

@@ -110,7 +110,15 @@ class TraininghistoryccCptsController extends GetxController {
         }).toList();
         return filteredAttendance;
       }
-
+      //
+      // final attendanceData = await Future.wait(
+      //   attendanceQuery.docs.map((doc) async {
+      //     final attendanceModel = AttendanceModel.fromJson(doc.data());
+      //     final attendanceDetail = attendanceDetailData.firstWhere((attendanceDetail) => attendanceDetail['idattendance'] == attendanceModel.id, orElse: () => {});
+      //     return attendanceModel.toJson();
+      //   }),
+      // );
+      print("data training: $attendanceData");
       return attendanceData;
     });
   }
@@ -131,11 +139,3 @@ class TraininghistoryccCptsController extends GetxController {
     super.onClose();
   }
 }
-
-
-/*class Training {
-  final String title;
-  final String date;
-
-  Training({required this.title, required this.date});
-}*/

@@ -368,7 +368,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.HOME_CPTSCC,
-      page: () => const HomeCptsccView(),
+      page: () => HomeCptsccView(),
       binding: HomeCptsccBinding(),
     ),
     GetPage(

@@ -14,6 +14,7 @@ class ListAttendanceccView extends GetView<ListAttendanceccController> {
   const ListAttendanceccView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    var nameC = TextEditingController();
     return Scaffold(
         appBar: AppBar(title: Text("Back")),
         body: Padding(
@@ -44,33 +45,53 @@ class ListAttendanceccView extends GetView<ListAttendanceccController> {
               Row(
                 children: [
                   Expanded(
+                    child: Container(
+                      margin: EdgeInsets.symmetric(vertical: 5),
                       child: Container(
-                        margin: EdgeInsets.symmetric(vertical: 5),
-                        decoration: BoxDecoration(
-                          color: TsOneColor.primaryFaded,
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        child: TextFormField(
-                          controller: controller.searchC,
-                          onChanged: (value) => controller.nameS.value = value,
-                          decoration: InputDecoration(
-                            hintText: "Search",
-                            hintStyle: TextStyle(
-                              color: Colors.red,
-                              fontStyle: FontStyle.italic,
-                            ),
-                            border: InputBorder.none,
-                            focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
-                            prefixIcon: Icon(Icons.search,),
-                            suffixIcon: IconButton(
-                              icon: Icon(Icons.clear,), onPressed: () {
-                              controller.searchC.clear();
-                            },
-                            ),
+                          decoration: BoxDecoration(
+                              color: TsOneColor.search,
+                              borderRadius: BorderRadius.circular(10.0),
+                              border: Border.all(
+                                color: Colors.white54,
+                                width: 0.5,
+                              )
                           ),
-                        ),
-                      )
-                  )
+                          child: ListTile(
+                            leading: Icon(
+                              Icons.search,
+                              color: Colors.blueGrey,
+                              size: 20,
+                            ),
+                            title: TextField(
+                              controller: nameC,
+                              onChanged: (value){
+                                controller.nameS.value = value;
+                                print(controller.nameS.value);
+                              },
+                              decoration: InputDecoration(
+                                hintText: 'Type instructor name...',
+                                hintStyle: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 12,
+                                  fontStyle: FontStyle.italic,
+                                ),
+                                border: InputBorder.none,
+                              ),
+                              style: TextStyle(
+                                color: Colors.black,
+                              ),
+                            ),
+                            trailing: InkWell(
+                              onTap: (){
+                                controller.nameS.value = "";
+                                nameC.clear();
+                              },
+                              child: Icon(Icons.clear),
+                            ),
+                          )
+                      ),
+                    ),
+                  ),
                 ],
               ),
 
