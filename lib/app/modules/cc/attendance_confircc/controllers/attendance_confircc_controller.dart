@@ -42,6 +42,7 @@ class AttendanceConfirccController extends GetxController {
   final RxString argumentid = "".obs;
   final RxString argumentname = "".obs;
   final RxInt jumlah = 0.obs;
+  final RxInt total = 0.obs;
   final RxBool showText = false.obs;
   final RxInt argumentTrainingType = 0.obs;
 
@@ -50,7 +51,7 @@ class AttendanceConfirccController extends GetxController {
   final RxString role = "".obs;
   final RxBool isLoading = false.obs;
 
-
+  RxString idAttendance = "".obs;
   RxString date = "".obs;
   RxInt idTrainingType = 0.obs;
 
@@ -65,6 +66,7 @@ class AttendanceConfirccController extends GetxController {
     cekRole();
     instructorStream();
     attendancelist();
+    absentList();
   }
 
   // List untuk asign Training
@@ -257,6 +259,7 @@ class AttendanceConfirccController extends GetxController {
         .map((attendanceQuery) {
       jumlah.value = attendanceQuery.docs.length;
 
+
       return attendanceQuery.docs.length;
     });
   }
@@ -301,6 +304,19 @@ class AttendanceConfirccController extends GetxController {
       );
       return attendanceData;
     });
+  }
+
+
+  Future<void> absentList() async {
+    final absentQuery = await _firestore
+        .collection('absent')
+        .where("idattendance", isEqualTo: argumentid.value)
+        .get();
+
+    total.value = absentQuery.docs.length;
+    print("fgcfg");
+    print(idAttendance.value);
+    print(total.value);
   }
 
   // Membatalkan daftar absent

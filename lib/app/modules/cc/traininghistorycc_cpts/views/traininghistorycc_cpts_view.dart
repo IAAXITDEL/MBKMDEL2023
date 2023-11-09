@@ -273,6 +273,13 @@ class TraininghistoryccCptsView
                                               ),
                                             ],
                                           ),
+                                          
+                                          child: Text(
+                                            "Reset",
+                                            style: tsOneTextTheme.headlineMedium?.copyWith(
+                                              color: Colors.red,
+                                            ),
+                                          ),
                                         ),
                                       ),
                                       SizedBox(height: 20),
@@ -410,6 +417,61 @@ class TraininghistoryccCptsView
                         ),
                         style: TextStyle(
                           color: Colors.red,
+                                            ],
+                                          ),
+                                          child: Text(
+                                            "Apply",
+                                            style: tsOneTextTheme.headlineMedium?.copyWith(
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          )
+
+                        ],
+                      ),
+                    ));
+              })
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            children: [
+              Container(
+                  decoration: BoxDecoration(
+                    color: TsOneColor.search,
+                    borderRadius: BorderRadius.circular(10.0),
+                    border: Border.all(
+                      color: Colors.white54,
+                      width: 0.5,
+                    )
+                  ),
+                  child: ListTile(
+                    leading: Icon(
+                      Icons.search,
+                      color: Colors.blueGrey,
+                      size: 20,
+                    ),
+                    title: TextField(
+                      controller: nameC,
+                      onChanged: (value){
+                        controller.nameS.value = value;
+                        print(controller.nameS.value);
+                      },
+                      decoration: InputDecoration(
+                        hintText: 'Type instructor name...',
+                        hintStyle: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 12,
+                          fontStyle: FontStyle.italic,
                         ),
                       ),
                       trailing: InkWell(
@@ -418,6 +480,8 @@ class TraininghistoryccCptsView
                           nameC.clear();
                         },
                         child: Icon(Icons.clear),
+                      style: TextStyle(
+                        color: Colors.black,
                       ),
                     )),
                 SizedBox(

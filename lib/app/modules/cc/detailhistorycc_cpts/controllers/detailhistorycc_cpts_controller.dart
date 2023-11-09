@@ -7,6 +7,7 @@ import '../../../../../presentation/view_model/attendance_model.dart';
 class DetailhistoryccCptsController extends GetxController {
   final RxString argument = "".obs;
   final RxInt jumlah = 0.obs;
+  final RxInt total = 0.obs;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   RxInt idTrainingType = 0.obs;
   RxString idAttendance = "".obs;
@@ -67,6 +68,13 @@ class DetailhistoryccCptsController extends GetxController {
         .where("idattendance", isEqualTo: idAttendance.value)
         .where("status", isEqualTo: "donescoring")
         .get();
+
+    final absentQuery = await _firestore
+        .collection('absent')
+        .where("idattendance", isEqualTo: idAttendance.value)
+        .get();
+
+    total.value = absentQuery.docs.length;
 
     List<AttendanceDetailModel> attendanceList = [];
 

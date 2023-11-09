@@ -253,7 +253,7 @@ class DetailhistoryccCptsView extends GetView<DetailhistoryccCptsController> {
                       ),
                       subtitle: Obx(() {
                         return Text(
-                          "${controller.jumlah.value.toString()} person",
+                          "${controller.total.value.toString()} person",
                           style: tsOneTextTheme.headlineMedium,
                         );
                       }),

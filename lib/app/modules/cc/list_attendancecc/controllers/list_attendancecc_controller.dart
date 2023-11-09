@@ -127,15 +127,21 @@ class ListAttendanceccController extends GetxController {
   }
 
   //mendapatkan panjang list attendance
-  Future<int> attendanceStream() async {
-    final attendanceQuery = await _firestore
-        .collection('attendance-detail')
-        .where("status", isEqualTo: "done")
-        .where("idattendance", isEqualTo: argumentid.value)
-        .get();
+  Future<int?> attendanceStream() async {
+    try {
+      userPreferences = getItLocator<UserPreferences>();
+      final attendanceQuery = await _firestore
+          .collection('attendance-detail')
+          .where("status", isEqualTo: userPreferences.getRank().contains("Pilot Administrator") ? "donescoring": "done")
+          .where("idattendance", isEqualTo: argumentid.value)
+          .get();
 
-    jumlah.value = attendanceQuery.docs.length;
-    return attendanceQuery.docs.length;
+      jumlah.value = attendanceQuery.docs.length;
+      return attendanceQuery.docs.length;
+    }catch(e){
+      print('An error occurred: $e');
+      return null;
+    }
   }
 
   @override
