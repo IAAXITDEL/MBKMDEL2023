@@ -313,9 +313,6 @@ class AttendanceConfirccController extends GetxController {
         .get();
 
     total.value = absentQuery.docs.length;
-    print("fgcfg");
-    print(idAttendance.value);
-    print(total.value);
   }
 
   // Membatalkan daftar absent
