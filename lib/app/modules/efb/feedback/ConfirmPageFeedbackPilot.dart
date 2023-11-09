@@ -370,7 +370,7 @@ class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
                 Container(
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey), // Atur warna dan tipe garis sesuai kebutuhan Anda
-                    borderRadius: const BorderRadius.all(Radius.circular(10)), // Atur sudut border sesuai kebutuhan Anda
+                    borderRadius: BorderRadius.all(Radius.circular(10)), // Atur sudut border sesuai kebutuhan Anda
                   ),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
@@ -386,7 +386,7 @@ class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
                             ),
                           ),
                         ),
-                        const Divider(
+                        Divider(
                           color: Colors.grey,
                         ),
                         const SizedBox(

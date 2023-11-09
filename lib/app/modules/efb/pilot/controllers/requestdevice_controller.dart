@@ -79,7 +79,27 @@ class RequestdeviceController extends GetxController {
       'waiting-handover-to-other-crew'
     ]).get();
 
-    return snapshot.docs.isNotEmpty;
+    QuerySnapshot snapshot2 = await _firestore
+        .collection('pilot-device-1')
+        .where('device_uid2', isEqualTo: deviceUid)
+        .where('statusDevice', whereIn: [
+      'in-use-pilot',
+      'waiting-confirmation-1',
+      'need-confirmation-occ',
+      'waiting-handover-to-other-crew'
+    ]).get();
+
+    QuerySnapshot snapshot3 = await _firestore
+        .collection('pilot-device-1')
+        .where('device_uid3', isEqualTo: deviceUid)
+        .where('statusDevice', whereIn: [
+      'in-use-pilot',
+      'waiting-confirmation-1',
+      'need-confirmation-occ',
+      'waiting-handover-to-other-crew'
+    ]).get();
+
+    return snapshot.docs.isNotEmpty || snapshot2.docs.isNotEmpty || snapshot3.docs.isNotEmpty;
   }
 
   Future<QuerySnapshot> getPilotDevices() async {

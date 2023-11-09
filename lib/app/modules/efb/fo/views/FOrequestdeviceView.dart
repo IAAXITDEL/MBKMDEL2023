@@ -605,22 +605,20 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
       ),
       bottomNavigationBar: BottomAppBar(
         surfaceTintColor: CupertinoColors.tertiarySystemBackground,
-        child: Expanded(
-          child: ElevatedButton(
-            onPressed: () {
-              if (selectedDevice2 != null && selectedDevice3 != null) {
-                _showConfirmationDialog();
-              }
-            },
-            style: ElevatedButton.styleFrom(
-                backgroundColor: TsOneColor.greenColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(4.0),
-                )),
-            child: const Text(
-              'Submit',
-              style: TextStyle(color: Colors.white),
-            ),
+        child: ElevatedButton(
+          onPressed: () {
+            if (selectedDevice2 != null && selectedDevice3 != null) {
+              _showConfirmationDialog();
+            }
+          },
+          style: ElevatedButton.styleFrom(
+              backgroundColor: TsOneColor.greenColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4.0),
+              )),
+          child: const Text(
+            'Submit',
+            style: TextStyle(color: Colors.white),
           ),
         ),
       ),
