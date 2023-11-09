@@ -172,6 +172,7 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                                               },
                                             );
 
+                                            await controller.attendancelist();
                                             await controller.savePdfFile(
                                                 await controller
                                                     .attendancelist());
@@ -420,7 +421,7 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
 
                               Obx(
                                 () => Radio<String>(
-                                  value: listAttendance[0]["attendanceType"],
+                                  value: listAttendance[0]["attendanceType"] ?? "N/A",
                                   groupValue: controller.selectedMeeting.value,
                                   onChanged: (String? newValue) {
                                     controller.selectMeeting(newValue);
@@ -428,7 +429,7 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                                 ),
                               ),
                               Text(
-                                listAttendance[0]["attendanceType"],
+                                listAttendance[0]["attendanceType"] ?? "N/A",
                                 style: tsOneTextTheme.labelSmall,
                               ),
                             ],

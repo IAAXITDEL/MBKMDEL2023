@@ -413,7 +413,7 @@ class ProfileccController extends GetxController {
       final List<Map<String, dynamic>>? historyDataLSWB = await getHistoryData(idCrew, "LOAD SHEET / WEIGHT & BALANCE", 1);
       final List<Map<String, dynamic>>? historyDataRVSM = await getHistoryData(idCrew, "RVSM", 1);
       final List<Map<String, dynamic>>? historyDataWNDSHEAR = await getHistoryData(idCrew, "WNDSHEAR", 8);
-      final List<Map<String, dynamic>>? historyDataAlarCfit = await getHistoryData(idCrew, "ALAR / CFIT", 4);
+      final List<Map<String, dynamic>>? historyDataAlarCfit = await getHistoryData(idCrew, "ALAR/CFIT", 4);
       final List<Map<String, dynamic>>? historyDataSEP = await getHistoryData(idCrew, "SEP", 4);
       final List<Map<String, dynamic>>? historyDataSEPDRILL = await getHistoryData(idCrew, "SEP DRILL", 2);
       final List<Map<String, dynamic>>? historyDataDGR = await getHistoryData(idCrew, "DGR & AVSEC", 2);
@@ -1997,18 +1997,36 @@ class ProfileccController extends GetxController {
     }
   }
 
+  // Future<void> savePdfFile(Uint8List byteList) async {
+  //   isLoading.value = true;
+  //   userPreferences = getItLocator<UserPreferences>();
+  //   final output = await getTemporaryDirectory();
+  //   var filePath = "${output.path}/training-cards-${userPreferences.getIDNo()}.pdf";
+  //   final file = File(filePath);
+  //   print("step 1");
+  //   await file.writeAsBytes(byteList);
+  //   print("step 2");
+  //   await OpenFile.open(filePath);
+  //   print("stetep 3");
+  //   isLoading.value = false;
+  // }
+
   Future<void> savePdfFile(Uint8List byteList) async {
-    isLoading.value = true;
     userPreferences = getItLocator<UserPreferences>();
+    Directory('/storage/emulated/0/Download/Training Cards/').createSync();
     final output = await getTemporaryDirectory();
-    var filePath = "${output.path}/training-cards-${userPreferences.getIDNo()}.pdf";
+    var filePath = "/storage/emulated/0/Download/Training Cards/training-cards-${userPreferences.getIDNo()}.pdf";
     final file = File(filePath);
     print("step 1");
     await file.writeAsBytes(byteList);
     print("step 2");
-    await OpenFile.open(filePath);
-    print("stetep 3");
-    isLoading.value = false;
-  }
 
+    final filePaths = "${output.path}/training-cards-${userPreferences.getIDNo()}.pdf";
+    final files = File(filePaths);
+    print("step 1");
+    await files.writeAsBytes(byteList);
+    print("step 2");
+    await OpenFile.open(filePaths);
+    print("step 3");
+  }
 }

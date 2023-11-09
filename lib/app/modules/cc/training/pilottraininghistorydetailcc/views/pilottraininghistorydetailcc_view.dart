@@ -4,6 +4,8 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:ts_one/presentation/shared_components/TitleText.dart';
 
 import '../../../../../../presentation/theme.dart';
@@ -50,25 +52,35 @@ class PilottraininghistorydetailccView
                        Expanded(
                          child: ElevatedButton(
                              onPressed: () async {
-                               try {
-                                 // Tampilkan LoadingScreen
-                                 showDialog(
-                                   context: context,
-                                   // barrierDismissible:
-                                   //     false, // Tidak bisa menutup dialog dengan tap di luar
-                                   builder: (BuildContext context) {
-                                     return LoadingScreen();
-                                   },
-                                 );
 
-                                 await controller.savePdfFile(
-                                     await controller
-                                     .createCertificate());
-                               } catch (e) {
-                               print('Error: $e');
-                               } finally {
-                               Navigator.pop(context);
+                               if(await controller.checkFeedbackIsProvided()){
+                                 try {
+                                   // Tampilkan LoadingScreen
+                                   showDialog(
+                                     context: context,
+                                     // barrierDismissible:
+                                     //     false, // Tidak bisa menutup dialog dengan tap di luar
+                                     builder: (BuildContext context) {
+                                       return LoadingScreen();
+                                     },
+                                   );
+
+                                   await controller.savePdfFile(
+                                       await controller
+                                           .createCertificate());
+                                 } catch (e) {
+                                   print('Error: $e');
+                                 } finally {
+                                   Navigator.pop(context);
+                                 }
+                               }else{
+                                 await QuickAlert.show(
+                                   context: context,
+                                   type: QuickAlertType.warning,
+                                   text: 'Kindly provide your feedback before proceeding further!',
+                                 );
                                }
+
                              },
                              style: ElevatedButton.styleFrom(
                                padding: EdgeInsets.symmetric(
@@ -136,7 +148,6 @@ class PilottraininghistorydetailccView
                       if (listAttendance.isEmpty) {
                         return EmptyScreen();
                       }
-
 
                       Timestamp? date = listAttendance[0]["date"];
                       DateTime? dates = date?.toDate();
