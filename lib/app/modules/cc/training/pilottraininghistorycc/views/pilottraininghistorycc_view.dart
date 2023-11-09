@@ -219,11 +219,11 @@ class PilottraininghistoryccView
 
                              Timestamp? date = listAttendance[index]["date"];
                              DateTime? dates = date?.toDate();
-                             String dateC = DateFormat('dd MMMM yyyy').format(dates!);
+                             String dateC = DateFormat('dd MMM yyyy').format(dates!);
 
                              Timestamp? timestamp = listAttendance[index]["valid_to"];
                              DateTime? dateTime = timestamp?.toDate();
-                             String validC = DateFormat('dd MMMM yyyy').format(dateTime!);
+                             String validC = DateFormat('dd MMM yyyy').format(dateTime!);
                              print(validC);
                              return InkWell(
                                onTap: () {

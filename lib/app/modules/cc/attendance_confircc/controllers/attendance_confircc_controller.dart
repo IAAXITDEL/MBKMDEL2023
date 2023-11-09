@@ -50,9 +50,8 @@ class AttendanceConfirccController extends GetxController {
   final RxString role = "".obs;
   final RxBool isLoading = false.obs;
 
-
-  RxString date = "".obs;
   RxInt idTrainingType = 0.obs;
+  Rx<DateTime> date = DateTime.now().obs;
 
   @override
   void onInit() {
@@ -64,7 +63,6 @@ class AttendanceConfirccController extends GetxController {
     getCombinedAttendanceStream();
     cekRole();
     instructorStream();
-    attendancelist();
   }
 
   // List untuk asign Training
@@ -105,7 +103,8 @@ class AttendanceConfirccController extends GetxController {
           attendanceModel.loano = user['LOA NO'];
           idInstructor.value = attendanceModel.instructor!;
 
-          date.value = attendanceModel.date!.toString();
+          Timestamp? timestamp = attendanceModel.date;
+          date.value = timestamp!.toDate();
           idTrainingType.value = attendanceModel.idTrainingType!;
 
           return attendanceModel.toJson();
@@ -206,7 +205,8 @@ class AttendanceConfirccController extends GetxController {
 
     if (querySnapshot.docs.isNotEmpty) {
       for (DocumentSnapshot document in querySnapshot.docs) {
-        var dates = dateFormat.parse(date.value);
+        var dates = date.value;
+
 
         var recurrent = (document.data() as Map<String, dynamic>)['recurrent'];
         var nextMonths;
@@ -218,7 +218,6 @@ class AttendanceConfirccController extends GetxController {
         }else if(recurrent == "12 MONTH CALENDER"){
            nextMonths = DateTime(dates.year, dates.month + 12, dates.day);
         }else if(recurrent == "24 MONTH CALENDER"){
-          print("disin");
            nextMonths = DateTime(dates.year, dates.month + 24, dates.day);
         }else if(recurrent == "36 MONTH CALENDER"){
           nextMonths = DateTime(dates.year, dates.month + 36, dates.day);
@@ -380,12 +379,6 @@ class AttendanceConfirccController extends GetxController {
     }
   }
 
-  // Future<Uint8List> resizeImage(Uint8List imageData, int targetWidth, int targetHeight) async {
-  //   final image = img.decodeImage(imageData);
-  //   final resizedImage = img.copyResize(image!, width: targetWidth, height: targetHeight);
-  //   return Uint8List.fromList(img.encodePng(resizedImage));
-  // }
-
   //Import PDF
   Future<Uint8List> attendancelist() async {
     try {
@@ -405,7 +398,7 @@ class AttendanceConfirccController extends GetxController {
 
       // Memanggil Data Attendance
       Stream<List<Map<String, dynamic>>> attendanceStream =
-          getCombinedAttendanceStream();
+         await getCombinedAttendanceStream();
       List<Map<String, dynamic>> attendanceDataList =
           await attendanceStream.first;
       List<AttendanceModel> attendanceModels = attendanceDataList.map((data) {
@@ -413,7 +406,7 @@ class AttendanceConfirccController extends GetxController {
       }).toList();
 
       // Memanggil Data Attendance Detail (Daftar Training)
-      Stream<List<Map<String, dynamic>>> attendanceDetailStream = getCombinedAttendanceDetailStream();
+      Stream<List<Map<String, dynamic>>> attendanceDetailStream = await getCombinedAttendanceDetailStream();
       attendanceDetailStream
           .listen((List<Map<String, dynamic>> attendanceDetailDataList) {
         allAttendanceDetailModels.clear();
@@ -427,7 +420,7 @@ class AttendanceConfirccController extends GetxController {
       });
 
       // Memanggil Data Instructor
-      Stream<List<Map<String, dynamic>>> instructorSt = instructorStream();
+      Stream<List<Map<String, dynamic>>> instructorSt = await instructorStream();
       instructorSt
           .listen((List<Map<String, dynamic>> attendanceDataList) {
         instructorModels.clear();
@@ -440,7 +433,7 @@ class AttendanceConfirccController extends GetxController {
 
 
       // Memanggil Data Pilot Administrator
-      Stream<List<Map<String, dynamic>>> administratorSt = administratorStream();
+      Stream<List<Map<String, dynamic>>> administratorSt = await administratorStream();
       administratorSt
           .listen((List<Map<String, dynamic>> attendanceDataList) {
         administratorModels.clear();
@@ -1107,17 +1100,35 @@ class AttendanceConfirccController extends GetxController {
     }
   }
 
+  // Future<void> savePdfFile(Uint8List byteList) async {
+  //   isLoading.value = true;
+  //   final output = await getTemporaryDirectory();
+  //   var filePath = "${output.path}/${argumentid.value}.pdf";
+  //   final file = File(filePath);
+  //   print("step 1");
+  //   await file.writeAsBytes(byteList);
+  //   print("step 2");
+  //   await OpenFile.open(filePath);
+  //   print("stetep 3");
+  //   isLoading.value = false;
+  // }
+
   Future<void> savePdfFile(Uint8List byteList) async {
-    isLoading.value = true;
+    Directory('/storage/emulated/0/Download/Attendance List/').createSync();
     final output = await getTemporaryDirectory();
-    var filePath = "${output.path}/${argumentid.value}.pdf";
+    var filePath = "/storage/emulated/0/Download/Attendance List/${argumentid.value}.pdf";
     final file = File(filePath);
     print("step 1");
     await file.writeAsBytes(byteList);
     print("step 2");
-    await OpenFile.open(filePath);
+
+    final filePaths = "${output.path}/${argumentid.value}.pdf";
+    final files = File(filePaths);
+    print("step 1");
+    await files.writeAsBytes(byteList);
+    print("step 2");
+    await OpenFile.open(filePaths);
     print("stetep 3");
-    isLoading.value = false;
   }
 
 

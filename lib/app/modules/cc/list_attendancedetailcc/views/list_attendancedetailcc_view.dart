@@ -23,8 +23,6 @@ class ListAttendancedetailccView
     var scoreC = TextEditingController();
     var feedbackC = TextEditingController();
 
-
-
     Future<void> updateScoring(String score, String feedback) async {
       controller.updateScoring(score, feedback).then((status) async {
         await QuickAlert.show(
