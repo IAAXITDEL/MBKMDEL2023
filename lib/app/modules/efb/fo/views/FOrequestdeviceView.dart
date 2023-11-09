@@ -45,10 +45,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
   }
 
   List<Device> getMatchingDevices(String input) {
-    return devices
-        .where((device) =>
-            device.deviceno.toLowerCase().contains(input.toLowerCase()))
-        .toList();
+    return devices.where((device) => device.deviceno.toLowerCase().contains(input.toLowerCase())).toList();
   }
 
   Future<void> _showQuickAlert(BuildContext context) async {
@@ -86,10 +83,8 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
   }
 
   Future<void> _showConfirmationDialog() async {
-    bool deviceInUse2 = await _bookingService.isDeviceInUse(
-        selectedDevice2!.uid, selectedDevice3!.uid);
-    bool deviceInUse3 = await _bookingService.isDeviceInUse(
-        selectedDevice3!.uid, selectedDevice2!.uid);
+    bool deviceInUse2 = await _bookingService.isDeviceInUse(selectedDevice2!.uid, selectedDevice3!.uid);
+    bool deviceInUse3 = await _bookingService.isDeviceInUse(selectedDevice3!.uid, selectedDevice2!.uid);
 
     if (selectedDevice2!.deviceno == selectedDevice3!.deviceno) {
       // Show an error message or handle it accordingly
@@ -129,8 +124,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                 Expanded(
                   flex: 5,
                   child: TextButton(
-                    child: const Text('No',
-                        style: TextStyle(color: TsOneColor.secondaryContainer)),
+                    child: const Text('No', style: TextStyle(color: TsOneColor.secondaryContainer)),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
@@ -147,12 +141,10 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                         borderRadius: BorderRadius.circular(20.0),
                       ),
                     ),
-                    child: const Text('Yes',
-                        style: TextStyle(color: TsOneColor.onPrimary)),
+                    child: const Text('Yes', style: TextStyle(color: TsOneColor.onPrimary)),
                     onPressed: () {
                       if (!deviceInUse2 && !deviceInUse3) _saveBooking();
-                      if (!deviceInUse2 && !deviceInUse3)
-                        _showQuickAlert(context);
+                      if (!deviceInUse2 && !deviceInUse3) _showQuickAlert(context);
 
                       if (deviceInUse2) _showInfo2(context);
                       if (deviceInUse3) _showInfo3(context);
@@ -208,8 +200,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
   }
 
   Future<Widget> getUserPhoto(String userUid) async {
-    final userSnapshot =
-        await FirebaseFirestore.instance.collection("users").doc(userUid).get();
+    final userSnapshot = await FirebaseFirestore.instance.collection("users").doc(userUid).get();
 
     if (userSnapshot.exists) {
       final userData = userSnapshot.data() as Map<String, dynamic>;
@@ -230,8 +221,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
   }
 
   Future<String> getUserName(String userUid) async {
-    final userSnapshot =
-        await FirebaseFirestore.instance.collection("users").doc(userUid).get();
+    final userSnapshot = await FirebaseFirestore.instance.collection("users").doc(userUid).get();
 
     if (userSnapshot.exists) {
       final userData = userSnapshot.data() as Map<String, dynamic>;
@@ -287,8 +277,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                         });
                       },
                       decoration: InputDecoration(
-                        contentPadding:
-                            const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                        contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                         labelText: 'Device No',
                         labelStyle: tsOneTextTheme.labelMedium,
                         border: const OutlineInputBorder(),
@@ -297,6 +286,11 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                   ),
                   const SizedBox(width: 16.0),
                   ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4.0),
+                      ),
+                    ),
                     onPressed: () async {
                       String qrCode = await FlutterBarcodeScanner.scanBarcode(
                         '#ff6666', // Warna overlay saat pemindaian
@@ -308,8 +302,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                       if (qrCode != '-1') {
                         setState(() {
                           deviceNoController2.text = qrCode;
-                          selectedDevice2 =
-                              getMatchingDevices(qrCode).firstOrNull;
+                          selectedDevice2 = getMatchingDevices(qrCode).firstOrNull;
                         });
                       }
                     },
@@ -336,8 +329,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                       .toList(),
                 ),
               const SizedBox(height: 16.0),
-              if (selectedDevice2 !=
-                  null) // Show attributes if a device is selected
+              if (selectedDevice2 != null) // Show attributes if a device is selected
                 Container(
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(4.0),
@@ -345,8 +337,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                         color: tsOneColorScheme.onSecondary,
                       )),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 10),
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -374,8 +365,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                         ),
                         Row(
                           children: [
-                            const Expanded(
-                                flex: 7, child: Text("FlySmart Version")),
+                            const Expanded(flex: 7, child: Text("FlySmart Version")),
                             const Expanded(child: Text(":")),
                             Expanded(
                               flex: 6,
@@ -385,8 +375,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                         ),
                         Row(
                           children: [
-                            const Expanded(
-                                flex: 7, child: Text("Docunet Version")),
+                            const Expanded(flex: 7, child: Text("Docunet Version")),
                             const Expanded(child: Text(":")),
                             Expanded(
                               flex: 6,
@@ -396,8 +385,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                         ),
                         Row(
                           children: [
-                            const Expanded(
-                                flex: 7, child: Text("Lido mPilot Version")),
+                            const Expanded(flex: 7, child: Text("Lido mPilot Version")),
                             const Expanded(child: Text(":")),
                             Expanded(
                               flex: 6,
@@ -452,8 +440,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                         });
                       },
                       decoration: InputDecoration(
-                        contentPadding:
-                            const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                        contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                         labelText: 'Device No',
                         labelStyle: tsOneTextTheme.labelMedium,
                         border: const OutlineInputBorder(),
@@ -462,6 +449,11 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                   ),
                   const SizedBox(width: 16.0),
                   ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4.0),
+                      ),
+                    ),
                     onPressed: () async {
                       String qrCode = await FlutterBarcodeScanner.scanBarcode(
                         '#ff6666', // Warna overlay saat pemindaian
@@ -473,12 +465,14 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                       if (qrCode != '-1') {
                         setState(() {
                           deviceNoController3.text = qrCode;
-                          selectedDevice3 =
-                              getMatchingDevices(qrCode).firstOrNull;
+                          selectedDevice3 = getMatchingDevices(qrCode).firstOrNull;
                         });
                       }
                     },
-                    child: const Icon(Icons.qr_code_2),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 5),
+                      child: const Icon(Icons.qr_code_2),
+                    ),
                   ),
                 ],
               ),
@@ -501,8 +495,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                       .toList(),
                 ),
               const SizedBox(height: 16.0),
-              if (selectedDevice3 !=
-                  null) // Show attributes if a device is selected
+              if (selectedDevice3 != null) // Show attributes if a device is selected
                 Container(
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(4.0),
@@ -510,8 +503,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                         color: tsOneColorScheme.onSecondary,
                       )),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 10),
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -539,8 +531,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                         ),
                         Row(
                           children: [
-                            const Expanded(
-                                flex: 7, child: Text("FlySmart Version")),
+                            const Expanded(flex: 7, child: Text("FlySmart Version")),
                             const Expanded(child: Text(":")),
                             Expanded(
                               flex: 6,
@@ -550,8 +541,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                         ),
                         Row(
                           children: [
-                            const Expanded(
-                                flex: 7, child: Text("Docunet Version")),
+                            const Expanded(flex: 7, child: Text("Docunet Version")),
                             const Expanded(child: Text(":")),
                             Expanded(
                               flex: 6,
@@ -561,8 +551,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                         ),
                         Row(
                           children: [
-                            const Expanded(
-                                flex: 7, child: Text("Lido mPilot Version")),
+                            const Expanded(flex: 7, child: Text("Lido mPilot Version")),
                             const Expanded(child: Text(":")),
                             Expanded(
                               flex: 6,

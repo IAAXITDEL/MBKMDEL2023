@@ -94,9 +94,8 @@ class _NavOCCView extends State<NavOCCView> {
           activeColor: Colors.white,
           iconSize: 24,
           //padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-          padding: _canManageDevice
-              ? const EdgeInsets.symmetric(vertical: 20, horizontal: 10)
-              : const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+          padding:
+              _canManageDevice ? const EdgeInsets.symmetric(vertical: 20, horizontal: 10) : const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
           duration: const Duration(milliseconds: 200),
           tabBackgroundColor: tsOneColorScheme.primary,
           selectedIndex: _selectedNav,
@@ -110,11 +109,12 @@ class _NavOCCView extends State<NavOCCView> {
             //   icon: Icons.list_alt_rounded,
             //   text: 'Device',
             // ),
-            const GButton(
-              icon: Icons.list_alt_rounded,
-              text: 'Device',
-            ),
             if (_canManageDevice)
+              const GButton(
+                icon: Icons.list_alt_rounded,
+                text: 'Device',
+              ),
+            if (_canManageDevice || _pilotRequestDevice)
               GButton(
                 icon: Icons.history_toggle_off_outlined,
                 text: 'History',

@@ -125,8 +125,14 @@ class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
       text: 'You have successfully added a device',
     );
 
+    //   Navigator.of(context).push(
+    //   MaterialPageRoute(
+    //     builder: (context) => PilotreturndeviceviewView(), // Gantilah dengan halaman yang sesuai
+    //   ),
+    // );
+
     // Close the success message after a delay (e.g., 2 seconds)
-    Future.delayed(const Duration(seconds: 2), () {
+    Future.delayed(const Duration(seconds: 1), () {
       Navigator.of(context).pop(); // Close the success message
 
       // Refresh the previous page if possible
@@ -137,6 +143,7 @@ class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
       // Alternatively, if you want to refresh the previous page, you can use Navigator.popUntil
       // For example:
       // Navigator.of(context).popUntil((route) => route.isFirst);
+      Navigator.of(context).pop();
     });
   }
 

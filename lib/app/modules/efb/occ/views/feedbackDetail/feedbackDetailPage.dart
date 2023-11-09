@@ -49,12 +49,6 @@ class FeedbackDetailPage extends StatelessWidget {
             return Center(child: Text('Feedback data not found'));
           }
 
-          // DATA PDF
-          // generateFeedbackForm(
-          //   date: feedbackData['timestamp'],
-          //   q1: feedbackData['q1'],
-          // );
-
           // Ambil data feedback dari Firestore
           final feedbackData = snapshot.data!.data() as Map<String, dynamic>;
 
@@ -148,40 +142,6 @@ class FeedbackDetailPage extends StatelessWidget {
                             child: Text(_formatTimestamp(date), style: tsOneTextTheme.labelSmall),
                           ),
                           SizedBox(height: 15.0),
-                          if (devicename1 != null && devicename2 == null)
-                            Row(
-                              children: [
-                                Expanded(flex: 6, child: Text("Device No")),
-                                Expanded(flex: 1, child: Text(":")),
-                                Expanded(
-                                  flex: 6,
-                                  child: Text(devicename1),
-                                ),
-                              ],
-                            ),
-
-                          if (devicename1 == '-')
-                            Row(
-                              children: [
-                                Expanded(flex: 6, child: Text("1st Device")),
-                                Expanded(flex: 1, child: Text(":")),
-                                Expanded(
-                                  flex: 6,
-                                  child: Text(devicename2),
-                                ),
-                              ],
-                            ),
-                          if (devicename1 == '-')
-                            Row(
-                              children: [
-                                Expanded(flex: 6, child: Text("2nd Device")),
-                                Expanded(flex: 1, child: Text(":")),
-                                Expanded(
-                                  flex: 6,
-                                  child: Text(devicename3),
-                                ),
-                              ],
-                            ),
                           Row(
                             children: [
                               Expanded(flex: 6, child: Text("Crew Name")),
@@ -203,6 +163,55 @@ class FeedbackDetailPage extends StatelessWidget {
                             ],
                           ),
                           const SizedBox(height: 15),
+
+                          //if (devicename1 != null && devicename2 == null)
+                          Row(
+                            children: [
+                              Expanded(child: Text("Device No", style: tsOneTextTheme.titleSmall)),
+                              // Expanded(flex: 1, child: Text(":")),
+                              // Expanded(
+                              //   flex: 6,
+                              //   child: Text(devicename1),
+                              // ),
+                            ],
+                          ),
+
+                          if (devicename1 != null)
+                            Row(
+                              children: [
+                                Expanded(flex: 6, child: Text("Device 1")),
+                                Expanded(flex: 1, child: Text(":")),
+                                Expanded(
+                                  flex: 6,
+                                  child: Text(devicename1),
+                                ),
+                              ],
+                            ),
+                          //Fo
+                          if (devicename2 != null)
+                            Row(
+                              children: [
+                                Expanded(flex: 6, child: Text("Device 2")),
+                                Expanded(flex: 1, child: Text(":")),
+                                Expanded(
+                                  flex: 6,
+                                  child: Text(devicename2),
+                                ),
+                              ],
+                            ),
+                          if (devicename3 != null)
+                            Row(
+                              children: [
+                                Expanded(flex: 6, child: Text("Device 3")),
+                                Expanded(flex: 1, child: Text(":")),
+                                Expanded(
+                                  flex: 6,
+                                  child: Text(devicename3),
+                                ),
+                              ],
+                            ),
+                          const SizedBox(height: 10),
+
                           const Padding(
                             padding: EdgeInsets.only(bottom: 16.0),
                             child: Row(
@@ -259,7 +268,7 @@ class FeedbackDetailPage extends StatelessWidget {
                                   ),
                                   Row(
                                     children: [
-                                      Text(q1,style: tsOneTextTheme.bodySmall?.copyWith(color: Colors.red)),
+                                      Text(q1, style: tsOneTextTheme.bodySmall?.copyWith(color: Colors.red)),
                                     ],
                                   ),
                                   const SizedBox(
@@ -279,13 +288,12 @@ class FeedbackDetailPage extends StatelessWidget {
                                   ),
                                   Row(
                                     children: [
-                                      Text(q2,style: tsOneTextTheme.bodySmall?.copyWith(color: Colors.red)),
+                                      Text(q2, style: tsOneTextTheme.bodySmall?.copyWith(color: Colors.red)),
                                     ],
                                   ),
                                   const SizedBox(
                                     height: 8,
                                   ),
-
 
                                   //Part 2
                                   Align(
@@ -306,7 +314,7 @@ class FeedbackDetailPage extends StatelessWidget {
                                   ),
                                   Row(
                                     children: [
-                                      Text(q3,style: tsOneTextTheme.bodySmall?.copyWith(color: Colors.red)),
+                                      Text(q3, style: tsOneTextTheme.bodySmall?.copyWith(color: Colors.red)),
                                     ],
                                   ),
                                   const SizedBox(
@@ -326,13 +334,12 @@ class FeedbackDetailPage extends StatelessWidget {
                                   ),
                                   Row(
                                     children: [
-                                      Text(q4,style: tsOneTextTheme.bodySmall?.copyWith(color: Colors.red)),
+                                      Text(q4, style: tsOneTextTheme.bodySmall?.copyWith(color: Colors.red)),
                                     ],
                                   ),
                                   const SizedBox(
                                     height: 8,
                                   ),
-
 
                                   //Part 3
                                   Align(
@@ -353,7 +360,7 @@ class FeedbackDetailPage extends StatelessWidget {
                                   ),
                                   Row(
                                     children: [
-                                      Text(q5,style: tsOneTextTheme.bodySmall?.copyWith(color: Colors.red)),
+                                      Text(q5, style: tsOneTextTheme.bodySmall?.copyWith(color: Colors.red)),
                                     ],
                                   ),
                                   const SizedBox(
@@ -373,7 +380,7 @@ class FeedbackDetailPage extends StatelessWidget {
                                   ),
                                   Row(
                                     children: [
-                                      Text(q6,style: tsOneTextTheme.bodySmall?.copyWith(color: Colors.red)),
+                                      Text(q6, style: tsOneTextTheme.bodySmall?.copyWith(color: Colors.red)),
                                     ],
                                   ),
                                 ],
@@ -408,7 +415,7 @@ class FeedbackDetailPage extends StatelessWidget {
                                       Expanded(flex: 1, child: Text(":", style: tsOneTextTheme.labelMedium)),
                                       Expanded(
                                         flex: 6,
-                                        child: Text(sector1,style: tsOneTextTheme.bodySmall?.copyWith(color: Colors.red)),
+                                        child: Text(sector1, style: tsOneTextTheme.bodySmall?.copyWith(color: Colors.red)),
                                       ),
                                     ],
                                   ),
@@ -418,7 +425,7 @@ class FeedbackDetailPage extends StatelessWidget {
                                       Expanded(flex: 1, child: Text(":", style: tsOneTextTheme.labelMedium)),
                                       Expanded(
                                         flex: 6,
-                                        child: Text(sector2,style: tsOneTextTheme.bodySmall?.copyWith(color: Colors.red)),
+                                        child: Text(sector2, style: tsOneTextTheme.bodySmall?.copyWith(color: Colors.red)),
                                       ),
                                     ],
                                   ),
@@ -428,7 +435,7 @@ class FeedbackDetailPage extends StatelessWidget {
                                       Expanded(flex: 1, child: Text(":", style: tsOneTextTheme.labelMedium)),
                                       Expanded(
                                         flex: 6,
-                                        child: Text(sector3,style: tsOneTextTheme.bodySmall?.copyWith(color: Colors.red)),
+                                        child: Text(sector3, style: tsOneTextTheme.bodySmall?.copyWith(color: Colors.red)),
                                       ),
                                     ],
                                   ),
@@ -438,7 +445,7 @@ class FeedbackDetailPage extends StatelessWidget {
                                       Expanded(flex: 1, child: Text(":", style: tsOneTextTheme.labelMedium)),
                                       Expanded(
                                         flex: 6,
-                                        child: Text(sector4,style: tsOneTextTheme.bodySmall?.copyWith(color: Colors.red)),
+                                        child: Text(sector4, style: tsOneTextTheme.bodySmall?.copyWith(color: Colors.red)),
                                       ),
                                     ],
                                   ),
@@ -448,7 +455,7 @@ class FeedbackDetailPage extends StatelessWidget {
                                       Expanded(flex: 1, child: Text(":", style: tsOneTextTheme.labelMedium)),
                                       Expanded(
                                         flex: 6,
-                                        child: Text(sector5,style: tsOneTextTheme.bodySmall?.copyWith(color: Colors.red)),
+                                        child: Text(sector5, style: tsOneTextTheme.bodySmall?.copyWith(color: Colors.red)),
                                       ),
                                     ],
                                   ),
@@ -458,7 +465,7 @@ class FeedbackDetailPage extends StatelessWidget {
                                       Expanded(flex: 1, child: Text(":", style: tsOneTextTheme.labelMedium)),
                                       Expanded(
                                         flex: 6,
-                                        child: Text(sector6,style: tsOneTextTheme.bodySmall?.copyWith(color: Colors.red)),
+                                        child: Text(sector6, style: tsOneTextTheme.bodySmall?.copyWith(color: Colors.red)),
                                       ),
                                     ],
                                   ),
@@ -469,8 +476,6 @@ class FeedbackDetailPage extends StatelessWidget {
                           const SizedBox(
                             height: 8,
                           ),
-
-
 
                           //Part 5
                           Container(
@@ -503,7 +508,7 @@ class FeedbackDetailPage extends StatelessWidget {
                                   ),
                                   Row(
                                     children: [
-                                      Text(q7,style: tsOneTextTheme.bodySmall?.copyWith(color: Colors.red)),
+                                      Text(q7, style: tsOneTextTheme.bodySmall?.copyWith(color: Colors.red)),
                                     ],
                                   ),
                                   const SizedBox(
@@ -523,7 +528,7 @@ class FeedbackDetailPage extends StatelessWidget {
                                   ),
                                   Row(
                                     children: [
-                                      Text(q8,style: tsOneTextTheme.bodySmall?.copyWith(color: Colors.red)),
+                                      Text(q8, style: tsOneTextTheme.bodySmall?.copyWith(color: Colors.red)),
                                     ],
                                   ),
                                   const SizedBox(
@@ -542,7 +547,7 @@ class FeedbackDetailPage extends StatelessWidget {
                                   ),
                                   Row(
                                     children: [
-                                      Text(q9,style: tsOneTextTheme.bodySmall?.copyWith(color: Colors.red)),
+                                      Text(q9, style: tsOneTextTheme.bodySmall?.copyWith(color: Colors.red)),
                                     ],
                                   ),
                                   const SizedBox(
@@ -562,13 +567,12 @@ class FeedbackDetailPage extends StatelessWidget {
                                   ),
                                   Row(
                                     children: [
-                                      Text(q10,style: tsOneTextTheme.bodySmall?.copyWith(color: Colors.red)),
+                                      Text(q10, style: tsOneTextTheme.bodySmall?.copyWith(color: Colors.red)),
                                     ],
                                   ),
                                   const SizedBox(
                                     height: 8,
                                   ),
-
                                   Row(
                                     children: [
                                       Flexible(
@@ -582,7 +586,7 @@ class FeedbackDetailPage extends StatelessWidget {
                                   ),
                                   Row(
                                     children: [
-                                      Text(q11,style: tsOneTextTheme.bodySmall?.copyWith(color: Colors.red)),
+                                      Text(q11, style: tsOneTextTheme.bodySmall?.copyWith(color: Colors.red)),
                                     ],
                                   ),
                                   const SizedBox(
@@ -602,7 +606,7 @@ class FeedbackDetailPage extends StatelessWidget {
                                   ),
                                   Row(
                                     children: [
-                                      Text(q12,style: tsOneTextTheme.bodySmall?.copyWith(color: Colors.red)),
+                                      Text(q12, style: tsOneTextTheme.bodySmall?.copyWith(color: Colors.red)),
                                     ],
                                   ),
                                   Row(
@@ -610,7 +614,8 @@ class FeedbackDetailPage extends StatelessWidget {
                                       Flexible(
                                         child: Wrap(
                                           children: [
-                                            Text("If high please write down your concern in the comment box below", style: tsOneTextTheme.labelMedium),
+                                            Text("If high please write down your concern in the comment box below",
+                                                style: tsOneTextTheme.labelMedium),
                                           ],
                                         ),
                                       ),
@@ -621,7 +626,7 @@ class FeedbackDetailPage extends StatelessWidget {
                                       Flexible(
                                         child: Wrap(
                                           children: [
-                                            Text(ifhigh,style: tsOneTextTheme.bodySmall?.copyWith(color: Colors.red)),
+                                            Text(ifhigh, style: tsOneTextTheme.bodySmall?.copyWith(color: Colors.red)),
                                           ],
                                         ),
                                       ),
@@ -635,7 +640,6 @@ class FeedbackDetailPage extends StatelessWidget {
                           const SizedBox(
                             height: 8,
                           ),
-
 
                           //Part 6
                           Container(
@@ -668,7 +672,7 @@ class FeedbackDetailPage extends StatelessWidget {
                                   ),
                                   Row(
                                     children: [
-                                      Text(q13,style: tsOneTextTheme.bodySmall?.copyWith(color: Colors.red)),
+                                      Text(q13, style: tsOneTextTheme.bodySmall?.copyWith(color: Colors.red)),
                                     ],
                                   ),
                                   const SizedBox(
@@ -688,13 +692,12 @@ class FeedbackDetailPage extends StatelessWidget {
                                   ),
                                   Row(
                                     children: [
-                                      Text(q14,style: tsOneTextTheme.bodySmall?.copyWith(color: Colors.red)),
+                                      Text(q14, style: tsOneTextTheme.bodySmall?.copyWith(color: Colors.red)),
                                     ],
                                   ),
                                   const SizedBox(
                                     height: 8,
                                   ),
-
                                   Row(
                                     children: [
                                       Flexible(
@@ -708,7 +711,7 @@ class FeedbackDetailPage extends StatelessWidget {
                                   ),
                                   Row(
                                     children: [
-                                      Text(q15,style: tsOneTextTheme.bodySmall?.copyWith(color: Colors.red)),
+                                      Text(q15, style: tsOneTextTheme.bodySmall?.copyWith(color: Colors.red)),
                                     ],
                                   ),
                                 ],
@@ -718,7 +721,6 @@ class FeedbackDetailPage extends StatelessWidget {
                           const SizedBox(
                             height: 8,
                           ),
-
 
                           Row(
                             children: [
@@ -733,84 +735,92 @@ class FeedbackDetailPage extends StatelessWidget {
                           ),
                           Row(
                             children: [
-                              Text(additionalComment,style: tsOneTextTheme.bodySmall?.copyWith(color: Colors.red)),
+                              Flexible(
+                                child: Wrap(
+                                  children: [
+                                    Text(additionalComment, style: tsOneTextTheme.bodySmall?.copyWith(color: Colors.red)),
+                                  ],
+                                ),
+                              ),
                             ],
                           ),
 
                           SizedBox(height: 30),
                           Row(
                             children: [
-                              ElevatedButton(
-                                onPressed: () {
-                                  showDialog(
-                                    context: context,
-                                    barrierDismissible: false,
-                                    builder: (context) {
-                                      return AlertDialog(
-                                        content: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            CircularProgressIndicator(),
-                                            SizedBox(height: 20),
-                                            Text('Please Wait...'),
-                                          ],
-                                        ),
-                                      );
-                                    },
-                                  );
-                                  generateFeedbackForm(
-                                    //handoverID: handoverTouserData != null ? handoverTouserData['ID NO'].toString() : 'Not Found',
-                                    date: feedbackData['timestamp'] ?? '-',
-                                    q1: feedbackData['q1'] ?? '-',
-                                    q2: feedbackData['q2'] ?? '-',
-                                    q3: feedbackData['q3'] ?? '-',
-                                    q4: feedbackData['q4'] ?? '-',
-                                    q5: feedbackData['q5'] ?? '-',
-                                    q6: feedbackData['q6'] ?? '-',
-                                    q7: feedbackData['q7'] ?? '-',
-                                    q8: feedbackData['q8'] ?? '-',
-                                    q9: feedbackData['q9'] ?? '-',
-                                    q10: feedbackData['q10'] ?? '-',
-                                    q11: feedbackData['q11'] ?? '-',
-                                    q12: feedbackData['q12'] ?? '-',
-                                    q13: feedbackData['q13'] ?? '-',
-                                    q14: feedbackData['q14'] ?? '-',
-                                    q15: feedbackData['q15'] ?? '-',
-                                    sector1: feedbackData['1-sector'] ?? '-',
-                                    sector2: feedbackData['2-sector'] ?? '-',
-                                    sector3: feedbackData['3-sector'] ?? '-',
-                                    sector4: feedbackData['4-sector'] ?? '-',
-                                    sector5: feedbackData['5-sector'] ?? '-',
-                                    sector6: feedbackData['6-sector'] ?? '-',
-                                    ifhigh: feedbackData['ifHigh'] ?? '-',
-                                    additionalComment: feedbackData['additionalComment'] ?? '-',
-                                    devicename1: pilotDeviceData['device_name'] ?? '-',
-                                    devicename2: pilotDeviceData['device_name2'] ?? '-',
-                                    devicename3: pilotDeviceData['device_name3'] ?? '-',
-                                    userName: userData['NAME'] as String? ?? '-',
-                                    userRank: userData['RANK'] as String? ?? '-',
-                                  ).then((_) {
-                                    Navigator.pop(context);
-                                  }).catchError((error) {
-                                    print('Error generating PDF: $error');
-                                    Navigator.pop(context);
-                                  });
-                                  // generateLogPdfDevice23();
-                                  print("Test" + q1);
-                                  print(sector1);
-                                  print(userName);
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: TsOneColor.greenColor,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(4.0),
+                              Expanded(
+                                child: ElevatedButton(
+                                  onPressed: () async {
+                                    showDialog(
+                                      context: context,
+                                      barrierDismissible: false,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          content: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              CircularProgressIndicator(),
+                                              SizedBox(height: 20),
+                                              Text('Please Wait...'),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    );
+                                    await generateFeedbackForm(
+                                      //handoverID: handoverTouserData != null ? handoverTouserData['ID NO'].toString() : 'Not Found',
+                                      date: feedbackData['timestamp'] ?? '-',
+                                      q1: feedbackData['q1'] ?? '-',
+                                      q2: feedbackData['q2'] ?? '-',
+                                      q3: feedbackData['q3'] ?? '-',
+                                      q4: feedbackData['q4'] ?? '-',
+                                      q5: feedbackData['q5'] ?? '-',
+                                      q6: feedbackData['q6'] ?? '-',
+                                      q7: feedbackData['q7'] ?? '-',
+                                      q8: feedbackData['q8'] ?? '-',
+                                      q9: feedbackData['q9'] ?? '-',
+                                      q10: feedbackData['q10'] ?? '-',
+                                      q11: feedbackData['q11'] ?? '-',
+                                      q12: feedbackData['q12'] ?? '-',
+                                      q13: feedbackData['q13'] ?? '-',
+                                      q14: feedbackData['q14'] ?? '-',
+                                      q15: feedbackData['q15'] ?? '-',
+                                      sector1: feedbackData['1-sector'] ?? '-',
+                                      sector2: feedbackData['2-sector'] ?? '-',
+                                      sector3: feedbackData['3-sector'] ?? '-',
+                                      sector4: feedbackData['4-sector'] ?? '-',
+                                      sector5: feedbackData['5-sector'] ?? '-',
+                                      sector6: feedbackData['6-sector'] ?? '-',
+                                      ifhigh: feedbackData['ifHigh'] ?? '-',
+                                      additionalComment: feedbackData['additionalComment'] ?? '-',
+                                      devicename1: pilotDeviceData['device_name'] ?? '-',
+                                      devicename2: pilotDeviceData['device_name2'] ?? '-',
+                                      devicename3: pilotDeviceData['device_name3'] ?? '-',
+                                      userName: userData['NAME'] as String? ?? '-',
+                                      userRank: userData['RANK'] as String? ?? '-',
+                                    ).then((_) {
+                                      Navigator.pop(context);
+                                    }).catchError((error) {
+                                      print('Error generating PDF: $error');
+                                      Navigator.pop(context);
+                                    });
+                                    // generateLogPdfDevice23();
+                                    // print("Test" + q1);
+                                    // print(sector1);
+                                    // print(userName);
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: TsOneColor.greenColor,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(4.0),
+                                    ),
                                   ),
-                                ),
-                                child: Padding(
-                                  padding: EdgeInsets.all(15),
-                                  child: Text(
-                                    'Open Attachment Feedback',
-                                    style: TextStyle(color: Colors.white),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(15),
+                                    child: Text(
+                                      'Open Attachment Feedback',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -851,7 +861,7 @@ Future<List<Map<String, dynamic>>> getAllFeedbackData() async {
     String feedbackId = doc['feedback_id'];
     // Gunakan feedbackId untuk mencari data dari koleksi 'feedback-device'
     QuerySnapshot feedbackDeviceQuerySnapshot =
-    await FirebaseFirestore.instance.collection('feedback-device').where('feedback_id', isEqualTo: feedbackId).get();
+        await FirebaseFirestore.instance.collection('feedback-device').where('feedback_id', isEqualTo: feedbackId).get();
 
     if (feedbackDeviceQuerySnapshot.docs.isNotEmpty) {
       // Jika data cocok, tambahkan data ke dalam list feedbackDataList
@@ -1310,7 +1320,7 @@ Future<void> generateFeedbackForm({
                     '  1.  Airbus Flysmart (Performance)' +
                         "             $q13\n" +
                         '  2.  Lido (Navigation)' +
-                        "                                $q14\n" +
+                        "                                   $q14\n" +
                         '  3.  Vistair Docunet (Library Document)' +
                         "      $q15\n",
                     context,

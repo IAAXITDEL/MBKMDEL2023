@@ -151,7 +151,7 @@ class DetailHistoryPilotView extends GetView {
                                               Row(
                                                 children: [
                                                   Expanded(flex: 6, child: Text("Loan Date")),
-                                                  Expanded( child: Text(":")),
+                                                  Expanded(child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
                                                     child: Text(_formatTimestamp(data['timestamp'])),
@@ -167,7 +167,7 @@ class DetailHistoryPilotView extends GetView {
                                               Row(
                                                 children: [
                                                   Expanded(flex: 6, child: Text("ID NO")),
-                                                  Expanded( child: Text(":")),
+                                                  Expanded(child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
                                                     child: Text('${userData['ID NO'] ?? 'No Data'}'),
@@ -178,7 +178,7 @@ class DetailHistoryPilotView extends GetView {
                                               Row(
                                                 children: [
                                                   Expanded(flex: 6, child: Text("Name")),
-                                                  Expanded( child: Text(":")),
+                                                  Expanded(child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
                                                     child: Text('${userData['NAME'] ?? 'No Data'}'),
@@ -189,7 +189,7 @@ class DetailHistoryPilotView extends GetView {
                                               Row(
                                                 children: [
                                                   Expanded(flex: 6, child: Text("Rank")),
-                                                  Expanded( child: Text(":")),
+                                                  Expanded(child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
                                                     child: Text('${userData['RANK'] ?? 'No Data'}'),
@@ -205,7 +205,7 @@ class DetailHistoryPilotView extends GetView {
                                               Row(
                                                 children: [
                                                   Expanded(flex: 6, child: Text("Device No")),
-                                                  Expanded( child: Text(":")),
+                                                  Expanded(child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
                                                     child: Text('${data['device_name'] ?? 'No Data'}'),
@@ -216,7 +216,7 @@ class DetailHistoryPilotView extends GetView {
                                               Row(
                                                 children: [
                                                   Expanded(flex: 6, child: Text("IOS Version")),
-                                                  Expanded( child: Text(":")),
+                                                  Expanded(child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
                                                     child: Text('${deviceData['iosver'] ?? 'No Data'}'),
@@ -227,7 +227,7 @@ class DetailHistoryPilotView extends GetView {
                                               Row(
                                                 children: [
                                                   Expanded(flex: 6, child: Text("FlySmart Version")),
-                                                  Expanded( child: Text(":")),
+                                                  Expanded(child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
                                                     child: Text('${deviceData['flysmart'] ?? 'No Data'}'),
@@ -238,7 +238,7 @@ class DetailHistoryPilotView extends GetView {
                                               Row(
                                                 children: [
                                                   Expanded(flex: 6, child: Text("Docunet Version")),
-                                                  Expanded( child: Text(":")),
+                                                  Expanded(child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
                                                     child: Text('${deviceData['docuversion'] ?? 'No Data'}'),
@@ -249,7 +249,7 @@ class DetailHistoryPilotView extends GetView {
                                               Row(
                                                 children: [
                                                   Expanded(flex: 6, child: Text("Lido mPilot Version")),
-                                                  Expanded( child: Text(":")),
+                                                  Expanded(child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
                                                     child: Text('${deviceData['lidoversion'] ?? 'No Data'}'),
@@ -260,7 +260,7 @@ class DetailHistoryPilotView extends GetView {
                                               Row(
                                                 children: [
                                                   Expanded(flex: 6, child: Text("HUB")),
-                                                  Expanded( child: Text(":")),
+                                                  Expanded(child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
                                                     child: Text('${deviceData['hub'] ?? 'No Data'}'),
@@ -271,7 +271,7 @@ class DetailHistoryPilotView extends GetView {
                                               Row(
                                                 children: [
                                                   Expanded(flex: 6, child: Text("Condition")),
-                                                  Expanded( child: Text(":")),
+                                                  Expanded(child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
                                                     child: Text('${deviceData['condition'] ?? 'No Data'}'),
@@ -305,7 +305,7 @@ class DetailHistoryPilotView extends GetView {
                                               Row(
                                                 children: [
                                                   Expanded(flex: 6, child: Text("Image Proof")),
-                                                  Expanded( child: Text(":")),
+                                                  Expanded(child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
                                                     child: Column(
@@ -340,7 +340,7 @@ class DetailHistoryPilotView extends GetView {
                                                 Row(
                                                   children: [
                                                     Expanded(flex: 6, child: Text("OCC That Gives")),
-                                                    Expanded( child: Text(":")),
+                                                    Expanded(child: Text(":")),
                                                     Expanded(
                                                       flex: 6,
                                                       child: Text('${occOnDutyuserData?['NAME'] ?? 'No Data'}'),
@@ -352,7 +352,7 @@ class DetailHistoryPilotView extends GetView {
                                                 Row(
                                                   children: [
                                                     Expanded(flex: 6, child: Text("OCC Who Received")),
-                                                    Expanded( child: Text(":")),
+                                                    Expanded(child: Text(":")),
                                                     Expanded(
                                                       flex: 6,
                                                       child: Text('${occAccepteduserData?['NAME'] ?? 'No Data'}'),
@@ -365,7 +365,7 @@ class DetailHistoryPilotView extends GetView {
                                                 Row(
                                                   children: [
                                                     Expanded(flex: 6, child: Text("Image Proof")),
-                                                    Expanded( child: Text(":")),
+                                                    Expanded(child: Text(":")),
                                                     Expanded(
                                                       flex: 6,
                                                       child: Column(
@@ -383,9 +383,15 @@ class DetailHistoryPilotView extends GetView {
                                                                 context: context,
                                                                 builder: (BuildContext context) {
                                                                   return AlertDialog(
-                                                                    content: Container(
-                                                                      width: 400, // Adjust the width as needed
-                                                                      height: 400, // Adjust the height as needed
+                                                                    // content: Container(
+                                                                    //   width: 400, // Adjust the width as needed
+                                                                    //   height: 400, // Adjust the height as needed
+                                                                    //   child: Image.network(
+                                                                    //     data['prove_back_to_base'] ?? '',
+                                                                    //     fit: BoxFit.cover,
+                                                                    //   ),
+                                                                    // ),
+                                                                    content: Expanded(
                                                                       child: Image.network(
                                                                         data['prove_back_to_base'] ?? '',
                                                                         fit: BoxFit.cover,
@@ -414,7 +420,7 @@ class DetailHistoryPilotView extends GetView {
                                                 Row(
                                                   children: [
                                                     Expanded(flex: 6, child: Text("ID NO")),
-                                                    Expanded( child: Text(":")),
+                                                    Expanded(child: Text(":")),
                                                     Expanded(
                                                       flex: 6,
                                                       child: handoverTouserData != null
@@ -428,7 +434,7 @@ class DetailHistoryPilotView extends GetView {
                                                 Row(
                                                   children: [
                                                     Expanded(flex: 6, child: Text("NAME")),
-                                                    Expanded( child: Text(":")),
+                                                    Expanded(child: Text(":")),
                                                     Expanded(
                                                       flex: 6,
                                                       child: handoverTouserData != null
@@ -442,7 +448,7 @@ class DetailHistoryPilotView extends GetView {
                                                 Row(
                                                   children: [
                                                     Expanded(flex: 6, child: Text("RANK")),
-                                                    Expanded( child: Text(":")),
+                                                    Expanded(child: Text(":")),
                                                     Expanded(
                                                       flex: 6,
                                                       child: handoverTouserData != null

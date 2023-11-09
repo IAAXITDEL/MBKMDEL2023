@@ -117,7 +117,7 @@ class _ShowDeviceState extends State<ShowDevice> {
                     children: [
                       Row(
                         children: [
-                          const Expanded(flex: 6, child: Text('Device Number')),
+                          const Expanded(flex: 7, child: Text('Device Number')),
                           const Expanded(child: Text(':')),
                           Expanded(flex: 6, child: Text('${widget.device.deviceno}')),
                         ],
@@ -127,7 +127,7 @@ class _ShowDeviceState extends State<ShowDevice> {
                       ),
                       Row(
                         children: [
-                          const Expanded(flex: 6, child: Text('IOS Version')),
+                          const Expanded(flex: 7, child: Text('IOS Version')),
                           const Expanded(child: Text(':')),
                           Expanded(flex: 6, child: Text('${widget.device.iosver}')),
                         ],
@@ -137,7 +137,7 @@ class _ShowDeviceState extends State<ShowDevice> {
                       ),
                       Row(
                         children: [
-                          const Expanded(flex: 6, child: Text('FlySmart Version')),
+                          const Expanded(flex: 7, child: Text('FlySmart Version')),
                           const Expanded(child: Text(':')),
                           Expanded(flex: 6, child: Text('${widget.device.flysmart}')),
                         ],
@@ -147,7 +147,7 @@ class _ShowDeviceState extends State<ShowDevice> {
                       ),
                       Row(
                         children: [
-                          const Expanded(flex: 6, child: Text('Lido mPilot Version')),
+                          const Expanded(flex: 7, child: Text('Lido mPilot Version')),
                           const Expanded(child: Text(':')),
                           Expanded(flex: 6, child: Text('${widget.device.lidoversion}')),
                         ],
@@ -157,7 +157,7 @@ class _ShowDeviceState extends State<ShowDevice> {
                       ),
                       Row(
                         children: [
-                          const Expanded(flex: 6, child: Text('Docunet Version')),
+                          const Expanded(flex: 7, child: Text('Docunet Version')),
                           const Expanded(child: Text(':')),
                           Expanded(flex: 6, child: Text('${widget.device.docuversion}')),
                         ],
@@ -167,7 +167,7 @@ class _ShowDeviceState extends State<ShowDevice> {
                       ),
                       Row(
                         children: [
-                          const Expanded(flex: 6, child: Text('Hub')),
+                          const Expanded(flex: 7, child: Text('Hub')),
                           const Expanded(child: Text(':')),
                           Expanded(flex: 6, child: Text('${widget.device.hub}')),
                         ],
@@ -177,7 +177,7 @@ class _ShowDeviceState extends State<ShowDevice> {
                       ),
                       Row(
                         children: [
-                          const Expanded(flex: 6, child: Text('Device Condition')),
+                          const Expanded(flex: 7, child: Text('Device Condition')),
                           const Expanded(child: Text(':')),
                           Expanded(flex: 6, child: Text('${widget.device.condition}')),
                         ],
@@ -279,7 +279,7 @@ class _ShowDeviceState extends State<ShowDevice> {
               borderRadius: BorderRadius.circular(4.0),
             ),
           ),
-          child: const Text('Download Image', style: TextStyle(color: Colors.white)),
+          child: const Text('Download Wallpaper', style: TextStyle(color: Colors.white)),
         ),
       ),
     );

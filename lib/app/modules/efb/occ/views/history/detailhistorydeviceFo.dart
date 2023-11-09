@@ -607,6 +607,10 @@ class DetailHistoryDeviceFOView extends GetView {
                                                                 ),
                                                               ),
                                                             );
+
+                                                            Future.delayed(Duration(seconds: 1), () {
+                                                              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                                            });
                                                           }
                                                           print(feedbackId);
                                                         },
@@ -728,7 +732,7 @@ class DetailHistoryDeviceFOView extends GetView {
                                                             statusdevice: data['statusDevice'],
                                                             handoverName: handoverTouserData != null ? handoverTouserData['NAME'] : 'Not Found',
                                                             handoverID:
-                                                            handoverTouserData != null ? handoverTouserData['ID NO'].toString() : 'Not Found',
+                                                                handoverTouserData != null ? handoverTouserData['ID NO'].toString() : 'Not Found',
                                                           ).then((_) {
                                                             Navigator.pop(context);
                                                           }).catchError((error) {
