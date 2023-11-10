@@ -479,16 +479,8 @@ class DetailHistoryDeviceFOView extends GetView {
                                                   ),
 
                                                 SizedBox(height: 5.0),
-                                                if (status == 'Done')
-                                                  Text(
-                                                    "Return Documentation",
-                                                    style: TextStyle(
-                                                      fontSize: 20,
-                                                      fontWeight: FontWeight.w600,
-                                                      color: tsOneColorScheme.onBackground,
-                                                      fontFamily: 'Poppins',
-                                                    ),
-                                                  ),
+                                                if (status == 'Done') Text("Return Documentation", style: tsOneTextTheme.headlineMedium),
+                                                if (status == 'Done') SizedBox(height: 5.0),
                                                 if (status == 'Done')
                                                   Row(
                                                     children: [
@@ -543,16 +535,7 @@ class DetailHistoryDeviceFOView extends GetView {
                                                   ),
 
                                                 if (status == 'Done') SizedBox(height: 15),
-                                                if (status == 'Done')
-                                                  Text(
-                                                    "OCC On Duty",
-                                                    style: TextStyle(
-                                                      fontSize: 18,
-                                                      fontWeight: FontWeight.w600,
-                                                      color: tsOneColorScheme.onBackground,
-                                                      fontFamily: 'Poppins',
-                                                    ),
-                                                  ),
+                                                if (status == 'Done') Text("OCC On Duty", style: tsOneTextTheme.headlineMedium),
                                                 if (status == 'Done') SizedBox(height: 7.0),
                                                 if (status == 'Done')
                                                   Row(
@@ -607,6 +590,10 @@ class DetailHistoryDeviceFOView extends GetView {
                                                                 ),
                                                               ),
                                                             );
+
+                                                            Future.delayed(Duration(seconds: 1), () {
+                                                              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                                            });
                                                           }
                                                           print(feedbackId);
                                                         },
@@ -728,7 +715,7 @@ class DetailHistoryDeviceFOView extends GetView {
                                                             statusdevice: data['statusDevice'],
                                                             handoverName: handoverTouserData != null ? handoverTouserData['NAME'] : 'Not Found',
                                                             handoverID:
-                                                            handoverTouserData != null ? handoverTouserData['ID NO'].toString() : 'Not Found',
+                                                                handoverTouserData != null ? handoverTouserData['ID NO'].toString() : 'Not Found',
                                                           ).then((_) {
                                                             Navigator.pop(context);
                                                           }).catchError((error) {

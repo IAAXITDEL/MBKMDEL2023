@@ -569,7 +569,7 @@ Future<void> generateLogPdfDevice23({
               ],
             ),
 
-          if ('$statusdevice' == 'handover-to-other-crew') pw.SizedBox(height: 50),
+          if ('$statusdevice' == 'handover-to-other-crew') pw.SizedBox(height: 30),
           if ('$statusdevice' == 'handover-to-other-crew')
             pw.Column(
               children: [footer],

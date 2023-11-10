@@ -13,21 +13,16 @@ abstract class Routes {
   static const detailUser = _Paths.detailUser;
   static const updateUser = _Paths.updateUser;
 
-  static const newAssessmentSimulatorFlight =
-      _Paths.newAssessmentSimulatorFlight;
+  static const newAssessmentSimulatorFlight = _Paths.newAssessmentSimulatorFlight;
   static const newAssessmentCandidate = _Paths.newAssessmentCandidate;
   static const newAssessmentFlightDetails = _Paths.newAssessmentFlightDetails;
   static const newAssessmentVariables = _Paths.newAssessmentVariables;
-  static const newAssessmentVariablesSecond =
-      _Paths.newAssessmentVariablesSecond;
-  static const newAssessmentHumanFactorVariables =
-      _Paths.newAssessmentHumanFactorVariables;
-  static const newAssessmentOverallPerformance =
-      _Paths.newAssessmentOverallPerformance;
+  static const newAssessmentVariablesSecond = _Paths.newAssessmentVariablesSecond;
+  static const newAssessmentHumanFactorVariables = _Paths.newAssessmentHumanFactorVariables;
+  static const newAssessmentOverallPerformance = _Paths.newAssessmentOverallPerformance;
   static const newAssessmentDeclaration = _Paths.newAssessmentDeclaration;
   static const newAssessmentSuccess = _Paths.newAssessmentSuccess;
-  static const newAssessmentInstructorNotes =
-      _Paths.newAssessmentInstructorNotes;
+  static const newAssessmentInstructorNotes = _Paths.newAssessmentInstructorNotes;
 
   static const allAssessmentPeriods = _Paths.allAssessmentPeriods;
   static const detailAssessmentPeriod = _Paths.detailAssessmentPeriod;
@@ -46,6 +41,7 @@ abstract class Routes {
   static const HOMEOCC = _Paths.HOMEOCC;
   static const LISTDEVICEOCC = _Paths.LISTDEVICEOCC;
   static const ANALYTICS = _Paths.ANALYTICS;
+  static const RETURN = _Paths.RETURN;
 
   //EFB PILOT
   static const HOMEPILOT = _Paths.HOMEPILOT;
@@ -90,10 +86,8 @@ abstract class _Paths {
   static const newAssessmentFlightDetails = '/newAssessmentFlightDetails';
   static const newAssessmentVariables = '/newAssessmentVariables';
   static const newAssessmentVariablesSecond = '/newAssessmentVariablesSecond';
-  static const newAssessmentHumanFactorVariables =
-      '/newAssessmentHumanFactorVariables';
-  static const newAssessmentOverallPerformance =
-      '/newAssessmentOverallPerformance';
+  static const newAssessmentHumanFactorVariables = '/newAssessmentHumanFactorVariables';
+  static const newAssessmentOverallPerformance = '/newAssessmentOverallPerformance';
   static const newAssessmentDeclaration = '/newAssessmentDeclaration';
   static const newAssessmentSuccess = '/newAssessmentSuccess';
   static const newAssessmentInstructorNotes = '/newAssessmentInstructorNotes';
@@ -119,6 +113,7 @@ abstract class _Paths {
   static const ANALYTICS = '/analytics';
   static const CAPTRETURNDEVICE = '/CaptReturnDevice';
   static const FORETURNDEVICE = '/FoReturnDevice';
+  static const RETURN = '/PilotreturndeviceviewView';
 
   //PILOT EFB
   static const HOMEPILOT = '/homepilot';

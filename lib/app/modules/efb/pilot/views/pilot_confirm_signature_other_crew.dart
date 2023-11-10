@@ -251,8 +251,7 @@ class _ConfirmSignatureReturnOtherPilotViewState
                         'user_uid': userUid,
                         'device_uid': deviceId,
                         'device_name': deviceName,
-                        'document_id':
-                            newDeviceId, // Tambahkan document_id di sini
+                        'document_id': newDeviceId, // Tambahkan document_id di sini
                         'occ-on-duty': OccOnDuty,
                         'handover-from': '-',
                         'statusDevice': 'in-use-pilot',

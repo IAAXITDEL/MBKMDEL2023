@@ -53,8 +53,7 @@ class _AddDevice extends State<AddDevice> {
         border: const OutlineInputBorder(),
       ),
       onEditingComplete: () {
-        FocusScope.of(context)
-            .requestFocus(_iosverFocus); // Pindah ke field berikutnya
+        FocusScope.of(context).requestFocus(_iosverFocus); // Pindah ke field berikutnya
       },
     );
     final iosverField = TextFormField(
@@ -77,8 +76,7 @@ class _AddDevice extends State<AddDevice> {
         border: const OutlineInputBorder(),
       ),
       onEditingComplete: () {
-        FocusScope.of(context)
-            .requestFocus(_flysmartverFocus); // Pindah ke field berikutnya
+        FocusScope.of(context).requestFocus(_flysmartverFocus); // Pindah ke field berikutnya
       },
     );
     final flysmarvertField = TextFormField(
@@ -101,8 +99,7 @@ class _AddDevice extends State<AddDevice> {
         border: const OutlineInputBorder(),
       ),
       onEditingComplete: () {
-        FocusScope.of(context)
-            .requestFocus(_lidoversionFocus); // Pindah ke field berikutnya
+        FocusScope.of(context).requestFocus(_lidoversionFocus); // Pindah ke field berikutnya
       },
     );
     final lidoField = TextFormField(
@@ -122,8 +119,7 @@ class _AddDevice extends State<AddDevice> {
         border: const OutlineInputBorder(),
       ),
       onEditingComplete: () {
-        FocusScope.of(context)
-            .requestFocus(_docuversionFocus); // Pindah ke field berikutnya
+        FocusScope.of(context).requestFocus(_docuversionFocus); // Pindah ke field berikutnya
       },
     );
     final docuField = TextFormField(
@@ -146,8 +142,7 @@ class _AddDevice extends State<AddDevice> {
         border: const OutlineInputBorder(),
       ),
       onEditingComplete: () {
-        FocusScope.of(context)
-            .requestFocus(_lidoversionFocus); // Pindah ke field berikutnya
+        FocusScope.of(context).requestFocus(_lidoversionFocus); // Pindah ke field berikutnya
       },
     );
 
@@ -235,8 +230,7 @@ class _AddDevice extends State<AddDevice> {
               lidoversion: _lidoversion.text,
               docuversion: _docuversion.text,
               hub: _selectedHub,
-              condition:
-                  _selectedCondition, // Menggunakan nilai yang dipilih dari dropdown
+              condition: _selectedCondition, // Menggunakan nilai yang dipilih dari dropdown
             );
             if (response.code == 200) {
               //Success
@@ -261,13 +255,13 @@ class _AddDevice extends State<AddDevice> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+        backgroundColor: Colors.white,
         title: const Text(
           'Add Device',
           style: TextStyle(
             color: Colors.black, // Set text color to red
-            fontSize: 20.1,
-            fontWeight: FontWeight.bold,
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
           ),
         ),
         centerTitle: true,
@@ -309,7 +303,7 @@ class _AddDevice extends State<AddDevice> {
               child: SaveButton,
             ),
             // Expanded(
-            //   
+            //
             //   child: Padding(
             //     padding: EdgeInsets.symmetric(vertical: 10),
             //     child: SaveButton,

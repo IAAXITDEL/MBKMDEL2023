@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
+import 'package:ts_one/app/modules/efb/pilot/views/pilotreturndeviceview_view.dart';
 
 import '../../../../presentation/theme.dart';
 
@@ -59,9 +60,11 @@ class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
   String? Q13;
   String? Q14;
   String? Q15;
-  String? Q16;
+  //String? Q16;
   TextEditingController? ifHighController = TextEditingController();
   TextEditingController? addionalComentController = TextEditingController();
+
+  get requestDeviceController => null;
 
   void submitFeedback(BuildContext context) async {
     String? ifHigh = ifHighController?.text;
@@ -102,7 +105,7 @@ class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
       'q13': Q13,
       'q14': Q14,
       'q15': Q15,
-      'q16': Q16,
+      //'q16': Q16,
     });
 
     String feedbackId = feedbackDoc.id;
@@ -117,17 +120,98 @@ class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
     _showQuickAlert(context);
   }
 
-// Function to show a success message using QuickAlert
+  // Function to show a success message using QuickAlert
   Future<void> _showQuickAlert(BuildContext context) async {
     await QuickAlert.show(
       context: context,
       type: QuickAlertType.success,
       text: 'You have successfully added a device',
     );
-    Navigator.of(context).pop(); // Close the success message
-    Navigator.of(context).pop(); // Close the success message
-    Navigator.of(context).pop(); // Close the success message
+
+    //   Navigator.of(context).push(
+    //   MaterialPageRoute(
+    //     builder: (context) => PilotreturndeviceviewView(), // Gantilah dengan halaman yang sesuai
+    //   ),
+    // );
+
+    Future.delayed(const Duration(seconds: 1), () {
+      Navigator.of(context).pop();
+      Navigator.of(context).pop();
+      Navigator.of(context).pop();
+    });
   }
+
+  // Future<void> _showQuickAlert(BuildContext context) async {
+  //   await QuickAlert.show(
+  //     context: context,
+  //     type: QuickAlertType.success,
+  //     text: 'You have successfully added a device',
+  //   ).then((value) {
+  //     FutureBuilder<QuerySnapshot>(
+  //       future: requestDeviceController.getPilotDevices(),
+  //       builder: (context, snapshot) {
+  //         if (snapshot.connectionState == ConnectionState.waiting) {
+  //           return const CircularProgressIndicator();
+  //         } else if (snapshot.hasError) {
+  //           return Text('Error: ${snapshot.error}');
+  //         } else {
+  //           QuerySnapshot? pilotDevicesSnapshot = snapshot.data;
+
+  //           // Ambil data yang diperlukan dari pilotDevicesSnapshot
+  //           String deviceName = pilotDevicesSnapshot?.docs[0]['device_name'];
+  //           String OccOnDuty = pilotDevicesSnapshot?.docs[0]['occ-on-duty'];
+  //           String userId = pilotDevicesSnapshot?.docs[0]['user_uid'];
+  //           String deviceId = pilotDevicesSnapshot!.docs[0].id;
+
+  //           Navigator.push(
+  //             context,
+  //             MaterialPageRoute(
+  //               builder: (context) => PilotreturndeviceviewView(
+  //                 deviceName: deviceName,
+  //                 deviceId: deviceId,
+  //                 OccOnDuty: OccOnDuty,
+  //               ),
+  //             ),
+  //           );
+
+  //           return SizedBox.shrink();
+  //         }
+  //       },
+  //     );
+  //   });
+
+  //   // FutureBuilder<QuerySnapshot>(
+  //   //   future: requestDeviceController.getPilotDevices(),
+  //   //   builder: (context, snapshot) {
+  //   //     if (snapshot.connectionState == ConnectionState.waiting) {
+  //   //       return const CircularProgressIndicator();
+  //   //     } else if (snapshot.hasError) {
+  //   //       return Text('Error: ${snapshot.error}');
+  //   //     } else {
+  //   //       QuerySnapshot? pilotDevicesSnapshot = snapshot.data;
+
+  //   //       // Ambil data yang diperlukan dari pilotDevicesSnapshot
+  //   //       String deviceName = pilotDevicesSnapshot?.docs[0]['device_name'];
+  //   //       String OccOnDuty = pilotDevicesSnapshot?.docs[0]['occ-on-duty'];
+  //   //       String userId = pilotDevicesSnapshot?.docs[0]['user_uid'];
+  //   //       String deviceId = pilotDevicesSnapshot!.docs[0].id;
+
+  //   //       Navigator.push(
+  //   //         context,
+  //   //         MaterialPageRoute(
+  //   //           builder: (context) => PilotreturndeviceviewView(
+  //   //             deviceName: deviceName,
+  //   //             deviceId: deviceId,
+  //   //             OccOnDuty: OccOnDuty,
+  //   //           ),
+  //   //         ),
+  //   //       );
+
+  //   //       return SizedBox.shrink();
+  //   //     }
+  //   //   },
+  //   // );
+  // }
 
   @override
   Widget build(BuildContext context) {

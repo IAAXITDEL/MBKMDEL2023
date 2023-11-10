@@ -286,6 +286,11 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                   ),
                   const SizedBox(width: 16.0),
                   ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4.0),
+                      ),
+                    ),
                     onPressed: () async {
                       String qrCode = await FlutterBarcodeScanner.scanBarcode(
                         '#ff6666', // Warna overlay saat pemindaian
@@ -312,15 +317,15 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                   children: getMatchingDevices(deviceNoController2.text)
                       .map(
                         (device) => ListTile(
-                      title: Text(device.deviceno),
-                      onTap: () {
-                        setState(() {
-                          selectedDevice2 = device;
-                          deviceNoController2.text = device.deviceno;
-                        });
-                      },
-                    ),
-                  )
+                          title: Text(device.deviceno),
+                          onTap: () {
+                            setState(() {
+                              selectedDevice2 = device;
+                              deviceNoController2.text = device.deviceno;
+                            });
+                          },
+                        ),
+                      )
                       .toList(),
                 ),
               const SizedBox(height: 16.0),
@@ -341,7 +346,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                         Row(
                           children: [
                             const Expanded(flex: 7, child: Text("Device No")),
-                            const Expanded( child: Text(":")),
+                            const Expanded(child: Text(":")),
                             Expanded(
                               flex: 6,
                               child: Text('${selectedDevice2!.deviceno}'),
@@ -351,7 +356,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                         Row(
                           children: [
                             const Expanded(flex: 7, child: Text("IOS Version")),
-                            const Expanded( child: Text(":")),
+                            const Expanded(child: Text(":")),
                             Expanded(
                               flex: 6,
                               child: Text('${selectedDevice2!.iosver}'),
@@ -361,7 +366,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                         Row(
                           children: [
                             const Expanded(flex: 7, child: Text("FlySmart Version")),
-                            const Expanded( child: Text(":")),
+                            const Expanded(child: Text(":")),
                             Expanded(
                               flex: 6,
                               child: Text('${selectedDevice2!.flysmart}'),
@@ -371,7 +376,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                         Row(
                           children: [
                             const Expanded(flex: 7, child: Text("Docunet Version")),
-                            const Expanded( child: Text(":")),
+                            const Expanded(child: Text(":")),
                             Expanded(
                               flex: 6,
                               child: Text('${selectedDevice2!.docuversion}'),
@@ -381,7 +386,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                         Row(
                           children: [
                             const Expanded(flex: 7, child: Text("Lido mPilot Version")),
-                            const Expanded( child: Text(":")),
+                            const Expanded(child: Text(":")),
                             Expanded(
                               flex: 6,
                               child: Text('${selectedDevice2!.lidoversion}'),
@@ -391,7 +396,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                         Row(
                           children: [
                             const Expanded(flex: 7, child: Text("Hub")),
-                            const Expanded( child: Text(":")),
+                            const Expanded(child: Text(":")),
                             Expanded(
                               flex: 6,
                               child: Text('${selectedDevice2!.hub}'),
@@ -401,7 +406,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                         Row(
                           children: [
                             const Expanded(flex: 7, child: Text("Condition")),
-                            const Expanded( child: Text(":")),
+                            const Expanded(child: Text(":")),
                             Expanded(
                               flex: 6,
                               child: Text('${selectedDevice2!.condition}'),
@@ -444,6 +449,11 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                   ),
                   const SizedBox(width: 16.0),
                   ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4.0),
+                      ),
+                    ),
                     onPressed: () async {
                       String qrCode = await FlutterBarcodeScanner.scanBarcode(
                         '#ff6666', // Warna overlay saat pemindaian
@@ -459,7 +469,10 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                         });
                       }
                     },
-                    child: const Icon(Icons.qr_code_2),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 5),
+                      child: const Icon(Icons.qr_code_2),
+                    ),
                   ),
                 ],
               ),
@@ -470,15 +483,15 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                   children: getMatchingDevices(deviceNoController3.text)
                       .map(
                         (device) => ListTile(
-                      title: Text(device.deviceno),
-                      onTap: () {
-                        setState(() {
-                          selectedDevice3 = device;
-                          deviceNoController3.text = device.deviceno;
-                        });
-                      },
-                    ),
-                  )
+                          title: Text(device.deviceno),
+                          onTap: () {
+                            setState(() {
+                              selectedDevice3 = device;
+                              deviceNoController3.text = device.deviceno;
+                            });
+                          },
+                        ),
+                      )
                       .toList(),
                 ),
               const SizedBox(height: 16.0),
@@ -499,7 +512,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                         Row(
                           children: [
                             const Expanded(flex: 7, child: Text("Device No")),
-                            const Expanded( child: Text(":")),
+                            const Expanded(child: Text(":")),
                             Expanded(
                               flex: 6,
                               child: Text('${selectedDevice3!.deviceno}'),
@@ -509,7 +522,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                         Row(
                           children: [
                             const Expanded(flex: 7, child: Text("IOS Version")),
-                            const Expanded( child: Text(":")),
+                            const Expanded(child: Text(":")),
                             Expanded(
                               flex: 6,
                               child: Text('${selectedDevice3!.iosver}'),
@@ -519,7 +532,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                         Row(
                           children: [
                             const Expanded(flex: 7, child: Text("FlySmart Version")),
-                            const Expanded( child: Text(":")),
+                            const Expanded(child: Text(":")),
                             Expanded(
                               flex: 6,
                               child: Text('${selectedDevice3!.flysmart}'),
@@ -529,7 +542,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                         Row(
                           children: [
                             const Expanded(flex: 7, child: Text("Docunet Version")),
-                            const Expanded( child: Text(":")),
+                            const Expanded(child: Text(":")),
                             Expanded(
                               flex: 6,
                               child: Text('${selectedDevice3!.docuversion}'),
@@ -539,7 +552,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                         Row(
                           children: [
                             const Expanded(flex: 7, child: Text("Lido mPilot Version")),
-                            const Expanded( child: Text(":")),
+                            const Expanded(child: Text(":")),
                             Expanded(
                               flex: 6,
                               child: Text('${selectedDevice3!.lidoversion}'),
@@ -549,7 +562,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                         Row(
                           children: [
                             const Expanded(flex: 7, child: Text("Hub")),
-                            const Expanded( child: Text(":")),
+                            const Expanded(child: Text(":")),
                             Expanded(
                               flex: 6,
                               child: Text('${selectedDevice3!.hub}'),
@@ -559,7 +572,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                         Row(
                           children: [
                             const Expanded(flex: 7, child: Text("Condition")),
-                            const Expanded( child: Text(":")),
+                            const Expanded(child: Text(":")),
                             Expanded(
                               flex: 6,
                               child: Text('${selectedDevice3!.condition}'),
