@@ -379,30 +379,66 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                                     centerSpaceRadius: 30,
                                   ),
                                 ),
+
+                                //DESCRIPTION
                                 Positioned(
-                                  top: 120,
+                                  top: 102,
                                   left: 0,
                                   right: -300,
-                                  child: Text(
-                                    'Instructors',
-                                    style: TextStyle(
-                                      fontSize: 12, // Perbesar angka
-                                      fontWeight: FontWeight.bold,
-                                      color: const Color(0xffF24C3D),
-                                    ),
-                                  ),
-                                ),
-                                Positioned(
-                                  top: 135,
-                                  left: 0,
-                                  right: -300,
-                                  child: Text(
-                                    'Pilots',
-                                    style: TextStyle(
-                                      fontSize: 12, // Perbesar angka
-                                      fontWeight: FontWeight.bold,
-                                      color: const Color(0xff35A29F),
-                                    ),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Desc:',
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      Row(
+                                        children: [
+                                          Container(
+                                            width: 10,
+                                            height: 10,
+                                            decoration: BoxDecoration(
+                                              color: const Color(0xffF24C3D),
+                                              shape: BoxShape.rectangle,
+                                            ),
+                                          ),
+                                          SizedBox(width: 5),
+                                          Text(
+                                            'Instructors',
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.bold,
+                                              color: const Color(0xffF24C3D),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Container(
+                                            width: 10,
+                                            height: 10,
+                                            decoration: BoxDecoration(
+                                              color: const Color(0xff35A29F),
+                                              shape: BoxShape.rectangle,
+                                            ),
+                                          ),
+                                          SizedBox(width: 5),
+                                          Text(
+                                            'Pilots',
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.bold,
+                                              color: const Color(0xff35A29F),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ],
@@ -704,7 +740,7 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                                                       border: const OutlineInputBorder(
                                                           borderSide: BorderSide(
                                                               color: TsOneColor
-                                                                  .primary)),
+                                                                  .greenColor)),
                                                       contentPadding:
                                                           const EdgeInsets
                                                                   .symmetric(
@@ -897,127 +933,151 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                             ],
                           ),
 
-                          Obx(
-                            () {
-                              print(
-                                  "test ${(controller.absentCount.value * 100 / (controller.absentCount.value + controller.presentCount.value))}");
-                              print("satu ${controller.absentCount.value}");
-                              print("dua ${controller.presentCount.value}");
-                              return FutureBuilder<List<Map<String, dynamic>>>(
-                                future: controller.getCombinedAttendance(
-                                    trainingType: controller.training.value,
-                                    from: controller.from.value,
-                                    to: controller.to.value),
-                                builder: (BuildContext context,
-                                    AsyncSnapshot<List<Map<String, dynamic>>>
-                                        snapshot) {
-                                  if (snapshot.connectionState ==
-                                      ConnectionState.waiting) {
-                                    return LoadingScreen();
-                                  }
+                          Center(
+                            child: Obx(
+                              () {
+                                print(
+                                    "test ${(controller.absentCount.value * 100 / (controller.absentCount.value + controller.presentCount.value))}");
+                                print("satu ${controller.absentCount.value}");
+                                print("dua ${controller.presentCount.value}");
+                                return FutureBuilder<List<Map<String, dynamic>>>(
+                                  future: controller.getCombinedAttendance(
+                                      trainingType: controller.training.value,
+                                      from: controller.from.value,
+                                      to: controller.to.value),
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot<List<Map<String, dynamic>>>
+                                          snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return LoadingScreen();
+                                    }
 
-                                  if (snapshot.hasError) {
-                                    return ErrorScreen();
-                                  }
+                                    if (snapshot.hasError) {
+                                      return ErrorScreen();
+                                    }
 
-                                  if (snapshot.data == null ||
-                                      snapshot.data!.isEmpty) {
-                                    return EmptyScreenAttendanceData();
-                                  }
+                                    if (snapshot.data == null ||
+                                        snapshot.data!.isEmpty) {
+                                      return EmptyScreenAttendanceData();
+                                    }
 
-                                  return Container(
-                                    height: 150,
-                                    child: Stack(
-                                      children: [
-                                        PieChart(
-                                          PieChartData(
-                                            sections: [
-                                              PieChartSectionData(
-                                                value: (controller
-                                                        .absentCount.value /
-                                                    (controller
-                                                            .absentCount.value +
-                                                        controller.presentCount
-                                                            .value)),
-                                                color: const Color(0xFF116D6E),
-                                                title:
-                                                    '${((controller.absentCount.value * 100 / (controller.absentCount.value + controller.presentCount.value))).toStringAsFixed(1)}%',
-                                                radius: 45,
-                                                titleStyle: TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.white,
+                                    return Container(
+                                      height: 180,
+                                      child: Stack(
+                                        children: [
+                                          PieChart(
+                                            PieChartData(
+                                              sections: [
+                                                PieChartSectionData(
+                                                  value: (controller
+                                                          .absentCount.value /
+                                                      (controller
+                                                              .absentCount.value +
+                                                          controller.presentCount
+                                                              .value)),
+                                                  color: const Color(0xFF116D6E),
+                                                  title:
+                                                      '${((controller.absentCount.value * 100 / (controller.absentCount.value + controller.presentCount.value))).toStringAsFixed(1)}%',
+                                                  radius: 45,
+                                                  titleStyle: TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white,
+                                                  ),
                                                 ),
-                                              ),
-                                              PieChartSectionData(
-                                                value: (controller
-                                                        .presentCount.value /
-                                                    (controller
-                                                            .absentCount.value +
-                                                        controller.presentCount
-                                                            .value)),
-                                                color: const Color(0xffFFB000),
-                                                title:
-                                                    '${((controller.presentCount.value * 100 / (controller.absentCount.value + controller.presentCount.value))).toStringAsFixed(1)}%',
-                                                radius: 45,
-                                                titleStyle: TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.white,
+                                                PieChartSectionData(
+                                                  value: (controller
+                                                          .presentCount.value /
+                                                      (controller
+                                                              .absentCount.value +
+                                                          controller.presentCount
+                                                              .value)),
+                                                  color: const Color(0xffFFB000),
+                                                  title:
+                                                      '${((controller.presentCount.value * 100 / (controller.absentCount.value + controller.presentCount.value))).toStringAsFixed(1)}%',
+                                                  radius: 45,
+                                                  titleStyle: TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white,
+                                                  ),
                                                 ),
-                                              ),
-                                            ],
-                                            sectionsSpace: 3,
-                                            centerSpaceRadius: 30,
-                                          ),
-                                        ),
-
-                                        // Positioned(
-                                        //   top: 95,
-                                        //   left: 0,
-                                        //   right: -300,
-                                        //   child: Text(
-                                        //     'Ket',
-                                        //     style: TextStyle(
-                                        //       fontSize: 12,
-                                        //       fontWeight: FontWeight.bold,
-                                        //       color: Colors.black,
-                                        //     ),
-                                        //   ),
-                                        // ),
-                                        Positioned(
-                                          top: 135,
-                                          left: 0,
-                                          right: -300,
-                                          child: Text(
-                                            'Absent',
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.bold,
-                                              color: const Color(0xff116D6E),
+                                              ],
+                                              sectionsSpace: 3,
+                                              centerSpaceRadius: 30,
                                             ),
                                           ),
-                                        ),
-                                        Positioned(
-                                          top: 120,
-                                          left: 0,
-                                          right: -300,
-                                          child: Text(
-                                            'Present',
-                                            style: TextStyle(
-                                              fontSize: 12, // Perbesar angka
-                                              fontWeight: FontWeight.bold,
-                                              color: const Color(0xffff9900),
+
+                                          //DESCRIPTION
+                                          Positioned(
+                                            top: 110,
+                                            left: 0,
+                                            right: -300,
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  'Desc:',
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    Container(
+                                                      width: 10,
+                                                      height: 10,
+                                                      decoration: BoxDecoration(
+                                                        color: const Color(0xff116D6E),
+                                                        shape: BoxShape.rectangle,
+                                                      ),
+                                                    ),
+                                                    SizedBox(width: 5),
+                                                    Text(
+                                                      'Absent',
+                                                      style: TextStyle(
+                                                        fontSize: 12,
+                                                        fontWeight: FontWeight.bold,
+                                                        color: const Color(0xff116D6E),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    Container(
+                                                      width: 10,
+                                                      height: 10,
+                                                      decoration: BoxDecoration(
+                                                        color: const Color(0xffff9900),
+                                                        shape: BoxShape.rectangle,
+                                                      ),
+                                                    ),
+                                                    SizedBox(width: 5),
+                                                    Text(
+                                                      'Present',
+                                                      style: TextStyle(
+                                                        fontSize: 12,
+                                                        fontWeight: FontWeight.bold,
+                                                        color: const Color(0xffff9900),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
                                             ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                },
-                              );
-                            },
-                          )
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                          ),
                         ],
                       ),
                     ],
