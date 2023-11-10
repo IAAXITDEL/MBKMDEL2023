@@ -23,7 +23,8 @@ class ProfileccView extends GetView<ProfileccController> {
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: tsOneColorScheme.primary,
-                padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -69,7 +70,8 @@ class ProfileccView extends GetView<ProfileccController> {
                 height: 175,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(200),
-                  child: Image.network(controller.userPreferences.getPhotoURL()),
+                  child:
+                      Image.network(controller.userPreferences.getPhotoURL()),
                 ),
               ),
             ),
@@ -90,7 +92,7 @@ class ProfileccView extends GetView<ProfileccController> {
                   Row(
                     children: [
                       Expanded(flex: 3, child: const Text("Email")),
-                      Expanded( child: const Text(":")),
+                      Expanded(child: const Text(":")),
                       Expanded(flex: 6, child: const Text("noel@airasia.com")),
                     ],
                   ),
@@ -100,7 +102,7 @@ class ProfileccView extends GetView<ProfileccController> {
                   Row(
                     children: [
                       Expanded(flex: 3, child: const Text("ID NO")),
-                      Expanded( child: const Text(":")),
+                      Expanded(child: const Text(":")),
                       Expanded(flex: 6, child: const Text("1007074")),
                     ],
                   ),
@@ -110,8 +112,9 @@ class ProfileccView extends GetView<ProfileccController> {
                   Row(
                     children: [
                       Expanded(flex: 3, child: const Text("LOA NO")),
-                      Expanded( child: const Text(":")),
-                      Expanded(flex: 6, child: const Text("2345/KAPEL/VIII/2022")),
+                      Expanded(child: const Text(":")),
+                      Expanded(
+                          flex: 6, child: const Text("2345/KAPEL/VIII/2022")),
                     ],
                   ),
                 ],

@@ -489,18 +489,16 @@ class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
       ),
       bottomNavigationBar: BottomAppBar(
         surfaceTintColor: tsOneColorScheme.secondary,
-        child: Expanded(
-          child: ElevatedButton(
-            onPressed: () {
-              submitFeedback(context);
-            },
-            style: ElevatedButton.styleFrom(
-                backgroundColor: TsOneColor.greenColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(4.0),
-                )),
-            child: const Text('Submit', style: TextStyle(color: Colors.white)),
-          ),
+        child: ElevatedButton(
+          onPressed: () {
+            submitFeedback(context);
+          },
+          style: ElevatedButton.styleFrom(
+              backgroundColor: TsOneColor.greenColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4.0),
+              )),
+          child: const Text('Submit', style: TextStyle(color: Colors.white)),
         ),
       ),
     );

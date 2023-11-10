@@ -766,40 +766,24 @@ class DetailHistoryDeviceView extends GetView {
                                                                           feedbackId),
                                                             ),
                                                           );
-                                                        } else if (feedbackId ==
-                                                                null ||
-                                                            feedbackId == '-') {
+                                                        } else {
                                                           // Tindakan alternatif jika feedbackId tidak ada atau kosong
-                                                          Builder(
-                                                            builder: (context) {
-                                                              // Menampilkan Snackbar "Data Not Found" selama 1 detik
-                                                              Future.delayed(
-                                                                  Duration(
-                                                                      seconds:
-                                                                          1),
-                                                                  () {
-                                                                ScaffoldMessenger.of(
-                                                                        context)
-                                                                    .showSnackBar(
-                                                                  SnackBar(
-                                                                    content: Text(
-                                                                        'Not Found'),
-                                                                    action:
-                                                                        SnackBarAction(
-                                                                      label:
-                                                                          'OK',
-                                                                      onPressed:
-                                                                          () {
-                                                                        ScaffoldMessenger.of(context)
-                                                                            .hideCurrentSnackBar();
-                                                                      },
-                                                                    ),
-                                                                  ),
-                                                                );
-                                                              });
-
-                                                              return Container();
-                                                            },
+                                                          ScaffoldMessenger.of(
+                                                                  context)
+                                                              .showSnackBar(
+                                                            SnackBar(
+                                                              content: Text(
+                                                                  'Feedback Not Found'),
+                                                              action:
+                                                                  SnackBarAction(
+                                                                label: 'OK',
+                                                                onPressed: () {
+                                                                  ScaffoldMessenger.of(
+                                                                          context)
+                                                                      .hideCurrentSnackBar();
+                                                                },
+                                                              ),
+                                                            ),
                                                           );
                                                         }
                                                         print(feedbackId);
