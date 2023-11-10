@@ -537,7 +537,7 @@ class DetailHistoryDeviceView extends GetView {
                                                               Future.delayed(Duration(seconds: 1), () {
                                                                 ScaffoldMessenger.of(context).showSnackBar(
                                                                   SnackBar(
-                                                                    content: Text('Not Found'),
+                                                                    content: Text('Feedback Not Found'),
                                                                     action: SnackBarAction(
                                                                       label: 'OK',
                                                                       onPressed: () {
@@ -623,7 +623,7 @@ class DetailHistoryDeviceView extends GetView {
                                               //             'Open Feedback',
                                               //             style: TextStyle(color: Colors.white),
                                               //           ),
-                                              //         ),
+                                              //         ), 3
                                               //       ),
                                               //     ),
                                               //   ],

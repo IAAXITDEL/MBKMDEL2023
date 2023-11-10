@@ -114,11 +114,11 @@ class _NavOCCView extends State<NavOCCView> {
                 icon: Icons.list_alt_rounded,
                 text: 'Device',
               ),
-            if (_canManageDevice || _pilotRequestDevice)
-              GButton(
-                icon: Icons.history_toggle_off_outlined,
-                text: 'History',
-              ),
+            //if (_canManageDevice || _pilotRequestDevice)
+            GButton(
+              icon: Icons.history_toggle_off_outlined,
+              text: 'History',
+            ),
             if (_canManageDevice)
               const GButton(
                 icon: Icons.analytics_outlined,

@@ -437,7 +437,7 @@ class DetailHistoryFOView extends GetView {
                                                   if (status == 'Done')
                                                     Text(
                                                       "OCC ON DUTY",
-                                                      style: tsOneTextTheme.headlineLarge,
+                                                      style: tsOneTextTheme.headlineMedium,
                                                     ),
                                                   SizedBox(height: 7.0),
                                                   if (status == 'Done')
