@@ -32,7 +32,7 @@ class _PilotFeedBackState extends State<PilotFeedBack> {
       'handover-id': widget.deviceId,
       'remarks': remarks,
       'q1': Q1,
-      'q2' : Q2,
+      'q2': Q2,
       'q3': Q3,
       'q4': Q4,
       'q5': Q5,
@@ -58,7 +58,7 @@ class _PilotFeedBackState extends State<PilotFeedBack> {
       body: Center(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 5),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -142,8 +142,7 @@ class _PilotFeedBackState extends State<PilotFeedBack> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 8,),
-
+                const SizedBox(height: 8),
                 Container(
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey), // Atur warna dan tipe garis sesuai kebutuhan Anda
@@ -270,8 +269,9 @@ class _PilotFeedBackState extends State<PilotFeedBack> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 8,),
-
+                const SizedBox(
+                  height: 8,
+                ),
                 Container(
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey), // Atur warna dan tipe garis sesuai kebutuhan Anda
@@ -294,7 +294,9 @@ class _PilotFeedBackState extends State<PilotFeedBack> {
                         const Divider(
                           color: Colors.grey,
                         ),
-                        const SizedBox(height: 5,),
+                        const SizedBox(
+                          height: 5,
+                        ),
                         Text('Did you utilize ALL EFB software during your duty?', style: tsOneTextTheme.labelMedium),
                         Column(
                           children: [
@@ -371,10 +373,8 @@ class _PilotFeedBackState extends State<PilotFeedBack> {
                 ),
               ],
             ),
-
           ),
         ),
-
       ),
       bottomNavigationBar: BottomAppBar(
         surfaceTintColor: tsOneColorScheme.secondary,
