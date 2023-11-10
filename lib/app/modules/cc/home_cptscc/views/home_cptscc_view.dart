@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:ts_one/app/modules/cc/home_cptscc/controllers/home_cptscc_controller.dart';
+import 'package:ts_one/util/empty_screen.dart';
 import '../../../../../presentation/theme.dart';
+import '../../../../../util/error_screen.dart';
+import '../../../../../util/loading_screen.dart';
 import '../../../../../util/util.dart';
 import 'package:csv/csv.dart';
 import 'package:path_provider/path_provider.dart';
@@ -47,10 +50,16 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
     );
   }
 
-
+  List<String> subjectTrainingOptions = [
+    'ALL',
+    'SEP',
+    'BASIC INDOC',
+    'RGT',
+    ' RVSM',
+    'D'
+  ];
   @override
   Widget build(BuildContext context) {
-
     var fromC = TextEditingController();
     var toC = TextEditingController();
 
@@ -128,7 +137,7 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                       ),
                       Divider(
                         color: Colors.black, // Color of the line
-                        thickness: 3,       // Thickness of the line
+                        thickness: 3, // Thickness of the line
                       ),
                     ],
                   ),
@@ -252,7 +261,6 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-
                           //SUBJECT TRAININGS
                           Expanded(
                             child: Container(
@@ -294,12 +302,14 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                       SizedBox(height: 40),
 
                       //PILOTS VS INSTRUCTORS PIE CHART
+
                       Column(
                         children: [
                           Row(
                             children: [
                               Container(
-                                width: 80, // Atur lebar garis kiri sesuai kebutuhan
+                                width:
+                                    80, // Atur lebar garis kiri sesuai kebutuhan
                                 child: Divider(
                                   color: Colors.red,
                                   thickness: 1,
@@ -319,7 +329,8 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                                 ),
                               ),
                               Container(
-                                width: 80, // Atur lebar garis kanan sesuai kebutuhan
+                                width:
+                                    80, // Atur lebar garis kanan sesuai kebutuhan
                                 child: Divider(
                                   color: Colors.red,
                                   thickness: 1,
@@ -327,9 +338,7 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                               ),
                             ],
                           ),
-
                           SizedBox(height: 10),
-
                           Container(
                             height: 150,
                             child: Stack(
@@ -338,25 +347,31 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                                   PieChartData(
                                     sections: [
                                       PieChartSectionData(
-                                        value: controller.instructorCount.value.toDouble(),
+                                        value: controller.instructorCount.value
+                                            .toDouble(),
                                         color: const Color(0xffF24C3D),
-                                        title: controller.instructorCount.value.toString(),
+                                        title: controller.instructorCount.value
+                                            .toString(),
                                         radius: 45,
                                         titleStyle: TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.bold,
-                                          color: Colors.white, // Ubah warna teks menjadi putih
+                                          color: Colors
+                                              .white, // Ubah warna teks menjadi putih
                                         ),
                                       ),
                                       PieChartSectionData(
-                                        value: controller.pilotCount.value.toDouble(),
+                                        value: controller.pilotCount.value
+                                            .toDouble(),
                                         color: const Color(0xff35A29F),
-                                        title: controller.pilotCount.value.toString(),
+                                        title: controller.pilotCount.value
+                                            .toString(),
                                         radius: 45,
                                         titleStyle: TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.bold,
-                                          color: Colors.white, // Ubah warna teks menjadi putih
+                                          color: Colors
+                                              .white, // Ubah warna teks menjadi putih
                                         ),
                                       ),
                                     ],
@@ -365,30 +380,28 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                                   ),
                                 ),
                                 Positioned(
-                                  top: 90, // Sesuaikan posisi teks
-                                  left: 250,
-                                  right: 20,
-                                  child: Center(
-                                    child: Text('Instructors',
-                                      style: TextStyle(
-                                        fontSize: 12, // Perbesar angka
-                                        fontWeight: FontWeight.bold,
-                                        color: const Color(0xffF24C3D),
-                                      ),
+                                  top: 120,
+                                  left: 0,
+                                  right: -300,
+                                  child: Text(
+                                    'Instructors',
+                                    style: TextStyle(
+                                      fontSize: 12, // Perbesar angka
+                                      fontWeight: FontWeight.bold,
+                                      color: const Color(0xffF24C3D),
                                     ),
                                   ),
                                 ),
                                 Positioned(
-                                  top: 40, // Sesuaikan posisi teks
-                                  left: -190,
-                                  right: 0,
-                                  child: Center(
-                                    child: Text('Pilots',
-                                      style: TextStyle(
-                                        fontSize: 12, // Perbesar angka
-                                        fontWeight: FontWeight.bold,
-                                        color: const Color(0xff35A29F),
-                                      ),
+                                  top: 135,
+                                  left: 0,
+                                  right: -300,
+                                  child: Text(
+                                    'Pilots',
+                                    style: TextStyle(
+                                      fontSize: 12, // Perbesar angka
+                                      fontWeight: FontWeight.bold,
+                                      color: const Color(0xff35A29F),
                                     ),
                                   ),
                                 ),
@@ -408,7 +421,8 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                           Row(
                             children: [
                               Container(
-                                width: 100, // Atur lebar garis kiri sesuai kebutuhan
+                                width:
+                                    100, // Atur lebar garis kiri sesuai kebutuhan
                                 child: Divider(
                                   color: Colors.red,
                                   thickness: 1,
@@ -428,7 +442,8 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                                 ),
                               ),
                               Container(
-                                width: 100, // Atur lebar garis kanan sesuai kebutuhan
+                                width:
+                                    100, // Atur lebar garis kanan sesuai kebutuhan
                                 child: Divider(
                                   color: Colors.red,
                                   thickness: 1,
@@ -443,362 +458,566 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               IconButton(
-                                  icon: Icon(Icons.filter_list),
-                                  onPressed: () {
-                                    showModalBottomSheet(
-                                        isScrollControlled: true,
-                                        context: context,
-                                        backgroundColor: Colors.white,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadiusDirectional.only(
-                                            topEnd: Radius.circular(25),
-                                            topStart: Radius.circular(25),
-                                          ),
-                                        ),
-                                        builder: (context) => SingleChildScrollView(
-                                          padding: EdgeInsetsDirectional.only(
-                                            start: 20,
-                                            end: 20,
-                                            bottom: 30,
-                                            top: 8,
-                                          ),
-                                          child: Wrap(
-                                            children: [
-                                              Padding(
-                                                padding: EdgeInsets.only(
-                                                    bottom: MediaQuery.of(context)
-                                                        .viewInsets
-                                                        .bottom),
-                                                child: Column(
-                                                  mainAxisSize: MainAxisSize.min,
-                                                  children: <Widget>[
+                                icon: Icon(Icons.filter_list),
+                                onPressed: () {
+                                  showModalBottomSheet(
+                                    isScrollControlled: true,
+                                    context: context,
+                                    backgroundColor: Colors.white,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadiusDirectional.only(
+                                        topEnd: Radius.circular(25),
+                                        topStart: Radius.circular(25),
+                                      ),
+                                    ),
+                                    builder: (context) => SingleChildScrollView(
+                                      padding: EdgeInsetsDirectional.only(
+                                        start: 20,
+                                        end: 20,
+                                        bottom: 30,
+                                        top: 8,
+                                      ),
+                                      child: Wrap(
+                                        children: [
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                bottom: MediaQuery.of(context)
+                                                    .viewInsets
+                                                    .bottom),
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: <Widget>[
+                                                Text(
+                                                  'Filter',
+                                                  style: TextStyle(
+                                                      fontSize: 20.0,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                SizedBox(height: 20),
+                                                Row(
+                                                  children: [
                                                     Text(
-                                                      'Filter',
-                                                      style: TextStyle(
-                                                          fontSize: 20.0,
-                                                          fontWeight: FontWeight.bold),
+                                                      'Please pick date range',
+                                                      style: tsOneTextTheme
+                                                          .labelLarge,
                                                     ),
-                                                    SizedBox(height: 20),
-                                                    Row(
+                                                  ],
+                                                ),
+                                                SizedBox(height: 10),
+                                                Form(
+                                                  key: _formKey,
+                                                  child: Container(
+                                                    child: Row(
                                                       children: [
-                                                        Text(
-                                                          'Date',
-                                                          style: tsOneTextTheme.labelLarge,
+                                                        Expanded(
+                                                          flex: 3,
+                                                          child: TextFormField(
+                                                            controller: fromC,
+                                                            obscureText: false,
+                                                            readOnly: true,
+                                                            // validator: (value) {
+                                                            //   if (value ==
+                                                            //           null ||
+                                                            //       value
+                                                            //           .isEmpty) {
+                                                            //     // Validation Logic
+                                                            //     return 'Please enter the From Date';
+                                                            //   }
+                                                            //   return null;
+                                                            // },
+                                                            decoration:
+                                                                InputDecoration(
+                                                                    contentPadding: const EdgeInsets
+                                                                            .symmetric(
+                                                                        vertical:
+                                                                            0,
+                                                                        horizontal:
+                                                                            10),
+                                                                    prefixIcon:
+                                                                        const Icon(
+                                                                      Icons
+                                                                          .calendar_month,
+                                                                      color: TsOneColor
+                                                                          .primary,
+                                                                    ),
+                                                                    enabledBorder:
+                                                                        const OutlineInputBorder(
+                                                                      borderSide:
+                                                                          BorderSide(
+                                                                        color: TsOneColor
+                                                                            .primary,
+                                                                      ),
+                                                                    ),
+                                                                    border: const OutlineInputBorder(
+                                                                        borderSide: BorderSide(
+                                                                            color: TsOneColor
+                                                                                .secondaryContainer)),
+                                                                    focusedBorder:
+                                                                        const OutlineInputBorder(
+                                                                      borderSide:
+                                                                          BorderSide(
+                                                                        color: Colors
+                                                                            .green,
+                                                                      ),
+                                                                    ),
+                                                                    labelText:
+                                                                        "From Date"),
+                                                            onTap: () async {
+                                                              DateTime? pickedDate = await showDatePicker(
+                                                                  context:
+                                                                      context,
+                                                                  initialDate:
+                                                                      DateTime
+                                                                          .now(),
+                                                                  firstDate:
+                                                                      DateTime(
+                                                                          1945),
+                                                                  lastDate:
+                                                                      DateTime(
+                                                                          2300));
+                                                              if (pickedDate !=
+                                                                  null) {
+                                                                String
+                                                                    formattedDate =
+                                                                    DateFormat(
+                                                                            'dd-MM-yyyy')
+                                                                        .format(
+                                                                            pickedDate);
+                                                                fromC.text =
+                                                                    formattedDate;
+                                                              }
+                                                            },
+                                                          ),
+                                                        ),
+                                                        Expanded(
+                                                            flex: 1,
+                                                            child: Icon(Icons
+                                                                .compare_arrows_rounded)),
+                                                        Expanded(
+                                                          flex: 3,
+                                                          child: TextFormField(
+                                                            controller: toC,
+                                                            obscureText: false,
+                                                            readOnly: true,
+                                                            // validator: (value) {
+                                                            //   if (value ==
+                                                            //           null ||
+                                                            //       value
+                                                            //           .isEmpty) {
+                                                            //     // Validation Logic
+                                                            //     return 'Please enter the To Date';
+                                                            //   }
+                                                            //   return null;
+                                                            // },
+                                                            decoration:
+                                                                InputDecoration(
+                                                                    contentPadding: const EdgeInsets
+                                                                            .symmetric(
+                                                                        vertical:
+                                                                            0,
+                                                                        horizontal:
+                                                                            10),
+                                                                    prefixIcon:
+                                                                        const Icon(
+                                                                      Icons
+                                                                          .calendar_month,
+                                                                      color: TsOneColor
+                                                                          .primary,
+                                                                    ),
+                                                                    enabledBorder:
+                                                                        const OutlineInputBorder(
+                                                                      borderSide:
+                                                                          BorderSide(
+                                                                        color: TsOneColor
+                                                                            .primary,
+                                                                      ),
+                                                                    ),
+                                                                    border: const OutlineInputBorder(
+                                                                        borderSide: BorderSide(
+                                                                            color: TsOneColor
+                                                                                .secondaryContainer)),
+                                                                    focusedBorder:
+                                                                        const OutlineInputBorder(
+                                                                      borderSide:
+                                                                          BorderSide(
+                                                                        color: Colors
+                                                                            .green,
+                                                                      ),
+                                                                    ),
+                                                                    labelText:
+                                                                        "To Date"),
+                                                            onTap: () async {
+                                                              DateTime? pickedDate = await showDatePicker(
+                                                                  context:
+                                                                      context,
+                                                                  initialDate:
+                                                                      DateTime
+                                                                          .now(),
+                                                                  firstDate:
+                                                                      DateTime(
+                                                                          1945),
+                                                                  lastDate:
+                                                                      DateTime(
+                                                                          2300));
+                                                              if (pickedDate !=
+                                                                  null) {
+                                                                String
+                                                                    formattedDate =
+                                                                    DateFormat(
+                                                                            'dd-MM-yyyy')
+                                                                        .format(
+                                                                            pickedDate);
+                                                                toC.text =
+                                                                    formattedDate;
+                                                              }
+                                                            },
+                                                          ),
                                                         ),
                                                       ],
                                                     ),
-                                                    SizedBox(height: 10),
-                                                    Form(
-                                                      key: _formKey,
-                                                      child: Container(
-                                                        child: Row(
-                                                          children: [
-                                                            Expanded(
-                                                              flex: 3,
-                                                              child: TextFormField(
-                                                                controller: fromC,
-                                                                obscureText: false,
-                                                                readOnly: true,
-                                                                validator: (value) {
-                                                                  if (value == null ||
-                                                                      value.isEmpty) {
-                                                                    // Validation Logic
-                                                                    return 'Please enter the From Date';
-                                                                  }
-                                                                  return null;
-                                                                },
-                                                                decoration: InputDecoration(
-                                                                    contentPadding:
-                                                                    const EdgeInsets
-                                                                        .symmetric(
-                                                                        vertical: 0,
-                                                                        horizontal: 10),
-                                                                    prefixIcon: const Icon(
-                                                                      Icons.calendar_month,
-                                                                      color:
-                                                                      TsOneColor.primary,
-                                                                    ),
-                                                                    enabledBorder:
-                                                                    const OutlineInputBorder(
-                                                                      borderSide: BorderSide(
-                                                                        color: TsOneColor
-                                                                            .primary,
-                                                                      ),
-                                                                    ),
-                                                                    border: const OutlineInputBorder(
-                                                                        borderSide: BorderSide(
-                                                                            color: TsOneColor
-                                                                                .secondaryContainer)),
-                                                                    focusedBorder:
-                                                                    const OutlineInputBorder(
-                                                                      borderSide: BorderSide(
-                                                                        color: Colors.green,
-                                                                      ),
-                                                                    ),
-                                                                    labelText: "From Date"),
-                                                                onTap: () async {
-                                                                  DateTime? pickedDate =
-                                                                  await showDatePicker(
-                                                                      context: context,
-                                                                      initialDate:
-                                                                      DateTime.now(),
-                                                                      firstDate:
-                                                                      DateTime(1945),
-                                                                      lastDate:
-                                                                      DateTime(2300));
-                                                                  if (pickedDate != null) {
-                                                                    String formattedDate =
-                                                                    DateFormat(
-                                                                        'dd-MM-yyyy')
-                                                                        .format(
-                                                                        pickedDate);
-                                                                    fromC.text =
-                                                                        formattedDate;
-                                                                  }
-                                                                },
-                                                              ),
-                                                            ),
-                                                            Expanded(
-                                                                flex: 1,
-                                                                child: Icon(Icons
-                                                                    .compare_arrows_rounded)),
-                                                            Expanded(
-                                                              flex: 3,
-                                                              child: TextFormField(
-                                                                controller: toC,
-                                                                obscureText: false,
-                                                                readOnly: true,
-                                                                validator: (value) {
-                                                                  if (value == null ||
-                                                                      value.isEmpty) {
-                                                                    // Validation Logic
-                                                                    return 'Please enter the To Date';
-                                                                  }
-                                                                  return null;
-                                                                },
-                                                                decoration: InputDecoration(
-                                                                    contentPadding:
-                                                                    const EdgeInsets
-                                                                        .symmetric(
-                                                                        vertical: 0,
-                                                                        horizontal: 10),
-                                                                    prefixIcon: const Icon(
-                                                                      Icons.calendar_month,
-                                                                      color:
-                                                                      TsOneColor.primary,
-                                                                    ),
-                                                                    enabledBorder:
-                                                                    const OutlineInputBorder(
-                                                                      borderSide: BorderSide(
-                                                                        color: TsOneColor
-                                                                            .primary,
-                                                                      ),
-                                                                    ),
-                                                                    border: const OutlineInputBorder(
-                                                                        borderSide: BorderSide(
-                                                                            color: TsOneColor
-                                                                                .secondaryContainer)),
-                                                                    focusedBorder:
-                                                                    const OutlineInputBorder(
-                                                                      borderSide: BorderSide(
-                                                                        color: Colors.green,
-                                                                      ),
-                                                                    ),
-                                                                    labelText: "To Date"),
-                                                                onTap: () async {
-                                                                  DateTime? pickedDate =
-                                                                  await showDatePicker(
-                                                                      context: context,
-                                                                      initialDate:
-                                                                      DateTime.now(),
-                                                                      firstDate:
-                                                                      DateTime(1945),
-                                                                      lastDate:
-                                                                      DateTime(2300));
-                                                                  if (pickedDate != null) {
-                                                                    String formattedDate =
-                                                                    DateFormat(
-                                                                        'dd-MM-yyyy')
-                                                                        .format(
-                                                                        pickedDate);
-                                                                    toC.text = formattedDate;
-                                                                  }
-                                                                },
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    SizedBox(height: 20),
-                                                    Align(
-                                                      alignment: Alignment.bottomCenter,
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                        MainAxisAlignment.spaceBetween,
-                                                        children: [
-                                                          InkWell(
-                                                            onTap: () {
-                                                              fromC.clear();
-                                                              toC.clear();
-                                                              controller.resetDate();
-                                                              Navigator.of(context).pop();
-                                                            },
-                                                            child: Container(
-                                                              padding: EdgeInsets.symmetric(
-                                                                  horizontal: 40,
-                                                                  vertical: 10),
-                                                              decoration: BoxDecoration(
-                                                                borderRadius:
-                                                                BorderRadius.circular(
-                                                                    10.0),
-                                                                color: Colors.white,
-                                                                boxShadow: [
-                                                                  BoxShadow(
-                                                                    color: Colors.grey
-                                                                        .withOpacity(0.3),
-                                                                    spreadRadius: 2,
-                                                                    blurRadius: 3,
-                                                                    offset:
-                                                                    const Offset(0, 2),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                              child: Text(
-                                                                "Reset",
-                                                                style: tsOneTextTheme
-                                                                    .headlineMedium,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          InkWell(
-                                                            onTap: () {
-                                                              DateTime from =
-                                                              DateFormat('dd-MM-yyyy')
-                                                                  .parse(fromC.text);
-                                                              DateTime to =
-                                                              DateFormat('dd-MM-yyyy')
-                                                                  .parse(toC.text);
+                                                  ),
+                                                ),
 
-                                                              if (_formKey.currentState !=
-                                                                  null &&
-                                                                  _formKey.currentState!
-                                                                      .validate() !=
-                                                                      0) {
-                                                                if (from.isBefore(to)) {
-                                                                  controller.from.value =
-                                                                      from;
-                                                                  controller.to.value = to;
-                                                                  Navigator.of(context).pop();
-                                                                } else {}
-                                                              }
-                                                            },
-                                                            child: Container(
-                                                              padding: EdgeInsets.symmetric(
-                                                                  horizontal: 40,
-                                                                  vertical: 10),
-                                                              decoration: BoxDecoration(
-                                                                borderRadius:
-                                                                BorderRadius.circular(
-                                                                    10.0),
-                                                                color: TsOneColor.primary,
-                                                                boxShadow: [
-                                                                  BoxShadow(
-                                                                    color: Colors.grey
-                                                                        .withOpacity(0.3),
-                                                                    spreadRadius: 2,
-                                                                    blurRadius: 3,
-                                                                    offset:
-                                                                    const Offset(0, 2),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                              child: Text(
-                                                                "Apply",
-                                                                style: tsOneTextTheme
-                                                                    .headlineMedium,
-                                                              ),
-                                                            ),
-                                                          )
-                                                        ],
-                                                      ),
-                                                    )
+                                                // Adding the filter dropdown inside the pop-up
+                                                SizedBox(height: 40),
+
+                                                //DROPDOWN
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      'Please choose the training subject',
+                                                      style: tsOneTextTheme
+                                                          .labelLarge,
+                                                    ),
                                                   ],
                                                 ),
-                                              )
-                                            ],
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(3.0),
+                                                  child: InputDecorator(
+                                                    decoration: InputDecoration(
+                                                      // labelText: 'TRAINING SUBJECT',
+                                                      border: const OutlineInputBorder(
+                                                          borderSide: BorderSide(
+                                                              color: TsOneColor
+                                                                  .primary)),
+                                                      contentPadding:
+                                                          const EdgeInsets
+                                                                  .symmetric(
+                                                              horizontal: 10,
+                                                              vertical: 8),
+                                                      labelStyle:
+                                                          const TextStyle(
+                                                              fontSize: 12,
+                                                              color:
+                                                                  Colors.black),
+                                                    ),
+                                                    child:
+                                                        DropdownButton<String>(
+                                                      value: selectedSubject,
+                                                      icon: const Icon(
+                                                          Icons.arrow_drop_down,
+                                                          size: 24),
+                                                      iconSize: 24,
+                                                      items:
+                                                          subjectTrainingOptions
+                                                              .map(
+                                                                  (String hub) {
+                                                        return DropdownMenuItem<
+                                                            String>(
+                                                          value: hub,
+                                                          child: Text(hub),
+                                                        );
+                                                      }).toList(),
+                                                      onChanged:
+                                                          (String? newValue) {
+                                                        // setState(() {
+                                                        //   selectedSubject = newValue ?? 'ALL';
+                                                        // });
+                                                        controller.training
+                                                            .value = newValue!;
+                                                      },
+                                                    ),
+                                                  ),
+                                                ),
+
+                                                SizedBox(height: 20),
+
+                                                Align(
+                                                  alignment:
+                                                      Alignment.bottomCenter,
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      InkWell(
+                                                        onTap: () {
+                                                          fromC.clear();
+                                                          toC.clear();
+                                                          controller
+                                                              .resetDate();
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                        },
+                                                        child: Container(
+                                                          padding: EdgeInsets
+                                                              .symmetric(
+                                                                  horizontal:
+                                                                      40,
+                                                                  vertical: 10),
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10.0),
+                                                            color: Colors.white,
+                                                            boxShadow: [
+                                                              BoxShadow(
+                                                                color: Colors
+                                                                    .grey
+                                                                    .withOpacity(
+                                                                        0.3),
+                                                                spreadRadius: 2,
+                                                                blurRadius: 3,
+                                                                offset:
+                                                                    const Offset(
+                                                                        0, 2),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          child: Text(
+                                                            "Reset",
+                                                            style: tsOneTextTheme
+                                                                .headlineMedium,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      InkWell(
+                                                        onTap: () {
+                                                          if (_formKey.currentState !=
+                                                                  null &&
+                                                              _formKey.currentState!
+                                                                      .validate() !=
+                                                                  0) {
+                                                            if (fromC.text
+                                                                    .isNotEmpty &&
+                                                                toC.text
+                                                                    .isNotEmpty) {
+                                                              print(fromC.text);
+                                                              DateTime from =
+                                                                  DateFormat(
+                                                                          'dd-MM-yyyy')
+                                                                      .parse(fromC
+                                                                          .text);
+                                                              DateTime to =
+                                                                  DateFormat(
+                                                                          'dd-MM-yyyy')
+                                                                      .parse(toC
+                                                                          .text);
+                                                              if (from.isBefore(
+                                                                  to)) {
+                                                                controller.from
+                                                                        .value =
+                                                                    from;
+                                                                controller.to
+                                                                    .value = to;
+                                                              } else {}
+                                                            }
+
+                                                            print(
+                                                                "training Type ${controller.training.value}");
+                                                            print(
+                                                                "from Type ${controller.from.value}");
+                                                            print(
+                                                                "to Type ${controller.to.value}");
+                                                            controller.getCombinedAttendance(
+                                                                trainingType:
+                                                                    controller
+                                                                        .training
+                                                                        .value,
+                                                                from: controller
+                                                                    .from.value,
+                                                                to: controller
+                                                                    .to.value);
+                                                          }
+                                                        },
+                                                        child: Container(
+                                                          padding: EdgeInsets
+                                                              .symmetric(
+                                                                  horizontal:
+                                                                      40,
+                                                                  vertical: 10),
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10.0),
+                                                            color: TsOneColor
+                                                                .primary,
+                                                            boxShadow: [
+                                                              BoxShadow(
+                                                                color: Colors
+                                                                    .grey
+                                                                    .withOpacity(
+                                                                        0.3),
+                                                                spreadRadius: 2,
+                                                                blurRadius: 3,
+                                                                offset:
+                                                                    const Offset(
+                                                                        0, 2),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          child: Text(
+                                                            "Apply",
+                                                            style: tsOneTextTheme
+                                                                .headlineMedium,
+                                                          ),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                )
+                                              ],
+                                            ),
                                           ),
-                                        ));
-                                  }),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
                             ],
                           ),
 
-                          Container(
-                            height: 150,
-                            child: Stack(
-                              children: [
-                                PieChart(
-                                  PieChartData(
-                                    sections: [
-                                      PieChartSectionData(
-                                        value: (controller.absentCount.value / (controller.absentCount.value + controller.presentCount.value)),
-                                        color: const Color(0xFF116D6E),
-                                        title: '${((controller.absentCount.value / (controller.absentCount.value + controller.presentCount.value))*100).toStringAsFixed(1)}%',
-                                        radius: 45,
-                                        titleStyle: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      PieChartSectionData(
-                                        value: (controller.presentCount.value / (controller.absentCount.value + controller.presentCount.value)),
-                                        color: const Color(0xffFFB000),
-                                        title: '${((controller.presentCount.value / (controller.absentCount.value + controller.presentCount.value))*100).toStringAsFixed(1)}%',
-                                        radius: 45,
-                                        titleStyle: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ],
-                                    sectionsSpace: 3,
-                                    centerSpaceRadius: 30,
-                                  ),
-                                ),
+                          Obx(
+                            () {
+                              print(
+                                  "test ${(controller.absentCount.value * 100 / (controller.absentCount.value + controller.presentCount.value))}");
+                              print("satu ${controller.absentCount.value}");
+                              print("dua ${controller.presentCount.value}");
+                              return FutureBuilder<List<Map<String, dynamic>>>(
+                                future: controller.getCombinedAttendance(
+                                    trainingType: controller.training.value,
+                                    from: controller.from.value,
+                                    to: controller.to.value),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<List<Map<String, dynamic>>>
+                                        snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return LoadingScreen();
+                                  }
 
-                                Positioned(
-                                  top: 120, // Sesuaikan posisi teks
-                                  left: 220,
-                                  right: 45,
-                                  child: Center(
-                                    child: Text('Absent',
-                                      style: TextStyle(
-                                        fontSize: 12, // Perbesar angka
-                                        fontWeight: FontWeight.bold,
-                                        color: const Color(0xff116D6E),
-                                      ),
+                                  if (snapshot.hasError) {
+                                    return ErrorScreen();
+                                  }
+
+                                  if (snapshot.data == null ||
+                                      snapshot.data!.isEmpty) {
+                                    return EmptyScreenAttendanceData();
+                                  }
+
+                                  return Container(
+                                    height: 150,
+                                    child: Stack(
+                                      children: [
+                                        PieChart(
+                                          PieChartData(
+                                            sections: [
+                                              PieChartSectionData(
+                                                value: (controller
+                                                        .absentCount.value /
+                                                    (controller
+                                                            .absentCount.value +
+                                                        controller.presentCount
+                                                            .value)),
+                                                color: const Color(0xFF116D6E),
+                                                title:
+                                                    '${((controller.absentCount.value * 100 / (controller.absentCount.value + controller.presentCount.value))).toStringAsFixed(1)}%',
+                                                radius: 45,
+                                                titleStyle: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                              PieChartSectionData(
+                                                value: (controller
+                                                        .presentCount.value /
+                                                    (controller
+                                                            .absentCount.value +
+                                                        controller.presentCount
+                                                            .value)),
+                                                color: const Color(0xffFFB000),
+                                                title:
+                                                    '${((controller.presentCount.value * 100 / (controller.absentCount.value + controller.presentCount.value))).toStringAsFixed(1)}%',
+                                                radius: 45,
+                                                titleStyle: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ],
+                                            sectionsSpace: 3,
+                                            centerSpaceRadius: 30,
+                                          ),
+                                        ),
+
+                                        // Positioned(
+                                        //   top: 95,
+                                        //   left: 0,
+                                        //   right: -300,
+                                        //   child: Text(
+                                        //     'Ket',
+                                        //     style: TextStyle(
+                                        //       fontSize: 12,
+                                        //       fontWeight: FontWeight.bold,
+                                        //       color: Colors.black,
+                                        //     ),
+                                        //   ),
+                                        // ),
+                                        Positioned(
+                                          top: 135,
+                                          left: 0,
+                                          right: -300,
+                                          child: Text(
+                                            'Absent',
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.bold,
+                                              color: const Color(0xff116D6E),
+                                            ),
+                                          ),
+                                        ),
+                                        Positioned(
+                                          top: 120,
+                                          left: 0,
+                                          right: -300,
+                                          child: Text(
+                                            'Present',
+                                            style: TextStyle(
+                                              fontSize: 12, // Perbesar angka
+                                              fontWeight: FontWeight.bold,
+                                              color: const Color(0xffff9900),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  ),
-                                ),
-                                Positioned(
-                                  top: 10, // Sesuaikan posisi teks
-                                  left: -190,
-                                  right: -20,
-                                  child: Center(
-                                    child: Text('Present',
-                                      style: TextStyle(
-                                        fontSize: 12, // Perbesar angka
-                                        fontWeight: FontWeight.bold,
-                                        color: const Color(0xffff9900),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                                  );
+                                },
+                              );
+                            },
+                          )
                         ],
                       ),
                     ],
