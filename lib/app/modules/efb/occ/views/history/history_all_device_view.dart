@@ -536,7 +536,7 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                         isGreaterThanOrEqualTo: _startDate,
                         isLessThanOrEqualTo: _endDate) // Add this line
                     .where('field_hub', isEqualTo: userHub)
-                    .limit(15) // Menampilkan hanya 15 dokumen
+                    .limit(30) // Menampilkan hanya 30 dokumen
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {

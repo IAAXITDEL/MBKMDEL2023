@@ -937,8 +937,7 @@ class DetailHistoryDeviceView extends GetView {
                                                             flySmart:
                                                             deviceData[
                                                             'flysmart'],
-                                                            lido: deviceData[
-                                                            ' lidoversion'],
+                                                            lido: deviceData['lidoversion'],
                                                             docunet: deviceData[
                                                             'docuversion'],
                                                             deviceCondition:

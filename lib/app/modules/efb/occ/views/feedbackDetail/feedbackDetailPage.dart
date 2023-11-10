@@ -733,84 +733,86 @@ class FeedbackDetailPage extends StatelessWidget {
                           ),
                           Row(
                             children: [
-                              Text(additionalComment,style: tsOneTextTheme.bodySmall?.copyWith(color: Colors.red)),
+                              Text(additionalComment ?? '-',style: tsOneTextTheme.bodySmall?.copyWith(color: Colors.red)),
                             ],
                           ),
 
                           SizedBox(height: 30),
                           Row(
                             children: [
-                              ElevatedButton(
-                                onPressed: () {
-                                  showDialog(
-                                    context: context,
-                                    barrierDismissible: false,
-                                    builder: (context) {
-                                      return AlertDialog(
-                                        content: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            CircularProgressIndicator(),
-                                            SizedBox(height: 20),
-                                            Text('Please Wait...'),
-                                          ],
-                                        ),
-                                      );
-                                    },
-                                  );
-                                  generateFeedbackForm(
-                                    //handoverID: handoverTouserData != null ? handoverTouserData['ID NO'].toString() : 'Not Found',
-                                    date: feedbackData['timestamp'] ?? '-',
-                                    q1: feedbackData['q1'] ?? '-',
-                                    q2: feedbackData['q2'] ?? '-',
-                                    q3: feedbackData['q3'] ?? '-',
-                                    q4: feedbackData['q4'] ?? '-',
-                                    q5: feedbackData['q5'] ?? '-',
-                                    q6: feedbackData['q6'] ?? '-',
-                                    q7: feedbackData['q7'] ?? '-',
-                                    q8: feedbackData['q8'] ?? '-',
-                                    q9: feedbackData['q9'] ?? '-',
-                                    q10: feedbackData['q10'] ?? '-',
-                                    q11: feedbackData['q11'] ?? '-',
-                                    q12: feedbackData['q12'] ?? '-',
-                                    q13: feedbackData['q13'] ?? '-',
-                                    q14: feedbackData['q14'] ?? '-',
-                                    q15: feedbackData['q15'] ?? '-',
-                                    sector1: feedbackData['1-sector'] ?? '-',
-                                    sector2: feedbackData['2-sector'] ?? '-',
-                                    sector3: feedbackData['3-sector'] ?? '-',
-                                    sector4: feedbackData['4-sector'] ?? '-',
-                                    sector5: feedbackData['5-sector'] ?? '-',
-                                    sector6: feedbackData['6-sector'] ?? '-',
-                                    ifhigh: feedbackData['ifHigh'] ?? '-',
-                                    additionalComment: feedbackData['additionalComment'] ?? '-',
-                                    devicename1: pilotDeviceData['device_name'] ?? '-',
-                                    devicename2: pilotDeviceData['device_name2'] ?? '-',
-                                    devicename3: pilotDeviceData['device_name3'] ?? '-',
-                                    userName: userData['NAME'] as String? ?? '-',
-                                    userRank: userData['RANK'] as String? ?? '-',
-                                  ).then((_) {
-                                    Navigator.pop(context);
-                                  }).catchError((error) {
-                                    print('Error generating PDF: $error');
-                                    Navigator.pop(context);
-                                  });
-                                  // generateLogPdfDevice23();
-                                  print("Test" + q1);
-                                  print(sector1);
-                                  print(userName);
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: TsOneColor.greenColor,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(4.0),
+                              Expanded(
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      barrierDismissible: false,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          content: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              CircularProgressIndicator(),
+                                              SizedBox(height: 20),
+                                              Text('Please Wait...'),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    );
+                                    generateFeedbackForm(
+                                      //handoverID: handoverTouserData != null ? handoverTouserData['ID NO'].toString() : 'Not Found',
+                                      date: feedbackData['timestamp'] ?? '-',
+                                      q1: feedbackData['q1'] ?? '-',
+                                      q2: feedbackData['q2'] ?? '-',
+                                      q3: feedbackData['q3'] ?? '-',
+                                      q4: feedbackData['q4'] ?? '-',
+                                      q5: feedbackData['q5'] ?? '-',
+                                      q6: feedbackData['q6'] ?? '-',
+                                      q7: feedbackData['q7'] ?? '-',
+                                      q8: feedbackData['q8'] ?? '-',
+                                      q9: feedbackData['q9'] ?? '-',
+                                      q10: feedbackData['q10'] ?? '-',
+                                      q11: feedbackData['q11'] ?? '-',
+                                      q12: feedbackData['q12'] ?? '-',
+                                      q13: feedbackData['q13'] ?? '-',
+                                      q14: feedbackData['q14'] ?? '-',
+                                      q15: feedbackData['q15'] ?? '-',
+                                      sector1: feedbackData['1-sector'] ?? '-',
+                                      sector2: feedbackData['2-sector'] ?? '-',
+                                      sector3: feedbackData['3-sector'] ?? '-',
+                                      sector4: feedbackData['4-sector'] ?? '-',
+                                      sector5: feedbackData['5-sector'] ?? '-',
+                                      sector6: feedbackData['6-sector'] ?? '-',
+                                      ifhigh: feedbackData['ifHigh'] ?? '-',
+                                      additionalComment: feedbackData['additionalComment'] ?? '-',
+                                      devicename1: pilotDeviceData['device_name'] ?? '-',
+                                      devicename2: pilotDeviceData['device_name2'] ?? '-',
+                                      devicename3: pilotDeviceData['device_name3'] ?? '-',
+                                      userName: userData['NAME'] as String? ?? '-',
+                                      userRank: userData['RANK'] as String? ?? '-',
+                                    ).then((_) {
+                                      Navigator.pop(context);
+                                    }).catchError((error) {
+                                      print('Error generating PDF: $error');
+                                      Navigator.pop(context);
+                                    });
+                                    // generateLogPdfDevice23();
+                                    print("Test" + q1);
+                                    print(sector1);
+                                    print(userName);
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: TsOneColor.greenColor,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(4.0),
+                                    ),
                                   ),
-                                ),
-                                child: Padding(
-                                  padding: EdgeInsets.all(15),
-                                  child: Text(
-                                    'Open Attachment Feedback',
-                                    style: TextStyle(color: Colors.white),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(15),
+                                    child: Text(
+                                      'Open Attachment Feedback',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
                                   ),
                                 ),
                               ),

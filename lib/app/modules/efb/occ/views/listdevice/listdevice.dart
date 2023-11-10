@@ -27,7 +27,7 @@ class ListDevice extends StatefulWidget {
 
 class _ListDeviceState extends State<ListDevice> {
   final Stream<QuerySnapshot> collectionReference =
-      DeviceController.readDevice();
+  DeviceController.readDevice();
   String searchQuery = "";
   TextEditingController searchController = TextEditingController();
 
@@ -362,6 +362,7 @@ class _ListDeviceState extends State<ListDevice> {
                           .toString()
                           .toLowerCase()
                           .contains(searchQuery.toLowerCase()))
+                      .take(20) // Limit the number of items to 20
                       .toList();
 
                   if (filteredData.isEmpty) {
