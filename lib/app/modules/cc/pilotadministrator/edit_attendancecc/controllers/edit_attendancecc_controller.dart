@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 
 class EditAttendanceccController extends GetxController {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -33,7 +32,7 @@ class EditAttendanceccController extends GetxController {
 
 
   //Edit Attendance Form
-  Future<void> editAttendanceForm(String subject, String date, String vanue, int instructor) async {
+  Future<void> editAttendanceForm(String subject, DateTime date, String vanue, int instructor) async {
     CollectionReference attendance = firestore.collection("attendance");
     try {
       if (instructor != 0) {

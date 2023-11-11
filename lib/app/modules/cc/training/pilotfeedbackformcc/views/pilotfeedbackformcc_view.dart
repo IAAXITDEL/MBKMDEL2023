@@ -48,6 +48,7 @@ class PilotfeedbackformccView extends GetView<PilotfeedbackformccController> {
           title: RedTitleText(
             text: "FEEDBACK FORM",
           ),
+          centerTitle: true,
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -68,7 +69,7 @@ class PilotfeedbackformccView extends GetView<PilotfeedbackformccController> {
 
                       var listAttendance = snapshot.data!;
 
-                      if (listAttendance != null && listAttendance.isNotEmpty) {
+                      if (listAttendance.isNotEmpty) {
 
                         Timestamp? date = listAttendance[0]["date"];
                         DateTime? dates = date?.toDate();

@@ -26,7 +26,6 @@ class DetailhistoryccCptsView extends GetView<DetailhistoryccCptsController> {
             color: Colors.red,
           ),
         ),
-        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -65,7 +64,6 @@ class DetailhistoryccCptsView extends GetView<DetailhistoryccCptsController> {
                       String dateC = DateFormat('dd MMMM yyyy').format(dates!);
                       return Column(
                         children: [
-                          SizedBox(height: 20),
                           //SUBJECT
                           Padding(
                             padding: EdgeInsets.symmetric(vertical: 5),
@@ -282,7 +280,7 @@ class DetailhistoryccCptsView extends GetView<DetailhistoryccCptsController> {
                 ),
 
                 Container(
-                  child: FutureBuilder<List<Map<String, dynamic>>>(
+                  child: FutureBuilder<List<Map<String, dynamic>?>>(
                     future: controller.getFeedbackDataList(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
@@ -293,7 +291,14 @@ class DetailhistoryccCptsView extends GetView<DetailhistoryccCptsController> {
                         return ErrorScreen();
                       }
 
+                      if (snapshot.data == null) {
+                        return EmptyScreen();
+                      }
+
                       var listFeedback = snapshot.data!;
+
+                      print("chek");
+                      print(listFeedback);
                       if (listFeedback.isEmpty) {
                         return EmptyScreen();
                       }
@@ -307,7 +312,9 @@ class DetailhistoryccCptsView extends GetView<DetailhistoryccCptsController> {
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
-                          return Column(
+                          return listFeedback[index]
+                          !['rating'] !=
+                              null ?  Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(
@@ -322,14 +329,14 @@ class DetailhistoryccCptsView extends GetView<DetailhistoryccCptsController> {
                                         borderRadius:
                                             BorderRadius.circular(100),
                                         child: listFeedback[index]
-                                                    ["PHOTOURL"] ==
+                                                    !["photoURL"] ==
                                                 null
                                             ? Image.asset(
                                                 "assets/images/placeholder_person.png",
                                                 fit: BoxFit.cover,
                                               )
                                             : Image.network(
-                                                "${listFeedback[index]["PHOTOURL"]}",
+                                                "${listFeedback[index]!["photoURL"]}",
                                                 fit: BoxFit.cover,
                                               ),
                                       ),
@@ -342,7 +349,7 @@ class DetailhistoryccCptsView extends GetView<DetailhistoryccCptsController> {
                                       Text(
                                         // listFeedback[index]["traineeName"] ??
                                         //     "N/A",
-                                        listFeedback[index]["traineeId"]
+                                        listFeedback[index]!["name"]
                                             .toString(),
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold),
@@ -350,11 +357,11 @@ class DetailhistoryccCptsView extends GetView<DetailhistoryccCptsController> {
                                       ),
                                       RatingBar.builder(
                                         initialRating: listFeedback[index]
-                                                    ['rating'] !=
+                                                    !['rating'] !=
                                                 null
                                             ? double.tryParse(
                                                     listFeedback[index]
-                                                            ['rating']
+                                                            !['rating']
                                                         .toString()) ??
                                                 0.0
                                             : 0.0,
@@ -369,14 +376,15 @@ class DetailhistoryccCptsView extends GetView<DetailhistoryccCptsController> {
                                           Icons.star,
                                           color: Colors.amber,
                                         ),
+                                        ignoreGestures: true,
                                         onRatingUpdate: (rating) {
                                           print(rating);
                                         },
                                       ),
                                       Text(
                                         listFeedback[index]
-                                                ["feedbackForInstructor"] ??
-                                            "N/A",
+                                                ?["feedbackforinstructor"] ??
+                                            "-",
                                         style: TextStyle(
                                             fontWeight: FontWeight.normal),
                                         maxLines:
@@ -392,7 +400,7 @@ class DetailhistoryccCptsView extends GetView<DetailhistoryccCptsController> {
                                 height: 10,
                               ),
                             ],
-                          );
+                          ) : SizedBox();
                         },
                       );
                     },

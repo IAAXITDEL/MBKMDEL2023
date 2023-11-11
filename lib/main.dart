@@ -1,11 +1,9 @@
-import 'dart:async';
 import 'dart:developer';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:ts_one/app/modules/main_home/controllers/main_home_controller.dart';
 import 'package:ts_one/data/users/user_preferences.dart';
 import 'package:ts_one/di/locator.dart';
 import 'package:ts_one/domain/assessment_repo.dart';
@@ -18,8 +16,6 @@ import 'package:ts_one/presentation/view_model/assessment_viewmodel.dart';
 import 'package:ts_one/presentation/view_model/user_viewmodel.dart';
 import 'firebase_options.dart';
 import 'package:get/get.dart';
-
-import 'app/modules/cc/home_cptscc/views/home_cptscc_view.dart';
 import 'app/routes/app_pages.dart';
 
 void main() async {
@@ -31,9 +27,7 @@ void main() async {
 
 
   runApp(
-    MaterialApp(
-      home: HomeCptsccView(), // Halaman awal aplikasi
-    ),
+    MaterialApp(),
   );
 
   try {

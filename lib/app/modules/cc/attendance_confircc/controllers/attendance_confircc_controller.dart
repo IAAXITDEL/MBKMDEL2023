@@ -11,7 +11,6 @@ import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
-import 'package:image/image.dart' as img;
 
 import '../../../../../data/users/user_preferences.dart';
 import '../../../../../data/users/users.dart';
@@ -20,8 +19,6 @@ import '../../../../../presentation/shared_components/normaltextfieldpdf.dart';
 import '../../../../../presentation/shared_components/textfieldpdf.dart';
 import '../../../../../presentation/view_model/attendance_detail_model.dart';
 import '../../../../../presentation/view_model/attendance_model.dart';
-import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class AttendanceConfirccController extends GetxController {
   var selectedMeeting = "Training".obs;
@@ -203,7 +200,6 @@ class AttendanceConfirccController extends GetxController {
         .get();
 
     var lastDayOfMonth;
-    var dateFormat = DateFormat('dd-MM-yyyy');
 
     if (querySnapshot.docs.isNotEmpty) {
       for (DocumentSnapshot document in querySnapshot.docs) {
@@ -745,7 +741,7 @@ class AttendanceConfirccController extends GetxController {
                                     children: [
                                       TextFieldPdf(title: "DATE"),
                                       TextFieldPdf(
-                                          title: DateFormat('dd MMMM yyyy').format(dateTime!) ?? ''),
+                                          title: DateFormat('dd MMMM yyyy').format(dateTime!)),
                                     ],
                                   ),
 
