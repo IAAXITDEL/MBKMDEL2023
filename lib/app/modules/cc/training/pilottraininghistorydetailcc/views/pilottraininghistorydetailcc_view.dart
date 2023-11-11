@@ -25,7 +25,9 @@ class PilottraininghistorydetailccView
         title: //--------------KELAS TRAINING-------------
            Obx(() =>  RedTitleText(
              text: "${controller.trainingName.value} TRAINING",
-           ),)
+           ),
+           ),
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -93,6 +95,8 @@ class PilottraininghistorydetailccView
                                    bottomRight: controller.isTrainee.value ? Radius.zero :  Radius.circular(20.0) ,
                                  ),
                                ),
+                               primary: TsOneColor.greenColor,
+                               onPrimary: Colors.white,
                              ),
                              child: Text("Download Certificate")),
                        ),
@@ -113,6 +117,8 @@ class PilottraininghistorydetailccView
                                    bottomRight: Radius.circular(20.0),
                                  ),
                                ),
+                               primary: TsOneColor.greenColor,
+                               onPrimary: Colors.white,
                              ),
                              child: Text("Give Feedback")),
                        ),

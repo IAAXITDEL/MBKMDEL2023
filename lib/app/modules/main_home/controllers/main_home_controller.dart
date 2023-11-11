@@ -45,19 +45,6 @@ class MainHomeController extends GetxController {
       default:
         titleToGreet = 'Allstar';
     }
-
-    assessmentResults = [];
-    assessmentResultsNotConfirmedByCPTS = [];
-
-    var hour = DateTime.now().hour;
-    if (hour < 12) {
-      timeToGreet = "Morning";
-    } else if (hour < 17) {
-      timeToGreet = "Afternoon";
-    } else {
-      timeToGreet = "Evening";
-    }
-
     _isCPTS = false;
     _isInstructor = false;
 
@@ -65,7 +52,8 @@ class MainHomeController extends GetxController {
       checkInstructor();
     });
     super.onInit();
-    cekValidityStream();
+    updateInvalidAttendances();
+    print("sudah cek?");
   }
 
   void checkInstructor() {
@@ -100,43 +88,34 @@ class MainHomeController extends GetxController {
   }
 
   // List Training History
-  Stream<List<Map<String, dynamic>>> cekValidityStream() {
+  Future<void> updateInvalidAttendances() async {
     final now = DateTime.now();
-    return firestore.collection('attendance')
+    final invalidSubjects = ["BASIC INDOC", "LOAD SHEET / WEIGHT & BALANCE", "RVSM"];
+
+    final querySnapshot = await firestore.collection('attendance')
         .where("status", isEqualTo: "done")
         .where("expiry", isEqualTo: "VALID")
         .where("is_delete", isEqualTo: 0)
-        .snapshots()
-        .asyncMap((attendanceQuery) async {
-      final attendanceData = await Future.wait(
-        attendanceQuery.docs.map((doc) async {
-          final attendanceModel = AttendanceModel.fromJson(doc.data());
-          final target = attendanceModel.valid_to?.toDate();
+        .get();
 
-          if (target != null) {
-            if (now.isBefore(target)) {
-              // final oneMonthBeforeTarget = target.subtract(Duration(days: 30));
-              // if (now.isAfter(oneMonthBeforeTarget)) {
-              //   await firestore.collection('attendance').doc(attendanceModel.id).update({
-              //     "expiry": "EARLY WARNING",
-              //   });
-              //   print("Attendance with ID ${attendanceModel.id} is in EARLY WARNING.");
-              // } else {
-              //   print("Attendance with ID ${attendanceModel.id} is still valid.");
-              // }
+    for (final doc in querySnapshot.docs) {
+      final attendanceModel = AttendanceModel.fromJson(doc.data());
+      final subject = attendanceModel.subject;
+      final validTo = attendanceModel.valid_to?.toDate();
 
-            } else {
-              await firestore.collection('attendance').doc(attendanceModel.id).update({
-                "expiry": "NOT VALID",
-              });
-              print("Attendance with ID ${attendanceModel.id} has expired. Updated to NOT VALID.");
-            }
-          }
-          return attendanceModel.toJson();
-        }),
-      );
+      if (!invalidSubjects.contains(subject) && (validTo != null && now.isAfter(validTo))) {
+        print("Attendance with ID ${attendanceModel.id} is invalid. Updating to NOT VALID.");
 
-      return attendanceData;
-    });
+        // Update status ke "NOT VALID"
+        await firestore.collection('attendance').doc(attendanceModel.id).update({
+          "expiry": "NOT VALID",
+        });
+      }
+    }
+
   }
+
+
+
+
 }

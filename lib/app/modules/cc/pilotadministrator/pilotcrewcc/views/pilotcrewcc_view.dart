@@ -172,16 +172,16 @@ class PilotcrewccView extends GetView<PilotcrewccController> {
                                                         vertical: 3,
                                                         horizontal: 10),
                                                 decoration: BoxDecoration(
-                                                  color: Colors.green
-                                                      .withOpacity(0.4),
+                                                  color: listAttendance[index]["STATUS"] == "VALID" ? Colors.green.withOpacity(0.4) :Colors.red.withOpacity(0.4),
                                                   borderRadius:
                                                       BorderRadius.circular(10),
                                                 ),
-                                                child: const Text(
-                                                  "Ready",
+                                                child: Text(
+                                                  listAttendance[index]["STATUS"] ??
+                                                      "",
                                                   style: TextStyle(
                                                       fontSize: 10,
-                                                      color: Colors.green),
+                                                      color: listAttendance[index]["STATUS"] == "VALID" ? Colors.green :Colors.red),
                                                 ),
                                               ),
                                             ],

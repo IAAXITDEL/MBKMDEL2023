@@ -26,15 +26,15 @@ class HomeInstructorccView extends GetView<HomeInstructorccController> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: 20,),
-                  Row(
+                  Obx(() => Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Hi, ${controller.titleToGreet}!",
+                        "Hi, ${controller.titleToGreet} ${controller.nameC.value}!",
                         style: tsOneTextTheme.headlineLarge,
                       ),
                     ],
-                  ),
+                  ),),
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
@@ -70,7 +70,11 @@ class HomeInstructorccView extends GetView<HomeInstructorccController> {
                       ],
                     ),
                   ),
-                  const RedTitleText(text: 'TRAINING OVERVIEW', size: 14,),
+                  SizedBox(height: 20,),
+                  Text(
+                    "TRAINING OVERVIEW",
+                    style: tsOneTextTheme.headlineMedium,
+                  ),
                   // const SizedBox(height: 20,),
                   // Row(
                   //   mainAxisAlignment: MainAxisAlignment.spaceBetween,

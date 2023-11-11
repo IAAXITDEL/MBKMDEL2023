@@ -13,11 +13,13 @@ class HomeInstructorccController extends GetxController {
   late bool _isCPTS;
   late bool _isInstructor;
   late bool _isPilotAdministrator;
+  RxString nameC  = "".obs;
 
   @override
   void onInit() {
     userPreferences = getItLocator<UserPreferences>();
     _isPilotAdministrator = false;
+    getName();
 
     switch (userPreferences.getRank()) {
       case 'CAPT':
@@ -46,9 +48,31 @@ class HomeInstructorccController extends GetxController {
     super.onInit();
   }
 
-
-
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  Future<void> getName() async{
+    try{
+      userPreferences = getItLocator<UserPreferences>();
+      final usersQuery = await _firestore
+          .collection('users')
+          .where("ID NO", isEqualTo: userPreferences.getIDNo())
+          .get();
+
+
+      if (usersQuery.docs.isNotEmpty) {
+        final fullName = usersQuery.docs[0]["NAME"];
+        final words = fullName.split(" ");
+        if (words.isNotEmpty) {
+          final firstName = words[0];
+          nameC.value = firstName;
+        } else {
+        }
+      } else {
+      }
+    }catch(e){
+    }
+  }
+
   Stream<List<Map<String, dynamic>>> getCombinedAttendanceStream(String status) {
     userPreferences = getItLocator<UserPreferences>();
     return _firestore.collection('attendance').where("instructor", isEqualTo: userPreferences.getIDNo()).where("status", isEqualTo: status).where("is_delete", isEqualTo: 0).snapshots().asyncMap((attendanceQuery) async {

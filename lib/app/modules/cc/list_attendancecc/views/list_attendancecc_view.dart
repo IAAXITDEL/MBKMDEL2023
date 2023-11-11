@@ -16,32 +16,42 @@ class ListAttendanceccView extends GetView<ListAttendanceccController> {
   Widget build(BuildContext context) {
     var nameC = TextEditingController();
     return Scaffold(
-        appBar: AppBar(title: Text("Back")),
+        appBar: AppBar(title: RedTitleText(
+          text: "ATTENDANCE LIST",
+        ),
+        centerTitle: true,
+        ),
         body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              RedTitleText(
-                text: "ATTENDANCE LIST",
-              ),
-              Row(
-                children: [
-                  Expanded(
-                      child: Container(
-                        margin: EdgeInsets.symmetric(vertical: 5),
-                        padding: EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5.0),
+              SizedBox(height: 10,),
+             Container(
+               decoration: BoxDecoration(
+                   border: Border.all(
+                     color: TsOneColor.primaryFaded,
+                     width: 1,
+                   ),
+                   borderRadius: BorderRadius.circular(10)),
+               child:  Row(
+                 children: [
+                   Expanded(
+                       child: Container(
+                         margin: EdgeInsets.symmetric(vertical: 5),
+                         padding: EdgeInsets.all(8),
+                         decoration: BoxDecoration(
+                           borderRadius: BorderRadius.circular(5.0),
 
-                          color: Colors.white,
-                        ),
-                        child:Obx(()=>  Text("Attendance : ${controller.jumlah.value.toString()} person")),
-                      )
-                  )
-                ],
-              ),
+                           color: Colors.white,
+                         ),
+                         child:Obx(()=>  Text("Attendance : ${controller.jumlah.value.toString()} person")),
+                       )
+                   )
+                 ],
+               ),
+             ),
               Row(
                 children: [
                   Expanded(
@@ -69,7 +79,7 @@ class ListAttendanceccView extends GetView<ListAttendanceccController> {
                                 print(controller.nameS.value);
                               },
                               decoration: InputDecoration(
-                                hintText: 'Type instructor name...',
+                                hintText: 'Type trainee name...',
                                 hintStyle: TextStyle(
                                   color: Colors.grey,
                                   fontSize: 12,

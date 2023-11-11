@@ -32,6 +32,7 @@ class PilottraininghistoryccView
     return Scaffold(
         appBar: AppBar(
           title: RedTitleText(text: 'TRAINING HISTORY'),
+          centerTitle: true,
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -68,13 +69,13 @@ class PilottraininghistoryccView
                    Obx(() =>  Expanded(flex: 1, child: Container(
                      padding: EdgeInsets.symmetric(vertical: 3, horizontal: 10),
                      decoration: BoxDecoration(
-                       color: controller.expiryC.value == "VALID" ? Colors.green.withOpacity(0.4) : Colors.red.withOpacity(0.4),
-                       borderRadius: BorderRadius.circular(10),
+                       color: controller.expiryC.value == "VALID" ? Colors.green : Colors.red,
+                       borderRadius: BorderRadius.circular(5),
                      ),
                      child: Center(
                        child: Text(
                          controller.expiryC.value ,
-                         style: TextStyle(fontSize: 10, color: controller.expiryC.value == "VALID" ? Colors.green : Colors.red),
+                         style: TextStyle(fontSize: 10, color: Colors.white),
                        ),
                      ),
                    ),),),

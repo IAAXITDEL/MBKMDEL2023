@@ -140,111 +140,12 @@ class TrainingccView extends GetView<TrainingccController> {
           title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          RedTitleText(text: 'TRAINING'),
+          RedTitleText(text: 'TRAINING LIST'),
           controller.isAdministrator.value == true
-              ? //ADD NEW SUBJECT
-          // ElevatedButton(
-          //   onPressed: () async {
-          //     String newSubject = '';
-          //     String newRemark = '';
-          //     String newTrainingDescription = '';
-          //     int newExpiryDate = 0;
-          //
-          //     // Show a dialog to input the new subject, remark and description
-          //     await showDialog(
-          //       context: context,
-          //       builder: (context) {
-          //         return AlertDialog(
-          //           title: Text('Add New Subject'),
-          //           content: Column(
-          //             mainAxisSize: MainAxisSize.min,
-          //             children: [
-          //               Container(
-          //                 margin: EdgeInsets.only(bottom: 16),
-          //                 child: TextField(
-          //                   onChanged: (value) {
-          //                     newSubject = value; //
-          //                   },
-          //                   decoration: InputDecoration(
-          //                     hintText: 'Enter the new subject',
-          //                     border: OutlineInputBorder(),
-          //                     labelText: 'Subject',
-          //                   ),
-          //                 ),
-          //               ),
-          //               Container(
-          //                 margin: EdgeInsets.only(bottom: 16),
-          //                 child: TextField(
-          //                   onChanged: (value) {
-          //                     newRemark = value;
-          //                   },
-          //                   decoration: InputDecoration(
-          //                     hintText: 'Enter the remark',
-          //                     border: OutlineInputBorder(),
-          //                     labelText: 'Remark',
-          //                   ),
-          //                 ),
-          //               ),
-          //               Container(
-          //                 margin: EdgeInsets.only(bottom: 16),
-          //                 child: TextField(
-          //                   onChanged: (value) {
-          //                     newExpiryDate = value as int;
-          //                   },
-          //                   decoration: InputDecoration(
-          //                     hintText: 'Enter the expiry date',
-          //                     border: OutlineInputBorder(),
-          //                     labelText: 'Expiry Date',
-          //                   ),
-          //                 ),
-          //               ),
-          //               Container(
-          //                 child: TextField(
-          //                   onChanged: (value) {
-          //                     newTrainingDescription = value;
-          //                   },
-          //                   maxLines:
-          //                   null, // Allow multiple lines for long text
-          //                   decoration: InputDecoration(
-          //                     hintText: 'About training',
-          //                     border: OutlineInputBorder(),
-          //                     labelText: 'Training Description',
-          //                   ),
-          //                 ),
-          //               ),
-          //             ],
-          //           ),
-          //           actions: <Widget>[
-          //             TextButton(
-          //               onPressed: () {
-          //                 Navigator.of(context).pop();
-          //               },
-          //               child: Text('Cancel'),
-          //             ),
-          //             ElevatedButton(
-          //               // Use ElevatedButton for the "Add" button
-          //               onPressed: () async {
-          //                 if (newSubject.isNotEmpty &&
-          //                     newRemark.isNotEmpty) {
-          //                   await controller.addNewSubject(
-          //                       newSubject,
-          //                       newRemark,
-          //                       newExpiryDate,
-          //                       newTrainingDescription);
-          //                   Navigator.of(context).pop();
-          //                 }
-          //               },
-          //               child: Text('Add'),
-          //             ),
-          //           ],
-          //         );
-          //       },
-          //     );
-          //   },
-          //   child: Text('Add New Subject'),
-          //   style: ElevatedButton.styleFrom(),
-          // )
+              ?
           PopupMenuButton(
+            color: Colors.white,
+            surfaceTintColor: Colors.white,
             itemBuilder: (BuildContext context) {
               return [
                 PopupMenuItem(
@@ -272,7 +173,7 @@ class TrainingccView extends GetView<TrainingccController> {
           )
               : SizedBox()
         ],
-      )),
+      ), centerTitle: true,),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20),
@@ -311,7 +212,11 @@ class TrainingccView extends GetView<TrainingccController> {
                       return Card(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
+                          side: BorderSide(color: TsOneColor.secondary, width: 1),
                         ),
+                        color: TsOneColor.surface,
+                        surfaceTintColor: Colors.white,
+                        shadowColor: Colors.white,
                         elevation: 5,
                         child: InkWell(
                           onTap: () {
@@ -331,7 +236,7 @@ class TrainingccView extends GetView<TrainingccController> {
                                   vertical: 1, horizontal: 10),
                               child: Center(
                                 child: Text(
-                                  trainingData["training"], style: tsOneTextTheme.labelSmall, textAlign: TextAlign.center,
+                                  trainingData["training"], style: TextStyle(color: TsOneColor.secondaryContainer, fontWeight: FontWeight.bold, fontSize: 12), textAlign: TextAlign.center,
                                 ),
                               ),
                             ),

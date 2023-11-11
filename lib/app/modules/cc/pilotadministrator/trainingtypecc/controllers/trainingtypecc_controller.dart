@@ -13,7 +13,7 @@ class TrainingtypeccController extends GetxController {
 
 
   late final Rx<DateTime> fromPending = DateTime(1900, 1, 1).obs;
-  late final Rx<DateTime> toPending = DateTime.now().obs;
+  late final Rx<DateTime> toPending = DateTime.now().add(Duration(days: 4 * 365)).obs;
 
   late final Rx<DateTime> fromConfirmation = DateTime(1900, 1, 1).obs;
   late final Rx<DateTime> toConfirmation = DateTime.now().obs;

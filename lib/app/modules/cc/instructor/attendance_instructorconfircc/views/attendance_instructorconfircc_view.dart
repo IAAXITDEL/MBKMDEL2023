@@ -106,10 +106,11 @@ class AttendanceInstructorconfirccView
 
     return Scaffold(
         appBar: AppBar(
-          title: Text('Back', style: TextStyle(color: Colors.black)),
+          title:  RedTitleText(text: "ATTENDANCE LIST"),
           iconTheme: IconThemeData(color: Colors.black),
           // backgroundColor: Colors.transparent,
           elevation: 0,
+          centerTitle: true,
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -148,7 +149,6 @@ class AttendanceInstructorconfirccView
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          RedTitleText(text: "ATTENDANCE LIST"),
                           //Text("REDUCED VERTICAL SEPARATION MINIMA (RVSM)"),
                           SizedBox(
                             height: 20,
@@ -460,6 +460,7 @@ class AttendanceInstructorconfirccView
                             height: 10,
                           ),
                           Text("Signature"),
+                          SizedBox(height: 10,),
                           Container(
                             decoration: BoxDecoration(
                               border: Border.all(

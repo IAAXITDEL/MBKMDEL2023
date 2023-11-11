@@ -129,7 +129,6 @@ class ProfileccController extends GetxController {
     }
   }
 
-
   Future<bool> fetchAttendanceData(int idCrew) async {
     try {
       QuerySnapshot attendanceQuery = await firestore
@@ -233,10 +232,12 @@ class ProfileccController extends GetxController {
           isReady.value = true;
           await getHistoryData(idCrew, "ALAR / CFIT", 5);
           print("test 2");
+
+          await firestore.collection('users').doc(idCrew.toString()).update({
+            "STATUS" : "VALID"
+          });
           return true;
         }
-
-
       } else {
         return false;
       }
@@ -246,6 +247,78 @@ class ProfileccController extends GetxController {
       return false;
     }
   }
+
+  Stream<String> cekValidationTraining(int idTrainingType, int idTrainee) {
+    return firestore
+        .collection('attendance')
+        .where("idTrainingType", isEqualTo: idTrainingType)
+        .where("status", isEqualTo: "done")
+        .where("is_delete", isEqualTo: 0)
+        .snapshots()
+        .asyncMap((attendanceQuery) async {
+      final attendanceDetailData = <Map<String, dynamic>>[];
+
+      final usersData = <Map<String, dynamic>>[];
+
+      if (attendanceQuery.docs.isNotEmpty) {
+        final attendanceIds = attendanceQuery.docs
+            .map((doc) => AttendanceModel.fromJson(doc.data()).id)
+            .toList();
+
+        print(attendanceIds);
+        if (attendanceIds.isNotEmpty) {
+          final attendanceDetailQuery = await firestore
+              .collection('attendance-detail')
+              .where("idtraining", isEqualTo: idTrainee)
+              .where("idattendance", whereIn: attendanceIds)
+              .get();
+          attendanceDetailData
+              .addAll(attendanceDetailQuery.docs.map((doc) => doc.data()));
+
+        }
+
+        if (attendanceDetailData.isNotEmpty) {
+          final usersQuery = await firestore
+              .collection('users')
+              .where("ID NO", isEqualTo: idTrainee)
+              .get();
+          usersData.addAll(usersQuery.docs.map((doc) => doc.data()));
+        }
+      }
+
+      // Filter attendanceQuery based on whether there is a corresponding attendanceDetail
+      final filteredAttendanceQuery = attendanceQuery.docs.where((doc) {
+        final attendanceModel = AttendanceModel.fromJson(doc.data());
+        return attendanceDetailData.any((attendanceDetail) => attendanceDetail['idattendance'] == attendanceModel.id);
+      });
+
+      final attendanceData = <Map<String, dynamic>>[];
+      for (var doc in filteredAttendanceQuery) {
+        final attendanceModel = AttendanceModel.fromJson(doc.data());
+        final attendanceDetail = attendanceDetailData.firstWhere(
+              (attendanceDetail) => attendanceDetail['idattendance'] == attendanceModel.id,
+          orElse: () => <String, dynamic>{}, // Return an empty map
+        );
+
+        attendanceData.add(attendanceModel.toJson());
+      }
+
+      // Sort attendanceData based on valid_to in descending order
+      attendanceData.sort((a, b) {
+        Timestamp timestampA =
+        Timestamp.fromMillisecondsSinceEpoch(a['valid_to'].millisecondsSinceEpoch);
+        Timestamp timestampB =
+        Timestamp.fromMillisecondsSinceEpoch(b['valid_to'].millisecondsSinceEpoch);
+        return timestampB.compareTo(timestampA);
+      });
+
+      if (attendanceData.isNotEmpty) {
+        return attendanceData[0]["expiry"];
+      }
+      return "NOT VALID";
+    });
+  }
+
 
 
   @override
@@ -382,8 +455,6 @@ class ProfileccController extends GetxController {
       final font = await rootBundle.load("assets/fonts/Poppins-Regular.ttf");
       final ttf = pw.Font.ttf(font);
       final pdf = pw.Document();
-
-      final List<Map<String, dynamic>> codeDataList = [];
 
       final Uint8List backgroundImageData = (await rootBundle.load('assets/images/AirAsiaTrainingCards.png')).buffer.asUint8List();
       final Uint8List AirAsiaLogo =

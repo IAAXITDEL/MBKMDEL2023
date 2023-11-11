@@ -4,6 +4,9 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 
+import '../../../../../data/users/user_preferences.dart';
+import '../../../../../data/users/users.dart';
+import '../../../../../di/locator.dart';
 import '../../../../../presentation/view_model/attendance_detail_model.dart';
 import '../../../../../presentation/view_model/attendance_model.dart';
 
@@ -16,13 +19,55 @@ class ListAttendancedetailccController extends GetxController {
   final RxBool showText = false.obs;
   RxString idattendancedetail = "".obs;
 
+  RxBool isCPTS = false.obs;
+
+  late UserPreferences userPreferences;
+
   @override
   void onInit() {
     super.onInit();
     argumentid.value = Get.arguments["id"];
     argumentstatus.value = Get.arguments["status"];
     argumentidattendance.value = Get.arguments["idattendance"];
+    cekRole();
   }
+
+  Future<bool> cekRole() async {
+    userPreferences = getItLocator<UserPreferences>();
+
+    // SEBAGAI CPTS
+    if (userPreferences.getInstructor().contains(UserModel.keyCPTS) &&
+        userPreferences.getRank().contains(UserModel.keyPositionCaptain) ||
+        userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)) {
+      isCPTS.value = true;
+    }
+    // SEBAGAI INSTRUCTOR
+    else if (userPreferences
+        .getInstructor()
+        .contains(UserModel.keySubPositionCCP) ||
+        userPreferences.getInstructor().contains(UserModel.keySubPositionFIA) ||
+        userPreferences.getInstructor().contains(UserModel.keySubPositionFIS) ||
+        userPreferences.getInstructor().contains(UserModel.keySubPositionPGI) &&
+            userPreferences.getRank().contains(UserModel.keyPositionCaptain) ||
+        userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)) {
+
+    }
+    // SEBAGAI PILOT
+    else if (userPreferences.getRank().contains(UserModel.keyPositionCaptain) ||
+        userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)) {
+
+    }
+    // SEBAGAI PILOT ADMINISTRATOR
+    else if (userPreferences.getRank().contains("Pilot Administrator")) {
+
+    }
+    // SEBAGAI ALL STAR
+    else {
+      return false;
+    }
+    return false;
+  }
+
 
   Stream<List<Map<String, dynamic>>> profileList() {
     return firestore
@@ -64,14 +109,12 @@ class ListAttendancedetailccController extends GetxController {
     });
   }
 
-
   //Membuat random string untuk key attendance
   static const _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
   final Random _rnd = Random();
 
   String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
       length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
-
 
   // Update score dan feedback dilakukan oleh instructor
   Future<void> updateScoring(String score, String feedback) async {
@@ -102,13 +145,6 @@ class ListAttendancedetailccController extends GetxController {
               .where("is_delete", isEqualTo: 0)
               .get();
 
-          print("satu");
-          print(attendanceData.subject);
-
-
-          print("dua");
-          print(totalAttendanceQuery.docs.length);
-
           final attendances = await Future.wait(
             totalAttendanceQuery.docs.map((doc) async {
               final attendanceModel = AttendanceModel.fromJson(doc.data() as Map<String, dynamic>);
@@ -116,8 +152,6 @@ class ListAttendancedetailccController extends GetxController {
             }),
           );
 
-          print("ini attendance");
-          print(attendances);
           //mengambil data year dan month yang sama
           final filteredAttendance = attendances.where((attendance) {
             final attendanceDate = attendance["date"].toDate();
@@ -126,8 +160,6 @@ class ListAttendancedetailccController extends GetxController {
 
             return attendanceYear == year && attendanceMonth == month;
           }).toList();
-          print("ini filtered");
-          print(filteredAttendance);
 
           final attendanceIds = <String>[];
 
@@ -137,9 +169,6 @@ class ListAttendancedetailccController extends GetxController {
               attendanceIds.add(attendanceId);
             }
           });
-
-          print("ini attendance ID");
-          print(attendanceIds);
 
           final attendanceDetailData = <Map<String, dynamic>>[];
 

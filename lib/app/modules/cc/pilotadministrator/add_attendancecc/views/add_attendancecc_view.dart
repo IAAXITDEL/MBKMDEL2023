@@ -48,7 +48,8 @@ class AddAttendanceccView extends GetView<AddAttendanceccController> {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text('Back', style: TextStyle(color: Colors.black)),
+          title: RedTitleText(text: "ADD ATTENDANCE"),
+          centerTitle: true,
           iconTheme: IconThemeData(color: Colors.black),
           backgroundColor: Colors.transparent,
           elevation: 0,
@@ -62,7 +63,7 @@ class AddAttendanceccView extends GetView<AddAttendanceccController> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  RedTitleText(text: "ADD ATTENDANCE"),
+                  RedTitleText(text: controller.argumentname.value),
                   //Text("REDUCED VERTICAL SEPARATION MINIMA (RVSM)"),
 
                   SizedBox(height: 20,),
@@ -106,10 +107,20 @@ class AddAttendanceccView extends GetView<AddAttendanceccController> {
                         showSelectedItems: true,
                         dropdownSearchDecoration: InputDecoration(
                           labelText: "INSTRUCTOR",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(5), // Mengatur radius border menjadi 0 membuatnya berbentuk petak
+                            ),
+                            borderSide: BorderSide(
+                              color: Colors.red, // Ganti warna border sesuai keinginan
+                              width: 5.0, // Atur ketebalan border sesuai keinginan
+                            ),
+                          ),
+
                         ),
                         showSearchBox: true,
                         searchFieldProps: TextFieldProps(
-                          cursorColor: TsOneColor.primary,
+                          cursorColor: TsOneColor.secondaryContainer,
                         ),
                         items: userNames,
                         onChanged: (selectedName) {
@@ -147,7 +158,7 @@ class AddAttendanceccView extends GetView<AddAttendanceccController> {
                                 return FutureBuilder<void>(
                                   future: add(
                                     subjectC.text,
-                                    DateFormat('dd-MM-yyyy').parse(dateC.text),
+                                    DateFormat('dd MMM yyyy').parse(dateC.text),
                                     venueC.text,
                                     instructorC!,
                                     controller.argumentid.value,

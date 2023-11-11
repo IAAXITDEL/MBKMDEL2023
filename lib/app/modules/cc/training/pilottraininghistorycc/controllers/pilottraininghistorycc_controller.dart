@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 
-import '../../../../../../presentation/view_model/attendance_detail_model.dart';
 import '../../../../../../presentation/view_model/attendance_model.dart';
 
 class PilottraininghistoryccController extends GetxController {
@@ -76,22 +75,6 @@ class PilottraininghistoryccController extends GetxController {
         return [];
       }
 
-      // // Inside the attendanceData mapping section
-      // final attendanceData = attendanceQuery.docs.map((doc) {
-      //   final attendanceModel = AttendanceModel.fromJson(doc.data());
-      //
-      //   // Find the corresponding attendanceDetail
-      //   Map<String, dynamic> attendanceDetail;
-      //   for (var detail in attendanceDetailData) {
-      //     if (detail['idattendance'] == attendanceModel.id) {
-      //       attendanceDetail = detail;
-      //       break;
-      //     }
-      //   }
-      //
-      //   return attendanceModel.toJson();
-      // }).where((attendance) => attendance != null).toList();
-
       // Filter attendanceQuery based on whether there is a corresponding attendanceDetail
       final filteredAttendanceQuery = attendanceQuery.docs.where((doc) {
         final attendanceModel = AttendanceModel.fromJson(doc.data());
@@ -106,9 +89,7 @@ class PilottraininghistoryccController extends GetxController {
           orElse: () => <String, dynamic>{}, // Return an empty map
         );
 
-        if (attendanceDetail != null) {
-          attendanceData.add(attendanceModel.toJson());
-        }
+        attendanceData.add(attendanceModel.toJson());
       }
 
       // Sort attendanceData based on valid_to in descending order

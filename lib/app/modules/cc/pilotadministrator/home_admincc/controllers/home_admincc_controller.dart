@@ -6,10 +6,11 @@ import '../../../../../../di/locator.dart';
 import '../../../../../../presentation/view_model/attendance_model.dart';
 
 class HomeAdminccController extends GetxController {
-
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
   late UserPreferences userPreferences;
   late String titleToGreet;
   late String timeToGreet;
+  RxString nameC = "".obs;
   late bool _isCPTS;
   late bool _isInstructor;
   late bool _isPilotAdministrator;
@@ -18,7 +19,7 @@ class HomeAdminccController extends GetxController {
   @override
   void onInit() {
     userPreferences = getItLocator<UserPreferences>();
-    _isPilotAdministrator = false;
+    getName();
 
     switch (userPreferences.getRank()) {
       case 'CAPT':
@@ -28,7 +29,7 @@ class HomeAdminccController extends GetxController {
         titleToGreet = 'First Officer';
         break;
       case 'Pilot Administrator':
-        titleToGreet = 'Pilot Administrator';
+        titleToGreet = 'Admin';
         _isPilotAdministrator = true;
         break;
       default:
@@ -48,15 +49,35 @@ class HomeAdminccController extends GetxController {
 
     super.onInit();
   }
-
-
   // LIST NEED CONFIRMATION
-  FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  Stream<List<Map<String, dynamic>>> getCombinedAttendanceStream() {
+  Future<void> getName() async{
+    try{
+      userPreferences = getItLocator<UserPreferences>();
+      final usersQuery = await firestore
+          .collection('users')
+          .where("ID NO", isEqualTo: userPreferences.getIDNo())
+          .get();
+
+
+      if (usersQuery.docs.isNotEmpty) {
+        final fullName = usersQuery.docs[0]["NAME"];
+        final words = fullName.split(" ");
+        if (words.isNotEmpty) {
+          final firstName = words[0];
+          nameC.value = firstName;
+        } else {
+        }
+      } else {
+      }
+    }catch(e){
+    }
+  }
+
+  Stream<List<Map<String, dynamic>>> getCombinedAttendanceStream(String status) {
     return firestore
         .collection('attendance')
-        .where("status", isEqualTo: "confirmation")
+        .where("status", isEqualTo: status)
         .where("is_delete", isEqualTo: 0)
         .snapshots()
         .asyncMap((attendanceQuery) async {

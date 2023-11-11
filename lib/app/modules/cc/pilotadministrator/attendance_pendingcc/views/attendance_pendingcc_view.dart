@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../../../../../presentation/shared_components/TitleText.dart';
@@ -21,18 +22,65 @@ class AttendancePendingccView extends GetView<AttendancePendingccController> {
     var dateC = TextEditingController();
     var instructorC = TextEditingController();
 
-    var departementC = TextEditingController();
-    var trainingtypeC = TextEditingController();
-    var roomC = TextEditingController();
-
-
-
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Back', style: TextStyle(color: Colors.black)),
+          title: RedTitleText(text: "ATTENDANCE LIST"),
           iconTheme: const IconThemeData(color: Colors.black),
           // backgroundColor: Colors.transparent,
           elevation: 0,
+          centerTitle:  true,
+            actions: <Widget>[
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 10),
+                child: PopupMenuButton(
+                  color: Colors.white,
+                  surfaceTintColor: Colors.white,
+                  itemBuilder: (BuildContext context) {
+                    return [
+                      PopupMenuItem(
+                        child: TextButton(
+                          onPressed: () async {
+                            await Get.toNamed(Routes.EDIT_ATTENDANCECC, arguments: {
+                              "id" : controller.argument.value,
+                            });
+
+                            Navigator.pop(context);
+                          },
+                          child: Row(
+                            children: [
+                              Icon(Icons.edit, size: 16, color: Colors.black,),
+                              SizedBox(width: 5,),
+                              Text("Edit", style: tsOneTextTheme.labelMedium,)
+                            ],
+                          ),
+                        ),
+                      ),
+                      PopupMenuItem(
+                        child: TextButton(
+                          onPressed: () async {
+                           await controller.deleteAttendance();
+                           Navigator.pop(context);
+                          },
+                          child: Row(
+                            children: [
+                              Icon(Icons.delete, size: 16,  color: Colors.black,),
+                              SizedBox(width: 5,),
+                              Text("Delete", style: tsOneTextTheme.labelMedium,)
+                            ],
+                          ),
+                        ),
+                      ),
+                    ];
+                  },
+                  offset: Offset(0, 30),
+                  child: GestureDetector(
+                    child: Container(
+                      child: Icon(Icons.more_vert_outlined),
+                    ),
+                  ),
+                ),
+              )
+            ]
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -51,8 +99,13 @@ class AttendancePendingccView extends GetView<AttendancePendingccController> {
 
                   var listAttendance = snapshot.data!;
                   if (listAttendance.isNotEmpty) {
+
+                    DateTime? dateTime = listAttendance[0]["date"].toDate();
+                    dateC.text = dateTime != null ? DateFormat('dd MMM yyyy').format(dateTime) : 'Invalid Date';
+
+
                     subjectC.text = listAttendance[0]["subject"];
-                    dateC.text = listAttendance[0]["date"];
+                   // dateC.text = DateFormat('dd MMM yyyy').format(dateTime!) ?? "N/A";
                     vanueC.text = listAttendance[0]["vanue"];
                     instructorC.text = listAttendance[0]["name"];
                   } else {
@@ -63,55 +116,6 @@ class AttendancePendingccView extends GetView<AttendancePendingccController> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          RedTitleText(text: "ATTENDANCE LIST"),
-                          PopupMenuButton(
-                            itemBuilder: (BuildContext context) {
-                              return [
-                                PopupMenuItem(
-                                  child: TextButton(
-                                    onPressed: () {
-                                      Get.toNamed(Routes.EDIT_ATTENDANCECC, arguments: {
-                                        "id" : controller.argument.value,
-                                      });
-                                    },
-                                    child: Row(
-                                      children: [
-                                        Icon(Icons.edit, size: 16),
-                                        SizedBox(width: 5,),
-                                        Text("Edit",)
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                PopupMenuItem(
-                                  child: TextButton(
-                                    onPressed: () {
-                                      controller.deleteAttendance();
-                                    },
-                                    child: Row(
-                                      children: [
-                                        Icon(Icons.delete, size: 16),
-                                        SizedBox(width: 5,),
-                                        Text("Delete",)
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ];
-                            },
-                            offset: Offset(0, 30),
-                            child: GestureDetector(
-                              child: Container(
-                                child: Icon(Icons.more_vert_outlined),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      // Text("REDUCED VERTICAL SEPARATION MINIMA (RVSM)"),
                       const SizedBox(
                         height: 20,
                       ),

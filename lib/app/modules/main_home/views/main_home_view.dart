@@ -11,7 +11,7 @@ class MainHomeView extends GetView<MainHomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: TsOneColor.primary,
+      backgroundColor: TsOneColor.redColor,
         body: SingleChildScrollView(
             child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 50),

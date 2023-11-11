@@ -12,8 +12,6 @@ class HomePilotccController extends GetxController {
   late UserPreferences userPreferences;
   late String titleToGreet;
   late String timeToGreet;
-  late bool _isCPTS;
-  late bool _isInstructor;
   late bool _isPilotAdministrator;
 
 
@@ -102,10 +100,7 @@ class HomePilotccController extends GetxController {
           orElse: () => <String, dynamic>{}, // Return an empty map
         );
 
-        print(attendanceModel);
-        if (attendanceDetail != null) {
-          attendanceData.add(attendanceModel.toJson());
-        }
+        attendanceData.add(attendanceModel.toJson());
       }
 
       return attendanceData;
