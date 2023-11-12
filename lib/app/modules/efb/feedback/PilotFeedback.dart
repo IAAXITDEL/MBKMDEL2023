@@ -56,7 +56,7 @@ class _PilotFeedBackState extends State<PilotFeedBack> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Feedback Page'),
+        title: const Text('Feedback Page'),
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -70,7 +70,7 @@ class _PilotFeedBackState extends State<PilotFeedBack> {
                     border: Border.all(
                         color: Colors
                             .grey), // Warna dan ketebalan border dapat disesuaikan
-                    borderRadius: BorderRadius.all(
+                    borderRadius: const BorderRadius.all(
                         Radius.circular(10)), // Untuk sudut yang lebih berbulu
                   ),
                   child: Padding(
@@ -89,7 +89,7 @@ class _PilotFeedBackState extends State<PilotFeedBack> {
                             ),
                           ),
                         ),
-                        Divider(
+                        const Divider(
                           color: Colors.grey,
                         ), // Divider akan menambahkan garis horizontal di bawah teks
                         const SizedBox(height: 5),
@@ -157,7 +157,7 @@ class _PilotFeedBackState extends State<PilotFeedBack> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 8,
                 ),
                 Container(
@@ -165,7 +165,7 @@ class _PilotFeedBackState extends State<PilotFeedBack> {
                     border: Border.all(
                         color: Colors
                             .grey), // Atur warna dan tipe garis sesuai kebutuhan Anda
-                    borderRadius: BorderRadius.all(Radius.circular(
+                    borderRadius: const BorderRadius.all(Radius.circular(
                         10)), // Atur sudut border sesuai kebutuhan Anda
                   ),
                   child: Padding(
@@ -186,10 +186,10 @@ class _PilotFeedBackState extends State<PilotFeedBack> {
                             ),
                           ),
                         ),
-                        Divider(
+                        const Divider(
                           color: Colors.grey,
                         ), // Divider akan menambahkan garis horizontal di bawah teks
-                        SizedBox(height: 5),
+                        const SizedBox(height: 5),
                         Text('Flight Phase', style: tsOneTextTheme.labelMedium),
                         Column(
                           children: [
@@ -219,7 +219,7 @@ class _PilotFeedBackState extends State<PilotFeedBack> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         Text('Charging duration',
                             style: tsOneTextTheme.labelMedium),
                         Column(
@@ -302,7 +302,7 @@ class _PilotFeedBackState extends State<PilotFeedBack> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 8,
                 ),
                 Container(
@@ -310,7 +310,7 @@ class _PilotFeedBackState extends State<PilotFeedBack> {
                     border: Border.all(
                         color: Colors
                             .grey), // Atur warna dan tipe garis sesuai kebutuhan Anda
-                    borderRadius: BorderRadius.all(Radius.circular(
+                    borderRadius: const BorderRadius.all(Radius.circular(
                         10)), // Atur sudut border sesuai kebutuhan Anda
                   ),
                   child: Padding(
@@ -331,7 +331,7 @@ class _PilotFeedBackState extends State<PilotFeedBack> {
                             ),
                           ),
                         ),
-                        Divider(
+                        const Divider(
                           color: Colors.grey,
                         ),
                         const SizedBox(
@@ -430,31 +430,29 @@ class _PilotFeedBackState extends State<PilotFeedBack> {
       ),
       bottomNavigationBar: BottomAppBar(
         surfaceTintColor: tsOneColorScheme.secondary,
-        child: Expanded(
-          child: ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => NextQuestionPageFeedbackPilot(
-                    documentId: widget.documentId,
-                    deviceId: widget.deviceId,
-                    Q1: Q1,
-                    Q2: Q2,
-                    Q3: Q3,
-                    Q4: Q4,
-                    Q5: Q5,
-                    Q6: Q6,
-                  ),
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => NextQuestionPageFeedbackPilot(
+                  documentId: widget.documentId,
+                  deviceId: widget.deviceId,
+                  Q1: Q1,
+                  Q2: Q2,
+                  Q3: Q3,
+                  Q4: Q4,
+                  Q5: Q5,
+                  Q6: Q6,
                 ),
-              );
-            },
-            style: ElevatedButton.styleFrom(
-                backgroundColor: TsOneColor.greenColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(4.0),
-                )),
-            child: const Text('Next', style: TextStyle(color: Colors.white)),
-          ),
+              ),
+            );
+          },
+          style: ElevatedButton.styleFrom(
+              backgroundColor: TsOneColor.greenColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4.0),
+              )),
+          child: const Text('Next', style: TextStyle(color: Colors.white)),
         ),
       ),
     );

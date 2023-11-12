@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
+import 'package:ts_one/app/modules/efb/pilot/views/pilotreturndeviceview_view.dart';
 
 import '../../../../presentation/theme.dart';
 
@@ -40,8 +41,7 @@ class ConfirmPageFeedbackPilot extends StatefulWidget {
   });
 
   @override
-  _ConfirmPageFeedbackPilotState createState() =>
-      _ConfirmPageFeedbackPilotState();
+  _ConfirmPageFeedbackPilotState createState() => _ConfirmPageFeedbackPilotState();
 }
 
 class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
@@ -60,9 +60,11 @@ class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
   String? Q13;
   String? Q14;
   String? Q15;
-  String? Q16;
+  //String? Q16;
   TextEditingController? ifHighController = TextEditingController();
   TextEditingController? addionalComentController = TextEditingController();
+
+  get requestDeviceController => null;
 
   void submitFeedback(BuildContext context) async {
     String? ifHigh = ifHighController?.text;
@@ -74,8 +76,7 @@ class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
     String? fiveSector = widget.fiveSectorController?.text;
     String? sixSector = widget.sixSectorController?.text;
 
-    final CollectionReference feedbackCollection =
-        FirebaseFirestore.instance.collection('feedback-device');
+    final CollectionReference feedbackCollection = FirebaseFirestore.instance.collection('feedback-device');
 
     // Membuat dokumen baru dalam koleksi feedback-device
     DocumentReference feedbackDoc = await feedbackCollection.add({
@@ -104,15 +105,13 @@ class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
       'q13': Q13,
       'q14': Q14,
       'q15': Q15,
-      'q16': Q16,
+      //'q16': Q16,
     });
 
     String feedbackId = feedbackDoc.id;
 
     // Update feedbackId pada dokumen pilot-device-1
-    final DocumentReference pilotDeviceRef = FirebaseFirestore.instance
-        .collection('pilot-device-1')
-        .doc(widget.documentId);
+    final DocumentReference pilotDeviceRef = FirebaseFirestore.instance.collection('pilot-device-1').doc(widget.documentId);
     await pilotDeviceRef.update({
       'feedbackId': feedbackId,
     });
@@ -128,16 +127,97 @@ class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
       type: QuickAlertType.success,
       text: 'You have successfully added a device',
     );
-    Navigator.of(context).pop();
-    Navigator.of(context).pop();
-    Navigator.of(context).pop();
+
+    //   Navigator.of(context).push(
+    //   MaterialPageRoute(
+    //     builder: (context) => PilotreturndeviceviewView(), // Gantilah dengan halaman yang sesuai
+    //   ),
+    // );
+
+    Future.delayed(const Duration(seconds: 1), () {
+      Navigator.of(context).pop();
+      Navigator.of(context).pop();
+      Navigator.of(context).pop();
+    });
   }
+
+  // Future<void> _showQuickAlert(BuildContext context) async {
+  //   await QuickAlert.show(
+  //     context: context,
+  //     type: QuickAlertType.success,
+  //     text: 'You have successfully added a device',
+  //   ).then((value) {
+  //     FutureBuilder<QuerySnapshot>(
+  //       future: requestDeviceController.getPilotDevices(),
+  //       builder: (context, snapshot) {
+  //         if (snapshot.connectionState == ConnectionState.waiting) {
+  //           return const CircularProgressIndicator();
+  //         } else if (snapshot.hasError) {
+  //           return Text('Error: ${snapshot.error}');
+  //         } else {
+  //           QuerySnapshot? pilotDevicesSnapshot = snapshot.data;
+
+  //           // Ambil data yang diperlukan dari pilotDevicesSnapshot
+  //           String deviceName = pilotDevicesSnapshot?.docs[0]['device_name'];
+  //           String OccOnDuty = pilotDevicesSnapshot?.docs[0]['occ-on-duty'];
+  //           String userId = pilotDevicesSnapshot?.docs[0]['user_uid'];
+  //           String deviceId = pilotDevicesSnapshot!.docs[0].id;
+
+  //           Navigator.push(
+  //             context,
+  //             MaterialPageRoute(
+  //               builder: (context) => PilotreturndeviceviewView(
+  //                 deviceName: deviceName,
+  //                 deviceId: deviceId,
+  //                 OccOnDuty: OccOnDuty,
+  //               ),
+  //             ),
+  //           );
+
+  //           return SizedBox.shrink();
+  //         }
+  //       },
+  //     );
+  //   });
+
+  //   // FutureBuilder<QuerySnapshot>(
+  //   //   future: requestDeviceController.getPilotDevices(),
+  //   //   builder: (context, snapshot) {
+  //   //     if (snapshot.connectionState == ConnectionState.waiting) {
+  //   //       return const CircularProgressIndicator();
+  //   //     } else if (snapshot.hasError) {
+  //   //       return Text('Error: ${snapshot.error}');
+  //   //     } else {
+  //   //       QuerySnapshot? pilotDevicesSnapshot = snapshot.data;
+
+  //   //       // Ambil data yang diperlukan dari pilotDevicesSnapshot
+  //   //       String deviceName = pilotDevicesSnapshot?.docs[0]['device_name'];
+  //   //       String OccOnDuty = pilotDevicesSnapshot?.docs[0]['occ-on-duty'];
+  //   //       String userId = pilotDevicesSnapshot?.docs[0]['user_uid'];
+  //   //       String deviceId = pilotDevicesSnapshot!.docs[0].id;
+
+  //   //       Navigator.push(
+  //   //         context,
+  //   //         MaterialPageRoute(
+  //   //           builder: (context) => PilotreturndeviceviewView(
+  //   //             deviceName: deviceName,
+  //   //             deviceId: deviceId,
+  //   //             OccOnDuty: OccOnDuty,
+  //   //           ),
+  //   //         ),
+  //   //       );
+
+  //   //       return SizedBox.shrink();
+  //   //     }
+  //   //   },
+  //   // );
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Confirmation Page'),
+        title: const Text('Confirmation Page'),
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -146,340 +226,334 @@ class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "BRACKET (RAM-MOUNT) INTEGRITY",
-                    style: tsOneTextTheme.titleMedium,
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey), // Atur warna dan tipe garis sesuai kebutuhan Anda
+                    borderRadius: const BorderRadius.all(Radius.circular(10)), // Atur sudut border sesuai kebutuhan Anda
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start, // Agar teks tetap di kiri
+                      children: [
+                        Center(
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "BRACKET (RAM-MOUNT) INTEGRITY",
+                              style: tsOneTextTheme.titleMedium?.copyWith(color: Colors.red), // Mengubah warna teks menjadi hijau
+                            ),
+                          ),
+                        ),
+                        const Divider(
+                          color: Colors.grey,
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Text('Strong Mechanical Integrity During Flight', style: tsOneTextTheme.labelMedium),
+                        Column(
+                          children: [
+                            RadioListTile<String?>(
+                              title: Text('Yes', style: tsOneTextTheme.labelMedium),
+                              value: 'Yes',
+                              groupValue: Q7,
+                              onChanged: (value) {
+                                setState(() {
+                                  Q7 = value;
+                                });
+                              },
+                              activeColor: Colors.red,
+                            ),
+                            RadioListTile<String?>(
+                              title: Text('No', style: tsOneTextTheme.labelMedium),
+                              value: 'No',
+                              groupValue: Q7,
+                              onChanged: (value) {
+                                setState(() {
+                                  Q7 = value;
+                                });
+                              },
+                              activeColor: Colors.red,
+                            )
+                          ],
+                        ),
+                        Text('Easy to use ', style: tsOneTextTheme.labelMedium),
+                        Column(
+                          children: [
+                            RadioListTile<String?>(
+                              title: Text('Yes', style: tsOneTextTheme.labelMedium),
+                              value: 'Yes',
+                              groupValue: Q8,
+                              onChanged: (value) {
+                                setState(() {
+                                  Q8 = value;
+                                });
+                              },
+                              activeColor: Colors.red,
+                            ),
+                            RadioListTile<String?>(
+                              title: Text('No', style: tsOneTextTheme.labelMedium),
+                              value: 'No',
+                              groupValue: Q8,
+                              onChanged: (value) {
+                                setState(() {
+                                  Q8 = value;
+                                });
+                              },
+                              activeColor: Colors.red,
+                            )
+                          ],
+                        ),
+                        Text('Easy to detached during emergency, if required', style: tsOneTextTheme.labelMedium),
+                        Column(
+                          children: [
+                            RadioListTile<String?>(
+                              title: Text('Yes', style: tsOneTextTheme.labelMedium),
+                              value: 'Yes',
+                              groupValue: Q9,
+                              onChanged: (value) {
+                                setState(() {
+                                  Q9 = value;
+                                });
+                              },
+                              activeColor: Colors.red,
+                            ),
+                            RadioListTile<String?>(
+                              title: Text('No', style: tsOneTextTheme.labelMedium),
+                              value: 'No',
+                              groupValue: Q9,
+                              onChanged: (value) {
+                                setState(() {
+                                  Q9 = value;
+                                });
+                              },
+                              activeColor: Colors.red,
+                            )
+                          ],
+                        ),
+                        Text('Obstruct emergency egress', style: tsOneTextTheme.labelMedium),
+                        Column(
+                          children: [
+                            RadioListTile<String?>(
+                              title: Text('Yes', style: tsOneTextTheme.labelMedium),
+                              value: 'Yes',
+                              groupValue: Q10,
+                              onChanged: (value) {
+                                setState(() {
+                                  Q10 = value;
+                                });
+                              },
+                              activeColor: Colors.red,
+                            ),
+                            RadioListTile<String?>(
+                              title: Text('No', style: tsOneTextTheme.labelMedium),
+                              value: 'No',
+                              groupValue: Q10,
+                              onChanged: (value) {
+                                setState(() {
+                                  Q10 = value;
+                                });
+                              },
+                              activeColor: Colors.red,
+                            )
+                          ],
+                        ),
+                        Text('Bracket position obstruct your vision', style: tsOneTextTheme.labelMedium),
+                        Column(
+                          children: [
+                            RadioListTile<String?>(
+                              title: Text('Yes', style: tsOneTextTheme.labelMedium),
+                              value: 'Yes',
+                              groupValue: Q11,
+                              onChanged: (value) {
+                                setState(() {
+                                  Q11 = value;
+                                });
+                              },
+                              activeColor: Colors.red,
+                            ),
+                            RadioListTile<String?>(
+                              title: Text('No', style: tsOneTextTheme.labelMedium),
+                              value: 'No',
+                              groupValue: Q11,
+                              onChanged: (value) {
+                                setState(() {
+                                  Q11 = value;
+                                });
+                              },
+                              activeColor: Colors.red,
+                            )
+                          ],
+                        ),
+                        Text('If Yes, How severe did it obstruct your vision?', style: tsOneTextTheme.labelMedium),
+                        Column(
+                          children: [
+                            RadioListTile<String?>(
+                              title: Text('Low', style: tsOneTextTheme.labelMedium),
+                              value: 'Low',
+                              groupValue: Q12,
+                              onChanged: (value) {
+                                setState(() {
+                                  Q12 = value;
+                                });
+                              },
+                              activeColor: Colors.red,
+                            ),
+                            RadioListTile<String?>(
+                              title: Text('High', style: tsOneTextTheme.labelMedium),
+                              value: 'High',
+                              groupValue: Q12,
+                              onChanged: (value) {
+                                setState(() {
+                                  Q12 = value;
+                                });
+                              },
+                              activeColor: Colors.red,
+                            )
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        const Text("If high please write down your concern in the comment box below"),
+                        TextFormField(
+                          controller: ifHighController,
+                          decoration: const InputDecoration(
+                            contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                            labelText: 'Write Here',
+                            border: OutlineInputBorder(),
+                          ),
+                          maxLines: 2, // Mengatur jumlah baris teks yang ditampilkan
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-                SizedBox(
-                  height: 5,
+                const SizedBox(
+                  height: 8,
                 ),
-                Text('Strong Mechanical Integrity During Flight',
-                    style: tsOneTextTheme.labelLarge),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 8.0), // Mengatur jarak antara radio buttons
-                  child: Column(
-                    children: [
-                      RadioListTile<String?>(
-                        title: Text('Yes'),
-                        value: 'Yes',
-                        groupValue: Q7,
-                        onChanged: (value) {
-                          setState(() {
-                            Q7 = value;
-                          });
-                        },
-                        activeColor: Colors.red,
-                      ),
-                      RadioListTile<String?>(
-                        title: Text('No'),
-                        value: 'No',
-                        groupValue: Q7,
-                        onChanged: (value) {
-                          setState(() {
-                            Q7 = value;
-                          });
-                        },
-                        activeColor: Colors.red,
-                      )
-                    ],
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey), // Atur warna dan tipe garis sesuai kebutuhan Anda
+                    borderRadius: BorderRadius.all(Radius.circular(10)), // Atur sudut border sesuai kebutuhan Anda
                   ),
-                ),
-                Text('Easy to use ', style: tsOneTextTheme.labelLarge),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 8.0), // Mengatur jarak antara radio buttons
-                  child: Column(
-                    children: [
-                      RadioListTile<String?>(
-                        title: Text('Yes'),
-                        value: 'Yes',
-                        groupValue: Q8,
-                        onChanged: (value) {
-                          setState(() {
-                            Q8 = value;
-                          });
-                        },
-                        activeColor: Colors.red,
-                      ),
-                      RadioListTile<String?>(
-                        title: Text('No'),
-                        value: 'No',
-                        groupValue: Q8,
-                        onChanged: (value) {
-                          setState(() {
-                            Q8 = value;
-                          });
-                        },
-                        activeColor: Colors.red,
-                      )
-                    ],
-                  ),
-                ),
-                Text('Easy to detached during emergency, if required',
-                    style: tsOneTextTheme.labelLarge),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 8.0), // Mengatur jarak antara radio buttons
-                  child: Column(
-                    children: [
-                      RadioListTile<String?>(
-                        title: Text('Yes'),
-                        value: 'Yes',
-                        groupValue: Q9,
-                        onChanged: (value) {
-                          setState(() {
-                            Q9 = value;
-                          });
-                        },
-                        activeColor: Colors.red,
-                      ),
-                      RadioListTile<String?>(
-                        title: Text('No'),
-                        value: 'No',
-                        groupValue: Q9,
-                        onChanged: (value) {
-                          setState(() {
-                            Q9 = value;
-                          });
-                        },
-                        activeColor: Colors.red,
-                      )
-                    ],
-                  ),
-                ),
-                Text('Obstruct emergency egress',
-                    style: tsOneTextTheme.labelLarge),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 8.0), // Mengatur jarak antara radio buttons
-                  child: Column(
-                    children: [
-                      RadioListTile<String?>(
-                        title: Text('Yes'),
-                        value: 'Yes',
-                        groupValue: Q10,
-                        onChanged: (value) {
-                          setState(() {
-                            Q10 = value;
-                          });
-                        },
-                        activeColor: Colors.red,
-                      ),
-                      RadioListTile<String?>(
-                        title: Text('No'),
-                        value: 'No',
-                        groupValue: Q10,
-                        onChanged: (value) {
-                          setState(() {
-                            Q10 = value;
-                          });
-                        },
-                        activeColor: Colors.red,
-                      )
-                    ],
-                  ),
-                ),
-                Text('Bracket position obstruct your vision',
-                    style: tsOneTextTheme.labelLarge),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 8.0), // Mengatur jarak antara radio buttons
-                  child: Column(
-                    children: [
-                      RadioListTile<String?>(
-                        title: Text('Yes'),
-                        value: 'Yes',
-                        groupValue: Q11,
-                        onChanged: (value) {
-                          setState(() {
-                            Q11 = value;
-                          });
-                        },
-                        activeColor: Colors.red,
-                      ),
-                      RadioListTile<String?>(
-                        title: Text('No'),
-                        value: 'No',
-                        groupValue: Q11,
-                        onChanged: (value) {
-                          setState(() {
-                            Q11 = value;
-                          });
-                        },
-                        activeColor: Colors.red,
-                      )
-                    ],
-                  ),
-                ),
-                Text('If Yes, How severe did it obstruct your vision?',
-                    style: tsOneTextTheme.labelLarge),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 8.0), // Mengatur jarak antara radio buttons
-                  child: Column(
-                    children: [
-                      RadioListTile<String?>(
-                        title: Text('Low'),
-                        value: 'Low',
-                        groupValue: Q12,
-                        onChanged: (value) {
-                          setState(() {
-                            Q12 = value;
-                          });
-                        },
-                        activeColor: Colors.red,
-                      ),
-                      RadioListTile<String?>(
-                        title: Text('High'),
-                        value: 'High',
-                        groupValue: Q12,
-                        onChanged: (value) {
-                          setState(() {
-                            Q12 = value;
-                          });
-                        },
-                        activeColor: Colors.red,
-                      )
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Text(
-                    "If high please write down your concern in the comment box below"),
-                TextFormField(
-                  controller: ifHighController,
-                  decoration: InputDecoration(
-                    contentPadding:
-                        const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                    labelText: 'Write Here',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "EFB SOFTWARE INTEGRITY",
-                    style: tsOneTextTheme.titleMedium,
-                  ),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Text('Airbus Flysmart (Performance)',
-                    style: tsOneTextTheme.labelLarge),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 8.0), // Mengatur jarak antara radio buttons
-                  child: Column(
-                    children: [
-                      RadioListTile<String?>(
-                        title: Text('Yes'),
-                        value: 'Yes',
-                        groupValue: Q13,
-                        onChanged: (value) {
-                          setState(() {
-                            Q13 = value;
-                          });
-                        },
-                        activeColor: Colors.red,
-                      ),
-                      RadioListTile<String?>(
-                        title: Text('No'),
-                        value: 'No',
-                        groupValue: Q13,
-                        onChanged: (value) {
-                          setState(() {
-                            Q13 = value;
-                          });
-                        },
-                        activeColor: Colors.red,
-                      )
-                    ],
-                  ),
-                ),
-                Text('Lido (Navigation)', style: tsOneTextTheme.labelLarge),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 8.0), // Mengatur jarak antara radio buttons
-                  child: Column(
-                    children: [
-                      RadioListTile<String?>(
-                        title: Text('Yes'),
-                        value: 'Yes',
-                        groupValue: Q14,
-                        onChanged: (value) {
-                          setState(() {
-                            Q14 = value;
-                          });
-                        },
-                        activeColor: Colors.red,
-                      ),
-                      RadioListTile<String?>(
-                        title: Text('No'),
-                        value: 'No',
-                        groupValue: Q14,
-                        onChanged: (value) {
-                          setState(() {
-                            Q14 = value;
-                          });
-                        },
-                        activeColor: Colors.red,
-                      )
-                    ],
-                  ),
-                ),
-                Text('Vistair Docunet (Library Document)',
-                    style: tsOneTextTheme.labelLarge),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 8.0), // Mengatur jarak antara radio buttons
-                  child: Column(
-                    children: [
-                      RadioListTile<String?>(
-                        title: Text('Yes'),
-                        value: 'Yes',
-                        groupValue: Q15,
-                        onChanged: (value) {
-                          setState(() {
-                            Q15 = value;
-                          });
-                        },
-                        activeColor: Colors.red,
-                      ),
-                      RadioListTile<String?>(
-                        title: Text('No'),
-                        value: 'No',
-                        groupValue: Q15,
-                        onChanged: (value) {
-                          setState(() {
-                            Q15 = value;
-                          });
-                        },
-                        activeColor: Colors.red,
-                      )
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Text("Additional comment on all observation"),
-                TextFormField(
-                  controller: addionalComentController,
-                  decoration: InputDecoration(
-                    contentPadding:
-                        const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                    labelText: 'Write Here',
-                    border: OutlineInputBorder(),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start, // Agar teks tetap di kiri
+                      children: [
+                        Center(
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "EFB SOFTWARE INTEGRITY",
+                              style: tsOneTextTheme.titleMedium?.copyWith(color: Colors.red), // Mengubah warna teks menjadi hijau
+                            ),
+                          ),
+                        ),
+                        Divider(
+                          color: Colors.grey,
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Text('Airbus Flysmart (Performance)', style: tsOneTextTheme.labelMedium),
+                        Column(
+                          children: [
+                            RadioListTile<String?>(
+                              title: Text('Yes', style: tsOneTextTheme.labelMedium),
+                              value: 'Yes',
+                              groupValue: Q13,
+                              onChanged: (value) {
+                                setState(() {
+                                  Q13 = value;
+                                });
+                              },
+                              activeColor: Colors.red,
+                            ),
+                            RadioListTile<String?>(
+                              title: Text('No', style: tsOneTextTheme.labelMedium),
+                              value: 'No',
+                              groupValue: Q13,
+                              onChanged: (value) {
+                                setState(() {
+                                  Q13 = value;
+                                });
+                              },
+                              activeColor: Colors.red,
+                            )
+                          ],
+                        ),
+                        Text('Lido (Navigation)', style: tsOneTextTheme.labelMedium),
+                        Column(
+                          children: [
+                            RadioListTile<String?>(
+                              title: Text('Yes', style: tsOneTextTheme.labelMedium),
+                              value: 'Yes',
+                              groupValue: Q14,
+                              onChanged: (value) {
+                                setState(() {
+                                  Q14 = value;
+                                });
+                              },
+                              activeColor: Colors.red,
+                            ),
+                            RadioListTile<String?>(
+                              title: Text('No', style: tsOneTextTheme.labelMedium),
+                              value: 'No',
+                              groupValue: Q14,
+                              onChanged: (value) {
+                                setState(() {
+                                  Q14 = value;
+                                });
+                              },
+                              activeColor: Colors.red,
+                            )
+                          ],
+                        ),
+                        Text('Vistair Docunet (Library Document)', style: tsOneTextTheme.labelMedium),
+                        Column(
+                          children: [
+                            RadioListTile<String?>(
+                              title: Text('Yes', style: tsOneTextTheme.labelMedium),
+                              value: 'Yes',
+                              groupValue: Q15,
+                              onChanged: (value) {
+                                setState(() {
+                                  Q15 = value;
+                                });
+                              },
+                              activeColor: Colors.red,
+                            ),
+                            RadioListTile<String?>(
+                              title: Text('No', style: tsOneTextTheme.labelMedium),
+                              value: 'No',
+                              groupValue: Q15,
+                              onChanged: (value) {
+                                setState(() {
+                                  Q15 = value;
+                                });
+                              },
+                              activeColor: Colors.red,
+                            )
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        const Text("Additional comment on all observation"),
+                        TextFormField(
+                          controller: addionalComentController,
+                          decoration: const InputDecoration(
+                            contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                            labelText: 'Write Here',
+                            border: OutlineInputBorder(),
+                          ),
+                          maxLines: 2, // Mengatur jumlah baris teks yang ditampilkan
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],

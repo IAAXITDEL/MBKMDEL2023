@@ -35,7 +35,8 @@ class DetailHistoryDeviceFOView extends GetView {
 
   Future<String> getDocumentIdForFeedback(String feedbackId) async {
     // Ambil semua dokumen dari koleksi 'pilot-feedback'
-    QuerySnapshot feedbackQuerySnapshot = await FirebaseFirestore.instance.collection('pilot-feedback').get();
+    QuerySnapshot feedbackQuerySnapshot =
+        await FirebaseFirestore.instance.collection('pilot-feedback').get();
 
     for (QueryDocumentSnapshot doc in feedbackQuerySnapshot.docs) {
       // Untuk setiap dokumen, periksa apakah 'id' sesuai dengan 'feedbackId'
@@ -686,17 +687,11 @@ class DetailHistoryDeviceFOView extends GetView {
 
                                                 SizedBox(height: 5.0),
                                                 if (status == 'Done')
-                                                  Text(
-                                                    "Return Documentation",
-                                                    style: TextStyle(
-                                                      fontSize: 20,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      color: tsOneColorScheme
-                                                          .onBackground,
-                                                      fontFamily: 'Poppins',
-                                                    ),
-                                                  ),
+                                                  Text("Return Documentation",
+                                                      style: tsOneTextTheme
+                                                          .headlineMedium),
+                                                if (status == 'Done')
+                                                  SizedBox(height: 5.0),
                                                 if (status == 'Done')
                                                   Row(
                                                     children: [
@@ -785,17 +780,9 @@ class DetailHistoryDeviceFOView extends GetView {
                                                 if (status == 'Done')
                                                   SizedBox(height: 15),
                                                 if (status == 'Done')
-                                                  Text(
-                                                    "OCC On Duty",
-                                                    style: TextStyle(
-                                                      fontSize: 18,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      color: tsOneColorScheme
-                                                          .onBackground,
-                                                      fontFamily: 'Poppins',
-                                                    ),
-                                                  ),
+                                                  Text("OCC On Duty",
+                                                      style: tsOneTextTheme
+                                                          .headlineMedium),
                                                 if (status == 'Done')
                                                   SizedBox(height: 7.0),
                                                 if (status == 'Done')
@@ -839,33 +826,60 @@ class DetailHistoryDeviceFOView extends GetView {
                                                   children: [
                                                     Expanded(
                                                       flex: 6,
-                                                      child: Text("Feedback Form", style: tsOneTextTheme.headlineMedium),
+                                                      child: Text(
+                                                          "Feedback Form",
+                                                          style: tsOneTextTheme
+                                                              .headlineMedium),
                                                     ),
                                                     Expanded(child: Text(":")),
                                                     Expanded(
                                                       flex: 6,
                                                       child: TextButton(
                                                         onPressed: () async {
-                                                          if (feedbackId != null && feedbackId.isNotEmpty) {
+                                                          if (feedbackId !=
+                                                                  null &&
+                                                              feedbackId
+                                                                  .isNotEmpty) {
                                                             // Menggunakan Navigator untuk berpindah ke halaman FeedbackDetailPage
-                                                            Navigator.of(context).push(
+                                                            Navigator.of(
+                                                                    context)
+                                                                .push(
                                                               MaterialPageRoute(
-                                                                builder: (context) => FeedbackDetailPage(feedbackId: feedbackId),
+                                                                builder: (context) =>
+                                                                    FeedbackDetailPage(
+                                                                        feedbackId:
+                                                                            feedbackId),
                                                               ),
                                                             );
                                                           } else {
                                                             // Tindakan alternatif jika feedbackId tidak ada atau kosong
-                                                            ScaffoldMessenger.of(context).showSnackBar(
+                                                            ScaffoldMessenger
+                                                                    .of(context)
+                                                                .showSnackBar(
                                                               SnackBar(
-                                                                content: Text('Feedback Not Found'),
-                                                                action: SnackBarAction(
+                                                                content: Text(
+                                                                    'No Feedback'),
+                                                                action:
+                                                                    SnackBarAction(
                                                                   label: 'OK',
-                                                                  onPressed: () {
-                                                                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                                                  onPressed:
+                                                                      () {
+                                                                    ScaffoldMessenger.of(
+                                                                            context)
+                                                                        .hideCurrentSnackBar();
                                                                   },
                                                                 ),
                                                               ),
                                                             );
+
+                                                            Future.delayed(
+                                                                Duration(
+                                                                    seconds: 1),
+                                                                () {
+                                                              ScaffoldMessenger
+                                                                      .of(context)
+                                                                  .hideCurrentSnackBar();
+                                                            });
                                                           }
                                                           print(feedbackId);
                                                         },
@@ -878,14 +892,22 @@ class DetailHistoryDeviceFOView extends GetView {
                                                         //   )),
                                                         // ),
                                                         child: Align(
-                                                          alignment: Alignment.centerLeft,
+                                                          alignment: Alignment
+                                                              .centerLeft,
                                                           child: Text(
                                                             'Open Feedback',
                                                             style: TextStyle(
-                                                              color: TsOneColor.primary,
-                                                              fontWeight: FontWeight.bold,
-                                                              decoration: TextDecoration.underline,
-                                                              decorationColor: TsOneColor.primary,
+                                                              color: TsOneColor
+                                                                  .primary,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              decoration:
+                                                                  TextDecoration
+                                                                      .underline,
+                                                              decorationColor:
+                                                                  TsOneColor
+                                                                      .primary,
                                                             ),
                                                           ),
                                                         ),

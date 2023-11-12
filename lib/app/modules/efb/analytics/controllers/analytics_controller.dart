@@ -118,7 +118,7 @@ class AnalyticsController extends GetxController {
   Future<Map<String, int>> countDevicesHub(String hub) async {
     final firestore = FirebaseFirestore.instance;
     final QuerySnapshot querySnapshot =
-        await firestore.collection('Device').get();
+    await firestore.collection('Device').get();
 
     final Map<String, int> deviceCountByHub = {
       'CGK': 0,

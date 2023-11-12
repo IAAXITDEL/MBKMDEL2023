@@ -766,24 +766,40 @@ class DetailHistoryDeviceView extends GetView {
                                                                           feedbackId),
                                                             ),
                                                           );
-                                                        } else {
+                                                        } else if (feedbackId ==
+                                                                null ||
+                                                            feedbackId == '-') {
                                                           // Tindakan alternatif jika feedbackId tidak ada atau kosong
-                                                          ScaffoldMessenger.of(
-                                                                  context)
-                                                              .showSnackBar(
-                                                            SnackBar(
-                                                              content: Text(
-                                                                  'Feedback Not Found'),
-                                                              action:
-                                                                  SnackBarAction(
-                                                                label: 'OK',
-                                                                onPressed: () {
-                                                                  ScaffoldMessenger.of(
-                                                                          context)
-                                                                      .hideCurrentSnackBar();
-                                                                },
-                                                              ),
-                                                            ),
+                                                          Builder(
+                                                            builder: (context) {
+                                                              // Menampilkan Snackbar "Data Not Found" selama 1 detik
+                                                              Future.delayed(
+                                                                  Duration(
+                                                                      seconds:
+                                                                          1),
+                                                                  () {
+                                                                ScaffoldMessenger.of(
+                                                                        context)
+                                                                    .showSnackBar(
+                                                                  SnackBar(
+                                                                    content: Text(
+                                                                        'Feedback Not Found'),
+                                                                    action:
+                                                                        SnackBarAction(
+                                                                      label:
+                                                                          'OK',
+                                                                      onPressed:
+                                                                          () {
+                                                                        ScaffoldMessenger.of(context)
+                                                                            .hideCurrentSnackBar();
+                                                                      },
+                                                                    ),
+                                                                  ),
+                                                                );
+                                                              });
+
+                                                              return Container();
+                                                            },
                                                           );
                                                         }
                                                         print(feedbackId);
@@ -864,7 +880,7 @@ class DetailHistoryDeviceView extends GetView {
                                               //             'Open Feedback',
                                               //             style: TextStyle(color: Colors.white),
                                               //           ),
-                                              //         ),
+                                              //         ), 3
                                               //       ),
                                               //     ),
                                               //   ],
@@ -875,115 +891,113 @@ class DetailHistoryDeviceView extends GetView {
                                                 children: [
                                                   Expanded(
                                                     child: ElevatedButton(
-                                                        onPressed: () {
-                                                          showDialog(
-                                                            context: context,
-                                                            barrierDismissible:
-                                                                false,
-                                                            builder: (context) {
-                                                              return AlertDialog(
-                                                                content: Column(
-                                                                  mainAxisSize:
-                                                                      MainAxisSize
-                                                                          .min,
-                                                                  children: [
-                                                                    CircularProgressIndicator(),
-                                                                    SizedBox(
-                                                                        height:
-                                                                            20),
-                                                                    Text(
-                                                                        'Please Wait...'),
-                                                                  ],
-                                                                ),
-                                                              );
-                                                            },
-                                                          );
+                                                      onPressed: () {
+                                                        showDialog(
+                                                          context: context,
+                                                          barrierDismissible:
+                                                              false,
+                                                          builder: (context) {
+                                                            return AlertDialog(
+                                                              content: Column(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .min,
+                                                                children: [
+                                                                  CircularProgressIndicator(),
+                                                                  SizedBox(
+                                                                      height:
+                                                                          20),
+                                                                  Text(
+                                                                      'Please Wait...'),
+                                                                ],
+                                                              ),
+                                                            );
+                                                          },
+                                                        );
 
-                                                          generateLogPdfDevice1(
-                                                            userName: userData[
-                                                                'NAME'],
-                                                            userRank: userData[
-                                                                'RANK'],
-                                                            userID: userData[
-                                                                    'ID NO']
-                                                                .toString(),
-                                                            occAccept:
-                                                                occAccepteduserData?[
-                                                                    'NAME'],
-                                                            occGiven:
-                                                                occOnDutyuserData?[
-                                                                    'NAME'],
-                                                            deviceNo: data[
-                                                                'device_name'],
-                                                            iosVer: deviceData[
-                                                                'iosver'],
-                                                            flySmart:
-                                                                deviceData[
-                                                                    'flysmart'],
-                                                            lido: deviceData[
-                                                                ' lidoversion'],
-                                                            docunet: deviceData[
-                                                                'docuversion'],
-                                                            deviceCondition:
-                                                                deviceData[
-                                                                    'condition'],
-                                                            ttdUser: data[
-                                                                'signature_url'],
-                                                            ttdOCC: data[
-                                                                'signature_url_occ'],
-                                                            loan: data[
-                                                                'timestamp'],
-                                                            statusdevice: data[
-                                                                'statusDevice'],
-                                                            ttdOtherCrew: data !=
-                                                                    null
-                                                                ? data[
-                                                                    'signature_url_other_user']
-                                                                : 'Not Found',
-                                                            handoverName:
-                                                                handoverTouserData !=
-                                                                        null
-                                                                    ? handoverTouserData[
-                                                                        'NAME']
-                                                                    : 'Not Found',
-                                                            handoverID: data[
-                                                                'handover-to-crew'],
-                                                          ).then((_) {
-                                                            Navigator.pop(
-                                                                context);
-                                                          }).catchError(
-                                                              (error) {
-                                                            print(
-                                                                'Error generating PDF: $error');
-                                                            Navigator.pop(
-                                                                context);
-                                                          });
-                                                          //generateLogPdfDevice1();
-                                                        },
-                                                        style: ElevatedButton
-                                                            .styleFrom(
-                                                          backgroundColor:
-                                                              TsOneColor
-                                                                  .greenColor,
-                                                          shape:
-                                                              RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        4.0),
-                                                          ),
+                                                        generateLogPdfDevice1(
+                                                          userName:
+                                                              userData['NAME'],
+                                                          userRank:
+                                                              userData['RANK'],
+                                                          userID:
+                                                              userData['ID NO']
+                                                                  .toString(),
+                                                          occAccept:
+                                                              occAccepteduserData?[
+                                                                  'NAME'],
+                                                          occGiven:
+                                                              occOnDutyuserData?[
+                                                                  'NAME'],
+                                                          deviceNo: data[
+                                                              'device_name'],
+                                                          iosVer: deviceData[
+                                                              'iosver'],
+                                                          flySmart: deviceData[
+                                                              'flysmart'],
+                                                          lido: deviceData[
+                                                              ' lidoversion'],
+                                                          docunet: deviceData[
+                                                              'docuversion'],
+                                                          deviceCondition:
+                                                              deviceData[
+                                                                  'condition'],
+                                                          ttdUser: data[
+                                                              'signature_url'],
+                                                          ttdOCC: data[
+                                                              'signature_url_occ'],
+                                                          loan:
+                                                              data['timestamp'],
+                                                          statusdevice: data[
+                                                              'statusDevice'],
+                                                          ttdOtherCrew: data !=
+                                                                  null
+                                                              ? data[
+                                                                  'signature_url_other_user']
+                                                              : 'Not Found',
+                                                          handoverName:
+                                                              handoverTouserData !=
+                                                                      null
+                                                                  ? handoverTouserData[
+                                                                      'NAME']
+                                                                  : 'Not Found',
+                                                          handoverID: data[
+                                                              'handover-to-crew'],
+                                                        ).then((_) {
+                                                          Navigator.pop(
+                                                              context);
+                                                        }).catchError((error) {
+                                                          print(
+                                                              'Error generating PDF: $error');
+                                                          Navigator.pop(
+                                                              context);
+                                                        });
+                                                        //generateLogPdfDevice1();
+                                                      },
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                        backgroundColor:
+                                                            TsOneColor
+                                                                .greenColor,
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      4.0),
                                                         ),
-                                                        child: Padding(
-                                                          padding:
-                                                              EdgeInsets.all(
-                                                                  15),
-                                                          child: Text(
-                                                            'Open Attachment History',
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .white),
-                                                          ),
-                                                        )),
+                                                      ),
+                                                      child: Padding(
+                                                        padding:
+                                                            EdgeInsets.all(15),
+                                                        child: Text(
+                                                          'Open Attachment History',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white),
+                                                        ),
+                                                      ),
+                                                    ),
                                                   ),
                                                 ],
                                               ),

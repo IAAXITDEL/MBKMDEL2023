@@ -2,11 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:ts_one/app/modules/efb/pilot/views/pilot_un_request_device_view.dart';
 import 'package:ts_one/app/modules/efb/pilot/views/pilot_un_return_device_view.dart';
 import 'package:ts_one/app/modules/efb/pilot/views/pilot_unreturn_to_other_crew.dart';
 import 'package:ts_one/app/modules/efb/pilot/views/pilotrequestdevice_view.dart';
 import 'package:ts_one/app/modules/efb/pilot/views/pilotreturndeviceview_view.dart';
+import 'package:ts_one/app/routes/app_pages.dart';
 import 'package:ts_one/app/routes/app_pages.dart';
 import 'package:ts_one/presentation/shared_components/TitleText.dart';
 import '../../../../../presentation/theme.dart';
@@ -65,7 +67,7 @@ class HomePilotView extends GetView<HomePilotController> {
       showChildOpacityTransition: false,
       child: ListView(children: [
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 50),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           child: Column(
             children: [
               Row(

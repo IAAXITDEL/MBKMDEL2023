@@ -50,7 +50,9 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
     final CollectionReference deviceCollection =
         FirebaseFirestore.instance.collection('pilot-device-1');
     QuerySnapshot deviceSnapshot = await deviceCollection.where('statusDevice',
-        whereIn: ['Done', 'handover-to-other-crew']).get();
+        whereIn: ['Done', 'handover-to-other-crew'])
+        .limit(15) // Menampilkan hanya 15 dokumen
+        .get();
 
     List<Map<String, dynamic>> devicesData = deviceSnapshot.docs
         .map((DocumentSnapshot document) =>
@@ -534,6 +536,7 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                         isGreaterThanOrEqualTo: _startDate,
                         isLessThanOrEqualTo: _endDate) // Add this line
                     .where('field_hub', isEqualTo: userHub)
+                    .limit(15) // Menampilkan hanya 15 dokumen
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
@@ -1015,7 +1018,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                   const SizedBox(width: 16),
                   Expanded(
                     child: InkWell(
-                      onTap: () => _selectEndDate(context),
+                      onTap: () => _selectEndDate( context),
                       child: InputDecorator(
                         decoration: const InputDecoration(
                           labelText: 'To',

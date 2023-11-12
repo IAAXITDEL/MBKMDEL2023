@@ -19,7 +19,7 @@ import 'fo_unreturn_other_crew.dart';
 
 class HomeFOView extends GetView<HomeFOController> {
   Future<void> _handleRefresh() async {
-    return await Future.delayed(Duration(milliseconds: 500)).then((value) {
+    return await Future.delayed(const Duration(milliseconds: 500)).then((value) {
       Get.offAllNamed(Routes.NAVOCC);
     });
   }
@@ -66,7 +66,7 @@ class HomeFOView extends GetView<HomeFOController> {
       showChildOpacityTransition: false,
       child: ListView(children: [
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 50),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           child: Column(
             children: [
               Row(
@@ -119,7 +119,7 @@ class HomeFOView extends GetView<HomeFOController> {
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                   height:
                       20), // Tambahkan SizedBox di sini untuk memberikan jarak
 
@@ -127,7 +127,7 @@ class HomeFOView extends GetView<HomeFOController> {
                 future: requestdeviceController.getFODevices(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator();
+                    return const CircularProgressIndicator();
                   } else if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   } else {
@@ -172,36 +172,36 @@ class HomeFOView extends GetView<HomeFOController> {
                               height: 20.0,
                             ),
 
-                            Align(
+                            const Align(
                               alignment: Alignment.centerLeft,
                               child: BlackTitleText(text: "Need Confirmation"),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 15.0,
                             ),
-                            Text(
+                            const Text(
                               "There is no data that needs confirmation",
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 20.0,
                             ),
-                            Align(
+                            const Align(
                               alignment: Alignment.centerLeft,
                               child: BlackTitleText(text: "In Use"),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
 
-                            //IN USE PILOT HERE
-                            Column(
-                              children: inUsePilotDocs.map((doc) {
-                                // Your existing code for displaying 'in-use-pilot' data
-                                String deviceName2 = doc['device_name2'];
-                                String deviceName3 = doc['device_name3'];
-                                String OccOnDuty = doc['occ-on-duty'];
-                                String userId = doc['user_uid'];
-                                String deviceId = doc.id;
+                                //IN USE PILOT HERE
+                                Column(
+                                  children: inUsePilotDocs.map((doc) {
+                                    // Your existing code for displaying 'in-use-pilot' data
+                                    String deviceName2 = doc['device_name2'];
+                                    String deviceName3 = doc['device_name3'];
+                                    String OccOnDuty = doc['occ-on-duty'];
+                                    String userId = doc['user_uid'];
+                                    String deviceId = doc.id;
 
                                 return Align(
                                   alignment: Alignment.centerLeft,
@@ -236,29 +236,29 @@ class HomeFOView extends GetView<HomeFOController> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Column(
+                                              const Column(
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
                                                 children: [
-                                                  const Text(
+                                                  Text(
                                                     "Device 2",
                                                     style: TextStyle(
                                                         color: TsOneColor
                                                             .secondary),
                                                   ),
-                                                  const Text(
+                                                  Text(
                                                     "Device 3",
                                                     style: TextStyle(
                                                         color: TsOneColor
                                                             .secondary),
                                                   ),
-                                                  const Text(
+                                                  Text(
                                                     'FO ID',
                                                     style: TextStyle(
                                                         color: TsOneColor
                                                             .secondary),
                                                   ),
-                                                  const Text(
+                                                  Text(
                                                     'Date',
                                                     style: TextStyle(
                                                         color: TsOneColor
@@ -269,27 +269,27 @@ class HomeFOView extends GetView<HomeFOController> {
                                               const SizedBox(
                                                 width: 5,
                                               ),
-                                              Column(
+                                              const Column(
                                                 children: [
-                                                  const Text(
+                                                  Text(
                                                     ':',
                                                     style: TextStyle(
                                                         color: TsOneColor
                                                             .secondary),
                                                   ),
-                                                  const Text(
+                                                  Text(
                                                     ':',
                                                     style: TextStyle(
                                                         color: TsOneColor
                                                             .secondary),
                                                   ),
-                                                  const Text(
+                                                  Text(
                                                     ':',
                                                     style: TextStyle(
                                                         color: TsOneColor
                                                             .secondary),
                                                   ),
-                                                  const Text(
+                                                  Text(
                                                     ':',
                                                     style: TextStyle(
                                                         color: TsOneColor
@@ -306,21 +306,21 @@ class HomeFOView extends GetView<HomeFOController> {
                                                     CrossAxisAlignment.start,
                                                 children: [
                                                   Text(deviceName2,
-                                                      style: TextStyle(
+                                                      style: const TextStyle(
                                                           color: TsOneColor
                                                               .secondary)),
                                                   Text(deviceName3,
-                                                      style: TextStyle(
+                                                      style: const TextStyle(
                                                           color: TsOneColor
                                                               .secondary)),
                                                   Text(userId,
-                                                      style: TextStyle(
+                                                      style: const TextStyle(
                                                           color: TsOneColor
                                                               .secondary)),
                                                   Text(
                                                       _formatTimestamp(
                                                           doc['timestamp']),
-                                                      style: TextStyle(
+                                                      style: const TextStyle(
                                                           color: TsOneColor
                                                               .secondary)),
                                                 ],
@@ -339,17 +339,17 @@ class HomeFOView extends GetView<HomeFOController> {
                                 );
                               }).toList(),
                             ),
-                            SizedBox(height: 10),
+                            const SizedBox(height: 10),
                           ],
 
                           // Display 'waiting-confirmation-1' data
                           if (waitingConfirmationDocs.isNotEmpty) ...[
-                            Align(
+                            const Align(
                               alignment: Alignment.centerLeft,
                               child: BlackTitleText(
                                   text: "Waiting For OCC To Confirm"),
                             ),
-                            SizedBox(height: 10),
+                            const SizedBox(height: 10),
                             Column(
                               children: waitingConfirmationDocs.map((doc) {
                                 String deviceName2 = doc['device_name2'];

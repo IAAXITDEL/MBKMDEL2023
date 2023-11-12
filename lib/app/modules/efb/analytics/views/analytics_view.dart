@@ -209,7 +209,7 @@ class AnalyticsView extends GetView<AnalyticsController> {
         centerTitle: true,
         actions: [
           IconButton(
-            icon: Icon(Icons.table_chart_rounded),
+            icon: const Icon(Icons.table_chart_rounded),
             tooltip: "Export to Sheet",
             onPressed: () async {
               if (selectedStartDate != null && selectedEndDate != null) {
@@ -220,7 +220,7 @@ class AnalyticsView extends GetView<AnalyticsController> {
                 await exportToExcel(data!);
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
+                  const SnackBar(
                     content: Text('Please select both start and end dates.'),
                   ),
                 );
@@ -229,7 +229,7 @@ class AnalyticsView extends GetView<AnalyticsController> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
+      body: const SingleChildScrollView(
         // scrollDirection: Axis.horizontal,
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
@@ -312,7 +312,6 @@ class _AnalyticsHubState extends State<AnalyticsHub>
 
   @override
   void dispose() {
-    // tabController?.dispose();
     super.dispose();
   }
 
@@ -343,7 +342,7 @@ class _AnalyticsHubState extends State<AnalyticsHub>
                       }
                     },
                     child: InputDecorator(
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Start Date',
                         border: OutlineInputBorder(),
                       ),
@@ -356,7 +355,7 @@ class _AnalyticsHubState extends State<AnalyticsHub>
                     ),
                   ),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 Expanded(
                   child: InkWell(
                     onTap: () async {
@@ -373,7 +372,7 @@ class _AnalyticsHubState extends State<AnalyticsHub>
                       }
                     },
                     child: InputDecorator(
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'End Date',
                         border: OutlineInputBorder(),
                       ),
@@ -398,12 +397,12 @@ class _AnalyticsHubState extends State<AnalyticsHub>
                   borderRadius: BorderRadius.circular(5.0),
                 ),
                 contentPadding:
-                    EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                labelStyle: TextStyle(fontSize: 12, color: Colors.black),
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                labelStyle: const TextStyle(fontSize: 12, color: Colors.black),
               ),
               child: DropdownButton<String>(
                 value: selectedHub,
-                icon: Icon(Icons.arrow_drop_down, size: 24),
+                icon: const Icon(Icons.arrow_drop_down, size: 24),
                 iconSize: 24,
                 items: hubOptions.map((String hub) {
                   return DropdownMenuItem<String>(
@@ -428,8 +427,8 @@ class _AnalyticsHubState extends State<AnalyticsHub>
           percentageDevicesInUse('CGK'),
           percentageDevices23InUse('CGK'),
           percentageDevices23InUsed('CGK'),
-          SizedBox(height: 20),
-          Padding(
+          const SizedBox(height: 20),
+          const Padding(
             padding: EdgeInsets.only(bottom: 8.0),
             child: Row(
               children: <Widget>[
@@ -453,22 +452,22 @@ class _AnalyticsHubState extends State<AnalyticsHub>
               ],
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Padding(
             padding: const EdgeInsets.only(top: 16.0, right: 16.0, left: 16.0),
             child: LegendsListWidget(
               legends: [
-                Legend('CGK', Color.fromARGB(255, 255, 243, 226)),
-                Legend('KNO', Color.fromARGB(255, 255, 229, 202)),
-                Legend('DPS', Color.fromARGB(250, 250, 152, 132)),
-                Legend('SUB', Color.fromARGB(231, 231, 70, 70)),
+                Legend('CGK', const Color.fromARGB(255, 255, 243, 226)),
+                Legend('KNO', const Color.fromARGB(255, 255, 229, 202)),
+                Legend('DPS', const Color.fromARGB(250, 250, 152, 132)),
+                Legend('SUB', const Color.fromARGB(231, 231, 70, 70)),
               ],
             ),
           ),
           PieChartWidget(totalDeviceCounts),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
         ],
       ),
     );
@@ -480,7 +479,7 @@ class _AnalyticsHubState extends State<AnalyticsHub>
         future: AnalyticsController().countDevicesHub_InUse_AllHubs(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
+            return const CircularProgressIndicator();
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else {
@@ -495,8 +494,8 @@ class _AnalyticsHubState extends State<AnalyticsHub>
                       children: [
                         Text("Acknowledgment", style: tsOneTextTheme.bodySmall),
                         Container(
-                          margin: EdgeInsets.all(6.0),
-                          padding: EdgeInsets.all(16.0),
+                          margin: const EdgeInsets.all(6.0),
+                          padding: const EdgeInsets.all(16.0),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(4.0),
                               border: Border.all(
@@ -521,13 +520,13 @@ class _AnalyticsHubState extends State<AnalyticsHub>
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
-                              return CircularProgressIndicator();
+                              return const CircularProgressIndicator();
                             } else if (snapshot.hasError) {
                               return Text('Error: ${snapshot.error}');
                             } else {
                               return Container(
-                                margin: EdgeInsets.all(6.0),
-                                padding: EdgeInsets.all(16.0),
+                                margin: const EdgeInsets.all(6.0),
+                                padding: const EdgeInsets.all(16.0),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(4.0),
                                   border: Border.all(
@@ -553,7 +552,7 @@ class _AnalyticsHubState extends State<AnalyticsHub>
         },
       );
     } else {
-      return Text('Tab tidak valid');
+      return const Text('Tab tidak valid');
     }
   }
 
@@ -563,7 +562,7 @@ class _AnalyticsHubState extends State<AnalyticsHub>
         future: AnalyticsController().countDevicesHub_InUse_AllHubs(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
+            return const CircularProgressIndicator();
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else {
@@ -586,7 +585,7 @@ class _AnalyticsHubState extends State<AnalyticsHub>
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
-                              return CircularProgressIndicator();
+                              return const CircularProgressIndicator();
                             } else if (snapshot.hasError) {
                               return Text('Error: ${snapshot.error}');
                             } else {
@@ -595,8 +594,8 @@ class _AnalyticsHubState extends State<AnalyticsHub>
                               final int deviceNameCount =
                                   snapshot.data?[1] as int;
                               return Container(
-                                margin: EdgeInsets.all(6.0),
-                                padding: EdgeInsets.all(16.0),
+                                margin: const EdgeInsets.all(6.0),
+                                padding: const EdgeInsets.all(16.0),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(4.0),
                                   border: Border.all(
@@ -632,7 +631,7 @@ class _AnalyticsHubState extends State<AnalyticsHub>
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
-                              return CircularProgressIndicator();
+                              return const CircularProgressIndicator();
                             } else if (snapshot.hasError) {
                               return Text('Error: ${snapshot.error}');
                             } else {
@@ -641,8 +640,8 @@ class _AnalyticsHubState extends State<AnalyticsHub>
                               final int deviceNameCountDone =
                                   snapshot.data?[1] as int;
                               return Container(
-                                margin: EdgeInsets.all(6.0),
-                                padding: EdgeInsets.all(16.0),
+                                margin: const EdgeInsets.all(6.0),
+                                padding: const EdgeInsets.all(16.0),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(4.0),
                                   border: Border.all(
@@ -671,7 +670,7 @@ class _AnalyticsHubState extends State<AnalyticsHub>
         },
       );
     } else {
-      return Text('Tab tidak valid');
+      return const Text('Tab tidak valid');
     }
   }
 
@@ -681,7 +680,7 @@ class _AnalyticsHubState extends State<AnalyticsHub>
         future: AnalyticsController().countDevicesHub_InUse_AllHubs(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
+            return const CircularProgressIndicator();
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else {
@@ -704,7 +703,7 @@ class _AnalyticsHubState extends State<AnalyticsHub>
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
-                              return CircularProgressIndicator();
+                              return const CircularProgressIndicator();
                             } else if (snapshot.hasError) {
                               return Text('Error: ${snapshot.error}');
                             } else {
@@ -713,8 +712,8 @@ class _AnalyticsHubState extends State<AnalyticsHub>
                               final int deviceNameCount23 =
                                   snapshot.data?[1] as int;
                               return Container(
-                                margin: EdgeInsets.all(6.0),
-                                padding: EdgeInsets.all(16.0),
+                                margin: const EdgeInsets.all(6.0),
+                                padding: const EdgeInsets.all(16.0),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(4.0),
                                   border: Border.all(
@@ -750,7 +749,7 @@ class _AnalyticsHubState extends State<AnalyticsHub>
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
-                              return CircularProgressIndicator();
+                              return const CircularProgressIndicator();
                             } else if (snapshot.hasError) {
                               return Text('Error: ${snapshot.error}');
                             } else {
@@ -759,8 +758,8 @@ class _AnalyticsHubState extends State<AnalyticsHub>
                               final int deviceNameCount2and3 =
                                   snapshot.data?[1] as int;
                               return Container(
-                                margin: EdgeInsets.all(6.0),
-                                padding: EdgeInsets.all(16.0),
+                                margin: const EdgeInsets.all(6.0),
+                                padding: const EdgeInsets.all(16.0),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(4.0),
                                   border: Border.all(
@@ -789,7 +788,7 @@ class _AnalyticsHubState extends State<AnalyticsHub>
         },
       );
     } else {
-      return Text('Tab tidak valid');
+      return const Text('Tab tidak valid');
     }
   }
 
@@ -799,7 +798,7 @@ class _AnalyticsHubState extends State<AnalyticsHub>
         future: AnalyticsController().countDevicesHub_InUse_AllHubs(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
+            return const CircularProgressIndicator();
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else {
@@ -822,7 +821,7 @@ class _AnalyticsHubState extends State<AnalyticsHub>
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
-                              return CircularProgressIndicator();
+                              return const CircularProgressIndicator();
                             } else if (snapshot.hasError) {
                               return Text('Error: ${snapshot.error}');
                             } else {
@@ -834,11 +833,12 @@ class _AnalyticsHubState extends State<AnalyticsHub>
                                   style: TextButton.styleFrom(
                                     backgroundColor: tsOneColorScheme.primary,
                                     primary: Colors.white,
-                                    padding: EdgeInsets.all(16),
-                                    minimumSize: Size(200, 50),
+                                    padding: const EdgeInsets.all(16),
+                                    minimumSize: const Size(200, 50),
                                   ),
                                   child: Text("$deviceNotReturn",
-                                      style: TextStyle(color: Colors.white)),
+                                      style:
+                                          const TextStyle(color: Colors.white)),
                                 ),
                               );
                             }
@@ -854,7 +854,7 @@ class _AnalyticsHubState extends State<AnalyticsHub>
         },
       );
     } else {
-      return Text('Tab tidak valid');
+      return const Text('Tab tidak valid');
     }
   }
 
@@ -910,7 +910,7 @@ class _PieChartWidgetState extends State<PieChartWidget> {
       future: AnalyticsController().countDevicesInUse(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator(); // Display a loading indicator while fetching data.
+          return const CircularProgressIndicator(); // Display a loading indicator while fetching data.
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         } else {
@@ -936,10 +936,10 @@ class _PieChartWidgetState extends State<PieChartWidget> {
 
   List<PieChartSectionData> _getChartSections(int? deviceCountInUse) {
     final List<Color> colors = [
-      Color.fromARGB(255, 255, 243, 226),
-      Color.fromARGB(255, 255, 229, 202),
-      Color.fromARGB(250, 250, 152, 132),
-      Color.fromARGB(231, 231, 70, 70),
+      const Color.fromARGB(255, 255, 243, 226),
+      const Color.fromARGB(255, 255, 229, 202),
+      const Color.fromARGB(250, 250, 152, 132),
+      const Color.fromARGB(231, 231, 70, 70),
     ];
 
     final otherSections = List.generate(widget.deviceCounts.length, (i) {
@@ -951,7 +951,7 @@ class _PieChartWidgetState extends State<PieChartWidget> {
         value: count.toDouble(),
         color: colors[i % colors.length],
         radius: 80,
-        titleStyle: TextStyle(
+        titleStyle: const TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w500,
           color: Colors.black,

@@ -222,7 +222,6 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
         );
       }
     }
-
     return const CircleAvatar(
       backgroundImage: AssetImage('assets/images/placeholder_person.png'),
       radius: 20.0,
@@ -297,6 +296,11 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                   ),
                   const SizedBox(width: 16.0),
                   ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4.0),
+                      ),
+                    ),
                     onPressed: () async {
                       String qrCode = await FlutterBarcodeScanner.scanBarcode(
                         '#ff6666', // Warna overlay saat pemindaian
@@ -462,6 +466,11 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                   ),
                   const SizedBox(width: 16.0),
                   ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4.0),
+                      ),
+                    ),
                     onPressed: () async {
                       String qrCode = await FlutterBarcodeScanner.scanBarcode(
                         '#ff6666', // Warna overlay saat pemindaian
@@ -478,7 +487,10 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                         });
                       }
                     },
-                    child: const Icon(Icons.qr_code_2),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 5),
+                      child: const Icon(Icons.qr_code_2),
+                    ),
                   ),
                 ],
               ),
@@ -616,22 +628,20 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
       ),
       bottomNavigationBar: BottomAppBar(
         surfaceTintColor: CupertinoColors.tertiarySystemBackground,
-        child: Expanded(
-          child: ElevatedButton(
-            onPressed: () {
-              if (selectedDevice2 != null && selectedDevice3 != null) {
-                _showConfirmationDialog();
-              }
-            },
-            style: ElevatedButton.styleFrom(
-                backgroundColor: TsOneColor.greenColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(4.0),
-                )),
-            child: const Text(
-              'Submit',
-              style: TextStyle(color: Colors.white),
-            ),
+        child: ElevatedButton(
+          onPressed: () {
+            if (selectedDevice2 != null && selectedDevice3 != null) {
+              _showConfirmationDialog();
+            }
+          },
+          style: ElevatedButton.styleFrom(
+              backgroundColor: TsOneColor.greenColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4.0),
+              )),
+          child: const Text(
+            'Submit',
+            style: TextStyle(color: Colors.white),
           ),
         ),
       ),

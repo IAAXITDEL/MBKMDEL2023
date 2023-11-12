@@ -122,7 +122,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: FutureBuilder<DocumentSnapshot>(
             future: FirebaseFirestore.instance
                 .collection("pilot-device-1")
@@ -138,7 +138,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
               }
 
               if (!snapshot.hasData || !snapshot.data!.exists) {
-                return Center(child: Text('Data not found'));
+                return const Center(child: Text('Data not found'));
               }
 
               final data = snapshot.data!.data() as Map<String, dynamic>;
@@ -150,7 +150,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                     .get(),
                 builder: (context, userSnapshot) {
                   if (userSnapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
+                    return const Center(child: CircularProgressIndicator());
                   }
 
                   if (userSnapshot.hasError) {
@@ -158,7 +158,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                   }
 
                   if (!userSnapshot.hasData || !userSnapshot.data!.exists) {
-                    return Center(child: Text('User data not found'));
+                    return const Center(child: Text('User data not found'));
                   }
 
                   final userData =
@@ -172,7 +172,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                     builder: (context, otheruserSnapshot) {
                       if (otheruserSnapshot.connectionState ==
                           ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator());
+                        return const Center(child: CircularProgressIndicator());
                       }
 
                       if (otheruserSnapshot.hasError) {
@@ -182,7 +182,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
 
                       if (!otheruserSnapshot.hasData ||
                           !otheruserSnapshot.data!.exists) {
-                        return Center(child: Text('Other Crew data not found'));
+                        return const Center(child: Text('Other Crew data not found'));
                       }
 
                       final otheruserData = otheruserSnapshot.data!.data()
@@ -196,7 +196,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                         builder: (context, device2Snapshot) {
                           if (device2Snapshot.connectionState ==
                               ConnectionState.waiting) {
-                            return Center(child: CircularProgressIndicator());
+                            return const Center(child: CircularProgressIndicator());
                           }
 
                           if (device2Snapshot.hasError) {
@@ -206,7 +206,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
 
                           if (!device2Snapshot.hasData ||
                               !device2Snapshot.data!.exists) {
-                            return Center(
+                            return const Center(
                                 child: Text('Device data 2 not found'));
                           }
 
@@ -221,7 +221,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                             builder: (context, device3Snapshot) {
                               if (device3Snapshot.connectionState ==
                                   ConnectionState.waiting) {
-                                return Center(
+                                return const Center(
                                     child: CircularProgressIndicator());
                               }
 
@@ -233,7 +233,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
 
                               if (!device3Snapshot.hasData ||
                                   !device3Snapshot.data!.exists) {
-                                return Center(
+                                return const Center(
                                     child: Text('Device data not found'));
                               }
 
@@ -244,14 +244,14 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    SizedBox(height: 10.0),
+                                    const SizedBox(height: 10.0),
                                     Align(
                                       alignment: Alignment.centerRight,
                                       child: Text(
                                           _formatTimestamp(data['timestamp']),
                                           style: tsOneTextTheme.labelSmall),
                                     ),
-                                    SizedBox(height: 10.0),
+                                    const SizedBox(height: 10.0),
                                     Align(
                                       alignment: Alignment.centerLeft,
                                       child: Text(
@@ -259,7 +259,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                         style: tsOneTextTheme.headlineMedium,
                                       ),
                                     ),
-                                    SizedBox(height: 10.0),
+                                    const SizedBox(height: 10.0),
                                     Row(
                                       children: [
                                         Expanded(
@@ -268,7 +268,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                               "ID NO",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        Expanded(child: Text(":")),
+                                        const Expanded(child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -278,7 +278,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 5.0),
+                                    const SizedBox(height: 5.0),
                                     Row(
                                       children: [
                                         Expanded(
@@ -287,7 +287,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                               "Name",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        Expanded(child: Text(":")),
+                                        const Expanded(child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -297,7 +297,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 5.0),
+                                    const SizedBox(height: 5.0),
                                     Row(
                                       children: [
                                         Expanded(
@@ -306,7 +306,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                               "RANK",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        Expanded(child: Text(":")),
+                                        const Expanded(child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -316,7 +316,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 16.0),
+                                    const SizedBox(height: 16.0),
                                     Align(
                                       alignment: Alignment.centerLeft,
                                       child: Text(
@@ -324,7 +324,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                         style: tsOneTextTheme.headlineMedium,
                                       ),
                                     ),
-                                    SizedBox(height: 10.0),
+                                    const SizedBox(height: 10.0),
                                     Row(
                                       children: [
                                         Expanded(
@@ -333,7 +333,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                               "ID NO",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        Expanded(child: Text(":")),
+                                        const Expanded(child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -343,7 +343,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 5.0),
+                                    const SizedBox(height: 5.0),
                                     Row(
                                       children: [
                                         Expanded(
@@ -352,7 +352,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                               "Name",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        Expanded(child: Text(":")),
+                                        const Expanded(child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -362,7 +362,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 5.0),
+                                    const SizedBox(height: 5.0),
                                     Row(
                                       children: [
                                         Expanded(
@@ -371,7 +371,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                               "Rank",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        Expanded(child: Text(":")),
+                                        const Expanded(child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -415,7 +415,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                         style: tsOneTextTheme.headlineMedium,
                                       ),
                                     ),
-                                    SizedBox(height: 10.0),
+                                    const SizedBox(height: 10.0),
                                     Row(
                                       children: [
                                         Expanded(
@@ -424,7 +424,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                               "Device No",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        Expanded(child: Text(":")),
+                                        const Expanded(child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -434,7 +434,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 5.0),
+                                    const SizedBox(height: 5.0),
                                     Row(
                                       children: [
                                         Expanded(
@@ -443,7 +443,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                               "IOS Version",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        Expanded(child: Text(":")),
+                                        const Expanded(child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -453,7 +453,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 5.0),
+                                    const SizedBox(height: 5.0),
                                     Row(
                                       children: [
                                         Expanded(
@@ -462,7 +462,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                               "FlySmart Version",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        Expanded(child: Text(":")),
+                                        const Expanded(child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -472,7 +472,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 5.0),
+                                    const SizedBox(height: 5.0),
                                     Row(
                                       children: [
                                         Expanded(
@@ -481,7 +481,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                               "Docunet Version",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        Expanded(child: Text(":")),
+                                        const Expanded(child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -491,7 +491,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 5.0),
+                                    const SizedBox(height: 5.0),
                                     Row(
                                       children: [
                                         Expanded(
@@ -500,7 +500,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                               "Lido mPilot Version",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        Expanded(child: Text(":")),
+                                        const Expanded(child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -510,7 +510,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 5.0),
+                                    const SizedBox(height: 5.0),
                                     Row(
                                       children: [
                                         Expanded(
@@ -519,7 +519,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                               "HUB",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        Expanded(child: Text(":")),
+                                        const Expanded(child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -529,7 +529,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 5.0),
+                                    const SizedBox(height: 5.0),
                                     Row(
                                       children: [
                                         Expanded(
@@ -538,7 +538,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                               "Condition",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        Expanded(child: Text(":")),
+                                        const Expanded(child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -548,7 +548,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 20.0),
+                                    const SizedBox(height: 20.0),
                                     Align(
                                       alignment: Alignment.centerLeft,
                                       child: Text(
@@ -556,7 +556,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                         style: tsOneTextTheme.headlineMedium,
                                       ),
                                     ),
-                                    SizedBox(height: 10.0),
+                                    const SizedBox(height: 10.0),
                                     Row(
                                       children: [
                                         Expanded(
@@ -565,7 +565,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                               "Device No",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        Expanded(child: Text(":")),
+                                        const Expanded(child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -575,7 +575,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 5.0),
+                                    const SizedBox(height: 5.0),
                                     Row(
                                       children: [
                                         Expanded(
@@ -584,7 +584,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                               "IOS Version",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        Expanded(child: Text(":")),
+                                        const Expanded(child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -594,7 +594,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 5.0),
+                                    const SizedBox(height: 5.0),
                                     Row(
                                       children: [
                                         Expanded(
@@ -603,7 +603,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                               "FlySmart Version",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        Expanded(child: Text(":")),
+                                        const Expanded(child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -613,7 +613,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 5.0),
+                                    const SizedBox(height: 5.0),
                                     Row(
                                       children: [
                                         Expanded(
@@ -622,7 +622,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                               "Docunet Version",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        Expanded(child: Text(":")),
+                                        const Expanded(child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -632,7 +632,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 5.0),
+                                    const SizedBox(height: 5.0),
                                     Row(
                                       children: [
                                         Expanded(
@@ -641,7 +641,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                               "Lido mPilot Version",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        Expanded(child: Text(":")),
+                                        const Expanded(child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -651,7 +651,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 5.0),
+                                    const SizedBox(height: 5.0),
                                     Row(
                                       children: [
                                         Expanded(
@@ -660,7 +660,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                               "HUB",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        Expanded(child: Text(":")),
+                                        const Expanded(child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
