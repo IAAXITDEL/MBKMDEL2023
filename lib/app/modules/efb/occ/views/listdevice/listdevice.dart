@@ -205,7 +205,8 @@ class _ListDeviceState extends State<ListDevice> {
                   style: TextButton.styleFrom(
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20.0),
-                          side: const BorderSide(color: TsOneColor.onSecondary))),
+                          side:
+                              const BorderSide(color: TsOneColor.onSecondary))),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
@@ -362,6 +363,7 @@ class _ListDeviceState extends State<ListDevice> {
                           .toString()
                           .toLowerCase()
                           .contains(searchQuery.toLowerCase()))
+                      .take(20) // Limit the number of items to 20
                       .toList();
 
                   if (filteredData.isEmpty) {
@@ -411,7 +413,8 @@ class _ListDeviceState extends State<ListDevice> {
                                 ),
                               ),
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 7),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 7),
                                 child: Row(
                                   children: [
                                     Expanded(
@@ -444,7 +447,8 @@ class _ListDeviceState extends State<ListDevice> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (BuildContext context) => const AddDevice()),
+              MaterialPageRoute(
+                  builder: (BuildContext context) => const AddDevice()),
             );
           },
           child: const Icon(Icons.add),

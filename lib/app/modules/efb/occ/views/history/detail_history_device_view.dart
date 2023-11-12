@@ -424,8 +424,7 @@ class DetailHistoryDeviceView extends GetView {
                                                   style: tsOneTextTheme
                                                       .headlineMedium),
 
-                                              if (status == 'Done')
-                                                SizedBox(height: 5.0),
+                                              SizedBox(height: 5.0),
                                               if (status == 'Done')
                                                 Row(
                                                   children: [
@@ -619,11 +618,11 @@ class DetailHistoryDeviceView extends GetView {
                                                   ],
                                                 ),
 
-                                              SizedBox(height: 5.0),
+                                              SizedBox(height: 15.0),
 
                                               if (status ==
                                                   'handover-to-other-crew')
-                                                Text("Given To",
+                                                Text("Handover To",
                                                     style: tsOneTextTheme
                                                         .headlineMedium),
                                               if (status ==
@@ -738,7 +737,6 @@ class DetailHistoryDeviceView extends GetView {
                                                   ],
                                                 ),
 
-                                              SizedBox(height: 15.0),
                                               Row(
                                                 children: [
                                                   Expanded(
@@ -766,41 +764,34 @@ class DetailHistoryDeviceView extends GetView {
                                                                           feedbackId),
                                                             ),
                                                           );
-                                                        } else if (feedbackId ==
-                                                                null ||
-                                                            feedbackId == '-') {
+                                                        } else {
                                                           // Tindakan alternatif jika feedbackId tidak ada atau kosong
-                                                          Builder(
-                                                            builder: (context) {
-                                                              // Menampilkan Snackbar "Data Not Found" selama 1 detik
-                                                              Future.delayed(
-                                                                  Duration(
-                                                                      seconds:
-                                                                          1),
-                                                                  () {
-                                                                ScaffoldMessenger.of(
-                                                                        context)
-                                                                    .showSnackBar(
-                                                                  SnackBar(
-                                                                    content: Text(
-                                                                        'Feedback Not Found'),
-                                                                    action:
-                                                                        SnackBarAction(
-                                                                      label:
-                                                                          'OK',
-                                                                      onPressed:
-                                                                          () {
-                                                                        ScaffoldMessenger.of(context)
-                                                                            .hideCurrentSnackBar();
-                                                                      },
-                                                                    ),
-                                                                  ),
-                                                                );
-                                                              });
-
-                                                              return Container();
-                                                            },
+                                                          ScaffoldMessenger.of(
+                                                                  context)
+                                                              .showSnackBar(
+                                                            SnackBar(
+                                                              content: Text(
+                                                                  'No Feedback'),
+                                                              action:
+                                                                  SnackBarAction(
+                                                                label: 'OK',
+                                                                onPressed: () {
+                                                                  ScaffoldMessenger.of(
+                                                                          context)
+                                                                      .hideCurrentSnackBar();
+                                                                },
+                                                              ),
+                                                            ),
                                                           );
+
+                                                          Future.delayed(
+                                                              Duration(
+                                                                  seconds: 1),
+                                                              () {
+                                                            ScaffoldMessenger
+                                                                    .of(context)
+                                                                .hideCurrentSnackBar();
+                                                          });
                                                         }
                                                         print(feedbackId);
                                                       },
@@ -878,7 +869,7 @@ class DetailHistoryDeviceView extends GetView {
                                               //           padding: EdgeInsets.all(15),
                                               //           child: Text(
                                               //             'Open Feedback',
-                                              //             style: TextStyle(color: Colors.white),
+                                              //             style: TextStyle(color: Colors.white),p
                                               //           ),
                                               //         ), 3
                                               //       ),
@@ -886,118 +877,120 @@ class DetailHistoryDeviceView extends GetView {
                                               //   ],
                                               // ),
 
-                                              SizedBox(height: 80.0),
+                                              SizedBox(height: 50.0),
                                               Row(
                                                 children: [
                                                   Expanded(
                                                     child: ElevatedButton(
-                                                      onPressed: () {
-                                                        showDialog(
-                                                          context: context,
-                                                          barrierDismissible:
-                                                              false,
-                                                          builder: (context) {
-                                                            return AlertDialog(
-                                                              content: Column(
-                                                                mainAxisSize:
-                                                                    MainAxisSize
-                                                                        .min,
-                                                                children: [
-                                                                  CircularProgressIndicator(),
-                                                                  SizedBox(
-                                                                      height:
-                                                                          20),
-                                                                  Text(
-                                                                      'Please Wait...'),
-                                                                ],
-                                                              ),
-                                                            );
-                                                          },
-                                                        );
+                                                        onPressed: () {
+                                                          showDialog(
+                                                            context: context,
+                                                            barrierDismissible:
+                                                                false,
+                                                            builder: (context) {
+                                                              return AlertDialog(
+                                                                content: Column(
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .min,
+                                                                  children: [
+                                                                    CircularProgressIndicator(),
+                                                                    SizedBox(
+                                                                        height:
+                                                                            20),
+                                                                    Text(
+                                                                        'Please Wait...'),
+                                                                  ],
+                                                                ),
+                                                              );
+                                                            },
+                                                          );
 
-                                                        generateLogPdfDevice1(
-                                                          userName:
-                                                              userData['NAME'],
-                                                          userRank:
-                                                              userData['RANK'],
-                                                          userID:
-                                                              userData['ID NO']
-                                                                  .toString(),
-                                                          occAccept:
-                                                              occAccepteduserData?[
-                                                                  'NAME'],
-                                                          occGiven:
-                                                              occOnDutyuserData?[
-                                                                  'NAME'],
-                                                          deviceNo: data[
-                                                              'device_name'],
-                                                          iosVer: deviceData[
-                                                              'iosver'],
-                                                          flySmart: deviceData[
-                                                              'flysmart'],
-                                                          lido: deviceData[
-                                                              ' lidoversion'],
-                                                          docunet: deviceData[
-                                                              'docuversion'],
-                                                          deviceCondition:
-                                                              deviceData[
-                                                                  'condition'],
-                                                          ttdUser: data[
-                                                              'signature_url'],
-                                                          ttdOCC: data[
-                                                              'signature_url_occ'],
-                                                          loan:
-                                                              data['timestamp'],
-                                                          statusdevice: data[
-                                                              'statusDevice'],
-                                                          ttdOtherCrew: data !=
-                                                                  null
-                                                              ? data[
-                                                                  'signature_url_other_user']
-                                                              : 'Not Found',
-                                                          handoverName:
-                                                              handoverTouserData !=
-                                                                      null
-                                                                  ? handoverTouserData[
-                                                                      'NAME']
-                                                                  : 'Not Found',
-                                                          handoverID: data[
-                                                              'handover-to-crew'],
-                                                        ).then((_) {
-                                                          Navigator.pop(
-                                                              context);
-                                                        }).catchError((error) {
-                                                          print(
-                                                              'Error generating PDF: $error');
-                                                          Navigator.pop(
-                                                              context);
-                                                        });
-                                                        //generateLogPdfDevice1();
-                                                      },
-                                                      style: ElevatedButton
-                                                          .styleFrom(
-                                                        backgroundColor:
-                                                            TsOneColor
-                                                                .greenColor,
-                                                        shape:
-                                                            RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      4.0),
+                                                          generateLogPdfDevice1(
+                                                            userName: userData[
+                                                                'NAME'],
+                                                            userRank: userData[
+                                                                'RANK'],
+                                                            userID: userData[
+                                                                    'ID NO']
+                                                                .toString(),
+                                                            occAccept:
+                                                                occAccepteduserData?[
+                                                                    'NAME'],
+                                                            occGiven:
+                                                                occOnDutyuserData?[
+                                                                    'NAME'],
+                                                            deviceNo: data[
+                                                                'device_name'],
+                                                            iosVer: deviceData[
+                                                                'iosver'],
+                                                            flySmart:
+                                                                deviceData[
+                                                                    'flysmart'],
+                                                            lido: deviceData[
+                                                                'lidoversion'],
+                                                            docunet: deviceData[
+                                                                'docuversion'],
+                                                            deviceCondition:
+                                                                deviceData[
+                                                                    'condition'],
+                                                            ttdUser: data[
+                                                                'signature_url'],
+                                                            ttdOCC: data[
+                                                                'signature_url_occ'],
+                                                            loan: data[
+                                                                'timestamp'],
+                                                            statusdevice: data[
+                                                                'statusDevice'],
+                                                            ttdOtherCrew: data !=
+                                                                    null
+                                                                ? data[
+                                                                    'signature_url_other_crew']
+                                                                : 'Not Found',
+                                                            handoverName:
+                                                                handoverTouserData !=
+                                                                        null
+                                                                    ? handoverTouserData[
+                                                                        'NAME']
+                                                                    : 'Not Found',
+                                                            handoverID: data[
+                                                                'handover-to-crew'],
+                                                          ).then((_) {
+                                                            Navigator.pop(
+                                                                context);
+                                                          }).catchError(
+                                                              (error) {
+                                                            print(
+                                                                'Error generating PDF: $error');
+                                                            Navigator.pop(
+                                                                context);
+                                                          });
+                                                          //generateLogPdfDevice1();
+                                                        },
+                                                        style: ElevatedButton
+                                                            .styleFrom(
+                                                          backgroundColor:
+                                                              TsOneColor
+                                                                  .greenColor,
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        4.0),
+                                                          ),
                                                         ),
-                                                      ),
-                                                      child: Padding(
-                                                        padding:
-                                                            EdgeInsets.all(15),
-                                                        child: Text(
-                                                          'Open Attachment History',
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white),
-                                                        ),
-                                                      ),
-                                                    ),
+                                                        child: Padding(
+                                                          padding:
+                                                              EdgeInsets.all(
+                                                                  15),
+                                                          child: Text(
+                                                            'Open Attachment History',
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white),
+                                                          ),
+                                                        )),
                                                   ),
                                                 ],
                                               ),

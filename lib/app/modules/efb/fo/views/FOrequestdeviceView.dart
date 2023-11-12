@@ -222,6 +222,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
         );
       }
     }
+
     return const CircleAvatar(
       backgroundImage: AssetImage('assets/images/placeholder_person.png'),
       radius: 20.0,

@@ -17,7 +17,7 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:open_file/open_file.dart';
 import 'package:ts_one/presentation/theme.dart';
 
-//
+//dsf
 class FeedbackDetailPage extends StatelessWidget {
   final String feedbackId;
 
@@ -162,17 +162,16 @@ class FeedbackDetailPage extends StatelessWidget {
                                 style: tsOneTextTheme.labelSmall),
                           ),
                           SizedBox(height: 15.0),
-                          if ('$userRank' == 'CAPT')
-                            Row(
-                              children: [
-                                Expanded(flex: 6, child: Text("Crew Name")),
-                                Expanded(flex: 1, child: Text(":")),
-                                Expanded(
-                                  flex: 6,
-                                  child: Text(userName),
-                                ),
-                              ],
-                            ),
+                          Row(
+                            children: [
+                              Expanded(flex: 6, child: Text("Crew Name")),
+                              Expanded(flex: 1, child: Text(":")),
+                              Expanded(
+                                flex: 6,
+                                child: Text(userName),
+                              ),
+                            ],
+                          ),
                           Row(
                             children: [
                               Expanded(flex: 6, child: Text("RANK")),
@@ -943,7 +942,8 @@ class FeedbackDetailPage extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: ElevatedButton(
-                                  onPressed: () async {
+                                  onPressed: () {
+                                    // Show AlertDialog with CircularProgressIndicator
                                     showDialog(
                                       context: context,
                                       barrierDismissible: false,
@@ -960,7 +960,9 @@ class FeedbackDetailPage extends StatelessWidget {
                                         );
                                       },
                                     );
-                                    await generateFeedbackForm(
+
+                                    // Call your asynchronous function (generateFeedbackForm)
+                                    generateFeedbackForm(
                                       //handoverID: handoverTouserData != null ? handoverTouserData['ID NO'].toString() : 'Not Found',
                                       date: feedbackData['timestamp'] ?? '-',
                                       q1: feedbackData['q1'] ?? '-',
@@ -1001,15 +1003,18 @@ class FeedbackDetailPage extends StatelessWidget {
                                       userRank:
                                           userData['RANK'] as String? ?? '-',
                                     ).then((_) {
+                                      // Open PDF or navigate to the PDF view screen
+                                      // Add your code to open the PDF here
+
+                                      // Dismiss the AlertDialog
                                       Navigator.pop(context);
                                     }).catchError((error) {
-                                      print('Error generating PDF: $error');
+                                      // Dismiss the AlertDialog
                                       Navigator.pop(context);
+
+                                      // Handle error (show a snackbar, log the error, etc.)
+                                      print('Error generating PDF: $error');
                                     });
-                                    // generateLogPdfDevice23();
-                                    // print("Test" + q1);
-                                    // print(sector1);
-                                    // print(userName);
                                   },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: TsOneColor.greenColor,
@@ -1352,7 +1357,7 @@ Future<void> generateFeedbackForm({
                     height: 20.0,
                     child: reguler("Device No.", context),
                   ),
-                  if (devicename2 == null)
+                  if (devicename2 == '-' || devicename2 == null)
                     pw.Container(
                       height: 20.0,
                       child: reguler("$devicename1", context),
