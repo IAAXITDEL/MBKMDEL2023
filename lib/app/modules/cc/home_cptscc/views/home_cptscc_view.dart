@@ -58,6 +58,7 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
     ' RVSM',
     'D'
   ];
+
   @override
   Widget build(BuildContext context) {
     var fromC = TextEditingController();
@@ -143,6 +144,8 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                   ),
 
                   SizedBox(height: 10),
+
+                  
                   // DOWNLOAD EXCEL
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -527,17 +530,20 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                                                 Text(
                                                   'Filter',
                                                   style: TextStyle(
-                                                      fontSize: 20.0,
+                                                      fontSize: 24,
                                                       fontWeight:
-                                                          FontWeight.bold),
+                                                          FontWeight.bold, color: Colors.red),
                                                 ),
                                                 SizedBox(height: 20),
                                                 Row(
                                                   children: [
                                                     Text(
                                                       'Please pick date range',
-                                                      style: tsOneTextTheme
-                                                          .labelLarge,
+                                                      style: TextStyle(
+                                                        fontSize: 16,
+                                                        fontWeight: FontWeight.bold,
+                                                        color: Colors.black,
+                                                      ),
                                                     ),
                                                   ],
                                                 ),
@@ -726,56 +732,104 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                                                   children: [
                                                     Text(
                                                       'Please choose the training subject',
-                                                      style: tsOneTextTheme
-                                                          .labelLarge,
+                                                      // style: tsOneTextTheme
+                                                      //     .labelLarge,
+                                                      style: TextStyle(
+                                                        fontSize: 16,
+                                                        fontWeight: FontWeight.bold,
+                                                        color: Colors.black,
+                                                      ),
                                                     ),
                                                   ],
                                                 ),
+
+                                                //OLD
+                                                // Padding(
+                                                //   padding: const EdgeInsets.all(3.0),
+                                                //   child: InputDecorator(
+                                                //     decoration: InputDecoration(
+                                                //       // labelText: 'TRAINING SUBJECT',
+                                                //       border: const OutlineInputBorder(
+                                                //         borderSide: BorderSide(color: TsOneColor.greenColor),
+                                                //       ),
+                                                //       contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                                                //       labelStyle: const TextStyle(fontSize: 12, color: Colors.black),
+                                                //     ),
+                                                //     child: FutureBuilder<List<String>>(
+                                                //       future: controller.getTrainingSubjects(),
+                                                //       builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
+                                                //         if (snapshot.connectionState == ConnectionState.waiting) {
+                                                //           return CircularProgressIndicator(); // Show a loading indicator while fetching data
+                                                //         }
+                                                //
+                                                //         if (snapshot.hasError) {
+                                                //           return Text('Error: ${snapshot.error}');
+                                                //         }
+                                                //
+                                                //         List<String> subjects = snapshot.data ?? [];
+                                                //
+                                                //         return DropdownButton<String>(
+                                                //           value: controller.selectedSubject(),
+                                                //           value: controller.getTrainingSubjects(),
+                                                //           icon: const Icon(Icons.arrow_drop_down, size: 24),
+                                                //           iconSize: 24,
+                                                //           items: subjects.map((String subject) {
+                                                //             return DropdownMenuItem<String>(
+                                                //               value: subject,
+                                                //               child: Text(subject),
+                                                //             );
+                                                //           }).toList(),
+                                                //           onChanged: (String? newValue) {
+                                                //             // setState(() {
+                                                //             //   selectedSubject = newValue ?? 'ALL';
+                                                //             // });
+                                                //             controller.training.value = newValue!;
+                                                //           },
+                                                //         );
+                                                //       },
+                                                //     ),
+                                                //   ),
+                                                // ),
+
                                                 Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(3.0),
+                                                  padding: const EdgeInsets.all(3.0),
                                                   child: InputDecorator(
                                                     decoration: InputDecoration(
                                                       // labelText: 'TRAINING SUBJECT',
                                                       border: const OutlineInputBorder(
-                                                          borderSide: BorderSide(
-                                                              color: TsOneColor
-                                                                  .greenColor)),
-                                                      contentPadding:
-                                                          const EdgeInsets
-                                                                  .symmetric(
-                                                              horizontal: 10,
-                                                              vertical: 8),
-                                                      labelStyle:
-                                                          const TextStyle(
-                                                              fontSize: 12,
-                                                              color:
-                                                                  Colors.black),
+                                                        borderSide: BorderSide(color: TsOneColor.greenColor),
+                                                      ),
+                                                      contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                                                      labelStyle: const TextStyle(fontSize: 12, color: Colors.black),
                                                     ),
-                                                    child:
-                                                        DropdownButton<String>(
-                                                      value: selectedSubject,
-                                                      icon: const Icon(
-                                                          Icons.arrow_drop_down,
-                                                          size: 24),
-                                                      iconSize: 24,
-                                                      items:
-                                                          subjectTrainingOptions
-                                                              .map(
-                                                                  (String hub) {
-                                                        return DropdownMenuItem<
-                                                            String>(
-                                                          value: hub,
-                                                          child: Text(hub),
+                                                    child: FutureBuilder<List<String>>(
+                                                      future: controller.getTrainingSubjects(),
+                                                      builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
+                                                        if (snapshot.connectionState == ConnectionState.waiting) {
+                                                          return CircularProgressIndicator(); // Show a loading indicator while fetching data
+                                                        }
+
+                                                        if (snapshot.hasError) {
+                                                          return Text('Error: ${snapshot.error}');
+                                                        }
+
+                                                        List<String> subjects = snapshot.data ?? [];
+
+                                                        return DropdownButton<String>(
+                                                          value: controller.selectedSubject.value,
+                                                          icon: const Icon(Icons.arrow_drop_down, size: 24),
+                                                          iconSize: 24,
+                                                          items: subjects.map((String subject) {
+                                                            return DropdownMenuItem<String>(
+                                                              value: subject,
+                                                              child: Text(subject),
+                                                            );
+                                                          }).toList(),
+                                                          onChanged: (String? newValue) {
+                                                            controller.updateSelectedSubject(newValue ?? 'ALL');
+                                                            controller.training.value = newValue!;
+                                                          },
                                                         );
-                                                      }).toList(),
-                                                      onChanged:
-                                                          (String? newValue) {
-                                                        // setState(() {
-                                                        //   selectedSubject = newValue ?? 'ALL';
-                                                        // });
-                                                        controller.training
-                                                            .value = newValue!;
                                                       },
                                                     ),
                                                   ),
@@ -829,8 +883,11 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                                                           ),
                                                           child: Text(
                                                             "Reset",
-                                                            style: tsOneTextTheme
-                                                                .headlineMedium,
+                                                            style: TextStyle(
+                                                              fontSize: 15,
+                                                              fontWeight: FontWeight.bold,
+                                                              color: Colors.red,
+                                                            ),
                                                           ),
                                                         ),
                                                       ),
@@ -913,8 +970,11 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                                                           ),
                                                           child: Text(
                                                             "Apply",
-                                                            style: tsOneTextTheme
-                                                                .headlineMedium,
+                                                            style: TextStyle(
+                                                              fontSize: 15,
+                                                              fontWeight: FontWeight.bold,
+                                                              color: Colors.white,
+                                                            ),
                                                           ),
                                                         ),
                                                       )

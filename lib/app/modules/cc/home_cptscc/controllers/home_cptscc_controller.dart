@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:csv/csv.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 import '../../../../../data/users/user_preferences.dart';
@@ -39,11 +40,17 @@ class HomeCptsccController extends GetxController {
 
   final RxString nameS = "".obs;
 
+  RxString _selectedSubject = "ALL".obs;
+
+  RxString get selectedSubject => _selectedSubject;
+
+
 
 
   @override
   void onInit() {
     userPreferences = getItLocator<UserPreferences>();
+    getTrainingSubjects();
     _isPilotAdministrator = false;
 
     switch (userPreferences.getRank()) {
@@ -69,6 +76,9 @@ class HomeCptsccController extends GetxController {
     } else {
       timeToGreet = "Evening";
     }
+
+    // Future<List<Map<String, dynamic>>> getCombinedAttendance({String? trainingType, DateTime? from, DateTime? to}) async {
+
 
     // Fetch Firestore data to count instructors
     FirebaseFirestore.instance
@@ -174,6 +184,7 @@ class HomeCptsccController extends GetxController {
 //
 
     // Fetch Firestore data to count instructors
+
     FirebaseFirestore.instance
         .collection('users')
         .where('INSTRUCTOR', arrayContainsAny: ["CCP", "FIA", "FIS", "PGI"])
@@ -198,6 +209,38 @@ class HomeCptsccController extends GetxController {
       int totalUsers = querySnapshot.docs.length + instructorCount.value;
       pilotPercentage = (querySnapshot.docs.length / totalUsers) * 100;
     });
+  }
+
+  // Future<List<String>> getTrainingSubjects() async {
+  //   List<String> subjects = ["ALL"];
+  //   try {
+  //     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+  //         .collection('trainingType')
+  //         .get();
+  //
+  //     subjects = querySnapshot.docs.map((doc) => doc['subject'].toString()).toList();
+  //   } catch (e) {
+  //     print("Error fetching training subjects: $e");
+  //   }
+  //   return subjects;
+  // }
+
+  Future<List<String>> getTrainingSubjects() async {
+    List<String> subjects = ["ALL"];
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('trainingType')
+          .get();
+
+      subjects = querySnapshot.docs.map((doc) => doc['subject'].toString()).toList();
+    } catch (e) {
+      print("Error fetching training subjects: $e");
+    }
+    return subjects;
+  }
+
+  void updateSelectedSubject(String newSubject) {
+    _selectedSubject.value = newSubject;
   }
 
 
