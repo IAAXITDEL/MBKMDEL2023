@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:ts_one/app/modules/cc/training/attendance_pilotcc/controllers/attendance_pilotcc_controller.dart';
-
 import '../../../../../../presentation/theme.dart';
 import '../../../../../../util/empty_screen.dart';
 import '../../../../../../util/error_screen.dart';
 import '../../../../../../util/loading_screen.dart';
 import '../../../../../../util/util.dart';
-import '../../../../../routes/app_pages.dart';
 import '../controllers/home_pilotcc_controller.dart';
 
 class HomePilotccView extends GetView<HomePilotccController> {
@@ -70,15 +67,9 @@ class HomePilotccView extends GetView<HomePilotccController> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Today",
-                      style: tsOneTextTheme.labelLarge,
+                      "Upcoming Training",
+                      style: tsOneTextTheme.headlineMedium,
                     ),
-                    InkWell(
-                      child: Text(
-                        "See All",
-                        style: tsOneTextTheme.labelMedium,
-                      ),
-                    )
                   ],
                 ),
                 const SizedBox(height: 10,),

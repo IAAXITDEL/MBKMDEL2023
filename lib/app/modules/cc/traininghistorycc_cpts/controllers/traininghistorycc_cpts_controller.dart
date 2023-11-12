@@ -82,19 +82,6 @@ class TraininghistoryccCptsController extends GetxController {
 
       attendanceData.sort((a, b) => b['date'].compareTo(a['date']));
 
-
-      if (name.isNotEmpty) {
-        print("ada");
-        print(name);
-
-        final filteredData = attendanceData.where((doc) {
-          final String attendanceName = doc['name'].toString().toLowerCase();
-          print(doc['name'].toString().toLowerCase());
-          return attendanceName.startsWith(name.toLowerCase());
-        }).toList();
-        return filteredData;
-      }
-
       if (from != null && to != null) {
         final filteredAttendance = attendanceData.where((attendance) {
           DateTime attendanceDate = attendance["date"].toDate();
@@ -104,25 +91,26 @@ class TraininghistoryccCptsController extends GetxController {
           DateTime toDate = DateTime(to.year, to.month, to.day);
           DateTime attendanceDateOnly = DateTime(attendanceDate.year, attendanceDate.month, attendanceDate.day);
 
+          print("this");
+          print(attendanceDate);
           return attendanceDateOnly.isAtSameMomentAs(fromDate) ||
               (attendanceDateOnly.isAfter(fromDate) && attendanceDateOnly.isBefore(toDate)) ||
               attendanceDateOnly.isAtSameMomentAs(toDate);
         }).toList();
+
+        if (name.isNotEmpty) {
+          final filteredData = filteredAttendance.where((doc) {
+            final String attendanceName = doc['name'].toString().toLowerCase();
+            print(doc['name'].toString().toLowerCase());
+            return attendanceName.startsWith(name.toLowerCase());
+          }).toList();
+          return filteredData;
+        }
         return filteredAttendance;
       }
-      //
-      // final attendanceData = await Future.wait(
-      //   attendanceQuery.docs.map((doc) async {
-      //     final attendanceModel = AttendanceModel.fromJson(doc.data());
-      //     final attendanceDetail = attendanceDetailData.firstWhere((attendanceDetail) => attendanceDetail['idattendance'] == attendanceModel.id, orElse: () => {});
-      //     return attendanceModel.toJson();
-      //   }),
-      // );
-      print("data training: $attendanceData");
       return attendanceData;
     });
   }
-
 
   void resetDate() {
     from.value  = DateTime(1900, 1, 1);

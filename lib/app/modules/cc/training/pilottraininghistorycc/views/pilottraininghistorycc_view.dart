@@ -32,6 +32,7 @@ class PilottraininghistoryccView
     return Scaffold(
         appBar: AppBar(
           title: RedTitleText(text: 'TRAINING HISTORY'),
+          centerTitle: true,
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -68,13 +69,13 @@ class PilottraininghistoryccView
                    Obx(() =>  Expanded(flex: 1, child: Container(
                      padding: EdgeInsets.symmetric(vertical: 3, horizontal: 10),
                      decoration: BoxDecoration(
-                       color: controller.expiryC.value == "VALID" ? Colors.green.withOpacity(0.4) : Colors.red.withOpacity(0.4),
-                       borderRadius: BorderRadius.circular(10),
+                       color: controller.expiryC.value == "VALID" ? Colors.green : Colors.red,
+                       borderRadius: BorderRadius.circular(5),
                      ),
                      child: Center(
                        child: Text(
                          controller.expiryC.value ,
-                         style: TextStyle(fontSize: 10, color: controller.expiryC.value == "VALID" ? Colors.green : Colors.red),
+                         style: TextStyle(fontSize: 10, color: Colors.white),
                        ),
                      ),
                    ),),),
@@ -219,11 +220,11 @@ class PilottraininghistoryccView
 
                              Timestamp? date = listAttendance[index]["date"];
                              DateTime? dates = date?.toDate();
-                             String dateC = DateFormat('dd MMMM yyyy').format(dates!);
+                             String dateC = DateFormat('dd MMM yyyy').format(dates!);
 
                              Timestamp? timestamp = listAttendance[index]["valid_to"];
                              DateTime? dateTime = timestamp?.toDate();
-                             String validC = DateFormat('dd MMMM yyyy').format(dateTime!);
+                             String validC = DateFormat('dd MMM yyyy').format(dateTime!);
                              print(validC);
                              return InkWell(
                                onTap: () {

@@ -3,6 +3,7 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 
@@ -26,7 +27,7 @@ class EditAttendanceccView extends GetView<EditAttendanceccController> {
     int? instructorC = 0;
 
 
-    Future<void> edit(String subject, String date, String vanue, int instructor) async {
+    Future<void> edit(String subject, DateTime date, String vanue, int instructor) async {
       controller.editAttendanceForm(subject, date, vanue, instructor).then((status) async {
         await QuickAlert.show(
           context: context,
@@ -76,8 +77,10 @@ class EditAttendanceccView extends GetView<EditAttendanceccController> {
 
                         var listAttendance = snapshot.data!.docs;
                         if (listAttendance.isNotEmpty) {
+                          DateTime? dateTime = listAttendance[0]["date"].toDate();
+                          dateC.text = dateTime != null ? DateFormat('dd MMM yyyy').format(dateTime) : 'Invalid Date';
+
                           subjectC.text = listAttendance[0]["subject"];
-                          dateC.text = listAttendance[0]["date"];
                           vanueC.text = listAttendance[0]["vanue"];
                           controller.instructor.value = listAttendance[0]["instructor"];
                         } else {
@@ -150,6 +153,11 @@ class EditAttendanceccView extends GetView<EditAttendanceccController> {
                     showSelectedItems: true,
                     dropdownSearchDecoration: InputDecoration(
                       labelText: "INSTRUCTOR",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(5),
+                        ),
+                      ),
                     ),
                     showSearchBox: true,
                     searchFieldProps: TextFieldProps(
@@ -163,11 +171,9 @@ class EditAttendanceccView extends GetView<EditAttendanceccController> {
                             (user) => user['NAME'] == selectedName,
                       );
 
-                      if (selectedUser != null) {
-                        final selectedUserIdValue = selectedUser['ID NO'] as int;
-                        selectedInstructorId = selectedUserIdValue;
-                        controller.instructor.value = selectedInstructorId;
-                      }
+                      final selectedUserIdValue = selectedUser['ID NO'] as int;
+                      selectedInstructorId = selectedUserIdValue;
+                      controller.instructor.value = selectedInstructorId;
 
 
                       print('Selected name: $selectedName, Selected ID: $selectedInstructorId');
@@ -194,9 +200,9 @@ class EditAttendanceccView extends GetView<EditAttendanceccController> {
                                 return FutureBuilder<void>(
                                   future: edit(
                                     subjectC.text,
-                                    dateC.text,
+                                    DateFormat('dd MMM yyyy').parse(dateC.text),
                                     vanueC.text,
-                                    controller.instructor.value!,
+                                    controller.instructor.value,
                                   ),
                                   builder: (BuildContext context,
                                       AsyncSnapshot<void> snapshot) {

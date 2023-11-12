@@ -47,7 +47,8 @@ class _TrainingInstructorccViewState extends State<TrainingInstructorccView>
             Get.to(()=>NavinstructorView(initialIndex: 1,));
           },
         ),
-        title: Text("Back"),
+        title: RedTitleText(text: "TRAINING",),
+        centerTitle: true,
       ),
       body:  Padding(
         padding: EdgeInsets.symmetric(horizontal: 20),

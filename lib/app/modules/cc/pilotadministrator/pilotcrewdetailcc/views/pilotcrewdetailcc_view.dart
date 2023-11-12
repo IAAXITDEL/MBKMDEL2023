@@ -18,7 +18,9 @@ class PilotcrewdetailccView extends GetView<PilotcrewdetailccController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Back'),
+        title:
+        RedTitleText(text: "PROFILE"),
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -49,7 +51,6 @@ class PilotcrewdetailccView extends GetView<PilotcrewdetailccController> {
                     controller.idTraining.value = documentData["ID NO"];
                     return Column(
                       children: [
-                        RedTitleText(text: "PROFILE"),
                         AvatarGlow(
                           endRadius: 110,
                           glowColor: Colors.black,

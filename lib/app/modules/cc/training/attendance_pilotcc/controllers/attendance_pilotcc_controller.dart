@@ -106,7 +106,6 @@ class AttendancePilotccController extends GetxController {
       final QuerySnapshot querySnapshot = await query.get();
 
       if (querySnapshot.docs.isNotEmpty) {
-        print("disini");
         // Assuming there's only one document that matches the query, you can update it like this:
         final DocumentReference documentReference = querySnapshot.docs[0].reference;
         await documentReference.update({

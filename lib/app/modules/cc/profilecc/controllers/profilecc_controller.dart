@@ -129,7 +129,6 @@ class ProfileccController extends GetxController {
     }
   }
 
-
   Future<bool> fetchAttendanceData(int idCrew) async {
     try {
       QuerySnapshot attendanceQuery = await firestore
@@ -233,10 +232,12 @@ class ProfileccController extends GetxController {
           isReady.value = true;
           await getHistoryData(idCrew, "ALAR / CFIT", 5);
           print("test 2");
+
+          await firestore.collection('users').doc(idCrew.toString()).update({
+            "STATUS" : "VALID"
+          });
           return true;
         }
-
-
       } else {
         return false;
       }
@@ -246,6 +247,78 @@ class ProfileccController extends GetxController {
       return false;
     }
   }
+
+  Stream<String> cekValidationTraining(int idTrainingType, int idTrainee) {
+    return firestore
+        .collection('attendance')
+        .where("idTrainingType", isEqualTo: idTrainingType)
+        .where("status", isEqualTo: "done")
+        .where("is_delete", isEqualTo: 0)
+        .snapshots()
+        .asyncMap((attendanceQuery) async {
+      final attendanceDetailData = <Map<String, dynamic>>[];
+
+      final usersData = <Map<String, dynamic>>[];
+
+      if (attendanceQuery.docs.isNotEmpty) {
+        final attendanceIds = attendanceQuery.docs
+            .map((doc) => AttendanceModel.fromJson(doc.data()).id)
+            .toList();
+
+        print(attendanceIds);
+        if (attendanceIds.isNotEmpty) {
+          final attendanceDetailQuery = await firestore
+              .collection('attendance-detail')
+              .where("idtraining", isEqualTo: idTrainee)
+              .where("idattendance", whereIn: attendanceIds)
+              .get();
+          attendanceDetailData
+              .addAll(attendanceDetailQuery.docs.map((doc) => doc.data()));
+
+        }
+
+        if (attendanceDetailData.isNotEmpty) {
+          final usersQuery = await firestore
+              .collection('users')
+              .where("ID NO", isEqualTo: idTrainee)
+              .get();
+          usersData.addAll(usersQuery.docs.map((doc) => doc.data()));
+        }
+      }
+
+      // Filter attendanceQuery based on whether there is a corresponding attendanceDetail
+      final filteredAttendanceQuery = attendanceQuery.docs.where((doc) {
+        final attendanceModel = AttendanceModel.fromJson(doc.data());
+        return attendanceDetailData.any((attendanceDetail) => attendanceDetail['idattendance'] == attendanceModel.id);
+      });
+
+      final attendanceData = <Map<String, dynamic>>[];
+      for (var doc in filteredAttendanceQuery) {
+        final attendanceModel = AttendanceModel.fromJson(doc.data());
+        final attendanceDetail = attendanceDetailData.firstWhere(
+              (attendanceDetail) => attendanceDetail['idattendance'] == attendanceModel.id,
+          orElse: () => <String, dynamic>{}, // Return an empty map
+        );
+
+        attendanceData.add(attendanceModel.toJson());
+      }
+
+      // Sort attendanceData based on valid_to in descending order
+      attendanceData.sort((a, b) {
+        Timestamp timestampA =
+        Timestamp.fromMillisecondsSinceEpoch(a['valid_to'].millisecondsSinceEpoch);
+        Timestamp timestampB =
+        Timestamp.fromMillisecondsSinceEpoch(b['valid_to'].millisecondsSinceEpoch);
+        return timestampB.compareTo(timestampA);
+      });
+
+      if (attendanceData.isNotEmpty) {
+        return attendanceData[0]["expiry"];
+      }
+      return "NOT VALID";
+    });
+  }
+
 
 
   @override
@@ -383,8 +456,6 @@ class ProfileccController extends GetxController {
       final ttf = pw.Font.ttf(font);
       final pdf = pw.Document();
 
-      final List<Map<String, dynamic>> codeDataList = [];
-
       final Uint8List backgroundImageData = (await rootBundle.load('assets/images/AirAsiaTrainingCards.png')).buffer.asUint8List();
       final Uint8List AirAsiaLogo =
       (await rootBundle.load('assets/images/airasia_logo_circle.png'))
@@ -413,7 +484,7 @@ class ProfileccController extends GetxController {
       final List<Map<String, dynamic>>? historyDataLSWB = await getHistoryData(idCrew, "LOAD SHEET / WEIGHT & BALANCE", 1);
       final List<Map<String, dynamic>>? historyDataRVSM = await getHistoryData(idCrew, "RVSM", 1);
       final List<Map<String, dynamic>>? historyDataWNDSHEAR = await getHistoryData(idCrew, "WNDSHEAR", 8);
-      final List<Map<String, dynamic>>? historyDataAlarCfit = await getHistoryData(idCrew, "ALAR / CFIT", 4);
+      final List<Map<String, dynamic>>? historyDataAlarCfit = await getHistoryData(idCrew, "ALAR/CFIT", 4);
       final List<Map<String, dynamic>>? historyDataSEP = await getHistoryData(idCrew, "SEP", 4);
       final List<Map<String, dynamic>>? historyDataSEPDRILL = await getHistoryData(idCrew, "SEP DRILL", 2);
       final List<Map<String, dynamic>>? historyDataDGR = await getHistoryData(idCrew, "DGR & AVSEC", 2);
@@ -1997,18 +2068,36 @@ class ProfileccController extends GetxController {
     }
   }
 
+  // Future<void> savePdfFile(Uint8List byteList) async {
+  //   isLoading.value = true;
+  //   userPreferences = getItLocator<UserPreferences>();
+  //   final output = await getTemporaryDirectory();
+  //   var filePath = "${output.path}/training-cards-${userPreferences.getIDNo()}.pdf";
+  //   final file = File(filePath);
+  //   print("step 1");
+  //   await file.writeAsBytes(byteList);
+  //   print("step 2");
+  //   await OpenFile.open(filePath);
+  //   print("stetep 3");
+  //   isLoading.value = false;
+  // }
+
   Future<void> savePdfFile(Uint8List byteList) async {
-    isLoading.value = true;
     userPreferences = getItLocator<UserPreferences>();
+    Directory('/storage/emulated/0/Download/Training Cards/').createSync();
     final output = await getTemporaryDirectory();
-    var filePath = "${output.path}/training-cards-${userPreferences.getIDNo()}.pdf";
+    var filePath = "/storage/emulated/0/Download/Training Cards/training-cards-${userPreferences.getIDNo()}.pdf";
     final file = File(filePath);
     print("step 1");
     await file.writeAsBytes(byteList);
     print("step 2");
-    await OpenFile.open(filePath);
-    print("stetep 3");
-    isLoading.value = false;
-  }
 
+    final filePaths = "${output.path}/training-cards-${userPreferences.getIDNo()}.pdf";
+    final files = File(filePaths);
+    print("step 1");
+    await files.writeAsBytes(byteList);
+    print("step 2");
+    await OpenFile.open(filePaths);
+    print("step 3");
+  }
 }

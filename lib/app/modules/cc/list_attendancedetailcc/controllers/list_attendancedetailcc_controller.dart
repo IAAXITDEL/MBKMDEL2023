@@ -1,6 +1,12 @@
+import 'dart:async';
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 
+import '../../../../../data/users/user_preferences.dart';
+import '../../../../../data/users/users.dart';
+import '../../../../../di/locator.dart';
 import '../../../../../presentation/view_model/attendance_detail_model.dart';
 import '../../../../../presentation/view_model/attendance_model.dart';
 
@@ -13,13 +19,55 @@ class ListAttendancedetailccController extends GetxController {
   final RxBool showText = false.obs;
   RxString idattendancedetail = "".obs;
 
+  RxBool isCPTS = false.obs;
+
+  late UserPreferences userPreferences;
+
   @override
   void onInit() {
     super.onInit();
     argumentid.value = Get.arguments["id"];
     argumentstatus.value = Get.arguments["status"];
     argumentidattendance.value = Get.arguments["idattendance"];
+    cekRole();
   }
+
+  Future<bool> cekRole() async {
+    userPreferences = getItLocator<UserPreferences>();
+
+    // SEBAGAI CPTS
+    if (userPreferences.getInstructor().contains(UserModel.keyCPTS) &&
+        userPreferences.getRank().contains(UserModel.keyPositionCaptain) ||
+        userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)) {
+      isCPTS.value = true;
+    }
+    // SEBAGAI INSTRUCTOR
+    else if (userPreferences
+        .getInstructor()
+        .contains(UserModel.keySubPositionCCP) ||
+        userPreferences.getInstructor().contains(UserModel.keySubPositionFIA) ||
+        userPreferences.getInstructor().contains(UserModel.keySubPositionFIS) ||
+        userPreferences.getInstructor().contains(UserModel.keySubPositionPGI) &&
+            userPreferences.getRank().contains(UserModel.keyPositionCaptain) ||
+        userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)) {
+
+    }
+    // SEBAGAI PILOT
+    else if (userPreferences.getRank().contains(UserModel.keyPositionCaptain) ||
+        userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)) {
+
+    }
+    // SEBAGAI PILOT ADMINISTRATOR
+    else if (userPreferences.getRank().contains("Pilot Administrator")) {
+
+    }
+    // SEBAGAI ALL STAR
+    else {
+      return false;
+    }
+    return false;
+  }
+
 
   Stream<List<Map<String, dynamic>>> profileList() {
     return firestore
@@ -61,64 +109,106 @@ class ListAttendancedetailccController extends GetxController {
     });
   }
 
+  //Membuat random string untuk key attendance
+  static const _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+  final Random _rnd = Random();
+
+  String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
+      length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
+
   // Update score dan feedback dilakukan oleh instructor
   Future<void> updateScoring(String score, String feedback) async {
+    CollectionReference attendance = firestore.collection('attendance-detail');
 
-      CollectionReference attendance = firestore.collection('attendance-detail');
+    // Get attendance detail
+    final attendanceDetailQuery = await attendance
+        .where("id", isEqualTo: idattendancedetail.value)
+        .get();
 
-      // Get attendance detail
-      final attendanceDetailQuery = await attendance
-          .where("id", isEqualTo: idattendancedetail.value)
-          .get();
+    if (attendanceDetailQuery.docs.isNotEmpty) {
+      final attendanceDetailData = AttendanceDetailModel.fromJson(attendanceDetailQuery.docs.first.data() as Map<String, dynamic>);
 
-      if (attendanceDetailQuery.docs.isNotEmpty) {
-        final attendanceDetailData = AttendanceDetailModel.fromJson(attendanceDetailQuery.docs.first.data() as Map<String, dynamic>);
+      if (score == "SUCCESS" && attendanceDetailData.formatNo == null) {
+        final attendanceQuery = await firestore
+            .collection('attendance')
+            .where("id", isEqualTo: attendanceDetailData.idattendance)
+            .get();
 
+        if (attendanceQuery.docs.isNotEmpty) {
+          final attendanceData = AttendanceModel.fromJson(attendanceQuery.docs.first.data());
+          final date = attendanceData.date?.toDate();
+          final year = date?.year;
+          final month = date?.month;
 
-        if (score == "SUCCESS") {
-          // Add Format No if it's not present
-          if (attendanceDetailData.formatNo == null) {
+          final totalAttendanceQuery = await firestore.collection('attendance')
+              .where("subject", isEqualTo: attendanceData.subject)
+              .where("is_delete", isEqualTo: 0)
+              .get();
 
-            final attendanceQuery = await firestore
-                .collection('attendance')
-                .where("id", isEqualTo: attendanceDetailData.idattendance)
-                .get();
+          final attendances = await Future.wait(
+            totalAttendanceQuery.docs.map((doc) async {
+              final attendanceModel = AttendanceModel.fromJson(doc.data() as Map<String, dynamic>);
+              return attendanceModel.toJson();
+            }),
+          );
 
-            if (attendanceQuery.docs.isNotEmpty) {
-              final attendanceData = AttendanceModel.fromJson(attendanceQuery.docs.first.data());
+          //mengambil data year dan month yang sama
+          final filteredAttendance = attendances.where((attendance) {
+            final attendanceDate = attendance["date"].toDate();
+            final attendanceYear = attendanceDate.year;
+            final attendanceMonth = attendanceDate.month;
 
-              // Get total successful attendance
-              final totalAttendanceQuery = await attendance
-                  .where("idattendance", isEqualTo: attendanceDetailData.idattendance)
-                  .where("score", isEqualTo: "SUCCESS")
-                  .get();
+            return attendanceYear == year && attendanceMonth == month;
+          }).toList();
 
-              final totalAttendanceCount = totalAttendanceQuery.docs.length + 1;
-              final totalAttendanceCountString = totalAttendanceCount.toString().padLeft(3, '0');
+          final attendanceIds = <String>[];
 
-              // Update attendance detail
-              await attendance.doc(idattendancedetail.value).update({
-                "formatNo": "${attendanceData.subject}-${totalAttendanceCountString}",
-              });
+          filteredAttendance.forEach((attendance) {
+            final attendanceId = attendance['id'];
+            if (attendanceId != null) {
+              attendanceIds.add(attendanceId);
             }
+          });
+
+          final attendanceDetailData = <Map<String, dynamic>>[];
+
+          int totalAttendanceCount = 0;
+          if (attendanceIds.isNotEmpty) {
+            final attendanceDetailQuery = await firestore
+                .collection('attendance-detail')
+                .where("idattendance", whereIn: attendanceIds)
+                .where("score", isEqualTo: "SUCCESS")
+                .get();
+            attendanceDetailData.addAll(attendanceDetailQuery.docs.map((doc) => doc.data()));
           }
-        }else if(score == "FAIL"){
-          if (attendanceDetailData.score == "SUCCESS") {
-            await attendance.doc(idattendancedetail.value).update({
-              "formatNo": null,
-            });
-          }
+
+          print("ini attendance detail");
+          print(attendanceDetailData.length);
+
+          totalAttendanceCount =  attendanceDetailData.length+1;
+          final totalAttendanceCountString = totalAttendanceCount.toString().padLeft(3, '0');
+
+          // Update attendance detail
+          await attendance.doc(idattendancedetail.value).update({
+            "formatNo": "${attendanceData.subject}-${totalAttendanceCountString}",
+            "certificatemandatory" : "1${getRandomString(32)}"
+          });
         }
+      } else if (score == "FAIL" && attendanceDetailData.score == "SUCCESS") {
+        await attendance.doc(idattendancedetail.value).update({
+          "formatNo": null,
+          "certificatemandatory" : null
+        });
       }
+    }
+
     await attendance.doc(idattendancedetail.value).update({
       "score": score,
       "feedback": feedback,
       "status": "donescoring",
       "updatedTime": DateTime.now().toIso8601String(),
     });
-
   }
-
 
   @override
   void onReady() {

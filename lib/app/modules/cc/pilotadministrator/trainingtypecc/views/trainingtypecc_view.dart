@@ -3,11 +3,9 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:ts_one/app/modules/pa/navadmin/views/navadmin_view.dart';
 import 'package:ts_one/presentation/shared_components/TitleText.dart';
 
-import '../../../../../../presentation/shared_components/formdatefield.dart';
 import '../../../../../../presentation/theme.dart';
 import '../../../../../../util/empty_screen.dart';
 import '../../../../../../util/error_screen.dart';
@@ -71,7 +69,8 @@ class _TrainingtypeccViewState extends State<TrainingtypeccView>
             controller.resetDate();
           },
         ),
-        title: Text("Back"),
+        title: RedTitleText(text: "TRAINING"),
+        centerTitle: true,
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20),
@@ -79,6 +78,7 @@ class _TrainingtypeccViewState extends State<TrainingtypeccView>
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            SizedBox(height: 10,),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -89,21 +89,24 @@ class _TrainingtypeccViewState extends State<TrainingtypeccView>
                 Expanded(
                   flex: 1,
                   child: PopupMenuButton(
+                    color: Colors.white,
+                    surfaceTintColor: Colors.white,
                     itemBuilder: (BuildContext context) {
                       return [
                         PopupMenuItem(
                             child: TextButton(
-                              onPressed: () {
-                                Get.toNamed(Routes.ADD_ATTENDANCECC, arguments: {
+                              onPressed: () async {
+                                await Get.toNamed(Routes.ADD_ATTENDANCECC, arguments: {
                                   "id" : controller.argumentid.value,
                                   "name" : controller.argumentname.value
                                 });
+                                Navigator.pop(context);
                               },
                               child: Row(
                                 children: [
-                                  Icon(Icons.add, size: 16),
+                                  Icon(Icons.add, size: 16, color: Colors.black,),
                                   SizedBox(width: 5,),
-                                  Text("Add Attendance",)
+                                  Text("Add Attendance", style: tsOneTextTheme.labelMedium,)
                                 ],
                               ),
                             )
@@ -112,12 +115,13 @@ class _TrainingtypeccViewState extends State<TrainingtypeccView>
                           child: TextButton(
                             onPressed: () {
                               controller.deleteTraining();
+                              Navigator.pop(context);
                             },
                             child: Row(
                               children: [
-                                Icon(Icons.delete, size: 16),
+                                Icon(Icons.delete, size: 16, color: Colors.black,),
                                 SizedBox(width: 5,),
-                                Text("Delete",)
+                                Text("Delete", style: tsOneTextTheme.labelMedium,)
                               ],
                             ),
                           ),

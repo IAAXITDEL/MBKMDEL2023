@@ -110,7 +110,6 @@ class PilottraininghistorydetailccController extends GetxController {
         trainingName.value = attendanceModel.subject!;
       }
     }
-
     return attendanceData;
   }
 
@@ -147,8 +146,7 @@ class PilottraininghistorydetailccController extends GetxController {
     }
     return false;
   }
-
-
+  
   Future<List> absentStream() async {
     try{
       userPreferences = getItLocator<UserPreferences>();
@@ -195,6 +193,32 @@ class PilottraininghistorydetailccController extends GetxController {
     }
 
   }
+
+  Future<bool> checkFeedbackIsProvided() async {
+    userPreferences = getItLocator<UserPreferences>();
+
+    final attendanceDetailQuery = await firestore
+        .collection('attendance-detail')
+        .where("idattendance", isEqualTo: idAttendance.value)
+        .where("idtraining", isEqualTo: userPreferences.getIDNo())
+        .get();
+
+    final attendanceDetailData = <Map<String, dynamic>>[];
+
+    for (final doc in attendanceDetailQuery.docs) {
+      final attendanceDetailModel = AttendanceDetailModel.fromJson(doc.data());
+      attendanceDetailData.add(attendanceDetailModel.toJson());
+    }
+
+    print(attendanceDetailData[0]);
+    if (attendanceDetailData[0]["feedbackforinstructor"] != null) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  
+  
   Future<Uint8List> createCertificate() async {
     try {
       final font = await rootBundle.load("assets/fonts/Poppins-Regular.ttf");
@@ -227,8 +251,6 @@ class PilottraininghistorydetailccController extends GetxController {
       }
 
       String certificateNo = "IAA/FC/${formatNo}/${month}/${year}";
-      print("dash");
-      print(certificateNo);
       // ------------------- PDF ------------------
       pdf.addPage(
         pw.Page(
@@ -356,15 +378,30 @@ class PilottraininghistorydetailccController extends GetxController {
   }
 
   Future<void> savePdfFile(Uint8List byteList) async {
+    var listAttendance = await getCombinedAttendance();
+
+    Timestamp? date = listAttendance[0]["date"];
+    DateTime? dates = date?.toDate();
+    String dateC = DateFormat('dd-MM-yyyy').format(dates!);
+
+
+    Directory('/storage/emulated/0/Download/').createSync();
     final output = await getTemporaryDirectory();
-    var filePath = "${output.path}/sda.pdf";
+    var filePath = "/storage/emulated/0/Download/Certificate/Certificate-${dateC}.pdf";
     final file = File(filePath);
     print("step 1");
     await file.writeAsBytes(byteList);
     print("step 2");
-    await OpenFile.open(filePath);
+
+    final filePaths = "${output.path}/Certificate-${dateC}.pdf";
+    final files = File(filePaths);
+    print("step 1");
+    await files.writeAsBytes(byteList);
+    print("step 2");
+    await OpenFile.open(filePaths);
     print("stetep 3");
   }
+
 
   @override
   void onReady() {

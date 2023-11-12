@@ -22,14 +22,14 @@ class HomeAdminccView extends GetView<HomeAdminccController> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 20,),
+              SizedBox(height: 30,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    "Hi, ${controller.titleToGreet}!",
+                  Obx(() => Text(
+                    "Hi, ${controller.titleToGreet} ${controller.nameC.value}!",
                     style: tsOneTextTheme.headlineLarge,
-                  ),
+                  ),)
                 ],
               ),
               Align(
@@ -67,18 +67,18 @@ class HomeAdminccView extends GetView<HomeAdminccController> {
                   ],
                 ),
               ),
+              SizedBox(height: 25,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     "Need Confirmation",
-                    style: tsOneTextTheme.labelLarge,
-                  ),
+                    style: tsOneTextTheme.headlineMedium,
+                  )
                 ],
               ),
-              const SizedBox(height: 5,),
               StreamBuilder<List<Map<String, dynamic>>>(
-                stream: controller.getCombinedAttendanceStream(),
+                stream: controller.getCombinedAttendanceStream("confirmation"),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return LoadingScreen(); // Placeholder while loading
@@ -105,7 +105,75 @@ class HomeAdminccView extends GetView<HomeAdminccController> {
                             });
                           },
                           child: Container(
-                            margin: EdgeInsets.symmetric(vertical: 5),
+                            margin: EdgeInsets.only(bottom: 10),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.0),
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.3),
+                                  spreadRadius: 2,
+                                  blurRadius: 3,
+                                  offset: const Offset(0, 2),
+                                ),
+                              ],
+                            ),
+                            child: ListTile(
+                              title: Text(
+                                listAttendance[index]["subject"],
+                                style: tsOneTextTheme.headlineMedium,
+                              ),
+                              subtitle: Text(
+                                listAttendance[index]["name"],
+                                style: tsOneTextTheme.labelSmall,
+                              ),
+                              trailing: const Icon(Icons.navigate_next),
+                            ) ,
+                          ),
+                        );
+                      }
+                  );
+                },
+              ),
+              SizedBox(height: 25,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Waiting",
+                    style: tsOneTextTheme.headlineMedium,
+                  ),
+                ],
+              ),
+              StreamBuilder<List<Map<String, dynamic>>>(
+                stream: controller.getCombinedAttendanceStream("pending"),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return LoadingScreen(); // Placeholder while loading
+                  }
+
+                  if (snapshot.hasError) {
+                    return ErrorScreen();
+                  }
+
+                  var listAttendance= snapshot.data!;
+                  if(listAttendance.isEmpty){
+                    return EmptyScreen();
+                  }
+
+                  return ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: listAttendance.length,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        return InkWell(
+                          onTap: () {
+                            Get.toNamed(Routes.ATTENDANCE_PENDINGCC,  arguments: {
+                              "id" : listAttendance[index]["id"],
+                            });
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(bottom: 10),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10.0),
                               color: Colors.white,

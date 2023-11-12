@@ -168,127 +168,153 @@ class ProfileccView extends GetView<ProfileccController> {
               SizedBox(
                 height: 20,
               ),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
-                  color: TsOneColor.surface,
-                ),
-                child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                  stream: controller.profileList(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return LoadingScreen(); // Placeholder while loading
-                    }
+              StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                stream: controller.profileList(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return LoadingScreen(); // Placeholder while loading
+                  }
 
-                    if (snapshot.hasError) {
-                      return ErrorScreen();
-                    }
+                  if (snapshot.hasError) {
+                    return ErrorScreen();
+                  }
 
-                    var listAttendance = snapshot.data!.docs;
-                    var documentData = listAttendance[0].data();
-                    controller.idTraining.value = documentData["ID NO"];
+                  var listAttendance = snapshot.data!.docs;
+                  var documentData = listAttendance[0].data();
+                  controller.idTraining.value = documentData["ID NO"];
 
-                    return Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Expanded(flex: 3, child: Text("RANK")),
-                              Expanded(flex: 1, child: Text(":")),
-                              Expanded(
-                                  flex: 6,
-                                  child: Text(documentData["RANK"] ?? "N/A")),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            children: [
-                              Expanded(flex: 3, child: Text("Email")),
-                              Expanded(flex: 1, child: Text(":")),
-                              Expanded(
-                                  flex: 6,
-                                  child: Text(documentData["EMAIL"] ?? "N/A")),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            children: [
-                              Expanded(flex: 3, child: Text("LICENSE NO")),
-                              Expanded(flex: 1, child: Text(":")),
-                              Expanded(
-                                  flex: 6,
-                                  child: Text(
-                                      documentData["LICENSE NO."] ?? "N/A")),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          controller.isAdministrator.value == false ?
-                              Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      Expanded(flex: 3, child: Text("HUB")),
-                                      Expanded(flex: 1, child: Text(":")),
-                                      Expanded(
-                                          flex: 6,
-                                          child: Text(documentData["HUB"] ?? "N/A")),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                ],
-                              ) : SizedBox(),
-
-                          controller.isInstructor.value == true
-                              ? Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Expanded(flex: 3, child: Text("INSTRUCTOR")),
-                                  Expanded(flex: 1, child: Text(":")),
-                                  Expanded(
-                                      flex: 6,
-                                      child: Text(controller.instructorType.value ?? "N/A")),
-                                ],
+                  return Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
+                      color: TsOneColor.surface,
+                    ),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                    margin: EdgeInsets.symmetric(horizontal: 20),
+                    child: Column(
+                      children: [
+                        controller.isAdministrator.value ? SizedBox() :
+                        Row(
+                          children: [
+                            Expanded(flex: 3, child: Text("STATUS")),
+                            Expanded(flex: 1, child: Text(":")),
+                            Expanded(flex: 6, child:
+                            Container(
+                              height: 30.0,
+                              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                              decoration: BoxDecoration(
+                                color:  documentData["STATUS"] == "VALID" ?  Colors.green : TsOneColor.redColor,
+                                borderRadius: BorderRadius.circular(5),
                               ),
-                              Row(
-                                children: [
-                                  Expanded(flex: 3, child: Text("LOA NO.")),
-                                  Expanded(flex: 1, child: Text(":")),
-                                  Expanded(
-                                      flex: 5,
-                                      child: Text(
-                                          documentData["LOA NO"] ?? "N/A")),
-                                  Expanded(
-                                      flex: 1,
-                                      child: InkWell(
-                                        onTap: (){
-                                          add();
-                                        },
-                                        child: Icon(
-                                          Icons.edit,
-                                          color: Colors.blue,
-                                        ),
-                                      )),
-                                ],
-                              )
-                            ],
-                          )
-                              : SizedBox()
-                        ],
-                      ),
-                    );
-                  },
-                ),
+
+                              child : Text(
+                                documentData["STATUS"],
+                                textAlign: TextAlign.center,
+                                style: TextStyle(color: Colors.white),
+
+                              ),
+                            )
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          children: [
+                            Expanded(flex: 3, child: Text("RANK")),
+                            Expanded(flex: 1, child: Text(":")),
+                            Expanded(
+                                flex: 6,
+                                child: Text(documentData["RANK"] ?? "N/A")),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          children: [
+                            Expanded(flex: 3, child: Text("Email")),
+                            Expanded(flex: 1, child: Text(":")),
+                            Expanded(
+                                flex: 6,
+                                child: Text(documentData["EMAIL"] ?? "N/A")),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          children: [
+                            Expanded(flex: 3, child: Text("LICENSE NO")),
+                            Expanded(flex: 1, child: Text(":")),
+                            Expanded(
+                                flex: 6,
+                                child: Text(
+                                    documentData["LICENSE NO."] ?? "N/A")),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        controller.isAdministrator.value == false ?
+                            Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Expanded(flex: 3, child: Text("HUB")),
+                                    Expanded(flex: 1, child: Text(":")),
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(documentData["HUB"] ?? "N/A")),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                              ],
+                            ) : SizedBox(),
+
+                        controller.isInstructor.value == true
+                            ? Column(
+                          children: [
+                            Row(
+                              children: [
+                                Expanded(flex: 3, child: Text("INSTRUCTOR")),
+                                Expanded(flex: 1, child: Text(":")),
+                                Expanded(
+                                    flex: 6,
+                                    child: Text(controller.instructorType.value ?? "N/A")),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Expanded(flex: 3, child: Text("LOA NO.")),
+                                Expanded(flex: 1, child: Text(":")),
+                                Expanded(
+                                    flex: 5,
+                                    child: Text(
+                                        documentData["LOA NO"] ?? "N/A")),
+                                Expanded(
+                                    flex: 1,
+                                    child: InkWell(
+                                      onTap: (){
+                                        add();
+                                      },
+                                      child: Icon(
+                                        Icons.edit,
+                                        color: Colors.blue,
+                                      ),
+                                    )),
+                              ],
+                            )
+                          ],
+                        )
+                            : SizedBox()
+                      ],
+                    ),
+                  );
+                },
               ),
               SizedBox(
                 height: 20,
@@ -413,16 +439,47 @@ class ProfileccView extends GetView<ProfileccController> {
                                         child: ClipRRect(
                                             borderRadius:
                                                 BorderRadius.circular(100),
-                                            child: Image.asset(
-                                              "assets/images/success.png",
-                                              fit: BoxFit.cover,
-                                            )),
+                                            child: StreamBuilder<String>(
+                                              stream: controller.cekValidationTraining(listTraining[index]['id'], controller.idTrainee.value),
+                                              builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+                                                if (snapshot.connectionState == ConnectionState.waiting) {
+                                                  // Menampilkan sesuatu saat data sedang diambil
+                                                  return Text("Loading...");
+                                                } else if (snapshot.hasError) {
+                                                  // Menampilkan pesan error jika terjadi kesalahan
+                                                  return Text("Error: ${snapshot.error}");
+                                                } else {
+                                                  // Menampilkan hasil dari Future ketika sudah tersedia
+                                                  return Image.asset(
+                                                    snapshot.data == "VALID" ?
+                                                    "assets/images/Green_check.png" : "assets/images/Red_check.png" ,
+                                                    fit: BoxFit.cover,
+                                                  );
+                                                }
+                                              },
+                                            ),),
                                       ),
                                       title: Text(
                                         listTraining[index]["training"],
                                         maxLines: 1,
                                         style: tsOneTextTheme.labelMedium,
                                       ),
+                                        subtitle: StreamBuilder<String>(
+                                          stream: controller.cekValidationTraining(listTraining[index]['id'], controller.idTrainee.value),
+                                          builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+                                            if (snapshot.connectionState == ConnectionState.waiting) {
+                                              // Menampilkan sesuatu saat data sedang diambil
+                                              return Text("Loading...");
+                                            } else if (snapshot.hasError) {
+                                              // Menampilkan pesan error jika terjadi kesalahan
+                                              return Text("Error: ${snapshot.error}");
+                                            } else {
+                                              // Menampilkan hasil dari Future ketika sudah tersedia
+                                              return Text(snapshot.data ?? "NOT VALID");
+                                            }
+                                          },
+                                        ),
+
                                       // subtitle: Column(
                                       //   crossAxisAlignment: CrossAxisAlignment.start,
                                       //   children: [

@@ -1,12 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:ts_one/presentation/shared_components/TitleText.dart';
 
-import '../../../../../../presentation/shared_components/formdatefield.dart';
 import '../../../../../../presentation/shared_components/formtextfield.dart';
 import '../../../../../../presentation/theme.dart';
 import '../../../../../../util/error_screen.dart';
@@ -20,7 +17,6 @@ class AddTrainingccView extends GetView<AddTrainingccController> {
   @override
   Widget build(BuildContext context) {
     var subjectC = TextEditingController();
-    var recurrentC = TextEditingController();
     var trainingDescriptionC = TextEditingController();
 
     Future<void> add(String newSubject, String newExpiryDate,
@@ -40,7 +36,8 @@ class AddTrainingccView extends GetView<AddTrainingccController> {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text('Back', style: TextStyle(color: Colors.black)),
+          title: RedTitleText(text: "ADD TRAINING"),
+          centerTitle: true,
           iconTheme: IconThemeData(color: Colors.black),
           backgroundColor: Colors.transparent,
           elevation: 0,
@@ -54,8 +51,6 @@ class AddTrainingccView extends GetView<AddTrainingccController> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  RedTitleText(text: "ADD TRAINING"),
-
                   SizedBox(
                     height: 20,
                   ),
@@ -67,11 +62,11 @@ class AddTrainingccView extends GetView<AddTrainingccController> {
                   ),
 
                   //--------------------------RECURRENT--------------------------
-                  Row(
-                    children: [
-                      Expanded(child: Text("Recurrent")),
-                    ],
-                  ),
+                  // Row(
+                  //   children: [
+                  //     Expanded(child: Text("Recurrent")),
+                  //   ],
+                  // ),
                   SizedBox(
                     height: 10,
                   ),
@@ -79,8 +74,8 @@ class AddTrainingccView extends GetView<AddTrainingccController> {
                     children: [
                       Container(
                         child: DropdownMenu<String>(
+                          hintText: "Recurrent",
                           width: Get.width / 1.12,
-                          initialSelection: controller.list.first,
                           onSelected: (String? value) {
                             controller.dropdownValue.value = value!;
                           },
@@ -106,16 +101,11 @@ class AddTrainingccView extends GetView<AddTrainingccController> {
                   ),
 
                   //-------------------------TRAINING DESCRIPTION-----------------------
-                  Row(
-                    children: [
-                      Expanded(child: Text("Training Description")),
-                    ],
-                  ),
                   SizedBox(
                     height: 10,
                   ),
                   Container(
-                    padding: EdgeInsets.all(5),
+                    padding: EdgeInsets.all(10),
                     decoration: BoxDecoration(
                         border: Border.all(
                             color: tsOneColorScheme.secondaryContainer),
@@ -132,7 +122,7 @@ class AddTrainingccView extends GetView<AddTrainingccController> {
                         return null;
                       },
                       decoration: InputDecoration.collapsed(
-                          hintText: "Enter your text here"),
+                          hintText: "Training Description"),
                     ),
                   ),
                   SizedBox(
@@ -181,6 +171,12 @@ class AddTrainingccView extends GetView<AddTrainingccController> {
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Center(
+                    child: Text("Make sure every data is selected before pressing the submit button", style: tsOneTextTheme.labelSmall,),
                   )
                 ],
               ),

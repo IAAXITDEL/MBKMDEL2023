@@ -42,11 +42,13 @@ class FormDateField extends StatelessWidget {
           labelText: text
       ),
       onTap: () async {
-        DateTime? pickedDate = await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(1945), lastDate: DateTime(2300));
-        if(pickedDate != null){
-          String formattedDate = DateFormat('dd-MM-yyyy').format(pickedDate);
-          textController.text = formattedDate;
-        }
+       if(!readOnly){
+         DateTime? pickedDate = await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(1945), lastDate: DateTime(2300));
+         if(pickedDate != null){
+           String formattedDate = DateFormat('dd MMM yyyy').format(pickedDate);
+           textController.text = formattedDate;
+         }
+       }
       },
     );
   }

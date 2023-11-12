@@ -2,7 +2,6 @@ import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_search/dropdown_search.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -95,9 +94,10 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text('Back', style: TextStyle(color: Colors.black)),
+          title: RedTitleText(text: "ATTENDANCE LIST"),
           iconTheme: IconThemeData(color: Colors.black),
           // backgroundColor: Colors.transparent,
+          centerTitle: true,
           elevation: 0,
         ),
         body: SingleChildScrollView(
@@ -116,13 +116,13 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
 
                   var listAttendance = snapshot.data!;
 
-                  if (listAttendance != null && listAttendance.isNotEmpty) {
+                  if (listAttendance.isNotEmpty) {
 
                     Timestamp? timestamp = listAttendance[0]["date"];
                     DateTime? dateTime = timestamp?.toDate();
 
                     subjectC.text = listAttendance[0]["subject"] ?? "N/A";
-                    dateC.text = DateFormat('dd MMM yyyy').format(dateTime!) ?? "N/A";
+                    dateC.text = DateFormat('dd MMM yyyy').format(dateTime!);
                     departmentC.text = listAttendance[0]["department"] ?? "N/A";
                     vanueC.text = listAttendance[0]["vanue"] ?? "N/A";
                     trainingtypeC.text = listAttendance[0]["trainingType"] ?? "N/A";
@@ -140,92 +140,6 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                     children: [
                       SizedBox(
                         height: 10,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          RedTitleText(text: "ATTENDANCE LIST"),
-
-                          // import pdf jika status sudah done
-                          listAttendance[0]["status"] == "done"
-                              ? StreamBuilder<int>(
-                                  stream: controller.attendanceStream(),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.connectionState ==
-                                        ConnectionState.waiting) {
-                                      return CircularProgressIndicator();
-                                    } else if (snapshot.hasError) {
-                                      return Text('Error: ${snapshot.error}');
-                                    } else {
-                                      int attendanceCount = snapshot.data ?? 0;
-                                      return InkWell(
-                                        onTap: () async {
-                                          try {
-                                            controller.isLoading.value = true;
-                                            // Tampilkan LoadingScreen
-                                            showDialog(
-                                              context: context,
-                                              // barrierDismissible:
-                                              //     false, // Tidak bisa menutup dialog dengan tap di luar
-                                              builder: (BuildContext context) {
-                                                return LoadingScreen();
-                                              },
-                                            );
-
-                                            await controller.savePdfFile(
-                                                await controller
-                                                    .attendancelist());
-                                          } catch (e) {
-                                            print('Error: $e');
-                                          } finally {
-                                            controller.isLoading.value = false;
-                                            // Tutup dialog saat selesai
-                                            Navigator.pop(context);
-                                          }
-                                        },
-                                        child: Container(
-                                          padding: EdgeInsets.all(5),
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10.0),
-                                            color: Colors.blue,
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: Colors.grey
-                                                    .withOpacity(0.3),
-                                                spreadRadius: 2,
-                                                blurRadius: 3,
-                                                offset: const Offset(0, 2),
-                                              ),
-                                            ],
-                                          ),
-                                          child: Row(
-                                            children: [
-                                              Icon(
-                                                Icons.picture_as_pdf,
-                                                size: 16,
-                                                color: Colors.white,
-                                              ),
-                                              SizedBox(
-                                                width: 5,
-                                              ),
-                                              Text(
-                                                "Save PDF",
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                    }
-                                  },
-                                )
-                              : SizedBox()
-                        ],
-                      ),
-                      SizedBox(
-                        height: 20,
                       ),
                       Row(
                         mainAxisSize: MainAxisSize.min,
@@ -420,7 +334,7 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
 
                               Obx(
                                 () => Radio<String>(
-                                  value: listAttendance[0]["attendanceType"],
+                                  value: listAttendance[0]["attendanceType"] ?? "N/A",
                                   groupValue: controller.selectedMeeting.value,
                                   onChanged: (String? newValue) {
                                     controller.selectMeeting(newValue);
@@ -428,7 +342,7 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                                 ),
                               ),
                               Text(
-                                listAttendance[0]["attendanceType"],
+                                listAttendance[0]["attendanceType"] ?? "N/A",
                                 style: tsOneTextTheme.labelSmall,
                               ),
                             ],
@@ -438,8 +352,87 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                       SizedBox(
                         height: 10,
                       ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          // import pdf jika status sudah done
+                          listAttendance[0]["status"] == "done"
+                              ? StreamBuilder<int>(
+                            stream: controller.attendanceStream(),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return CircularProgressIndicator();
+                              } else if (snapshot.hasError) {
+                                return Text('Error: ${snapshot.error}');
+                              } else {
+                                return InkWell(
+                                  onTap: () async {
+                                    try {
+                                      controller.isLoading.value = true;
+                                      // Tampilkan LoadingScreen
+                                      showDialog(
+                                        context: context,
+                                        // barrierDismissible:
+                                        //     false, // Tidak bisa menutup dialog dengan tap di luar
+                                        builder: (BuildContext context) {
+                                          return LoadingScreen();
+                                        },
+                                      );
 
-
+                                      await controller.attendancelist();
+                                      await controller.savePdfFile(
+                                          await controller
+                                              .attendancelist());
+                                    } catch (e) {
+                                      print('Error: $e');
+                                    } finally {
+                                      controller.isLoading.value = false;
+                                      // Tutup dialog saat selesai
+                                      Navigator.pop(context);
+                                    }
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
+                                      borderRadius:
+                                      BorderRadius.circular(10.0),
+                                      color: Colors.blue,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey
+                                              .withOpacity(0.3),
+                                          spreadRadius: 2,
+                                          blurRadius: 3,
+                                          offset: const Offset(0, 2),
+                                        ),
+                                      ],
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.picture_as_pdf,
+                                          size: 16,
+                                          color: Colors.white,
+                                        ),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                        Text(
+                                          "Save PDF",
+                                          style: TextStyle(
+                                              color: Colors.white),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              }
+                            },
+                          )
+                              : SizedBox()
+                        ],
+                      ),
 
                       // Jika status masih konfirmasi
                       ((listAttendance[0]["status"] == "confirmation") &&

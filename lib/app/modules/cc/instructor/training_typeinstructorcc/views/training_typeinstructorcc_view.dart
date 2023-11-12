@@ -18,12 +18,9 @@ class TrainingTypeinstructorccView
 
     return Scaffold(
       appBar: AppBar(
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              RedTitleText(text: 'TRAINING'),
-            ],
-          )),
+          title:RedTitleText(text: 'TRAINING'),
+        centerTitle: true,
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20),
@@ -63,7 +60,11 @@ class TrainingTypeinstructorccView
                       return Card(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
+                          side: BorderSide(color: TsOneColor.secondary, width: 1),
                         ),
+                        color: TsOneColor.surface,
+                        surfaceTintColor: Colors.white,
+                        shadowColor: Colors.white,
                         elevation: 5,
                         child: InkWell(
                           onTap: () {
@@ -79,7 +80,7 @@ class TrainingTypeinstructorccView
                               padding: const EdgeInsets.symmetric(
                                   vertical: 1, horizontal: 10),
                               child: Text(
-                                trainingData["training"], style: tsOneTextTheme.labelSmall, textAlign: TextAlign.center,
+                                trainingData["training"], style: TextStyle(color: TsOneColor.secondaryContainer, fontWeight: FontWeight.bold, fontSize: 12), textAlign: TextAlign.center,
                               ),
                             ),
                           ),
