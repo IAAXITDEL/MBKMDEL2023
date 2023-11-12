@@ -311,7 +311,18 @@ class PilotcrewdetailccView extends GetView<PilotcrewdetailccController> {
                                   return Text("Error: ${snapshot.error}");
                                 } else {
                                   // Menampilkan hasil dari Future ketika sudah tersedia
-                                  return Text(snapshot.data ?? "NOT VALID");
+                                  return Row(
+                                    children: [
+                                      Container(
+                                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+                                        decoration: BoxDecoration(
+                                          color: TsOneColor.secondaryContainer.withOpacity(0.2),
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        child: Text(snapshot.data ?? "NOT VALID", style: TextStyle(fontSize: 11)),
+                                      )
+                                    ],
+                                  );
                                 }
                               },
                             ),

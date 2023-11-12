@@ -347,10 +347,10 @@ class AttendanceConfirccController extends GetxController {
     }
 
   // List untuk Administrator
-  Stream<List<Map<String, dynamic>>> administratorStream() {
-    return _firestore.collection('attendance').where("id", isEqualTo: argumentid.value).snapshots().asyncMap((attendanceQuery) async {
+  Future<List<Map<String, dynamic>?>>  administratorList() async {
+    QuerySnapshot attendanceQuery = await _firestore.collection('attendance').where("id", isEqualTo: argumentid.value).get();
       List<int?> adminIds =
-      attendanceQuery.docs.map((doc) => AttendanceModel.fromJson(doc.data()).idPilotAdministrator).toList();
+      attendanceQuery.docs.map((doc) => AttendanceModel.fromJson(doc.data() as Map<String, dynamic>).idPilotAdministrator).toList();
 
       final usersData = <Map<String, dynamic>>[];
 
@@ -361,15 +361,15 @@ class AttendanceConfirccController extends GetxController {
 
       final attendanceData = await Future.wait(
         attendanceQuery.docs.map((doc) async {
-          final attendanceModel = AttendanceModel.fromJson(doc.data());
+          final attendanceModel = AttendanceModel.fromJson(doc.data() as Map<String, dynamic>);
           final user = usersData.firstWhere((user) => user['ID NO'] == attendanceModel.idPilotAdministrator, orElse: () => {});
           attendanceModel.name = user['NAME'];
           attendanceModel.photoURL = user['PHOTOURL'];
           return attendanceModel.toJson();
         }),
       );
+      print(attendanceData);
       return attendanceData;
-    });
   }
 
 
@@ -417,24 +417,17 @@ class AttendanceConfirccController extends GetxController {
       print(attendanceModels);
       // Memanggil Data Attendance Detail (Daftar Training)
       final List<Map<String, dynamic>?> attendanceDetailStream = await getCombinedAttendanceDetailStream();
+      print("attendanceDetail");
+      print(attendanceDetailStream);
 
       // Memanggil Data Instructor
       final List<Map<String, dynamic>?> instructorSt = await instructorList();
       print("panjangnya ada ${instructorSt.length}");
 
       // Memanggil Data Pilot Administrator
-      Stream<List<Map<String, dynamic>>> administratorSt = await administratorStream();
-      await administratorSt
-          .listen((List<Map<String, dynamic>> attendanceDataList) {
-        administratorModels.clear();
-        List<AttendanceModel> currentAdministratorModels =
-        attendanceDataList.map((data) {
-          return AttendanceModel.fromJson(data);
-        }).toList();
-        administratorModels.addAll(currentAdministratorModels);
-      });
-      print("admin");
-      print(administratorModels);
+      final List<Map<String, dynamic>?> administratorSt = await administratorList();
+      print("sda");
+      print(administratorSt);
 
 
       //menampilkan data training
@@ -449,11 +442,11 @@ class AttendanceConfirccController extends GetxController {
           pw.TableRow(
             children: [
               NormalTextFieldPdf(title: "${e+1}"),
-              NormalTextFieldPdf(title: "${attendanceDetailStream[e]?['name']}"),
-              NormalTextFieldPdf(title: "${attendanceDetailStream[e]?['idtraining']}"),
-              NormalTextFieldPdf(title: "${attendanceDetailStream[e]?['rank']}"),
-              NormalTextFieldPdf(title: "${attendanceDetailStream[e]?['license']}"),
-              NormalTextFieldPdf(title: "${attendanceDetailStream[e]?['hub']}"),
+              NormalTextFieldPdf(title: "${attendanceDetailStream[e]?['name'] ?? 'N/A'}  "),
+              NormalTextFieldPdf(title: "${attendanceDetailStream[e]?['idtraining'] ?? 'N/A'}"),
+              NormalTextFieldPdf(title: "${attendanceDetailStream[e]?['rank'] ?? 'N/A'}"),
+              NormalTextFieldPdf(title: "${attendanceDetailStream[e]?['license'] ?? 'N/A'}"),
+              NormalTextFieldPdf(title: "${attendanceDetailStream[e]?['hub']?? 'N/A'}"),
               pw.Container(
                 height: 15,
                 padding: pw.EdgeInsets.all(5),
@@ -482,9 +475,9 @@ class AttendanceConfirccController extends GetxController {
         instructorTableRows.add(
           pw.TableRow(
             children: [
-              NormalTextFieldPdf(title: "${instructorSt[f]?['name']}"),
-              NormalTextFieldPdf(title: "${instructorSt[f]?['instructor']}"),
-              NormalTextFieldPdf(title: "${instructorSt[f]?['loano']}"),
+              NormalTextFieldPdf(title: "${instructorSt[f]?['name'] ?? 'N/A'}"),
+              NormalTextFieldPdf(title: "${instructorSt[f]?['instructor'] ?? 'N/A'}"),
+              NormalTextFieldPdf(title: "${instructorSt[f]?['loano']?? 'N/A' }"),
               pw.Container(
                 height: 15,
                 padding: pw.EdgeInsets.all(5),
@@ -504,18 +497,18 @@ class AttendanceConfirccController extends GetxController {
       }
 
       //menampilkan data pilot administrator
-      for (int g = 0; g < administratorModels.length; g++) {
+      for (int g = 0; g < administratorSt.length; g++) {
        // var imagesipa = await loadImageFromNetwork(administratorModels[g].signaturePilotAdministratorUrl ?? "");
 
-        final Uint8List imageBytesAdministrator = await _getImageBytes(administratorModels[g].signaturePilotAdministratorUrl ?? "");
+        final Uint8List imageBytesAdministrator = await _getImageBytes(administratorSt[g]?['signaturePilotAdministratorUrl'] ?? "");
      //   final Uint8List resizedImageBytesAdministrator = await resizeImage(imageBytesAdministrator, 50, 50); // Adjust dimensions as needed
 
         pw.MemoryImage imagesipa = pw.MemoryImage(imageBytesAdministrator);
         administratorTableRows.add(
           pw.TableRow(
             children: [
-              NormalTextFieldPdf(title: "${administratorModels[g].name}"),
-              NormalTextFieldPdf(title: "${administratorModels[g].idPilotAdministrator}"),
+              NormalTextFieldPdf(title: "${administratorSt[g]?['name'] ?? 'N/A'}"),
+              NormalTextFieldPdf(title: "${administratorSt[g]?['idPilotAdministrator'] ?? 'N/A'}"),
               pw.Container(
                 height: 15,
                 padding: pw.EdgeInsets.all(5),
@@ -685,7 +678,7 @@ class AttendanceConfirccController extends GetxController {
                                     children: [
                                       TextFieldPdf(title: "SUBJECT"),
                                       TextFieldPdf(
-                                          title: attendanceModel.subject ?? ''),
+                                          title: attendanceModel.subject ?? 'N/A'),
                                     ],
                                   ),
 
@@ -694,7 +687,7 @@ class AttendanceConfirccController extends GetxController {
                                       TextFieldPdf(title: "DEPARTMENT"),
                                       TextFieldPdf(
                                           title:
-                                              attendanceModel.department ?? ''),
+                                              attendanceModel.department ?? 'N/A'),
                                     ],
                                   ),
 
@@ -724,7 +717,7 @@ class AttendanceConfirccController extends GetxController {
                                     children: [
                                       TextFieldPdf(title: "DATE"),
                                       TextFieldPdf(
-                                          title: DateFormat('dd MMMM yyyy').format(dateTime!)),
+                                          title: DateFormat('dd MMMM yyyy').format(dateTime!) ?? 'N/A'),
                                     ],
                                   ),
 
@@ -732,7 +725,7 @@ class AttendanceConfirccController extends GetxController {
                                     children: [
                                       TextFieldPdf(title: "VANUE"),
                                       TextFieldPdf(
-                                          title: attendanceModel.vanue ?? ''),
+                                          title: attendanceModel.vanue ?? 'N/A'),
                                     ],
                                   ),
 
@@ -740,7 +733,7 @@ class AttendanceConfirccController extends GetxController {
                                     children: [
                                       TextFieldPdf(title: "ROOM"),
                                       TextFieldPdf(
-                                          title: attendanceModel.room ?? ''),
+                                          title: attendanceModel.room ?? 'N/A'),
                                     ],
                                   ),
                                 ],

@@ -129,7 +129,7 @@ class TrainingccView extends GetView<TrainingccController> {
       } else {
         await QuickAlert.show(
           context: context,
-          type: QuickAlertType.warning,
+          type: QuickAlertType.info,
           text: 'No class opened!',
         );
       }

@@ -54,7 +54,7 @@ class PilotcrewccView extends GetView<PilotcrewccController> {
                             print(controller.nameS.value);
                           },
                           decoration: InputDecoration(
-                            hintText: 'Type instructor name...',
+                            hintText: 'Type pilot name...',
                             hintStyle: TextStyle(
                               color: Colors.grey,
                               fontSize: 12,
