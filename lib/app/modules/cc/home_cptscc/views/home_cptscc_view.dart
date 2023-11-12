@@ -262,43 +262,103 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                       SizedBox(height: 10),
 
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           //SUBJECT TRAININGS
-                          Expanded(
-                            child: Container(
-                              height: 140,
-                              child: buildCard(
-                                'assets/images/G1.png',
-                                '${controller.trainingCount.value}',
-                                'Trainings',
-                              ),
-                            ),
-                          ),
+                         Expanded(child:  Card(
+                           shape: RoundedRectangleBorder(
+                             borderRadius: BorderRadius.circular(10),
+                             side: BorderSide(color: TsOneColor.secondary, width: 1),
+                           ),
+                           color: TsOneColor.surface,
+                           surfaceTintColor: Colors.white,
+                           shadowColor: Colors.white,
+                           elevation: 5,
+                           child: InkWell(
+                             onTap: () {},
+                             splashColor: TsOneColor.primary,
+                             child: Center(
+                               child: Container(
+                                 padding: const EdgeInsets.symmetric(
+                                     vertical: 10, horizontal: 10),
+                                 child: Column(
+                                   children: [
+                                     Image.asset(
+                                       "assets/images/G1.png",
+                                       fit: BoxFit.fitWidth,
+                                     ),
+                                     Text('${controller.trainingCount.value}', style: tsOneTextTheme.headlineMedium,),
+                                     Text( 'Trainings\n', style: TextStyle(color: TsOneColor.redColor),)
+                                   ],
+                                 ),
+                               ),
+                             ),
+                           ),
+                         )),
 
                           //ONGOING TRAININGS
-                          Expanded(
-                            child: Container(
-                              height: 140,
-                              child: buildCard(
-                                'assets/images/G1.png',
-                                '${controller.ongoingTrainingCount.value}',
-                                'Ongoing Trainings',
+                          Expanded(child:  Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              side: BorderSide(color: TsOneColor.secondary, width: 1),
+                            ),
+                            color: TsOneColor.surface,
+                            surfaceTintColor: Colors.white,
+                            shadowColor: Colors.white,
+                            elevation: 5,
+                            child: InkWell(
+                              onTap: () {},
+                              splashColor: TsOneColor.primary,
+                              child: Center(
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 10, horizontal: 10),
+                                  child: Column(
+                                    children: [
+                                      Image.asset(
+                                        "assets/images/G1.png",
+                                        fit: BoxFit.fitWidth,
+                                      ),
+                                      Text('${controller.ongoingTrainingCount.value}', style: tsOneTextTheme.headlineMedium,),
+                                      Text( 'Ongoing Trainings', style: TextStyle(color: TsOneColor.redColor), textAlign: TextAlign.center,)
+                                    ],
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
+                          )),
 
                           //COMPLETED TRAININGS
-                          Expanded(
-                            child: Container(
-                              height: 140,
-                              child: buildCard(
-                                'assets/images/G2.png',
-                                '${controller.completedTrainingCount.value}',
-                                'Completed Trainings',
+                          Expanded(child:  Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              side: BorderSide(color: TsOneColor.secondary, width: 1),
+                            ),
+                            color: TsOneColor.surface,
+                            surfaceTintColor: Colors.white,
+                            shadowColor: Colors.white,
+                            elevation: 5,
+                            child: InkWell(
+                              onTap: () {},
+                              splashColor: TsOneColor.primary,
+                              child: Center(
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 10, horizontal: 10),
+                                  child: Column(
+                                    children: [
+                                      Image.asset(
+                                        "assets/images/G2.png",
+                                        fit: BoxFit.fitWidth,
+                                      ),
+                                      Text('${controller.completedTrainingCount.value}', style: tsOneTextTheme.headlineMedium,),
+                                      Text( 'Completed Trainings', style: TextStyle(color: TsOneColor.redColor), textAlign: TextAlign.center,)
+                                    ],
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
+                          )),
                         ],
                       ),
 
@@ -847,8 +907,6 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                                                     children: [
                                                       InkWell(
                                                         onTap: () {
-                                                          fromC.clear();
-                                                          toC.clear();
                                                           controller
                                                               .resetDate();
                                                           Navigator.of(context)
@@ -929,7 +987,7 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                                                                 "from Type ${controller.from.value}");
                                                             print(
                                                                 "to Type ${controller.to.value}");
-                                                            controller.getCombinedAttendance(
+                                                            controller.fetchAttendanceData(
                                                                 trainingType:
                                                                     controller
                                                                         .training
@@ -994,34 +1052,31 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                           ),
 
                           Center(
-                            child: Obx(
-                              () {
-                                print(
-                                    "test ${(controller.absentCount.value * 100 / (controller.absentCount.value + controller.presentCount.value))}");
-                                print("satu ${controller.absentCount.value}");
-                                print("dua ${controller.presentCount.value}");
-                                return FutureBuilder<List<Map<String, dynamic>>>(
-                                  future: controller.getCombinedAttendance(
-                                      trainingType: controller.training.value,
-                                      from: controller.from.value,
-                                      to: controller.to.value),
-                                  builder: (BuildContext context,
-                                      AsyncSnapshot<List<Map<String, dynamic>>>
-                                          snapshot) {
-                                    if (snapshot.connectionState ==
-                                        ConnectionState.waiting) {
-                                      return LoadingScreen();
-                                    }
+                            child:Obx((){
+                              return  FutureBuilder<void>(
+                                future: controller.fetchAttendanceData(
+                                  trainingType: controller.training.value,
+                                  from: controller.from.value,
+                                  to: controller.to.value,
+                                ),
+                                builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
+                                  if (snapshot.connectionState == ConnectionState.waiting) {
+                                    return LoadingScreen();
+                                  }
 
-                                    if (snapshot.hasError) {
-                                      return ErrorScreen();
-                                    }
+                                  if (snapshot.hasError) {
+                                    return ErrorScreen();
+                                  }
 
-                                    if (snapshot.data == null ||
-                                        snapshot.data!.isEmpty) {
-                                      return EmptyScreenAttendanceData();
-                                    }
+                                  print("cek");
+                                  print(controller.presentCount.value);
+                                  print(controller.absentCount.value);
+                                  if(controller.presentCount.value == 0 && controller.absentCount.value == 0){
+                                    return EmptyScreen();
+                                  }
 
+                                  // Check if the data has been fetched and processed
+                                  if (snapshot.connectionState == ConnectionState.done) {
                                     return Container(
                                       height: 180,
                                       child: Stack(
@@ -1031,14 +1086,14 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                                               sections: [
                                                 PieChartSectionData(
                                                   value: (controller
-                                                          .absentCount.value /
+                                                      .absentCount.value /
                                                       (controller
-                                                              .absentCount.value +
+                                                          .absentCount.value +
                                                           controller.presentCount
                                                               .value)),
                                                   color: const Color(0xFF116D6E),
                                                   title:
-                                                      '${((controller.absentCount.value * 100 / (controller.absentCount.value + controller.presentCount.value))).toStringAsFixed(1)}%',
+                                                  '${((controller.absentCount.value * 100 / (controller.absentCount.value + controller.presentCount.value))).toStringAsFixed(1)}%',
                                                   radius: 45,
                                                   titleStyle: TextStyle(
                                                     fontSize: 16,
@@ -1048,14 +1103,14 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                                                 ),
                                                 PieChartSectionData(
                                                   value: (controller
-                                                          .presentCount.value /
+                                                      .presentCount.value /
                                                       (controller
-                                                              .absentCount.value +
+                                                          .absentCount.value +
                                                           controller.presentCount
                                                               .value)),
                                                   color: const Color(0xffFFB000),
                                                   title:
-                                                      '${((controller.presentCount.value * 100 / (controller.absentCount.value + controller.presentCount.value))).toStringAsFixed(1)}%',
+                                                  '${((controller.presentCount.value * 100 / (controller.absentCount.value + controller.presentCount.value))).toStringAsFixed(1)}%',
                                                   radius: 45,
                                                   titleStyle: TextStyle(
                                                     fontSize: 16,
@@ -1133,10 +1188,13 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                                         ],
                                       ),
                                     );
-                                  },
-                                );
-                              },
-                            ),
+                                  }
+
+                                  return EmptyScreenAttendanceData();
+                                },
+                              );
+                            })
+                            ,
                           ),
                         ],
                       ),

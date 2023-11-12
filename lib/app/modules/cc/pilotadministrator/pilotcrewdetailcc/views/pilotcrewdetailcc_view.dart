@@ -86,22 +86,21 @@ class PilotcrewdetailccView extends GetView<PilotcrewdetailccController> {
                                   Expanded(flex: 3, child: Text("STATUS")),
                                   Expanded(flex: 1, child: Text(":")),
                                   Expanded(flex: 6, child:
-                                      Obx(() {
-                                      return Container(
-                                          height: 30.0,
-                                          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                                        decoration: BoxDecoration(
-                                        color: controller.isReady.value ?  Colors.green.withOpacity(0.4) : Colors.red.withOpacity(0.4),
-                                        borderRadius: BorderRadius.circular(10),
-                                        ),
+                                  Container(
+                                    height: 30.0,
+                                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                                    decoration: BoxDecoration(
+                                      color:  documentData["STATUS"] == "VALID" ?  Colors.green : TsOneColor.redColor,
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
 
-                                        child : Text(
-                                          controller.isReady.value ?  "READY": "NOT READY",
-                                          textAlign: TextAlign.center,
-                                          style: tsOneTextTheme.bodyMedium,
-                                        ),
-                                      );
-                                    })
+                                    child : Text(
+                                      documentData["STATUS"],
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(color: Colors.white),
+
+                                    ),
+                                  )
                                   ),
                                 ],
                               ),
@@ -278,30 +277,44 @@ class PilotcrewdetailccView extends GetView<PilotcrewdetailccController> {
                               radius: 20,
                               backgroundColor: Colors.white,
                               child: ClipRRect(
-                                borderRadius: BorderRadius.circular(100),
-                                child :  Image.asset(
-                                  "assets/images/success.png",
-                                  fit: BoxFit.cover,
-                                )),
+                                borderRadius:
+                                BorderRadius.circular(100),
+                                child: StreamBuilder<String>(
+                                  stream: Get.find<ProfileccController>().cekValidationTraining(listTraining[index]['id'], controller.idTraining.value),
+                                  builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+                                    if (snapshot.connectionState == ConnectionState.waiting) {
+                                      // Menampilkan sesuatu saat data sedang diambil
+                                      return Text("Loading...");
+                                    } else if (snapshot.hasError) {
+                                      // Menampilkan pesan error jika terjadi kesalahan
+                                      return Text("Error: ${snapshot.error}");
+                                    } else {
+                                      // Menampilkan hasil dari Future ketika sudah tersedia
+                                      return Image.asset(
+                                        snapshot.data == "VALID" ?
+                                        "assets/images/Green_check.png" : "assets/images/Red_check.png" ,
+                                        fit: BoxFit.cover,
+                                      );
+                                    }
+                                  },
+                                ),),
                             ),
                             title: Text(listTraining[index]["training"], maxLines: 1, style: tsOneTextTheme.labelMedium,),
-                            // subtitle: Column(
-                            //   crossAxisAlignment: CrossAxisAlignment.start,
-                            //   children: [
-                            //     Text(listTraining[index]["ID NO"].toString() ?? "", style: tsOneTextTheme.labelSmall,),
-                            //     Container(
-                            //       padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 10),
-                            //       decoration: BoxDecoration(
-                            //         color: Colors.green.withOpacity(0.4),
-                            //         borderRadius: BorderRadius.circular(10),
-                            //       ),
-                            //       child: const Text(
-                            //         "Ready",
-                            //         style: TextStyle(fontSize: 10, color: Colors.green),
-                            //       ),
-                            //     ),
-                            //   ],
-                            // ),
+                            subtitle: StreamBuilder<String>(
+                              stream: Get.find<ProfileccController>().cekValidationTraining(listTraining[index]['id'], controller.idTraining.value),
+                              builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+                                if (snapshot.connectionState == ConnectionState.waiting) {
+                                  // Menampilkan sesuatu saat data sedang diambil
+                                  return Text("Loading...");
+                                } else if (snapshot.hasError) {
+                                  // Menampilkan pesan error jika terjadi kesalahan
+                                  return Text("Error: ${snapshot.error}");
+                                } else {
+                                  // Menampilkan hasil dari Future ketika sudah tersedia
+                                  return Text(snapshot.data ?? "NOT VALID");
+                                }
+                              },
+                            ),
                             trailing: const Icon(Icons.navigate_next),
                           ),
                         ),

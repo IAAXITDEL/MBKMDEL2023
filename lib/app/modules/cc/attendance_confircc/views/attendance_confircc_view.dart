@@ -380,7 +380,6 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                                         },
                                       );
 
-                                      await controller.attendancelist();
                                       await controller.savePdfFile(
                                           await controller
                                               .attendancelist());

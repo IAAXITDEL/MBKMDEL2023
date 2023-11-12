@@ -37,6 +37,7 @@ class TraininghistoryccCptsView
             color: Colors.red,
           ),
         ),
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Padding(

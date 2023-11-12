@@ -19,7 +19,7 @@ import '../../../../../presentation/shared_components/textTrainingCodeCard.dart'
 import '../../../../../presentation/view_model/attendance_model.dart';
 import '../../../../../presentation/view_model/user_viewmodel.dart';
 import '../../../../routes/app_pages.dart';
-
+import 'package:permission_handler/permission_handler.dart';
 
 class ProfileccController extends GetxController {
 
@@ -2084,20 +2084,35 @@ class ProfileccController extends GetxController {
 
   Future<void> savePdfFile(Uint8List byteList) async {
     userPreferences = getItLocator<UserPreferences>();
-    Directory('/storage/emulated/0/Download/Training Cards/').createSync();
-    final output = await getTemporaryDirectory();
-    var filePath = "/storage/emulated/0/Download/Training Cards/training-cards-${userPreferences.getIDNo()}.pdf";
-    final file = File(filePath);
-    print("step 1");
-    await file.writeAsBytes(byteList);
-    print("step 2");
 
-    final filePaths = "${output.path}/training-cards-${userPreferences.getIDNo()}.pdf";
-    final files = File(filePaths);
-    print("step 1");
-    await files.writeAsBytes(byteList);
-    print("step 2");
-    await OpenFile.open(filePaths);
-    print("step 3");
+    PermissionStatus status = await Permission.storage.request();
+
+    if (status.isGranted) {
+      Directory('/storage/emulated/0/Download/Training Cards/').createSync();
+        var filePath = "/storage/emulated/0/Download/Training Cards/training-cards-${userPreferences.getIDNo()}.pdf";
+        final file = File(filePath);
+        print("step 1");
+        await file.writeAsBytes(byteList);
+        print("step 2");
+      await OpenFile.open(filePath);
+    } else {
+      // Handle the case when permission is denied
+      // You may want to display a message to the user or handle the situation accordingly.
+    }
+    // Directory('/storage/emulated/0/Download/Training Cards/').createSync();
+    // final output = await getTemporaryDirectory();
+    // var filePath = "/storage/emulated/0/Download/Training Cards/training-cards-${userPreferences.getIDNo()}.pdf";
+    // final file = File(filePath);
+    // print("step 1");
+    // await file.writeAsBytes(byteList);
+    // print("step 2");
+    //
+    // final filePaths = "${output.path}/training-cards-${userPreferences.getIDNo()}.pdf";
+    // final files = File(filePaths);
+    // print("step 1");
+    // await files.writeAsBytes(byteList);
+    // print("step 2");
+    // await OpenFile.open(filePaths);
+    // print("step 3");
   }
 }
