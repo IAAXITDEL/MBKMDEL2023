@@ -19,12 +19,10 @@ import '../../../../../presentation/shared_components/normaltextfieldpdf.dart';
 import '../../../../../presentation/shared_components/textfieldpdf.dart';
 import '../../../../../presentation/view_model/attendance_detail_model.dart';
 import '../../../../../presentation/view_model/attendance_model.dart';
-
+import 'package:permission_handler/permission_handler.dart';
 class AttendanceConfirccController extends GetxController {
   var selectedMeeting = "Training".obs;
   late UserPreferences userPreferences;
-  List<AttendanceDetailModel> allAttendanceDetailModels = [];
-  List<AttendanceModel> instructorModels = [];
   List<AttendanceModel> administratorModels = [];
 
   List<pw.TableRow> tableRows = [];
@@ -60,7 +58,6 @@ class AttendanceConfirccController extends GetxController {
     attendanceStream();
     getCombinedAttendanceStream();
     cekRole();
-    instructorStream();
     absentList();
   }
 
@@ -114,43 +111,47 @@ class AttendanceConfirccController extends GetxController {
     });
   }
 
-  Stream<List<Map<String, dynamic>>> getCombinedAttendanceDetailStream() {
-    return _firestore
+  Future<List<Map<String, dynamic>?>> getCombinedAttendanceDetailStream() async {
+    QuerySnapshot attendanceQuery = await _firestore
         .collection('attendance-detail')
         .where("idattendance", isEqualTo: argumentid.value)
-        .where("status", whereIn: ["done", "donescoring"])
-        .snapshots()
-        .asyncMap((attendanceQuery) async {
+        .where("status", whereIn: ["donescoring"])
+        .get();
 
-          List<int?> traineIds =
-          attendanceQuery.docs.map((doc) => AttendanceDetailModel.fromJson(doc.data()).idtraining).toList();
+    List<int?> traineIds = attendanceQuery.docs.map((doc) {
+      final data = doc.data();
+      final attendanceModel = AttendanceDetailModel.fromJson(data as Map<String, dynamic>);
+      return attendanceModel.idtraining;
+    }).toList();
 
-          final usersData = <Map<String, dynamic>>[];
-
-          if (traineIds.isNotEmpty) {
-            final usersQuery = await _firestore.collection('users').where("ID NO", whereIn: traineIds).get();
-            usersData.addAll(usersQuery.docs.map((doc) => doc.data()));
-          }
-
-          final attendanceData = await Future.wait(
-            attendanceQuery.docs.map((doc) async {
-              final attendanceModel =
-                  AttendanceDetailModel.fromJson(doc.data());
-              final user = usersData.firstWhere(
-                (user) => user['ID NO'] == attendanceModel.idtraining,
-                orElse: () => {},
-              );
-              attendanceModel.name = user['NAME'];
-              attendanceModel.license = user['LICENSE NO.'];
-              attendanceModel.rank = user['RANK'];
-              attendanceModel.hub = user['HUB'];
-              return attendanceModel.toJson();
-            }),
+    final attendanceData = await Future.wait(
+      attendanceQuery.docs.map((doc) async {
+        try {
+          final attendanceModel = AttendanceDetailModel.fromJson(doc.data() as Map<String, dynamic>);
+          final usersQuery = await _firestore.collection('users').where("ID NO", whereIn: traineIds).get();
+          final user = usersQuery.docs.firstWhere(
+                (userDoc) => userDoc.data()['ID NO'] == attendanceModel.idtraining,
           );
-          instructorStream();
-          return attendanceData;
-        });
+          if (user != null) {
+            final userData = UserModel.fromFirebaseUser(user.data());
+            print(userData.name);
+            attendanceModel.name = userData.name;
+            attendanceModel.license = userData.licenseNo;
+            attendanceModel.rank = userData.rank;
+            attendanceModel.hub = userData.hub;
+          } else {
+            print("User not found for ID NO: ${attendanceModel.idtraining}");
+          }
+          return attendanceModel.toJson();
+        } catch (error) {
+          return null;
+        }
+      }),
+    );
+    return attendanceData;
   }
+
+
 
   Future<void> cekRole() async {
     userPreferences = getItLocator<UserPreferences>();
@@ -253,8 +254,6 @@ class AttendanceConfirccController extends GetxController {
         .snapshots()
         .map((attendanceQuery) {
       jumlah.value = attendanceQuery.docs.length;
-
-
       return attendanceQuery.docs.length;
     });
   }
@@ -322,10 +321,10 @@ class AttendanceConfirccController extends GetxController {
 
 
   // List untuk Instructor
-  Stream<List<Map<String, dynamic>>> instructorStream() {
-    return _firestore.collection('attendance').where("id", isEqualTo: argumentid.value).snapshots().asyncMap((attendanceQuery) async {
+  Future<List<Map<String, dynamic>?>> instructorList() async {
+    QuerySnapshot attendanceQuery = await _firestore.collection('attendance').where("id", isEqualTo: argumentid.value).get();
       List<int?> instructorIds =
-      attendanceQuery.docs.map((doc) => AttendanceModel.fromJson(doc.data()).instructor).toList();
+      attendanceQuery.docs.map((doc) => AttendanceModel.fromJson(doc.data() as Map<String, dynamic>).instructor).toList();
 
       final usersData = <Map<String, dynamic>>[];
 
@@ -336,16 +335,16 @@ class AttendanceConfirccController extends GetxController {
 
       final attendanceData = await Future.wait(
         attendanceQuery.docs.map((doc) async {
-          final attendanceModel = AttendanceModel.fromJson(doc.data());
+          final attendanceModel = AttendanceModel.fromJson(doc.data() as Map<String, dynamic>);
           final user = usersData.firstWhere((user) => user['ID NO'] == attendanceModel.instructor, orElse: () => {});
           attendanceModel.name = user['NAME'];
           attendanceModel.loano = user['LOA NO'];
           return attendanceModel.toJson();
         }),
       );
+      print(attendanceData);
       return attendanceData;
-    });
-  }
+    }
 
   // List untuk Administrator
   Stream<List<Map<String, dynamic>>> administratorStream() {
@@ -414,36 +413,18 @@ class AttendanceConfirccController extends GetxController {
         return AttendanceModel.fromJson(data);
       }).toList();
 
+      print("attendanceModels");
+      print(attendanceModels);
       // Memanggil Data Attendance Detail (Daftar Training)
-      Stream<List<Map<String, dynamic>>> attendanceDetailStream = await getCombinedAttendanceDetailStream();
-      attendanceDetailStream
-          .listen((List<Map<String, dynamic>> attendanceDetailDataList) {
-        allAttendanceDetailModels.clear();
-
-        List<AttendanceDetailModel> currentAttendanceDetailModels =
-            attendanceDetailDataList.map((data) {
-          return AttendanceDetailModel.fromJson(data);
-        }).toList();
-
-        allAttendanceDetailModels.addAll(currentAttendanceDetailModels);
-      });
+      final List<Map<String, dynamic>?> attendanceDetailStream = await getCombinedAttendanceDetailStream();
 
       // Memanggil Data Instructor
-      Stream<List<Map<String, dynamic>>> instructorSt = await instructorStream();
-      instructorSt
-          .listen((List<Map<String, dynamic>> attendanceDataList) {
-        instructorModels.clear();
-        List<AttendanceModel> currentInstructorModels =
-        attendanceDataList.map((data) {
-          return AttendanceModel.fromJson(data);
-        }).toList();
-        instructorModels.addAll(currentInstructorModels);
-      });
-
+      final List<Map<String, dynamic>?> instructorSt = await instructorList();
+      print("panjangnya ada ${instructorSt.length}");
 
       // Memanggil Data Pilot Administrator
       Stream<List<Map<String, dynamic>>> administratorSt = await administratorStream();
-      administratorSt
+      await administratorSt
           .listen((List<Map<String, dynamic>> attendanceDataList) {
         administratorModels.clear();
         List<AttendanceModel> currentAdministratorModels =
@@ -452,13 +433,15 @@ class AttendanceConfirccController extends GetxController {
         }).toList();
         administratorModels.addAll(currentAdministratorModels);
       });
+      print("admin");
+      print(administratorModels);
 
 
       //menampilkan data training
-      for (int e = 0; e < allAttendanceDetailModels.length; e++) {
+      for (int e = 0; e < attendanceDetailStream.length; e++) {
        // var images = await loadImageFromNetwork(allAttendanceDetailModels[e].signature_url ?? "");
 
-        final Uint8List imageBytes = await _getImageBytes(allAttendanceDetailModels[e].signature_url ?? "");
+        final Uint8List imageBytes = await _getImageBytes(attendanceDetailStream[e]?['signature_url'] ?? "");
         // final Uint8List resizedImageBytes = await resizeImage(imageBytes, 50, 50);
 
         pw.MemoryImage images = pw.MemoryImage(imageBytes);
@@ -466,11 +449,11 @@ class AttendanceConfirccController extends GetxController {
           pw.TableRow(
             children: [
               NormalTextFieldPdf(title: "${e+1}"),
-              NormalTextFieldPdf(title: "${allAttendanceDetailModels[e].name}"),
-              NormalTextFieldPdf(title: "${allAttendanceDetailModels[e].idtraining}"),
-              NormalTextFieldPdf(title: "${allAttendanceDetailModels[e].rank}"),
-              NormalTextFieldPdf(title: "${allAttendanceDetailModels[e].license}"),
-              NormalTextFieldPdf(title: "${allAttendanceDetailModels[e].hub}"),
+              NormalTextFieldPdf(title: "${attendanceDetailStream[e]?['name']}"),
+              NormalTextFieldPdf(title: "${attendanceDetailStream[e]?['idtraining']}"),
+              NormalTextFieldPdf(title: "${attendanceDetailStream[e]?['rank']}"),
+              NormalTextFieldPdf(title: "${attendanceDetailStream[e]?['license']}"),
+              NormalTextFieldPdf(title: "${attendanceDetailStream[e]?['hub']}"),
               pw.Container(
                 height: 15,
                 padding: pw.EdgeInsets.all(5),
@@ -489,19 +472,19 @@ class AttendanceConfirccController extends GetxController {
       }
 
       //menampilkan data instructor
-      for (int f = 0; f < instructorModels.length; f++) {
+      for (int f = 0; f < instructorSt.length; f++) {
         //var imagesicc = await loadImageFromNetwork(instructorModels[f].signatureIccUrl ?? "");
 
-        final Uint8List imageBytesInstructor = await _getImageBytes(instructorModels[f].signatureIccUrl ?? "");
+        final Uint8List imageBytesInstructor = await _getImageBytes(instructorSt[f]?['signatureIccUrl'] ?? "");
        // final Uint8List resizedImageBytesInstructor = await resizeImage(imageBytesInstructor, 50, 50); // Adjust dimensions as needed
 
         pw.MemoryImage imagesicc = pw.MemoryImage(imageBytesInstructor);
         instructorTableRows.add(
           pw.TableRow(
             children: [
-              NormalTextFieldPdf(title: "${instructorModels[f].name}"),
-              NormalTextFieldPdf(title: "${instructorModels[f].instructor}"),
-              NormalTextFieldPdf(title: "${instructorModels[f].loano}"),
+              NormalTextFieldPdf(title: "${instructorSt[f]?['name']}"),
+              NormalTextFieldPdf(title: "${instructorSt[f]?['instructor']}"),
+              NormalTextFieldPdf(title: "${instructorSt[f]?['loano']}"),
               pw.Container(
                 height: 15,
                 padding: pw.EdgeInsets.all(5),
@@ -1123,21 +1106,37 @@ class AttendanceConfirccController extends GetxController {
   // }
 
   Future<void> savePdfFile(Uint8List byteList) async {
-    Directory('/storage/emulated/0/Download/Attendance List/').createSync();
-    final output = await getTemporaryDirectory();
-    var filePath = "/storage/emulated/0/Download/Attendance List/${argumentid.value}.pdf";
-    final file = File(filePath);
-    print("step 1");
-    await file.writeAsBytes(byteList);
-    print("step 2");
+    PermissionStatus status = await Permission.storage.request();
 
-    final filePaths = "${output.path}/${argumentid.value}.pdf";
-    final files = File(filePaths);
-    print("step 1");
-    await files.writeAsBytes(byteList);
-    print("step 2");
-    await OpenFile.open(filePaths);
-    print("stetep 3");
+    if (status.isGranted) {
+      // Permission is granted, you can now create directories and write files
+      Directory('/storage/emulated/0/Download/Attendance List/').createSync();
+      var filePath = "/storage/emulated/0/Download/Attendance List/${argumentid.value}.pdf";
+      final file = File(filePath);
+      print("step 1");
+      await file.writeAsBytes(byteList);
+      print("step 2");
+      await OpenFile.open(filePath);
+      // Rest of your code here...
+    } else {
+      // Handle the case when permission is denied
+      // You may want to display a message to the user or handle the situation accordingly.
+    }
+    // Directory('/storage/emulated/0/Download/Attendance List/').createSync();
+    // final output = await getTemporaryDirectory();
+    // var filePath = "/storage/emulated/0/Download/Attendance List/${argumentid.value}.pdf";
+    // final file = File(filePath);
+    // print("step 1");
+    // await file.writeAsBytes(byteList);
+    // print("step 2");
+    //
+    // final filePaths = "${output.path}/${argumentid.value}.pdf";
+    // final files = File(filePaths);
+    // print("step 1");
+    // await files.writeAsBytes(byteList);
+    // print("step 2");
+    // await OpenFile.open(filePaths);
+    // print("stetep 3");
   }
 
 

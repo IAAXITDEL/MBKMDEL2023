@@ -14,26 +14,31 @@ import '../../../../../../data/users/users.dart';
 import '../../../../../../di/locator.dart';
 import '../../../../../../presentation/view_model/attendance_model.dart';
 import 'dart:io';
+import 'package:permission_handler/permission_handler.dart';
 
 class PilottraininghistorydetailccController extends GetxController {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   RxInt idTrainingType = 0.obs;
   RxString idAttendance = "".obs;
   RxString trainingName = "".obs;
+  RxInt idTraining = 0.obs;
 
   late UserPreferences userPreferences;
 
   final RxBool isTrainee = false.obs;
   final RxBool isCPTS = false.obs;
+  final RxBool isAdmin = false.obs;
 
   @override
   void onInit() {
     super.onInit();
     idTrainingType.value = Get.arguments["idTrainingType"];
     idAttendance.value = Get.arguments["idAttendance"];
+    idTraining.value = Get.arguments["idTraining"];
+    checkFeedbackForAdmin();
     getCombinedAttendance();
     cekRole();
-    absentStream();
+    attendanceStream(idTraining.value);
   }
 
   //Mendapatkan Training
@@ -147,7 +152,7 @@ class PilottraininghistorydetailccController extends GetxController {
     return false;
   }
   
-  Future<List> absentStream() async {
+  Future<List> attendanceStream(int idTraining) async {
     try{
       userPreferences = getItLocator<UserPreferences>();
       final attendanceQuery = await firestore
@@ -158,7 +163,7 @@ class PilottraininghistorydetailccController extends GetxController {
       final attendanceDetailQuery = await firestore
           .collection('attendance-detail')
           .where("idattendance", isEqualTo: idAttendance.value)
-          .where("idtraining", isEqualTo: userPreferences.getIDNo())
+          .where("idtraining", isEqualTo: idTraining)
           .get();
 
 
@@ -217,8 +222,41 @@ class PilottraininghistorydetailccController extends GetxController {
       return false;
     }
   }
-  
-  
+
+
+
+  Future<bool> checkFeedbackForAdmin() async {
+    userPreferences = getItLocator<UserPreferences>();
+    print("kan");
+    if (userPreferences.getRank().contains("Pilot Administrator")) {
+      final attendanceDetailQuery = await firestore
+          .collection('attendance-detail')
+          .where("idattendance", isEqualTo: idAttendance.value)
+          .where("idtraining", isEqualTo: idTraining.value)
+          .get();
+
+      final attendanceDetailData = <Map<String, dynamic>>[];
+
+      for (final doc in attendanceDetailQuery.docs) {
+        final attendanceDetailModel = AttendanceDetailModel.fromJson(doc.data());
+        attendanceDetailData.add(attendanceDetailModel.toJson());
+      }
+
+      print("jhuis");
+      print(attendanceDetailData[0]["formatNo"] );
+      if (attendanceDetailData[0]["formatNo"] != null) {
+        isAdmin.value = true;
+        print("disini");
+        print(isAdmin.value);
+        return true;
+      } else {
+        return false;
+      }
+    }
+    return false;
+  }
+
+
   Future<Uint8List> createCertificate() async {
     try {
       final font = await rootBundle.load("assets/fonts/Poppins-Regular.ttf");
@@ -233,7 +271,7 @@ class PilottraininghistorydetailccController extends GetxController {
           .buffer
           .asUint8List();
 
-      final List certificateDate = await absentStream();
+      final List certificateDate = await attendanceStream(idTraining.value);
       var name = certificateDate[0]['name'];
       var formatNo = certificateDate[0]['formatNo'];
       var subject = certificateDate[0]['subject'];
@@ -383,23 +421,47 @@ class PilottraininghistorydetailccController extends GetxController {
     Timestamp? date = listAttendance[0]["date"];
     DateTime? dates = date?.toDate();
     String dateC = DateFormat('dd-MM-yyyy').format(dates!);
+    //
+    //
+    // Directory('/storage/emulated/0/Download/').createSync();
+    // final output = await getTemporaryDirectory();
+    // var filePath = "/storage/emulated/0/Download/Certificate/Certificate-${dateC}.pdf";
+    // final file = File(filePath);
+    // print("step 1");
+    // await file.writeAsBytes(byteList);
+    // print("step 2");
+    //
+    // final filePaths = "${output.path}/Certificate-${dateC}.pdf";
+    // final files = File(filePaths);
+    // print("step 1");
+    // await files.writeAsBytes(byteList);
+    // print("step 2");
+    // await OpenFile.open(filePaths);
+    // print("stetep 3");
+
+    PermissionStatus status = await Permission.storage.request();
+
+    if (status.isGranted) {
+      // Permission is granted, you can now create directories and write files
+      Directory('/storage/emulated/0/Download/Certificate/').createSync();
+      Directory? tempDir = await getExternalStorageDirectory();
+      String pathSavePDF = '/storage/emulated/0/Download/Certificate/Certificate-${dateC}.pdf';
+      String cacheSavePDF = '${tempDir?.path}/Certificate-${dateC}.pdf';
+      print("BISA");
+      File(pathSavePDF).writeAsBytesSync(byteList);
+      print("BISGADWADAWA");
+      File(cacheSavePDF).writeAsBytesSync(byteList);
+      print("dwadawdawdaw");
+      await OpenFile.open(cacheSavePDF);
+    } else {
+      // Handle the case when permission is denied
+      // You may want to display a message to the user or handle the situation accordingly.
+    }
 
 
-    Directory('/storage/emulated/0/Download/').createSync();
-    final output = await getTemporaryDirectory();
-    var filePath = "/storage/emulated/0/Download/Certificate/Certificate-${dateC}.pdf";
-    final file = File(filePath);
-    print("step 1");
-    await file.writeAsBytes(byteList);
-    print("step 2");
+    // document.dispose();
 
-    final filePaths = "${output.path}/Certificate-${dateC}.pdf";
-    final files = File(filePaths);
-    print("step 1");
-    await files.writeAsBytes(byteList);
-    print("step 2");
-    await OpenFile.open(filePaths);
-    print("stetep 3");
+
   }
 
 

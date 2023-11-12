@@ -9,5 +9,8 @@ class PilotcrewdetailccBinding extends Bindings {
     Get.lazyPut<PilotcrewdetailccController>(
       () => PilotcrewdetailccController(),
     );
+    Get.lazyPut<ProfileccController>(
+          () => ProfileccController(),
+    );
   }
 }

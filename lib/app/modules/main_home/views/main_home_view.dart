@@ -31,6 +31,7 @@ class MainHomeView extends GetView<MainHomeController> {
                 style: TextStyle(color: Colors.white),
               ),
               const SizedBox(height: 20,),
+              controller.isTsOne.value || controller.isCC.value ?
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10.0),
@@ -52,8 +53,9 @@ class MainHomeView extends GetView<MainHomeController> {
                     trailing: const Icon(Icons.navigate_next),
                   ),
                 ),
-              ),
+              ) : SizedBox(),
               const SizedBox(height: 10,),
+              controller.isTsOne.value || controller.isCC.value ?
               Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10.0),
@@ -75,8 +77,9 @@ class MainHomeView extends GetView<MainHomeController> {
                     trailing: const Icon(Icons.navigate_next),
                   ),
                 ),
-              ),
+              ) : SizedBox(),
               const SizedBox(height: 10,),
+              controller.isEFB.value ?
               Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10.0),
@@ -98,7 +101,7 @@ class MainHomeView extends GetView<MainHomeController> {
                     trailing: const Icon(Icons.navigate_next),
                   ),
                 ),
-              ),
+              ) : SizedBox(),
 
             ],
           ),

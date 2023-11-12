@@ -13,54 +13,21 @@ import '../../../routes/app_pages.dart';
 class MainHomeController extends GetxController {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   late UserPreferences userPreferences;
-  late String titleToGreet;
-  late String timeToGreet;
-  late AssessmentResultsViewModel viewModel;
-  late List<AssessmentResults> assessmentResults;
-  late List<AssessmentResults> assessmentResultsNotConfirmedByCPTS;
-  late bool _isCPTS;
-  late bool _isInstructor;
-  late bool _isPilotAdministrator;
-
+  RxBool isTsOne = false.obs;
+  RxBool isCC = false.obs;
+  RxBool isEFB = false.obs;
 
   @override
   void onInit() {
-    userPreferences = getItLocator<UserPreferences>();
-    _isPilotAdministrator = false;
-
-    switch (userPreferences.getRank()) {
-      case 'CAPT':
-        titleToGreet = 'Captain';
-        break;
-      case 'CPTS':
-        titleToGreet = 'Chief Pilot';
-        break;
-      case 'FO':
-        titleToGreet = 'First Officer';
-        break;
-      case 'Pilot Administrator':
-        titleToGreet = 'Pilot Administrator';
-        _isPilotAdministrator = true;
-        break;
-      default:
-        titleToGreet = 'Allstar';
-    }
-    _isCPTS = false;
-    _isInstructor = false;
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      checkInstructor();
-    });
+    cekRoleAccess();
+    print(isTsOne.value);
+    print(isCC.value);
+    print(isEFB.value);
+    print("sdadsa");
     super.onInit();
     updateInvalidAttendances();
-    print("sudah cek?");
   }
 
-  void checkInstructor() {
-    if(userPreferences.getPrivileges().contains(UserModel.keyPrivilegeCreateAssessment)) {
-      _isInstructor = true;
-    }
-  }
 
   Future<void> cekRole() async {
     userPreferences = getItLocator<UserPreferences>();
@@ -81,11 +48,54 @@ class MainHomeController extends GetxController {
     else if( userPreferences.getRank().contains("Pilot Administrator")){
       Get.toNamed(Routes.NAVADMIN);
     }
+
+    else if(userPreferences.getPrivileges().contains("manage-device-occ")){
+
+    }
     // SEBAGAI ALL STAR
     else{
     }
 
   }
+
+  Future<void> cekRoleAccess() async {
+    userPreferences = getItLocator<UserPreferences>();
+
+    print("akses");
+    // SEBAGAI CPTS
+    if( userPreferences.getInstructor().contains(UserModel.keyCPTS) && userPreferences.getRank().contains(UserModel.keyPositionCaptain) || userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)){
+      isTsOne.value = true;
+      isCC.value = true;
+      print("satu");
+    }
+    // SEBAGAI INSTRUCTOR
+    else if( userPreferences.getInstructor().contains(UserModel.keySubPositionCCP) || userPreferences.getInstructor().contains(UserModel.keySubPositionFIA) || userPreferences.getInstructor().contains(UserModel.keySubPositionFIS) || userPreferences.getInstructor().contains(UserModel.keySubPositionPGI)&& userPreferences.getRank().contains(UserModel.keyPositionCaptain) || userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)){
+      isTsOne.value = true;
+      isCC.value = true;
+      print("dua");
+    }
+    // SEBAGAI PILOT
+    else if( userPreferences.getRank().contains(UserModel.keyPositionCaptain) || userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)){
+      isTsOne.value = true;
+      isCC.value = true;
+      isEFB.value = true;
+    }
+    // SEBAGAI PILOT ADMINISTRATOR
+    else if( userPreferences.getRank().contains("Pilot Administrator")){
+      isTsOne.value = true;
+      isCC.value = true;
+    }
+
+    else if(userPreferences.getPrivileges().contains("manage-device-occ")){
+      isEFB.value = true;
+      print("ada");
+    }
+    // SEBAGAI ALL STAR
+    else{
+    }
+
+  }
+
 
   // List Training History
   Future<void> updateInvalidAttendances() async {

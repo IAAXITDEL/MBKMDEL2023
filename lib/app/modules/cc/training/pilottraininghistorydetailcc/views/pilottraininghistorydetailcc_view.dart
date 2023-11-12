@@ -354,18 +354,63 @@ class PilottraininghistorydetailccView
                   ),
                 ) : SizedBox(),
 
+                Obx(() => controller.isAdmin.value  ?
+                Row(
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                          onPressed: () async {
+                            try {
+                              // Tampilkan LoadingScreen
+                              showDialog(
+                                context: context,
+                                // barrierDismissible:
+                                //     false, // Tidak bisa menutup dialog dengan tap di luar
+                                builder: (BuildContext context) {
+                                  return LoadingScreen();
+                                },
+                              );
+
+                              await controller.savePdfFile(
+                                  await controller
+                                      .createCertificate());
+                            } catch (e) {
+                              print('Error: $e');
+                            } finally {
+                              Navigator.pop(context);
+                            }
+
+                          },
+                          style: ElevatedButton.styleFrom(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 5.0, horizontal: 1.0),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20.0),
+                                bottomLeft: Radius.circular(20.0),
+                                topRight: controller.isTrainee.value ? Radius.zero :  Radius.circular(20.0) ,
+                                bottomRight: controller.isTrainee.value ? Radius.zero :  Radius.circular(20.0) ,
+                              ),
+                            ),
+                            primary: TsOneColor.greenColor,
+                            onPrimary: Colors.white,
+                          ),
+                          child: Text("Download Certificate")),
+                    ),
+                  ],
+                ) :
                 SizedBox(
                   height: 20,
-                ),
+                ),)
 
                 //FEEDBACK FROM TRAINEE
                 // controller.isCPTS.value ?
                 // Container(
                 //   child: FutureBuilder<List<Map<String, dynamic>>>(
                 //     future: controller.getCombinedAttendance(),
+                //         return LoadingScreen(); // Placeholder while loading
                 //     builder: (context, snapshot) {
                 //       if (snapshot.connectionState == ConnectionState.waiting) {
-                //         return LoadingScreen(); // Placeholder while loading
                 //       }
                 //
                 //       if (snapshot.hasError) {

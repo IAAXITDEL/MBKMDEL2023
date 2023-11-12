@@ -230,7 +230,8 @@ class PilottraininghistoryccView
                                onTap: () {
                                  Get.toNamed(Routes.PILOTTRAININGHISTORYDETAILCC, arguments: {
                                    "idTrainingType" : controller.idTrainingType.value,
-                                   "idAttendance" : listAttendance[index]["id"]
+                                   "idAttendance" : listAttendance[index]["id"],
+                                   "idTraining" : controller.idTraining.value
                                  });
                                },
                                child: Container(

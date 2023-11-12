@@ -53,6 +53,11 @@ class HomeCptsccController extends GetxController {
     getTrainingSubjects();
     _isPilotAdministrator = false;
 
+    fetchAttendanceData(
+        trainingType: training.value,
+        from: from.value,
+        to: to.value);
+
     switch (userPreferences.getRank()) {
       case 'CAPT':
         titleToGreet = 'Captain';
@@ -232,11 +237,12 @@ class HomeCptsccController extends GetxController {
           .collection('trainingType')
           .get();
 
-      subjects = querySnapshot.docs.map((doc) => doc['subject'].toString()).toList();
+      subjects.addAll(querySnapshot.docs.map((doc) => doc['training'].toString()).toList());
+      return subjects;
     } catch (e) {
       print("Error fetching training subjects: $e");
+      return subjects;
     }
-    return subjects;
   }
 
   void updateSelectedSubject(String newSubject) {
@@ -244,25 +250,32 @@ class HomeCptsccController extends GetxController {
   }
 
 
-  Future<List<Map<String, dynamic>>> getCombinedAttendance({String? trainingType, DateTime? from, DateTime? to}) async {
+  Future<void> fetchAttendanceData({String? trainingType, DateTime? from, DateTime? to}) async {
     try {
       print("ppp");
       var attendanceData = <Map<String, dynamic>>[];
-      CollectionReference<Map<String, dynamic>>? attendanceQuery = firestore.collection("attendance");
+      CollectionReference<Map<String, dynamic>> attendanceQuery = firestore.collection("attendance");
+
+      print(trainingType);
+      print(to);
+      print(from);
 
       Query<Map<String, dynamic>> attendance;
       if (trainingType != "ALL") {
         attendance = attendanceQuery.where("subject", isEqualTo: trainingType);
-      }else{
+      } else {
         attendance = attendanceQuery;
       }
+
+      print(attendance);
 
       QuerySnapshot<Map<String, dynamic>> attendanceDatas = await attendance.get();
 
       attendanceData.addAll(attendanceDatas.docs.map((doc) => doc.data()) ?? []);
 
       print(attendanceData);
-      if(from != null && to!= null && attendanceData.isNotEmpty){
+
+      if (from != null && to != null && attendanceData.isNotEmpty) {
         print("adaad");
         attendanceData = attendanceData.where((attendance) {
           DateTime attendanceDate = attendance["date"].toDate();
@@ -276,86 +289,85 @@ class HomeCptsccController extends GetxController {
               (attendanceDateOnly.isAfter(fromDate) && attendanceDateOnly.isBefore(toDate)) ||
               attendanceDateOnly.isAtSameMomentAs(toDate);
         }).toList();
+        print("de");
 
         List<String?> attendanceId = attendanceData.map((doc) => AttendanceModel.fromJson(doc).id).toList();
 
         print(attendanceId);
         print(attendanceId.length);
-        if(attendanceId.isNotEmpty){
-          final absentQuery = await firestore
-              .collection('absent')
-              .where("idattendance", whereIn: attendanceId)
-              .get();
-          // int totalAbsents = absentQuery.docs.length;
-          absentCount.value = await absentQuery.docs.length;
-          absentQuery.docs.forEach((doc) {
-            print("dasd ${doc["idattendance"]}");
-            print("dasd ${doc["id"]}");
-          });
-          print("absent loihhhh ${absentCount.value}");
 
-          final attendanceDetailQuery = await firestore
-              .collection('attendance-detail')
-              .where("idattendance", whereIn: attendanceId)
-              .get();
-          int totalPresents = attendanceDetailQuery.docs.length;
-          presentCount.value = totalPresents;
+        if (attendanceId.isNotEmpty) {
+          print("Sda");
+
+          List<String> allIds = List.from(attendanceId);
+
+          absentCount.value = 0;
+          presentCount.value = 0;
+          final batchSize = 30; // Tentukan ukuran batch yang diinginkan
+
+          if (allIds.length >= batchSize) {
+            print("whoaa");
+            while (allIds.isNotEmpty) {
+              var batchIds = allIds.take(batchSize).toList(); // Ambil 'batchSize' elemen
+
+              final absentQuery = await firestore
+                  .collection('absent')
+                  .where("idattendance", whereIn: batchIds)
+                  .get();
+
+              final attendanceDetailQuery = await firestore
+                  .collection('attendance-detail')
+                  .where("idattendance", whereIn: batchIds)
+                  .get();
+
+              absentCount.value += absentQuery.docs.length;
+              presentCount.value += attendanceDetailQuery.docs.length;
+
+              // Hapus ID yang telah diproses
+              allIds = allIds.sublist(batchSize);
+            }
+          } else {
+            print("roarr");
+            if (allIds.isNotEmpty) {
+              final remainingIds = allIds.toList();
+
+              final absentQuery = await firestore
+                  .collection('absent')
+                  .where("idattendance", whereIn: remainingIds)
+                  .get();
+
+              final attendanceDetailQuery = await firestore
+                  .collection('attendance-detail')
+                  .where("idattendance", whereIn: remainingIds)
+                  .get();
+
+              absentCount.value += absentQuery.docs.length;
+              presentCount.value += attendanceDetailQuery.docs.length;
+            }
+          }
+          print("sda ${absentCount.value}");
+          print("sdffa ${presentCount.value}");
         } else {
           // Handle the case when attendanceId is empty
           print("Attendance ID is empty");
+          absentCount.value = 0;
+          presentCount.value = 0;
         }
 
-        // if (trainingType != "ALL") {
-        //   final absentQuery = await firestore
-        //       .collection('absent')
-        //       .where("idattendance", whereIn: attendanceId)
-        //       .get();
-        //   int totalAbsents = absentQuery.docs.length;
-        //   absentCount.value = totalAbsents;
-        //   print(absentCount.value);
-        //
-        //   final attendanceDetailQuery = await firestore
-        //       .collection('attendance-detail')
-        //       .where("idattendance", whereIn: attendanceId)
-        //       .get();
-        //   int totalPresents = attendanceDetailQuery.docs.length;
-        //   presentCount.value = totalPresents;
-        // }
-        // else {
-        //   attendanceData = attendanceData.where((attendance) {
-        //     String attendanceSubject = attendance["subject"].toDate();
-        //
-        //     return attendanceSubject == trainingType;
-        //   }).toList();
-        //   attendanceId = attendanceData.map((doc) => AttendanceModel.fromJson(doc).id);
-        //
-        //   final absentQuery = await firestore
-        //       .collection('absent')
-        //       .where("idattendance", whereIn: attendanceId)
-        //       .get();
-        //   int totalAbsents = absentQuery.docs.length;
-        //   absentCount.value = totalAbsents;
-        //
-        //   final attendanceDetailQuery = await firestore
-        //       .collection('attendance-detail')
-        //       .where("idattendance", whereIn: attendanceId)
-        //       .get();
-        //   int totalPresents = attendanceDetailQuery.docs.length;
-        //   presentCount.value = totalPresents;
-        // }
       }
 
-      return attendanceData;
     } catch (e) {
       // Handle any errors that might occur during the async operation
       print("Error fetching attendance data: $e");
-      return []; // or throw an exception if needed
     }
   }
 
 
-
-
+  void resetDate() {
+    training.value = "ALL";
+    from.value  = DateTime(1900, 1, 1);
+    to.value  = DateTime.now();
+  }
 
   // Function to export data to CSV
   Future<String> exportToCSV(List<List<dynamic>> data, String filename) async {
@@ -368,11 +380,6 @@ class HomeCptsccController extends GetxController {
     return path; // Mengembalikan path file yang telah disimpan
   }
 
-
-  void resetDate() {
-    from.value  = DateTime(1900, 1, 1);
-    to.value  = DateTime.now();
-  }
 
   @override
   void onReady() {

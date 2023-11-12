@@ -92,7 +92,7 @@ class ListPilotcptsccView extends GetView<ListPilotcptsccController> {
                                 print(controller.nameS.value);
                               },
                               decoration: InputDecoration(
-                                hintText: 'Type instructor name...',
+                                hintText: 'Type pilot name...',
                                 hintStyle: TextStyle(
                                   color: Colors.grey,
                                   fontSize: 12,
@@ -202,20 +202,21 @@ class ListPilotcptsccView extends GetView<ListPilotcptsccController> {
                                             style: tsOneTextTheme.labelSmall,
                                           ),
                                           Container(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 3, horizontal: 10),
+                                            padding:
+                                            const EdgeInsets.symmetric(
+                                                vertical: 3,
+                                                horizontal: 10),
                                             decoration: BoxDecoration(
-                                              color:
-                                              Colors.green.withOpacity(0.4),
+                                              color: listAttendance[index]["STATUS"] == "VALID" ? Colors.green.withOpacity(0.4) :Colors.red.withOpacity(0.4),
                                               borderRadius:
                                               BorderRadius.circular(10),
                                             ),
-                                            child: const Text(
-                                              "Ready",
+                                            child: Text(
+                                              listAttendance[index]["STATUS"] ??
+                                                  "",
                                               style: TextStyle(
-                                                fontSize: 10,
-                                                color: Colors.green,
-                                              ),
+                                                  fontSize: 10,
+                                                  color: listAttendance[index]["STATUS"] == "VALID" ? Colors.green :Colors.red),
                                             ),
                                           ),
                                         ],
