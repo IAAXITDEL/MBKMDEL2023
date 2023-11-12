@@ -287,7 +287,7 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                                        "assets/images/G1.png",
                                        fit: BoxFit.fitWidth,
                                      ),
-                                     Text('${controller.trainingCount.value}', style: tsOneTextTheme.headlineMedium,),
+                                     Obx(() => Text('${controller.trainingCount.value}', style: tsOneTextTheme.headlineMedium,),),
                                      Text( 'Trainings\n', style: TextStyle(color: TsOneColor.redColor),)
                                    ],
                                  ),
@@ -319,7 +319,7 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                                         "assets/images/G1.png",
                                         fit: BoxFit.fitWidth,
                                       ),
-                                      Text('${controller.ongoingTrainingCount.value}', style: tsOneTextTheme.headlineMedium,),
+                                      Obx(() => Text('${controller.ongoingTrainingCount.value}', style: tsOneTextTheme.headlineMedium,),),
                                       Text( 'Ongoing Trainings', style: TextStyle(color: TsOneColor.redColor), textAlign: TextAlign.center,)
                                     ],
                                   ),
@@ -351,7 +351,7 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                                         "assets/images/G2.png",
                                         fit: BoxFit.fitWidth,
                                       ),
-                                      Text('${controller.completedTrainingCount.value}', style: tsOneTextTheme.headlineMedium,),
+                                     Obx(() =>  Text('${controller.completedTrainingCount.value}', style: tsOneTextTheme.headlineMedium,),),
                                       Text( 'Completed Trainings', style: TextStyle(color: TsOneColor.redColor), textAlign: TextAlign.center,)
                                     ],
                                   ),
@@ -402,111 +402,113 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                             ],
                           ),
                           SizedBox(height: 10),
-                          Container(
-                            height: 150,
-                            child: Stack(
-                              children: [
-                                PieChart(
-                                  PieChartData(
-                                    sections: [
-                                      PieChartSectionData(
-                                        value: controller.instructorCount.value
-                                            .toDouble(),
-                                        color: const Color(0xffF24C3D),
-                                        title: controller.instructorCount.value
-                                            .toString(),
-                                        radius: 45,
-                                        titleStyle: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors
-                                              .white, // Ubah warna teks menjadi putih
-                                        ),
-                                      ),
-                                      PieChartSectionData(
-                                        value: controller.pilotCount.value
-                                            .toDouble(),
-                                        color: const Color(0xff35A29F),
-                                        title: controller.pilotCount.value
-                                            .toString(),
-                                        radius: 45,
-                                        titleStyle: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors
-                                              .white, // Ubah warna teks menjadi putih
-                                        ),
-                                      ),
-                                    ],
-                                    sectionsSpace: 3,
-                                    centerSpaceRadius: 30,
-                                  ),
-                                ),
+                         Obx((){
+                           return  Container(
+                             height: 150,
+                             child: Stack(
+                               children: [
+                                 PieChart(
+                                   PieChartData(
+                                     sections: [
+                                       PieChartSectionData(
+                                         value: controller.instructorCount.value
+                                             .toDouble(),
+                                         color: const Color(0xffF24C3D),
+                                         title: controller.instructorCount.value
+                                             .toString(),
+                                         radius: 45,
+                                         titleStyle: TextStyle(
+                                           fontSize: 16,
+                                           fontWeight: FontWeight.bold,
+                                           color: Colors
+                                               .white, // Ubah warna teks menjadi putih
+                                         ),
+                                       ),
+                                       PieChartSectionData(
+                                         value: controller.pilotCount.value
+                                             .toDouble(),
+                                         color: const Color(0xff35A29F),
+                                         title: controller.pilotCount.value
+                                             .toString(),
+                                         radius: 45,
+                                         titleStyle: TextStyle(
+                                           fontSize: 16,
+                                           fontWeight: FontWeight.bold,
+                                           color: Colors
+                                               .white, // Ubah warna teks menjadi putih
+                                         ),
+                                       ),
+                                     ],
+                                     sectionsSpace: 3,
+                                     centerSpaceRadius: 30,
+                                   ),
+                                 ),
 
-                                //DESCRIPTION
-                                Positioned(
-                                  top: 102,
-                                  left: 0,
-                                  right: -300,
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Desc:',
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                      Row(
-                                        children: [
-                                          Container(
-                                            width: 10,
-                                            height: 10,
-                                            decoration: BoxDecoration(
-                                              color: const Color(0xffF24C3D),
-                                              shape: BoxShape.rectangle,
-                                            ),
-                                          ),
-                                          SizedBox(width: 5),
-                                          Text(
-                                            'Instructors',
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.bold,
-                                              color: const Color(0xffF24C3D),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      Row(
-                                        children: [
-                                          Container(
-                                            width: 10,
-                                            height: 10,
-                                            decoration: BoxDecoration(
-                                              color: const Color(0xff35A29F),
-                                              shape: BoxShape.rectangle,
-                                            ),
-                                          ),
-                                          SizedBox(width: 5),
-                                          Text(
-                                            'Pilots',
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.bold,
-                                              color: const Color(0xff35A29F),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                                 //DESCRIPTION
+                                 Positioned(
+                                   top: 102,
+                                   left: 0,
+                                   right: -300,
+                                   child: Column(
+                                     crossAxisAlignment: CrossAxisAlignment.start,
+                                     children: [
+                                       Text(
+                                         'Desc:',
+                                         style: TextStyle(
+                                           fontSize: 12,
+                                           fontWeight: FontWeight.bold,
+                                           color: Colors.black,
+                                         ),
+                                       ),
+                                       Row(
+                                         children: [
+                                           Container(
+                                             width: 10,
+                                             height: 10,
+                                             decoration: BoxDecoration(
+                                               color: const Color(0xffF24C3D),
+                                               shape: BoxShape.rectangle,
+                                             ),
+                                           ),
+                                           SizedBox(width: 5),
+                                           Text(
+                                             'Instructors',
+                                             style: TextStyle(
+                                               fontSize: 12,
+                                               fontWeight: FontWeight.bold,
+                                               color: const Color(0xffF24C3D),
+                                             ),
+                                           ),
+                                         ],
+                                       ),
+                                       Row(
+                                         children: [
+                                           Container(
+                                             width: 10,
+                                             height: 10,
+                                             decoration: BoxDecoration(
+                                               color: const Color(0xff35A29F),
+                                               shape: BoxShape.rectangle,
+                                             ),
+                                           ),
+                                           SizedBox(width: 5),
+                                           Text(
+                                             'Pilots',
+                                             style: TextStyle(
+                                               fontSize: 12,
+                                               fontWeight: FontWeight.bold,
+                                               color: const Color(0xff35A29F),
+                                             ),
+                                           ),
+                                         ],
+                                       ),
+                                     ],
+                                   ),
+                                 ),
+                               ],
+                             ),
+                           );
+                         }),
                         ],
                       ),
 
