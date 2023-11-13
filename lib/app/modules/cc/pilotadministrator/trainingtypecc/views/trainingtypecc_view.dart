@@ -340,6 +340,169 @@ class _TrainingtypeccViewState extends State<TrainingtypeccView>
                     children: [
                       SizedBox(height: 15),
                       Form(
+                        key: _formConfirmationKey,
+                        child: Container(
+                          child:   Row(
+                            children: [
+                              Expanded(
+                                flex: 3,
+                                child: TextFormField(
+                                  controller: fromConfirmationC,
+                                  obscureText: false,
+                                  readOnly: false,
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {   // Validation Logic
+                                      return 'Please enter the From Date';
+                                    }
+                                    return null;
+                                  },
+                                  decoration: InputDecoration(
+                                      contentPadding: const EdgeInsets.symmetric(vertical: 0,horizontal: 10),
+                                      prefixIcon: const Icon(Icons.calendar_month, color: TsOneColor.primary,),
+                                      enabledBorder: const OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: TsOneColor.primary,
+                                        ),
+                                      ),
+                                      border: const OutlineInputBorder(
+                                          borderSide: BorderSide(color: TsOneColor.secondaryContainer)
+                                      ),
+                                      focusedBorder: const OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: Colors.green,
+                                        ),
+                                      ),
+                                      labelText: "From Date"
+                                  ),
+                                  onTap: () async {
+                                    DateTime? pickedDate = await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(1945), lastDate: DateTime(2300));
+                                    if(pickedDate != null){
+                                      String formattedDate = DateFormat('dd-MM-yyyy').format(pickedDate);
+                                      fromConfirmationC.text = formattedDate;
+                                    }
+                                  },
+                                ),
+                              ),
+                              Expanded(flex: 1,child: Icon(Icons.compare_arrows_rounded)),
+                              Expanded(
+                                flex: 3,
+                                child: TextFormField(
+                                  controller: toConfirmationC,
+                                  obscureText: false,
+                                  readOnly: false,
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {   // Validation Logic
+                                      return 'Please enter the To Date';
+                                    }
+                                    return null;
+                                  },
+                                  decoration: InputDecoration(
+                                      contentPadding: const EdgeInsets.symmetric(vertical: 0,horizontal: 10),
+                                      prefixIcon: const Icon(Icons.calendar_month, color: TsOneColor.primary,),
+                                      enabledBorder: const OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: TsOneColor.primary,
+                                        ),
+                                      ),
+                                      border: const OutlineInputBorder(
+                                          borderSide: BorderSide(color: TsOneColor.secondaryContainer)
+                                      ),
+                                      focusedBorder: const OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: Colors.green,
+                                        ),
+                                      ),
+                                      labelText: "To Date"
+                                  ),
+                                  onTap: () async {
+                                    DateTime? pickedDate = await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(1945), lastDate: DateTime(2300));
+                                    if(pickedDate != null){
+                                      String formattedDate = DateFormat('dd-MM-yyyy').format(pickedDate);
+                                      toConfirmationC.text = formattedDate;
+                                    }
+                                  },
+                                ),
+                              ),
+                              Expanded(flex: 1,child:
+                              InkWell(
+                                onTap: (){
+                                  DateTime from = DateFormat('dd-MM-yyyy').parse(fromDoneC.text);
+                                  DateTime to = DateFormat('dd-MM-yyyy').parse(toDoneC.text);
+
+                                  if (_formConfirmationKey.currentState != null && _formConfirmationKey.currentState!.validate()  != 0) {
+                                    if (from.isBefore(to)) {
+                                      controller.fromConfirmation.value = from;
+                                      controller.toConfirmation.value = to;
+                                    } else {
+
+                                    }
+                                  }
+                                },
+                                child: Icon(Icons.filter_list, color: TsOneColor.primary,),
+                              )
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      StreamBuilder<List<Map<String, dynamic>>>(
+                        stream: controller.getCombinedAttendanceStream(controller.argumentid.value, "confirmation", from: controller.fromConfirmation.value, to:controller.toConfirmation.value),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return LoadingScreen(); // Placeholder while loading
+                          }
+
+                          if (snapshot.hasError) {
+                            return ErrorScreen();
+                          }
+
+                          var listAttendance= snapshot.data!;
+                          if(listAttendance.isEmpty){
+                            return EmptyScreen();
+                          }
+
+                          return Column(
+                            children: [
+                              SizedBox(height: 10),
+                              ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: listAttendance.length,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemBuilder: (context, index) {
+
+                                    Timestamp? timestamp = listAttendance[index]["date"];
+                                    DateTime? dateTime = timestamp?.toDate();
+                                    String dateC = DateFormat('dd MMMM yyyy').format(dateTime!);
+                                    return ListTile(
+                                      leading: CircleAvatar(
+                                        radius: 20,
+                                        backgroundColor: Colors.black26,
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(100),
+                                          child : listAttendance[index]["photoURL"] == null ?  Image.asset(
+                                            "assets/images/placeholder_person.png",
+                                            fit: BoxFit.cover,
+                                          ) : Image.network("${listAttendance[index]["photoURL"]}", fit: BoxFit.cover),),
+                                      ),
+                                      title: Text(listAttendance[index]["name"].toString()),
+                                      subtitle: Text(dateC),
+                                      trailing: Icon(Icons.navigate_next),
+                                      onTap: () => Get.toNamed(Routes.ATTENDANCE_CONFIRCC,  arguments: {
+                                        "id" : listAttendance[index]["id"],
+                                      }),
+                                    );
+                                  }
+                              )
+                            ],
+                          );
+                        },
+                      ),
+                    ],
+                  )),
+                  Obx(() =>  Column(
+                    children: [
+                      SizedBox(height: 15),
+                      Form(
                         key: _formDoneKey,
                         child: Container(
                           child:   Row(
@@ -445,63 +608,6 @@ class _TrainingtypeccViewState extends State<TrainingtypeccView>
                           ),
                         ),
                       ),
-                      StreamBuilder<List<Map<String, dynamic>>>(
-                        stream: controller.getCombinedAttendanceStream(controller.argumentid.value, "confirmation", from: controller.fromConfirmation.value, to:controller.toConfirmation.value),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState == ConnectionState.waiting) {
-                            return LoadingScreen(); // Placeholder while loading
-                          }
-
-                          if (snapshot.hasError) {
-                            return ErrorScreen();
-                          }
-
-                          var listAttendance= snapshot.data!;
-                          if(listAttendance.isEmpty){
-                            return EmptyScreen();
-                          }
-
-                          return Column(
-                            children: [
-                              SizedBox(height: 10),
-                              ListView.builder(
-                                  shrinkWrap: true,
-                                  itemCount: listAttendance.length,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  itemBuilder: (context, index) {
-
-                                    Timestamp? timestamp = listAttendance[index]["date"];
-                                    DateTime? dateTime = timestamp?.toDate();
-                                    String dateC = DateFormat('dd MMMM yyyy').format(dateTime!);
-                                    return ListTile(
-                                      leading: CircleAvatar(
-                                        radius: 20,
-                                        backgroundColor: Colors.black26,
-                                        child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(100),
-                                          child : listAttendance[index]["photoURL"] == null ?  Image.asset(
-                                            "assets/images/placeholder_person.png",
-                                            fit: BoxFit.cover,
-                                          ) : Image.network("${listAttendance[index]["photoURL"]}", fit: BoxFit.cover),),
-                                      ),
-                                      title: Text(listAttendance[index]["name"].toString()),
-                                      subtitle: Text(dateC),
-                                      trailing: Icon(Icons.navigate_next),
-                                      onTap: () => Get.toNamed(Routes.ATTENDANCE_CONFIRCC,  arguments: {
-                                        "id" : listAttendance[index]["id"],
-                                      }),
-                                    );
-                                  }
-                              )
-                            ],
-                          );
-                        },
-                      ),
-                    ],
-                  )),
-                  Obx(() =>  Column(
-                    children: [
-                      SizedBox(height: 15),
                       StreamBuilder<List<Map<String, dynamic>>>(
                         stream: controller.getCombinedAttendanceStream(controller.argumentid.value, "done", from: controller.fromDone.value, to:controller.toDone.value),
                         builder: (context, snapshot) {
