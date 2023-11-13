@@ -109,15 +109,17 @@ class ProfileccView extends GetView<ProfileccController> {
 
     return Scaffold(
       appBar: AppBar(
+        title: RedTitleText(text: "PROFILE"),
+        centerTitle: true,
         elevation: 0,
         actions: [
           // LOGOUT
           Container(
-            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+            margin: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 primary: tsOneColorScheme.primary,
-                padding: EdgeInsets.symmetric(vertical: 4, horizontal: 20),
+                padding: EdgeInsets.symmetric(vertical: 3, horizontal: 10),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -132,18 +134,17 @@ class ProfileccView extends GetView<ProfileccController> {
                   Icon(
                     Icons.logout,
                     color: Colors.white,
-                    size: 20,
+                    size: 15,
                   ),
                   SizedBox(
-                    width: 10,
+                    width: 5,
                   ),
                   Text(
                     "Logout",
                     style: const TextStyle(
                       color: TsOneColor.surface,
                       fontFamily: 'Poppins',
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
                     ),
                   ),
                 ],
@@ -157,7 +158,6 @@ class ProfileccView extends GetView<ProfileccController> {
           padding: EdgeInsets.all(10),
           child: Column(
             children: [
-              RedTitleText(text: "PROFILE"),
               AvatarGlow(
                 endRadius: 110,
                 glowColor: Colors.black,

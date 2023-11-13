@@ -37,7 +37,8 @@ class ListAttendancedetailccView
 
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Back'),
+          title: RedTitleText(text : "PROFILE"),
+          centerTitle: true,
         ),
         body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),

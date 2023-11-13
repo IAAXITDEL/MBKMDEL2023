@@ -19,7 +19,9 @@ class PilotcrewccView extends GetView<PilotcrewccController> {
         text: "PILOT LIST",
       ),
           backgroundColor: Colors.white,
-          elevation: 0),
+          elevation: 0,
+      centerTitle: true,
+      ),
       body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: Column(
