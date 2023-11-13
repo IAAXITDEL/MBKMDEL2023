@@ -436,7 +436,7 @@ class ListAttendancedetailccView
                                      mainAxisAlignment: MainAxisAlignment.start,
                                      children: [
                                        Text(
-                                         'Feedback to Trainee',
+                                         'Feedback from instructor',
                                          style: TextStyle(
                                            fontWeight: FontWeight.bold,
                                            fontSize: 15,
