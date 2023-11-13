@@ -548,14 +548,6 @@ class DetailHistoryDeviceView extends GetView {
                                                         }
                                                         print(feedbackId);
                                                       },
-                                                      // style: ButtonStyle(
-                                                      //   foregroundColor: MaterialStateProperty.all(TsOneColor.primary),
-                                                      //   textStyle: MaterialStateProperty.all(TextStyle(
-                                                      //     fontWeight: FontWeight.bold,
-                                                      //     decoration: TextDecoration.underline,
-                                                      //     decorationColor: TsOneColor.primary,
-                                                      //   )),
-                                                      // ),
                                                       child: Align(
                                                         alignment: Alignment.centerLeft,
                                                         child: Text(
