@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:ts_one/app/modules/efb/occ/views/confirm_request_pilot_view.dart';
 import 'package:ts_one/app/modules/efb/occ/views/confirm_return_back_pilot_view.dart';
+import 'package:ts_one/app/modules/efb/occ/views/detail_inuse_pilot.dart';
 import 'package:ts_one/presentation/shared_components/TitleText.dart';
 import 'package:ts_one/util/error_screen.dart';
 import 'package:ts_one/util/loading_screen.dart';
@@ -437,7 +438,17 @@ class FirebaseDataTab extends StatelessWidget {
                                 ),
                               );
                             }
+                            if (statuses.contains("in-use-pilot")) {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      DetailInUsePilot(
+                                          dataId: dataId),
+                                ),
+                              );
+                            }
                           },
+
                           borderRadius: BorderRadius.circular(15.0),
                           child: Padding(
                             padding: const EdgeInsets.all(10.0),

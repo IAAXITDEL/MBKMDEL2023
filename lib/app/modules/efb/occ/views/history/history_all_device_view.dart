@@ -536,7 +536,9 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                         isGreaterThanOrEqualTo: _startDate,
                         isLessThanOrEqualTo: _endDate) // Add this line
                     .where('field_hub', isEqualTo: userHub)
+                    .orderBy('timestamp', descending: true) // Mengurutkan berdasarkan timestamp descending (baru ke lama)
                     .limit(30) // Menampilkan hanya 30 dokumen
+
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {

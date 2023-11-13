@@ -15,6 +15,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:open_file/open_file.dart';
+import 'package:ts_one/app/modules/efb/occ/views/feedbackDetail/feedback_atachment.dart';
 import 'package:ts_one/presentation/theme.dart';
 
 //dsf
@@ -767,54 +768,55 @@ class FeedbackDetailPage extends StatelessWidget {
                                           ),
                                         );
                                       },
-                                    );
-
-                                    // Call your asynchronous function (generateFeedbackForm)
-                                    generateFeedbackForm(
-                                      //handoverID: handoverTouserData != null ? handoverTouserData['ID NO'].toString() : 'Not Found',
-                                      date: feedbackData['timestamp'] ?? '-',
-                                      q1: feedbackData['q1'] ?? '-',
-                                      q2: feedbackData['q2'] ?? '-',
-                                      q3: feedbackData['q3'] ?? '-',
-                                      q4: feedbackData['q4'] ?? '-',
-                                      q5: feedbackData['q5'] ?? '-',
-                                      q6: feedbackData['q6'] ?? '-',
-                                      q7: feedbackData['q7'] ?? '-',
-                                      q8: feedbackData['q8'] ?? '-',
-                                      q9: feedbackData['q9'] ?? '-',
-                                      q10: feedbackData['q10'] ?? '-',
-                                      q11: feedbackData['q11'] ?? '-',
-                                      q12: feedbackData['q12'] ?? '-',
-                                      q13: feedbackData['q13'] ?? '-',
-                                      q14: feedbackData['q14'] ?? '-',
-                                      q15: feedbackData['q15'] ?? '-',
-                                      sector1: feedbackData['1-sector'] ?? '-',
-                                      sector2: feedbackData['2-sector'] ?? '-',
-                                      sector3: feedbackData['3-sector'] ?? '-',
-                                      sector4: feedbackData['4-sector'] ?? '-',
-                                      sector5: feedbackData['5-sector'] ?? '-',
-                                      sector6: feedbackData['6-sector'] ?? '-',
-                                      ifhigh: feedbackData['ifHigh'] ?? '-',
-                                      additionalComment: feedbackData['additionalComment'] ?? '-',
-                                      devicename1: pilotDeviceData['device_name'] ?? '-',
-                                      devicename2: pilotDeviceData['device_name2'] ?? '-',
-                                      devicename3: pilotDeviceData['device_name3'] ?? '-',
-                                      userName: userData['NAME'] as String? ?? '-',
-                                      userRank: userData['RANK'] as String? ?? '-',
                                     ).then((_) {
-                                      // Open PDF or navigate to the PDF view screen
-                                      // Add your code to open the PDF here
+                                      // Call your asynchronous function (generateFeedbackForm)
+                                      generateFeedbackForm(
+                                        //handoverID: handoverTouserData != null ? handoverTouserData['ID NO'].toString() : 'Not Found',
+                                        date: feedbackData['timestamp'] ?? '-',
+                                        q1: feedbackData['q1'] ?? '-',
+                                        q2: feedbackData['q2'] ?? '-',
+                                        q3: feedbackData['q3'] ?? '-',
+                                        q4: feedbackData['q4'] ?? '-',
+                                        q5: feedbackData['q5'] ?? '-',
+                                        q6: feedbackData['q6'] ?? '-',
+                                        q7: feedbackData['q7'] ?? '-',
+                                        q8: feedbackData['q8'] ?? '-',
+                                        q9: feedbackData['q9'] ?? '-',
+                                        q10: feedbackData['q10'] ?? '-',
+                                        q11: feedbackData['q11'] ?? '-',
+                                        q12: feedbackData['q12'] ?? '-',
+                                        q13: feedbackData['q13'] ?? '-',
+                                        q14: feedbackData['q14'] ?? '-',
+                                        q15: feedbackData['q15'] ?? '-',
+                                        sector1: feedbackData['1-sector'] ?? '-',
+                                        sector2: feedbackData['2-sector'] ?? '-',
+                                        sector3: feedbackData['3-sector'] ?? '-',
+                                        sector4: feedbackData['4-sector'] ?? '-',
+                                        sector5: feedbackData['5-sector'] ?? '-',
+                                        sector6: feedbackData['6-sector'] ?? '-',
+                                        ifhigh: feedbackData['ifHigh'] ?? '-',
+                                        additionalComment: feedbackData['additionalComment'] ?? '-',
+                                        devicename1: pilotDeviceData['device_name'] ?? '-',
+                                        devicename2: pilotDeviceData['device_name2'] ?? '-',
+                                        devicename3: pilotDeviceData['device_name3'] ?? '-',
+                                        userName: userData['NAME'] as String? ?? '-',
+                                        userRank: userData['RANK'] as String? ?? '-',
+                                      ).then((_) {
+                                        // Open PDF or navigate to the PDF view screen
+                                        // Add your code to open the PDF here
 
-                                      // Dismiss the AlertDialog
-                                      Navigator.pop(context);
-                                    }).catchError((error) {
-                                      // Dismiss the AlertDialog
-                                      Navigator.pop(context);
+                                        // Dismiss the AlertDialog
+                                        Navigator.pop(context);
+                                      }).catchError((error) {
+                                        // Dismiss the AlertDialog
+                                        Navigator.pop(context);
 
-                                      // Handle error (show a snackbar, log the error, etc.)
-                                      print('Error generating PDF: $error');
+                                        // Handle error (show a snackbar, log the error, etc.)
+                                        print('Error generating PDF: $error');
+                                      });
                                     });
                                   },
+
 
 
                                   style: ElevatedButton.styleFrom(
@@ -883,540 +885,4 @@ Future<List<Map<String, dynamic>>> getAllFeedbackData() async {
   return feedbackDataList;
 }
 
-// PDF FEEDBACK
-Future<void> generateFeedbackForm({
-  Timestamp? date,
-  String? q1,
-  String? q2,
-  String? q3,
-  String? q4,
-  String? q5,
-  String? q6,
-  String? q7,
-  String? q8,
-  String? q9,
-  String? q10,
-  String? q11,
-  String? q12,
-  String? q13,
-  String? q14,
-  String? q15,
-  // String? q16,
-  String? sector1,
-  String? sector2,
-  String? sector3,
-  String? sector4,
-  String? sector5,
-  String? sector6,
-  String? ifhigh,
-  String? additionalComment,
-  String? devicename1,
-  String? devicename2,
-  String? devicename3,
-  String? userName,
-  String? userRank,
-}) async {
-  final pdf = pw.Document();
 
-  final output = await getTemporaryDirectory();
-  final file = File("${output.path}/feedback_form.pdf");
-
-  final ByteData logo = await rootBundle.load('assets/images/airasia_logo_circle.png');
-  final Uint8List uint8list = logo.buffer.asUint8List();
-
-  final font = await rootBundle.load("assets/fonts/Poppins-Regular.ttf");
-  final ttf = pw.Font.ttf(font);
-
-  pdf.addPage(
-    pw.Page(
-      pageFormat: PdfPageFormat.letter.copyWith(
-        marginLeft: 72.0,
-        marginRight: 72.0,
-        marginTop: 36.0,
-        marginBottom: 72.0,
-      ),
-      build: (context) {
-        return pw.Column(children: [
-          pw.Table(
-            tableWidth: pw.TableWidth.min,
-            border: pw.TableBorder.all(),
-            columnWidths: {
-              0: pw.FlexColumnWidth(1),
-            },
-            children: [
-              pw.TableRow(
-                children: [
-                  pw.Expanded(
-                    flex: 1,
-                    child: pw.Column(
-                      mainAxisAlignment: pw.MainAxisAlignment.center,
-                      crossAxisAlignment: pw.CrossAxisAlignment.center,
-                      children: [
-                        pw.Image(
-                          pw.MemoryImage(uint8list),
-                          width: 65,
-                          height: 65,
-                        ),
-                      ],
-                    ),
-                  ),
-                  pw.Expanded(
-                    flex: 3,
-                    child: pw.Padding(
-                      padding: pw.EdgeInsets.symmetric(vertical: 5),
-                      child: pw.Column(
-                        mainAxisAlignment: pw.MainAxisAlignment.center,
-                        crossAxisAlignment: pw.CrossAxisAlignment.center,
-                        children: [
-                          pw.Text(
-                            'IAA EFB',
-                            style: pw.TextStyle(
-                              // font: ttf,
-                              fontSize: 12,
-                              fontWeight: pw.FontWeight.bold,
-                            ),
-                          ),
-                          pw.SizedBox(height: 5),
-                          pw.Text(
-                            'FEEDBACK FORM',
-                            style: pw.TextStyle(
-                              // font: ttf,
-                              fontSize: 12,
-                              fontWeight: pw.FontWeight.bold,
-                            ),
-                          ),
-                          pw.SizedBox(height: 5),
-                          if (devicename1 != null && devicename2 == null)
-                            pw.Text(
-                              '$devicename1',
-                              style: pw.TextStyle(
-                                // font: ttf,
-                                fontSize: 12,
-                              ),
-                            ),
-                          if (devicename1 == '-')
-                            pw.Text(
-                              '$devicename2 & $devicename3',
-                              style: pw.TextStyle(
-                                // font: ttf,
-                                fontSize: 12,
-                              ),
-                            ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  pw.Expanded(
-                    flex: 2,
-                    child: pw.Padding(
-                      padding: pw.EdgeInsets.all(5),
-                      child: pw.Column(
-                        mainAxisAlignment: pw.MainAxisAlignment.center,
-                        crossAxisAlignment: pw.CrossAxisAlignment.center,
-                        children: [
-                          pw.Row(
-                            mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                            children: [
-                              pw.Text(
-                                'DCC No.',
-                                style: pw.TextStyle(
-                                  font: ttf,
-                                  fontSize: 8,
-                                ),
-                              ),
-                              pw.Text(
-                                'IAA/FOP/F/009',
-                                style: pw.TextStyle(
-                                  font: ttf,
-                                  fontSize: 8,
-                                ),
-                              ),
-                            ],
-                          ),
-                          pw.SizedBox(height: 4),
-                          pw.Row(
-                            mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                            children: [
-                              pw.Text(
-                                'Revision',
-                                style: pw.TextStyle(
-                                  font: ttf,
-                                  fontSize: 8,
-                                ),
-                              ),
-                              pw.Text(
-                                '3',
-                                style: pw.TextStyle(
-                                  font: ttf,
-                                  fontSize: 8,
-                                ),
-                              ),
-                            ],
-                          ),
-                          pw.SizedBox(height: 4),
-                          pw.Row(
-                            mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                            children: [
-                              pw.Text(
-                                'Date',
-                                style: pw.TextStyle(
-                                  font: ttf,
-                                  fontSize: 8,
-                                ),
-                              ),
-                              pw.Text(
-                                '06-12-21',
-                                style: pw.TextStyle(
-                                  font: ttf,
-                                  fontSize: 8,
-                                ),
-                              ),
-                            ],
-                          ),
-                          pw.SizedBox(height: 4),
-                          pw.Row(
-                            mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                            children: [
-                              pw.Text(
-                                'Page',
-                                style: pw.TextStyle(
-                                  font: ttf,
-                                  fontSize: 8,
-                                ),
-                              ),
-                              pw.Text(
-                                '1 of 1',
-                                style: pw.TextStyle(
-                                  font: ttf,
-                                  fontSize: 8,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          pw.SizedBox(height: 10),
-          pw.Align(
-            alignment: pw.Alignment.centerLeft,
-            child: pw.Text(
-              'Dear Pilots, The following test must be conducted on the IPAD PRO 10.5',
-              style: pw.TextStyle(
-                font: ttf,
-                fontSize: 11,
-              ),
-            ),
-          ),
-          pw.Table(
-            tableWidth: pw.TableWidth.min,
-            border: pw.TableBorder.all(),
-            columnWidths: {
-              0: pw.FlexColumnWidth(1),
-              1: pw.FlexColumnWidth(2),
-              2: pw.FlexColumnWidth(1),
-              3: pw.FlexColumnWidth(2),
-            },
-            children: [
-              pw.TableRow(
-                children: [
-                  pw.Container(
-                    height: 20.0,
-                    child: reguler("DATE", context),
-                  ),
-                  pw.Container(
-                    height: 20.0,
-                    child: reguler(_formatTimestamp(date), context),
-                  ),
-                  pw.Container(
-                    height: 20.0,
-                    child: reguler("RANK", context),
-                  ),
-                  pw.Container(
-                    height: 20.0,
-                    child: reguler("$userRank", context),
-                  ),
-                ],
-              ),
-              pw.TableRow(
-                children: [
-                  pw.Container(
-                    height: 20.0,
-                    child: reguler("Device No.", context),
-                  ),
-                  if (devicename2 == '-' || devicename2 == null)
-                    pw.Container(
-                      height: 20.0,
-                      child: reguler("$devicename1", context),
-                    ),
-                  if (devicename1 == '-')
-                    pw.Container(
-                      height: 20.0,
-                      child: reguler("$devicename2 & $devicename3", context),
-                    ),
-                  pw.Container(
-                    height: 20.0,
-                    child: reguler("CREW NAME", context),
-                  ),
-                  pw.Container(
-                    height: 20.0,
-                    child: reguler("$userName", context),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          pw.SizedBox(height: 10),
-          pw.Table(
-            tableWidth: pw.TableWidth.min,
-            border: pw.TableBorder.all(),
-            columnWidths: {
-              0: pw.FlexColumnWidth(1),
-            },
-            children: [
-              pw.TableRow(
-                children: [
-                  pw.Container(
-                    height: 25.0,
-                    child: boldTitle('BATTERY INTEGRITY', context),
-                  )
-                ],
-              ),
-            ],
-          ),
-          pw.Table(
-            tableWidth: pw.TableWidth.min,
-            border: pw.TableBorder.all(),
-            columnWidths: {
-              0: pw.FlexColumnWidth(2),
-              1: pw.FlexColumnWidth(2),
-            },
-            children: [
-              pw.TableRow(
-                children: [
-                  pw.Column(children: [
-                    reguler("Do you charge the device during your duty?\n" + "$q1", context),
-                    bold("If charging the device is REQUIRED.", context),
-                    pw.Column(children: [
-                      reguler("1.  Flight Phase\n" + "     $q3", context),
-                      reguler("2.  Charging duration\n" + "     $q4", context),
-                    ])
-                  ]),
-                  pw.Column(children: [
-                    reguler("Do you find any risk or concern on the cabling?\n" + "$q2", context),
-                    bold("If charging the device is NOT REQUIRED.", context),
-                    pw.Column(children: [
-                      reguler("1.  Did you utilize ALL EFB software during your duty?\n" + "     $q5", context),
-                      reguler("2.  Which software did you utilize the most?\n" + "     $q6", context),
-                    ])
-                  ]),
-                ],
-              ),
-            ],
-          ),
-          pw.SizedBox(height: 10),
-          pw.Table(
-            tableWidth: pw.TableWidth.min,
-            border: pw.TableBorder.all(),
-            columnWidths: {
-              0: pw.FlexColumnWidth(1),
-            },
-            children: [
-              pw.TableRow(
-                children: [
-                  pw.Container(
-                    height: 25.0,
-                    child: boldTitle('BATTERY LEVEL AFTER ENGINE SHUTDOWN (with or without charging)', context),
-                  )
-                ],
-              ),
-            ],
-          ),
-          pw.Table(tableWidth: pw.TableWidth.min, border: pw.TableBorder.all(), columnWidths: {
-            0: pw.FlexColumnWidth(1),
-            1: pw.FlexColumnWidth(2),
-            2: pw.FlexColumnWidth(2),
-            3: pw.FlexColumnWidth(2),
-            4: pw.FlexColumnWidth(2),
-            5: pw.FlexColumnWidth(2),
-            6: pw.FlexColumnWidth(2),
-          }, children: [
-            pw.TableRow(
-              children: [
-                reguler("%", context),
-                reguler("1st  " + "  $sector1", context),
-                reguler("2nd  " + "  $sector2", context),
-                reguler("3rd  " + "  $sector3", context),
-                reguler("4th  " + "  $sector4", context),
-                reguler("5th  " + "  $sector5", context),
-                reguler("6th  " + "  $sector6", context),
-              ],
-            ),
-          ]),
-          pw.SizedBox(height: 10),
-          pw.Table(
-            tableWidth: pw.TableWidth.min,
-            border: pw.TableBorder.all(),
-            columnWidths: {
-              0: pw.FlexColumnWidth(1),
-            },
-            children: [
-              pw.TableRow(
-                children: [
-                  pw.Container(
-                    height: 25.0,
-                    child: boldTitle('BRACKET (RAM-MOUNT) INTEGRITY', context),
-                  )
-                ],
-              ),
-            ],
-          ),
-          pw.Table(tableWidth: pw.TableWidth.min, border: pw.TableBorder.all(), columnWidths: {
-            0: pw.FlexColumnWidth(1),
-          }, children: [
-            pw.TableRow(
-              children: [
-                pw.Column(children: [
-                  reguler(
-                    'Please observe the bracket and tick on your answer :\n' +
-                        '\n' +
-                        '  1.  Strong Mechanical Integrity Flight\n' +
-                        "       $q7\n" +
-                        '  2.  Easy to use\n' +
-                        "       $q8\n" +
-                        '  3.  Easy to detached during emergency, if required\n' +
-                        "       $q8\n" +
-                        '  4.  Obstruct emergency egress\n' +
-                        "       $q10\n" +
-                        '  5.  Bracket position obstruct Pilot vision\n' +
-                        "       $q11 (If Yes, How severe did it obstruct your vision)?\n" +
-                        "       $q12\n",
-                    context,
-                  ),
-                ])
-              ],
-            ),
-          ]),
-          pw.SizedBox(height: 10),
-          pw.Table(
-            tableWidth: pw.TableWidth.min,
-            border: pw.TableBorder.all(),
-            columnWidths: {
-              0: pw.FlexColumnWidth(1),
-            },
-            children: [
-              pw.TableRow(
-                children: [
-                  pw.Container(
-                    height: 25.0,
-                    child: boldTitle('EFB SOFTWARE INTEGRITY', context),
-                  )
-                ],
-              ),
-            ],
-          ),
-          pw.Table(tableWidth: pw.TableWidth.min, border: pw.TableBorder.all(), columnWidths: {
-            0: pw.FlexColumnWidth(1),
-          }, children: [
-            pw.TableRow(
-              children: [
-                pw.Column(children: [
-                  reguler(
-                    '  1.  Airbus Flysmart (Performance)' +
-                        "             $q13\n" +
-                        '  2.  Lido (Navigation)' +
-                        "                                   $q14\n" +
-                        '  3.  Vistair Docunet (Library Document)' +
-                        "      $q15\n",
-                    context,
-                  ),
-                ])
-              ],
-            ),
-          ]),
-          pw.Align(
-            alignment: pw.Alignment.centerLeft,
-            child: pw.Text(
-              'Additional comment on all observation : $additionalComment',
-              style: pw.TextStyle(
-                font: ttf,
-                fontSize: 8,
-              ),
-            ),
-          )
-        ]);
-      },
-    ),
-  );
-  final pdfBytes = await pdf.save();
-  await file.writeAsBytes(pdfBytes);
-
-  OpenFile.open(file.path);
-}
-//child: _buildHeaderCellLeft('Handover To', context),
-
-pw.Widget bold(String text, pw.Context context) {
-  // final fontData = rootBundle.load("assets/fonts/Poppins-Regular.ttf");
-  // final ttf = pw.Font.ttf(fontData as ByteData);
-
-  return pw.Container(
-    alignment: pw.Alignment.centerLeft,
-    decoration: pw.BoxDecoration(
-      border: pw.TableBorder.all(),
-    ),
-    padding: pw.EdgeInsets.all(5.0),
-    child: pw.Text(
-      text,
-      style: pw.TextStyle(
-        // font: ttf,
-        fontWeight: pw.FontWeight.bold,
-        fontSize: 9,
-      ),
-    ),
-  );
-}
-
-pw.Widget boldTitle(String text, pw.Context context) {
-  // final fontData = rootBundle.load("assets/fonts/Poppins-Regular.ttf");
-  // final ttf = pw.Font.ttf(fontData as ByteData);
-
-  return pw.Container(
-    alignment: pw.Alignment.center,
-    decoration: pw.BoxDecoration(
-      border: pw.TableBorder.all(),
-    ),
-    padding: pw.EdgeInsets.all(5.0),
-    child: pw.Text(
-      text,
-      style: pw.TextStyle(
-        // font: ttf,
-        fontWeight: pw.FontWeight.bold,
-        fontSize: 10,
-      ),
-    ),
-  );
-}
-
-pw.Widget reguler(String text, pw.Context context) {
-  // final fontData = rootBundle.load("assets/fonts/Poppins-Regular.ttf");
-  // final ttf = pw.Font.ttf(fontData as ByteData);
-
-  return pw.Container(
-    alignment: pw.Alignment.centerLeft,
-    decoration: pw.BoxDecoration(
-      border: pw.TableBorder.all(),
-    ),
-    padding: pw.EdgeInsets.all(5.0),
-    child: pw.Text(
-      text,
-      style: pw.TextStyle(
-        //font: ttf,
-        fontSize: 9,
-      ),
-    ),
-  );
-}
