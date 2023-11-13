@@ -11,7 +11,7 @@ class MainHomeView extends GetView<MainHomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: TsOneColor.primary,
+        backgroundColor: TsOneColor.redColor,
         body: SingleChildScrollView(
             child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
@@ -36,70 +36,76 @@ class MainHomeView extends GetView<MainHomeController> {
               const SizedBox(
                 height: 20,
               ),
-              Container(
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.0), color: Colors.white),
-                child: InkWell(
-                  onTap: () {
-                    Get.offAllNamed(Routes.home);
-                  },
-                  child: ListTile(
-                    title: Text(
-                      "TS -1",
-                      style: tsOneTextTheme.headlineLarge,
-                    ),
-                    subtitle: Text(
-                      "Training Simulator",
-                      style: tsOneTextTheme.labelSmall,
-                    ),
-                    trailing: const Icon(Icons.navigate_next),
-                  ),
-                ),
-              ),
+              controller.isTsOne.value || controller.isCC.value
+                  ? Container(
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.0), color: Colors.white),
+                      child: InkWell(
+                        onTap: () {
+                          Get.offAllNamed(Routes.home);
+                        },
+                        child: ListTile(
+                          title: Text(
+                            "TS -1",
+                            style: tsOneTextTheme.headlineLarge,
+                          ),
+                          subtitle: Text(
+                            "Training Simulator",
+                            style: tsOneTextTheme.labelSmall,
+                          ),
+                          trailing: const Icon(Icons.navigate_next),
+                        ),
+                      ),
+                    )
+                  : SizedBox(),
               const SizedBox(
                 height: 10,
               ),
-              Container(
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.0), color: Colors.white),
-                child: InkWell(
-                  onTap: () {
-                    controller.cekRole();
-                  },
-                  child: ListTile(
-                    title: Text(
-                      "Training Card",
-                      style: tsOneTextTheme.headlineLarge,
-                    ),
-                    subtitle: Text(
-                      "Pilot Training and Proficiency Control Card",
-                      style: tsOneTextTheme.labelSmall,
-                    ),
-                    trailing: const Icon(Icons.navigate_next),
-                  ),
-                ),
-              ),
+              controller.isTsOne.value || controller.isCC.value
+                  ? Container(
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.0), color: Colors.white),
+                      child: InkWell(
+                        onTap: () {
+                          controller.cekRole();
+                        },
+                        child: ListTile(
+                          title: Text(
+                            "Training Card",
+                            style: tsOneTextTheme.headlineLarge,
+                          ),
+                          subtitle: Text(
+                            "Pilot Training and Proficiency Control Card",
+                            style: tsOneTextTheme.labelSmall,
+                          ),
+                          trailing: const Icon(Icons.navigate_next),
+                        ),
+                      ),
+                    )
+                  : SizedBox(),
               const SizedBox(
                 height: 10,
               ),
-              Container(
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.0), color: Colors.white),
-                child: InkWell(
-                  onTap: () {
-                    // Get.toNamed(Routes.NAVOCC);
-                    controller.checkRoleEFB();
-                  },
-                  child: ListTile(
-                    title: Text(
-                      "EFB",
-                      style: tsOneTextTheme.headlineLarge,
-                    ),
-                    subtitle: Text(
-                      "Electronic Flight Bag (EFB)",
-                      style: tsOneTextTheme.labelSmall,
-                    ),
-                    trailing: const Icon(Icons.navigate_next),
-                  ),
-                ),
-              ),
+              controller.isEFB.value
+                  ? Container(
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.0), color: Colors.white),
+                      child: InkWell(
+                        onTap: () {
+                          // Get.toNamed(Routes.NAVOCC);
+                          controller.checkRoleEFB();
+                        },
+                        child: ListTile(
+                          title: Text(
+                            "EFB",
+                            style: tsOneTextTheme.headlineLarge,
+                          ),
+                          subtitle: Text(
+                            "Electronic Flight Bag (EFB)",
+                            style: tsOneTextTheme.labelSmall,
+                          ),
+                          trailing: const Icon(Icons.navigate_next),
+                        ),
+                      ),
+                    )
+                  : SizedBox(),
             ],
           ),
         )));

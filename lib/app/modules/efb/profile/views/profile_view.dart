@@ -4,12 +4,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:ts_one/app/modules/cc/profilecc/controllers/profilecc_controller.dart';
 import 'package:ts_one/data/users/user_preferences.dart';
 import 'package:ts_one/data/users/users.dart';
 
 import '../../../../../presentation/shared_components/TitleText.dart';
 import '../../../../../presentation/theme.dart';
-import '../../../profilecc/controllers/profilecc_controller.dart';
 import '../controllers/profile_controller.dart';
 
 class ProfileView extends GetView<ProfileccController> {

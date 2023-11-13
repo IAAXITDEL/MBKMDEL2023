@@ -78,7 +78,7 @@ dependencies:
   screenshot: ^2.1.0
   flutter_progress_hud: ^2.0.2
   excel: ^2.1.0
-
+  csv: ^5.1.1
   get: ^4.6.5
   persistent_bottom_nav_bar: ^5.0.2
   avatar_glow: 2.0.2
@@ -103,7 +103,10 @@ dependencies:
   image_gallery_saver: ^2.0.3
   liquid_pull_to_refresh: ^3.0.1
   rxdart: ^0.27.7
+  syncfusion_flutter_signaturepad: ^22.2.10
+  flutter_rating_bar: ^4.0.1
 
+  permission_handler: ^10.0.0
 dev_dependencies:
   flutter_launcher_icons: ^0.13.1
   syncfusion_flutter_signaturepad: ^22.2.11
@@ -140,6 +143,7 @@ flutter:
     - family: Poppins
       fonts:
         - asset: assets/fonts/Poppins-Regular.ttf
+        - asset: assets/fonts/materialIcons.ttf
         - asset: assets/fonts/Poppins-Bold.ttf
           weight: 700
         - asset: assets/fonts/Poppins-Medium.ttf

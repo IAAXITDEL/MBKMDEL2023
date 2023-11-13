@@ -14,7 +14,7 @@ import 'package:ts_one/presentation/view/splash_screen.dart';
 import 'package:ts_one/presentation/view_model/assessment_results_viewmodel.dart';
 import 'package:ts_one/presentation/view_model/assessment_viewmodel.dart';
 import 'package:ts_one/presentation/view_model/user_viewmodel.dart';
-import 'package:ts_one/firebase_options.dart';
+import 'firebase_options.dart';
 import 'package:get/get.dart';
 import 'app/routes/app_pages.dart';
 
@@ -24,6 +24,11 @@ void main() async {
 
   // register all the dependencies with GetIt
   setupLocator();
+
+
+  runApp(
+    MaterialApp(),
+  );
 
   try {
     // initialize firebase
@@ -78,6 +83,7 @@ class MyApp extends StatelessWidget {
     //   home: const SplashScreenView(title: 'TS1 AirAsia'),
     //   debugShowCheckedModeBanner: false,
     // );
+
     return GetMaterialApp(
       title: "Air Asia",
       theme: tsOneThemeData,

@@ -2,11 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:ts_one/app/modules/cc/instructor/training_typeinstructorcc/views/training_typeinstructorcc_view.dart';
 
 import '../../../../../presentation/theme.dart';
-import '../../../homecc/views/homecc_view.dart';
-import '../../../profilecc/views/profilecc_view.dart';
-import '../../../trainingcc/views/trainingcc_view.dart';
+import '../../../cc/instructor/home_instructorcc/views/home_instructorcc_view.dart';
+import '../../../cc/profilecc/views/profilecc_view.dart';
+import '../../../cc/trainingcc/views/trainingcc_view.dart';
 
 class NavinstructorView extends StatefulWidget {
   final int initialIndex;
@@ -27,7 +28,8 @@ class _NavinstructorState extends State<NavinstructorView> {
 
   List<Widget> _buildScreens() {
     return [
-      const HomeccView(),
+      const HomeInstructorccView(),
+      const TrainingTypeinstructorccView(),
       const TrainingccView(),
       const ProfileccView(),
     ];
@@ -37,6 +39,11 @@ class _NavinstructorState extends State<NavinstructorView> {
     return [
       PersistentBottomNavBarItem(
         icon: const Icon(CupertinoIcons.house_alt),
+        activeColorPrimary: tsOneColorScheme.primary,
+        inactiveColorPrimary: CupertinoColors.systemGrey,
+      ),
+      PersistentBottomNavBarItem(
+        icon: const Icon(CupertinoIcons.square_favorites_fill),
         activeColorPrimary: tsOneColorScheme.primary,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),

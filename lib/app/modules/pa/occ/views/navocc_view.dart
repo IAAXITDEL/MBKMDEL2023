@@ -10,11 +10,11 @@ import '../../../../../di/locator.dart';
 import '../../../../../presentation/theme.dart';
 import '../../../efb/history_crew/for_crew_history.dart';
 import '../../../efb/occ/views/history/history_all_device_view.dart';
+import '../../../cc/pilotadministrator/homecc/views/homecc_view.dart';
+import '../../../cc/profilecc/views/profilecc_view.dart';
 import '../../../efb/occ/views/listdevice/listdevice.dart';
 import '../../../efb/pilot/views/main_view_pilot.dart';
 import '../../../efb/profile/views/profile_view.dart';
-import '../../../homecc/views/homecc_view.dart';
-import '../../../profilecc/views/profilecc_view.dart';
 import '../../../efb/analytics/views/analytics_view.dart';
 // import '../../../efb/device/views/device_view.dart';
 
