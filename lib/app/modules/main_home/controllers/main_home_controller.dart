@@ -68,6 +68,7 @@ class MainHomeController extends GetxController {
         userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)) {
       isTsOne.value = true;
       isCC.value = true;
+      isEFB.value = true;
       print("satu");
     }
     // SEBAGAI INSTRUCTOR
@@ -78,6 +79,7 @@ class MainHomeController extends GetxController {
         userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)) {
       isTsOne.value = true;
       isCC.value = true;
+      isEFB.value = true;
       print("dua");
     }
     // SEBAGAI PILOT
@@ -91,7 +93,7 @@ class MainHomeController extends GetxController {
     else if (userPreferences.getRank().contains("Pilot Administrator")) {
       isTsOne.value = true;
       isCC.value = true;
-    } else if (userPreferences.getPrivileges().contains("manage-device-occ")) {
+    } else if (userPreferences.getPrivileges().contains(UserModel.keyPrivilegeOCC)) {
       isEFB.value = true;
       print("ada");
     }
