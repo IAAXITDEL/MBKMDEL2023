@@ -180,7 +180,7 @@ class TrainingccView extends GetView<TrainingccController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              controller.isAdministrator.value == false ?
+              controller.isInstructor.value ?
               Text("TRAINEE / PILOT", style: tsOneTextTheme.labelMedium,) : SizedBox(),
               // ------------------------------------ LIST TRAINING ----------------------------------
 

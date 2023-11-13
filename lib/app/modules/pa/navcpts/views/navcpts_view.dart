@@ -37,7 +37,7 @@ class _NavcptsState extends State<NavcptsView> {
       HomeCptsccView(),
       const TrainingccView(),
       const ListPilotcptsccView(),
-      const ProfileccView(),
+      ProfileccView(),
     ];
   }
 

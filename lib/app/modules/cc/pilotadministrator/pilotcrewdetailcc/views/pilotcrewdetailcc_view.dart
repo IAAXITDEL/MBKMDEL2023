@@ -174,7 +174,7 @@ class PilotcrewdetailccView extends GetView<PilotcrewdetailccController> {
                 children: [
                   Text("TRAINING", style: tsOneTextTheme.headlineLarge,),
                   Obx(() {
-                    return  controller.isReady.value ?
+                    return  controller.isReady.value && controller.isCPTS.value == false ?
                     InkWell(
                       onTap: () async {
                         try {
