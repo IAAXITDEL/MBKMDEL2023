@@ -23,6 +23,7 @@ class TrainingccController extends GetxController {
 
   final RxBool cekPilot = false.obs;
   RxBool isAdministrator = false.obs;
+  RxBool isInstructor = false.obs;
   RxBool iscpts = false.obs;
   final RxString passwordKey = "".obs;
   final RxBool isLoading = false.obs;
@@ -55,18 +56,16 @@ class TrainingccController extends GetxController {
         Get.find<TraininghistoryccCptsController>().onInit();
     }
     // SEBAGAI INSTRUCTOR
-    // else if (userPreferences
-    //         .getInstructor()
-    //         .contains(UserModel.keySubPositionCCP) ||
-    //     userPreferences.getInstructor().contains(UserModel.keySubPositionFIA) ||
-    //     userPreferences.getInstructor().contains(UserModel.keySubPositionFIS) ||
-    //     userPreferences.getInstructor().contains(UserModel.keySubPositionPGI) &&
-    //         userPreferences.getRank().contains(UserModel.keyPositionCaptain) ||
-    //     userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)) {
-    //   Get.toNamed(Routes.TRAINING_INSTRUCTORCC,
-    //       arguments: {"id": argumentid.value, "name": argumentname.value});
-    //   Get.find<TrainingInstructorccController>().onInit();
-    // }
+    else if (userPreferences
+            .getInstructor()
+            .contains(UserModel.keySubPositionCCP) ||
+        userPreferences.getInstructor().contains(UserModel.keySubPositionFIA) ||
+        userPreferences.getInstructor().contains(UserModel.keySubPositionFIS) ||
+        userPreferences.getInstructor().contains(UserModel.keySubPositionPGI) &&
+            userPreferences.getRank().contains(UserModel.keyPositionCaptain) ||
+        userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)) {
+      isInstructor.value= true;
+    }
     // SEBAGAI PILOT
     else if (userPreferences.getRank().contains(UserModel.keyPositionCaptain) ||
         userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)) {

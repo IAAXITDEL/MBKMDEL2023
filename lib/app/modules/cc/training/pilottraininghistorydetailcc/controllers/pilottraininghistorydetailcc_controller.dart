@@ -98,6 +98,7 @@ class PilottraininghistorydetailccController extends GetxController {
             'date': attendanceModel.date,
             'trainer-name': trainerData['NAME'],
             'trainee-name': traineeData['NAME'],
+            'PHOTOURL' : traineeData['PHOTOURL'],
             'department': attendanceModel.department,
             'trainingType': attendanceModel.trainingType,
             'vanue': attendanceModel.vanue,

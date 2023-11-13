@@ -116,6 +116,15 @@ class ListAttendancedetailccController extends GetxController {
   String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
       length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
 
+  Future<bool> isCertificatemandatoryAlreadyUsed(String certificatemandatory) async {
+    final attendanceDetailQuery = await firestore
+        .collection('attendance-detail')
+        .where("certificatemandatory", isEqualTo: certificatemandatory)
+        .get();
+
+    return attendanceDetailQuery.docs.isNotEmpty;
+  }
+
   // Update score dan feedback dilakukan oleh instructor
   Future<void> updateScoring(String score, String feedback) async {
     CollectionReference attendance = firestore.collection('attendance-detail');
@@ -189,10 +198,20 @@ class ListAttendancedetailccController extends GetxController {
           final totalAttendanceCountString = totalAttendanceCount.toString().padLeft(3, '0');
 
           // Update attendance detail
+          String newCertificatemandatory;
+          bool isCertificatemandatoryUsed;
+
+          do {
+            newCertificatemandatory = "1${getRandomString(32)}";
+            isCertificatemandatoryUsed = await isCertificatemandatoryAlreadyUsed(newCertificatemandatory);
+          } while (isCertificatemandatoryUsed);
+
+          // Lakukan pembaruan certificatemandatory
           await attendance.doc(idattendancedetail.value).update({
             "formatNo": "${attendanceData.subject}-${totalAttendanceCountString}",
-            "certificatemandatory" : "1${getRandomString(32)}"
+            "certificatemandatory": newCertificatemandatory,
           });
+
         }
       } else if (score == "FAIL" && attendanceDetailData.score == "SUCCESS") {
         await attendance.doc(idattendancedetail.value).update({

@@ -284,45 +284,47 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                       SizedBox(
                         height: 20,
                       ),
+                      listAttendance[0]["status"] == "done" ?
                       //LIST ABSENT
-                      InkWell(
-                        onTap: () {
-                          if (controller.jumlah.value > 0) {
-                            print(controller.jumlah.value);
-                            Get.toNamed(
-                              Routes.LIST_ABSENTCPTSCC,
-                              arguments: {
-                                "id": controller.argumentid.value
-                              },
-                            );
-                          }
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: TsOneColor.secondaryContainer,
-                              width: 1,
-                            ),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: ListTile(
-                            title: Text(
-                              "Absent",
-                              style: tsOneTextTheme.labelSmall,
-                            ),
-                            subtitle: Obx(() {
-                              return Text(
-                                "${controller.total.value.toString()} person",
-                                style: tsOneTextTheme.headlineMedium,
+                      Column(
+                        children: [InkWell(
+                          onTap: () {
+                            if (controller.jumlah.value > 0) {
+                              print(controller.jumlah.value);
+                              Get.toNamed(
+                                Routes.LIST_ABSENTCPTSCC,
+                                arguments: {
+                                  "id": controller.argumentid.value
+                                },
                               );
-                            }),
-                            trailing: Icon(Icons.navigate_next),
+                            }
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: TsOneColor.secondaryContainer,
+                                width: 1,
+                              ),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: ListTile(
+                              title: Text(
+                                "Absent",
+                                style: tsOneTextTheme.labelSmall,
+                              ),
+                              subtitle: Obx(() {
+                                return Text(
+                                  "${controller.total.value.toString()} person",
+                                  style: tsOneTextTheme.headlineMedium,
+                                );
+                              }),
+                              trailing: Icon(Icons.navigate_next),
+                            ),
                           ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
+                        ) , SizedBox(
+                          height: 20,
+                        ), ],
+                      ): SizedBox(),
                       Text("Attendance"),
                       Row(
                         children: [

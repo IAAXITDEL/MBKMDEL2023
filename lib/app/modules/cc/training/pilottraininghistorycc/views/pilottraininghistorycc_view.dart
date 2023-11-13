@@ -69,7 +69,7 @@ class PilottraininghistoryccView
                    Obx(() =>  Expanded(flex: 1, child: Container(
                      padding: EdgeInsets.symmetric(vertical: 3, horizontal: 10),
                      decoration: BoxDecoration(
-                       color: controller.expiryC.value == "VALID" ? Colors.green : Colors.red,
+                       color: controller.expiryC.value == "" ? Colors.white : controller.expiryC.value == "VALID" ? Colors.green : Colors.red,
                        borderRadius: BorderRadius.circular(5),
                      ),
                      child: Center(

@@ -17,7 +17,9 @@ class ListPilotcptsccView extends GetView<ListPilotcptsccController> {
     return Scaffold(
       appBar: AppBar(title: RedTitleText(
         text: "PILOT LIST",
-      ),),
+      ),
+      centerTitle: true,
+      ),
         body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: Column(

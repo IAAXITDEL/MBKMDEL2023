@@ -16,10 +16,10 @@ class TrainingtypeccController extends GetxController {
   late final Rx<DateTime> toPending = DateTime.now().add(Duration(days: 4 * 365)).obs;
 
   late final Rx<DateTime> fromConfirmation = DateTime(1900, 1, 1).obs;
-  late final Rx<DateTime> toConfirmation = DateTime.now().obs;
+  late final Rx<DateTime> toConfirmation = DateTime.now().add(Duration(days: 4 * 365)).obs;
 
   late final Rx<DateTime> fromDone = DateTime(1900, 1, 1).obs;
-  late final Rx<DateTime> toDone = DateTime.now().obs;
+  late final Rx<DateTime> toDone = DateTime.now().add(Duration(days: 4 * 365)).obs;
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
@@ -128,13 +128,13 @@ class TrainingtypeccController extends GetxController {
 
   void resetDate() {
     fromPending.value  = DateTime(1900, 1, 1);
-    toPending.value  = DateTime.now();
+    toPending.value  = DateTime.now().add(Duration(days: 4 * 365));
 
     fromConfirmation.value = DateTime(1900, 1, 1);
-    toConfirmation.value = DateTime.now();
+    toConfirmation.value = DateTime.now().add(Duration(days: 4 * 365));
 
     fromDone.value = DateTime(1900, 1, 1);
-    toDone.value = DateTime.now();
+    toDone.value = DateTime.now().add(Duration(days: 4 * 365));
   }
 
   //delete Trainining
