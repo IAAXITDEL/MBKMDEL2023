@@ -98,6 +98,8 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                     final pilotDeviceData = pilotDeviceSnapshot.docs.isNotEmpty ? pilotDeviceSnapshot.docs.first.data() : <String, dynamic>{};
                     final occOnDuty = pilotDeviceData['occ-on-duty'] as String? ?? 'N/A';
 
+                    final feedbackId = pilotDeviceData['feedbackId'];
+
                     return Column(
                       children: [
                         Column(
@@ -117,11 +119,10 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                                       style: tsOneTextTheme.bodySmall,
                                     )),
                                 Expanded(
-                                    
                                     child: Text(
-                                      ":",
-                                      style: tsOneTextTheme.bodySmall,
-                                    )),
+                                  ":",
+                                  style: tsOneTextTheme.bodySmall,
+                                )),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
@@ -143,11 +144,10 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                                       style: tsOneTextTheme.bodySmall,
                                     )),
                                 Expanded(
-                                    
                                     child: Text(
-                                      ":",
-                                      style: tsOneTextTheme.bodySmall,
-                                    )),
+                                  ":",
+                                  style: tsOneTextTheme.bodySmall,
+                                )),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
@@ -169,11 +169,10 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                                       style: tsOneTextTheme.bodySmall,
                                     )),
                                 Expanded(
-                                    
                                     child: Text(
-                                      ":",
-                                      style: tsOneTextTheme.bodySmall,
-                                    )),
+                                  ":",
+                                  style: tsOneTextTheme.bodySmall,
+                                )),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
@@ -195,11 +194,10 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                                       style: tsOneTextTheme.bodySmall,
                                     )),
                                 Expanded(
-                                    
                                     child: Text(
-                                      ":",
-                                      style: tsOneTextTheme.bodySmall,
-                                    )),
+                                  ":",
+                                  style: tsOneTextTheme.bodySmall,
+                                )),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
@@ -221,11 +219,10 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                                       style: tsOneTextTheme.bodySmall,
                                     )),
                                 Expanded(
-                                    
                                     child: Text(
-                                      ":",
-                                      style: tsOneTextTheme.bodySmall,
-                                    )),
+                                  ":",
+                                  style: tsOneTextTheme.bodySmall,
+                                )),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
@@ -247,11 +244,10 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                                       style: tsOneTextTheme.bodySmall,
                                     )),
                                 Expanded(
-                                    
                                     child: Text(
-                                      ":",
-                                      style: tsOneTextTheme.bodySmall,
-                                    )),
+                                  ":",
+                                  style: tsOneTextTheme.bodySmall,
+                                )),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
@@ -273,11 +269,10 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                                       style: tsOneTextTheme.bodySmall,
                                     )),
                                 Expanded(
-                                    
                                     child: Text(
-                                      ":",
-                                      style: tsOneTextTheme.bodySmall,
-                                    )),
+                                  ":",
+                                  style: tsOneTextTheme.bodySmall,
+                                )),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
@@ -302,11 +297,10 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                                       style: tsOneTextTheme.bodySmall,
                                     )),
                                 Expanded(
-                                    
                                     child: Text(
-                                      ":",
-                                      style: tsOneTextTheme.bodySmall,
-                                    )),
+                                  ":",
+                                  style: tsOneTextTheme.bodySmall,
+                                )),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
@@ -328,11 +322,10 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                                       style: tsOneTextTheme.bodySmall,
                                     )),
                                 Expanded(
-                                    
                                     child: Text(
-                                      ":",
-                                      style: tsOneTextTheme.bodySmall,
-                                    )),
+                                  ":",
+                                  style: tsOneTextTheme.bodySmall,
+                                )),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
@@ -354,11 +347,10 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                                       style: tsOneTextTheme.bodySmall,
                                     )),
                                 Expanded(
-                                    
                                     child: Text(
-                                      ":",
-                                      style: tsOneTextTheme.bodySmall,
-                                    )),
+                                  ":",
+                                  style: tsOneTextTheme.bodySmall,
+                                )),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
@@ -380,11 +372,10 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                                       style: tsOneTextTheme.bodySmall,
                                     )),
                                 Expanded(
-                                    
                                     child: Text(
-                                      ":",
-                                      style: tsOneTextTheme.bodySmall,
-                                    )),
+                                  ":",
+                                  style: tsOneTextTheme.bodySmall,
+                                )),
                                 Expanded(
                                   flex: 6,
                                   child: Text(docuversion3),
@@ -403,11 +394,10 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                                       style: tsOneTextTheme.bodySmall,
                                     )),
                                 Expanded(
-                                    
                                     child: Text(
-                                      ":",
-                                      style: tsOneTextTheme.bodySmall,
-                                    )),
+                                  ":",
+                                  style: tsOneTextTheme.bodySmall,
+                                )),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
@@ -429,11 +419,10 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                                       style: tsOneTextTheme.bodySmall,
                                     )),
                                 Expanded(
-                                    
                                     child: Text(
-                                      ":",
-                                      style: tsOneTextTheme.bodySmall,
-                                    )),
+                                  ":",
+                                  style: tsOneTextTheme.bodySmall,
+                                )),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
@@ -455,11 +444,10 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                                       style: tsOneTextTheme.bodySmall,
                                     )),
                                 Expanded(
-                                    
                                     child: Text(
-                                      ":",
-                                      style: tsOneTextTheme.bodySmall,
-                                    )),
+                                  ":",
+                                  style: tsOneTextTheme.bodySmall,
+                                )),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
@@ -472,6 +460,83 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                             const SizedBox(
                               height: 15,
                             ),
+                            const Padding(
+                              padding: EdgeInsets.only(bottom: 16.0),
+                              child: Row(
+                                children: <Widget>[
+                                  Expanded(
+                                    child: Divider(
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 8.0),
+                                    child: Text(
+                                      'Form Feedback',
+                                      style: TextStyle(color: Colors.grey),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Divider(
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.grey), // Warna dan ketebalan border dapat disesuaikan
+                                borderRadius: const BorderRadius.all(Radius.circular(10)), // Untuk sudut yang lebih berbulu
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                                child: Column(
+                                  children: [
+                                    Center(
+                                      child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          "Here is the feedback form, fill up this form if needed after you finish the flight.",
+                                          style: tsOneTextTheme.headlineSmall?.copyWith(color: Colors.black), // Mengubah warna teks menjadi hijau
+                                        ),
+                                      ),
+                                    ),
+                                    const Divider(
+                                      color: Colors.grey,
+                                    ),
+                                    const SizedBox(height: 5),
+                                    if (feedbackId == null)
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          ElevatedButton(
+                                            onPressed: () async {
+                                              String documentId = await getDocumentIdForDevice(widget.deviceId);
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) => PilotFeedBack(
+                                                    documentId: documentId,
+                                                    deviceId: widget.deviceId,
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            child: const Text("FeedBack"),
+                                          )
+                                        ],
+                                      ),
+                                    if (feedbackId != null)
+                                      const Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [Text("Your feedback has been recorded")],
+                                      )
+                                  ],
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 10),
                           ],
                         ),
                       ],
@@ -479,6 +544,7 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                   }
                 },
               ),
+
               const Padding(
                 padding: EdgeInsets.only(bottom: 16.0),
                 child: Row(
@@ -503,25 +569,26 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                   ],
                 ),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ElevatedButton(
-                      onPressed: () async {
-                        String documentId = await getDocumentIdForDevice(widget.deviceId);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => PilotFeedBack(
-                              documentId: documentId,
-                              deviceId: widget.deviceId,
-                            ),
-                          ),
-                        );
-                      },
-                      child: const Text("FeedBack"))
-                ],
-              ),
+              // Column(
+              //   crossAxisAlignment: CrossAxisAlignment.start,
+              //   children: [
+              //     ElevatedButton(
+              //       onPressed: () async {
+              //         String documentId = await getDocumentIdForDevice(widget.deviceId);
+              //         Navigator.push(
+              //           context,
+              //           MaterialPageRoute(
+              //             builder: (context) => PilotFeedBack(
+              //               documentId: documentId,
+              //               deviceId: widget.deviceId,
+              //             ),
+              //           ),
+              //         );
+              //       },
+              //       child: const Text("FeedBack"),
+              //     )
+              //   ],
+              // ),
               const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
