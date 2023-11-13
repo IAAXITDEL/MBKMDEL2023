@@ -193,6 +193,7 @@ class ProfileccController extends GetxController {
         print(sortedAttendanceData);
         QuerySnapshot trainingQuery = await firestore
             .collection('trainingType')
+            .where('is_delete', isEqualTo: 0)
             .get();
 
         List<String?> trainingNames = trainingQuery.docs.map((doc) {
@@ -226,6 +227,9 @@ class ProfileccController extends GetxController {
         if(trainingNames.length > attendanceMap.length){
           print("NOT VALID");
           isReady.value = false;
+          await firestore.collection('users').doc(idCrew.toString()).update({
+            "STATUS" : "NOT VALID"
+          });
           return false;
         }else{
           print("VALID");
@@ -1316,7 +1320,7 @@ class ProfileccController extends GetxController {
                                                             child: TextCard(text: "BASIC INDOC"),
                                                           ),
                                                           TextCard(text: item['date'] ?? ''),
-                                                          TextCard(text: item['valid_to'] ?? ''),
+                                                          TextCard(text:'-'),
                                                         ],
                                                       ),
 
@@ -1328,7 +1332,7 @@ class ProfileccController extends GetxController {
                                                             child: TextCard(text: "LOAD SHEET / WEIGHT & BALANCE"),
                                                           ),
                                                           TextCard(text: item['date'] ?? ''),
-                                                          TextCard(text: item['valid_to'] ?? ''),
+                                                          TextCard(text: '-'),
                                                         ],
                                                       ),
 
@@ -1337,7 +1341,7 @@ class ProfileccController extends GetxController {
                                                         children: [
                                                           TextCard(text: "RVSM"),
                                                           TextCard(text: item['date'] ?? ''),
-                                                          TextCard(text: item['valid_to'] ?? ''),
+                                                          TextCard(text: '-'),
                                                         ],
                                                       ),
                                                   ],

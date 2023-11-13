@@ -12,14 +12,13 @@ class HomePilotccController extends GetxController {
   late UserPreferences userPreferences;
   late String titleToGreet;
   late String timeToGreet;
-  late bool _isPilotAdministrator;
-
+  RxString nameC = "".obs;
 
 
   @override
   void onInit() {
     userPreferences = getItLocator<UserPreferences>();
-    _isPilotAdministrator = false;
+    getName();
 
     switch (userPreferences.getRank()) {
       case 'CAPT':
@@ -30,7 +29,6 @@ class HomePilotccController extends GetxController {
         break;
       case 'Pilot Administrator':
         titleToGreet = 'Pilot Administrator';
-        _isPilotAdministrator = true;
         break;
       default:
         titleToGreet = 'Allstar';
@@ -52,26 +50,30 @@ class HomePilotccController extends GetxController {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
 
-  // Stream<List<Map<String, dynamic>>> getCombinedAttendanceStream() {
-  //   userPreferences = getItLocator<UserPreferences>();
-  //   return firestore.collection('attendance').where("status", isEqualTo: "pending").snapshots().asyncMap((attendanceQuery) async {
-  //     final attendanceDetailQuery = await firestore.collection('attendance-detail').where("idtraining", isEqualTo: userPreferences.getIDNo()).where("status", isEqualTo: "confirmation").get();
-  //     final attendanceDetailData = attendanceDetailQuery.docs.map((doc) => doc.data()).toList();
-  //
-  //     if (attendanceDetailData.isEmpty) {
-  //       return [];
-  //     }
-  //
-  //     final attendanceData = await Future.wait(
-  //       attendanceQuery.docs.map((doc) async {
-  //         final attendanceModel = AttendanceModel.fromJson(doc.data());
-  //         final attendanceDetail = attendanceDetailData.firstWhere((attendanceDetail) => attendanceDetail['idattendance'] == attendanceModel.id, orElse: () => {});
-  //         return attendanceModel.toJson();
-  //       }),
-  //     );
-  //     return attendanceData;
-  //   });
-  // }
+
+  Future<void> getName() async{
+    try{
+      userPreferences = getItLocator<UserPreferences>();
+      final usersQuery = await firestore
+          .collection('users')
+          .where("ID NO", isEqualTo: userPreferences.getIDNo())
+          .get();
+
+
+      if (usersQuery.docs.isNotEmpty) {
+        final fullName = usersQuery.docs[0]["NAME"];
+        final words = fullName.split(" ");
+        if (words.isNotEmpty) {
+          final firstName = words[0];
+          nameC.value = firstName;
+        } else {
+        }
+      } else {
+      }
+    }catch(e){
+    }
+  }
+
   Stream<List<Map<String, dynamic>>> getCombinedAttendanceStream() {
     userPreferences = getItLocator<UserPreferences>();
     return firestore.collection('attendance').where("status", isEqualTo: "pending").snapshots().asyncMap((attendanceQuery) async {

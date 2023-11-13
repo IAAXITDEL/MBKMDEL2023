@@ -18,29 +18,42 @@ class ProfileccView extends GetView<ProfileccController> {
 
   // Function to show the logout confirmation dialog
   Future<void> _showLogoutConfirmationDialog(BuildContext context) async {
-    return showDialog<void>(
+    // return showDialog<void>(
+    //   context: context,
+    //   builder: (BuildContext context) {
+    //     return AlertDialog(
+    //       title: Text('Logout Confirmation'),
+    //       content: Text('Are you sure you want to logout?'),
+    //       actions: <Widget>[
+    //         TextButton(
+    //           onPressed: () {
+    //             Navigator.of(context).pop(); // Close the dialog
+    //           },
+    //           child: Text('Cancel'),
+    //         ),
+    //         TextButton(
+    //           onPressed: () {
+    //             controller.logout();
+    //             Navigator.of(context).pop(); // Close the dialog
+    //           },
+    //           child: Text('Logout'),
+    //         ),
+    //       ],
+    //     );
+    //   },
+    // );
+    return  await QuickAlert.show(
       context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Logout Confirmation'),
-          content: Text('Are you sure you want to logout?'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-              },
-              child: Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                controller.logout();
-                Navigator.of(context).pop(); // Close the dialog
-              },
-              child: Text('Logout'),
-            ),
-          ],
-        );
-      },
+      type: QuickAlertType.confirm,
+      text: 'Do you want to logout',
+      confirmBtnText: 'Yes',
+      cancelBtnText: 'No',
+      confirmBtnColor: Colors.green,
+        onConfirmBtnTap: () async {
+          await controller.logout();
+          Navigator.of(context).pop();
+      }
+
     );
   }
 
@@ -287,6 +300,9 @@ class ProfileccView extends GetView<ProfileccController> {
                                     child: Text(controller.instructorType.value ?? "N/A")),
                               ],
                             ),
+                            SizedBox(
+                              height: 10,
+                            ),
                             Row(
                               children: [
                                 Expanded(flex: 3, child: Text("LOA NO.")),
@@ -345,8 +361,7 @@ class ProfileccView extends GetView<ProfileccController> {
                                  } catch (e) {
                                    print('Error: $e');
                                  } finally {
-                                   // Tutup dialog saat selesai
-                                   Navigator.pop(context);
+
                                  }
                                },
                                child: Container(
@@ -419,7 +434,7 @@ class ProfileccView extends GetView<ProfileccController> {
                                   child: Container(
                                     padding: const EdgeInsets.all(5),
                                     margin: const EdgeInsets.symmetric(
-                                        vertical: 5, ),
+                                        vertical: 5, horizontal: 10 ),
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(10),
                                       color: Colors.white,
@@ -475,7 +490,18 @@ class ProfileccView extends GetView<ProfileccController> {
                                               return Text("Error: ${snapshot.error}");
                                             } else {
                                               // Menampilkan hasil dari Future ketika sudah tersedia
-                                              return Text(snapshot.data ?? "NOT VALID");
+                                              return Row(
+                                                children: [
+                                                  Container(
+                                                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+                                                    decoration: BoxDecoration(
+                                                      color: TsOneColor.secondaryContainer.withOpacity(0.2),
+                                                      borderRadius: BorderRadius.circular(10),
+                                                    ),
+                                                    child: Text(snapshot.data ?? "NOT VALID", style: TextStyle(fontSize: 11)),
+                                                  )
+                                                ],
+                                              );
                                             }
                                           },
                                         ),

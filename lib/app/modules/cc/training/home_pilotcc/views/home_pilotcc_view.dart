@@ -21,10 +21,10 @@ class HomePilotccView extends GetView<HomePilotccController> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      "Hi, ${controller.titleToGreet}!",
+                    Obx(() => Text(
+                      "Hi, ${controller.titleToGreet} ${controller.nameC.value}!",
                       style: tsOneTextTheme.headlineLarge,
-                    ),
+                    ),)
                   ],
                 ),
                 Align(
