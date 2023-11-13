@@ -135,7 +135,7 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
                           });
                         },
                       ),
-                      const Text('I agree with all of the results', style: TextStyle(fontWeight: FontWeight.w300)),
+                      const Text('I agree with all the statements above.', style: TextStyle(fontWeight: FontWeight.w300)),
                     ],
                   ),
                   const SizedBox(height: 10),

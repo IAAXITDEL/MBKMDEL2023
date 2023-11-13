@@ -472,7 +472,7 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                                   Padding(
                                     padding: EdgeInsets.symmetric(horizontal: 8.0),
                                     child: Text(
-                                      'Form Feedback',
+                                      'Feedback Form',
                                       style: TextStyle(color: Colors.grey),
                                     ),
                                   ),
@@ -493,14 +493,29 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
                                 child: Column(
                                   children: [
-                                    Center(
-                                      child: Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(
-                                          "Here is the feedback form, fill up this form if needed after you finish the flight.",
-                                          style: tsOneTextTheme.headlineSmall?.copyWith(color: Colors.black), // Mengubah warna teks menjadi hijau
+                                    // Center(
+                                    //   child: Align(
+                                    //     alignment: Alignment.centerLeft,
+                                    //     child: Text(
+                                    //       "Fill out this form after you complete the flight",
+                                    //       style: tsOneTextTheme.headlineSmall?.copyWith(color: Colors.black), // Mengubah warna teks menjadi hijau
+                                    //     ),
+
+                                    //   ),
+                                    // ),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Fill out this form after you complete the flight",
+                                          style: tsOneTextTheme.headlineSmall?.copyWith(color: Colors.black),
                                         ),
-                                      ),
+                                        const SizedBox(height: 5.0),
+                                        Text(
+                                          "(Optional)",
+                                          style: tsOneTextTheme.labelSmall?.copyWith(color: Colors.red),
+                                        ),
+                                      ],
                                     ),
                                     const Divider(
                                       color: Colors.grey,
@@ -557,7 +572,7 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 8.0),
                       child: Text(
-                        'RETURN',
+                        'Return Device',
                         style: TextStyle(color: Colors.grey),
                       ),
                     ),

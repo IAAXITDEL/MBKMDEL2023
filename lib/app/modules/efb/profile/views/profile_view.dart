@@ -75,7 +75,7 @@ class ProfileView extends GetView<ProfileccController> {
               ),
               const RedTitleText(text: "PROFILE"),
               Expanded(
-                flex: 6,
+                flex: 7,
                 child: Column(
                   children: [
                     AvatarGlow(
@@ -114,7 +114,7 @@ class ProfileView extends GetView<ProfileccController> {
                 ),
               ),
               Expanded(
-                flex: 5,
+                flex: 4,
                 child: Column(
                   children: [
                     const SizedBox(

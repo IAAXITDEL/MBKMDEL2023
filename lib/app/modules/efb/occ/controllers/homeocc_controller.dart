@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ts_one/app/routes/app_pages.dart';
+import 'package:ts_one/data/users/users.dart';
 
 import '../../../../../data/users/user_preferences.dart';
 import '../../../../../di/locator.dart';
@@ -63,7 +66,42 @@ class HomeOCCController extends GetxController {
     selectedIndex.value = index;
   }
 
-  String? selectedHubText;  // Define selectedHubText here
+  String? selectedHubText; // Define selectedHubText here
 
   void increment() => count.value++;
+
+  Future<void> checkRoleEFB() async {
+    userPreferences = getItLocator<UserPreferences>();
+
+    // AS OCC
+    if (userPreferences.getPrivileges().contains(UserModel.keyPrivilegeOCC)) {
+      Get.toNamed(Routes.NAVOCC);
+    }
+    // AS PILOT
+    else if (userPreferences.getRank().contains(UserModel.keyPositionCaptain) ||
+        userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)) {
+      Get.toNamed(Routes.NAVOCC);
+    } else {
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(
+      //     content: const Text("Please checklist consent"),
+      //     duration: const Duration(milliseconds: 1000),
+      //     action: SnackBarAction(
+      //       label: 'Close',
+      //       onPressed: () {
+      //         ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      //       },
+      //     ),
+      //   ),
+      // );
+      Get.snackbar(
+        'Access Denied',
+        'You do not have access.',
+        duration: const Duration(milliseconds: 1000),
+        backgroundColor: Colors.black,
+        colorText: Colors.white,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+  }
 }

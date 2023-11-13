@@ -74,7 +74,6 @@ class _ResultAssessmentDeclarationState extends State<ResultAssessmentDeclaratio
     imageSignature = Image.memory(data);
   }
 
-
   @override
   void dispose() {
     _tabController.dispose();
@@ -185,8 +184,7 @@ class _ResultAssessmentDeclarationState extends State<ResultAssessmentDeclaratio
                                   Stack(children: <Widget>[
                                     ClipRRect(
                                       child: SizedBox(
-                                        child:
-                                        Signature(
+                                        child: Signature(
                                           controller: _signatureController,
                                           backgroundColor: TsOneColor.primaryFaded,
                                         ),
@@ -264,7 +262,7 @@ class _ResultAssessmentDeclarationState extends State<ResultAssessmentDeclaratio
                               contentPadding: const EdgeInsets.only(bottom: 0),
                               child: CheckboxListTile(
                                 value: _isConfirmed,
-                                title: const Text("I agree with all of the results above"),
+                                title: const Text("I agree with all the statements above. above"),
                                 dense: true,
                                 controlAffinity: ListTileControlAffinity.leading,
                                 onChanged: (newValue) {
@@ -338,14 +336,11 @@ class _ResultAssessmentDeclarationState extends State<ResultAssessmentDeclaratio
                               _assessmentResults.signatureBytes = await _image!.readAsBytes();
                             }
 
-
                             try {
                               // Check if CPTS
                               if (_isCPTS) {
                                 String signatureUrl = await _userViewModel.uploadSignature(
-                                    userPreferences.getIDNo(),
-                                    _assessmentResults.date,
-                                    _assessmentResults.signatureBytes);
+                                    userPreferences.getIDNo(), _assessmentResults.date, _assessmentResults.signatureBytes);
                                 _assessmentResults.cptsSignatureUrl = signatureUrl;
 
                                 // Store UserSignature in remote to be used later in the app
@@ -357,12 +352,9 @@ class _ResultAssessmentDeclarationState extends State<ResultAssessmentDeclaratio
 
                                 _assessmentResults.confirmedByCPTS = true;
                                 _assessmentResults.cptsStaffIDNo = userPreferences.getIDNo();
-
                               } else {
                                 String signatureUrl = await _userViewModel.uploadSignature(
-                                    _assessmentResults.examineeStaffIDNo,
-                                    _assessmentResults.date,
-                                    _assessmentResults.signatureBytes);
+                                    _assessmentResults.examineeStaffIDNo, _assessmentResults.date, _assessmentResults.signatureBytes);
                                 _assessmentResults.examineeSignatureUrl = signatureUrl;
 
                                 // Store UserSignature in remote to be used later in the app

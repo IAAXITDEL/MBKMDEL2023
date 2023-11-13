@@ -1,6 +1,5 @@
-
-
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../data/assessments/assessment_results.dart';
@@ -20,8 +19,6 @@ class MainHomeController extends GetxController {
   late bool _isCPTS;
   late bool _isInstructor;
   late bool _isPilotAdministrator;
-
-
 
   @override
   void onInit() {
@@ -65,38 +62,67 @@ class MainHomeController extends GetxController {
   }
 
   void checkInstructor() {
-    if(userPreferences.getPrivileges().contains(UserModel.keyPrivilegeCreateAssessment)) {
+    if (userPreferences.getPrivileges().contains(UserModel.keyPrivilegeCreateAssessment)) {
       _isInstructor = true;
     }
   }
-
-
-
 
   Future<void> cekRole() async {
     userPreferences = getItLocator<UserPreferences>();
 
     // SEBAGAI CPTS
-    if( userPreferences.getInstructor().contains(UserModel.keyCPTS) && userPreferences.getRank().contains(UserModel.keyPositionCaptain) || userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)){
+    if (userPreferences.getInstructor().contains(UserModel.keyCPTS) && userPreferences.getRank().contains(UserModel.keyPositionCaptain) ||
+        userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)) {
       print(userPreferences.getRank());
     }
     // SEBAGAI INSTRUCTOR
-    else if( userPreferences.getInstructor().contains(UserModel.keySubPositionICC) && userPreferences.getRank().contains(UserModel.keyPositionCaptain) || userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)){
+    else if (userPreferences.getInstructor().contains(UserModel.keySubPositionICC) &&
+            userPreferences.getRank().contains(UserModel.keyPositionCaptain) ||
+        userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)) {
       Get.toNamed(Routes.INSTRUCTOR_MAIN_HOMECC);
     }
     // SEBAGAI PILOT
-    else if( userPreferences.getRank().contains(UserModel.keyPositionCaptain) || userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)){
+    else if (userPreferences.getRank().contains(UserModel.keyPositionCaptain) ||
+        userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)) {
       Get.toNamed(Routes.NAVCAPTAIN);
     }
     // SEBAGAI PILOT ADMINISTRATOR
-    else if( userPreferences.getRank().contains("Pilot Administrator")){
+    else if (userPreferences.getRank().contains("Pilot Administrator")) {
       Get.toNamed(Routes.NAVADMIN);
     }
     // SEBAGAI ALL STAR
-    else{
+    else {
+      Get.snackbar(
+        'Access Denied',
+        'You do not have access.',
+        duration: const Duration(milliseconds: 1000),
+        backgroundColor: Colors.black,
+        colorText: Colors.white,
+        snackPosition: SnackPosition.BOTTOM,
+      );
     }
-
   }
 
+  Future<void> checkRoleEFB() async {
+    userPreferences = getItLocator<UserPreferences>();
 
+    // AS OCC
+    if (userPreferences.getPrivileges().contains(UserModel.keyPrivilegeOCC)) {
+      Get.toNamed(Routes.NAVOCC);
+    }
+    // AS PILOT
+    else if (userPreferences.getRank().contains(UserModel.keyPositionCaptain) ||
+        userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)) {
+      Get.toNamed(Routes.NAVOCC);
+    } else {
+      Get.snackbar(
+        'Access Denied',
+        'You do not have access.',
+        duration: const Duration(milliseconds: 1000),
+        backgroundColor: Colors.black,
+        colorText: Colors.white,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+  }
 }

@@ -930,7 +930,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                                   );
                                                 },
                                               ),
-                                              const Text('I agree with all of the results', style: TextStyle(fontWeight: FontWeight.w300)),
+                                              const Text('I agree with all the statements above.', style: TextStyle(fontWeight: FontWeight.w300)),
                                             ],
                                           ),
 
@@ -1464,7 +1464,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                         );
                                       },
                                     ),
-                                    const Text('I agree with all of the results', style: TextStyle(fontWeight: FontWeight.w300)),
+                                    const Text('I agree with all the statements above.', style: TextStyle(fontWeight: FontWeight.w300)),
                                   ],
                                 ),
 

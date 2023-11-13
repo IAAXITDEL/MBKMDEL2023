@@ -70,6 +70,7 @@ class _PilotFeedBackState extends State<PilotFeedBack> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Center(
                           child: Align(

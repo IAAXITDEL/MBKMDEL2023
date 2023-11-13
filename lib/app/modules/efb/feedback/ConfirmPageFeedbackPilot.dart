@@ -3,7 +3,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
+import 'package:ts_one/app/modules/efb/pilot/controllers/requestdevice_controller.dart';
 import 'package:ts_one/app/modules/efb/pilot/views/pilotreturndeviceview_view.dart';
+import 'package:ts_one/app/modules/efb/fo/views/fo_return_device_view.dart';
 
 import '../../../../presentation/theme.dart';
 
@@ -64,9 +66,9 @@ class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
   TextEditingController? ifHighController = TextEditingController();
   TextEditingController? addionalComentController = TextEditingController();
 
-  get requestDeviceController => null;
+  late String feedbackId;
 
-  void submitFeedback(BuildContext context) async {
+  Future<void> submitFeedback(BuildContext context) async {
     String? ifHigh = ifHighController?.text;
     String? additionalComment = addionalComentController?.text;
     String? oneSector = widget.oneSectorController?.text;
@@ -109,6 +111,7 @@ class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
     });
 
     String feedbackId = feedbackDoc.id;
+    this.feedbackId = feedbackId; // Initialize the class-level variable
 
     // Update feedbackId pada dokumen pilot-device-1
     final DocumentReference pilotDeviceRef = FirebaseFirestore.instance.collection('pilot-device-1').doc(widget.documentId);
@@ -120,7 +123,7 @@ class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
     _showQuickAlert(context);
   }
 
-  // Function to show a success message using QuickAlert
+  //Function to show a success message using QuickAlert
   Future<void> _showQuickAlert(BuildContext context) async {
     await QuickAlert.show(
       context: context,
@@ -128,90 +131,152 @@ class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
       text: 'You have successfully added a device',
     );
 
-    //   Navigator.of(context).push(
-    //   MaterialPageRoute(
-    //     builder: (context) => PilotreturndeviceviewView(), // Gantilah dengan halaman yang sesuai
-    //   ),
-    // );
+    //await submitFeedback(context);
 
-    Future.delayed(const Duration(seconds: 1), () {
-      Navigator.of(context).pop();
-      Navigator.of(context).pop();
-      Navigator.of(context).pop();
-    });
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) {
+          return FutureBuilder<DocumentSnapshot>(
+            future: FirebaseFirestore.instance.collection('feedback-device').doc(feedbackId).get(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return CircularProgressIndicator(); // Loading indicator or other loading UI
+              }
+
+              if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              }
+
+              var documentData = snapshot.data?.data() as Map<String, dynamic>?;
+
+              if (documentData == null) {
+                return Text('Document not found'); // Handle case when document is not found
+              }
+
+              final feedbackData = snapshot.data!.data() as Map<String, dynamic>;
+              final pilotDeviceId = feedbackData['handover-id'];
+
+              return FutureBuilder<DocumentSnapshot>(
+                future: FirebaseFirestore.instance.collection('pilot-device-1').doc(pilotDeviceId).get(),
+                builder: (context, pilotDeviceSnapshot) {
+                  if (pilotDeviceSnapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+
+                  if (pilotDeviceSnapshot.hasError) {
+                    return Center(child: Text('Error: ${pilotDeviceSnapshot.error}'));
+                  }
+
+                  if (!pilotDeviceSnapshot.hasData || !pilotDeviceSnapshot.data!.exists) {
+                    return Center(child: Text('Pilot device data not found'));
+                  }
+
+                  final pilotDeviceData = pilotDeviceSnapshot.data!.data() as Map<String, dynamic>;
+                  final deviceName = pilotDeviceData['device_name'] ?? '-';
+                  final deviceName2 = pilotDeviceData['device_name2'] ?? '-';
+                  final deviceName3 = pilotDeviceData['device_name3'] ?? '-';
+                  final deviceId = pilotDeviceData['deviceId'] ?? '-';
+                  final occOnDuty = pilotDeviceData['OccOnDuty'] ?? '-';
+
+                  final userid = pilotDeviceData['user_uid'];
+
+                  return FutureBuilder<DocumentSnapshot>(
+                    future: FirebaseFirestore.instance.collection('users').doc(userid).get(),
+                    builder: (context, userDeviceSnapshot) {
+                      if (userDeviceSnapshot.connectionState == ConnectionState.waiting) {
+                        return Center(child: CircularProgressIndicator());
+                      }
+
+                      if (userDeviceSnapshot.hasError) {
+                        return Center(child: Text('Error: ${userDeviceSnapshot.error}'));
+                      }
+
+                      if (!userDeviceSnapshot.hasData || !userDeviceSnapshot.data!.exists) {
+                        return Center(child: Text('User not found'));
+                      }
+
+                      final userData = userDeviceSnapshot.data?.data() as Map<String, dynamic> ?? {};
+                      final userRank = userData['RANK'] as String? ?? '-';
+
+                      if (userRank == "CAPT") {
+                        return PilotreturndeviceviewView(
+                          deviceName: deviceName,
+                          deviceId: deviceId,
+                          OccOnDuty: occOnDuty,
+                        );
+                      } else if (userRank == "FO") {
+                        return FOreturndeviceviewView(
+                          deviceName2: deviceName2,
+                          deviceName3: deviceName3,
+                          deviceId: deviceId,
+                          OccOnDuty: occOnDuty,
+                        );
+                      }
+
+                      // if (userRank == "FO")
+                      //   return FOreturndeviceviewView(
+                      //     deviceName2: deviceName2,
+                      //     deviceName3: deviceName3,
+                      //     deviceId: deviceId,
+                      //     OccOnDuty: occOnDuty,
+                      //   );
+
+                      // return PilotreturndeviceviewView(
+                      //   deviceName: deviceName,
+                      //   deviceId: deviceId,
+                      //   OccOnDuty: occOnDuty,
+                      // );
+
+                      return Center(child: Text('Unknown user rank'));
+
+                      //   return FOreturndeviceviewView(
+                      //     deviceName2: deviceName2,
+                      //     deviceName3: deviceName3,
+                      //     deviceId: deviceId,
+                      //     OccOnDuty: occOnDuty,
+                      //   );
+
+                      // Stream<Widget> getDeviceViewStream(String userRank) async* {
+                      //   if (userRank == "CAPT") {
+                      //     yield PilotreturndeviceviewView(
+                      //       deviceName: deviceName,
+                      //       deviceId: deviceId,
+                      //       OccOnDuty: occOnDuty,
+                      //     );
+                      //   } else if (userRank == "FO") {
+                      //     yield FOreturndeviceviewView(
+                      //       deviceName2: deviceName2,
+                      //       deviceName3: deviceName3,
+                      //       deviceId: deviceId,
+                      //       OccOnDuty: occOnDuty,
+                      //     );
+                      //   } else {
+                      //     // Jika userRank tidak sesuai dengan kondisi yang diberikan
+                      //     yield Center(child: Text('Unknown user rank'));
+                      //   }
+                      // }
+
+                      // return StreamBuilder<Widget>(
+                      //   stream: getDeviceViewStream(userRank),
+                      //   builder: (context, snapshot) {
+                      //     if (snapshot.hasData) {
+                      //       return snapshot.data!;
+                      //     } else {
+                      //       // Handle kasus lain seperti loading atau error
+                      //       return CircularProgressIndicator();
+                      //     }
+                      //   },
+                      // );
+                    },
+                  );
+                },
+              );
+            },
+          );
+        },
+      ),
+    );
   }
-
-  // Future<void> _showQuickAlert(BuildContext context) async {
-  //   await QuickAlert.show(
-  //     context: context,
-  //     type: QuickAlertType.success,
-  //     text: 'You have successfully added a device',
-  //   ).then((value) {
-  //     FutureBuilder<QuerySnapshot>(
-  //       future: requestDeviceController.getPilotDevices(),
-  //       builder: (context, snapshot) {
-  //         if (snapshot.connectionState == ConnectionState.waiting) {
-  //           return const CircularProgressIndicator();
-  //         } else if (snapshot.hasError) {
-  //           return Text('Error: ${snapshot.error}');
-  //         } else {
-  //           QuerySnapshot? pilotDevicesSnapshot = snapshot.data;
-
-  //           // Ambil data yang diperlukan dari pilotDevicesSnapshot
-  //           String deviceName = pilotDevicesSnapshot?.docs[0]['device_name'];
-  //           String OccOnDuty = pilotDevicesSnapshot?.docs[0]['occ-on-duty'];
-  //           String userId = pilotDevicesSnapshot?.docs[0]['user_uid'];
-  //           String deviceId = pilotDevicesSnapshot!.docs[0].id;
-
-  //           Navigator.push(
-  //             context,
-  //             MaterialPageRoute(
-  //               builder: (context) => PilotreturndeviceviewView(
-  //                 deviceName: deviceName,
-  //                 deviceId: deviceId,
-  //                 OccOnDuty: OccOnDuty,
-  //               ),
-  //             ),
-  //           );
-
-  //           return SizedBox.shrink();
-  //         }
-  //       },
-  //     );
-  //   });
-
-  //   // FutureBuilder<QuerySnapshot>(
-  //   //   future: requestDeviceController.getPilotDevices(),
-  //   //   builder: (context, snapshot) {
-  //   //     if (snapshot.connectionState == ConnectionState.waiting) {
-  //   //       return const CircularProgressIndicator();
-  //   //     } else if (snapshot.hasError) {
-  //   //       return Text('Error: ${snapshot.error}');
-  //   //     } else {
-  //   //       QuerySnapshot? pilotDevicesSnapshot = snapshot.data;
-
-  //   //       // Ambil data yang diperlukan dari pilotDevicesSnapshot
-  //   //       String deviceName = pilotDevicesSnapshot?.docs[0]['device_name'];
-  //   //       String OccOnDuty = pilotDevicesSnapshot?.docs[0]['occ-on-duty'];
-  //   //       String userId = pilotDevicesSnapshot?.docs[0]['user_uid'];
-  //   //       String deviceId = pilotDevicesSnapshot!.docs[0].id;
-
-  //   //       Navigator.push(
-  //   //         context,
-  //   //         MaterialPageRoute(
-  //   //           builder: (context) => PilotreturndeviceviewView(
-  //   //             deviceName: deviceName,
-  //   //             deviceId: deviceId,
-  //   //             OccOnDuty: OccOnDuty,
-  //   //           ),
-  //   //         ),
-  //   //       );
-
-  //   //       return SizedBox.shrink();
-  //   //     }
-  //   //   },
-  //   // );
-  // }
 
   @override
   Widget build(BuildContext context) {

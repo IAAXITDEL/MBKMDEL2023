@@ -11,7 +11,7 @@ class MainHomeView extends GetView<MainHomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: TsOneColor.primary,
+        backgroundColor: TsOneColor.primary,
         body: SingleChildScrollView(
             child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
@@ -19,7 +19,10 @@ class MainHomeView extends GetView<MainHomeController> {
             children: [
               Center(
                 child: Container(
-                  child: Image.asset("assets/images/airasia_logo_circle.png",  fit: BoxFit.cover,),
+                  child: Image.asset(
+                    "assets/images/airasia_logo_circle.png",
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
               const Text(
@@ -30,14 +33,13 @@ class MainHomeView extends GetView<MainHomeController> {
                 "Please select the desired menu",
                 style: TextStyle(color: Colors.white),
               ),
-              const SizedBox(height: 20,),
+              const SizedBox(
+                height: 20,
+              ),
               Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
-                  color: Colors.white
-                ),
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.0), color: Colors.white),
                 child: InkWell(
-                  onTap: (){
+                  onTap: () {
                     Get.offAllNamed(Routes.home);
                   },
                   child: ListTile(
@@ -53,14 +55,13 @@ class MainHomeView extends GetView<MainHomeController> {
                   ),
                 ),
               ),
-              const SizedBox(height: 10,),
+              const SizedBox(
+                height: 10,
+              ),
               Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.0),
-                    color: Colors.white
-                ),
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.0), color: Colors.white),
                 child: InkWell(
-                  onTap: (){
+                  onTap: () {
                     controller.cekRole();
                   },
                   child: ListTile(
@@ -76,15 +77,15 @@ class MainHomeView extends GetView<MainHomeController> {
                   ),
                 ),
               ),
-              const SizedBox(height: 10,),
+              const SizedBox(
+                height: 10,
+              ),
               Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.0),
-                    color: Colors.white
-                ),
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.0), color: Colors.white),
                 child: InkWell(
-                  onTap: (){
-                    Get.toNamed(Routes.NAVOCC);
+                  onTap: () {
+                    // Get.toNamed(Routes.NAVOCC);
+                    controller.checkRoleEFB();
                   },
                   child: ListTile(
                     title: Text(
@@ -99,11 +100,8 @@ class MainHomeView extends GetView<MainHomeController> {
                   ),
                 ),
               ),
-
             ],
           ),
-        )
-        )
-    );
+        )));
   }
 }
