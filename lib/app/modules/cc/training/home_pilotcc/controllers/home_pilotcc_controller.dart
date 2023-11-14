@@ -13,11 +13,11 @@ class HomePilotccController extends GetxController {
   late String titleToGreet;
   late String timeToGreet;
   RxString nameC = "".obs;
-
-
+  RxInt idTrainee = 0.obs;
   @override
   void onInit() {
     userPreferences = getItLocator<UserPreferences>();
+    idTrainee.value = userPreferences.getIDNo();
     getName();
 
     switch (userPreferences.getRank()) {
@@ -76,11 +76,14 @@ class HomePilotccController extends GetxController {
 
   Stream<List<Map<String, dynamic>>> getCombinedAttendanceStream() {
     userPreferences = getItLocator<UserPreferences>();
-    return firestore.collection('attendance').where("status", isEqualTo: "pending").snapshots().asyncMap((attendanceQuery) async {
-
+    return firestore.collection('attendance').where("status", isEqualTo: "done").snapshots().asyncMap((attendanceQuery) async {
       var attendanceDetailData = <Map<String, dynamic>>[];
+
       if (attendanceQuery.docs.isNotEmpty) {
-        final attendanceDetailQuery = await firestore.collection('attendance-detail').where("idtraining", isEqualTo: userPreferences.getIDNo()).where("status", isEqualTo: "confirmation").get();
+        final attendanceDetailQuery = await firestore.collection('attendance-detail')
+            .where("idtraining", isEqualTo: userPreferences.getIDNo())
+            .get();
+
         attendanceDetailData = attendanceDetailQuery.docs.map((doc) => doc.data()).toList();
       }
 
@@ -91,7 +94,8 @@ class HomePilotccController extends GetxController {
       // Filter attendanceQuery based on whether there is a corresponding attendanceDetail
       final filteredAttendanceQuery = attendanceQuery.docs.where((doc) {
         final attendanceModel = AttendanceModel.fromJson(doc.data());
-        return attendanceDetailData.any((attendanceDetail) => attendanceDetail['idattendance'] == attendanceModel.id);
+        return attendanceDetailData.any((attendanceDetail) =>
+        attendanceDetail['idattendance'] == attendanceModel.id && !attendanceDetail.containsKey('feedbackforinstructor'));
       });
 
       final attendanceData = <Map<String, dynamic>>[];
@@ -105,16 +109,21 @@ class HomePilotccController extends GetxController {
         attendanceData.add(attendanceModel.toJson());
       }
 
+      // Print the contents of attendanceData
+      print('Attendance Data: $attendanceData');
       return attendanceData;
     });
   }
 
-  Future<void> toAttendance(String id) async {
-    Get.toNamed(Routes.ATTENDANCE_PILOTCC, arguments: {
-      "id": id,
-    });
-    Get.find<AttendancePilotccController>().onInit();
-  }
+
+  // Future<void> toAttendance(String id) async {
+  //   Get.toNamed(Routes.PILOTTRAININGHISTORYDETAILCC, arguments: {
+  //     "idTrainingType": idTrainingType.value,
+  //     "idAttendance": id,
+  //     "idTraining": idTraining.value,
+  //   });
+  //   Get.find<AttendancePilotccController>().onInit();
+  // }
 
 
   @override
