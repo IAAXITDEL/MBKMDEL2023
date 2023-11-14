@@ -71,7 +71,7 @@ class HomePilotccView extends GetView<HomePilotccController> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Feedback Needed",
+                      "Feedback Required ",
                       style: tsOneTextTheme.headlineMedium,
                     ),
                   ],
@@ -91,7 +91,7 @@ class HomePilotccView extends GetView<HomePilotccController> {
 
                     var listAttendance= snapshot.data!;
                     if(listAttendance.isEmpty){
-                      return EmptyScreen();
+                      return EmptyScreenFeedbackRequired();
                     }
 
 
