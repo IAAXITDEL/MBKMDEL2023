@@ -203,6 +203,7 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                             child: FormTextField(
                               text: "Room",
                               textController: roomC,
+                                readOnly: true
                             ),
                           )
                         ],
@@ -210,7 +211,7 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                       SizedBox(
                         height: 20,
                       ),
-                      FormTextField(text: "LOA NO.", textController: loaNoC),
+                      FormTextField(text: "LOA NO.", textController: loaNoC, readOnly: true),
                       SizedBox(
                         height: 20,
                       ),
@@ -254,7 +255,7 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                                   Get.toNamed(Routes.LIST_ATTENDANCECC,
                                       arguments: {
                                         "id": controller.argumentid.value,
-                                        "status": "confirmation"
+                                        "status": listAttendance[0]["status"]
                                       });
                                 }
                               },

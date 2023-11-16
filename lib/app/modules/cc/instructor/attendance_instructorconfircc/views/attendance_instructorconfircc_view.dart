@@ -139,6 +139,9 @@ class AttendanceInstructorconfirccView
                         vanueC.text = listAttendance[0]["vanue"];
                         instructorC.text = listAttendance[0]["name"];
                         loaNoC.text = listAttendance[0]["loano"] ?? "" ;
+                        roomC.text = " ";
+                        departmentC.text = " ";
+                        trainingtypeC.text = " ";
                         controller.argumentname.value =
                             listAttendance[0]["subject"];
                       } else {

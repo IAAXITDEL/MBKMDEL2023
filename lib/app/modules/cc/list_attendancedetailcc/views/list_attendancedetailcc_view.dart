@@ -1,5 +1,4 @@
 import 'package:avatar_glow/avatar_glow.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -68,62 +67,60 @@ class ListAttendancedetailccView
                     List<String> list = ['SUCCESS', 'FAIL'];
                     RxString dropdownValue =
                         RxString(documentData["score"] ?? list.first);
-
-                    return Container(
-                      child: Column(
-                        children: [
-                          AvatarGlow(
-                            endRadius: 110,
-                            glowColor: Colors.black,
-                            duration: Duration(seconds: 2),
-                            child: Container(
-                                width: 175,
-                                height: 175,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(100),
-                                  child: documentData["photoURL"] == null
-                                      ? Image.asset(
-                                          "assets/images/placeholder_person.png",
-                                          fit: BoxFit.cover,
-                                        )
-                                      : Image.network(
-                                          "${documentData["photoURL"]}",
-                                          fit: BoxFit.cover),
-                                )),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          controller.argumentstatus.value == "pending"
-                              ? SizedBox()
-                              : Row(
-                                  children: [
-                                    Expanded(flex: 3, child: Text("SCORE")),
-                                    Expanded(flex: 1, child: Text(":")),
-                                    Expanded(
-                                        flex: 6,
-                                        child: Row(
-                                          children: [
-                                            Container(
-                                              padding: EdgeInsets.symmetric(
-                                                  vertical: 3, horizontal: 10),
-                                              decoration: BoxDecoration(
-                                                color: documentData["score"] ==
-                                                        "SUCCESS"
-                                                    ? Colors.green
-                                                        .withOpacity(0.4)
-                                                    : Colors.red
-                                                        .withOpacity(0.4),
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                              ),
-                                              child: Text(
-                                                documentData["score"],
-                                                style: TextStyle(
-                                                    fontSize: 10,
-                                                    color:
-                                                        documentData["score"] ==
-                                                                "SUCCESS"
+                        return Container(
+                          child: Column(
+                            children: [
+                              AvatarGlow(
+                                endRadius: 110,
+                                glowColor: Colors.black,
+                                duration: Duration(seconds: 2),
+                                child: Container(
+                                    width: 175,
+                                    height: 175,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(100),
+                                      child: documentData["photoURL"] == null
+                                          ? Image.asset(
+                                              "assets/images/placeholder_person.png",
+                                              fit: BoxFit.cover,
+                                            )
+                                          : Image.network(
+                                              "${documentData["photoURL"]}",
+                                              fit: BoxFit.cover),
+                                    )),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              controller.argumentstatus.value == "pending" || controller.argumentstatus.value == "confirmation"
+                                  ? SizedBox()
+                                  : Row(
+                                      children: [
+                                        Expanded(flex: 3, child: Text("SCORE")),
+                                        Expanded(flex: 1, child: Text(":")),
+                                        Expanded(
+                                            flex: 6,
+                                            child: Row(
+                                              children: [
+                                                Container(
+                                                  padding: EdgeInsets.symmetric(
+                                                      vertical: 3,
+                                                      horizontal: 10),
+                                                  decoration: BoxDecoration(
+                                                    color: documentData["score"] == "SUCCESS" || documentData["score"] ==  null ? Colors.green.withOpacity(0.4)
+                                                        : Colors.red
+                                                            .withOpacity(0.4),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                  ),
+                                                  child: Text(
+                                                    documentData["score"],
+                                                    style: TextStyle(
+                                                        fontSize: 10,
+                                                        color: documentData[
+                                                                    "score"] ==
+                                                                "SUCCESS"  || documentData["score"] ==  null
                                                             ? Colors.green
                                                             : Colors.red),
                                               ),
@@ -184,209 +181,226 @@ class ListAttendancedetailccView
                           SizedBox(
                             height: 10,
                           ),
-                          controller.argumentstatus.value == "pending"
-                              ? Form(
-                                  key: _formKey,
-                                  child: Column(
-                                    children: [
-                                      Row(
+  controller.argumentstatus.value == "pending"
+                                  ? Form(
+                                      key: _formKey,
+                                      child: Column(
                                         children: [
-                                          Expanded(
-                                              flex: 3, child: Text("SCORE")),
-                                          Expanded(flex: 1, child: Text(":")),
-                                          Expanded(
-                                              flex: 6,
-                                              child: Row(
-                                                children: [
-                                                  Obx(() => Container(
-                                                        height: 30.0,
-                                                        padding: EdgeInsets
-                                                            .symmetric(
-                                                                horizontal: 8),
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: scoreC.text ==
-                                                                  "SUCCESS"
-                                                              ? Colors.green
-                                                                  .withOpacity(
-                                                                      0.4)
-                                                              : Colors.red
-                                                                  .withOpacity(
-                                                                      0.4),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(10),
-                                                        ),
-                                                        child: DropdownButton<
-                                                            String>(
-                                                          underline:
-                                                              Container(),
-                                                          focusColor:
-                                                              tsOneColorScheme
-                                                                  .onSecondaryContainer,
-                                                          value: dropdownValue
-                                                              .value,
-                                                          onChanged: (String?
-                                                              newValue) {
-                                                            dropdownValue
-                                                                    .value =
-                                                                newValue!;
-                                                            scoreC.text =
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                  flex: 3,
+                                                  child: Text("SCORE")),
+                                              Expanded(
+                                                  flex: 1, child: Text(":")),
+                                              Expanded(
+                                                  flex: 6,
+                                                  child: Row(
+                                                    children: [
+                                                      Obx(() => Container(
+                                                            height: 30.0,
+                                                            padding: EdgeInsets
+                                                                .symmetric(
+                                                                    horizontal:
+                                                                        8),
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color: scoreC.text.isEmpty ? Colors.green.withOpacity(0.4) : scoreC.text == "SUCCESS" ? Colors.green.withOpacity(0.4) : Colors.red.withOpacity(0.4),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10),
+                                                            ),
+                                                            child:
+                                                                DropdownButton<
+                                                                    String>(
+                                                              underline:
+                                                                  Container(),
+                                                              focusColor:
+                                                                  tsOneColorScheme
+                                                                      .onSecondaryContainer,
+                                                              value:
+                                                                  dropdownValue
+                                                                      .value,
+                                                              onChanged: (String?
+                                                                  newValue) {
                                                                 dropdownValue
-                                                                    .value;
-                                                          },
-                                                          items: list.map(
-                                                              (String value) {
-                                                            return DropdownMenuItem<
-                                                                String>(
-                                                              value: value,
-                                                              child: Text(
-                                                                value,
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        14),
-                                                              ),
-                                                            );
-                                                          }).toList(),
-                                                        ),
-                                                      )),
-                                                ],
-                                              ))
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                              flex: 3, child: Text("FEEDBACK")),
-                                          Expanded(flex: 1, child: Text(":")),
-                                          Expanded(
-                                              flex: 6,
-                                              child: Row(
-                                                children: [],
-                                              ))
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Container(
-                                        padding: EdgeInsets.all(5),
-                                        decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: tsOneColorScheme
-                                                    .secondaryContainer),
-                                            borderRadius:
-                                                BorderRadius.circular(5)),
-                                        child: TextFormField(
-                                          controller: feedbackC,
-                                          maxLines: 4,
-                                          keyboardType: TextInputType.multiline,
-                                          validator: (value) {
-                                            if (value == null ||
-                                                value.isEmpty) {
-                                              // Validation Logic
-                                              return 'Please enter the Feedback';
-                                            }
-                                            return null;
-                                          },
-                                          decoration: InputDecoration.collapsed(
-                                              hintText: "Enter your text here"),
-                                        ),
-                                      ),
-
-                                      Obx(() => CheckboxListTile(
-                                          title: Text(
-                                            "I agree with all of the results",
-                                            style: tsOneTextTheme.labelSmall,
+                                                                        .value =
+                                                                    newValue!;
+                                                                scoreC.text =
+                                                                    dropdownValue
+                                                                        .value;
+                                                              },
+                                                              items: list.map(
+                                                                  (String
+                                                                      value) {
+                                                                return DropdownMenuItem<
+                                                                    String>(
+                                                                  value: value,
+                                                                  child: Text(
+                                                                    value,
+                                                                    style: TextStyle(
+                                                                        fontSize:
+                                                                            14),
+                                                                  ),
+                                                                );
+                                                              }).toList(),
+                                                            ),
+                                                          )),
+                                                    ],
+                                                  ))
+                                            ],
                                           ),
-                                          value: controller.checkAgree.value,
-                                          onChanged: (newValue) {
-                                            controller.checkAgree.value =
-                                                newValue!;
-                                          },
-                                          controlAffinity:
-                                              ListTileControlAffinity.leading,
-                                          activeColor: Colors.green)),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                  flex: 3,
+                                                  child: Text("FEEDBACK")),
+                                              Expanded(
+                                                  flex: 1, child: Text(":")),
+                                              Expanded(
+                                                  flex: 6,
+                                                  child: Row(
+                                                    children: [],
+                                                  ))
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Container(
+                                            padding: EdgeInsets.all(5),
+                                            decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color: tsOneColorScheme
+                                                        .secondaryContainer),
+                                                borderRadius:
+                                                    BorderRadius.circular(5)),
+                                            child: TextFormField(
+                                              controller: feedbackC,
+                                              maxLines: 4,
+                                              keyboardType:
+                                                  TextInputType.multiline,
+                                              validator: (value) {
+                                                if (value == null ||
+                                                    value.isEmpty) {
+                                                  // Validation Logic
+                                                  return 'Please enter the Feedback';
+                                                }
+                                                return null;
+                                              },
+                                              decoration:
+                                                  InputDecoration.collapsed(
+                                                      hintText:
+                                                          "Enter your text here"),
+                                            ),
+                                          ),
 
-                                      Obx(() {
-                                        return controller.showText.value
-                                            ? Container(
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 5),
-                                                child: Text(
-                                                    "Please review the legal agreement and check this box to proceed",
-                                                    style: TextStyle(
-                                                        color: Colors.red,
-                                                        fontSize: 12)),
-                                              )
-                                            : SizedBox();
-                                      }),
+                                          Obx(() => CheckboxListTile(
+                                              title: Text(
+                                                "I agree with all of the results",
+                                                style:
+                                                    tsOneTextTheme.labelSmall,
+                                              ),
+                                              value:
+                                                  controller.checkAgree.value,
+                                              onChanged: (newValue) {
+                                                controller.checkAgree.value =
+                                                    newValue!;
+                                              },
+                                              controlAffinity:
+                                                  ListTileControlAffinity
+                                                      .leading,
+                                              activeColor: Colors.green)),
 
-                                      //-------------------------SUBMIT-----------------------
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 5.0),
-                                        child: ElevatedButton(
-                                          onPressed: () {
-                                            if (controller.checkAgree.value ==
-                                                false) {
-                                              controller.showText.value = true;
-                                              controller.update();
-                                            }
-                                            if (_formKey.currentState != null &&
-                                                _formKey.currentState!
-                                                    .validate() &&
-                                                controller.checkAgree.value ==
-                                                    true) {
-                                              showDialog(
-                                                  context: context,
-                                                  builder:
-                                                      (BuildContext context) {
-                                                    return FutureBuilder<void>(
-                                                      future: updateScoring(
-                                                          dropdownValue.value,
-                                                          feedbackC.text),
+                                          Obx(() {
+                                            return controller.showText.value
+                                                ? Container(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 5),
+                                                    child: Text(
+                                                        "Please review the legal agreement and check this box to proceed",
+                                                        style: TextStyle(
+                                                            color: Colors.red,
+                                                            fontSize: 12)),
+                                                  )
+                                                : SizedBox();
+                                          }),
+
+                                          //-------------------------SUBMIT-----------------------
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 5.0),
+                                            child: ElevatedButton(
+                                              onPressed: () {
+                                                if (controller
+                                                        .checkAgree.value ==
+                                                    false) {
+                                                  controller.showText.value =
+                                                      true;
+                                                  controller.update();
+                                                }
+                                                if (_formKey.currentState !=
+                                                        null &&
+                                                    _formKey.currentState!
+                                                        .validate() &&
+                                                    controller
+                                                            .checkAgree.value ==
+                                                        true) {
+                                                  showDialog(
+                                                      context: context,
                                                       builder: (BuildContext
-                                                              context,
-                                                          AsyncSnapshot<void>
-                                                              snapshot) {
-                                                        if (snapshot
-                                                                .connectionState ==
-                                                            ConnectionState
-                                                                .waiting) {
-                                                          return LoadingScreen(); // Show loading screen
-                                                        }
+                                                          context) {
+                                                        return FutureBuilder<
+                                                            void>(
+                                                          future: updateScoring(
+                                                              dropdownValue
+                                                                  .value,
+                                                              feedbackC.text),
+                                                          builder: (BuildContext
+                                                                  context,
+                                                              AsyncSnapshot<
+                                                                      void>
+                                                                  snapshot) {
+                                                            if (snapshot
+                                                                    .connectionState ==
+                                                                ConnectionState
+                                                                    .waiting) {
+                                                              return LoadingScreen(); // Show loading screen
+                                                            }
 
-                                                        if (snapshot.hasError) {
-                                                          // Handle error if needed
-                                                          return ErrorScreen();
-                                                        } else {
-                                                          return Container();
-                                                        }
-                                                      },
-                                                    );
-                                                  });
-                                            }
-                                          },
-                                          style: ElevatedButton.styleFrom(
-                                            primary: TsOneColor.greenColor,
-                                            minimumSize:
-                                                Size(double.infinity, 50),
-                                          ),
-                                          child: Text(
-                                            'Submit',
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                )
-                              : SizedBox(),
+                                                            if (snapshot
+                                                                .hasError) {
+                                                              // Handle error if needed
+                                                              return ErrorScreen();
+                                                            } else {
+                                                              return Container();
+                                                            }
+                                                          },
+                                                        );
+                                                      });
+                                                }
+                                              },
+                                              style: ElevatedButton.styleFrom(
+                                                primary: TsOneColor.greenColor,
+                                                minimumSize:
+                                                    Size(double.infinity, 50),
+                                              ),
+                                              child: Text(
+                                                'Submit',
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    )
+                                  : SizedBox(),
                           controller.isCPTS.value
                               ? Row(
                                   children: [
