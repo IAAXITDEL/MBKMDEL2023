@@ -1,5 +1,4 @@
 import 'package:avatar_glow/avatar_glow.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -96,7 +95,7 @@ class ListAttendancedetailccView
                               SizedBox(
                                 height: 10,
                               ),
-                              controller.argumentstatus.value == "pending"
+                              controller.argumentstatus.value == "pending" || controller.argumentstatus.value == "confirmation"
                                   ? SizedBox()
                                   : Row(
                                       children: [
@@ -111,11 +110,7 @@ class ListAttendancedetailccView
                                                       vertical: 3,
                                                       horizontal: 10),
                                                   decoration: BoxDecoration(
-                                                    color: documentData[
-                                                                "score"] ==
-                                                            "SUCCESS"
-                                                        ? Colors.green
-                                                            .withOpacity(0.4)
+                                                    color: documentData["score"] == "SUCCESS" || documentData["score"] ==  null ? Colors.green.withOpacity(0.4)
                                                         : Colors.red
                                                             .withOpacity(0.4),
                                                     borderRadius:
@@ -128,7 +123,7 @@ class ListAttendancedetailccView
                                                         fontSize: 10,
                                                         color: documentData[
                                                                     "score"] ==
-                                                                "SUCCESS"
+                                                                "SUCCESS"  || documentData["score"] ==  null
                                                             ? Colors.green
                                                             : Colors.red),
                                                   ),
@@ -216,15 +211,7 @@ class ListAttendancedetailccView
                                                                         8),
                                                             decoration:
                                                                 BoxDecoration(
-                                                              color: scoreC
-                                                                          .text ==
-                                                                      "SUCCESS"
-                                                                  ? Colors.green
-                                                                      .withOpacity(
-                                                                          0.4)
-                                                                  : Colors.red
-                                                                      .withOpacity(
-                                                                          0.4),
+                                                              color: scoreC.text.isEmpty ? Colors.green.withOpacity(0.4) : scoreC.text == "SUCCESS" ? Colors.green.withOpacity(0.4) : Colors.red.withOpacity(0.4),
                                                               borderRadius:
                                                                   BorderRadius
                                                                       .circular(

@@ -16,7 +16,7 @@ class FormTextField extends StatelessWidget {
       obscureText: false,
       readOnly: readOnly,
       validator: (value) {
-        if (value == null || value.isEmpty) {   // Validation Logic
+        if (value == null || value.isEmpty || value == " ") {   // Validation Logic
           return 'Please enter the $text';
         }
         return null;

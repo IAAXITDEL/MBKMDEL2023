@@ -28,6 +28,8 @@ class ListAttendancedetailccController extends GetxController {
     super.onInit();
     argumentid.value = Get.arguments["id"];
     argumentstatus.value = Get.arguments["status"];
+    print("this");
+    print(argumentstatus.value);
     argumentidattendance.value = Get.arguments["idattendance"];
     cekRole();
   }
