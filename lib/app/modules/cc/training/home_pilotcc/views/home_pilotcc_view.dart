@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import '../../../../../../presentation/theme.dart';
 import '../../../../../../util/empty_screen.dart';
 import '../../../../../../util/error_screen.dart';
 import '../../../../../../util/loading_screen.dart';
 import '../../../../../../util/util.dart';
+import '../../../../../routes/app_pages.dart';
 import '../controllers/home_pilotcc_controller.dart';
+import 'package:cloud_firestore/cloud_firestore.dart' as firestore;
+
 
 class HomePilotccView extends GetView<HomePilotccController> {
   const HomePilotccView({Key? key}) : super(key: key);
@@ -67,7 +71,7 @@ class HomePilotccView extends GetView<HomePilotccController> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Upcoming Training",
+                      "Feedback Required ",
                       style: tsOneTextTheme.headlineMedium,
                     ),
                   ],
@@ -87,8 +91,9 @@ class HomePilotccView extends GetView<HomePilotccController> {
 
                     var listAttendance= snapshot.data!;
                     if(listAttendance.isEmpty){
-                      return EmptyScreen();
+                      return EmptyScreenFeedbackRequired();
                     }
+
 
                     return ListView.builder(
                         shrinkWrap: true,
@@ -96,9 +101,17 @@ class HomePilotccView extends GetView<HomePilotccController> {
                         physics: const NeverScrollableScrollPhysics(),
                         itemBuilder: (context, index) {
 
+                          firestore.Timestamp? date = listAttendance[index]["date"];
+                          DateTime? dates = date?.toDate();
+                          String dateTraining = DateFormat('dd MMM yyyy').format(dates!);
+
                           return InkWell(
                             onTap: () {
-                              controller.toAttendance(listAttendance[index]["id"]);
+                              Get.toNamed(Routes.PILOTTRAININGHISTORYDETAILCC, arguments: {
+                                "idTrainingType": listAttendance[index]["idTrainingType"],
+                                "idAttendance": listAttendance[index]["id"],
+                                "idTraining": controller.idTrainee.value,
+                              });
                             },
                             child: Container(
                               margin: EdgeInsets.symmetric(vertical: 5),
@@ -114,15 +127,17 @@ class HomePilotccView extends GetView<HomePilotccController> {
                                   ),
                                 ],
                               ),
+
+
                               child: ListTile(
                                 title: Text(
                                   listAttendance[index]["subject"],
                                   style: tsOneTextTheme.headlineMedium,
                                 ),
-                                // subtitle: Text(
-                                //   listAttendance[index]["name"],
-                                //   style: tsOneTextTheme.labelSmall,
-                                // ),
+                                subtitle: Text(
+                                  dateTraining,
+                                  style: tsOneTextTheme.labelSmall,
+                                ),
                                 trailing: const Icon(Icons.navigate_next),
                               ) ,
                             ),

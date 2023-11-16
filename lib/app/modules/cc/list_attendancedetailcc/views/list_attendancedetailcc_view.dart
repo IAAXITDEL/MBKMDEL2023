@@ -35,41 +35,38 @@ class ListAttendancedetailccView
     }
 
     return Scaffold(
-        appBar: AppBar(
-          title: RedTitleText(text : "PROFILE"),
-          centerTitle: true,
-        ),
-        body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Container(
-                  child: StreamBuilder<List<Map<String, dynamic>>>(
-                      stream: controller.profileList(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return LoadingScreen(); // Placeholder while loading
-                        }
+      appBar: AppBar(
+        title: RedTitleText(text: "PROFILE"),
+        centerTitle: true,
+      ),
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                child: StreamBuilder<List<Map<String, dynamic>>>(
+                  stream: controller.profileList(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return LoadingScreen(); // Placeholder while loading
+                    }
 
-                        if (snapshot.hasError) {
-                          return ErrorScreen();
-                        }
+                    if (snapshot.hasError) {
+                      return ErrorScreen();
+                    }
 
-                        var listAttendance = snapshot.data!;
-                        if (listAttendance.isEmpty) {
-                          return EmptyScreen();
-                        }
-                        var documentData = listAttendance[0];
-                        controller.idattendancedetail.value =
-                            documentData["id"];
-                        feedbackC.text = documentData["feedback"] ?? "";
+                    var listAttendance = snapshot.data!;
+                    if (listAttendance.isEmpty) {
+                      return EmptyScreen();
+                    }
+                    var documentData = listAttendance[0];
+                    controller.idattendancedetail.value = documentData["id"];
+                    feedbackC.text = documentData["feedback"] ?? "";
 
-                        List<String> list = ['SUCCESS', 'FAIL'];
-                        RxString dropdownValue =
-                            RxString(documentData["score"] ?? list.first);
-
+                    List<String> list = ['SUCCESS', 'FAIL'];
+                    RxString dropdownValue =
+                        RxString(documentData["score"] ?? list.first);
                         return Container(
                           child: Column(
                             children: [
@@ -126,68 +123,65 @@ class ListAttendancedetailccView
                                                                 "SUCCESS"  || documentData["score"] ==  null
                                                             ? Colors.green
                                                             : Colors.red),
-                                                  ),
-                                                ),
-                                              ],
-                                            ))
-                                      ],
-                                    ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Row(
-                                children: [
-                                  Expanded(flex: 3, child: Text("NAME")),
-                                  Expanded(flex: 1, child: Text(":")),
-                                  Expanded(
-                                      flex: 6,
-                                      child:
-                                          Text(documentData["name"] ?? "N/A")),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Row(
-                                children: [
-                                  Expanded(flex: 3, child: Text("EMAIL")),
-                                  Expanded(flex: 1, child: Text(":")),
-                                  Expanded(
-                                      flex: 6,
-                                      child:
-                                          Text(documentData["email"] ?? "N/A")),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Row(
-                                children: [
-                                  Expanded(flex: 3, child: Text("RANK")),
-                                  Expanded(flex: 1, child: Text(":")),
-                                  Expanded(
-                                      flex: 6,
-                                      child:
-                                          Text(documentData["rank"] ?? "N/A")),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Row(
-                                children: [
-                                  Expanded(flex: 3, child: Text("LICENSE NO")),
-                                  Expanded(flex: 1, child: Text(":")),
-                                  Expanded(
-                                      flex: 6,
-                                      child: Text(
-                                          documentData["license"] ?? "N/A")),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              controller.argumentstatus.value == "pending"
+                                              ),
+                                            ),
+                                          ],
+                                        ))
+                                  ],
+                                ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            children: [
+                              Expanded(flex: 3, child: Text("NAME")),
+                              Expanded(flex: 1, child: Text(":")),
+                              Expanded(
+                                  flex: 6,
+                                  child: Text(documentData["name"] ?? "N/A")),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            children: [
+                              Expanded(flex: 3, child: Text("EMAIL")),
+                              Expanded(flex: 1, child: Text(":")),
+                              Expanded(
+                                  flex: 6,
+                                  child: Text(documentData["email"] ?? "N/A")),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            children: [
+                              Expanded(flex: 3, child: Text("RANK")),
+                              Expanded(flex: 1, child: Text(":")),
+                              Expanded(
+                                  flex: 6,
+                                  child: Text(documentData["rank"] ?? "N/A")),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            children: [
+                              Expanded(flex: 3, child: Text("LICENSE NO")),
+                              Expanded(flex: 1, child: Text(":")),
+                              Expanded(
+                                  flex: 6,
+                                  child:
+                                      Text(documentData["license"] ?? "N/A")),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+  controller.argumentstatus.value == "pending"
                                   ? Form(
                                       key: _formKey,
                                       child: Column(
@@ -407,48 +401,54 @@ class ListAttendancedetailccView
                                       ),
                                     )
                                   : SizedBox(),
-                              controller.isCPTS.value ?
-                             Row(
-
-                               children: [
-                                 Expanded(child:  Container(
-                                   padding: const EdgeInsets.symmetric(
-                                       horizontal: 20, vertical: 20),
-                                   decoration: BoxDecoration(
-                                     borderRadius: BorderRadius.circular(10.0),
-                                     color: TsOneColor.surface,
-                                   ),
-                                   child: Column(
-                                     crossAxisAlignment: CrossAxisAlignment.start,
-                                     mainAxisAlignment: MainAxisAlignment.start,
-                                     children: [
-                                       Text(
-                                         'Feedback to Trainee',
-                                         style: TextStyle(
-                                           fontWeight: FontWeight.bold,
-                                           fontSize: 15,
-                                         ),
-                                       ),
-                                       Text(
-                                         documentData["feedback"],
-                                         style: TextStyle(
-                                           fontSize: 15,
-                                         ),
-                                       ),
-
-                                     ],
-                                   ),
-                                 ))
-                               ],
-                             ) : SizedBox()
-                            ],
-                          ),
-                        );
-                      }),
-                )
-              ],
-            ),
+                          controller.isCPTS.value
+                              ? Row(
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 20, vertical: 20),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                          color: TsOneColor.surface,
+                                        ),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'Feedback from instructor',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 15,
+                                              ),
+                                            ),
+                                            Text(
+                                              documentData["feedback"],
+                                              style: TextStyle(
+                                                fontSize: 15,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                )
+                              : SizedBox()
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              )
+            ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

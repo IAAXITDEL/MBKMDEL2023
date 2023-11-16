@@ -284,7 +284,7 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                                  child: Column(
                                    children: [
                                      Image.asset(
-                                       "assets/images/G1.png",
+                                       "assets/images/trainings_logo.png",
                                        fit: BoxFit.fitWidth,
                                      ),
                                      Obx(() => Text('${controller.trainingCount.value}', style: tsOneTextTheme.headlineMedium,),),
@@ -316,7 +316,7 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                                   child: Column(
                                     children: [
                                       Image.asset(
-                                        "assets/images/G1.png",
+                                        "assets/images/on_going_training_logo.png",
                                         fit: BoxFit.fitWidth,
                                       ),
                                       Obx(() => Text('${controller.ongoingTrainingCount.value}', style: tsOneTextTheme.headlineMedium,),),
@@ -348,7 +348,7 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                                   child: Column(
                                     children: [
                                       Image.asset(
-                                        "assets/images/G2.png",
+                                        "assets/images/completed_training_logo.png",
                                         fit: BoxFit.fitWidth,
                                       ),
                                      Obx(() =>  Text('${controller.completedTrainingCount.value}', style: tsOneTextTheme.headlineMedium,),),
