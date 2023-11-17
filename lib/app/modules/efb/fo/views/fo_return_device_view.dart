@@ -76,23 +76,39 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
 
                     print(deviceData3);
 
-                    // Handle null values gracefully
-                    final deviceno2 = deviceData2['deviceno'] as String? ?? 'N/A';
-                    final iosver2 = deviceData2['iosver'] as String? ?? 'N/A';
-                    final flysmart2 = deviceData2['flysmart'] as String? ?? 'N/A';
-                    final lidoversion2 = deviceData2['lidoversion'] as String? ?? 'N/A';
-                    final docuversion2 = deviceData2['docuversion'] as String? ?? 'N/A';
-                    final condition2 = deviceData2['condition'] as String? ?? 'N/A';
-                    final hub2 = deviceData2['hub'] as String? ?? 'N/A';
+                        return FutureBuilder<DocumentSnapshot>(
+                        future: FirebaseFirestore.instance.collection("Device").doc(widget.deviceName2).get(),
+                        builder: (context, deviceUid2Snapshot) {
+                        if (deviceUid2Snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                        }
 
-                    // Handle null values gracefully
-                    final deviceno3 = deviceData3['deviceno'] as String? ?? 'N/A';
-                    final iosver3 = deviceData3['iosver'] as String? ?? 'N/A';
-                    final flysmart3 = deviceData3['flysmart'] as String? ?? 'N/A';
-                    final lidoversion3 = deviceData3['lidoversion'] as String? ?? 'N/A';
-                    final docuversion3 = deviceData3['docuversion'] as String? ?? 'N/A';
-                    final condition3 = deviceData3['condition'] as String? ?? 'N/A';
-                    final hub3 = deviceData3['hub'] as String? ?? 'N/A';
+                        if (deviceUid2Snapshot.hasError) {
+                        return Center(child: Text('Error: ${deviceUid2Snapshot.error}'));
+                        }
+
+                        if (!deviceUid2Snapshot.hasData || !deviceUid2Snapshot.data!.exists) {
+                        return const Center(child: Text('Device data 2 not found'));
+                        }
+
+                        final deviceData2 = deviceUid2Snapshot.data!.data() as Map<String, dynamic>;
+
+                        return FutureBuilder<DocumentSnapshot>(
+                        future: FirebaseFirestore.instance.collection("Device").doc(widget.deviceName3).get(),
+                        builder: (context, deviceUid3Snapshot) {
+                        if (deviceUid3Snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                        }
+
+                        if (deviceUid3Snapshot.hasError) {
+                        return Center(child: Text('Error: ${deviceUid3Snapshot.error}'));
+                        }
+
+                        if (!deviceUid3Snapshot.hasData || !deviceUid3Snapshot.data!.exists) {
+                        return const Center(child: Text('Device data 3 not found'));
+                        }
+
+                        final deviceData3 = deviceUid3Snapshot.data!.data() as Map<String, dynamic>;
 
                     // Handle data from 'pilot-device-1' collection
                     final pilotDeviceData = pilotDeviceSnapshot.docs.isNotEmpty ? pilotDeviceSnapshot.docs.first.data() : <String, dynamic>{};
@@ -126,7 +142,7 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                                 Expanded(
                                   flex: 6,
                                   child: Text(
-                                    deviceno2,
+                                    '${deviceData2['value']['deviceno'] ?? 'No Data'}',
                                     style: tsOneTextTheme.bodySmall,
                                   ),
                                 ),
@@ -151,7 +167,7 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                                 Expanded(
                                   flex: 6,
                                   child: Text(
-                                    iosver2,
+                                    '${deviceData2['value']['iosver'] ?? 'No Data'}',
                                     style: tsOneTextTheme.bodySmall,
                                   ),
                                 ),
@@ -176,7 +192,7 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                                 Expanded(
                                   flex: 6,
                                   child: Text(
-                                    flysmart2,
+                                    '${deviceData2['value']['flysmart'] ?? 'No Data'}',
                                     style: tsOneTextTheme.bodySmall,
                                   ),
                                 ),
@@ -201,7 +217,7 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                                 Expanded(
                                   flex: 6,
                                   child: Text(
-                                    docuversion2,
+                                    '${deviceData2['value']['docuverion'] ?? 'No Data'}',
                                     style: tsOneTextTheme.bodySmall,
                                   ),
                                 ),
@@ -225,8 +241,8 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                                 )),
                                 Expanded(
                                   flex: 6,
-                                  child: Text(
-                                    lidoversion2,
+                                  child:Text(
+                                    '${deviceData2['value']['lidoversion'] ?? 'No Data'}',
                                     style: tsOneTextTheme.bodySmall,
                                   ),
                                 ),
@@ -251,7 +267,7 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                                 Expanded(
                                   flex: 6,
                                   child: Text(
-                                    hub2,
+                                    '${deviceData2['value']['hub'] ?? 'No Data'}',
                                     style: tsOneTextTheme.bodySmall,
                                   ),
                                 ),
@@ -276,7 +292,7 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                                 Expanded(
                                   flex: 6,
                                   child: Text(
-                                    condition2,
+                                    '${deviceData2['value']['condition'] ?? 'No Data'}',
                                     style: tsOneTextTheme.bodySmall,
                                   ),
                                 ),
@@ -304,7 +320,7 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                                 Expanded(
                                   flex: 6,
                                   child: Text(
-                                    deviceno3,
+                                    '${deviceData3['value']['deviceno'] ?? 'No Data'}',
                                     style: tsOneTextTheme.bodySmall,
                                   ),
                                 ),
@@ -328,8 +344,8 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                                 )),
                                 Expanded(
                                   flex: 6,
-                                  child: Text(
-                                    iosver3,
+                                  child:  Text(
+                                    '${deviceData3['value']['iosver'] ?? 'No Data'}',
                                     style: tsOneTextTheme.bodySmall,
                                   ),
                                 ),
@@ -345,7 +361,8 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                                     child: Text(
                                       "Flysmart Ver",
                                       style: tsOneTextTheme.bodySmall,
-                                    )),
+                                    )
+                                ),
                                 Expanded(
                                     child: Text(
                                   ":",
@@ -353,8 +370,8 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                                 )),
                                 Expanded(
                                   flex: 6,
-                                  child: Text(
-                                    flysmart3,
+                                  child:  Text(
+                                    '${deviceData3['value']['flysmart'] ?? 'No Data'}',
                                     style: tsOneTextTheme.bodySmall,
                                   ),
                                 ),
@@ -378,7 +395,10 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                                 )),
                                 Expanded(
                                   flex: 6,
-                                  child: Text(docuversion3),
+                                  child:  Text(
+                                    '${deviceData3['value']['docuversion'] ?? 'No Data'}',
+                                    style: tsOneTextTheme.bodySmall,
+                                  ),
                                 ),
                               ],
                             ),
@@ -400,8 +420,8 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                                 )),
                                 Expanded(
                                   flex: 6,
-                                  child: Text(
-                                    lidoversion3,
+                                  child:  Text(
+                                    '${deviceData3['value']['lidoversion'] ?? 'No Data'}',
                                     style: tsOneTextTheme.bodySmall,
                                   ),
                                 ),
@@ -425,8 +445,8 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                                 )),
                                 Expanded(
                                   flex: 6,
-                                  child: Text(
-                                    hub3,
+                                  child:  Text(
+                                    '${deviceData3['value']['hub'] ?? 'No Data'}',
                                     style: tsOneTextTheme.bodySmall,
                                   ),
                                 ),
@@ -450,8 +470,8 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                                 )),
                                 Expanded(
                                   flex: 6,
-                                  child: Text(
-                                    condition3,
+                                  child:  Text(
+                                    '${deviceData3['value']['condition'] ?? 'No Data'}',
                                     style: tsOneTextTheme.bodySmall,
                                   ),
                                 ),
@@ -555,6 +575,10 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                           ],
                         ),
                       ],
+                        );
+                        }
+                        );
+                        }
                     );
                   }
                 },

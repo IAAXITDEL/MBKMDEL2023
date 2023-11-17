@@ -253,7 +253,7 @@ class DetailHistoryDeviceView extends GetView {
                                                   Expanded(flex: 1, child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
-                                                    child: Text('${deviceData['iosver'] ?? 'No Data'}'),
+                                                    child: Text('${deviceData['value']['iosver'] ?? 'No Data'}'),
                                                   ),
                                                 ],
                                               ),
@@ -264,7 +264,7 @@ class DetailHistoryDeviceView extends GetView {
                                                   Expanded(flex: 1, child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
-                                                    child: Text('${deviceData['flysmart'] ?? 'No Data'}'),
+                                                    child: Text('${deviceData['value']['flysmart'] ?? 'No Data'}'),
                                                   ),
                                                 ],
                                               ),
@@ -275,7 +275,7 @@ class DetailHistoryDeviceView extends GetView {
                                                   Expanded(flex: 1, child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
-                                                    child: Text('${deviceData['docuversion'] ?? 'No Data'}'),
+                                                    child: Text('${deviceData['value']['docuversion'] ?? 'No Data'}'),
                                                   ),
                                                 ],
                                               ),
@@ -286,7 +286,7 @@ class DetailHistoryDeviceView extends GetView {
                                                   Expanded(flex: 1, child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
-                                                    child: Text('${deviceData['lidoversion'] ?? 'No Data'}'),
+                                                    child: Text('${deviceData['value']['lidoversion'] ?? 'No Data'}'),
                                                   ),
                                                 ],
                                               ),
@@ -297,7 +297,7 @@ class DetailHistoryDeviceView extends GetView {
                                                   Expanded(flex: 1, child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
-                                                    child: Text('${deviceData['hub'] ?? 'No Data'}'),
+                                                    child: Text('${deviceData['value']['hub'] ?? 'No Data'}'),
                                                   ),
                                                 ],
                                               ),
@@ -308,7 +308,7 @@ class DetailHistoryDeviceView extends GetView {
                                                   Expanded(flex: 1, child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
-                                                    child: Text('${deviceData['condition'] ?? 'No Data'}'),
+                                                    child: Text('${deviceData['value']['condition'] ?? 'No Data'}'),
                                                   ),
                                                 ],
                                               ),
@@ -654,16 +654,16 @@ class DetailHistoryDeviceView extends GetView {
                                                             'NAME'],
                                                             deviceNo: data[
                                                             'device_name'],
-                                                            iosVer: deviceData[
+                                                            iosVer: deviceData['value'][
                                                             'iosver'],
                                                             flySmart:
-                                                            deviceData[
+                                                            deviceData['value'][
                                                             'flysmart'],
-                                                            lido: deviceData['lidoversion'],
-                                                            docunet: deviceData[
+                                                            lido: deviceData['value']['lidoversion'],
+                                                            docunet: deviceData['value'][
                                                             'docuversion'],
                                                             deviceCondition:
-                                                            deviceData[
+                                                            deviceData['value'][
                                                             'condition'],
                                                             ttdUser: data[
                                                             'signature_url'],
