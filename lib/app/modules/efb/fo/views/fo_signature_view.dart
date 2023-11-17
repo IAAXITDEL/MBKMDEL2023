@@ -136,7 +136,10 @@ class _FOSignaturePadPageState extends State<FOSignaturePadPage> {
                           });
                         },
                       ),
-                      const Text('I agree with all the statements above.', style: TextStyle(fontWeight: FontWeight.w300)),
+                      Text(
+                        'I agree with all the statements above.',
+                        style: tsOneTextTheme.labelSmall,
+                      )
                     ],
                   ),
                   const SizedBox(height: 10),

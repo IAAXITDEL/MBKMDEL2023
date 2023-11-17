@@ -433,6 +433,7 @@ class DetailHistoryDeviceFOView extends GetView {
                                                       Expanded(
                                                         flex: 6,
                                                         child: Column(
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
                                                           children: [
                                                             if (status == 'handover-to-other-crew' && data['prove_image_url'] == null ||
                                                                 data['prove_image_url'].isEmpty)
@@ -489,6 +490,7 @@ class DetailHistoryDeviceFOView extends GetView {
                                                       Expanded(
                                                         flex: 6,
                                                         child: Column(
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
                                                           children: [
                                                             if (status == 'Done' && data['prove_back_to_base'] == null ||
                                                                 data['prove_back_to_base'].isEmpty)
@@ -606,7 +608,7 @@ class DetailHistoryDeviceFOView extends GetView {
                                                         //   )),
                                                         // ),
                                                         child: Align(
-                                                          alignment: Alignment.centerLeft,
+                                                          alignment: Alignment.center,
                                                           child: Text(
                                                             'Open Feedback',
                                                             style: TextStyle(

@@ -285,28 +285,34 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                     ),
                   ),
                   const SizedBox(width: 16.0),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(4.0),
+                  Container(
+                    height: 56.0,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4.0),
+                        ),
+                      ),
+                      onPressed: () async {
+                        String qrCode = await FlutterBarcodeScanner.scanBarcode(
+                          '#ff6666', // Warna overlay saat pemindaian
+                          'Cancel', // Label tombol batal
+                          true, // Memungkinkan pemindaian di latar belakang
+                          ScanMode.QR, // Mode pemindaian QR code
+                        );
+
+                        if (qrCode != '-1') {
+                          setState(() {
+                            deviceNoController2.text = qrCode;
+                            selectedDevice2 = getMatchingDevices(qrCode).firstOrNull;
+                          });
+                        }
+                      },
+                      child: const Icon(
+                        Icons.qr_code_2_rounded,
+                        size: 35,
                       ),
                     ),
-                    onPressed: () async {
-                      String qrCode = await FlutterBarcodeScanner.scanBarcode(
-                        '#ff6666', // Warna overlay saat pemindaian
-                        'Cancel', // Label tombol batal
-                        true, // Memungkinkan pemindaian di latar belakang
-                        ScanMode.QR, // Mode pemindaian QR code
-                      );
-
-                      if (qrCode != '-1') {
-                        setState(() {
-                          deviceNoController2.text = qrCode;
-                          selectedDevice2 = getMatchingDevices(qrCode).firstOrNull;
-                        });
-                      }
-                    },
-                    child: const Icon(Icons.qr_code_2),
                   ),
                 ],
               ),
@@ -448,30 +454,36 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                     ),
                   ),
                   const SizedBox(width: 16.0),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(4.0),
+                  Container(
+                    height: 56.0,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4.0),
+                        ),
                       ),
-                    ),
-                    onPressed: () async {
-                      String qrCode = await FlutterBarcodeScanner.scanBarcode(
-                        '#ff6666', // Warna overlay saat pemindaian
-                        'Cancel', // Label tombol batal
-                        true, // Memungkinkan pemindaian di latar belakang
-                        ScanMode.QR, // Mode pemindaian QR code
-                      );
+                      onPressed: () async {
+                        String qrCode = await FlutterBarcodeScanner.scanBarcode(
+                          '#ff6666', // Warna overlay saat pemindaian
+                          'Cancel', // Label tombol batal
+                          true, // Memungkinkan pemindaian di latar belakang
+                          ScanMode.QR, // Mode pemindaian QR code
+                        );
 
-                      if (qrCode != '-1') {
-                        setState(() {
-                          deviceNoController3.text = qrCode;
-                          selectedDevice3 = getMatchingDevices(qrCode).firstOrNull;
-                        });
-                      }
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 5),
-                      child: const Icon(Icons.qr_code_2),
+                        if (qrCode != '-1') {
+                          setState(() {
+                            deviceNoController3.text = qrCode;
+                            selectedDevice3 = getMatchingDevices(qrCode).firstOrNull;
+                          });
+                        }
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 5),
+                        child: const Icon(
+                          Icons.qr_code_2_rounded,
+                          size: 35,
+                        ),
+                      ),
                     ),
                   ),
                 ],

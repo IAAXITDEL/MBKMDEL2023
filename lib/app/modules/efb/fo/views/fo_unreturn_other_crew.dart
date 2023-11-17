@@ -60,6 +60,34 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
     }
   }
 
+  String getMonthText(int month) {
+    const List<String> months = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'Desember'
+    ];
+    return months[month - 1]; // Index 0-11 for Januari-Desember
+  }
+
+  String _formatTimestamp(Timestamp? timestamp) {
+    if (timestamp == null) return 'No Data';
+
+    DateTime dateTime = timestamp.toDate();
+    String formattedDateTime = '${dateTime.day} ${getMonthText(dateTime.month)} ${dateTime.year}'
+        ' ; '
+        '${dateTime.hour}:${dateTime.minute}';
+    return formattedDateTime;
+  }
+
   // Function to show a success message using QuickAlert
   Future<void> _showQuickAlert(BuildContext context) async {
     await QuickAlert.show(
@@ -121,7 +149,12 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Confirmation'),
+        backgroundColor: Colors.white,
+        title: Text(
+          'Reject Return',
+          style: tsOneTextTheme.headlineLarge,
+        ),
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -215,15 +248,19 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    const SizedBox(height: 10.0),
+                                    Align(
+                                      alignment: Alignment.centerRight,
+                                      child: Text(_formatTimestamp(data['timestamp']), style: tsOneTextTheme.labelSmall),
+                                    ),
+                                    const SizedBox(height: 15.0),
                                     Align(
                                       alignment: Alignment.centerLeft,
                                       child: Text(
-                                        "HANDOVER FROM",
-                                        style: tsOneTextTheme.titleLarge,
+                                        "Handover From",
+                                        style: tsOneTextTheme.headlineMedium,
                                       ),
                                     ),
-                                    const SizedBox(height: 5.0),
+                                    const SizedBox(height: 10.0),
                                     Row(
                                       children: [
                                         Expanded(
@@ -232,7 +269,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                               "ID NO",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        const Expanded( child: Text(":")),
+                                        const Expanded(child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -251,7 +288,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                               "Name",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        const Expanded( child: Text(":")),
+                                        const Expanded(child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -270,7 +307,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                               "RANK",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        const Expanded( child: Text(":")),
+                                        const Expanded(child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -280,15 +317,15 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                         ),
                                       ],
                                     ),
-                                    const SizedBox(height: 20.0),
+                                    const SizedBox(height: 16.0),
                                     Align(
                                       alignment: Alignment.centerLeft,
                                       child: Text(
-                                        "HANDOVER TO",
-                                        style: tsOneTextTheme.titleLarge,
+                                        "Handover To",
+                                        style: tsOneTextTheme.headlineMedium,
                                       ),
                                     ),
-                                    const SizedBox(height: 5.0),
+                                    const SizedBox(height: 10.0),
                                     Row(
                                       children: [
                                         Expanded(
@@ -297,7 +334,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                               "ID NO",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        const Expanded( child: Text(":")),
+                                        const Expanded(child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -316,7 +353,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                               "Name",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        const Expanded( child: Text(":")),
+                                        const Expanded(child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -335,7 +372,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                               "Rank",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        const Expanded( child: Text(":")),
+                                        const Expanded(child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -346,12 +383,33 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                       ],
                                     ),
                                     const SizedBox(height: 20.0),
+                                    const Padding(
+                                      padding: EdgeInsets.only(bottom: 16.0),
+                                      child: Row(
+                                        children: <Widget>[
+                                          Expanded(
+                                            child: Divider(
+                                              color: Colors.grey,
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.symmetric(horizontal: 8.0),
+                                            child: Text(
+                                              'Device Details',
+                                              style: TextStyle(color: Colors.grey),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: Divider(
+                                              color: Colors.grey,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
                                     Align(
                                       alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        "Device 2",
-                                        style: tsOneTextTheme.titleLarge,
-                                      ),
+                                      child: Text("Device 2", style: tsOneTextTheme.headlineMedium),
                                     ),
                                     const SizedBox(height: 5.0),
                                     Row(
@@ -362,7 +420,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                               "Device No",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        const Expanded( child: Text(":")),
+                                        const Expanded(child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -381,7 +439,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                               "IOS Version",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        const Expanded( child: Text(":")),
+                                        const Expanded(child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -400,7 +458,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                               "FlySmart Version",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        const Expanded( child: Text(":")),
+                                        const Expanded(child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -419,7 +477,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                               "Docunet Version",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        const Expanded( child: Text(":")),
+                                        const Expanded(child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -438,7 +496,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                               "Lido mPilot Version",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        const Expanded( child: Text(":")),
+                                        const Expanded(child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -457,7 +515,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                               "HUB",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        const Expanded( child: Text(":")),
+                                        const Expanded(child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -476,7 +534,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                               "Condition",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        const Expanded( child: Text(":")),
+                                        const Expanded(child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -486,13 +544,10 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                         ),
                                       ],
                                     ),
-                                    const SizedBox(height: 20.0),
+                                    const SizedBox(height: 15.0),
                                     Align(
                                       alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        "Device 3",
-                                        style: tsOneTextTheme.titleLarge,
-                                      ),
+                                      child: Text("Device 3", style: tsOneTextTheme.headlineMedium),
                                     ),
                                     const SizedBox(height: 5.0),
                                     Row(
@@ -503,7 +558,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                               "Device No",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        const Expanded( child: Text(":")),
+                                        const Expanded(child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -522,7 +577,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                               "IOS Version",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        const Expanded( child: Text(":")),
+                                        const Expanded(child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -541,7 +596,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                               "FlySmart Version",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        const Expanded( child: Text(":")),
+                                        const Expanded(child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -560,7 +615,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                               "Docunet Version",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        const Expanded( child: Text(":")),
+                                        const Expanded(child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -579,7 +634,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                               "Lido mPilot Version",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        const Expanded( child: Text(":")),
+                                        const Expanded(child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -598,7 +653,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                               "HUB",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        const Expanded( child: Text(":")),
+                                        const Expanded(child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -617,7 +672,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                               "Condition",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        const Expanded( child: Text(":")),
+                                        const Expanded(child: Text(":")),
                                         Expanded(
                                           flex: 6,
                                           child: Text(

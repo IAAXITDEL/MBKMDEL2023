@@ -325,6 +325,7 @@ class DetailHistoryDeviceView extends GetView {
                                                     Expanded(
                                                       flex: 6,
                                                       child: Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
                                                         children: [
                                                           if (status == 'Done' && data['prove_back_to_base'] == null ||
                                                               data['prove_back_to_base'].isEmpty)
@@ -392,6 +393,7 @@ class DetailHistoryDeviceView extends GetView {
                                                     Expanded(
                                                       flex: 6,
                                                       child: Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
                                                         children: [
                                                           if (status == 'handover-to-other-crew' && data['prove_image_url'] == null ||
                                                               data['prove_image_url'].isEmpty)
@@ -549,7 +551,7 @@ class DetailHistoryDeviceView extends GetView {
                                                         print(feedbackId);
                                                       },
                                                       child: Align(
-                                                        alignment: Alignment.centerLeft,
+                                                        alignment: Alignment.center,
                                                         child: Text(
                                                           'Open Feedback',
                                                           style: TextStyle(
@@ -620,106 +622,62 @@ class DetailHistoryDeviceView extends GetView {
                                                 children: [
                                                   Expanded(
                                                     child: ElevatedButton(
-                                                      onPressed: () {
-                                                        showDialog(
-                                                          context: context,
-                                                          barrierDismissible: false,
-                                                          builder: (context) {
-                                                            return AlertDialog(
-                                                              content: Column(
-                                                                mainAxisSize: MainAxisSize.min,
-                                                                children: [
-                                                                  CircularProgressIndicator(),
-                                                                  SizedBox(height: 20),
-                                                                  Text('Please Wait...'),
-                                                                ],
-                                                              ),
-                                                            );
-                                                          },
-                                                        );
+                                                        onPressed: () {
+                                                          showDialog(
+                                                            context: context,
+                                                            barrierDismissible: false,
+                                                            builder: (context) {
+                                                              return AlertDialog(
+                                                                content: Column(
+                                                                  mainAxisSize: MainAxisSize.min,
+                                                                  children: [
+                                                                    CircularProgressIndicator(),
+                                                                    SizedBox(height: 20),
+                                                                    Text('Please Wait...'),
+                                                                  ],
+                                                                ),
+                                                              );
+                                                            },
+                                                          );
 
                                                           generateLogPdfDevice1(
-                                                            userName: userData[
-                                                            'NAME'],
-                                                            userRank: userData[
-                                                            'RANK'],
-                                                            userID: userData[
-                                                            'ID NO']
-                                                                .toString(),
-                                                            occAccept:
-                                                            occAccepteduserData?[
-                                                            'NAME'],
-                                                            occGiven:
-                                                            occOnDutyuserData?[
-                                                            'NAME'],
-                                                            deviceNo: data[
-                                                            'device_name'],
-                                                            iosVer: deviceData[
-                                                            'iosver'],
-                                                            flySmart:
-                                                            deviceData[
-                                                            'flysmart'],
+                                                            userName: userData['NAME'],
+                                                            userRank: userData['RANK'],
+                                                            userID: userData['ID NO'].toString(),
+                                                            occAccept: occAccepteduserData?['NAME'],
+                                                            occGiven: occOnDutyuserData?['NAME'],
+                                                            deviceNo: data['device_name'],
+                                                            iosVer: deviceData['iosver'],
+                                                            flySmart: deviceData['flysmart'],
                                                             lido: deviceData['lidoversion'],
-                                                            docunet: deviceData[
-                                                            'docuversion'],
-                                                            deviceCondition:
-                                                            deviceData[
-                                                            'condition'],
-                                                            ttdUser: data[
-                                                            'signature_url'],
-                                                            ttdOCC: data[
-                                                            'signature_url_occ'],
-                                                            loan: data[
-                                                            'timestamp'],
-                                                            statusdevice: data[
-                                                            'statusDevice'],
-                                                            ttdOtherCrew: data !=
-                                                                null
-                                                                ? data[
-                                                            'signature_url_other_crew']
-                                                                : 'Not Found',
-                                                            handoverName:
-                                                            handoverTouserData !=
-                                                                null
-                                                                ? handoverTouserData[
-                                                            'NAME']
-                                                                : 'Not Found',
-                                                            handoverID: data[
-                                                            'handover-to-crew'],
+                                                            docunet: deviceData['docuversion'],
+                                                            deviceCondition: deviceData['condition'],
+                                                            ttdUser: data['signature_url'],
+                                                            ttdOCC: data['signature_url_occ'],
+                                                            loan: data['timestamp'],
+                                                            statusdevice: data['statusDevice'],
+                                                            ttdOtherCrew: data != null ? data['signature_url_other_crew'] : 'Not Found',
+                                                            handoverName: handoverTouserData != null ? handoverTouserData['NAME'] : 'Not Found',
+                                                            handoverID: data['handover-to-crew'],
                                                           ).then((_) {
-                                                            Navigator.pop(
-                                                                context);
-                                                          }).catchError(
-                                                                  (error) {
-                                                                print(
-                                                                    'Error generating PDF: $error');
-                                                                Navigator.pop(
-                                                                    context);
-                                                              });
+                                                            Navigator.pop(context);
+                                                          }).catchError((error) {
+                                                            print('Error generating PDF: $error');
+                                                            Navigator.pop(context);
+                                                          });
                                                           //generateLogPdfDevice1();
                                                         },
-                                                        style: ElevatedButton
-                                                            .styleFrom(
-                                                          backgroundColor:
-                                                          TsOneColor
-                                                              .greenColor,
-                                                          shape:
-                                                          RoundedRectangleBorder(
-                                                            borderRadius:
-                                                            BorderRadius
-                                                                .circular(
-                                                                4.0),
+                                                        style: ElevatedButton.styleFrom(
+                                                          backgroundColor: TsOneColor.greenColor,
+                                                          shape: RoundedRectangleBorder(
+                                                            borderRadius: BorderRadius.circular(4.0),
                                                           ),
                                                         ),
                                                         child: Padding(
-                                                          padding:
-                                                          EdgeInsets.all(
-                                                              15),
+                                                          padding: EdgeInsets.all(15),
                                                           child: Text(
                                                             'Open Attachment History',
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .white),
+                                                            style: TextStyle(color: Colors.white),
                                                           ),
                                                         )),
                                                   ),

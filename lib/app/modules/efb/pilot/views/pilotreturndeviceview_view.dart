@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ts_one/app/modules/efb/feedback/PilotFeedback.dart';
+import 'package:ts_one/app/modules/efb/feedback/pilot/PilotFeedback.dart';
 import 'package:ts_one/app/modules/efb/pilot/views/pilotsignature_view.dart';
 import 'package:ts_one/app/modules/efb/pilot/views/return_other_pilot_view.dart';
 import 'package:ts_one/presentation/shared_components/TitleText.dart';
@@ -87,9 +87,10 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                   FirebaseFirestore.instance.collection('pilot-device-1').where('device_name', isEqualTo: widget.deviceName).get(),
                 ]),
                 builder: (context, snapshotList) {
-                  if (snapshotList.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
-                  } else if (snapshotList.hasError) {
+                  // if (snapshotList.connectionState == ConnectionState.waiting) {
+                  //   return const CircularProgressIndicator();
+                  // } else
+                  if (snapshotList.hasError) {
                     return Center(
                       child: Text('Error: ${snapshotList.error.toString()}'),
                     );
@@ -118,7 +119,7 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                       future: FirebaseFirestore.instance.collection("users").doc(userUid).get(),
                       builder: (context, userSnapshot) {
                         if (userSnapshot.connectionState == ConnectionState.waiting) {
-                          return const Center(child: CircularProgressIndicator());
+                          //return const Center(child: CircularProgressIndicator());
                         }
 
                         if (userSnapshot.hasError) {
@@ -354,7 +355,7 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                                                   ),
                                                 );
                                               },
-                                              child: const Text("FeedBack"),
+                                              child: const Text("Feedback"),
                                             )
                                           ],
                                         ),

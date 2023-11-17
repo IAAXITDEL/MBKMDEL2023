@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ts_one/app/modules/efb/feedback/NextQuestionPageFeedbackPilot.dart';
+import 'package:ts_one/app/modules/efb/feedback/fo/NextQuestionPageFeedbackFO.dart';
 
-import '../../../../presentation/theme.dart';
+import '../../../../../presentation/theme.dart';
 
-class PilotFeedBack extends StatefulWidget {
+class FOFeedBack extends StatefulWidget {
   final String documentId;
   final String deviceId;
 
-  PilotFeedBack({required this.documentId, required this.deviceId});
+  FOFeedBack({required this.documentId, required this.deviceId});
 
   @override
-  _PilotFeedBackState createState() => _PilotFeedBackState();
+  _FOFeedBackState createState() => _FOFeedBackState();
 }
 
-class _PilotFeedBackState extends State<PilotFeedBack> {
+class _FOFeedBackState extends State<FOFeedBack> {
   TextEditingController remarksController = TextEditingController();
   String? Q1; // To store the "Yes" or "No" value
   String? Q2; // To store the "Yes" or "No" value
@@ -383,7 +383,7 @@ class _PilotFeedBackState extends State<PilotFeedBack> {
           onPressed: () {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => NextQuestionPageFeedbackPilot(
+                builder: (context) => NextQuestionPageFeedbackFO(
                   documentId: widget.documentId,
                   deviceId: widget.deviceId,
                   Q1: Q1,

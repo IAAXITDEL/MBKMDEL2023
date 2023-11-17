@@ -262,7 +262,7 @@ class _ResultAssessmentDeclarationState extends State<ResultAssessmentDeclaratio
                               contentPadding: const EdgeInsets.only(bottom: 0),
                               child: CheckboxListTile(
                                 value: _isConfirmed,
-                                title: const Text("I agree with all the statements above. above"),
+                                title: const Text("I agree with all the statements above."),
                                 dense: true,
                                 controlAffinity: ListTileControlAffinity.leading,
                                 onChanged: (newValue) {
