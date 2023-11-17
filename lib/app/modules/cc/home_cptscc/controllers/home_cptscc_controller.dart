@@ -41,10 +41,7 @@ class HomeCptsccController extends GetxController {
   final RxString nameS = "".obs;
 
   RxString _selectedSubject = "ALL".obs;
-
   RxString get selectedSubject => _selectedSubject;
-
-
 
 
   @override
@@ -274,6 +271,9 @@ class HomeCptsccController extends GetxController {
       attendanceData.addAll(attendanceDatas.docs.map((doc) => doc.data()) ?? []);
 
       print(attendanceData);
+      bool isSameDay(DateTime date, DateTime other) {
+        return date.year == other.year && date.month == other.month && date.day == other.day;
+      }
 
       if (from != null && to != null && attendanceData.isNotEmpty) {
         print("adaad");
@@ -283,13 +283,13 @@ class HomeCptsccController extends GetxController {
           // Compare dates only, ignoring the time component
           DateTime fromDate = DateTime(from.year, from.month, from.day);
           DateTime toDate = DateTime(to.year, to.month, to.day);
-          DateTime attendanceDateOnly = DateTime(attendanceDate.year, attendanceDate.month, attendanceDate.day);
 
-          return attendanceDateOnly.isAtSameMomentAs(fromDate) ||
-              (attendanceDateOnly.isAfter(fromDate) && attendanceDateOnly.isBefore(toDate)) ||
-              attendanceDateOnly.isAtSameMomentAs(toDate);
+          // Updated date comparison logic
+          return (attendanceDate.isAtSameMomentAs(fromDate) ||
+              attendanceDate.isAfter(fromDate)) &&
+              (attendanceDate.isAtSameMomentAs(toDate) ||
+                  attendanceDate.isBefore(toDate));
         }).toList();
-        print("de");
 
         List<String?> attendanceId = attendanceData.map((doc) => AttendanceModel.fromJson(doc).id).toList();
 
@@ -297,8 +297,6 @@ class HomeCptsccController extends GetxController {
         print(attendanceId.length);
 
         if (attendanceId.isNotEmpty) {
-          print("Sda");
-
           List<String> allIds = List.from(attendanceId);
 
           absentCount.value = 0;
@@ -306,7 +304,6 @@ class HomeCptsccController extends GetxController {
           final batchSize = 30; // Tentukan ukuran batch yang diinginkan
 
           if (allIds.length >= batchSize) {
-            print("whoaa");
             while (allIds.isNotEmpty) {
               var batchIds = allIds.take(batchSize).toList(); // Ambil 'batchSize' elemen
 
@@ -327,7 +324,6 @@ class HomeCptsccController extends GetxController {
               allIds = allIds.sublist(batchSize);
             }
           } else {
-            print("roarr");
             if (allIds.isNotEmpty) {
               final remainingIds = allIds.toList();
 
@@ -345,8 +341,7 @@ class HomeCptsccController extends GetxController {
               presentCount.value += attendanceDetailQuery.docs.length;
             }
           }
-          print("sda ${absentCount.value}");
-          print("sdffa ${presentCount.value}");
+
         } else {
           // Handle the case when attendanceId is empty
           print("Attendance ID is empty");
