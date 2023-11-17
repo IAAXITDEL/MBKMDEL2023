@@ -212,7 +212,7 @@ class HomeOCCView extends GetView<HomeOCCController> {
                                                 stream: FirebaseFirestore
                                                     .instance
                                                     .collection("Device")
-                                                    .where("hub",
+                                                    .where("value.hub",
                                                         isEqualTo: userHub)
                                                     .snapshots(),
                                                 builder: (context, snapshot) {

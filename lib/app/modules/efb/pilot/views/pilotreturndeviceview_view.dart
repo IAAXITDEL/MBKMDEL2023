@@ -102,7 +102,7 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                       future: FirebaseFirestore.instance.collection("Device").doc(widget.deviceName).get(),
                       builder: (context, deviceSnapshot) {
                       if (deviceSnapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
+                      //return const Center(child: CircularProgressIndicator());
                       }
 
                       if (deviceSnapshot.hasError) {

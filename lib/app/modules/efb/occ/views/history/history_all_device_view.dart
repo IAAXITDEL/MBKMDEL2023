@@ -1171,34 +1171,34 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
               ),
             ),
 
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                children: [
-                  Checkbox(
-                    value: selectedIsCaptChecked,
-                    onChanged: (value) {
-                      setState(() {
-                        isCaptChecked = value ?? false;
-                        selectedIsCaptChecked = isCaptChecked; // Update selected value
-                      });
-                    },
-                  ),
-                  Text('CAPT'),
-                  const SizedBox(width: 16),
-                  Checkbox(
-                    value: selectedIsFoChecked,
-                    onChanged: (value) {
-                      setState(() {
-                        isFoChecked = value ?? false;
-                        selectedIsFoChecked = isFoChecked; // Update selected value
-                      });
-                    },
-                  ),
-                  Text('FO'),
-                ],
-              ),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.all(16.0),
+            //   child: Row(
+            //     children: [
+            //       Checkbox(
+            //         value: selectedIsCaptChecked,
+            //         onChanged: (value) {
+            //           setState(() {
+            //             isCaptChecked = value ?? false;
+            //             selectedIsCaptChecked = isCaptChecked; // Update selected value
+            //           });
+            //         },
+            //       ),
+            //       Text('CAPT'),
+            //       const SizedBox(width: 16),
+            //       Checkbox(
+            //         value: selectedIsFoChecked,
+            //         onChanged: (value) {
+            //           setState(() {
+            //             isFoChecked = value ?? false;
+            //             selectedIsFoChecked = isFoChecked; // Update selected value
+            //           });
+            //         },
+            //       ),
+            //       Text('FO'),
+            //     ],
+            //   ),
+            // ),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Row(
