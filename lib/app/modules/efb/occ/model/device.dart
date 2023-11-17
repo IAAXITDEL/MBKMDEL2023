@@ -1,9 +1,8 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Device {
   final String uid;
-  final    deviceno;
+  final String deviceno;
   final String iosver;
   final String flysmart;
   final String lidoversion;
@@ -24,31 +23,16 @@ class Device {
 
   factory Device.fromFirestore(DocumentSnapshot doc) {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+    Map<String, dynamic> valueData = data['value'] as Map<String, dynamic>;
     return Device(
       uid: doc.id,
-      deviceno: data['deviceno'] ?? '',
-      iosver: data['iosver'] ?? '',
-      flysmart: data['flysmart'] ?? '',
-      lidoversion: data['lidoversion'] ?? '',
-      docuversion: data['docuversion'] ?? '',
-      hub: data['hub'] ?? '',
-      condition: data['condition'] ?? '',
+      deviceno: valueData['deviceno'] ?? '',
+      iosver: valueData['iosver'] ?? '',
+      flysmart: valueData['flysmart'] ?? '',
+      lidoversion: valueData['lidoversion'] ?? '',
+      docuversion: valueData['docuversion'] ?? '',
+      hub: valueData['hub'] ?? '',
+      condition: valueData['condition'] ?? '',
     );
   }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

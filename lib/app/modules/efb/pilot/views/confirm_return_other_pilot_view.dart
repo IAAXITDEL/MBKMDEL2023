@@ -496,7 +496,7 @@ class _ConfirmReturnOtherPilotViewState
                                     Expanded(
                                       flex: 6,
                                       child: Text(
-                                        '${deviceData['iosver'] ?? 'No Data'}',
+                                        '${deviceData['value']['iosver'] ?? 'No Data'}',
                                         style: tsOneTextTheme.bodySmall,
                                       ),
                                     ),
@@ -519,7 +519,7 @@ class _ConfirmReturnOtherPilotViewState
                                     Expanded(
                                       flex: 6,
                                       child: Text(
-                                        '${deviceData['flysmart'] ?? 'No Data'}',
+                                        '${deviceData['value']['flysmart'] ?? 'No Data'}',
                                         style: tsOneTextTheme.bodySmall,
                                       ),
                                     ),
@@ -542,7 +542,7 @@ class _ConfirmReturnOtherPilotViewState
                                     Expanded(
                                       flex: 6,
                                       child: Text(
-                                        '${deviceData['docuversion'] ?? 'No Data'}',
+                                        '${deviceData['value']['docuversion'] ?? 'No Data'}',
                                         style: tsOneTextTheme.bodySmall,
                                       ),
                                     ),
@@ -565,7 +565,7 @@ class _ConfirmReturnOtherPilotViewState
                                     Expanded(
                                       flex: 6,
                                       child: Text(
-                                        '${deviceData['lidoversion'] ?? 'No Data'}',
+                                        '${deviceData['value']['lidoversion'] ?? 'No Data'}',
                                         style: tsOneTextTheme.bodySmall,
                                       ),
                                     ),
@@ -588,7 +588,7 @@ class _ConfirmReturnOtherPilotViewState
                                     Expanded(
                                       flex: 6,
                                       child: Text(
-                                        '${deviceData['hub'] ?? 'No Data'}',
+                                        '${deviceData['value']['hub'] ?? 'No Data'}',
                                         style: tsOneTextTheme.bodySmall,
                                       ),
                                     ),
@@ -611,7 +611,7 @@ class _ConfirmReturnOtherPilotViewState
                                     Expanded(
                                       flex: 6,
                                       child: Text(
-                                        '${deviceData['condition'] ?? 'No Data'}',
+                                        '${deviceData['value']['condition'] ?? 'No Data'}',
                                         style: tsOneTextTheme.bodySmall,
                                       ),
                                     ),

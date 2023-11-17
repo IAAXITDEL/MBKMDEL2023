@@ -26,6 +26,9 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
   DateTime? _endDate;
   bool isFoChecked = false;
   bool isCaptChecked = false;
+  bool isDoneChecked =false;
+  bool isHandoverChecked =false;
+
 
   Future<void> exportToExcel(List<Map<String, dynamic>> data) async {
     showDialog(
@@ -423,6 +426,12 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
               isCaptChecked = captChecked;
             });
           },
+          onStatusFilterChanged: (bool doneChecked, bool handoverChecked) { // Add this line
+            setState(() {
+              isDoneChecked = doneChecked;
+              isHandoverChecked = handoverChecked;
+            });
+          },
         );
       },
     );
@@ -532,9 +541,9 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                     .collection("pilot-device-1")
                     .where('statusDevice',
                         whereIn: ['Done', 'handover-to-other-crew'])
-                    .where('timestamp',
-                        isGreaterThanOrEqualTo: _startDate,
-                        isLessThanOrEqualTo: _endDate) // Add this line
+                    // .where('timestamp',
+                    //     isGreaterThanOrEqualTo: _startDate,
+                    //     isLessThanOrEqualTo: _endDate) // Add this line
                     .where('field_hub', isEqualTo: userHub)
                     .orderBy('timestamp', descending: true) // Mengurutkan berdasarkan timestamp descending (baru ke lama)
                     .limit(30) // Menampilkan hanya 30 dokumen
@@ -575,31 +584,40 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                         deviceName3.contains(searchTerm);
                   }).toList();
 
-                  // Filter documents based on rank (FO and CAPT)
-                  final rankFilteredDocuments =
-                      filteredDocuments.where((document) {
-                    final data = document.data() as Map<String, dynamic>;
-                    final rank = data['RANK'].toString().toLowerCase();
 
-                    if (isFoChecked && isCaptChecked) {
-                      // Both FO and CAPT are selected
-                      return true;
-                    } else if (isFoChecked) {
-                      // Only FO is selected
-                      return rank.contains('fo');
-                    } else if (isCaptChecked) {
-                      // Only CAPT is selected
-                      return rank.contains('capt');
+                  final statusFilteredDocuments = filteredDocuments.where((document) {
+                    final data = document.data() as Map<String, dynamic>;
+                    final status = data['statusDevice'];
+                    final timestamp = (data['timestamp'] as Timestamp).toDate(); // Assuming 'timestamp' is a Timestamp field
+                    final UserId = data['user_uid'];
+
+                    // Check if the document falls within the selected date range
+                    bool isWithinDateRange = true;
+                    if (_startDate != null && _endDate != null) {
+                      isWithinDateRange = timestamp.isAfter(_startDate!) && timestamp.isBefore(_endDate!);
+                    }
+
+                    // Check status based on the selected checkboxes
+                    if (isDoneChecked && isHandoverChecked) {
+                      // Both Done and Handover are selected
+                      return isWithinDateRange && true;
+                    } else if (isDoneChecked) {
+                      // Only Done is selected
+                      return isWithinDateRange && status.contains('Done');
+                    } else if (isHandoverChecked) {
+                      // Only Handover is selected
+                      return isWithinDateRange && status.contains('handover-to-other-crew');
                     } else {
-                      // Neither FO nor CAPT is selected
-                      return true;
+                      // Neither Done nor Handover is selected
+                      return isWithinDateRange;
                     }
                   }).toList();
 
+
                   return ListView.builder(
-                    itemCount: rankFilteredDocuments.length,
+                    itemCount: statusFilteredDocuments.length,
                     itemBuilder: (context, index) {
-                      final document = rankFilteredDocuments[index];
+                      final document = statusFilteredDocuments[index];
                       final data = document.data() as Map<String, dynamic>;
                       final dataId = document.id;
                       final userUid = data['user_uid'];
@@ -684,7 +702,7 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                                       }
 
                                       final deviceno2 =
-                                          deviceData2?['deviceno'];
+                                          deviceData2?['value']['deviceno'];
 
                                       return FutureBuilder<DocumentSnapshot>(
                                         future: FirebaseFirestore.instance
@@ -715,7 +733,7 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                                           }
 
                                           final deviceno3 =
-                                              deviceData3?['deviceno'];
+                                              deviceData3?['value']['deviceno'];
 
                                           return Padding(
                                             padding: const EdgeInsets.symmetric(
@@ -837,7 +855,7 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
                                   );
                                 }
 
-                                final deviceno = deviceData?['deviceno'];
+                                final deviceno = deviceData?['value']['deviceno'];
 
                                 return Padding(
                                   padding: const EdgeInsets.symmetric(
@@ -942,10 +960,13 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
 class FilterBottomSheet extends StatefulWidget {
   final Function(DateTime, DateTime) onDateRangeSelected;
   final Function(bool, bool) onRankFilterChanged;
+  final Function(bool, bool) onStatusFilterChanged; // Added this line
 
   const FilterBottomSheet({
     required this.onDateRangeSelected,
     required this.onRankFilterChanged,
+    required this.onStatusFilterChanged,
+
   });
 
   @override
@@ -953,34 +974,119 @@ class FilterBottomSheet extends StatefulWidget {
 }
 
 class _FilterBottomSheetState extends State<FilterBottomSheet> {
-  late DateTime startDate = DateTime.now();
-  late DateTime endDate = DateTime.now();
+  DateTime? startDate;
+  DateTime? endDate;
+  bool isDoneChecked = false;
+  bool isHandoverChecked = false;
+  bool isCaptChecked = false;
+  bool isFoChecked = false;
 
-  Future<void> _selectStartDate(BuildContext context) async {
+  // Store selected filter values separately
+  DateTime? selectedStartDate;
+  DateTime? selectedEndDate;
+  bool selectedIsDoneChecked = false;
+  bool selectedIsHandoverChecked = false;
+  bool selectedIsCaptChecked = false;
+  bool selectedIsFoChecked = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Initialize selected filter values with current values or previously selected values
+    selectedStartDate = startDate ?? selectedStartDate;
+    selectedEndDate = endDate ?? selectedEndDate;
+    selectedIsDoneChecked = isDoneChecked ?? selectedIsDoneChecked;
+    selectedIsHandoverChecked = isHandoverChecked ?? selectedIsHandoverChecked;
+    selectedIsCaptChecked = isCaptChecked ?? selectedIsDoneChecked;
+    selectedIsFoChecked = isFoChecked ?? selectedIsHandoverChecked;
+  }
+
+  void _selectStartDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: startDate,
+      initialDate: startDate ?? DateTime.now(),
       firstDate: DateTime(2000),
-      lastDate: DateTime.now(),
+      lastDate: endDate ?? DateTime.now(),
     );
-    if (picked != null && picked != startDate)
+    if (picked != null && picked != startDate) {
       setState(() {
         startDate = picked;
+        selectedStartDate = picked; // Update selected value
       });
+    }
   }
 
-  Future<void> _selectEndDate(BuildContext context) async {
+  void _selectEndDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: endDate,
-      firstDate: DateTime(2000),
+      initialDate: endDate ?? DateTime.now(),
+      firstDate: startDate ?? DateTime(2000),
       lastDate: DateTime.now(),
     );
-    if (picked != null && picked != endDate)
+
+    if (picked != null && picked != endDate) {
+      // Set end time to 23:59:59
+      DateTime adjustedEndDate = DateTime(picked.year, picked.month, picked.day, 23, 59, 59);
+
       setState(() {
-        endDate = picked;
+        endDate = adjustedEndDate;
+        selectedEndDate = adjustedEndDate; // Update selected value
       });
+    }
   }
+
+
+  void _resetFilters() {
+    setState(() {
+      // Clear filter values
+      startDate = null;
+      endDate = null;
+      isDoneChecked = false;
+      isHandoverChecked = false;
+      isCaptChecked = false;
+      isFoChecked = false;
+
+      // Clear selected filter values
+      selectedStartDate = null;
+      selectedEndDate = null;
+      selectedIsDoneChecked = false;
+      selectedIsHandoverChecked = false;
+      selectedIsCaptChecked = false;
+      selectedIsFoChecked = false;
+    });
+  }
+
+  void _applyFilters() {
+    // Cek apakah startDate dan endDate null
+    if (startDate == null && endDate == null) {
+      // Jika keduanya null, maka set rentang waktu sangat luas
+      startDate = DateTime(2000);
+      endDate = DateTime.now();
+    }
+
+    if (startDate != null || endDate != null) {
+      widget.onDateRangeSelected(startDate ?? DateTime.now(), endDate ?? DateTime.now());
+    }
+
+    if (isDoneChecked != null || isHandoverChecked != null) {
+      widget.onStatusFilterChanged(isDoneChecked, isHandoverChecked);
+    }
+
+    if (isCaptChecked != null || isFoChecked != null) {
+      widget.onRankFilterChanged(isCaptChecked, isFoChecked);
+    }
+
+    // Update selected filter values
+    selectedStartDate = startDate;
+    selectedEndDate = endDate;
+    selectedIsDoneChecked = isDoneChecked;
+    selectedIsHandoverChecked = isHandoverChecked;
+    selectedIsCaptChecked = isCaptChecked;
+    selectedIsFoChecked = isFoChecked;
+
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -1011,7 +1117,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                           border: OutlineInputBorder(),
                         ),
                         child: Text(
-                          startDate.toLocal().toString().split(' ')[0],
+                          selectedStartDate?.toLocal().toString().split(' ')[0] ?? 'Select Date',
                           style: const TextStyle(fontSize: 16),
                         ),
                       ),
@@ -1020,14 +1126,14 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                   const SizedBox(width: 16),
                   Expanded(
                     child: InkWell(
-                      onTap: () => _selectEndDate( context),
+                      onTap: () => _selectEndDate(context),
                       child: InputDecorator(
                         decoration: const InputDecoration(
                           labelText: 'To',
                           border: OutlineInputBorder(),
                         ),
                         child: Text(
-                          endDate.toLocal().toString().split(' ')[0],
+                          selectedEndDate?.toLocal().toString().split(' ')[0] ?? 'Select Date',
                           style: const TextStyle(fontSize: 16),
                         ),
                       ),
@@ -1038,33 +1144,122 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
             ),
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: ElevatedButton(
-                onPressed: () {
-                  widget.onDateRangeSelected(startDate, endDate);
-                  Navigator.pop(context);
-                },
-                style: ElevatedButton.styleFrom(
-                  elevation: 5.0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4.0),
+              child: Row(
+                children: [
+                  Checkbox(
+                    value: selectedIsDoneChecked,
+                    onChanged: (value) {
+                      setState(() {
+                        isDoneChecked = value ?? false;
+                        selectedIsDoneChecked = isDoneChecked; // Update selected value
+                      });
+                    },
                   ),
-                  primary: TsOneColor.primary,
-                  minimumSize: Size(
-                    MediaQuery.of(context).size.width,
-                    48,
+                  Text('Done'),
+                  const SizedBox(width: 16),
+                  Checkbox(
+                    value: selectedIsHandoverChecked,
+                    onChanged: (value) {
+                      setState(() {
+                        isHandoverChecked = value ?? false;
+                        selectedIsHandoverChecked = isHandoverChecked; // Update selected value
+                      });
+                    },
                   ),
-                ),
-                child: const Padding(
-                  padding: EdgeInsets.all(15.0),
-                  child: Text(
-                    'Apply',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16.0,
+                  Text('Handover'),
+                ],
+              ),
+            ),
+
+            // Padding(
+            //   padding: const EdgeInsets.all(16.0),
+            //   child: Row(
+            //     children: [
+            //       Checkbox(
+            //         value: selectedIsCaptChecked,
+            //         onChanged: (value) {
+            //           setState(() {
+            //             isCaptChecked = value ?? false;
+            //             selectedIsCaptChecked = isCaptChecked; // Update selected value
+            //           });
+            //         },
+            //       ),
+            //       Text('CAPT'),
+            //       const SizedBox(width: 16),
+            //       Checkbox(
+            //         value: selectedIsFoChecked,
+            //         onChanged: (value) {
+            //           setState(() {
+            //             isFoChecked = value ?? false;
+            //             selectedIsFoChecked = isFoChecked; // Update selected value
+            //           });
+            //         },
+            //       ),
+            //       Text('FO'),
+            //     ],
+            //   ),
+            // ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      _applyFilters();
+                      Navigator.pop(context);
+                      print(startDate);
+                      print(endDate);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      elevation: 5.0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4.0),
+                      ),
+                      primary: TsOneColor.primary,
+                      minimumSize: Size(
+                        MediaQuery.of(context).size.width / 2 - 24,
+                        48,
+                      ),
                     ),
-                    textAlign: TextAlign.center,
+                    child: const Padding(
+                      padding: EdgeInsets.all(15.0),
+                      child: Text(
+                        'Apply',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16.0,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
                   ),
-                ),
+                  const SizedBox(width: 16),
+                  ElevatedButton(
+                    onPressed: _resetFilters,
+                    style: ElevatedButton.styleFrom(
+                      elevation: 5.0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4.0),
+                      ),
+                      primary: TsOneColor.primary,
+                      minimumSize: Size(
+                        MediaQuery.of(context).size.width / 2 - 24,
+                        48,
+                      ),
+                    ),
+                    child: const Padding(
+                      padding: EdgeInsets.all(15.0),
+                      child: Text(
+                        'Reset',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16.0,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
@@ -1073,3 +1268,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
     );
   }
 }
+
+
+
+

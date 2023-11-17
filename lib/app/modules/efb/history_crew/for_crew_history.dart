@@ -249,7 +249,7 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
                                       }
 
                                       final deviceno2 =
-                                          deviceData2?['deviceno'];
+                                          deviceData2?['value']['deviceno'];
 
                                       return FutureBuilder<DocumentSnapshot>(
                                         future: FirebaseFirestore.instance
@@ -279,7 +279,7 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
                                           }
 
                                           final deviceno3 =
-                                              deviceData3?['deviceno'];
+                                              deviceData3?['value']['deviceno'];
 
                                           return Padding(
                                             padding: const EdgeInsets.symmetric(
@@ -399,7 +399,7 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
                                   );
                                 }
 
-                                final deviceno = deviceData?['deviceno'];
+                                final deviceno = deviceData?['value']['deviceno'];
 
                                 return Padding(
                                   padding: const EdgeInsets.symmetric(

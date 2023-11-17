@@ -198,7 +198,7 @@ class PilotUnReturnDeviceView extends GetView {
                             Row(
                               children: [
                                 const Expanded(flex: 6, child: Text("ID NO")),
-                                const Expanded( child: Text(":")),
+                                const Expanded(child: Text(":")),
                                 Expanded(
                                   flex: 6,
                                   child: Text('${userData['ID NO'] ?? 'No Data'}'),
@@ -209,7 +209,7 @@ class PilotUnReturnDeviceView extends GetView {
                             Row(
                               children: [
                                 const Expanded(flex: 6, child: Text("Name")),
-                                const Expanded( child: Text(":")),
+                                const Expanded(child: Text(":")),
                                 Expanded(
                                   flex: 6,
                                   child: Text('${userData['NAME'] ?? 'No Data'}'),
@@ -220,7 +220,7 @@ class PilotUnReturnDeviceView extends GetView {
                             Row(
                               children: [
                                 const Expanded(flex: 6, child: Text("Rank")),
-                                const Expanded( child: Text(":")),
+                                const Expanded(child: Text(":")),
                                 Expanded(
                                   flex: 6,
                                   child: Text('${userData['RANK'] ?? 'No Data'}'),
@@ -240,7 +240,7 @@ class PilotUnReturnDeviceView extends GetView {
                                   Padding(
                                     padding: EdgeInsets.symmetric(horizontal: 8.0),
                                     child: Text(
-                                      'Loan Details',
+                                      'Device Details',
                                       style: TextStyle(color: Colors.grey),
                                     ),
                                   ),
@@ -267,11 +267,10 @@ class PilotUnReturnDeviceView extends GetView {
                                       style: tsOneTextTheme.bodySmall,
                                     )),
                                 Expanded(
-                                    
                                     child: Text(
-                                      ":",
-                                      style: tsOneTextTheme.bodySmall,
-                                    )),
+                                  ":",
+                                  style: tsOneTextTheme.bodySmall,
+                                )),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
@@ -291,15 +290,14 @@ class PilotUnReturnDeviceView extends GetView {
                                       style: tsOneTextTheme.bodySmall,
                                     )),
                                 Expanded(
-                                    
                                     child: Text(
-                                      ":",
-                                      style: tsOneTextTheme.bodySmall,
-                                    )),
+                                  ":",
+                                  style: tsOneTextTheme.bodySmall,
+                                )),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
-                                    '${deviceData['iosver'] ?? 'No Data'}',
+                                    '${deviceData['value']['iosver'] ?? 'No Data'}',
                                     style: tsOneTextTheme.bodySmall,
                                   ),
                                 ),
@@ -315,15 +313,14 @@ class PilotUnReturnDeviceView extends GetView {
                                       style: tsOneTextTheme.bodySmall,
                                     )),
                                 Expanded(
-                                    
                                     child: Text(
-                                      ":",
-                                      style: tsOneTextTheme.bodySmall,
-                                    )),
+                                  ":",
+                                  style: tsOneTextTheme.bodySmall,
+                                )),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
-                                    '${deviceData['flysmart'] ?? 'No Data'}',
+                                    '${deviceData['value']['flysmart'] ?? 'No Data'}',
                                     style: tsOneTextTheme.bodySmall,
                                   ),
                                 ),
@@ -339,15 +336,14 @@ class PilotUnReturnDeviceView extends GetView {
                                       style: tsOneTextTheme.bodySmall,
                                     )),
                                 Expanded(
-                                    
                                     child: Text(
-                                      ":",
-                                      style: tsOneTextTheme.bodySmall,
-                                    )),
+                                  ":",
+                                  style: tsOneTextTheme.bodySmall,
+                                )),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
-                                    '${deviceData['docuversion'] ?? 'No Data'}',
+                                    '${deviceData['value']['docuversion'] ?? 'No Data'}',
                                     style: tsOneTextTheme.bodySmall,
                                   ),
                                 ),
@@ -363,15 +359,14 @@ class PilotUnReturnDeviceView extends GetView {
                                       style: tsOneTextTheme.bodySmall,
                                     )),
                                 Expanded(
-                                    
                                     child: Text(
-                                      ":",
-                                      style: tsOneTextTheme.bodySmall,
-                                    )),
+                                  ":",
+                                  style: tsOneTextTheme.bodySmall,
+                                )),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
-                                    '${deviceData['lidoversion'] ?? 'No Data'}',
+                                    '${deviceData['value']['lidoversion'] ?? 'No Data'}',
                                     style: tsOneTextTheme.bodySmall,
                                   ),
                                 ),
@@ -387,15 +382,14 @@ class PilotUnReturnDeviceView extends GetView {
                                       style: tsOneTextTheme.bodySmall,
                                     )),
                                 Expanded(
-                                    
                                     child: Text(
-                                      ":",
-                                      style: tsOneTextTheme.bodySmall,
-                                    )),
+                                  ":",
+                                  style: tsOneTextTheme.bodySmall,
+                                )),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
-                                    '${deviceData['hub'] ?? 'No Data'}',
+                                    '${deviceData['value']['hub'] ?? 'No Data'}',
                                     style: tsOneTextTheme.bodySmall,
                                   ),
                                 ),
@@ -411,15 +405,14 @@ class PilotUnReturnDeviceView extends GetView {
                                       style: tsOneTextTheme.bodySmall,
                                     )),
                                 Expanded(
-                                    
                                     child: Text(
-                                      ":",
-                                      style: tsOneTextTheme.bodySmall,
-                                    )),
+                                  ":",
+                                  style: tsOneTextTheme.bodySmall,
+                                )),
                                 Expanded(
                                   flex: 6,
                                   child: Text(
-                                    '${deviceData['condition'] ?? 'No Data'}',
+                                    '${deviceData['value']['condition'] ?? 'No Data'}',
                                     style: tsOneTextTheme.bodySmall,
                                   ),
                                 ),

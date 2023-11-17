@@ -41,10 +41,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
   }
 
   List<Device> getMatchingDevices(String input) {
-    return devices
-        .where((device) =>
-            device.deviceno.toLowerCase().contains(input.toLowerCase()))
-        .toList();
+    return devices.where((device) => device.deviceno.toLowerCase().contains(input.toLowerCase())).toList();
   }
 
   //QuickAlert Success
@@ -95,8 +92,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                 Expanded(
                   flex: 5,
                   child: TextButton(
-                    child: const Text('No',
-                        style: TextStyle(color: TsOneColor.secondaryContainer)),
+                    child: const Text('No', style: TextStyle(color: TsOneColor.secondaryContainer)),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
@@ -112,8 +108,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                         borderRadius: BorderRadius.circular(20.0),
                       ),
                     ),
-                    child: const Text('Yes',
-                        style: TextStyle(color: TsOneColor.onPrimary)),
+                    child: const Text('Yes', style: TextStyle(color: TsOneColor.onPrimary)),
                     onPressed: () {
                       if (!deviceInUse) _saveBooking();
                       if (!deviceInUse) _showQuickAlert(context);
@@ -148,8 +143,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
   }
 
   Future<Widget> getUserPhoto(String userUid) async {
-    final userSnapshot =
-        await FirebaseFirestore.instance.collection("users").doc(userUid).get();
+    final userSnapshot = await FirebaseFirestore.instance.collection("users").doc(userUid).get();
 
     if (userSnapshot.exists) {
       final userData = userSnapshot.data() as Map<String, dynamic>;
@@ -170,8 +164,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
   }
 
   Future<String> getUserName(String userUid) async {
-    final userSnapshot =
-        await FirebaseFirestore.instance.collection("users").doc(userUid).get();
+    final userSnapshot = await FirebaseFirestore.instance.collection("users").doc(userUid).get();
 
     if (userSnapshot.exists) {
       final userData = userSnapshot.data() as Map<String, dynamic>;
@@ -186,8 +179,8 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
 
   @override
   Widget build(BuildContext context) {
-    bool isDeviceNotFound = deviceNoController.text.isNotEmpty &&
-        getMatchingDevices(deviceNoController.text).isEmpty;
+    bool isDeviceNotFound = deviceNoController.text.isNotEmpty && getMatchingDevices(deviceNoController.text).isEmpty;
+    List<Device> matchingDevices = getMatchingDevices(deviceNoController.text);
 
     return Scaffold(
       appBar: AppBar(
@@ -200,7 +193,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
           child: Column(
             children: [
               Align(
@@ -219,8 +212,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                         });
                       },
                       decoration: InputDecoration(
-                        contentPadding:
-                            const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                        contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                         labelText: 'Device No',
                         labelStyle: tsOneTextTheme.labelMedium,
                         border: const OutlineInputBorder(),
@@ -228,29 +220,39 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                     ),
                   ),
                   const SizedBox(width: 16.0),
-                  ElevatedButton(
-                    onPressed: () async {
-                      String qrCode = await FlutterBarcodeScanner.scanBarcode(
-                        '#ff6666', // Warna overlay saat pemindaian
-                        'Cancel', // Label tombol batal
-                        true, // Memungkinkan pemindaian di latar belakang
-                        ScanMode.QR, // Mode pemindaian QR code
-                      );
+                  Container(
+                    height: 56.0,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        String qrCode = await FlutterBarcodeScanner.scanBarcode(
+                          '#ff6666', // Warna overlay saat pemindaian
+                          'Cancel', // Label tombol batal
+                          true, // Memungkinkan pemindaian di latar belakang
+                          ScanMode.QR, // Mode pemindaian QR code
+                        );
 
-                      if (qrCode != '-1') {
-                        setState(() {
-                          deviceNoController.text = qrCode;
-                          selectedDevice =
-                              getMatchingDevices(qrCode).firstOrNull;
-                        });
-                      }
-                    },
-                    child: const Icon(Icons.qr_code_2),
+                        if (qrCode != '-1') {
+                          setState(() {
+                            deviceNoController.text = qrCode;
+                            selectedDevice = getMatchingDevices(qrCode).firstOrNull;
+                          });
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4.0),
+                        ),
+                      ),
+                      child: Icon(
+                        Icons.qr_code_2_rounded,
+                        size: 35,
+                      ),
+                    ),
                   ),
                 ],
               ),
               if (isDeviceNotFound) const EmptyScreenEFB(),
-              if (deviceNoController.text.isNotEmpty)
+              if (deviceNoController.text.isNotEmpty && matchingDevices.isNotEmpty)
                 Column(
                   children: getMatchingDevices(deviceNoController.text)
                       .map(
@@ -261,6 +263,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                               selectedDevice = device;
                               deviceNoController.text = device.deviceno;
                             });
+                            // deviceNoController.clear();
                           },
                         ),
                       )
@@ -275,8 +278,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                         color: tsOneColorScheme.onSecondary,
                       )),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 10),
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -284,9 +286,8 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                         const SizedBox(height: 5.0),
                         Row(
                           children: [
-                            const Expanded(
-                                flex: 7, child: Text("Device Number")),
-                            const Expanded(flex: 2, child: Text(":")),
+                            const Expanded(flex: 7, child: Text("Device Number")),
+                            const Expanded(child: Text(":")),
                             Expanded(
                               flex: 6,
                               child: Text('${selectedDevice!.deviceno}'),
@@ -296,7 +297,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                         Row(
                           children: [
                             const Expanded(flex: 7, child: Text("IOS Version")),
-                            const Expanded(flex: 2, child: Text(":")),
+                            const Expanded(child: Text(":")),
                             Expanded(
                               flex: 6,
                               child: Text('${selectedDevice!.iosver}'),
@@ -305,9 +306,8 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                         ),
                         Row(
                           children: [
-                            const Expanded(
-                                flex: 7, child: Text("FlySmart Version")),
-                            const Expanded(flex: 2, child: Text(":")),
+                            const Expanded(flex: 7, child: Text("FlySmart Version")),
+                            const Expanded(child: Text(":")),
                             Expanded(
                               flex: 6,
                               child: Text('${selectedDevice!.flysmart}'),
@@ -316,9 +316,8 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                         ),
                         Row(
                           children: [
-                            const Expanded(
-                                flex: 7, child: Text("Docunet Version")),
-                            const Expanded(flex: 2, child: Text(":")),
+                            const Expanded(flex: 7, child: Text("Docunet Version")),
+                            const Expanded(child: Text(":")),
                             Expanded(
                               flex: 6,
                               child: Text('${selectedDevice!.docuversion}'),
@@ -327,9 +326,8 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                         ),
                         Row(
                           children: [
-                            const Expanded(
-                                flex: 7, child: Text("Lido mPilot Version")),
-                            const Expanded(flex: 2, child: Text(":")),
+                            const Expanded(flex: 7, child: Text("Lido mPilot Version")),
+                            const Expanded(child: Text(":")),
                             Expanded(
                               flex: 6,
                               child: Text('${selectedDevice!.lidoversion}'),
@@ -339,7 +337,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                         Row(
                           children: [
                             const Expanded(flex: 7, child: Text("HUB")),
-                            const Expanded(flex: 2, child: Text(":")),
+                            const Expanded(child: Text(":")),
                             Expanded(
                               flex: 6,
                               child: Text('${selectedDevice!.hub}'),
@@ -349,7 +347,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                         Row(
                           children: [
                             const Expanded(flex: 7, child: Text("Condition")),
-                            const Expanded(flex: 2, child: Text(":")),
+                            const Expanded(child: Text(":")),
                             Expanded(
                               flex: 6,
                               child: Text('${selectedDevice!.condition}'),

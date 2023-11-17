@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ts_one/app/modules/efb/feedback/ConfirmPageFeedbackPilot.dart';
+import 'package:ts_one/app/modules/efb/feedback/fo/ConfirmPageFeedbackFO.dart';
 
-import '../../../../presentation/theme.dart';
+import '../../../../../presentation/theme.dart';
 
-class NextQuestionPageFeedbackPilot extends StatefulWidget {
+class NextQuestionPageFeedbackFO extends StatefulWidget {
   final String documentId;
   final String deviceId;
   final String? Q1;
@@ -14,7 +14,7 @@ class NextQuestionPageFeedbackPilot extends StatefulWidget {
   final String? Q5;
   final String? Q6;
 
-  NextQuestionPageFeedbackPilot({
+  NextQuestionPageFeedbackFO({
     required this.documentId,
     required this.deviceId,
     this.Q1,
@@ -26,10 +26,10 @@ class NextQuestionPageFeedbackPilot extends StatefulWidget {
   });
 
   @override
-  _NextQuestionPageFeedbackPilotState createState() => _NextQuestionPageFeedbackPilotState();
+  _NextQuestionPageFeedbackFOState createState() => _NextQuestionPageFeedbackFOState();
 }
 
-class _NextQuestionPageFeedbackPilotState extends State<NextQuestionPageFeedbackPilot> {
+class _NextQuestionPageFeedbackFOState extends State<NextQuestionPageFeedbackFO> {
   TextEditingController? oneSectorController = TextEditingController();
   TextEditingController? twoSectorController = TextEditingController();
   TextEditingController? threeSectorController = TextEditingController();
@@ -133,7 +133,7 @@ class _NextQuestionPageFeedbackPilotState extends State<NextQuestionPageFeedback
           onPressed: () {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => ConfirmPageFeedbackPilot(
+                builder: (context) => ConfirmPageFeedbackFO(
                   documentId: widget.documentId,
                   deviceId: widget.deviceId,
                   Q1: widget.Q1,

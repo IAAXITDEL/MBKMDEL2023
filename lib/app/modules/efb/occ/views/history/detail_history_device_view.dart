@@ -253,7 +253,7 @@ class DetailHistoryDeviceView extends GetView {
                                                   Expanded(flex: 1, child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
-                                                    child: Text('${deviceData['iosver'] ?? 'No Data'}'),
+                                                    child: Text('${deviceData['value']['iosver'] ?? 'No Data'}'),
                                                   ),
                                                 ],
                                               ),
@@ -264,7 +264,7 @@ class DetailHistoryDeviceView extends GetView {
                                                   Expanded(flex: 1, child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
-                                                    child: Text('${deviceData['flysmart'] ?? 'No Data'}'),
+                                                    child: Text('${deviceData['value']['flysmart'] ?? 'No Data'}'),
                                                   ),
                                                 ],
                                               ),
@@ -275,7 +275,7 @@ class DetailHistoryDeviceView extends GetView {
                                                   Expanded(flex: 1, child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
-                                                    child: Text('${deviceData['docuversion'] ?? 'No Data'}'),
+                                                    child: Text('${deviceData['value']['docuversion'] ?? 'No Data'}'),
                                                   ),
                                                 ],
                                               ),
@@ -286,7 +286,7 @@ class DetailHistoryDeviceView extends GetView {
                                                   Expanded(flex: 1, child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
-                                                    child: Text('${deviceData['lidoversion'] ?? 'No Data'}'),
+                                                    child: Text('${deviceData['value']['lidoversion'] ?? 'No Data'}'),
                                                   ),
                                                 ],
                                               ),
@@ -297,7 +297,7 @@ class DetailHistoryDeviceView extends GetView {
                                                   Expanded(flex: 1, child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
-                                                    child: Text('${deviceData['hub'] ?? 'No Data'}'),
+                                                    child: Text('${deviceData['value']['hub'] ?? 'No Data'}'),
                                                   ),
                                                 ],
                                               ),
@@ -308,7 +308,7 @@ class DetailHistoryDeviceView extends GetView {
                                                   Expanded(flex: 1, child: Text(":")),
                                                   Expanded(
                                                     flex: 6,
-                                                    child: Text('${deviceData['condition'] ?? 'No Data'}'),
+                                                    child: Text('${deviceData['value']['condition'] ?? 'No Data'}'),
                                                   ),
                                                 ],
                                               ),
@@ -325,6 +325,7 @@ class DetailHistoryDeviceView extends GetView {
                                                     Expanded(
                                                       flex: 6,
                                                       child: Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
                                                         children: [
                                                           if (status == 'Done' && data['prove_back_to_base'] == null ||
                                                               data['prove_back_to_base'].isEmpty)
@@ -392,6 +393,7 @@ class DetailHistoryDeviceView extends GetView {
                                                     Expanded(
                                                       flex: 6,
                                                       child: Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
                                                         children: [
                                                           if (status == 'handover-to-other-crew' && data['prove_image_url'] == null ||
                                                               data['prove_image_url'].isEmpty)
@@ -549,7 +551,7 @@ class DetailHistoryDeviceView extends GetView {
                                                         print(feedbackId);
                                                       },
                                                       child: Align(
-                                                        alignment: Alignment.centerLeft,
+                                                        alignment: Alignment.center,
                                                         child: Text(
                                                           'Open Feedback',
                                                           style: TextStyle(
@@ -620,23 +622,23 @@ class DetailHistoryDeviceView extends GetView {
                                                 children: [
                                                   Expanded(
                                                     child: ElevatedButton(
-                                                      onPressed: () {
-                                                        showDialog(
-                                                          context: context,
-                                                          barrierDismissible: false,
-                                                          builder: (context) {
-                                                            return AlertDialog(
-                                                              content: Column(
-                                                                mainAxisSize: MainAxisSize.min,
-                                                                children: [
-                                                                  CircularProgressIndicator(),
-                                                                  SizedBox(height: 20),
-                                                                  Text('Please Wait...'),
-                                                                ],
-                                                              ),
-                                                            );
-                                                          },
-                                                        );
+                                                        onPressed: () {
+                                                          showDialog(
+                                                            context: context,
+                                                            barrierDismissible: false,
+                                                            builder: (context) {
+                                                              return AlertDialog(
+                                                                content: Column(
+                                                                  mainAxisSize: MainAxisSize.min,
+                                                                  children: [
+                                                                    CircularProgressIndicator(),
+                                                                    SizedBox(height: 20),
+                                                                    Text('Please Wait...'),
+                                                                  ],
+                                                                ),
+                                                              );
+                                                            },
+                                                          );
 
                                                           generateLogPdfDevice1(
                                                             userName: userData[
@@ -654,16 +656,16 @@ class DetailHistoryDeviceView extends GetView {
                                                             'NAME'],
                                                             deviceNo: data[
                                                             'device_name'],
-                                                            iosVer: deviceData[
+                                                            iosVer: deviceData['value'][
                                                             'iosver'],
                                                             flySmart:
-                                                            deviceData[
+                                                            deviceData['value'][
                                                             'flysmart'],
-                                                            lido: deviceData['lidoversion'],
-                                                            docunet: deviceData[
+                                                            lido: deviceData['value']['lidoversion'],
+                                                            docunet: deviceData['value'][
                                                             'docuversion'],
                                                             deviceCondition:
-                                                            deviceData[
+                                                            deviceData['value'][
                                                             'condition'],
                                                             ttdUser: data[
                                                             'signature_url'],
@@ -687,39 +689,24 @@ class DetailHistoryDeviceView extends GetView {
                                                             handoverID: data[
                                                             'handover-to-crew'],
                                                           ).then((_) {
-                                                            Navigator.pop(
-                                                                context);
-                                                          }).catchError(
-                                                                  (error) {
-                                                                print(
-                                                                    'Error generating PDF: $error');
-                                                                Navigator.pop(
-                                                                    context);
-                                                              });
+                                                            Navigator.pop(context);
+                                                          }).catchError((error) {
+                                                            print('Error generating PDF: $error');
+                                                            Navigator.pop(context);
+                                                          });
                                                           //generateLogPdfDevice1();
                                                         },
-                                                        style: ElevatedButton
-                                                            .styleFrom(
-                                                          backgroundColor:
-                                                          TsOneColor
-                                                              .greenColor,
-                                                          shape:
-                                                          RoundedRectangleBorder(
-                                                            borderRadius:
-                                                            BorderRadius
-                                                                .circular(
-                                                                4.0),
+                                                        style: ElevatedButton.styleFrom(
+                                                          backgroundColor: TsOneColor.greenColor,
+                                                          shape: RoundedRectangleBorder(
+                                                            borderRadius: BorderRadius.circular(4.0),
                                                           ),
                                                         ),
                                                         child: Padding(
-                                                          padding:
-                                                          EdgeInsets.all(
-                                                              15),
+                                                          padding: EdgeInsets.all(15),
                                                           child: Text(
                                                             'Open Attachment History',
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .white),
+                                                            style: TextStyle(color: Colors.white),
                                                           ),
                                                         )),
                                                   ),

@@ -231,16 +231,11 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Align(
+                        Align(
                           alignment: Alignment.center,
                           child: Text(
                             "Crew Info",
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.black,
-                              fontFamily: 'Poppins',
-                            ),
+                            style: tsOneTextTheme.headlineMedium,
                           ),
                         ),
                         const SizedBox(height: 10.0),
@@ -271,7 +266,7 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                         Row(
                           children: [
                             Expanded(
-                                flex: 6,
+                                flex: 3,
                                 child: Text(
                                   "Name",
                                   style: tsOneTextTheme.bodySmall,
@@ -293,7 +288,7 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                         Row(
                           children: [
                             Expanded(
-                                flex: 6,
+                                flex: 3,
                                 child: Text(
                                   "Rank",
                                   style: tsOneTextTheme.bodySmall,
@@ -315,7 +310,7 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                         Row(
                           children: [
                             Expanded(
-                                flex: 6,
+                                flex: 3,
                                 child: Text(
                                   "HUB",
                                   style: tsOneTextTheme.bodySmall,
@@ -374,7 +369,7 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                 Stack(
                   children: [
                     Container(
-                      height: 480,
+                      height: 380,
                       decoration: BoxDecoration(
                         borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(10.0),
@@ -433,7 +428,10 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                             });
                           },
                         ),
-                        const Text('I agree with all the statements above.', style: TextStyle(fontWeight: FontWeight.w300)),
+                        Text(
+                          'I agree with all the statements above.',
+                          style: tsOneTextTheme.labelSmall,
+                        )
                       ],
                     ),
                     const SizedBox(height: 10),

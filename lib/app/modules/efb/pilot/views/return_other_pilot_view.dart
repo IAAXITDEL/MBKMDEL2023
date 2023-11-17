@@ -200,16 +200,11 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Align(
+                        Align(
                           alignment: Alignment.center,
                           child: Text(
                             "Crew Info",
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.black,
-                              fontFamily: 'Poppins',
-                            ),
+                            style: tsOneTextTheme.headlineMedium,
                           ),
                         ),
                         // Row(
@@ -239,7 +234,7 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
                         Row(
                           children: [
                             Expanded(
-                                flex: 6,
+                                flex: 3,
                                 child: Text(
                                   "Name",
                                   style: tsOneTextTheme.bodySmall,
@@ -261,7 +256,7 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
                         Row(
                           children: [
                             Expanded(
-                                flex: 6,
+                                flex: 3,
                                 child: Text(
                                   "Rank",
                                   style: tsOneTextTheme.bodySmall,
@@ -283,7 +278,7 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
                         Row(
                           children: [
                             Expanded(
-                                flex: 6,
+                                flex: 3,
                                 child: Text(
                                   "HUB",
                                   style: tsOneTextTheme.bodySmall,
@@ -342,7 +337,7 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
                 Stack(
                   children: [
                     Container(
-                      height: 480,
+                      height: 380,
                       decoration: BoxDecoration(
                         borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(10.0),
@@ -401,7 +396,10 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
                             });
                           },
                         ),
-                        const Text('I agree with all the statements above.', style: TextStyle(fontWeight: FontWeight.w300)),
+                        Text(
+                          'I agree with all the statements above.',
+                          style: tsOneTextTheme.labelSmall,
+                        )
                       ],
                     ),
                     const SizedBox(height: 10),

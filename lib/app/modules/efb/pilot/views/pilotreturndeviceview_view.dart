@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ts_one/app/modules/efb/feedback/PilotFeedback.dart';
+import 'package:ts_one/app/modules/efb/feedback/pilot/PilotFeedback.dart';
 import 'package:ts_one/app/modules/efb/pilot/views/pilotsignature_view.dart';
 import 'package:ts_one/app/modules/efb/pilot/views/return_other_pilot_view.dart';
 import 'package:ts_one/presentation/shared_components/TitleText.dart';
@@ -87,25 +87,33 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                   FirebaseFirestore.instance.collection('pilot-device-1').where('device_name', isEqualTo: widget.deviceName).get(),
                 ]),
                 builder: (context, snapshotList) {
-                  if (snapshotList.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
-                  } else if (snapshotList.hasError) {
+                  // if (snapshotList.connectionState == ConnectionState.waiting) {
+                  //   return const CircularProgressIndicator();
+                  // } else
+                  if (snapshotList.hasError) {
                     return Center(
                       child: Text('Error: ${snapshotList.error.toString()}'),
                     );
                   } else {
                     final deviceSnapshot = snapshotList.data![0];
                     final pilotDeviceSnapshot = snapshotList.data![1];
-                    final deviceData = deviceSnapshot.docs.isNotEmpty ? deviceSnapshot.docs.first.data() : <String, dynamic>{};
 
-                    // Handle null values gracefully
-                    final deviceno = deviceData['deviceno'] as String? ?? 'N/A';
-                    final iosver = deviceData['iosver'] as String? ?? 'N/A';
-                    final flysmart = deviceData['flysmart'] as String? ?? 'N/A';
-                    final lidoversion = deviceData['lidoversion'] as String? ?? 'N/A';
-                    final docuversion = deviceData['docuversion'] as String? ?? 'N/A';
-                    final condition = deviceData['condition'] as String? ?? 'N/A';
-                    final hub = deviceData['hub'] as String? ?? 'N/A';
+                      return FutureBuilder<DocumentSnapshot>(
+                      future: FirebaseFirestore.instance.collection("Device").doc(widget.deviceName).get(),
+                      builder: (context, deviceSnapshot) {
+                      if (deviceSnapshot.connectionState == ConnectionState.waiting) {
+                      //return const Center(child: CircularProgressIndicator());
+                      }
+
+                      if (deviceSnapshot.hasError) {
+                      return Center(child: Text('Error: ${deviceSnapshot.error}'));
+                      }
+
+                      if (!deviceSnapshot.hasData || !deviceSnapshot.data!.exists) {
+                      return const Center(child: Text('Device data not found'));
+                      }
+
+                      final deviceData = deviceSnapshot.data!.data() as Map<String, dynamic>;
 
                     // Handle data from 'pilot-device-1' collection
                     final pilotDeviceData = pilotDeviceSnapshot.docs.isNotEmpty ? pilotDeviceSnapshot.docs.first.data() : <String, dynamic>{};
@@ -118,7 +126,7 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                       future: FirebaseFirestore.instance.collection("users").doc(userUid).get(),
                       builder: (context, userSnapshot) {
                         if (userSnapshot.connectionState == ConnectionState.waiting) {
-                          return const Center(child: CircularProgressIndicator());
+                          //return const Center(child: CircularProgressIndicator());
                         }
 
                         if (userSnapshot.hasError) {
@@ -209,7 +217,10 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                                     children: [
                                       const Expanded(flex: 5, child: Text("Device No")),
                                       const Expanded(child: Text(":")),
-                                      Expanded(flex: 5, child: Text(deviceno)),
+                                      Expanded(flex: 5, child: Text(
+                                        '${deviceData['value']['deviceno'] ?? 'No Data'}',
+
+                                      ),),
                                     ],
                                   ),
                                   const SizedBox(
@@ -219,7 +230,10 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                                     children: [
                                       const Expanded(flex: 5, child: Text("IOS Version")),
                                       const Expanded(child: Text(":")),
-                                      Expanded(flex: 5, child: Text(iosver)),
+                                      Expanded(flex: 5, child: Text(
+                                        '${deviceData['value']['iosver'] ?? 'No Data'}',
+
+                                      ),),
                                     ],
                                   ),
                                   const SizedBox(
@@ -229,7 +243,10 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                                     children: [
                                       const Expanded(flex: 5, child: Text("Flysmart Ver")),
                                       const Expanded(child: Text(":")),
-                                      Expanded(flex: 5, child: Text(flysmart)),
+                                      Expanded(flex: 5, child: Text(
+                                        '${deviceData['value']['flysmart'] ?? 'No Data'}',
+
+                                      ),),
                                     ],
                                   ),
                                   const SizedBox(
@@ -239,7 +256,9 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                                     children: [
                                       const Expanded(flex: 5, child: Text("Docunet Version")),
                                       const Expanded(child: Text(":")),
-                                      Expanded(flex: 5, child: Text(docuversion)),
+                                      Expanded(flex: 5, child: Text(
+                                        '${deviceData['value']['docuversion'] ?? 'No Data'}',
+                                      ),),
                                     ],
                                   ),
                                   const SizedBox(
@@ -249,7 +268,10 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                                     children: [
                                       const Expanded(flex: 5, child: Text("Lido mPilot Version")),
                                       const Expanded(child: Text(":")),
-                                      Expanded(flex: 5, child: Text(lidoversion)),
+                                      Expanded(flex: 5, child: Text(
+                                        '${deviceData['value']['lidoversion'] ?? 'No Data'}',
+
+                                      ),),
                                     ],
                                   ),
                                   const SizedBox(
@@ -259,7 +281,11 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                                     children: [
                                       const Expanded(flex: 5, child: Text("HUB")),
                                       const Expanded(child: Text(":")),
-                                      Expanded(flex: 5, child: Text(hub)),
+                                      Expanded(flex: 5, child: Text(
+                                        '${deviceData['value']['hub'] ?? 'No Data'}',
+
+                                      ),
+                                      ),
                                     ],
                                   ),
                                   const SizedBox(
@@ -269,7 +295,11 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                                     children: [
                                       const Expanded(flex: 5, child: Text("Condition")),
                                       const Expanded(child: Text(":")),
-                                      Expanded(flex: 5, child: Text(condition)),
+                                      Expanded(flex: 5, child: Text(
+                                        '${deviceData['value']['condition'] ?? 'No Data'}',
+
+                                      ),
+                                      ),
                                     ],
                                   ),
                                   const SizedBox(
@@ -354,7 +384,7 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                                                   ),
                                                 );
                                               },
-                                              child: const Text("FeedBack"),
+                                              child: const Text("Feedback"),
                                             )
                                           ],
                                         ),
@@ -398,6 +428,8 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                         );
                       },
                     );
+                      },
+                      );
                   }
                 },
               ),

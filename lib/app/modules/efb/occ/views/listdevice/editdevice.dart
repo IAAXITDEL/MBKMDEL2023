@@ -184,44 +184,34 @@ class _EditDevice extends State<EditDevice> {
             ),
             content: const Text('Are you sure you want to update this device?'),
             actions: <Widget>[
-              Container(
-                width: 115,
-                child: TextButton(
-                  style: TextButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0),
-                      side: const BorderSide(color: TsOneColor.onSecondary),
+              Row(
+                children: [
+                  Expanded(
+                    flex: 5,
+                    child: TextButton(
+                      child: const Text('No', style: TextStyle(color: TsOneColor.secondaryContainer)),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
                     ),
                   ),
-                  onPressed: () {
-                    Navigator.of(context).pop(false);
-                  },
-                  child: const Text(
-                    'No',
-                    style: TextStyle(color: TsOneColor.onSecondary),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                width: 15,
-              ),
-              Container(
-                width: 115,
-                child: TextButton(
-                  style: TextButton.styleFrom(
-                    backgroundColor: TsOneColor.greenColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0),
+                  const Spacer(flex: 1),
+                  Expanded(
+                    flex: 5,
+                    child: TextButton(
+                      style: TextButton.styleFrom(
+                        backgroundColor: TsOneColor.greenColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                      ),
+                      child: const Text('Yes', style: TextStyle(color: TsOneColor.onPrimary)),
+                      onPressed: () async {
+                        Navigator.of(context).pop(true);
+                      },
                     ),
                   ),
-                  onPressed: () {
-                    Navigator.of(context).pop(true);
-                  },
-                  child: const Text(
-                    'Yes',
-                    style: TextStyle(color: TsOneColor.onPrimary),
-                  ),
-                ),
+                ],
               ),
             ],
           );
