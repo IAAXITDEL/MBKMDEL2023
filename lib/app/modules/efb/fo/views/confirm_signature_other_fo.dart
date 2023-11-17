@@ -615,7 +615,10 @@ class _ConfirmSignatureReturnOtherFOViewState extends State<ConfirmSignatureRetu
                                             );
                                           },
                                         ),
-                                        const Text('I agree with all the statements above.', style: TextStyle(fontWeight: FontWeight.w300)),
+                                        Text(
+                                          'I agree with all the statements above.',
+                                          style: tsOneTextTheme.labelSmall,
+                                        )
                                       ],
                                     ),
 

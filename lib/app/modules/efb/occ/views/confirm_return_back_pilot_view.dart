@@ -930,7 +930,10 @@ class ConfirmReturnBackPilotView extends GetView {
                                                   );
                                                 },
                                               ),
-                                              const Text('I agree with all the statements above.', style: TextStyle(fontWeight: FontWeight.w300)),
+                                              Text(
+                                                'I agree with all the statements above.',
+                                                style: tsOneTextTheme.labelSmall,
+                                              )
                                             ],
                                           ),
 
@@ -1464,7 +1467,10 @@ class ConfirmReturnBackPilotView extends GetView {
                                         );
                                       },
                                     ),
-                                    const Text('I agree with all the statements above.', style: TextStyle(fontWeight: FontWeight.w300)),
+                                    Text(
+                                      'I agree with all the statements above.',
+                                      style: tsOneTextTheme.labelSmall,
+                                    )
                                   ],
                                 ),
 

@@ -148,6 +148,7 @@ class PilotUnReturnToOtherCrewView extends GetView {
               final data = snapshot.data!.data() as Map<String, dynamic>;
 
               final userUid = data['user_uid'];
+              final userUidHandover = data['handover-to-crew'];
               final deviceUid = data['device_uid'];
 
               return FutureBuilder<DocumentSnapshot>(
@@ -168,124 +169,192 @@ class PilotUnReturnToOtherCrewView extends GetView {
                   final userData = userSnapshot.data!.data() as Map<String, dynamic>;
 
                   return FutureBuilder<DocumentSnapshot>(
-                    future: FirebaseFirestore.instance.collection("Device").doc(deviceUid).get(),
-                    builder: (context, deviceSnapshot) {
-                      if (deviceSnapshot.connectionState == ConnectionState.waiting) {
+                    future: FirebaseFirestore.instance.collection("users").doc(userUidHandover).get(),
+                    builder: (context, userSnapshotHandover) {
+                      if (userSnapshotHandover.connectionState == ConnectionState.waiting) {
                         return const Center(child: CircularProgressIndicator());
                       }
 
-                      if (deviceSnapshot.hasError) {
-                        return Center(child: Text('Error: ${deviceSnapshot.error}'));
+                      if (userSnapshotHandover.hasError) {
+                        return Center(child: Text('Error: ${userSnapshotHandover.error}'));
                       }
 
-                      if (!deviceSnapshot.hasData || !deviceSnapshot.data!.exists) {
-                        return const Center(child: Text('Device data not found'));
+                      if (!userSnapshotHandover.hasData || !userSnapshotHandover.data!.exists) {
+                        return const Center(child: Text('User data not found'));
                       }
 
-                      final deviceData = deviceSnapshot.data!.data() as Map<String, dynamic>;
+                      final userDataHandover = userSnapshotHandover.data!.data() as Map<String, dynamic>;
 
-                      return Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: Text(_formatTimestamp(data['timestamp']), style: tsOneTextTheme.labelSmall),
-                            ),
-                            const SizedBox(height: 15),
-                            Row(
+                      return FutureBuilder<DocumentSnapshot>(
+                        future: FirebaseFirestore.instance.collection("Device").doc(deviceUid).get(),
+                        builder: (context, deviceSnapshot) {
+                          if (deviceSnapshot.connectionState == ConnectionState.waiting) {
+                            return const Center(child: CircularProgressIndicator());
+                          }
+
+                          if (deviceSnapshot.hasError) {
+                            return Center(child: Text('Error: ${deviceSnapshot.error}'));
+                          }
+
+                          if (!deviceSnapshot.hasData || !deviceSnapshot.data!.exists) {
+                            return const Center(child: Text('Device data not found'));
+                          }
+
+                          final deviceData = deviceSnapshot.data!.data() as Map<String, dynamic>;
+
+                          return Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                const Expanded(flex: 6, child: Text("ID NO")),
-                                const Expanded( child: Text(":")),
-                                Expanded(
-                                  flex: 6,
-                                  child: Text('${userData['ID NO'] ?? 'No Data'}'),
+                                Align(
+                                  alignment: Alignment.centerRight,
+                                  child: Text(_formatTimestamp(data['timestamp']), style: tsOneTextTheme.labelSmall),
                                 ),
-                              ],
-                            ),
-                            const SizedBox(height: 5.0),
-                            Row(
-                              children: [
-                                const Expanded(flex: 6, child: Text("Name")),
-                                const Expanded( child: Text(":")),
-                                Expanded(
-                                  flex: 6,
-                                  child: Text('${userData['NAME'] ?? 'No Data'}'),
+                                const SizedBox(height: 15),
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    "Handover From",
+                                    style: tsOneTextTheme.headlineMedium,
+                                  ),
                                 ),
-                              ],
-                            ),
-                            const SizedBox(height: 5.0),
-                            Row(
-                              children: [
-                                const Expanded(flex: 6, child: Text("Rank")),
-                                const Expanded( child: Text(":")),
-                                Expanded(
-                                  flex: 6,
-                                  child: Text('${userData['RANK'] ?? 'No Data'}'),
+                                const SizedBox(height: 10.0),
+                                Row(
+                                  children: [
+                                    const Expanded(flex: 6, child: Text("ID NO")),
+                                    const Expanded(child: Text(":")),
+                                    Expanded(
+                                      flex: 6,
+                                      child: Text('${userData['ID NO'] ?? 'No Data'}'),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                            const SizedBox(height: 20),
-                            const Padding(
-                              padding: EdgeInsets.only(bottom: 16.0),
-                              child: Row(
-                                children: <Widget>[
-                                  Expanded(
-                                    child: Divider(
-                                      color: Colors.grey,
+                                const SizedBox(height: 5.0),
+                                Row(
+                                  children: [
+                                    const Expanded(flex: 6, child: Text("Name")),
+                                    const Expanded(child: Text(":")),
+                                    Expanded(
+                                      flex: 6,
+                                      child: Text('${userData['NAME'] ?? 'No Data'}'),
                                     ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 8.0),
-                                    child: Text(
-                                      'Loan Details',
-                                      style: TextStyle(color: Colors.grey),
+                                  ],
+                                ),
+                                const SizedBox(height: 5.0),
+                                Row(
+                                  children: [
+                                    const Expanded(flex: 6, child: Text("Rank")),
+                                    const Expanded(child: Text(":")),
+                                    Expanded(
+                                      flex: 6,
+                                      child: Text('${userData['RANK'] ?? 'No Data'}'),
                                     ),
+                                  ],
+                                ),
+                                const SizedBox(height: 16.0),
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    "Handover To",
+                                    style: tsOneTextTheme.headlineMedium,
                                   ),
-                                  Expanded(
-                                    child: Divider(
-                                      color: Colors.grey,
+                                ),
+                                const SizedBox(height: 10.0),
+                                Row(
+                                  children: [
+                                    const Expanded(flex: 6, child: Text("ID NO")),
+                                    const Expanded(child: Text(":")),
+                                    Expanded(
+                                      flex: 6,
+                                      child: Text('${userDataHandover['ID NO'] ?? 'No Data'}'),
                                     ),
+                                  ],
+                                ),
+                                const SizedBox(height: 5.0),
+                                Row(
+                                  children: [
+                                    const Expanded(flex: 6, child: Text("Name")),
+                                    const Expanded(child: Text(":")),
+                                    Expanded(
+                                      flex: 6,
+                                      child: Text('${userDataHandover['NAME'] ?? 'No Data'}'),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 5.0),
+                                Row(
+                                  children: [
+                                    const Expanded(flex: 6, child: Text("Rank")),
+                                    const Expanded(child: Text(":")),
+                                    Expanded(
+                                      flex: 6,
+                                      child: Text('${userDataHandover['RANK'] ?? 'No Data'}'),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 20),
+                                const Padding(
+                                  padding: EdgeInsets.only(bottom: 16.0),
+                                  child: Row(
+                                    children: <Widget>[
+                                      Expanded(
+                                        child: Divider(
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(horizontal: 8.0),
+                                        child: Text(
+                                          'Device Details',
+                                          style: TextStyle(color: Colors.grey),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Divider(
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 5.0),
-                            Row(
-                              children: [
-                                Expanded(
-                                    flex: 6,
-                                    child: Text(
-                                      "Device No",
-                                      style: tsOneTextTheme.bodySmall,
-                                    )),
-                                Expanded(
-                                    
-                                    child: Text(
+                                ),
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text("Device 1", style: tsOneTextTheme.headlineMedium),
+                                ),
+                                const SizedBox(height: 5.0),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                          "Device No",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        child: Text(
                                       ":",
                                       style: tsOneTextTheme.bodySmall,
                                     )),
-                                Expanded(
-                                  flex: 6,
-                                  child: Text(
-                                    '${data['device_name'] ?? 'No Data'}',
-                                    style: tsOneTextTheme.bodySmall,
-                                  ),
+                                    Expanded(
+                                      flex: 6,
+                                      child: Text(
+                                        '${data['device_name'] ?? 'No Data'}',
+                                        style: tsOneTextTheme.bodySmall,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                            const SizedBox(height: 5.0),
-                            Row(
-                              children: [
-                                Expanded(
-                                    flex: 6,
-                                    child: Text(
-                                      "IOS Version",
-                                      style: tsOneTextTheme.bodySmall,
-                                    )),
-                                Expanded(
-                                    
-                                    child: Text(
+                                const SizedBox(height: 5.0),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                          "IOS Version",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        child: Text(
                                       ":",
                                       style: tsOneTextTheme.bodySmall,
                                     )),
@@ -426,9 +495,11 @@ class PilotUnReturnToOtherCrewView extends GetView {
                 },
               );
             },
-          ),
+          );
+            },
         ),
       ),
+    ),
       bottomNavigationBar: BottomAppBar(
         surfaceTintColor: tsOneColorScheme.secondary,
         child: ElevatedButton(

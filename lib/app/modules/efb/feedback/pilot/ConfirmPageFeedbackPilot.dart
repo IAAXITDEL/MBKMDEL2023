@@ -6,8 +6,9 @@ import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:ts_one/app/modules/efb/pilot/controllers/requestdevice_controller.dart';
 import 'package:ts_one/app/modules/efb/pilot/views/pilotreturndeviceview_view.dart';
 import 'package:ts_one/app/modules/efb/fo/views/fo_return_device_view.dart';
+import 'package:ts_one/app/routes/app_pages.dart';
 
-import '../../../../presentation/theme.dart';
+import '../../../../../presentation/theme.dart';
 
 class ConfirmPageFeedbackPilot extends StatefulWidget {
   final String documentId;
@@ -198,75 +199,26 @@ class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
                       final userData = userDeviceSnapshot.data?.data() as Map<String, dynamic> ?? {};
                       final userRank = userData['RANK'] as String? ?? '-';
 
-                      if (userRank == "CAPT") {
-                        return PilotreturndeviceviewView(
-                          deviceName: deviceName,
-                          deviceId: deviceId,
-                          OccOnDuty: occOnDuty,
-                        );
-                      } else if (userRank == "FO") {
-                        return FOreturndeviceviewView(
-                          deviceName2: deviceName2,
-                          deviceName3: deviceName3,
-                          deviceId: deviceId,
-                          OccOnDuty: occOnDuty,
-                        );
-                      }
-
-                      // if (userRank == "FO")
+                      // if (userRank == "CAPT") {
+                      //   return PilotreturndeviceviewView(
+                      //     deviceName: deviceName,
+                      //     deviceId: deviceId,
+                      //     OccOnDuty: occOnDuty,
+                      //   );
+                      // } else if (userRank == "FO") {
                       //   return FOreturndeviceviewView(
                       //     deviceName2: deviceName2,
                       //     deviceName3: deviceName3,
                       //     deviceId: deviceId,
                       //     OccOnDuty: occOnDuty,
                       //   );
-
-                      // return PilotreturndeviceviewView(
-                      //   deviceName: deviceName,
-                      //   deviceId: deviceId,
-                      //   OccOnDuty: occOnDuty,
-                      // );
-
-                      return Center(child: Text('Unknown user rank'));
-
-                      //   return FOreturndeviceviewView(
-                      //     deviceName2: deviceName2,
-                      //     deviceName3: deviceName3,
-                      //     deviceId: deviceId,
-                      //     OccOnDuty: occOnDuty,
-                      //   );
-
-                      // Stream<Widget> getDeviceViewStream(String userRank) async* {
-                      //   if (userRank == "CAPT") {
-                      //     yield PilotreturndeviceviewView(
-                      //       deviceName: deviceName,
-                      //       deviceId: deviceId,
-                      //       OccOnDuty: occOnDuty,
-                      //     );
-                      //   } else if (userRank == "FO") {
-                      //     yield FOreturndeviceviewView(
-                      //       deviceName2: deviceName2,
-                      //       deviceName3: deviceName3,
-                      //       deviceId: deviceId,
-                      //       OccOnDuty: occOnDuty,
-                      //     );
-                      //   } else {
-                      //     // Jika userRank tidak sesuai dengan kondisi yang diberikan
-                      //     yield Center(child: Text('Unknown user rank'));
-                      //   }
                       // }
 
-                      // return StreamBuilder<Widget>(
-                      //   stream: getDeviceViewStream(userRank),
-                      //   builder: (context, snapshot) {
-                      //     if (snapshot.hasData) {
-                      //       return snapshot.data!;
-                      //     } else {
-                      //       // Handle kasus lain seperti loading atau error
-                      //       return CircularProgressIndicator();
-                      //     }
-                      //   },
-                      // );
+                      return PilotreturndeviceviewView(
+                        deviceName: deviceName,
+                        deviceId: deviceId,
+                        OccOnDuty: occOnDuty,
+                      );
                     },
                   );
                 },
@@ -274,6 +226,20 @@ class _ConfirmPageFeedbackPilotState extends State<ConfirmPageFeedbackPilot> {
             },
           );
         },
+      ),
+    );
+
+    Get.offAllNamed(Routes.NAVOCC);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: const Text("Successfully fill in the Feedback Form"),
+        duration: const Duration(milliseconds: 2000),
+        action: SnackBarAction(
+          label: 'Close',
+          onPressed: () {
+            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          },
+        ),
       ),
     );
   }
