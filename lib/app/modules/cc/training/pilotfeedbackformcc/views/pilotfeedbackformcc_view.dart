@@ -63,7 +63,6 @@ class PilotfeedbackformccView extends GetView<PilotfeedbackformccController> {
                       }
 
                       if (snapshot.hasError) {
-                        print("unu ${snapshot.error}");
                         return ErrorScreen();
                       }
 
@@ -115,53 +114,53 @@ class PilotfeedbackformccView extends GetView<PilotfeedbackformccController> {
                           SizedBox(
                             height: 20,
                           ),
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Expanded(
-                                child: FormTextField(
-                                    text: "Department",
-                                    textController: departmentC,
-                                    readOnly: true),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                child: FormTextField(
-                                    text: "Vanue",
-                                    textController: vanueC,
-                                    readOnly: true),
-                              )
-                            ],
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Expanded(
-                                child: FormTextField(
-                                    text: "Training Type",
-                                    textController: trainingtypeC,
-                                    readOnly: true),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                child: FormTextField(
-                                  text: "Room",
-                                  textController: roomC,
-                                    readOnly: true
-                                ),
-                              )
-                            ],
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
+                          // Row(
+                          //   mainAxisSize: MainAxisSize.min,
+                          //   children: [
+                          //     Expanded(
+                          //       child: FormTextField(
+                          //           text: "Department",
+                          //           textController: departmentC,
+                          //           readOnly: true),
+                          //     ),
+                          //     SizedBox(
+                          //       width: 10,
+                          //     ),
+                          //     Expanded(
+                          //       child: FormTextField(
+                          //           text: "Vanue",
+                          //           textController: vanueC,
+                          //           readOnly: true),
+                          //     )
+                          //   ],
+                          // ),
+                          // SizedBox(
+                          //   height: 20,
+                          // ),
+                          // Row(
+                          //   mainAxisSize: MainAxisSize.min,
+                          //   children: [
+                          //     Expanded(
+                          //       child: FormTextField(
+                          //           text: "Training Type",
+                          //           textController: trainingtypeC,
+                          //           readOnly: true),
+                          //     ),
+                          //     SizedBox(
+                          //       width: 10,
+                          //     ),
+                          //     Expanded(
+                          //       child: FormTextField(
+                          //         text: "Room",
+                          //         textController: roomC,
+                          //           readOnly: true
+                          //       ),
+                          //     )
+                          //   ],
+                          // ),
+                          // SizedBox(
+                          //   height: 20,
+                          // ),
                           InkWell(
                             onTap: () {},
                             child: Container(

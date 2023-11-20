@@ -22,6 +22,9 @@ class ListAttendancedetailccController extends GetxController {
   RxBool isCPTS = false.obs;
 
   late UserPreferences userPreferences;
+  RxDouble ratingCommunication = 1.0.obs;
+  RxDouble ratingKnowledge = 1.0.obs;
+  RxDouble ratingParticipation = 1.0.obs;
 
   @override
   void onInit() {
