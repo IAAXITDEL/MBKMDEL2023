@@ -265,31 +265,33 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           //SUBJECT TRAININGS
-                         Expanded(child:  Card(
-                           shape: RoundedRectangleBorder(
-                             borderRadius: BorderRadius.circular(10),
-                             side: BorderSide(color: TsOneColor.secondary, width: 1),
-                           ),
-                           color: TsOneColor.surface,
-                           surfaceTintColor: Colors.white,
-                           shadowColor: Colors.white,
-                           elevation: 5,
-                           child: InkWell(
-                             onTap: () {},
-                             splashColor: TsOneColor.primary,
-                             child: Center(
-                               child: Container(
-                                 padding: const EdgeInsets.symmetric(
-                                     vertical: 10, horizontal: 10),
-                                 child: Column(
-                                   children: [
-                                     Image.asset(
-                                       "assets/images/trainings_logo.png",
-                                       fit: BoxFit.fitWidth,
-                                     ),
-                                     Obx(() => Text('${controller.trainingCount.value}', style: tsOneTextTheme.headlineMedium,),),
-                                     Text( 'Trainings\n', style: TextStyle(color: TsOneColor.redColor),)
-                                   ],
+                         Expanded(child:  Container(height: 140,
+                           child: Card(
+                             shape: RoundedRectangleBorder(
+                               borderRadius: BorderRadius.circular(10),
+                               side: BorderSide(color: TsOneColor.secondary, width: 1),
+                             ),
+                             color: TsOneColor.surface,
+                             surfaceTintColor: Colors.white,
+                             shadowColor: Colors.white,
+                             elevation: 5,
+                             child: InkWell(
+                               onTap: () {},
+                               splashColor: TsOneColor.primary,
+                               child: Center(
+                                 child: Container(
+                                   padding: const EdgeInsets.symmetric(
+                                       vertical: 10, horizontal: 10),
+                                   child: Column(
+                                     children: [
+                                       Image.asset(
+                                         "assets/images/trainings_logo.png",
+                                         fit: BoxFit.fitWidth,
+                                       ),
+                                       Obx(() => Text('${controller.trainingCount.value}', style: tsOneTextTheme.headlineMedium,),),
+                                       Text( 'Subject Trainings', style: TextStyle(color: TsOneColor.redColor),)
+                                     ],
+                                   ),
                                  ),
                                ),
                              ),
@@ -297,63 +299,33 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                          )),
 
                           //ONGOING TRAININGS
-                          Expanded(child:  Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              side: BorderSide(color: TsOneColor.secondary, width: 1),
-                            ),
-                            color: TsOneColor.surface,
-                            surfaceTintColor: Colors.white,
-                            shadowColor: Colors.white,
-                            elevation: 5,
-                            child: InkWell(
-                              onTap: () {},
-                              splashColor: TsOneColor.primary,
-                              child: Center(
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 10, horizontal: 10),
-                                  child: Column(
-                                    children: [
-                                      Image.asset(
-                                        "assets/images/on_going_training_logo.png",
-                                        fit: BoxFit.fitWidth,
-                                      ),
-                                      Obx(() => Text('${controller.ongoingTrainingCount.value}', style: tsOneTextTheme.headlineMedium,),),
-                                      Text( 'Ongoing Trainings', style: TextStyle(color: TsOneColor.redColor), textAlign: TextAlign.center,)
-                                    ],
-                                  ),
-                                ),
+                          Expanded(child:  Container(height: 140,
+                            child: Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                side: BorderSide(color: TsOneColor.secondary, width: 1),
                               ),
-                            ),
-                          )),
-
-                          //COMPLETED TRAININGS
-                          Expanded(child:  Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              side: BorderSide(color: TsOneColor.secondary, width: 1),
-                            ),
-                            color: TsOneColor.surface,
-                            surfaceTintColor: Colors.white,
-                            shadowColor: Colors.white,
-                            elevation: 5,
-                            child: InkWell(
-                              onTap: () {},
-                              splashColor: TsOneColor.primary,
-                              child: Center(
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 10, horizontal: 10),
-                                  child: Column(
-                                    children: [
-                                      Image.asset(
-                                        "assets/images/completed_training_logo.png",
-                                        fit: BoxFit.fitWidth,
-                                      ),
-                                     Obx(() =>  Text('${controller.completedTrainingCount.value}', style: tsOneTextTheme.headlineMedium,),),
-                                      Text( 'Completed Trainings', style: TextStyle(color: TsOneColor.redColor), textAlign: TextAlign.center,)
-                                    ],
+                              color: TsOneColor.surface,
+                              surfaceTintColor: Colors.white,
+                              shadowColor: Colors.white,
+                              elevation: 5,
+                              child: InkWell(
+                                onTap: () {},
+                                splashColor: TsOneColor.primary,
+                                child: Center(
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 10, horizontal: 10),
+                                    child: Column(
+                                      children: [
+                                        Image.asset(
+                                          "assets/images/on_going_training_logo.png",
+                                          fit: BoxFit.fitWidth,
+                                        ),
+                                        Obx(() => Text('${controller.ongoingTrainingCount.value}', style: tsOneTextTheme.headlineMedium,),),
+                                        Text( 'Ongoing Trainings', style: TextStyle(color: TsOneColor.redColor), textAlign: TextAlign.center,)
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
@@ -402,7 +374,7 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                             ],
                           ),
                           SizedBox(height: 10),
-                         Obx((){
+                          Obx((){
                            return  Container(
                              height: 150,
                              child: Stack(
@@ -509,10 +481,88 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                              ),
                            );
                          }),
+
+                          SizedBox(height: 20), // Add some space between the pie chart and the cards
+
+                          Row(
+                            children: [
+                              // Card for "CCP", "FIA", "FIS", "PGI"
+                              Expanded(
+                                child: Container(
+                                  height: 105, // Set the desired height
+                                  child: Card(
+                                    elevation: 5,
+                                    // color: Colors.green,
+                                    color: const Color(0xFFEEEEEE),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          Center(
+                                            child: Text(
+                                              'Instructor Categories',
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.redAccent[700],
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(height: 8),
+                                          // Display counts for "CCP", "FIA", "FIS", "GI"
+                                          for (String category in ["CCP", "FIA", "FIS", "GI"])
+                                            Obx(() => Text('$category: ${controller.counts[category]}', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold))),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+
+                              SizedBox(width: 8),
+
+                              // Card for "CAPT" and "FO"
+                              Expanded(
+                                child: Container(
+                                  height: 105, // Set the desired height
+                                  child: Card(
+                                    elevation: 5,
+                                    // color: Colors.green,
+                                    color: const Color(0xFFEEEEEE),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [Center(
+                                          child: Text(
+                                                'Rank Categories',
+                                                style: TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.redAccent[700],
+                                                ),
+                                              ),
+                                        ),
+                                          SizedBox(height: 8),
+                                          // Display counts for "CAPT" and "FO"
+                                          Obx(() => Text('CAPT: ${controller.captCount.value}', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold))),
+                                          Obx(() => Text('FO: ${controller.foCount.value}', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold))),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+
                         ],
                       ),
 
-                      SizedBox(height: 40),
+                      SizedBox(height: 35),
 
                       //FILTERS
 
