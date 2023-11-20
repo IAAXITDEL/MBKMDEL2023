@@ -20,9 +20,11 @@ class ListAttendancedetailccView
   Widget build(BuildContext context) {
     var scoreC = TextEditingController();
     var feedbackC = TextEditingController();
+    var gradeC = TextEditingController();
 
-    Future<void> updateScoring(String score, String feedback) async {
-      controller.updateScoring(score, feedback).then((status) async {
+
+    Future<void> updateScoring(String score, String feedback, double grade, double communication, double knowledge, double active) async {
+      controller.updateScoring(score, feedback, grade, communication, knowledge, active ).then((status) async {
         await QuickAlert.show(
           context: context,
           type: QuickAlertType.success,
@@ -63,7 +65,7 @@ class ListAttendancedetailccView
                     var documentData = listAttendance[0];
                     controller.idattendancedetail.value = documentData["id"];
                     feedbackC.text = documentData["feedback"] ?? "";
-
+                    gradeC.text = documentData["grade"].toString() ?? "";
                     List<String> list = ['PASS', 'FAIL'];
                     RxString dropdownValue =
                         RxString(documentData["score"] ?? list.first);
@@ -239,6 +241,38 @@ class ListAttendancedetailccView
                                           SizedBox(
                                             height: 10,
                                           ),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                  flex: 3,
+                                                  child: Text("GRADE")),
+                                              Expanded(
+                                                  flex: 1, child: Text(":")),
+                                              Expanded(
+                                                  flex: 6,
+                                                  child:  TextFormField(
+                                                    controller: gradeC,
+                                                    keyboardType: TextInputType.number,
+                                                    validator: (value) {
+                                                      if (value == null || value.isEmpty) {
+                                                        // Validation Logic
+                                                        return 'Please enter the Grade';
+                                                      } else {
+                                                        // Convert the value to double for numeric comparison
+                                                        double? numericValue = double.tryParse(value);
+                                                        if (numericValue == null || numericValue < 0 || numericValue > 100) {
+                                                          return 'Please enter a valid numeric Grade between 0 and 100';
+                                                        }
+                                                      }
+                                                      return null;
+                                                    },
+                                                  )
+                                                ,)
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 20,
+                                          ),
                                           Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
@@ -257,7 +291,7 @@ class ListAttendancedetailccView
                                                   value: controller.ratingCommunication.value,
                                                   min: 1,
                                                   max: 5,
-                                                  divisions: 5,
+                                                  divisions: 4,
                                                   label: controller.ratingCommunication.value.round().toString(),
                                                   onChanged: (double value) {
                                                     controller.ratingCommunication.value = value;
@@ -288,7 +322,7 @@ class ListAttendancedetailccView
                                                   value: controller.ratingKnowledge.value,
                                                   min: 1,
                                                   max: 5,
-                                                  divisions: 5,
+                                                  divisions: 4,
                                                   label: controller.ratingKnowledge.value.round().toString(),
                                                   onChanged: (double value) {
                                                     controller.ratingKnowledge.value = value;
@@ -316,13 +350,13 @@ class ListAttendancedetailccView
                                               ),
                                               Obx(() {
                                                 return Slider(
-                                                  value: controller.ratingParticipation.value,
+                                                  value: controller.ratingActive.value,
                                                   min: 1,
                                                   max: 5,
-                                                  divisions: 5,
-                                                  label: controller.ratingParticipation.value.round().toString(),
+                                                  divisions: 4,
+                                                  label: controller.ratingActive.value.round().toString(),
                                                   onChanged: (double value) {
-                                                    controller.ratingParticipation.value = value;
+                                                    controller.ratingActive.value = value;
                                                   },
                                                   activeColor: Colors.red[900],
                                                 );
@@ -335,15 +369,7 @@ class ListAttendancedetailccView
                                           Row(
                                             children: [
                                               Expanded(
-                                                  flex: 3,
-                                                  child: Text("Provide Additional Information")),
-                                              Expanded(
-                                                  flex: 1, child: Text(":")),
-                                              Expanded(
-                                                  flex: 6,
-                                                  child: Row(
-                                                    children: [],
-                                                  ))
+                                                  child: Text("Provide Additional Information", style: tsOneTextTheme.headlineMedium,)),
                                             ],
                                           ),
                                           SizedBox(
@@ -433,26 +459,14 @@ class ListAttendancedetailccView
                                                       context: context,
                                                       builder: (BuildContext
                                                           context) {
-                                                        return FutureBuilder<
-                                                            void>(
-                                                          future: updateScoring(
-                                                              dropdownValue
-                                                                  .value,
-                                                              feedbackC.text),
-                                                          builder: (BuildContext
-                                                                  context,
-                                                              AsyncSnapshot<
-                                                                      void>
-                                                                  snapshot) {
-                                                            if (snapshot
-                                                                    .connectionState ==
-                                                                ConnectionState
-                                                                    .waiting) {
+                                                        return FutureBuilder<void>(
+                                                          future: updateScoring(dropdownValue.value, feedbackC.text, double.tryParse(gradeC.text)! , controller.ratingCommunication.value, controller.ratingKnowledge.value, controller.ratingActive.value ),
+                                                          builder: (BuildContextcontext, AsyncSnapshot<void>snapshot) {
+                                                            if (snapshot.connectionState == ConnectionState.waiting) {
                                                               return LoadingScreen(); // Show loading screen
                                                             }
 
-                                                            if (snapshot
-                                                                .hasError) {
+                                                            if (snapshot.hasError) {
                                                               // Handle error if needed
                                                               return ErrorScreen();
                                                             } else {

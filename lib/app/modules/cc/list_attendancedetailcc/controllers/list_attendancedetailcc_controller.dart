@@ -24,7 +24,7 @@ class ListAttendancedetailccController extends GetxController {
   late UserPreferences userPreferences;
   RxDouble ratingCommunication = 1.0.obs;
   RxDouble ratingKnowledge = 1.0.obs;
-  RxDouble ratingParticipation = 1.0.obs;
+  RxDouble ratingActive = 1.0.obs;
 
   @override
   void onInit() {
@@ -107,6 +107,10 @@ class ListAttendancedetailccController extends GetxController {
           attendanceModel.rank = user['RANK'];
           attendanceModel.license = user['LICENSE NO.'];
 
+          ratingCommunication.value = attendanceModel.rCommunication!;
+          ratingKnowledge.value = attendanceModel.rKnowledge!;
+          ratingActive.value = attendanceModel.rActive!;
+
           return attendanceModel.toJson();
         }),
       );
@@ -131,7 +135,7 @@ class ListAttendancedetailccController extends GetxController {
   }
 
   // Update score dan feedback dilakukan oleh instructor
-  Future<void> updateScoring(String score, String feedback) async {
+  Future<void> updateScoring(String score, String feedback, double grade, double communication, double knowledge, double active) async {
     CollectionReference attendance = firestore.collection('attendance-detail');
 
     // Get attendance detail
@@ -229,6 +233,10 @@ class ListAttendancedetailccController extends GetxController {
     await attendance.doc(idattendancedetail.value).update({
       "score": score,
       "feedback": feedback,
+      "grade" : grade,
+      "rCommunication" : communication,
+      "rKnowledge" : knowledge,
+      "rActive" : active,
       "status": "donescoring",
       "updatedTime": DateTime.now().toIso8601String(),
     });

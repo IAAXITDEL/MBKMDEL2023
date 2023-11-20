@@ -124,6 +124,7 @@ class ListAttendanceccView extends GetView<ListAttendanceccController> {
                        return EmptyScreen();
                      }
 
+                     print(listAttendance);
                      return ListView.builder(
                          itemCount: listAttendance.length,
                          physics: const NeverScrollableScrollPhysics(),
@@ -170,6 +171,21 @@ class ListAttendanceccView extends GetView<ListAttendanceccController> {
                                          listAttendance[index]["score"] ?? "",
                                          style: TextStyle(
                                            fontSize: 10, color: listAttendance[index]["score"] == "PASS" ? Colors.green : Colors.red,),
+                                       ),
+                                     ),
+
+                                     SizedBox(width: 10,),
+                                     Container(
+                                       padding: EdgeInsets.symmetric(
+                                           vertical: 3, horizontal: 10),
+                                       decoration: BoxDecoration(
+                                         color: Colors.yellow.withOpacity(0.4) ,
+                                         borderRadius: BorderRadius.circular(10),
+                                       ),
+                                       child: Text(
+                                         listAttendance[index]["grade"].toString() ?? "0",
+                                         style: TextStyle(
+                                           fontSize: 10, color: Colors.orange),
                                        ),
                                      ),
                                    ],
