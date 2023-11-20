@@ -139,7 +139,7 @@ class ListAttendancedetailccController extends GetxController {
     if (attendanceDetailQuery.docs.isNotEmpty) {
       final attendanceDetailData = AttendanceDetailModel.fromJson(attendanceDetailQuery.docs.first.data() as Map<String, dynamic>);
 
-      if (score == "SUCCESS" && attendanceDetailData.formatNo == null) {
+      if (score == "PASS" && attendanceDetailData.formatNo == null) {
         final attendanceQuery = await firestore
             .collection('attendance')
             .where("id", isEqualTo: attendanceDetailData.idattendance)
@@ -188,7 +188,7 @@ class ListAttendancedetailccController extends GetxController {
             final attendanceDetailQuery = await firestore
                 .collection('attendance-detail')
                 .where("idattendance", whereIn: attendanceIds)
-                .where("score", isEqualTo: "SUCCESS")
+                .where("score", isEqualTo: "PASS")
                 .get();
             attendanceDetailData.addAll(attendanceDetailQuery.docs.map((doc) => doc.data()));
           }
@@ -215,7 +215,7 @@ class ListAttendancedetailccController extends GetxController {
           });
 
         }
-      } else if (score == "FAIL" && attendanceDetailData.score == "SUCCESS") {
+      } else if (score == "FAIL" && attendanceDetailData.score == "PASS") {
         await attendance.doc(idattendancedetail.value).update({
           "formatNo": null,
           "certificatemandatory" : null

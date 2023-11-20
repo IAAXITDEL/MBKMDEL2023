@@ -89,6 +89,16 @@ class AddTrainingccView extends GetView<AddTrainingccController> {
                                   TextStyle(
                                       fontSize: 11.0), // Set the font size here
                                 ),
+                                backgroundColor: MaterialStateProperty.resolveWith<Color?>(
+                                      (Set<MaterialState> states) {
+                                    // Change the background color when the button is pressed
+                                    if (states.contains(MaterialState.pressed)) {
+                                      return Colors.grey; // You can set a different color here
+                                    }
+                                    // Return the default color
+                                    return Colors.white;
+                                  },
+                                ),
                               ),
                             );
                           }).toList(),

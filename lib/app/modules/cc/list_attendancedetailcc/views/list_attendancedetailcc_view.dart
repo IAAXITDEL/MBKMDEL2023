@@ -64,7 +64,7 @@ class ListAttendancedetailccView
                     controller.idattendancedetail.value = documentData["id"];
                     feedbackC.text = documentData["feedback"] ?? "";
 
-                    List<String> list = ['SUCCESS', 'FAIL'];
+                    List<String> list = ['PASS', 'FAIL'];
                     RxString dropdownValue =
                         RxString(documentData["score"] ?? list.first);
                         return Container(
@@ -107,7 +107,7 @@ class ListAttendancedetailccView
                                                       vertical: 3,
                                                       horizontal: 10),
                                                   decoration: BoxDecoration(
-                                                    color: documentData["score"] == "SUCCESS" || documentData["score"] ==  null ? Colors.green.withOpacity(0.4)
+                                                    color: documentData["score"] == "PASS" || documentData["score"] ==  null ? Colors.green.withOpacity(0.4)
                                                         : Colors.red
                                                             .withOpacity(0.4),
                                                     borderRadius:
@@ -120,7 +120,7 @@ class ListAttendancedetailccView
                                                         fontSize: 10,
                                                         color: documentData[
                                                                     "score"] ==
-                                                                "SUCCESS"  || documentData["score"] ==  null
+                                                                "PASS"  || documentData["score"] ==  null
                                                             ? Colors.green
                                                             : Colors.red),
                                               ),
@@ -181,7 +181,7 @@ class ListAttendancedetailccView
                           SizedBox(
                             height: 10,
                           ),
-  controller.argumentstatus.value == "pending"
+                            controller.argumentstatus.value == "pending"
                                   ? Form(
                                       key: _formKey,
                                       child: Column(
@@ -205,43 +205,28 @@ class ListAttendancedetailccView
                                                                         8),
                                                             decoration:
                                                                 BoxDecoration(
-                                                              color: scoreC.text.isEmpty ? Colors.green.withOpacity(0.4) : scoreC.text == "SUCCESS" ? Colors.green.withOpacity(0.4) : Colors.red.withOpacity(0.4),
+                                                              color: scoreC.text.isEmpty ? Colors.green.withOpacity(0.4) : scoreC.text == "PASS" ? Colors.green.withOpacity(0.4) : Colors.red.withOpacity(0.4),
                                                               borderRadius:
                                                                   BorderRadius
                                                                       .circular(
                                                                           10),
                                                             ),
                                                             child:
-                                                                DropdownButton<
-                                                                    String>(
-                                                              underline:
-                                                                  Container(),
-                                                              focusColor:
-                                                                  tsOneColorScheme
-                                                                      .onSecondaryContainer,
-                                                              value:
-                                                                  dropdownValue
-                                                                      .value,
-                                                              onChanged: (String?
-                                                                  newValue) {
-                                                                dropdownValue
-                                                                        .value =
-                                                                    newValue!;
-                                                                scoreC.text =
-                                                                    dropdownValue
-                                                                        .value;
+                                                                DropdownButton<String>(
+                                                              underline: Container(),
+                                                              focusColor: tsOneColorScheme.onSecondaryContainer,
+                                                              value: dropdownValue.value,
+                                                              onChanged: (String? newValue) {
+                                                                dropdownValue.value = newValue!;
+                                                                scoreC.text = dropdownValue.value;
                                                               },
                                                               items: list.map(
-                                                                  (String
-                                                                      value) {
+                                                                  (String value) {
                                                                 return DropdownMenuItem<
                                                                     String>(
                                                                   value: value,
-                                                                  child: Text(
-                                                                    value,
-                                                                    style: TextStyle(
-                                                                        fontSize:
-                                                                            14),
+                                                                  child: Text(value,
+                                                                    style: TextStyle(fontSize: 14),
                                                                   ),
                                                                 );
                                                               }).toList(),
