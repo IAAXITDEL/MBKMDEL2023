@@ -141,18 +141,18 @@ class ListAttendancedetailccView
                                   child: Text(documentData["name"] ?? "N/A")),
                             ],
                           ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            children: [
-                              Expanded(flex: 3, child: Text("EMAIL")),
-                              Expanded(flex: 1, child: Text(":")),
-                              Expanded(
-                                  flex: 6,
-                                  child: Text(documentData["email"] ?? "N/A")),
-                            ],
-                          ),
+                          // SizedBox(
+                          //   height: 10,
+                          // ),
+                          // Row(
+                          //   children: [
+                          //     Expanded(flex: 3, child: Text("EMAIL")),
+                          //     Expanded(flex: 1, child: Text(":")),
+                          //     Expanded(
+                          //         flex: 6,
+                          //         child: Text(documentData["email"] ?? "N/A")),
+                          //   ],
+                          // ),
                           SizedBox(
                             height: 10,
                           ),
@@ -165,19 +165,19 @@ class ListAttendancedetailccView
                                   child: Text(documentData["rank"] ?? "N/A")),
                             ],
                           ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            children: [
-                              Expanded(flex: 3, child: Text("LICENSE NO")),
-                              Expanded(flex: 1, child: Text(":")),
-                              Expanded(
-                                  flex: 6,
-                                  child:
-                                      Text(documentData["license"] ?? "N/A")),
-                            ],
-                          ),
+                          // SizedBox(
+                          //   height: 10,
+                          // ),
+                          // Row(
+                          //   children: [
+                          //     Expanded(flex: 3, child: Text("LICENSE NO")),
+                          //     Expanded(flex: 1, child: Text(":")),
+                          //     Expanded(
+                          //         flex: 6,
+                          //         child:
+                          //             Text(documentData["license"] ?? "N/A")),
+                          //   ],
+                          // ),
                           SizedBox(
                             height: 10,
                           ),
@@ -239,11 +239,104 @@ class ListAttendancedetailccView
                                           SizedBox(
                                             height: 10,
                                           ),
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text("Communication Skills", style: tsOneTextTheme.headlineMedium,textAlign: TextAlign.center,),
+                                              Text("Clear and effective communication", style: TextStyle(color: TsOneColor.secondaryContainer, fontSize: 11),textAlign: TextAlign.start,),
+                                              SizedBox(height: 10,),
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Text("Very Poor", style: tsOneTextTheme.labelSmall,),
+                                                  Text("Excellent", style: tsOneTextTheme.labelSmall,)
+                                                ],
+                                              ),
+                                              Obx(() {
+                                                return Slider(
+                                                  value: controller.ratingCommunication.value,
+                                                  min: 1,
+                                                  max: 5,
+                                                  divisions: 5,
+                                                  label: controller.ratingCommunication.value.round().toString(),
+                                                  onChanged: (double value) {
+                                                    controller.ratingCommunication.value = value;
+                                                  },
+                                                  activeColor: Colors.blue[900],
+                                                );
+                                              }),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text("Knowledge Acquisition", style: tsOneTextTheme.headlineMedium,textAlign: TextAlign.center,),
+                                              Text("Understanding and applying training materials", style: TextStyle(color: TsOneColor.secondaryContainer, fontSize: 11),textAlign: TextAlign.start,),
+                                              SizedBox(height: 10,),
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Text("Very Low", style: tsOneTextTheme.labelSmall,),
+                                                  Text("Very High", style: tsOneTextTheme.labelSmall,)
+                                                ],
+                                              ),
+                                              Obx(() {
+                                                return Slider(
+                                                  value: controller.ratingKnowledge.value,
+                                                  min: 1,
+                                                  max: 5,
+                                                  divisions: 5,
+                                                  label: controller.ratingKnowledge.value.round().toString(),
+                                                  onChanged: (double value) {
+                                                    controller.ratingKnowledge.value = value;
+                                                  },
+                                                  activeColor: Colors.green[900],
+                                                );
+                                              }),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text("Active Participation", style: tsOneTextTheme.headlineMedium,textAlign: TextAlign.center,),
+                                              Text("Engaging actively", style: TextStyle(color: TsOneColor.secondaryContainer, fontSize: 11),textAlign: TextAlign.start,),
+                                              SizedBox(height: 10,),
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Text("Very Low", style: tsOneTextTheme.labelSmall,),
+                                                  Text("Very High", style: tsOneTextTheme.labelSmall,)
+                                                ],
+                                              ),
+                                              Obx(() {
+                                                return Slider(
+                                                  value: controller.ratingParticipation.value,
+                                                  min: 1,
+                                                  max: 5,
+                                                  divisions: 5,
+                                                  label: controller.ratingParticipation.value.round().toString(),
+                                                  onChanged: (double value) {
+                                                    controller.ratingParticipation.value = value;
+                                                  },
+                                                  activeColor: Colors.red[900],
+                                                );
+                                              }),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
                                           Row(
                                             children: [
                                               Expanded(
                                                   flex: 3,
-                                                  child: Text("FEEDBACK")),
+                                                  child: Text("Provide Additional Information")),
                                               Expanded(
                                                   flex: 1, child: Text(":")),
                                               Expanded(
