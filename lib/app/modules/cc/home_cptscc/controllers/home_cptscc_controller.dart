@@ -29,7 +29,6 @@ class HomeCptsccController extends GetxController {
   RxInt presentCount = 0.obs; // Number of pilots (use .obs here)
   double absentPercentage = 0.0;
   double presentPercentage = 0.0;
-
   RxString training = "ALL".obs;
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -43,12 +42,22 @@ class HomeCptsccController extends GetxController {
   RxString _selectedSubject = "ALL".obs;
   RxString get selectedSubject => _selectedSubject;
 
+  RxInt foCount = 0.obs;
+  RxInt captCount = 0.obs;
+  RxMap<String, int> counts = {
+    "CCP": 0,
+    "FIA": 0,
+    "FIS": 0,
+    "GI": 0,
+  }.obs;
+
 
   @override
   void onInit() {
     userPreferences = getItLocator<UserPreferences>();
     getTrainingSubjects();
     _isPilotAdministrator = false;
+    fetchCounts();
 
     fetchAttendanceData(
         trainingType: training.value,
@@ -79,26 +88,6 @@ class HomeCptsccController extends GetxController {
       timeToGreet = "Evening";
     }
 
-    // Future<List<Map<String, dynamic>>> getCombinedAttendance({String? trainingType, DateTime? from, DateTime? to}) async {
-
-
-    // Fetch Firestore data to count instructors
-    FirebaseFirestore.instance
-        .collection('users')
-        .where('INSTRUCTOR', arrayContainsAny: ["CCP", "FIA", "FIS", "PGI"])
-        .get()
-        .then((querySnapshot) {
-      instructorCount.value = querySnapshot.docs.length;
-    });
-
-    // Fetch Firestore data to count pilots
-    FirebaseFirestore.instance
-        .collection('users')
-        .where('INSTRUCTOR', arrayContains: "")
-        .get()
-        .then((querySnapshot) {
-      pilotCount.value = querySnapshot.docs.length;
-    });
 
     // Fetch Firestore data to count completed trainings
     FirebaseFirestore.instance
@@ -134,62 +123,9 @@ class HomeCptsccController extends GetxController {
       trainingCount.value = querySnapshot.docs.length;
     });
 
-
-    // Fetch Firestore data to count absent
-    // FirebaseFirestore.instance
-    //     .collection('absent')
-    //     .get()
-    //     .then((absentQuerySnapshot) {
-    //   Map<String, List<DocumentSnapshot>> absentDataByAttendance = {};
-    //   absentQuerySnapshot.docs.forEach((doc) {
-    //     String idAttendance = doc.data()['idAttendance'];
-    //     if (!absentDataByAttendance.containsKey(idAttendance)) {
-    //       absentDataByAttendance[idAttendance] = [];
-    //     }
-    //     absentDataByAttendance[idAttendance]?.add(doc);
-    //   });
-    //
-    //   // After grouping the 'absent' data
-    //   print("Absent data grouped by idAttendance:");
-    //   absentDataByAttendance.forEach((idAttendance, data) {
-    //     print("idAttendance: $idAttendance");
-    //     data.forEach((doc) {
-    //       print("Document: ${doc.data()}");
-    //     });
-    //   });
-    // });
-
-
-// Fetch Firestore data to count attendance
-//     FirebaseFirestore.instance
-//         .collection('attendance-detail')
-//         .get()
-//         .then((attendanceQuerySnapshot) {
-//       Map<String, List<DocumentSnapshot>> attendanceDataByAttendance = {};
-//       attendanceQuerySnapshot.docs.forEach((doc) {
-//         String idAttendance = doc.data()['idAttendance'];
-//         if (!attendanceDataByAttendance.containsKey(idAttendance)) {
-//           attendanceDataByAttendance[idAttendance] = [];
-//         }
-//         attendanceDataByAttendance[idAttendance]?.add(doc);
-//       });
-//
-//       // After grouping the 'attendance' data
-//       print("Attendance data grouped by idAttendance:");
-//       attendanceDataByAttendance.forEach((idAttendance, data) {
-//         print("idAttendance: $idAttendance");
-//         data.forEach((doc) {
-//           print("Document: ${doc.data()}");
-//         });
-//       });
-//     });
-//
-
-    // Fetch Firestore data to count instructors
-
     FirebaseFirestore.instance
         .collection('users')
-        .where('INSTRUCTOR', arrayContainsAny: ["CCP", "FIA", "FIS", "PGI"])
+        .where('INSTRUCTOR', arrayContainsAny: ["CCP", "FIA", "FIS", "GI"])
         .get()
         .then((querySnapshot) {
       instructorCount.value = querySnapshot.docs.length;
@@ -211,21 +147,46 @@ class HomeCptsccController extends GetxController {
       int totalUsers = querySnapshot.docs.length + instructorCount.value;
       pilotPercentage = (querySnapshot.docs.length / totalUsers) * 100;
     });
+
   }
 
-  // Future<List<String>> getTrainingSubjects() async {
-  //   List<String> subjects = ["ALL"];
-  //   try {
-  //     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-  //         .collection('trainingType')
-  //         .get();
-  //
-  //     subjects = querySnapshot.docs.map((doc) => doc['subject'].toString()).toList();
-  //   } catch (e) {
-  //     print("Error fetching training subjects: $e");
-  //   }
-  //   return subjects;
-  // }
+  //RATIO OF "CCP", "FIA", "FIS", "GI"
+  Future<void> performQueries() async {
+    List<Query> queries = [
+      FirebaseFirestore.instance.collection('users').where('INSTRUCTOR', arrayContains: "CCP"),
+      FirebaseFirestore.instance.collection('users').where('INSTRUCTOR', arrayContains: "FIA"),
+      FirebaseFirestore.instance.collection('users').where('INSTRUCTOR', arrayContains: "FIS"),
+      FirebaseFirestore.instance.collection('users').where('INSTRUCTOR', arrayContains: "GI"),
+    ];
+
+    for (int i = 0; i < queries.length; i++) {
+      QuerySnapshot querySnapshot = await queries[i].get();
+      counts[["CCP", "FIA", "FIS", "GI"][i]] = querySnapshot.docs.length;
+    }
+
+    int totalInstructorCount = counts.values.reduce((sum, count) => sum + count);
+    print("Total Instructor Count: $totalInstructorCount");
+    print("CCP Count: ${counts["CCP"]}");
+    print("FIA Count: ${counts["FIA"]}");
+    print("FIS Count: ${counts["FIS"]}");
+    print("GI Count: ${counts["GI"]}");
+  }
+
+  Future<void> fetchCounts() async {
+    await performQueries();
+
+    QuerySnapshot querySnapshotFO = await FirebaseFirestore.instance
+        .collection('users')
+        .where('RANK', isEqualTo: "FO")
+        .get();
+    foCount.value = querySnapshotFO.docs.length;
+
+    QuerySnapshot querySnapshotCAPT = await FirebaseFirestore.instance
+        .collection('users')
+        .where('RANK', isEqualTo: "CAPT")
+        .get();
+    captCount.value = querySnapshotCAPT.docs.length;
+  }
 
   Future<List<String>> getTrainingSubjects() async {
     List<String> subjects = ["ALL"];
@@ -245,7 +206,6 @@ class HomeCptsccController extends GetxController {
   void updateSelectedSubject(String newSubject) {
     _selectedSubject.value = newSubject;
   }
-
 
   Future<void> fetchAttendanceData({String? trainingType, DateTime? from, DateTime? to}) async {
     try {
