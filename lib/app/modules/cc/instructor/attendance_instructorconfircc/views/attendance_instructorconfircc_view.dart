@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -160,19 +161,29 @@ class AttendanceInstructorconfirccView
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Expanded(
-                                child: FormTextField(
-                                    text: "Subject",
-                                    textController: subjectC,
-                                    readOnly: true),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey.withOpacity(0.3)
+                                  ),
+                                  child: FormTextField(
+                                      text: "Subject",
+                                      textController: subjectC,
+                                      readOnly: true),
+                                )
                               ),
                               SizedBox(
                                 width: 10,
                               ),
                               Expanded(
-                                child: FormDateField(
-                                    text: "Date",
-                                    textController: dateC,
-                                    readOnly: true),
+                                child: Container(
+                                    decoration: BoxDecoration(
+                                        color: Colors.grey.withOpacity(0.3)
+                                    ),
+                                  child: FormDateField(
+                                      text: "Date",
+                                      textController: dateC,
+                                      readOnly: true),
+                                )
                               )
                             ],
                           ),
@@ -183,19 +194,43 @@ class AttendanceInstructorconfirccView
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Expanded(
-                                child: FormTextField(
-                                  text: "Department",
-                                  textController: departmentC,
-                                ),
+                                child: DropdownSearch<String>(
+                                  mode: Mode.MENU,
+                                  items: ['NONE', 'Option 1', 'Option 2', 'Option 3', 'Option 4'],
+                                  dropdownSearchDecoration:
+                                  InputDecoration(
+                                    labelText: "Department",
+                                    hintText: "choose Department",
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(5),
+                                      ),
+                                    ),
+                                  ),
+                                  onChanged: (String? newValue) {
+                                    departmentC.text = newValue!;
+                                  },
+                                  validator: (String? value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please choose a department';
+                                    }
+                                    return null;
+                                  },
+                                )
                               ),
                               SizedBox(
                                 width: 10,
                               ),
                               Expanded(
-                                child: FormTextField(
-                                    text: "Vanue",
-                                    textController: vanueC,
-                                    readOnly: true),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      color: Colors.grey.withOpacity(0.3)
+                                  ),
+                                  child: FormTextField(
+                                      text: "Vanue",
+                                      textController: vanueC,
+                                      readOnly: true),
+                                ),
                               )
                             ],
                           ),
@@ -205,21 +240,68 @@ class AttendanceInstructorconfirccView
                           Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Expanded(
-                                child: FormTextField(
-                                  text: "Training Type",
-                                  textController: trainingtypeC,
+                              // Expanded(
+                              //   child: FormTextField(
+                              //     text: "Training Type",
+                              //     textController: trainingtypeC,
+                              //   ),
+                              // ),
+                              Expanded(child: DropdownSearch<String>(
+                                mode: Mode.MENU,
+                                items: ['NONE', 'RECURRENT'],
+                                dropdownSearchDecoration:
+                                InputDecoration(
+                                  labelText: "Training Type",
+                                  hintText: "Choose Training Type",
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(5),
+                                    ),
+                                  ),
                                 ),
-                              ),
+                                onChanged: (String? newValue) {
+                                  trainingtypeC.text = newValue!;
+                                },
+                                validator: (String? value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please choose a training type';
+                                  }
+                                  return null;
+                                },
+                              )),
                               SizedBox(
                                 width: 10,
                               ),
-                              Expanded(
-                                child: FormTextField(
-                                  text: "Room",
-                                  textController: roomC,
+                              // Expanded(
+                              //   child: FormTextField(
+                              //     text: "Room",
+                              //     textController: roomC,
+                              //   ),
+                              // )
+
+                              Expanded(child: DropdownSearch<String>(
+                                mode: Mode.MENU,
+                                items: ['NONE', 'RECURRENT'],
+                                dropdownSearchDecoration:
+                                InputDecoration(
+                                  labelText: "Room",
+                                  hintText: "Choose Room",
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(5),
+                                    ),
+                                  ),
                                 ),
-                              )
+                                onChanged: (String? newValue) {
+                                  roomC.text = newValue!;
+                                },
+                                validator: (String? value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please choose a room';
+                                  }
+                                  return null;
+                                },
+                              )),
                             ],
                           ),
                           SizedBox(

@@ -163,13 +163,13 @@ class ListAttendanceccView extends GetView<ListAttendanceccController> {
                                        padding: EdgeInsets.symmetric(
                                            vertical: 3, horizontal: 10),
                                        decoration: BoxDecoration(
-                                         color: listAttendance[index]["score"] == "SUCCESS" ? Colors.green.withOpacity(0.4) : Colors.red.withOpacity(0.4),
+                                         color: listAttendance[index]["score"] == "PASS" ? Colors.green.withOpacity(0.4) : Colors.red.withOpacity(0.4),
                                          borderRadius: BorderRadius.circular(10),
                                        ),
                                        child: Text(
                                          listAttendance[index]["score"] ?? "",
                                          style: TextStyle(
-                                           fontSize: 10, color: listAttendance[index]["score"] == "SUCCESS" ? Colors.green : Colors.red,),
+                                           fontSize: 10, color: listAttendance[index]["score"] == "PASS" ? Colors.green : Colors.red,),
                                        ),
                                      ),
                                    ],

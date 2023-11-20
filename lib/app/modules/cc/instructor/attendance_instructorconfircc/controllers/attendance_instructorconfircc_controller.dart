@@ -9,9 +9,12 @@ import '../../../../../../presentation/view_model/attendance_model.dart';
 class AttendanceInstructorconfirccController extends GetxController {
   var selectedMeeting = "Training".obs;
   late UserPreferences userPreferences;
+  late RxString dropdownValueDepartment = "".obs;
+  late RxString dropdownValueTrainingType = "".obs;
+  late RxString dropdownValueRoom = "".obs;
 
   void selectMeeting(String? newValue) {
-    selectedMeeting.value = newValue ?? "Training"; // Default to "Meeting 1" if newValue is null
+    selectedMeeting.value = newValue ?? "Training";
   }
 
   final RxString argumentid = "".obs;
