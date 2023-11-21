@@ -119,4 +119,16 @@ class AttendanceDetailModel {
     data['rTimeManagement'] = this.rTimeManagement;
     return data;
   }
+
+  @override
+  String toString() {
+    return 'AttendanceDetailModel{id: $id, idattendance: $idattendance, idtraining: $idtraining, '
+        'signature_url: $signature_url, score: $score, feedback: $feedback, status: $status, '
+        'creationTime: $creationTime, updatedTime: $updatedTime, name: $name, email: $email, '
+        'photoURL: $photoURL, rank: $rank, license: $license, hub: $hub, rating: $rating, '
+        'feedbackforinstructor: $feedbackforinstructor, formatNo: $formatNo, '
+        'certificatemandatory: $certificatemandatory, grade: $grade, rCommunication: $rCommunication, '
+        'rKnowledge: $rKnowledge, rActive: $rActive, rTeachingMethod: $rTeachingMethod, '
+        'rMastery: $rMastery, rTimeManagement: $rTimeManagement}';
+  }
 }

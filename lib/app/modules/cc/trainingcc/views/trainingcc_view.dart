@@ -113,12 +113,12 @@ class TrainingccView extends GetView<TrainingccController> {
                     text: "The class key is wrong, Please enter the key again!",
                   );
                 } else {
+                  passwordC.clear();
                   Navigator.of(context, rootNavigator: true).pop();
                   await Get.toNamed(Routes.ATTENDANCE_PILOTCC, arguments: {
                     "id": listAttendance[0]["id"],
                   });
                   Get.find<AttendancePilotccController>().onInit();
-                  passwordC.clear();
                 }
               } catch (e) {
                 print("Error joining class: $e");

@@ -324,7 +324,7 @@ class _TrainingtypeccViewState extends State<TrainingtypeccView>
                                       title: Text(listAttendance[index]["name"].toString()),
                                       subtitle: Text(dateC),
                                       trailing: Icon(Icons.navigate_next),
-                                      onTap: () => Get.toNamed(Routes.ATTENDANCE_CONFIRCC,  arguments: {
+                                      onTap: () => Get.toNamed(Routes.ATTENDANCE_PENDINGCC,  arguments: {
                                         "id" : listAttendance[index]["id"],
                                       }),
                                     );
