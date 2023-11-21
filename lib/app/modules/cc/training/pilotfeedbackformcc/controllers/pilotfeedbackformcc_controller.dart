@@ -50,7 +50,6 @@ class PilotfeedbackformccController extends GetxController {
           'room': attendanceModel.room,
         };
 
-        // Tambahkan data ke list
         attendanceData.add(data);
       }
 
@@ -83,7 +82,6 @@ class PilotfeedbackformccController extends GetxController {
     });
   }
 
-
   Future<List<AttendanceDetailModel>> feedbackStream() async {
     userPreferences = getItLocator<UserPreferences>();
     final attendanceQuery = await _firestore
@@ -93,6 +91,7 @@ class PilotfeedbackformccController extends GetxController {
         .get();
 
     List<AttendanceDetailModel> attendanceList = [];
+
     attendanceQuery.docs.forEach((attendanceDoc) {
       AttendanceDetailModel attendance = AttendanceDetailModel();
 
@@ -101,20 +100,40 @@ class PilotfeedbackformccController extends GetxController {
         attendance.feedbackforinstructor = attendanceDoc['feedbackforinstructor'];
       }
 
+      if (attendanceDoc.data().containsKey('rTeachingMethod')) {
+        attendance.rTeachingMethod = attendanceDoc['rTeachingMethod'];
+      }
+
+      if (attendanceDoc.data().containsKey('rMastery')) {
+        attendance.rMastery = attendanceDoc['rMastery'];
+      }
+
+      if (attendanceDoc.data().containsKey('rTimeManagement')) {
+        attendance.rTimeManagement = attendanceDoc['rTimeManagement'];
+      }
+
       attendanceList.add(attendance);
     });
 
-    rating.value = attendanceList.isNotEmpty ? attendanceList[0].rating ?? 1.0 : 1.0;
+    // Check if the list is not empty before accessing its elements
+    if (attendanceList.isNotEmpty) {
+      rating.value = attendanceList[0].rating ?? 1.0;
 
-    ratingTeachingMethod.value = attendanceList[0].rTeachingMethod!;
-    ratingMastery.value = attendanceList[0].rMastery!;
-    ratingTimeManagement.value = attendanceList[0].rTimeManagement!;
+      if (attendanceList[0].rTeachingMethod != null) {
+        ratingTeachingMethod.value = attendanceList[0].rTeachingMethod!;
+      }
 
-    print("asda");
-    print(attendanceList);
+      if (attendanceList[0].rMastery != null) {
+        ratingMastery.value = attendanceList[0].rMastery!;
+      }
+
+      if (attendanceList[0].rTimeManagement != null) {
+        ratingTimeManagement.value = attendanceList[0].rTimeManagement!;
+      }
+    }
+
     return attendanceList;
   }
-
 
   @override
   void onReady() {

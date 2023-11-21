@@ -115,6 +115,7 @@ class AttendancePilotccView extends GetView<AttendancePilotccController> {
                           ),
 
                           //DEPARTEMENT
+                          listAttendance[0]["department"] != null ?
                           Padding(
                             padding: EdgeInsets.symmetric(vertical: 5),
                             child:  Row(
@@ -130,9 +131,10 @@ class AttendancePilotccView extends GetView<AttendancePilotccController> {
                                     child: Text(listAttendance[0]["department"] ?? "N/A")),
                               ],
                             ),
-                          ),
+                          ) : SizedBox(),
 
                           //TRAINING TYPE
+                          listAttendance[0]["trainingType"] != null ?
                           Padding(
                             padding: EdgeInsets.symmetric(vertical: 5),
                             child:  Row(
@@ -148,7 +150,7 @@ class AttendancePilotccView extends GetView<AttendancePilotccController> {
                                     child: Text(listAttendance[0]["trainingType"] ?? "N/A")),
                               ],
                             ),
-                          ),
+                          ) : SizedBox(),
 
                           //DATE
                           Padding(
@@ -187,6 +189,7 @@ class AttendancePilotccView extends GetView<AttendancePilotccController> {
                           ),
 
                           //ROOM
+                          listAttendance[0]["room"] != null ?
                           Padding(
                             padding: EdgeInsets.symmetric(vertical: 5),
                             child: Row(
@@ -202,7 +205,7 @@ class AttendancePilotccView extends GetView<AttendancePilotccController> {
                                     child: Text(listAttendance[0]["room"] ?? "N/A")),
                               ],
                             ),
-                          ),
+                          ) : SizedBox(),
 
                           //INSTRUCTOR
                            Padding(

@@ -77,9 +77,31 @@ class AddAttendanceccView extends GetView<AddAttendanceccController> {
                   SizedBox(height: 10,),
 
                   //-------------------------VENUE-----------------------
-                  FormTextField(text: "Venue", textController: venueC),
+                  // FormTextField(text: "Venue", textController: venueC),
+                  // SizedBox(height: 10,),
+                  DropdownSearch<String>(
+                    mode: Mode.MENU,
+                    items: ['IAA'],
+                    dropdownSearchDecoration:
+                    InputDecoration(
+                      labelText: "Venue",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(5),
+                        ),
+                      ),
+                    ),
+                    onChanged: (String? newValue) {
+                        venueC.text = newValue!;
+                    },
+                    validator: (String? value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please choose a venue';
+                      }
+                      return null;
+                    },
+                  ),
                   SizedBox(height: 10,),
-
                   //-------------------------INSTRUCTOR-----------------------
 
                   StreamBuilder<QuerySnapshot>(
