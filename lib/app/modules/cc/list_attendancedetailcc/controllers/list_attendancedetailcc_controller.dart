@@ -107,9 +107,17 @@ class ListAttendancedetailccController extends GetxController {
           attendanceModel.rank = user['RANK'];
           attendanceModel.license = user['LICENSE NO.'];
 
-          ratingCommunication.value = attendanceModel.rCommunication!;
-          ratingKnowledge.value = attendanceModel.rKnowledge!;
-          ratingActive.value = attendanceModel.rActive!;
+          if(attendanceModel.rCommunication != null){
+            ratingCommunication.value = attendanceModel.rCommunication!;
+          }
+
+          if(attendanceModel.rKnowledge != null){
+            ratingKnowledge.value = attendanceModel.rKnowledge!;
+          }
+
+          if(attendanceModel.rActive != null){
+            ratingActive.value = attendanceModel.rActive!;
+          }
 
           return attendanceModel.toJson();
         }),

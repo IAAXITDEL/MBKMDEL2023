@@ -168,20 +168,20 @@ class AttendancePilotccView extends GetView<AttendancePilotccController> {
                             ),
                           ),
 
-                          //VANUE
+                          //VENUE
                           Padding(
                             padding: EdgeInsets.symmetric(vertical: 5),
                             child:  Row(
                               children: [
                                 Expanded(
                                     flex: 3,
-                                    child: Text("Vanue")),
+                                    child: Text("Venue")),
                                 Expanded(
                                     flex: 1,
                                     child: Text(":")),
                                 Expanded(
                                     flex: 4,
-                                    child: Text(listAttendance[0]["vanue"] ?? "N/A")),
+                                    child: Text(listAttendance[0]["venue"] ?? "N/A")),
                               ],
                             ),
                           ),

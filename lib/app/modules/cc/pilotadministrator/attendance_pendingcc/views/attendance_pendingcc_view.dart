@@ -18,7 +18,7 @@ class AttendancePendingccView extends GetView<AttendancePendingccController> {
   @override
   Widget build(BuildContext context) {
     var subjectC = TextEditingController();
-    var vanueC = TextEditingController();
+    var venueC = TextEditingController();
     var dateC = TextEditingController();
     var instructorC = TextEditingController();
 
@@ -106,7 +106,7 @@ class AttendancePendingccView extends GetView<AttendancePendingccController> {
 
                     subjectC.text = listAttendance[0]["subject"];
                    // dateC.text = DateFormat('dd MMM yyyy').format(dateTime!) ?? "N/A";
-                    vanueC.text = listAttendance[0]["vanue"];
+                    venueC.text = listAttendance[0]["venue"];
                     instructorC.text = listAttendance[0]["name"];
                   } else {
                     // Handle the case where the list is empty or null
@@ -147,8 +147,8 @@ class AttendancePendingccView extends GetView<AttendancePendingccController> {
                         children: [
                           Expanded(
                             child: FormTextField(
-                                text: "Vanue",
-                                textController: vanueC,
+                                text: "Venue",
+                                textController: venueC,
                                 readOnly: true),
                           )
                         ],

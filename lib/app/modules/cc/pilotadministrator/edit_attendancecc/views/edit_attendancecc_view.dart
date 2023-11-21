@@ -22,13 +22,13 @@ class EditAttendanceccView extends GetView<EditAttendanceccController> {
   @override
   Widget build(BuildContext context) {
     var subjectC = TextEditingController();
-    var vanueC = TextEditingController();
+    var venueC = TextEditingController();
     var dateC = TextEditingController();
     int? instructorC = 0;
 
 
-    Future<void> edit(String subject, DateTime date, String vanue, int instructor) async {
-      controller.editAttendanceForm(subject, date, vanue, instructor).then((status) async {
+    Future<void> edit(String subject, DateTime date, String venue, int instructor) async {
+      controller.editAttendanceForm(subject, date, venue, instructor).then((status) async {
         await QuickAlert.show(
           context: context,
           type: QuickAlertType.success,
@@ -81,7 +81,7 @@ class EditAttendanceccView extends GetView<EditAttendanceccController> {
                           dateC.text = dateTime != null ? DateFormat('dd MMM yyyy').format(dateTime) : 'Invalid Date';
 
                           subjectC.text = listAttendance[0]["subject"];
-                          vanueC.text = listAttendance[0]["vanue"];
+                          venueC.text = listAttendance[0]["venue"];
                           controller.instructor.value = listAttendance[0]["instructor"];
                         } else {
                           // Handle the case where the list is empty or null
@@ -110,8 +110,8 @@ class EditAttendanceccView extends GetView<EditAttendanceccController> {
                               height: 10,
                             ),
 
-                            //-------------------------VANUE-----------------------
-                            FormTextField(text: "Vanue", textController: vanueC),
+                            //-------------------------VENUE-----------------------
+                            FormTextField(text: "Venue", textController: venueC),
                             SizedBox(
                               height: 10,
                             ),
@@ -201,7 +201,7 @@ class EditAttendanceccView extends GetView<EditAttendanceccController> {
                                   future: edit(
                                     subjectC.text,
                                     DateFormat('dd MMM yyyy').parse(dateC.text),
-                                    vanueC.text,
+                                    venueC.text,
                                     controller.instructor.value,
                                   ),
                                   builder: (BuildContext context,

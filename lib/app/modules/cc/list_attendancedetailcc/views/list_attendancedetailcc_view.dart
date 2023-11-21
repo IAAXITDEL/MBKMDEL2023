@@ -51,14 +51,16 @@ class ListAttendancedetailccView
                   stream: controller.profileList(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return LoadingScreen(); // Placeholder while loading
+                      return LoadingScreen();
                     }
 
                     if (snapshot.hasError) {
+                      print(snapshot.error);
                       return ErrorScreen();
                     }
 
                     var listAttendance = snapshot.data!;
+
                     if (listAttendance.isEmpty) {
                       return EmptyScreen();
                     }

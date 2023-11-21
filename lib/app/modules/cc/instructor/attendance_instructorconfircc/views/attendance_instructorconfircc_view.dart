@@ -29,7 +29,7 @@ class AttendanceInstructorconfirccView
   @override
   Widget build(BuildContext context) {
     var subjectC = TextEditingController();
-    var vanueC = TextEditingController();
+    var venueC = TextEditingController();
     var dateC = TextEditingController();
     var instructorC = TextEditingController();
     var loaNoC = TextEditingController();
@@ -137,7 +137,7 @@ class AttendanceInstructorconfirccView
 
                         subjectC.text = listAttendance[0]["subject"];
                         dateC.text = DateFormat('dd MMM yyyy').format(dateTime!) ?? "N/A";
-                        vanueC.text = listAttendance[0]["vanue"];
+                        venueC.text = listAttendance[0]["venue"];
                         instructorC.text = listAttendance[0]["name"];
                         loaNoC.text = listAttendance[0]["loano"] ?? "" ;
                         roomC.text = " ";
@@ -227,8 +227,8 @@ class AttendanceInstructorconfirccView
                                       color: Colors.grey.withOpacity(0.3)
                                   ),
                                   child: FormTextField(
-                                      text: "Vanue",
-                                      textController: vanueC,
+                                      text: "Venue",
+                                      textController: venueC,
                                       readOnly: true),
                                 ),
                               )

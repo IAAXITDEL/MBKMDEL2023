@@ -26,7 +26,7 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
   @override
   Widget build(BuildContext context) {
     var subjectC = TextEditingController();
-    var vanueC = TextEditingController();
+    var venueC = TextEditingController();
     var dateC = TextEditingController();
     var instructorC = TextEditingController();
     var loaNoC = TextEditingController();
@@ -124,7 +124,7 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                     subjectC.text = listAttendance[0]["subject"] ?? "N/A";
                     dateC.text = DateFormat('dd MMM yyyy').format(dateTime!);
                     departmentC.text = listAttendance[0]["department"] ?? "N/A";
-                    vanueC.text = listAttendance[0]["vanue"] ?? "N/A";
+                    venueC.text = listAttendance[0]["venue"] ?? "N/A";
                     trainingtypeC.text = listAttendance[0]["trainingType"] ?? "N/A";
                     roomC.text = listAttendance[0]["room"] ?? "N/A";
                     instructorC.text = listAttendance[0]["name"] ?? "N/A";
@@ -178,8 +178,8 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                           ),
                           Expanded(
                             child: FormTextField(
-                                text: "Vanue",
-                                textController: vanueC,
+                                text: "Venue",
+                                textController: venueC,
                                 readOnly: true),
                           )
                         ],

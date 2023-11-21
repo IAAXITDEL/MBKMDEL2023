@@ -723,9 +723,9 @@ class AttendanceConfirccController extends GetxController {
 
                                   pw.TableRow(
                                     children: [
-                                      TextFieldPdf(title: "VANUE"),
+                                      TextFieldPdf(title: "VENUE"),
                                       TextFieldPdf(
-                                          title: attendanceModel.vanue ?? 'N/A'),
+                                          title: attendanceModel.venue ?? 'N/A'),
                                     ],
                                   ),
 

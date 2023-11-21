@@ -55,17 +55,7 @@ class TrainingccController extends GetxController {
         Get.toNamed(Routes.TRAININGHISTORYCC_CPTS, arguments: {"id": argumentid.value});
         Get.find<TraininghistoryccCptsController>().onInit();
     }
-    // SEBAGAI INSTRUCTOR
-    else if (userPreferences
-            .getInstructor()
-            .contains(UserModel.keySubPositionCCP) ||
-        userPreferences.getInstructor().contains(UserModel.keySubPositionFIA) ||
-        userPreferences.getInstructor().contains(UserModel.keySubPositionFIS) ||
-        userPreferences.getInstructor().contains(UserModel.keySubPositionPGI) &&
-            userPreferences.getRank().contains(UserModel.keyPositionCaptain) ||
-        userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)) {
-      isInstructor.value= true;
-    }
+
     // SEBAGAI PILOT
     else if (userPreferences.getRank().contains(UserModel.keyPositionCaptain) ||
         userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)) {
@@ -83,6 +73,18 @@ class TrainingccController extends GetxController {
     // SEBAGAI ALL STAR
     else {
       return false;
+    }
+
+    // SEBAGAI INSTRUCTOR
+    if (userPreferences
+        .getInstructor()
+        .contains(UserModel.keySubPositionCCP) ||
+    userPreferences.getInstructor().contains(UserModel.keySubPositionFIA) ||
+    userPreferences.getInstructor().contains(UserModel.keySubPositionFIS) ||
+    userPreferences.getInstructor().contains(UserModel.keySubPositionPGI) &&
+    userPreferences.getRank().contains(UserModel.keyPositionCaptain) ||
+    userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)) {
+    isInstructor.value= true;
     }
     return false;
   }

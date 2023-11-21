@@ -43,7 +43,7 @@ class PilotfeedbackformccController extends GetxController {
           'name': userData['NAME'],
           'department':  attendanceModel.department,
           'trainingType': attendanceModel.trainingType,
-          'vanue': attendanceModel.vanue,
+          'venue': attendanceModel.venue,
           'room': attendanceModel.room,
         };
 
