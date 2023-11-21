@@ -182,572 +182,593 @@ class DetailHistoryDeviceFOView extends GetView {
 
                                     final occAccepteduserData = occAcceptedSnapshot.data?.data() as Map<String, dynamic>?;
 
-                                    return Center(
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                                            child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                //show date
-                                                Align(
-                                                  alignment: Alignment.centerRight,
-                                                  child: Text(_formatTimestamp(data['timestamp']), style: tsOneTextTheme.labelSmall),
-                                                ),
-                                                // SizedBox(height: 7),
-                                                // Row(
-                                                //   children: [
-                                                //     Expanded(flex: 6, child: Text("Loan Date")),
-                                                //     Expanded(flex: 1, child: Text(":")),
-                                                //     Expanded(
-                                                //       flex: 6,
-                                                //       child: Text(_formatTimestamp(data['timestamp'])),
-                                                //     ),
-                                                //   ],
-                                                // ),
-                                                SizedBox(height: 15.0),
+                                    // Format document
+                                    return FutureBuilder<DocumentSnapshot>(
+                                      future: FirebaseFirestore.instance.collection("efb-document").doc("handover-log").get(),
+                                      builder: (context, formatSnapshot) {
+                                        if (formatSnapshot.connectionState == ConnectionState.waiting) {
+                                          return Center(child: CircularProgressIndicator());
+                                        }
 
-                                                // Text(
-                                                //   "CREW INFO",
-                                                //   style: tsOneTextTheme.headlineLarge,
-                                                // ),
-                                                Row(
-                                                  children: [
-                                                    Expanded(flex: 6, child: Text("ID NO")),
-                                                    Expanded(flex: 1, child: Text(":")),
-                                                    Expanded(
-                                                      flex: 6,
-                                                      child: Text('${userData['ID NO'] ?? 'No Data'}'),
-                                                    ),
-                                                  ],
-                                                ),
-                                                SizedBox(height: 5.0),
-                                                Row(
-                                                  children: [
-                                                    Expanded(flex: 6, child: Text("Name")),
-                                                    Expanded(flex: 1, child: Text(":")),
-                                                    Expanded(
-                                                      flex: 6,
-                                                      child: Text('${userData['NAME'] ?? 'No Data'}'),
-                                                    ),
-                                                  ], //
-                                                ),
-                                                SizedBox(height: 5.0),
-                                                Row(
-                                                  children: [
-                                                    Expanded(flex: 6, child: Text("Rank")),
-                                                    Expanded(flex: 1, child: Text(":")),
-                                                    Expanded(
-                                                      flex: 6,
-                                                      child: Text('${userData['RANK'] ?? 'No Data'}'),
-                                                    ),
-                                                  ],
-                                                ),
-                                                SizedBox(height: 15.0),
+                                        if (formatSnapshot.hasError) {
+                                          return Center(child: Text('Error: ${formatSnapshot.error}'));
+                                        }
 
-                                                //device info
-                                                Text("Device 2", style: tsOneTextTheme.headlineMedium),
-                                                SizedBox(height: 7.0),
-                                                Row(
-                                                  children: [
-                                                    Expanded(flex: 6, child: Text("Device No")),
-                                                    Expanded(flex: 1, child: Text(":")),
-                                                    Expanded(
-                                                      flex: 6,
-                                                      child: Text('${data['device_name2'] ?? 'No Data'}'),
-                                                    ),
-                                                  ],
-                                                ),
-                                                SizedBox(height: 5.0),
-                                                Row(
-                                                  children: [
-                                                    Expanded(flex: 6, child: Text("IOS Version")),
-                                                    Expanded(flex: 1, child: Text(":")),
-                                                    Expanded(
-                                                      flex: 6,
-                                                      child: Text('${deviceData2['value']['iosver'] ?? 'No Data'}'),
-                                                    ),
-                                                  ],
-                                                ),
-                                                SizedBox(height: 5.0),
-                                                Row(
-                                                  children: [
-                                                    Expanded(flex: 6, child: Text("FlySmart Version")),
-                                                    Expanded(flex: 1, child: Text(":")),
-                                                    Expanded(
-                                                      flex: 6,
-                                                      child: Text('${deviceData2['value']['flysmart'] ?? 'No Data'}'),
-                                                    ),
-                                                  ],
-                                                ),
-                                                SizedBox(height: 5.0),
-                                                Row(
-                                                  children: [
-                                                    Expanded(flex: 6, child: Text("Docunet Version")),
-                                                    Expanded(flex: 1, child: Text(":")),
-                                                    Expanded(
-                                                      flex: 6,
-                                                      child: Text('${deviceData2['value']['docuversion'] ?? 'No Data'}'),
-                                                    ),
-                                                  ],
-                                                ),
-                                                SizedBox(height: 5.0),
-                                                Row(
-                                                  children: [
-                                                    Expanded(flex: 6, child: Text("Lido mPilot Version")),
-                                                    Expanded(flex: 1, child: Text(":")),
-                                                    Expanded(
-                                                      flex: 6,
-                                                      child: Text('${deviceData2['value']['lidoversion'] ?? 'No Data'}'),
-                                                    ),
-                                                  ],
-                                                ),
-                                                SizedBox(height: 5.0),
-                                                Row(
-                                                  children: [
-                                                    Expanded(flex: 6, child: Text("HUB")),
-                                                    Expanded(flex: 1, child: Text(":")),
-                                                    Expanded(
-                                                      flex: 6,
-                                                      child: Text('${deviceData2['value']['hub'] ?? 'No Data'}'),
-                                                    ),
-                                                  ],
-                                                ),
-                                                SizedBox(height: 5.0),
-                                                Row(
-                                                  children: [
-                                                    Expanded(flex: 6, child: Text("Condition")),
-                                                    Expanded(flex: 1, child: Text(":")),
-                                                    Expanded(
-                                                      flex: 6,
-                                                      child: Text('${deviceData2['value']['condition'] ?? 'No Data'}'),
-                                                    ),
-                                                  ],
-                                                ),
+                                        final formatData = formatSnapshot.data?.data() as Map<String, dynamic>?;
 
-                                                SizedBox(height: 15.0),
-                                                Text("Device 3", style: tsOneTextTheme.headlineMedium),
-                                                SizedBox(height: 7.0),
-                                                Row(
+                                        return Center(
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                                                child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
-                                                    Expanded(flex: 6, child: Text("Device No")),
-                                                    Expanded(flex: 1, child: Text(":")),
-                                                    Expanded(
-                                                      flex: 6,
-                                                      child: Text('${data['device_name3'] ?? 'No Data'}'),
+                                                    //show date
+                                                    Align(
+                                                      alignment: Alignment.centerRight,
+                                                      child: Text(_formatTimestamp(data['timestamp']), style: tsOneTextTheme.labelSmall),
                                                     ),
-                                                  ],
-                                                ),
-                                                SizedBox(height: 5.0),
-                                                Row(
-                                                  children: [
-                                                    Expanded(flex: 6, child: Text("IOS Version")),
-                                                    Expanded(flex: 1, child: Text(":")),
-                                                    Expanded(
-                                                      flex: 6,
-                                                      child: Text('${deviceData3['value']['iosver'] ?? 'No Data'}'),
-                                                    ),
-                                                  ],
-                                                ),
-                                                SizedBox(height: 5.0),
-                                                Row(
-                                                  children: [
-                                                    Expanded(flex: 6, child: Text("FlySmart Version")),
-                                                    Expanded(flex: 1, child: Text(":")),
-                                                    Expanded(
-                                                      flex: 6,
-                                                      child: Text('${deviceData3['value']['flysmart'] ?? 'No Data'}'),
-                                                    ),
-                                                  ],
-                                                ),
-                                                SizedBox(height: 5.0),
-                                                Row(
-                                                  children: [
-                                                    Expanded(flex: 6, child: Text("Docunet Version")),
-                                                    Expanded(flex: 1, child: Text(":")),
-                                                    Expanded(
-                                                      flex: 6,
-                                                      child: Text('${deviceData3['value']['docuversion'] ?? 'No Data'}'),
-                                                    ),
-                                                  ],
-                                                ),
-                                                SizedBox(height: 5.0),
-                                                Row(
-                                                  children: [
-                                                    Expanded(flex: 6, child: Text("Lido mPilot Version")),
-                                                    Expanded(flex: 1, child: Text(":")),
-                                                    Expanded(
-                                                      flex: 6,
-                                                      child: Text('${deviceData3['value']['lidoversion'] ?? 'No Data'}'),
-                                                    ),
-                                                  ],
-                                                ),
-                                                SizedBox(height: 5.0),
-                                                Row(
-                                                  children: [
-                                                    Expanded(flex: 6, child: Text("HUB")),
-                                                    Expanded(flex: 1, child: Text(":")),
-                                                    Expanded(
-                                                      flex: 6,
-                                                      child: Text('${deviceData3['value']['hub'] ?? 'No Data'}'),
-                                                    ),
-                                                  ],
-                                                ),
-                                                SizedBox(height: 5.0),
-                                                Row(
-                                                  children: [
-                                                    Expanded(flex: 6, child: Text("Condition")),
-                                                    Expanded(flex: 1, child: Text(":")),
-                                                    Expanded(
-                                                      flex: 6,
-                                                      child: Text('${deviceData3['value']['condition'] ?? 'No Data'}'),
-                                                    ),
-                                                  ],
-                                                ),
-                                                SizedBox(height: 15.0),
+                                                    // SizedBox(height: 7),
+                                                    // Row(
+                                                    //   children: [
+                                                    //     Expanded(flex: 6, child: Text("Loan Date")),
+                                                    //     Expanded(flex: 1, child: Text(":")),
+                                                    //     Expanded(
+                                                    //       flex: 6,
+                                                    //       child: Text(_formatTimestamp(data['timestamp'])),
+                                                    //     ),
+                                                    //   ],
+                                                    // ),
+                                                    SizedBox(height: 15.0),
 
-                                                if (status == 'handover-to-other-crew')
-                                                  Text("Return Documentation", style: tsOneTextTheme.headlineMedium),
-                                                SizedBox(height: 7.0),
-                                                if (status == 'handover-to-other-crew')
-                                                  Row(
-                                                    children: [
-                                                      Expanded(flex: 6, child: Text("Remarks")),
-                                                      Expanded(flex: 1, child: Text(":")),
-                                                      Expanded(
-                                                        flex: 6,
-                                                        child: handoverTouserData != null
-                                                            ? Text('${data['remarks'] ?? 'Not Found'}')
-                                                            : Text('Not Found'),
+                                                    // Text(
+                                                    //   "CREW INFO",
+                                                    //   style: tsOneTextTheme.headlineLarge,
+                                                    // ),
+                                                    Row(
+                                                      children: [
+                                                        Expanded(flex: 6, child: Text("ID NO")),
+                                                        Expanded(flex: 1, child: Text(":")),
+                                                        Expanded(
+                                                          flex: 6,
+                                                          child: Text('${userData['ID NO'] ?? 'No Data'}'),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    SizedBox(height: 5.0),
+                                                    Row(
+                                                      children: [
+                                                        Expanded(flex: 6, child: Text("Name")),
+                                                        Expanded(flex: 1, child: Text(":")),
+                                                        Expanded(
+                                                          flex: 6,
+                                                          child: Text('${userData['NAME'] ?? 'No Data'}'),
+                                                        ),
+                                                      ], //
+                                                    ),
+                                                    SizedBox(height: 5.0),
+                                                    Row(
+                                                      children: [
+                                                        Expanded(flex: 6, child: Text("Rank")),
+                                                        Expanded(flex: 1, child: Text(":")),
+                                                        Expanded(
+                                                          flex: 6,
+                                                          child: Text('${userData['RANK'] ?? 'No Data'}'),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    SizedBox(height: 15.0),
+
+                                                    //device info
+                                                    Text("Device 2", style: tsOneTextTheme.headlineMedium),
+                                                    SizedBox(height: 7.0),
+                                                    Row(
+                                                      children: [
+                                                        Expanded(flex: 6, child: Text("Device No")),
+                                                        Expanded(flex: 1, child: Text(":")),
+                                                        Expanded(
+                                                          flex: 6,
+                                                          child: Text('${data['device_name2'] ?? 'No Data'}'),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    SizedBox(height: 5.0),
+                                                    Row(
+                                                      children: [
+                                                        Expanded(flex: 6, child: Text("IOS Version")),
+                                                        Expanded(flex: 1, child: Text(":")),
+                                                        Expanded(
+                                                          flex: 6,
+                                                          child: Text('${deviceData2['value']['iosver'] ?? 'No Data'}'),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    SizedBox(height: 5.0),
+                                                    Row(
+                                                      children: [
+                                                        Expanded(flex: 6, child: Text("FlySmart Version")),
+                                                        Expanded(flex: 1, child: Text(":")),
+                                                        Expanded(
+                                                          flex: 6,
+                                                          child: Text('${deviceData2['value']['flysmart'] ?? 'No Data'}'),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    SizedBox(height: 5.0),
+                                                    Row(
+                                                      children: [
+                                                        Expanded(flex: 6, child: Text("Docunet Version")),
+                                                        Expanded(flex: 1, child: Text(":")),
+                                                        Expanded(
+                                                          flex: 6,
+                                                          child: Text('${deviceData2['value']['docuversion'] ?? 'No Data'}'),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    SizedBox(height: 5.0),
+                                                    Row(
+                                                      children: [
+                                                        Expanded(flex: 6, child: Text("Lido mPilot Version")),
+                                                        Expanded(flex: 1, child: Text(":")),
+                                                        Expanded(
+                                                          flex: 6,
+                                                          child: Text('${deviceData2['value']['lidoversion'] ?? 'No Data'}'),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    SizedBox(height: 5.0),
+                                                    Row(
+                                                      children: [
+                                                        Expanded(flex: 6, child: Text("HUB")),
+                                                        Expanded(flex: 1, child: Text(":")),
+                                                        Expanded(
+                                                          flex: 6,
+                                                          child: Text('${deviceData2['value']['hub'] ?? 'No Data'}'),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    SizedBox(height: 5.0),
+                                                    Row(
+                                                      children: [
+                                                        Expanded(flex: 6, child: Text("Condition")),
+                                                        Expanded(flex: 1, child: Text(":")),
+                                                        Expanded(
+                                                          flex: 6,
+                                                          child: Text('${deviceData2['value']['condition'] ?? 'No Data'}'),
+                                                        ),
+                                                      ],
+                                                    ),
+
+                                                    SizedBox(height: 15.0),
+                                                    Text("Device 3", style: tsOneTextTheme.headlineMedium),
+                                                    SizedBox(height: 7.0),
+                                                    Row(
+                                                      children: [
+                                                        Expanded(flex: 6, child: Text("Device No")),
+                                                        Expanded(flex: 1, child: Text(":")),
+                                                        Expanded(
+                                                          flex: 6,
+                                                          child: Text('${data['device_name3'] ?? 'No Data'}'),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    SizedBox(height: 5.0),
+                                                    Row(
+                                                      children: [
+                                                        Expanded(flex: 6, child: Text("IOS Version")),
+                                                        Expanded(flex: 1, child: Text(":")),
+                                                        Expanded(
+                                                          flex: 6,
+                                                          child: Text('${deviceData3['value']['iosver'] ?? 'No Data'}'),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    SizedBox(height: 5.0),
+                                                    Row(
+                                                      children: [
+                                                        Expanded(flex: 6, child: Text("FlySmart Version")),
+                                                        Expanded(flex: 1, child: Text(":")),
+                                                        Expanded(
+                                                          flex: 6,
+                                                          child: Text('${deviceData3['value']['flysmart'] ?? 'No Data'}'),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    SizedBox(height: 5.0),
+                                                    Row(
+                                                      children: [
+                                                        Expanded(flex: 6, child: Text("Docunet Version")),
+                                                        Expanded(flex: 1, child: Text(":")),
+                                                        Expanded(
+                                                          flex: 6,
+                                                          child: Text('${deviceData3['value']['docuversion'] ?? 'No Data'}'),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    SizedBox(height: 5.0),
+                                                    Row(
+                                                      children: [
+                                                        Expanded(flex: 6, child: Text("Lido mPilot Version")),
+                                                        Expanded(flex: 1, child: Text(":")),
+                                                        Expanded(
+                                                          flex: 6,
+                                                          child: Text('${deviceData3['value']['lidoversion'] ?? 'No Data'}'),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    SizedBox(height: 5.0),
+                                                    Row(
+                                                      children: [
+                                                        Expanded(flex: 6, child: Text("HUB")),
+                                                        Expanded(flex: 1, child: Text(":")),
+                                                        Expanded(
+                                                          flex: 6,
+                                                          child: Text('${deviceData3['value']['hub'] ?? 'No Data'}'),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    SizedBox(height: 5.0),
+                                                    Row(
+                                                      children: [
+                                                        Expanded(flex: 6, child: Text("Condition")),
+                                                        Expanded(flex: 1, child: Text(":")),
+                                                        Expanded(
+                                                          flex: 6,
+                                                          child: Text('${deviceData3['value']['condition'] ?? 'No Data'}'),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    SizedBox(height: 15.0),
+
+                                                    if (status == 'handover-to-other-crew')
+                                                      Text("Return Documentation", style: tsOneTextTheme.headlineMedium),
+                                                    SizedBox(height: 7.0),
+                                                    if (status == 'handover-to-other-crew')
+                                                      Row(
+                                                        children: [
+                                                          Expanded(flex: 6, child: Text("Remarks")),
+                                                          Expanded(flex: 1, child: Text(":")),
+                                                          Expanded(
+                                                            flex: 6,
+                                                            child: handoverTouserData != null
+                                                                ? Text('${data['remarks'] ?? 'Not Found'}')
+                                                                : Text('Not Found'),
+                                                          ),
+                                                        ],
                                                       ),
-                                                    ],
-                                                  ),
-                                                SizedBox(height: 7.0),
-                                                if (status == 'handover-to-other-crew')
-                                                  Row(
-                                                    children: [
-                                                      Expanded(flex: 6, child: Text("Proof of Remarks")),
-                                                      Expanded(flex: 1, child: Text(":")),
-                                                      Expanded(
-                                                        flex: 6,
-                                                        child: Column(
-                                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                                          children: [
-                                                            if (status == 'handover-to-other-crew' && data['prove_image_url'] == null ||
-                                                                data['prove_image_url'].isEmpty)
-                                                              Text(
-                                                                'There is no image',
-                                                                style: TextStyle(color: Colors.black),
-                                                              ),
-                                                            if (data['prove_image_url'] != null && data['prove_image_url'].isNotEmpty)
-                                                              GestureDetector(
-                                                                onTap: () {
-                                                                  showDialog(
-                                                                    context: context,
-                                                                    builder: (BuildContext context) {
-                                                                      return AlertDialog(
-                                                                        content: Container(
-                                                                          width: 400,
-                                                                          height: 400,
-                                                                          child: Image.network(
-                                                                            data['prove_image_url'] ?? 'No Data',
-                                                                            fit: BoxFit.cover,
-                                                                          ),
-                                                                        ),
+                                                    SizedBox(height: 7.0),
+                                                    if (status == 'handover-to-other-crew')
+                                                      Row(
+                                                        children: [
+                                                          Expanded(flex: 6, child: Text("Proof of Remarks")),
+                                                          Expanded(flex: 1, child: Text(":")),
+                                                          Expanded(
+                                                            flex: 6,
+                                                            child: Column(
+                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                              children: [
+                                                                if (status == 'handover-to-other-crew' && data['prove_image_url'] == null ||
+                                                                    data['prove_image_url'].isEmpty)
+                                                                  Text(
+                                                                    'There is no image',
+                                                                    style: TextStyle(color: Colors.black),
+                                                                  ),
+                                                                if (data['prove_image_url'] != null && data['prove_image_url'].isNotEmpty)
+                                                                  GestureDetector(
+                                                                    onTap: () {
+                                                                      showDialog(
+                                                                        context: context,
+                                                                        builder: (BuildContext context) {
+                                                                          return AlertDialog(
+                                                                            content: Container(
+                                                                              width: 400,
+                                                                              height: 400,
+                                                                              child: Image.network(
+                                                                                data['prove_image_url'] ?? 'No Data',
+                                                                                fit: BoxFit.cover,
+                                                                              ),
+                                                                            ),
+                                                                          );
+                                                                        },
                                                                       );
                                                                     },
-                                                                  );
-                                                                },
-                                                                child: Align(
-                                                                  alignment: Alignment.centerLeft,
-                                                                  child: Text(
-                                                                    'Open Picture',
-                                                                    style: TextStyle(
-                                                                      color: TsOneColor.primary,
-                                                                      fontWeight: FontWeight.bold,
-                                                                      decoration: TextDecoration.underline,
-                                                                      decorationColor: TsOneColor.primary,
+                                                                    child: Align(
+                                                                      alignment: Alignment.centerLeft,
+                                                                      child: Text(
+                                                                        'Open Picture',
+                                                                        style: TextStyle(
+                                                                          color: TsOneColor.primary,
+                                                                          fontWeight: FontWeight.bold,
+                                                                          decoration: TextDecoration.underline,
+                                                                          decorationColor: TsOneColor.primary,
+                                                                        ),
+                                                                      ),
                                                                     ),
                                                                   ),
-                                                                ),
-                                                              ),
-                                                          ],
-                                                        ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ],
                                                       ),
-                                                    ],
-                                                  ),
 
-                                                SizedBox(height: 5.0),
-                                                if (status == 'Done') Text("Return Documentation", style: tsOneTextTheme.headlineMedium),
-                                                if (status == 'Done') SizedBox(height: 5.0),
-                                                if (status == 'Done')
-                                                  Row(
-                                                    children: [
-                                                      Expanded(flex: 6, child: Text("Proof Back To Base")),
-                                                      Expanded(flex: 1, child: Text(":")),
-                                                      Expanded(
-                                                        flex: 6,
-                                                        child: Column(
-                                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                                          children: [
-                                                            if (status == 'Done' && data['prove_back_to_base'] == null ||
-                                                                data['prove_back_to_base'].isEmpty)
-                                                              Text(
-                                                                'There is no image',
-                                                                style: TextStyle(color: Colors.black),
-                                                              ),
-                                                            if (data['prove_back_to_base'] != null && data['prove_back_to_base'].isNotEmpty)
-                                                              GestureDetector(
-                                                                onTap: () {
-                                                                  showDialog(
-                                                                    context: context,
-                                                                    builder: (BuildContext context) {
-                                                                      return AlertDialog(
-                                                                        content: Container(
-                                                                          width: 400,
-                                                                          height: 400,
-                                                                          child: Image.network(
-                                                                            data['prove_back_to_base']!,
-                                                                            fit: BoxFit.cover,
-                                                                          ),
-                                                                        ),
+                                                    SizedBox(height: 5.0),
+                                                    if (status == 'Done') Text("Return Documentation", style: tsOneTextTheme.headlineMedium),
+                                                    if (status == 'Done') SizedBox(height: 5.0),
+                                                    if (status == 'Done')
+                                                      Row(
+                                                        children: [
+                                                          Expanded(flex: 6, child: Text("Proof Back To Base")),
+                                                          Expanded(flex: 1, child: Text(":")),
+                                                          Expanded(
+                                                            flex: 6,
+                                                            child: Column(
+                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                              children: [
+                                                                if (status == 'Done' && data['prove_back_to_base'] == null ||
+                                                                    data['prove_back_to_base'].isEmpty)
+                                                                  Text(
+                                                                    'There is no image',
+                                                                    style: TextStyle(color: Colors.black),
+                                                                  ),
+                                                                if (data['prove_back_to_base'] != null && data['prove_back_to_base'].isNotEmpty)
+                                                                  GestureDetector(
+                                                                    onTap: () {
+                                                                      showDialog(
+                                                                        context: context,
+                                                                        builder: (BuildContext context) {
+                                                                          return AlertDialog(
+                                                                            content: Container(
+                                                                              width: 400,
+                                                                              height: 400,
+                                                                              child: Image.network(
+                                                                                data['prove_back_to_base']!,
+                                                                                fit: BoxFit.cover,
+                                                                              ),
+                                                                            ),
+                                                                          );
+                                                                        },
                                                                       );
                                                                     },
-                                                                  );
-                                                                },
-                                                                child: Align(
-                                                                  alignment: Alignment.centerLeft,
-                                                                  child: Text(
-                                                                    'Open Picture',
-                                                                    style: TextStyle(
-                                                                      color: TsOneColor.primary,
-                                                                      fontWeight: FontWeight.bold,
-                                                                      decoration: TextDecoration.underline,
-                                                                      decorationColor: TsOneColor.primary,
+                                                                    child: Align(
+                                                                      alignment: Alignment.centerLeft,
+                                                                      child: Text(
+                                                                        'Open Picture',
+                                                                        style: TextStyle(
+                                                                          color: TsOneColor.primary,
+                                                                          fontWeight: FontWeight.bold,
+                                                                          decoration: TextDecoration.underline,
+                                                                          decorationColor: TsOneColor.primary,
+                                                                        ),
+                                                                      ),
                                                                     ),
                                                                   ),
-                                                                ),
-                                                              ),
-                                                          ],
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+
+                                                    if (status == 'Done') SizedBox(height: 15),
+                                                    if (status == 'Done') Text("OCC On Duty", style: tsOneTextTheme.headlineMedium),
+                                                    if (status == 'Done') SizedBox(height: 7.0),
+                                                    if (status == 'Done')
+                                                      Row(
+                                                        children: [
+                                                          Expanded(flex: 6, child: Text("OCC (Given)")),
+                                                          Expanded(flex: 1, child: Text(":")),
+                                                          Expanded(
+                                                            flex: 6,
+                                                            child: Text('${occOnDutyuserData?['NAME'] ?? 'No Data'}'),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    if (status == 'Done') SizedBox(height: 5.0),
+                                                    if (status == 'Done')
+                                                      Row(
+                                                        children: [
+                                                          Expanded(flex: 6, child: Text("OCC (Received)")),
+                                                          Expanded(flex: 1, child: Text(":")),
+                                                          Expanded(flex: 6, child: Text('${occAccepteduserData?['NAME'] ?? 'No Data'}')),
+                                                        ],
+                                                      ),
+
+                                                    SizedBox(height: 15.0),
+                                                    Row(
+                                                      children: [
+                                                        Expanded(
+                                                          flex: 6,
+                                                          child: Text("Feedback Form", style: tsOneTextTheme.headlineMedium),
                                                         ),
-                                                      ),
-                                                    ],
-                                                  ),
+                                                        Expanded(child: Text(":")),
+                                                        Expanded(
+                                                          flex: 6,
+                                                          child: TextButton(
+                                                            onPressed: () async {
+                                                              if (feedbackId != null && feedbackId.isNotEmpty) {
+                                                                // Menggunakan Navigator untuk berpindah ke halaman FeedbackDetailPage
+                                                                Navigator.of(context).push(
+                                                                  MaterialPageRoute(
+                                                                    builder: (context) => FeedbackDetailPage(feedbackId: feedbackId),
+                                                                  ),
+                                                                );
+                                                              } else {
+                                                                // Tindakan alternatif jika feedbackId tidak ada atau kosong
+                                                                ScaffoldMessenger.of(context).showSnackBar(
+                                                                  SnackBar(
+                                                                    content: Text('No Feedback'),
+                                                                    action: SnackBarAction(
+                                                                      label: 'OK',
+                                                                      onPressed: () {
+                                                                        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                                                      },
+                                                                    ),
+                                                                  ),
+                                                                );
 
-                                                if (status == 'Done') SizedBox(height: 15),
-                                                if (status == 'Done') Text("OCC On Duty", style: tsOneTextTheme.headlineMedium),
-                                                if (status == 'Done') SizedBox(height: 7.0),
-                                                if (status == 'Done')
-                                                  Row(
-                                                    children: [
-                                                      Expanded(flex: 6, child: Text("OCC (Given)")),
-                                                      Expanded(flex: 1, child: Text(":")),
-                                                      Expanded(
-                                                        flex: 6,
-                                                        child: Text('${occOnDutyuserData?['NAME'] ?? 'No Data'}'),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                if (status == 'Done') SizedBox(height: 5.0),
-                                                if (status == 'Done')
-                                                  Row(
-                                                    children: [
-                                                      Expanded(flex: 6, child: Text("OCC (Received)")),
-                                                      Expanded(flex: 1, child: Text(":")),
-                                                      Expanded(flex: 6, child: Text('${occAccepteduserData?['NAME'] ?? 'No Data'}')),
-                                                    ],
-                                                  ),
-
-                                                SizedBox(height: 15.0),
-                                                Row(
-                                                  children: [
-                                                    Expanded(
-                                                      flex: 6,
-                                                      child: Text("Feedback Form", style: tsOneTextTheme.headlineMedium),
-                                                    ),
-                                                    Expanded(child: Text(":")),
-                                                    Expanded(
-                                                      flex: 6,
-                                                      child: TextButton(
-                                                        onPressed: () async {
-                                                          if (feedbackId != null && feedbackId.isNotEmpty) {
-                                                            // Menggunakan Navigator untuk berpindah ke halaman FeedbackDetailPage
-                                                            Navigator.of(context).push(
-                                                              MaterialPageRoute(
-                                                                builder: (context) => FeedbackDetailPage(feedbackId: feedbackId),
-                                                              ),
-                                                            );
-                                                          } else {
-                                                            // Tindakan alternatif jika feedbackId tidak ada atau kosong
-                                                            ScaffoldMessenger.of(context).showSnackBar(
-                                                              SnackBar(
-                                                                content: Text('No Feedback'),
-                                                                action: SnackBarAction(
-                                                                  label: 'OK',
-                                                                  onPressed: () {
-                                                                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                                                                  },
+                                                                Future.delayed(Duration(seconds: 1), () {
+                                                                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                                                });
+                                                              }
+                                                              print(feedbackId);
+                                                            },
+                                                            // style: ButtonStyle(
+                                                            //   foregroundColor: MaterialStateProperty.all(TsOneColor.primary),
+                                                            //   textStyle: MaterialStateProperty.all(TextStyle(
+                                                            //     fontWeight: FontWeight.bold,
+                                                            //     decoration: TextDecoration.underline,
+                                                            //     decorationColor: TsOneColor.primary,
+                                                            //   )),
+                                                            // ),
+                                                            child: Align(
+                                                              alignment: Alignment.center,
+                                                              child: Text(
+                                                                'Open Feedback',
+                                                                style: TextStyle(
+                                                                  color: TsOneColor.primary,
+                                                                  fontWeight: FontWeight.bold,
+                                                                  decoration: TextDecoration.underline,
+                                                                  decorationColor: TsOneColor.primary,
                                                                 ),
                                                               ),
-                                                            );
-
-                                                            Future.delayed(Duration(seconds: 1), () {
-                                                              ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                                                            });
-                                                          }
-                                                          print(feedbackId);
-                                                        },
-                                                        // style: ButtonStyle(
-                                                        //   foregroundColor: MaterialStateProperty.all(TsOneColor.primary),
-                                                        //   textStyle: MaterialStateProperty.all(TextStyle(
-                                                        //     fontWeight: FontWeight.bold,
-                                                        //     decoration: TextDecoration.underline,
-                                                        //     decorationColor: TsOneColor.primary,
-                                                        //   )),
-                                                        // ),
-                                                        child: Align(
-                                                          alignment: Alignment.center,
-                                                          child: Text(
-                                                            'Open Feedback',
-                                                            style: TextStyle(
-                                                              color: TsOneColor.primary,
-                                                              fontWeight: FontWeight.bold,
-                                                              decoration: TextDecoration.underline,
-                                                              decorationColor: TsOneColor.primary,
                                                             ),
                                                           ),
                                                         ),
-                                                      ),
+                                                      ],
                                                     ),
-                                                  ],
-                                                ),
 
-                                                SizedBox(height: 10.0),
-                                                if (status == 'handover-to-other-crew') Text("Given To", style: tsOneTextTheme.headlineMedium),
-                                                SizedBox(height: 7.0),
-                                                if (status == 'handover-to-other-crew')
-                                                  Row(
-                                                    children: [
-                                                      Expanded(flex: 6, child: Text("ID NO")),
-                                                      Expanded(flex: 1, child: Text(":")),
-                                                      Expanded(
-                                                        flex: 6,
-                                                        child: handoverTouserData != null
-                                                            ? Text('${handoverTouserData['ID NO'] ?? 'Not Found'}')
-                                                            : Text('Not Found'),
+                                                    SizedBox(height: 10.0),
+                                                    if (status == 'handover-to-other-crew') Text("Given To", style: tsOneTextTheme.headlineMedium),
+                                                    SizedBox(height: 7.0),
+                                                    if (status == 'handover-to-other-crew')
+                                                      Row(
+                                                        children: [
+                                                          Expanded(flex: 6, child: Text("ID NO")),
+                                                          Expanded(flex: 1, child: Text(":")),
+                                                          Expanded(
+                                                            flex: 6,
+                                                            child: handoverTouserData != null
+                                                                ? Text('${handoverTouserData['ID NO'] ?? 'Not Found'}')
+                                                                : Text('Not Found'),
+                                                          ),
+                                                        ],
                                                       ),
-                                                    ],
-                                                  ),
-                                                SizedBox(height: 5.0),
-                                                if (status == 'handover-to-other-crew')
-                                                  Row(
-                                                    children: [
-                                                      Expanded(flex: 6, child: Text("NAME")),
-                                                      Expanded(flex: 1, child: Text(":")),
-                                                      Expanded(
-                                                        flex: 6,
-                                                        child: handoverTouserData != null
-                                                            ? Text('${handoverTouserData['NAME'] ?? 'Not Found'}')
-                                                            : Text('Not Found'),
+                                                    SizedBox(height: 5.0),
+                                                    if (status == 'handover-to-other-crew')
+                                                      Row(
+                                                        children: [
+                                                          Expanded(flex: 6, child: Text("NAME")),
+                                                          Expanded(flex: 1, child: Text(":")),
+                                                          Expanded(
+                                                            flex: 6,
+                                                            child: handoverTouserData != null
+                                                                ? Text('${handoverTouserData['NAME'] ?? 'Not Found'}')
+                                                                : Text('Not Found'),
+                                                          ),
+                                                        ],
                                                       ),
-                                                    ],
-                                                  ),
-                                                SizedBox(height: 5.0),
-                                                if (status == 'handover-to-other-crew')
-                                                  Row(
-                                                    children: [
-                                                      Expanded(flex: 6, child: Text("RANK")),
-                                                      Expanded(flex: 1, child: Text(":")),
-                                                      Expanded(
-                                                        flex: 6,
-                                                        child: handoverTouserData != null
-                                                            ? Text('${handoverTouserData['RANK'] ?? 'Not Found'}')
-                                                            : Text('Not Found'),
+                                                    SizedBox(height: 5.0),
+                                                    if (status == 'handover-to-other-crew')
+                                                      Row(
+                                                        children: [
+                                                          Expanded(flex: 6, child: Text("RANK")),
+                                                          Expanded(flex: 1, child: Text(":")),
+                                                          Expanded(
+                                                            flex: 6,
+                                                            child: handoverTouserData != null
+                                                                ? Text('${handoverTouserData['RANK'] ?? 'Not Found'}')
+                                                                : Text('Not Found'),
+                                                          ),
+                                                        ],
                                                       ),
-                                                    ],
-                                                  ),
 
-                                                SizedBox(height: 30.0),
-                                                Row(
-                                                  children: [
-                                                    Expanded(
-                                                      child: ElevatedButton(
-                                                        onPressed: () {
-                                                          showDialog(
-                                                            context: context,
-                                                            barrierDismissible: false,
-                                                            builder: (context) {
-                                                              return AlertDialog(
-                                                                content: Column(
-                                                                  mainAxisSize: MainAxisSize.min,
-                                                                  children: [
-                                                                    CircularProgressIndicator(),
-                                                                    SizedBox(height: 20),
-                                                                    Text('Please Wait...'),
-                                                                  ],
-                                                                ),
+                                                    SizedBox(height: 30.0),
+                                                    Row(
+                                                      children: [
+                                                        Expanded(
+                                                          child: ElevatedButton(
+                                                            onPressed: () {
+                                                              showDialog(
+                                                                context: context,
+                                                                barrierDismissible: false,
+                                                                builder: (context) {
+                                                                  return AlertDialog(
+                                                                    content: Column(
+                                                                      mainAxisSize: MainAxisSize.min,
+                                                                      children: [
+                                                                        CircularProgressIndicator(),
+                                                                        SizedBox(height: 20),
+                                                                        Text('Please Wait...'),
+                                                                      ],
+                                                                    ),
+                                                                  );
+                                                                },
                                                               );
-                                                            },
-                                                          );
 
-                                                          generateLogPdfDevice23(
-                                                            userName: userData['NAME'],
-                                                            userRank: userData['RANK'],
-                                                            userID: userData['ID NO'].toString(),
-                                                            occAccept: occAccepteduserData?['NAME'],
-                                                            occGiven: occOnDutyuserData?['NAME'],
-                                                            deviceNo2: data['device_name2'],
-                                                            iosVer2: deviceData2['value']['iosver'],
-                                                            flySmart2: deviceData2['value']['flysmart'],
-                                                            lido2: deviceData2['value']['lidoversion'],
-                                                            docunet2: deviceData2['value']['docuversion'],
-                                                            deviceCondition2: deviceData2['value']['condition'],
-                                                            deviceNo3: data['device_name3'],
-                                                            iosVer3: deviceData3['value']['iosver'],
-                                                            flySmart3: deviceData3['value']['flysmart'],
-                                                            lido3: deviceData3['value']['lidoversion'],
-                                                            docunet3: deviceData3['value']['docuversion'],
-                                                            deviceCondition3: deviceData3['value']['condition'],
-                                                            ttdUser: data['signature_url'],
-                                                            ttdOCC: data['signature_url_occ'],
-                                                            ttdOtherCrew: data != null ? data['signature_url_other_crew'] : 'Not Found',
-                                                            loan: data['timestamp'],
-                                                            statusdevice: data['statusDevice'],
-                                                            handoverName: handoverTouserData != null ? handoverTouserData['NAME'] : 'Not Found',
-                                                            handoverID:
-                                                                handoverTouserData != null ? handoverTouserData['ID NO'].toString() : 'Not Found',
-                                                          ).then((_) {
-                                                            Navigator.pop(context);
-                                                          }).catchError((error) {
-                                                            print('Error generating PDF: $error');
-                                                            Navigator.pop(context);
-                                                          });
-                                                          // generateLogPdfDevice23();
-                                                        },
-                                                        style: ElevatedButton.styleFrom(
-                                                          backgroundColor: TsOneColor.greenColor,
-                                                          shape: RoundedRectangleBorder(
-                                                            borderRadius: BorderRadius.circular(4.0),
+                                                              generateLogPdfDevice23(
+                                                                userName: userData['NAME'],
+                                                                userRank: userData['RANK'],
+                                                                userID: userData['ID NO'].toString(),
+                                                                occAccept: occAccepteduserData?['NAME'],
+                                                                occGiven: occOnDutyuserData?['NAME'],
+                                                                deviceNo2: data['device_name2'],
+                                                                iosVer2: deviceData2['value']['iosver'],
+                                                                flySmart2: deviceData2['value']['flysmart'],
+                                                                lido2: deviceData2['value']['lidoversion'],
+                                                                docunet2: deviceData2['value']['docuversion'],
+                                                                deviceCondition2: deviceData2['value']['condition'],
+                                                                deviceNo3: data['device_name3'],
+                                                                iosVer3: deviceData3['value']['iosver'],
+                                                                flySmart3: deviceData3['value']['flysmart'],
+                                                                lido3: deviceData3['value']['lidoversion'],
+                                                                docunet3: deviceData3['value']['docuversion'],
+                                                                deviceCondition3: deviceData3['value']['condition'],
+                                                                ttdUser: data['signature_url'],
+                                                                ttdOCC: data['signature_url_occ'],
+                                                                ttdOtherCrew: data != null ? data['signature_url_other_crew'] : 'Not Found',
+                                                                loan: data['timestamp'],
+                                                                statusdevice: data['statusDevice'],
+                                                                handoverName: handoverTouserData != null ? handoverTouserData['NAME'] : 'Not Found',
+                                                                handoverID:
+                                                                    handoverTouserData != null ? handoverTouserData['ID NO'].toString() : 'Not Found',
+                                                                recNo: formatData?['RecNo'] ?? '-',
+                                                                date: formatData?['Date'] ?? '-',
+                                                                page: formatData?['Page'] ?? '-',
+                                                                footerLeft: formatData?['FooterLeft'] ?? '-',
+                                                                footerRight: formatData?['FooterRight'] ?? '-',
+                                                              ).then((_) {
+                                                                Navigator.pop(context);
+                                                              }).catchError((error) {
+                                                                print('Error generating PDF: $error');
+                                                                Navigator.pop(context);
+                                                              });
+                                                              // generateLogPdfDevice23();
+                                                            },
+                                                            style: ElevatedButton.styleFrom(
+                                                              backgroundColor: TsOneColor.greenColor,
+                                                              shape: RoundedRectangleBorder(
+                                                                borderRadius: BorderRadius.circular(4.0),
+                                                              ),
+                                                            ),
+                                                            child: Padding(
+                                                              padding: EdgeInsets.all(15),
+                                                              child: Text(
+                                                                'Open Attachment History',
+                                                                style: TextStyle(color: Colors.white),
+                                                              ),
+                                                            ),
                                                           ),
                                                         ),
-                                                        child: Padding(
-                                                          padding: EdgeInsets.all(15),
-                                                          child: Text(
-                                                            'Open Attachment History',
-                                                            style: TextStyle(color: Colors.white),
-                                                          ),
-                                                        ),
-                                                      ),
+                                                      ],
                                                     ),
                                                   ],
                                                 ),
-                                              ],
-                                            ),
+                                              ),
+                                            ],
                                           ),
-                                        ],
-                                      ),
+                                        );
+                                      },
                                     );
                                   },
                                 );

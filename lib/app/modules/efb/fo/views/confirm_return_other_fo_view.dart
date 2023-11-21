@@ -23,8 +23,7 @@ class ConfirmReturnOtherFOView extends StatefulWidget {
   });
 
   @override
-  _ConfirmReturnOtherFOViewState createState() =>
-      _ConfirmReturnOtherFOViewState();
+  _ConfirmReturnOtherFOViewState createState() => _ConfirmReturnOtherFOViewState();
 }
 
 class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
@@ -43,11 +42,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
   void initState() {
     super.initState();
     // Fetch deviceUid, deviceName, and OCC On Duty from Firestore using widget.deviceId
-    FirebaseFirestore.instance
-        .collection('pilot-device-1')
-        .doc(widget.deviceId)
-        .get()
-        .then((documentSnapshot) {
+    FirebaseFirestore.instance.collection('pilot-device-1').doc(widget.deviceId).get().then((documentSnapshot) {
       if (documentSnapshot.exists) {
         setState(() {
           deviceId2 = documentSnapshot['device_uid2'];
@@ -82,8 +77,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
     if (timestamp == null) return 'No Data';
 
     DateTime dateTime = timestamp.toDate();
-    String formattedDateTime =
-        '${dateTime.day} ${getMonthText(dateTime.month)} ${dateTime.year}'
+    String formattedDateTime = '${dateTime.day} ${getMonthText(dateTime.month)} ${dateTime.year}'
         ' ; '
         '${dateTime.hour}:${dateTime.minute}';
     return formattedDateTime;
@@ -91,8 +85,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
 
   // Function to open the image picker
   Future<void> _pickImage() async {
-    final pickedImageCamera =
-        await _imagePicker.pickImage(source: ImageSource.camera);
+    final pickedImageCamera = await _imagePicker.pickImage(source: ImageSource.camera);
 
     if (pickedImageCamera != null) {
       setState(() {
@@ -124,10 +117,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: FutureBuilder<DocumentSnapshot>(
-            future: FirebaseFirestore.instance
-                .collection("pilot-device-1")
-                .doc(widget.deviceId)
-                .get(),
+            future: FirebaseFirestore.instance.collection("pilot-device-1").doc(widget.deviceId).get(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
@@ -144,10 +134,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
               final data = snapshot.data!.data() as Map<String, dynamic>;
 
               return FutureBuilder<DocumentSnapshot>(
-                future: FirebaseFirestore.instance
-                    .collection("users")
-                    .doc(data['handover-to-crew'])
-                    .get(),
+                future: FirebaseFirestore.instance.collection("users").doc(data['handover-to-crew']).get(),
                 builder: (context, userSnapshot) {
                   if (userSnapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
@@ -161,84 +148,58 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                     return const Center(child: Text('User data not found'));
                   }
 
-                  final userData =
-                      userSnapshot.data!.data() as Map<String, dynamic>;
+                  final userData = userSnapshot.data!.data() as Map<String, dynamic>;
 
                   return FutureBuilder<DocumentSnapshot>(
-                    future: FirebaseFirestore.instance
-                        .collection("users")
-                        .doc(data['user_uid'])
-                        .get(),
+                    future: FirebaseFirestore.instance.collection("users").doc(data['user_uid']).get(),
                     builder: (context, otheruserSnapshot) {
-                      if (otheruserSnapshot.connectionState ==
-                          ConnectionState.waiting) {
+                      if (otheruserSnapshot.connectionState == ConnectionState.waiting) {
                         return const Center(child: CircularProgressIndicator());
                       }
 
                       if (otheruserSnapshot.hasError) {
-                        return Center(
-                            child: Text('Error: ${otheruserSnapshot.error}'));
+                        return Center(child: Text('Error: ${otheruserSnapshot.error}'));
                       }
 
-                      if (!otheruserSnapshot.hasData ||
-                          !otheruserSnapshot.data!.exists) {
+                      if (!otheruserSnapshot.hasData || !otheruserSnapshot.data!.exists) {
                         return const Center(child: Text('Other Crew data not found'));
                       }
 
-                      final otheruserData = otheruserSnapshot.data!.data()
-                          as Map<String, dynamic>;
+                      final otheruserData = otheruserSnapshot.data!.data() as Map<String, dynamic>;
 
                       return FutureBuilder<DocumentSnapshot>(
-                        future: FirebaseFirestore.instance
-                            .collection("Device")
-                            .doc(data['device_uid2'])
-                            .get(),
+                        future: FirebaseFirestore.instance.collection("Device").doc(data['device_uid2']).get(),
                         builder: (context, device2Snapshot) {
-                          if (device2Snapshot.connectionState ==
-                              ConnectionState.waiting) {
+                          if (device2Snapshot.connectionState == ConnectionState.waiting) {
                             return const Center(child: CircularProgressIndicator());
                           }
 
                           if (device2Snapshot.hasError) {
-                            return Center(
-                                child: Text('Error: ${device2Snapshot.error}'));
+                            return Center(child: Text('Error: ${device2Snapshot.error}'));
                           }
 
-                          if (!device2Snapshot.hasData ||
-                              !device2Snapshot.data!.exists) {
-                            return const Center(
-                                child: Text('Device data 2 not found'));
+                          if (!device2Snapshot.hasData || !device2Snapshot.data!.exists) {
+                            return const Center(child: Text('Device data 2 not found'));
                           }
 
-                          final deviceData2 = device2Snapshot.data!.data()
-                              as Map<String, dynamic>;
+                          final deviceData2 = device2Snapshot.data!.data() as Map<String, dynamic>;
 
                           return FutureBuilder<DocumentSnapshot>(
-                            future: FirebaseFirestore.instance
-                                .collection("Device")
-                                .doc(data['device_uid3'])
-                                .get(),
+                            future: FirebaseFirestore.instance.collection("Device").doc(data['device_uid3']).get(),
                             builder: (context, device3Snapshot) {
-                              if (device3Snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return const Center(
-                                    child: CircularProgressIndicator());
+                              if (device3Snapshot.connectionState == ConnectionState.waiting) {
+                                return const Center(child: CircularProgressIndicator());
                               }
 
                               if (device3Snapshot.hasError) {
-                                return Center(
-                                    child: Text(
-                                        'Error: ${device3Snapshot.error}'));
+                                return Center(child: Text('Error: ${device3Snapshot.error}'));
                               }
 
-                              if (!device3Snapshot.hasData ||
-                                  !device3Snapshot.data!.exists) {
-                                return const Center(
-                                    child: Text('Device data not found'));
+                              if (!device3Snapshot.hasData || !device3Snapshot.data!.exists) {
+                                return const Center(child: Text('Device data not found'));
                               }
 
-                              final deviceData3 = device3Snapshot.data!.data()
-                                  as Map<String, dynamic>;
+                              final deviceData3 = device3Snapshot.data!.data() as Map<String, dynamic>;
 
                               return Center(
                                 child: Column(
@@ -247,9 +208,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                     const SizedBox(height: 10.0),
                                     Align(
                                       alignment: Alignment.centerRight,
-                                      child: Text(
-                                          _formatTimestamp(data['timestamp']),
-                                          style: tsOneTextTheme.labelSmall),
+                                      child: Text(_formatTimestamp(data['timestamp']), style: tsOneTextTheme.labelSmall),
                                     ),
                                     const SizedBox(height: 10.0),
                                     Align(
@@ -392,12 +351,10 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                             ),
                                           ),
                                           Padding(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 8.0),
+                                            padding: EdgeInsets.symmetric(horizontal: 8.0),
                                             child: Text(
                                               'Device Details',
-                                              style:
-                                                  TextStyle(color: Colors.grey),
+                                              style: TextStyle(color: Colors.grey),
                                             ),
                                           ),
                                           Expanded(
@@ -689,7 +646,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
         surfaceTintColor: tsOneColorScheme.secondary,
         child: ElevatedButton(
           onPressed: () {
-            Navigator.push(
+            Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                 builder: (context) => ConfirmSignatureReturnOtherFOView(
@@ -712,15 +669,12 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
   }
 }
 
-Future<String> getHubFromDeviceName(
-    String deviceName2, String deviceName3) async {
+Future<String> getHubFromDeviceName(String deviceName2, String deviceName3) async {
   String hub = "Unknown Hub"; // Default value
 
   try {
     // Fetch the 'hub' field from the 'Device' collection based on deviceName
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-        .collection('Device')
-        .where('deviceno', whereIn: [deviceName2, deviceName3]).get();
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Device').where('deviceno', whereIn: [deviceName2, deviceName3]).get();
 
     if (querySnapshot.docs.isNotEmpty) {
       hub = querySnapshot.docs.first['hub'];

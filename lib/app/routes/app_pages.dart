@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:ts_one/app/modules/efb/pilot/views/pilotreturndeviceview_view.dart';
 
 import '../../data/assessments/assessment_results.dart';
 import '../../data/assessments/new_assessment.dart';
@@ -25,14 +24,6 @@ import '../../presentation/view/users/all_users.dart';
 import '../../presentation/view/users/detail_user.dart';
 import '../../presentation/view/users/login.dart';
 import '../../presentation/view/users/update_user.dart';
-// import '../modules/add_attendancecc/bindings/add_attendancecc_binding.dart';
-// import '../modules/add_attendancecc/views/add_attendancecc_view.dart';
-// import '../modules/attendance_confircc/bindings/attendance_confircc_binding.dart';
-// import '../modules/attendance_confircc/views/attendance_confircc_view.dart';
-// import '../modules/attendance_pendingcc/bindings/attendance_pendingcc_binding.dart';
-// import '../modules/attendance_pendingcc/views/attendance_pendingcc_view.dart';
-import '../modules/efb/analytics/bindings/analytics_binding.dart';
-import '../modules/efb/analytics/views/analytics_view.dart';
 import '../../presentation/view/users/update_user.dart';
 import '../modules/cc/attendance_confircc/bindings/attendance_confircc_binding.dart';
 import '../modules/cc/attendance_confircc/views/attendance_confircc_view.dart';
@@ -48,6 +39,8 @@ import '../modules/cc/instructor/training_instructorcc/bindings/training_instruc
 import '../modules/cc/instructor/training_instructorcc/views/training_instructorcc_view.dart';
 import '../modules/cc/instructor/training_typeinstructorcc/bindings/training_typeinstructorcc_binding.dart';
 import '../modules/cc/instructor/training_typeinstructorcc/views/training_typeinstructorcc_view.dart';
+import '../modules/cc/list_absentcptscc/bindings/list_absentcptscc_binding.dart';
+import '../modules/cc/list_absentcptscc/views/list_absentcptscc_view.dart';
 import '../modules/cc/list_attendancecc/bindings/list_attendancecc_binding.dart';
 import '../modules/cc/list_attendancecc/views/list_attendancecc_view.dart';
 import '../modules/cc/list_attendancedetailcc/bindings/list_attendancedetailcc_binding.dart';
@@ -88,6 +81,10 @@ import '../modules/cc/trainingcc/bindings/trainingcc_binding.dart';
 import '../modules/cc/trainingcc/views/trainingcc_view.dart';
 import '../modules/cc/traininghistorycc_cpts/bindings/traininghistorycc_cpts_binding.dart';
 import '../modules/cc/traininghistorycc_cpts/views/traininghistorycc_cpts_view.dart';
+import '../modules/efb/analytics/bindings/analytics_binding.dart';
+import '../modules/efb/analytics/views/analytics_view.dart';
+import '../modules/efb/dokumen/bindings/efb_dokumen_binding.dart';
+import '../modules/efb/dokumen/views/efb_dokumen_view.dart';
 import '../modules/efb/fo/bindings/homefo_binding.dart';
 import '../modules/efb/fo/views/main_view_fo.dart';
 import '../modules/efb/occ/bindings/device_binding.dart';
@@ -96,8 +93,7 @@ import '../modules/efb/occ/views/homeocc_view.dart';
 import '../modules/efb/occ/views/listdevice/listdevice.dart';
 import '../modules/efb/pilot/bindings/homepilot_binding.dart';
 import '../modules/efb/pilot/views/main_view_pilot.dart';
-import '../modules/cc/list_absentcptscc/bindings/list_absentcptscc_binding.dart';
-import '../modules/cc/list_absentcptscc/views/list_absentcptscc_view.dart';
+import '../modules/efb/pilot/views/pilotreturndeviceview_view.dart';
 import '../modules/efb/profile/bindings/profile_binding.dart';
 import '../modules/efb/profile/views/profile_view.dart';
 import '../modules/main_home/bindings/main_home_binding.dart';
@@ -112,6 +108,13 @@ import '../modules/pa/navpilot/bindings/navpilot_binding.dart';
 import '../modules/pa/navpilot/views/navpilot_view.dart';
 import '../modules/pa/occ/bindings/navocc_binding.dart';
 import '../modules/pa/occ/views/navocc_view.dart';
+
+// import '../modules/add_attendancecc/bindings/add_attendancecc_binding.dart';
+// import '../modules/add_attendancecc/views/add_attendancecc_view.dart';
+// import '../modules/attendance_confircc/bindings/attendance_confircc_binding.dart';
+// import '../modules/attendance_confircc/views/attendance_confircc_view.dart';
+// import '../modules/attendance_pendingcc/bindings/attendance_pendingcc_binding.dart';
+// import '../modules/attendance_pendingcc/views/attendance_pendingcc_view.dart';
 
 part 'app_routes.dart';
 
@@ -192,7 +195,8 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.newAssessmentInstructorNotes,
-      page: () => NewAssessmentInstructorNotes(examineeId: Get.arguments as int),
+      page: () =>
+          NewAssessmentInstructorNotes(examineeId: Get.arguments as int),
     ),
     GetPage(
       name: _Paths.newAssessmentDeclaration,
@@ -213,7 +217,8 @@ class AppPages {
 
     GetPage(
       name: _Paths.detailAssessmentPeriod,
-      page: () => DetailAssessmentPeriodView(assessmentPeriodId: Get.arguments as String),
+      page: () => DetailAssessmentPeriodView(
+          assessmentPeriodId: Get.arguments as String),
     ),
 
     GetPage(
@@ -223,7 +228,8 @@ class AppPages {
 
     GetPage(
       name: _Paths.updateAssessmentPeriod,
-      page: () => UpdateAssessmentPeriodView(assessmentPeriodId: Get.arguments as String),
+      page: () => UpdateAssessmentPeriodView(
+          assessmentPeriodId: Get.arguments as String),
     ),
 
     GetPage(
@@ -457,6 +463,11 @@ class AppPages {
       name: _Paths.PROFILE,
       page: () => ProfileView(),
       binding: ProfileBinding(),
+    ),
+    GetPage(
+      name: _Paths.EFB_DOKUMEN,
+      page: () => const EfbDokumenView(),
+      binding: EfbDokumenBinding(),
     ),
   ];
 }
