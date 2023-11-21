@@ -101,7 +101,7 @@ class PilottraininghistorydetailccController extends GetxController {
             'PHOTOURL' : traineeData['PHOTOURL'],
             'department': attendanceModel.department,
             'trainingType': attendanceModel.trainingType,
-            'vanue': attendanceModel.vanue,
+            'venue': attendanceModel.venue,
             'room': attendanceModel.room,
             'feedback-from-trainer': attendanceDetailData['feedback'],
             'feedback-from-trainee':

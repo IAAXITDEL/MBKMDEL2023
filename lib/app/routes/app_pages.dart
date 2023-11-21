@@ -438,8 +438,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.DETAILHISTORYCC_CPTS,
-      page: () => const DetailhistoryccCptsView(
-        listAttendance: [],
+      page: () => DetailhistoryccCptsView(
       ),
       binding: DetailhistoryccCptsBinding(),
     ),

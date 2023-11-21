@@ -149,7 +149,7 @@ class DetailhistoryccCptsController extends GetxController {
             'trainee-name': traineeData['NAME'],
             'department': attendanceModel.department,
             'trainingType': attendanceModel.trainingType,
-            'vanue': attendanceModel.vanue,
+            'venue': attendanceModel.venue,
             'room': attendanceModel.room,
             'feedback-from-trainer': attendanceDetailData['feedback'],
             'feedback-from-trainee':
