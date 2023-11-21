@@ -96,46 +96,7 @@ class ListAttendancedetailccView
                               SizedBox(
                                 height: 10,
                               ),
-                              controller.argumentstatus.value == "pending" || controller.argumentstatus.value == "confirmation"
-                                  ? SizedBox()
-                                  : Row(
-                                      children: [
-                                        Expanded(flex: 3, child: Text("SCORE")),
-                                        Expanded(flex: 1, child: Text(":")),
-                                        Expanded(
-                                            flex: 6,
-                                            child: Row(
-                                              children: [
-                                                Container(
-                                                  padding: EdgeInsets.symmetric(
-                                                      vertical: 3,
-                                                      horizontal: 10),
-                                                  decoration: BoxDecoration(
-                                                    color: documentData["score"] == "PASS" || documentData["score"] ==  null ? Colors.green.withOpacity(0.4)
-                                                        : Colors.red
-                                                            .withOpacity(0.4),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                  ),
-                                                  child: Text(
-                                                    documentData["score"],
-                                                    style: TextStyle(
-                                                        fontSize: 10,
-                                                        color: documentData[
-                                                                    "score"] ==
-                                                                "PASS"  || documentData["score"] ==  null
-                                                            ? Colors.green
-                                                            : Colors.red),
-                                              ),
-                                            ),
-                                          ],
-                                        ))
-                                  ],
-                                ),
-                          SizedBox(
-                            height: 10,
-                          ),
+
                           Row(
                             children: [
                               Expanded(flex: 3, child: Text("NAME")),
@@ -495,43 +456,182 @@ class ListAttendancedetailccView
                                       ),
                                     )
                                   : SizedBox(),
-                          controller.isCPTS.value
-                              ? Row(
-                                  children: [
-                                    Expanded(
-                                      child: Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 20, vertical: 20),
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                          color: TsOneColor.surface,
-                                        ),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              'Feedback from instructor',
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 15,
+                              controller.argumentstatus.value == "pending" || controller.argumentstatus.value == "confirmation"
+                                  ? SizedBox()
+                                  : Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Expanded(flex: 3, child: Text("GRADE")),
+                                      Expanded(flex: 1, child: Text(":")),
+                                      Expanded(
+                                          flex: 6,
+                                          child: Row(
+                                            children: [
+                                              Container(
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: 3,
+                                                    horizontal: 10),
+                                                child: Text(
+                                                  documentData["grade"].round().toString() ?? "",
+                                                ),
                                               ),
-                                            ),
-                                            Text(
-                                              documentData["feedback"],
-                                              style: TextStyle(
-                                                fontSize: 15,
+                                            ],
+                                          ))
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Row(
+                                  children: [
+                                    Expanded(flex: 3, child: Text("SCORE")),
+                                    Expanded(flex: 1, child: Text(":")),
+                                    Expanded(
+                                        flex: 6,
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: 3,
+                                                  horizontal: 10),
+                                              decoration: BoxDecoration(
+                                                color: documentData["score"] == "PASS" || documentData["score"] ==  null ? Colors.green.withOpacity(0.4)
+                                                    : Colors.red
+                                                    .withOpacity(0.4),
+                                                borderRadius:
+                                                BorderRadius.circular(
+                                                    10),
+                                              ),
+                                              child: Text(
+                                                documentData["score"],
+                                                style: TextStyle(
+                                                    fontSize: 10,
+                                                    color: documentData[
+                                                    "score"] ==
+                                                        "PASS"  || documentData["score"] ==  null
+                                                        ? Colors.green
+                                                        : Colors.red),
                                               ),
                                             ),
                                           ],
-                                        ),
-                                      ),
-                                    )
+                                        ))
                                   ],
                                 )
+                                ],
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                          controller.isCPTS.value
+                              ? Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Expanded(flex: 2,child: Text("Communication Skills", style: tsOneTextTheme.labelSmall)),
+                                  Expanded(
+                                    flex: 3,
+                                    child: Obx(() {
+                                      return Slider(
+                                        value: controller.ratingCommunication.value,
+                                        min: 1,
+                                        max: 5,
+                                        divisions: 4,
+                                        label: controller.ratingCommunication.value.round().toString(),
+                                        onChanged: (double value) {
+                                        },
+                                        activeColor: Colors.blue[900],
+                                      );
+                                    }),
+                                  ),
+                                  Text("${controller.ratingCommunication.value.round().toString()}/5"),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(flex: 2,child: Text("Knowledge", style: tsOneTextTheme.labelSmall,)),
+                                  Expanded( flex: 3,
+                                    child: Obx(() {
+                                      return Slider(
+                                        value: controller.ratingKnowledge.value,
+                                        min: 1,
+                                        max: 5,
+                                        divisions: 4,
+                                        label: controller.ratingKnowledge.value.round().toString(),
+                                        onChanged: (double value) {
+                                        },
+                                        activeColor: Colors.green[900],
+                                      );
+                                    }),
+                                  ),
+                                  Text("${controller.ratingKnowledge.value.round().toString()}/5"),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(flex: 2, child: Text("Active Participation", style: tsOneTextTheme.labelSmall)),
+                                  Expanded(
+                                    flex: 3,
+                                    child: Obx(() {
+                                      return Slider(
+                                        value: controller.ratingActive.value,
+                                        min: 1,
+                                        max: 5,
+                                        divisions: 4,
+                                        label: controller.ratingActive.value.round().toString(),
+                                        onChanged: (double value) {
+                                        },
+                                        activeColor: Colors.red[900],
+                                      );
+                                    }),
+                                  ),
+                                  Text("${controller.ratingActive.value.round().toString()}/5"),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 20, vertical: 20),
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                        BorderRadius.circular(10.0),
+                                        color: TsOneColor.surface,
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Feedback from instructor',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 15,
+                                            ),
+                                          ),
+                                          Text(
+                                            documentData["feedback"],
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              )
+                            ],
+                          )
                               : SizedBox()
                         ],
                       ),

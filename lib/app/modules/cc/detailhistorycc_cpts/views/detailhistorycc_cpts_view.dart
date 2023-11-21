@@ -225,7 +225,6 @@ with SingleTickerProviderStateMixin {
                       InkWell(
                         onTap: () {
                           if (controller.jumlah.value > 0) {
-                            print(controller.jumlah.value);
                             Get.toNamed(
                               Routes.LIST_ATTENDANCECC,
                               arguments: {
@@ -268,7 +267,6 @@ with SingleTickerProviderStateMixin {
                       InkWell(
                         onTap: () {
                           if (controller.jumlah.value > 0) {
-                            print(controller.jumlah.value);
                             Get.toNamed(
                               Routes.LIST_ABSENTCPTSCC,
                               arguments: {
@@ -308,7 +306,6 @@ with SingleTickerProviderStateMixin {
                   ),
                   Column(
                     children: [
-
                       Container(
                         child: FutureBuilder<List<Map<String, dynamic>?>>(
                           future: controller.getFeedbackDataList(),
@@ -318,6 +315,7 @@ with SingleTickerProviderStateMixin {
                             }
 
                             if (snapshot.hasError) {
+                              print("Error : ${snapshot.error}");
                               return ErrorScreen();
                             }
 
@@ -327,8 +325,6 @@ with SingleTickerProviderStateMixin {
 
                             var listFeedback = snapshot.data!;
 
-                            print("chek");
-                            print(listFeedback);
                             if (listFeedback.isEmpty) {
                               return EmptyScreen();
                             }
@@ -337,101 +333,205 @@ with SingleTickerProviderStateMixin {
                               height: 15,
                             );
 
-                            return ListView.builder(
-                              itemCount: listFeedback.length,
-                              physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return listFeedback[index]
-                                !['rating'] !=
-                                    null ?  Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                            return Column(
+                              children: [
+                                Text("Review", style: tsOneTextTheme.headlineMedium,),
+                                SizedBox(height: 20,),
+                                Text("${controller.allAverage.value.toStringAsFixed(1)}", style: tsOneTextTheme.displayLarge,),
+                                RatingBar.builder(
+                                  initialRating: controller.allAverage.value,
+                                  minRating: 1,
+                                  direction: Axis.horizontal,
+                                  allowHalfRating: true,
+                                  itemCount: 5,
+                                  itemPadding: EdgeInsets.symmetric(
+                                      horizontal: 1.0),
+                                  itemSize: 20.0,
+                                  itemBuilder: (context, _) => Icon(
+                                    Icons.star,
+                                    color: Colors.amber,
+                                  ),
+                                  ignoreGestures: true,
+                                  onRatingUpdate: (rating) {
+                                    print(rating);
+                                  },
+                                ),
+                                Text("Based on ${listFeedback.length} reviews", style: tsOneTextTheme.labelSmall,),
+                                SizedBox(height: 20,),
+                                controller.averageRTeachings.value != 0.0 ?
+                                Row(
                                   children: [
-                                    Row(
+                                    Expanded(flex : 2, child: Text("Teaching Methods", style: tsOneTextTheme.labelSmall,)),
+                                    Expanded(
+                                      flex: 3,
+                                      child: Obx(() {
+                                        return Slider(
+                                          value: controller.averageRTeachings.value,
+                                          min: 1,
+                                          max: 5,
+                                          divisions: 4,
+                                          label: controller.averageRTeachings.value
+                                              .round()
+                                              .toString(),
+                                          onChanged: (double value) {
+                                          },
+                                          activeColor: Colors.purple[900],
+                                        );
+                                      }),
+                                    ),
+                                    Text("${controller.averageRTeachings.value
+                                        .toStringAsFixed(1)
+                                        .toString()}/5", style: tsOneTextTheme.labelSmall,),
+                                  ],
+                                ) : SizedBox(),
+                                controller.averageRMastery.value != 0.0 ?
+                                Row(
+                                  children: [
+                                    Expanded(flex : 2, child: Text("Proficiency", style: tsOneTextTheme.labelSmall,)),
+                                    Expanded(
+                                      flex: 3,
+                                      child: Obx(() {
+                                        return Slider(
+                                          value: controller.averageRMastery.value,
+                                          min: 1,
+                                          max: 5,
+                                          divisions: 4,
+                                          label: controller.averageRMastery.value
+                                              .round()
+                                              .toString(),
+                                          onChanged: (double value) {
+                                          },
+                                          activeColor: Colors.green[900],
+                                        );
+                                      }),
+                                    ),
+                                    Text("${controller.averageRMastery.value
+                                        .toStringAsFixed(1)}/5", style: tsOneTextTheme.labelSmall,),
+                                  ],
+                                ) : SizedBox(),
+                                controller.averageRTimes.value != 0.0 ?
+                                Row(
+                                  children: [
+                                    Expanded(flex: 2,child: Text("Time Management", style: tsOneTextTheme.labelSmall,)),
+                                    Expanded(
+                                      flex: 3,
+                                      child: Obx(() {
+                                        return Slider(
+                                          value: controller.averageRTimes.value,
+                                          min: 1,
+                                          max: 5,
+                                          divisions: 4,
+                                          label: controller.averageRTimes.value
+                                              .round()
+                                              .toString(),
+                                          onChanged: (double value) {
+                                            controller.averageRTimes.value =
+                                                value;
+                                          },
+                                          activeColor: Colors.red[900],
+                                        );
+                                      }),
+                                    ),
+                                    Text("${controller.averageRTimes.value
+                                        .toStringAsFixed(1)}/5", style: tsOneTextTheme.labelSmall,),
+                                  ],
+                                ) : SizedBox(),
+                                SizedBox(height: 20,),
+                                ListView.builder(
+                                  itemCount: listFeedback.length,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemBuilder: (context, index) {
+                                    return Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Container(
-                                          margin: EdgeInsets.only(right: 16),
-                                          child: CircleAvatar(
-                                            radius: 20,
-                                            backgroundColor: Colors.black26,
-                                            child: ClipRRect(
-                                              borderRadius:
-                                              BorderRadius.circular(100),
-                                              child: listFeedback[index]
-                                              !["photoURL"] ==
-                                                  null
-                                                  ? Image.asset(
-                                                "assets/images/placeholder_person.png",
-                                                fit: BoxFit.cover,
-                                              )
-                                                  : Image.network(
-                                                "${listFeedback[index]!["photoURL"]}",
-                                                fit: BoxFit.cover,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Column(
-                                          crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                        Row(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
-                                            Text(
-                                              // listFeedback[index]["traineeName"] ??
-                                              //     "N/A",
-                                              listFeedback[index]!["name"]
-                                                  .toString(),
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold),
-                                              maxLines: 1,
-                                            ),
-                                            RatingBar.builder(
-                                              initialRating: listFeedback[index]
-                                              !['rating'] !=
-                                                  null
-                                                  ? double.tryParse(
-                                                  listFeedback[index]
-                                                  !['rating']
-                                                      .toString()) ??
-                                                  0.0
-                                                  : 0.0,
-                                              minRating: 1,
-                                              direction: Axis.horizontal,
-                                              allowHalfRating: false,
-                                              itemCount: 5,
-                                              itemPadding: EdgeInsets.symmetric(
-                                                  horizontal: 1.0),
-                                              itemSize: 20.0,
-                                              itemBuilder: (context, _) => Icon(
-                                                Icons.star,
-                                                color: Colors.amber,
+                                            Container(
+                                              margin: EdgeInsets.only(right: 16),
+                                              child: CircleAvatar(
+                                                radius: 20,
+                                                backgroundColor: Colors.black26,
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                  BorderRadius.circular(100),
+                                                  child: listFeedback[index]
+                                                  !["photoURL"] ==
+                                                      null
+                                                      ? Image.asset(
+                                                    "assets/images/placeholder_person.png",
+                                                    fit: BoxFit.cover,
+                                                  )
+                                                      : Image.network(
+                                                    "${listFeedback[index]!["photoURL"]}",
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
                                               ),
-                                              ignoreGestures: true,
-                                              onRatingUpdate: (rating) {
-                                                print(rating);
-                                              },
                                             ),
-                                            Text(
-                                              listFeedback[index]
-                                              ?["feedbackforinstructor"] ??
-                                                  "-",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.normal),
-                                              maxLines:
-                                              2, // Set the maximum number of lines you want to display
-                                              overflow: TextOverflow
-                                                  .ellipsis, // Specify how to handle overflow
+                                            Column(
+                                              crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  // listFeedback[index]["traineeName"] ??
+                                                  //     "N/A",
+                                                  listFeedback[index]!["name"]
+                                                      .toString(),
+                                                  style: TextStyle(
+                                                      fontWeight: FontWeight.bold),
+                                                  maxLines: 1,
+                                                ),
+                                                // RatingBar.builder(
+                                                //   initialRating: listFeedback[index]
+                                                //   !['rating'] !=
+                                                //       null
+                                                //       ? double.tryParse(
+                                                //       listFeedback[index]
+                                                //       !['rating']
+                                                //           .toString()) ??
+                                                //       0.0
+                                                //       : 0.0,
+                                                //   minRating: 1,
+                                                //   direction: Axis.horizontal,
+                                                //   allowHalfRating: false,
+                                                //   itemCount: 5,
+                                                //   itemPadding: EdgeInsets.symmetric(
+                                                //       horizontal: 1.0),
+                                                //   itemSize: 20.0,
+                                                //   itemBuilder: (context, _) => Icon(
+                                                //     Icons.star,
+                                                //     color: Colors.amber,
+                                                //   ),
+                                                //   ignoreGestures: true,
+                                                //   onRatingUpdate: (rating) {
+                                                //     print(rating);
+                                                //   },
+                                                // ),
+                                                Text(
+                                                  listFeedback[index]
+                                                  ?["feedbackforinstructor"] ??
+                                                      "-",
+                                                  style: TextStyle(
+                                                      fontWeight: FontWeight.normal),
+                                                  maxLines:
+                                                  2, // Set the maximum number of lines you want to display
+                                                  overflow: TextOverflow
+                                                      .ellipsis, // Specify how to handle overflow
+                                                ),
+                                              ],
                                             ),
                                           ],
                                         ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
                                       ],
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                  ],
-                                ) : SizedBox();
-                              },
+                                    ) ;
+                                  },
+                                )
+                              ],
                             );
                           },
                         ),
