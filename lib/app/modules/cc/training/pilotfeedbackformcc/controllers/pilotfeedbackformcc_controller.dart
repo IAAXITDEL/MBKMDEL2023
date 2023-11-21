@@ -11,6 +11,9 @@ class PilotfeedbackformccController extends GetxController {
   RxDouble rating = 1.0.obs;
 
   late UserPreferences userPreferences;
+  RxDouble ratingTeachingMethod = 1.0.obs;
+  RxDouble ratingMastery = 1.0.obs;
+  RxDouble ratingTimeManagement = 1.0.obs;
 
   @override
   void onInit() {
@@ -69,7 +72,11 @@ class PilotfeedbackformccController extends GetxController {
 
     querySnapshot.docs.forEach((doc) async {
       await doc.reference.update({
-        "rating": rating.value,
+        // "rating": rating.value,
+
+        "rTeachingMethod": ratingTeachingMethod.value,
+        "rMastery": ratingMastery.value,
+        "rTimeManagement": ratingTimeManagement.value,
         "feedbackforinstructor" : feedback,
         "updatedTime": DateTime.now().toIso8601String(),
       });
@@ -94,14 +101,14 @@ class PilotfeedbackformccController extends GetxController {
         attendance.feedbackforinstructor = attendanceDoc['feedbackforinstructor'];
       }
 
-      // Check if 'rating' exists in the document
-      if (attendanceDoc.data().containsKey('rating')) {
-        attendance.rating = attendanceDoc['rating'].toDouble();
-      }
       attendanceList.add(attendance);
     });
 
     rating.value = attendanceList.isNotEmpty ? attendanceList[0].rating ?? 1.0 : 1.0;
+
+    ratingTeachingMethod.value = attendanceList[0].rTeachingMethod!;
+    ratingMastery.value = attendanceList[0].rMastery!;
+    ratingTimeManagement.value = attendanceList[0].rTimeManagement!;
 
     print("asda");
     print(attendanceList);
