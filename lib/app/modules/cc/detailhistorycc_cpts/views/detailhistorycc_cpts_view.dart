@@ -335,7 +335,7 @@ with SingleTickerProviderStateMixin {
 
                             return Column(
                               children: [
-                                Text("Review", style: tsOneTextTheme.headlineMedium,),
+                                // Text("Review", style: tsOneTextTheme.headlineMedium,),
                                 SizedBox(height: 20,),
                                 Text("${controller.allAverage.value.toStringAsFixed(1)}", style: tsOneTextTheme.displayLarge,),
                                 RatingBar.builder(
@@ -375,7 +375,8 @@ with SingleTickerProviderStateMixin {
                                               .toString(),
                                           onChanged: (double value) {
                                           },
-                                          activeColor: Colors.purple[900],
+                                          // activeColor: Colors.purple[900],
+                                          activeColor : Color(0XFFFFFB000),
                                         );
                                       }),
                                     ),
@@ -401,7 +402,8 @@ with SingleTickerProviderStateMixin {
                                               .toString(),
                                           onChanged: (double value) {
                                           },
-                                          activeColor: Colors.green[900],
+                                          //activeColor: Colors.green[900],
+                                          activeColor : Color(0XFFF004225),
                                         );
                                       }),
                                     ),
@@ -428,7 +430,8 @@ with SingleTickerProviderStateMixin {
                                             controller.averageRTimes.value =
                                                 value;
                                           },
-                                          activeColor: Colors.red[900],
+                                          //activeColor: Colors.red[900],
+                                          activeColor : Color(0XFFF071952),
                                         );
                                       }),
                                     ),

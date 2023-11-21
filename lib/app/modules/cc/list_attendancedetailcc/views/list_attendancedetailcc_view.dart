@@ -20,7 +20,8 @@ class ListAttendancedetailccView
   Widget build(BuildContext context) {
     var scoreC = TextEditingController();
     var feedbackC = TextEditingController();
-    var gradeC = TextEditingController();
+    // var gradeC = TextEditingController();
+    var gradeC = TextEditingController(text: "DEFAULT_VALUE");
 
 
     Future<void> updateScoring(String score, String feedback, double grade, double communication, double knowledge, double active) async {
@@ -106,18 +107,6 @@ class ListAttendancedetailccView
                                   child: Text(documentData["name"] ?? "N/A")),
                             ],
                           ),
-                          // SizedBox(
-                          //   height: 10,
-                          // ),
-                          // Row(
-                          //   children: [
-                          //     Expanded(flex: 3, child: Text("EMAIL")),
-                          //     Expanded(flex: 1, child: Text(":")),
-                          //     Expanded(
-                          //         flex: 6,
-                          //         child: Text(documentData["email"] ?? "N/A")),
-                          //   ],
-                          // ),
                           SizedBox(
                             height: 10,
                           ),
@@ -130,19 +119,6 @@ class ListAttendancedetailccView
                                   child: Text(documentData["rank"] ?? "N/A")),
                             ],
                           ),
-                          // SizedBox(
-                          //   height: 10,
-                          // ),
-                          // Row(
-                          //   children: [
-                          //     Expanded(flex: 3, child: Text("LICENSE NO")),
-                          //     Expanded(flex: 1, child: Text(":")),
-                          //     Expanded(
-                          //         flex: 6,
-                          //         child:
-                          //             Text(documentData["license"] ?? "N/A")),
-                          //   ],
-                          // ),
                           SizedBox(
                             height: 10,
                           ),
@@ -234,7 +210,7 @@ class ListAttendancedetailccView
                                             ],
                                           ),
                                           SizedBox(
-                                            height: 20,
+                                            height: 30,
                                           ),
                                           Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -259,13 +235,14 @@ class ListAttendancedetailccView
                                                   onChanged: (double value) {
                                                     controller.ratingCommunication.value = value;
                                                   },
-                                                  activeColor: Colors.blue[900],
+                                                  // activeColor: Colors.blue[900],
+                                                  activeColor : Color(0XFFFFFB000),
                                                 );
                                               }),
                                             ],
                                           ),
                                           SizedBox(
-                                            height: 10,
+                                            height: 15,
                                           ),
                                           Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -290,13 +267,14 @@ class ListAttendancedetailccView
                                                   onChanged: (double value) {
                                                     controller.ratingKnowledge.value = value;
                                                   },
-                                                  activeColor: Colors.green[900],
+                                                  // activeColor: Colors.green[900],
+                                                  activeColor : Color(0XFFF004225),
                                                 );
                                               }),
                                             ],
                                           ),
                                           SizedBox(
-                                            height: 10,
+                                            height: 15,
                                           ),
                                           Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -321,13 +299,14 @@ class ListAttendancedetailccView
                                                   onChanged: (double value) {
                                                     controller.ratingActive.value = value;
                                                   },
-                                                  activeColor: Colors.red[900],
+                                                  // activeColor: Colors.red[900],
+                                                  activeColor : Color(0XFFF071952),
                                                 );
                                               }),
                                             ],
                                           ),
                                           SizedBox(
-                                            height: 10,
+                                            height: 15,
                                           ),
                                           Row(
                                             children: [
@@ -521,11 +500,47 @@ class ListAttendancedetailccView
                                 ],
                               ),
                               SizedBox(
-                                height: 10,
+                                height: 30,
                               ),
                           controller.isCPTS.value
                               ? Column(
                             children: [
+                              Row(
+                                children: [
+                                  Container(
+                                    width:
+                                    40, // Atur lebar garis kiri sesuai kebutuhan
+                                    child: Divider(
+                                      color: Colors.red,
+                                      thickness: 1,
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 1, // Atur flex ke 3 untuk teks
+                                    child: Center(
+                                      child: Text(
+                                        'Feedback from instructor',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    width:
+                                    40, // Atur lebar garis kanan sesuai kebutuhan
+                                    child: Divider(
+                                      color: Colors.red,
+                                      thickness: 1,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
                               Row(
                                 children: [
                                   Expanded(flex: 2,child: Text("Communication Skills", style: tsOneTextTheme.labelSmall)),
@@ -540,7 +555,8 @@ class ListAttendancedetailccView
                                         label: controller.ratingCommunication.value.round().toString(),
                                         onChanged: (double value) {
                                         },
-                                        activeColor: Colors.blue[900],
+                                        // activeColor: Colors.blue[900],
+                                        activeColor : Color(0XFFFFFB000),
                                       );
                                     }),
                                   ),
@@ -563,7 +579,8 @@ class ListAttendancedetailccView
                                         label: controller.ratingKnowledge.value.round().toString(),
                                         onChanged: (double value) {
                                         },
-                                        activeColor: Colors.green[900],
+                                        // activeColor: Colors.green[900],
+                                        activeColor : Color(0XFFF004225),
                                       );
                                     }),
                                   ),
@@ -587,47 +604,41 @@ class ListAttendancedetailccView
                                         label: controller.ratingActive.value.round().toString(),
                                         onChanged: (double value) {
                                         },
-                                        activeColor: Colors.red[900],
+                                        // activeColor: Colors.red[900],
+                                        activeColor : Color(0XFFF071952),
                                       );
                                     }),
                                   ),
                                   Text("${controller.ratingActive.value.round().toString()}/5"),
                                 ],
                               ),
+
+                              SizedBox(
+                                height: 5,
+                              ),
                               Row(
                                 children: [
-                                  Expanded(
-                                    child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 20, vertical: 20),
-                                      decoration: BoxDecoration(
-                                        borderRadius:
-                                        BorderRadius.circular(10.0),
-                                        color: TsOneColor.surface,
+                                  Column(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Notes:',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15,
+                                        ),
                                       ),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            'Feedback from instructor',
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 15,
-                                            ),
-                                          ),
-                                          Text(
-                                            documentData["feedback"],
-                                            style: TextStyle(
-                                              fontSize: 15,
-                                            ),
-                                          ),
-                                        ],
+                                      Text(
+                                        documentData["feedback"],
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                        ),
                                       ),
-                                    ),
-                                  )
+                                    ],
+                                  ),
                                 ],
                               )
                             ],

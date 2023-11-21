@@ -142,7 +142,8 @@ class PilotfeedbackformccView extends GetView<PilotfeedbackformccController> {
                                   controller.ratingTeachingMethod.value =
                                       value;
                                 },
-                                activeColor: Colors.blue[900],
+                                // activeColor: Colors.blue[900],
+                                activeColor : Color(0XFFFFFB000),
                               );
                             }),
                           ],
@@ -194,7 +195,8 @@ class PilotfeedbackformccView extends GetView<PilotfeedbackformccController> {
                                 onChanged: (double value) {
                                   controller.ratingMastery.value = value;
                                 },
-                                activeColor: Colors.green[900],
+                                // activeColor: Colors.green[900],
+                                activeColor : Color(0XFFF004225),
                               );
                             }),
                           ],
@@ -247,7 +249,9 @@ class PilotfeedbackformccView extends GetView<PilotfeedbackformccController> {
                                   controller.ratingTimeManagement.value =
                                       value;
                                 },
-                                activeColor: Colors.red[900],
+                                // activeColor: Colors.red[900],
+                                activeColor : Color(0XFFF071952),
+
                               );
                             }),
                           ],
