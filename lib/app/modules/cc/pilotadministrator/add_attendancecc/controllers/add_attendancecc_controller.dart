@@ -31,7 +31,7 @@ class AddAttendanceccController extends GetxController {
 
 
   //Membuat attendance baru
-  Future<void> addAttendanceForm( String subject, DateTime date, String venue, int instructor, int idtrainingtype ) async {
+  Future<void> addAttendanceForm( String subject, DateTime date, String trainingType,String department,String room,String venue, int instructor, int idtrainingtype ) async {
     CollectionReference attendance = firestore.collection("attendance");
 
     String formattedDate = DateFormat('ddMMyyyyHHmmss').format(DateTime.now());
@@ -41,6 +41,9 @@ class AddAttendanceccController extends GetxController {
           "id" : "attendance-$idtrainingtype-$formattedDate",
           "subject": subject,
           "date": date,
+          'trainingType' : trainingType,
+          'department' : department,
+          'room' : room,
           "venue": venue,
           "instructor": instructor,
           "status": "pending",

@@ -27,11 +27,15 @@ class AddAttendanceccView extends GetView<AddAttendanceccController> {
     var venueC = TextEditingController();
     var dateC = TextEditingController();
 
+    var departmentC = TextEditingController();
+    var trainingTypeC = TextEditingController();
+    var roomC = TextEditingController();
+
     subjectC.text = controller.argumentname.value;
     int? instructorC = 0;
 
-    Future<void> add(String subject, DateTime date, String venue, int instructor, int idtrainingtype) async {
-      controller.addAttendanceForm(subject, date, venue, instructor, idtrainingtype).then((status) async {
+    Future<void> add(String subject, DateTime date, String trainingType,String department,String room, String venue, int instructor, int idtrainingtype) async {
+      controller.addAttendanceForm(subject, date, trainingType,department, room, venue, instructor, idtrainingtype).then((status) async {
         await QuickAlert.show(
           context: context,
           type: QuickAlertType.success,
@@ -63,7 +67,7 @@ class AddAttendanceccView extends GetView<AddAttendanceccController> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  RedTitleText(text: controller.argumentname.value),
+                  // RedTitleText(text: controller.argumentname.value),
                   //Text("REDUCED VERTICAL SEPARATION MINIMA (RVSM)"),
 
                   SizedBox(height: 20,),
@@ -76,14 +80,112 @@ class AddAttendanceccView extends GetView<AddAttendanceccController> {
                   FormDateField(text: 'Date', textController: dateC,),
                   SizedBox(height: 10,),
 
-                  //-------------------------VENUE-----------------------
-                  // FormTextField(text: "Venue", textController: venueC),
-                  // SizedBox(height: 10,),
+                  //-------------------------TRAINING TYPE-----------------------
                   DropdownSearch<String>(
                     mode: Mode.MENU,
-                    items: ['IAA'],
-                    dropdownSearchDecoration:
-                    InputDecoration(
+                    items: ['INITIAL', 'RECURRENT'],
+                    dropdownSearchDecoration: InputDecoration(
+                      labelText: "Training Type",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(5),
+                        ),
+                      ),
+                    ),
+                    onChanged: (String? newValue) {
+                      trainingTypeC.text = newValue!;
+                    },
+                    validator: (String? value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please choose a training type';
+                      }
+                      return null;
+                    },
+                    popupItemBuilder: (BuildContext context, String item, bool isSelected) {
+                      return Padding(
+                        padding: EdgeInsets.zero,
+                        child: ListTile(
+                          title: Text(item),
+                          tileColor: isSelected ? Colors.grey : null,
+                        ),
+                      );
+                    },
+                    maxHeight: 120,
+                  ),
+                  SizedBox(height: 10,),
+
+                 //-------------------------DEPARTMENT-----------------------
+                  DropdownSearch<String>(
+                    mode: Mode.MENU,
+                    items: ['Flight Ops'],
+                    dropdownSearchDecoration: InputDecoration(
+                      labelText: "Department",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(5),
+                        ),
+                      ),
+                    ),
+                    onChanged: (String? newValue) {
+                      departmentC.text = newValue!;
+                    },
+                    validator: (String? value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please choose a department';
+                      }
+                      return null;
+                    },
+                    popupItemBuilder: (BuildContext context, String item, bool isSelected) {
+                      return Padding(
+                        padding: EdgeInsets.zero,
+                        child: ListTile(
+                          title: Text(item),
+                          tileColor: isSelected ? Colors.grey : null,
+                        ),
+                      );
+                    },
+                    maxHeight: 60,
+                  ),
+                  SizedBox(height: 10,),
+
+                  //-------------------------ROOM-----------------------
+                  DropdownSearch<String>(
+                    mode: Mode.MENU,
+                    items: ['Throttle', 'Wing Tip', 'Sharklet', 'Windshear', 'Joystick', 'Fuselage', 'Spoiler', 'Rudder', 'Windshield', 'Apron', 'Flap', 'Noseweel'],
+                    dropdownSearchDecoration: InputDecoration(
+                      labelText: "Room",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(5),
+                        ),
+                      ),
+                    ),
+                    onChanged: (String? newValue) {
+                      roomC.text = newValue!;
+                    },
+                    validator: (String? value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please choose a room';
+                      }
+                      return null;
+                    },
+                    popupItemBuilder: (BuildContext context, String item, bool isSelected) {
+                      return Padding(
+                        padding: EdgeInsets.zero,
+                        child: ListTile(
+                          title: Text(item),
+                          tileColor: isSelected ? Colors.grey : null,
+                        ),
+                      );
+                    },
+                  ),
+                  SizedBox(height: 10,),
+
+                  //-------------------------VENUE-----------------------
+                  DropdownSearch<String>(
+                    mode: Mode.MENU,
+                    items: ['IAA RH'],
+                    dropdownSearchDecoration: InputDecoration(
                       labelText: "Venue",
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(
@@ -92,7 +194,7 @@ class AddAttendanceccView extends GetView<AddAttendanceccController> {
                       ),
                     ),
                     onChanged: (String? newValue) {
-                        venueC.text = newValue!;
+                      venueC.text = newValue!;
                     },
                     validator: (String? value) {
                       if (value == null || value.isEmpty) {
@@ -100,10 +202,20 @@ class AddAttendanceccView extends GetView<AddAttendanceccController> {
                       }
                       return null;
                     },
+                    popupItemBuilder: (BuildContext context, String item, bool isSelected) {
+                      return Padding(
+                        padding: EdgeInsets.zero,
+                        child: ListTile(
+                          title: Text(item),
+                          tileColor: isSelected ? Colors.grey : null,
+                        ),
+                      );
+                    },
+                    maxHeight: 60,
                   ),
                   SizedBox(height: 10,),
-                  //-------------------------INSTRUCTOR-----------------------
 
+                  //-------------------------INSTRUCTOR-----------------------
                   StreamBuilder<QuerySnapshot>(
                     stream: controller.instructorStream(),
                     builder: (context, snapshot) {
@@ -181,6 +293,9 @@ class AddAttendanceccView extends GetView<AddAttendanceccController> {
                                   future: add(
                                     subjectC.text,
                                     DateFormat('dd MMM yyyy').parse(dateC.text),
+                                    trainingTypeC.text,
+                                    departmentC.text,
+                                    roomC.text,
                                     venueC.text,
                                     instructorC!,
                                     controller.argumentid.value,

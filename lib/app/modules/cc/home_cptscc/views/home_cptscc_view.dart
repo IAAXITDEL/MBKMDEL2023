@@ -56,7 +56,6 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
     'BASIC INDOC',
     'RGT',
     ' RVSM',
-    'D'
   ];
 
   @override
@@ -145,7 +144,6 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
 
                   SizedBox(height: 10),
 
-                  
                   // DOWNLOAD EXCEL
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -265,45 +263,61 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           //SUBJECT TRAININGS
-                         Expanded(child:  Container(height: 140,
-                           child: Card(
-                             shape: RoundedRectangleBorder(
-                               borderRadius: BorderRadius.circular(10),
-                               side: BorderSide(color: TsOneColor.secondary, width: 1),
-                             ),
-                             color: TsOneColor.surface,
-                             surfaceTintColor: Colors.white,
-                             shadowColor: Colors.white,
-                             elevation: 5,
-                             child: InkWell(
-                               onTap: () {},
-                               splashColor: TsOneColor.primary,
-                               child: Center(
-                                 child: Container(
-                                   padding: const EdgeInsets.symmetric(
-                                       vertical: 10, horizontal: 10),
-                                   child: Column(
-                                     children: [
-                                       Image.asset(
-                                         "assets/images/trainings_logo.png",
-                                         fit: BoxFit.fitWidth,
-                                       ),
-                                       Obx(() => Text('${controller.trainingCount.value}', style: tsOneTextTheme.headlineMedium,),),
-                                       Text( 'Subject Trainings', style: TextStyle(color: TsOneColor.redColor),)
-                                     ],
-                                   ),
-                                 ),
-                               ),
-                             ),
-                           ),
-                         )),
-
-                          //ONGOING TRAININGS
-                          Expanded(child:  Container(height: 140,
+                          Expanded(
+                              child: Container(
+                            height: 140,
                             child: Card(
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
-                                side: BorderSide(color: TsOneColor.secondary, width: 1),
+                                side: BorderSide(
+                                    color: TsOneColor.secondary, width: 1),
+                              ),
+                              color: TsOneColor.surface,
+                              surfaceTintColor: Colors.white,
+                              shadowColor: Colors.white,
+                              elevation: 5,
+                              child: InkWell(
+                                onTap: () {},
+                                splashColor: TsOneColor.primary,
+                                child: Center(
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 10, horizontal: 10),
+                                    child: Column(
+                                      children: [
+                                        Image.asset(
+                                          "assets/images/trainings_logo.png",
+                                          fit: BoxFit.fitWidth,
+                                        ),
+                                        Obx(
+                                          () => Text(
+                                            '${controller.trainingCount.value}',
+                                            style:
+                                                tsOneTextTheme.headlineMedium,
+                                          ),
+                                        ),
+                                        Text(
+                                          'Subject Trainings',
+                                          style: TextStyle(
+                                              color: TsOneColor.redColor),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )),
+
+                          //ONGOING TRAININGS
+                          Expanded(
+                              child: Container(
+                            height: 140,
+                            child: Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                side: BorderSide(
+                                    color: TsOneColor.secondary, width: 1),
                               ),
                               color: TsOneColor.surface,
                               surfaceTintColor: Colors.white,
@@ -322,8 +336,19 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                                           "assets/images/on_going_training_logo.png",
                                           fit: BoxFit.fitWidth,
                                         ),
-                                        Obx(() => Text('${controller.ongoingTrainingCount.value}', style: tsOneTextTheme.headlineMedium,),),
-                                        Text( 'Ongoing Trainings', style: TextStyle(color: TsOneColor.redColor), textAlign: TextAlign.center,)
+                                        Obx(
+                                          () => Text(
+                                            '${controller.ongoingTrainingCount.value}',
+                                            style:
+                                                tsOneTextTheme.headlineMedium,
+                                          ),
+                                        ),
+                                        Text(
+                                          'Ongoing Trainings',
+                                          style: TextStyle(
+                                              color: TsOneColor.redColor),
+                                          textAlign: TextAlign.center,
+                                        )
                                       ],
                                     ),
                                   ),
@@ -374,115 +399,120 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                             ],
                           ),
                           SizedBox(height: 10),
-                          Obx((){
-                           return  Container(
-                             height: 150,
-                             child: Stack(
-                               children: [
-                                 PieChart(
-                                   PieChartData(
-                                     sections: [
-                                       PieChartSectionData(
-                                         value: controller.instructorCount.value
-                                             .toDouble(),
-                                         color: const Color(0xffF24C3D),
-                                         title: controller.instructorCount.value
-                                             .toString(),
-                                         radius: 45,
-                                         titleStyle: TextStyle(
-                                           fontSize: 16,
-                                           fontWeight: FontWeight.bold,
-                                           color: Colors
-                                               .white, // Ubah warna teks menjadi putih
-                                         ),
-                                       ),
-                                       PieChartSectionData(
-                                         value: controller.pilotCount.value
-                                             .toDouble(),
-                                         color: const Color(0xff35A29F),
-                                         title: controller.pilotCount.value
-                                             .toString(),
-                                         radius: 45,
-                                         titleStyle: TextStyle(
-                                           fontSize: 16,
-                                           fontWeight: FontWeight.bold,
-                                           color: Colors
-                                               .white, // Ubah warna teks menjadi putih
-                                         ),
-                                       ),
-                                     ],
-                                     sectionsSpace: 3,
-                                     centerSpaceRadius: 30,
-                                   ),
-                                 ),
+                          Obx(() {
+                            return Container(
+                              height: 150,
+                              child: Stack(
+                                children: [
+                                  PieChart(
+                                    PieChartData(
+                                      sections: [
+                                        PieChartSectionData(
+                                          value: controller
+                                              .instructorCount.value
+                                              .toDouble(),
+                                          color: const Color(0xffF24C3D),
+                                          title: controller
+                                              .instructorCount.value
+                                              .toString(),
+                                          radius: 45,
+                                          titleStyle: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors
+                                                .white, // Ubah warna teks menjadi putih
+                                          ),
+                                        ),
+                                        PieChartSectionData(
+                                          value: controller.pilotCount.value
+                                              .toDouble(),
+                                          color: const Color(0xff35A29F),
+                                          title: controller.pilotCount.value
+                                              .toString(),
+                                          radius: 45,
+                                          titleStyle: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors
+                                                .white, // Ubah warna teks menjadi putih
+                                          ),
+                                        ),
+                                      ],
+                                      sectionsSpace: 3,
+                                      centerSpaceRadius: 30,
+                                    ),
+                                  ),
 
-                                 //DESCRIPTION
-                                 Positioned(
-                                   top: 102,
-                                   left: 0,
-                                   right: -300,
-                                   child: Column(
-                                     crossAxisAlignment: CrossAxisAlignment.start,
-                                     children: [
-                                       Text(
-                                         'Desc:',
-                                         style: TextStyle(
-                                           fontSize: 12,
-                                           fontWeight: FontWeight.bold,
-                                           color: Colors.black,
-                                         ),
-                                       ),
-                                       Row(
-                                         children: [
-                                           Container(
-                                             width: 10,
-                                             height: 10,
-                                             decoration: BoxDecoration(
-                                               color: const Color(0xffF24C3D),
-                                               shape: BoxShape.rectangle,
-                                             ),
-                                           ),
-                                           SizedBox(width: 5),
-                                           Text(
-                                             'Instructors',
-                                             style: TextStyle(
-                                               fontSize: 12,
-                                               fontWeight: FontWeight.bold,
-                                               color: const Color(0xffF24C3D),
-                                             ),
-                                           ),
-                                         ],
-                                       ),
-                                       Row(
-                                         children: [
-                                           Container(
-                                             width: 10,
-                                             height: 10,
-                                             decoration: BoxDecoration(
-                                               color: const Color(0xff35A29F),
-                                               shape: BoxShape.rectangle,
-                                             ),
-                                           ),
-                                           SizedBox(width: 5),
-                                           Text(
-                                             'Pilots',
-                                             style: TextStyle(
-                                               fontSize: 12,
-                                               fontWeight: FontWeight.bold,
-                                               color: const Color(0xff35A29F),
-                                             ),
-                                           ),
-                                         ],
-                                       ),
-                                     ],
-                                   ),
-                                 ),
-                               ],
-                             ),
-                           );
-                         }),
+                                  //DESCRIPTION
+                                  Positioned(
+                                    top: 102,
+                                    left: 0,
+                                    right: -300,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Desc:',
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                        Row(
+                                          children: [
+                                            Container(
+                                              width: 10,
+                                              height: 10,
+                                              decoration: BoxDecoration(
+                                                color: const Color(0xffF24C3D),
+                                                shape: BoxShape.rectangle,
+                                              ),
+                                            ),
+                                            SizedBox(width: 5),
+                                            Text(
+                                              'Instructors',
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.bold,
+                                                color: const Color(0xffF24C3D),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            Container(
+                                              width: 10,
+                                              height: 10,
+                                              decoration: BoxDecoration(
+                                                color: const Color(0xff35A29F),
+                                                shape: BoxShape.rectangle,
+                                              ),
+                                            ),
+                                            SizedBox(width: 5),
+                                            Text(
+                                              'Pilots',
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.bold,
+                                                color: const Color(0xff35A29F),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }),
 
-                          SizedBox(height: 20), // Add some space between the pie chart and the cards
+                          SizedBox(
+                              height:
+                                  20), // Add some space between the pie chart and the cards
 
                           Row(
                             children: [
@@ -497,8 +527,10 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                                     child: Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
                                         children: [
                                           Center(
                                             child: Text(
@@ -512,8 +544,18 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                                           ),
                                           SizedBox(height: 8),
                                           // Display counts for "CCP", "FIA", "FIS", "GI"
-                                          for (String category in ["CCP", "FIA", "FIS", "GI"])
-                                            Obx(() => Text('$category: ${controller.counts[category]}', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold))),
+                                          for (String category in [
+                                            "CCP",
+                                            "FIA",
+                                            "FIS",
+                                            "GI"
+                                          ])
+                                            Obx(() => Text(
+                                                '$category: ${controller.counts[category]}',
+                                                style: TextStyle(
+                                                    fontSize: 10,
+                                                    fontWeight:
+                                                        FontWeight.bold))),
                                         ],
                                       ),
                                     ),
@@ -534,22 +576,35 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                                     child: Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        children: [Center(
-                                          child: Text(
-                                                'Rank Categories',
-                                                style: TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.redAccent[700],
-                                                ),
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Center(
+                                            child: Text(
+                                              'Rank Categories',
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.redAccent[700],
                                               ),
-                                        ),
+                                            ),
+                                          ),
                                           SizedBox(height: 8),
                                           // Display counts for "CAPT" and "FO"
-                                          Obx(() => Text('CAPT: ${controller.captCount.value}', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold))),
-                                          Obx(() => Text('FO: ${controller.foCount.value}', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold))),
+                                          Obx(() => Text(
+                                              'CAPT: ${controller.captCount.value}',
+                                              style: TextStyle(
+                                                  fontSize: 10,
+                                                  fontWeight:
+                                                      FontWeight.bold))),
+                                          Obx(() => Text(
+                                              'FO: ${controller.foCount.value}',
+                                              style: TextStyle(
+                                                  fontSize: 10,
+                                                  fontWeight:
+                                                      FontWeight.bold))),
                                         ],
                                       ),
                                     ),
@@ -558,7 +613,6 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                               ),
                             ],
                           ),
-
                         ],
                       ),
 
@@ -644,14 +698,15 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                                                   style: TextStyle(
                                                       fontSize: 24,
                                                       fontWeight:
-                                                          FontWeight.bold, color: Colors.red),
+                                                          FontWeight.bold,
+                                                      color: Colors.red),
                                                 ),
                                                 SizedBox(height: 20),
 
                                                 //DROPDOWN
                                                 Row(
                                                   mainAxisAlignment:
-                                                  MainAxisAlignment.start,
+                                                      MainAxisAlignment.start,
                                                   children: [
                                                     Text(
                                                       'Please choose the training subject',
@@ -659,7 +714,8 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                                                       //     .labelLarge,
                                                       style: TextStyle(
                                                         fontSize: 16,
-                                                        fontWeight: FontWeight.bold,
+                                                        fontWeight:
+                                                            FontWeight.bold,
                                                         color: Colors.black,
                                                       ),
                                                     ),
@@ -667,44 +723,82 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                                                 ),
                                                 SizedBox(height: 10),
                                                 Padding(
-                                                  padding: const EdgeInsets.all(3.0),
+                                                  padding:
+                                                      const EdgeInsets.all(3.0),
                                                   child: InputDecorator(
                                                     decoration: InputDecoration(
-                                                      border: const OutlineInputBorder(
-                                                        borderSide: BorderSide(color: TsOneColor.greenColor),
+                                                      border:
+                                                          const OutlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                            color: TsOneColor
+                                                                .greenColor),
                                                       ),
-                                                      contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                                                      labelStyle: const TextStyle(fontSize: 12, color: Colors.black),
+                                                      contentPadding:
+                                                          const EdgeInsets
+                                                                  .symmetric(
+                                                              horizontal: 10,
+                                                              vertical: 8),
+                                                      labelStyle:
+                                                          const TextStyle(
+                                                              fontSize: 12,
+                                                              color:
+                                                                  Colors.black),
                                                     ),
-                                                    child: FutureBuilder<List<String>>(
-                                                      future: controller.getTrainingSubjects(),
-                                                      builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
-                                                        if (snapshot.connectionState == ConnectionState.waiting) {
+                                                    child: FutureBuilder<
+                                                        List<String>>(
+                                                      future: controller
+                                                          .getTrainingSubjects(),
+                                                      builder: (BuildContext
+                                                              context,
+                                                          AsyncSnapshot<
+                                                                  List<String>>
+                                                              snapshot) {
+                                                        if (snapshot
+                                                                .connectionState ==
+                                                            ConnectionState
+                                                                .waiting) {
                                                           return CircularProgressIndicator(); // Show a loading indicator while fetching data
                                                         }
 
                                                         if (snapshot.hasError) {
-                                                          return Text('Error: ${snapshot.error}');
+                                                          return Text(
+                                                              'Error: ${snapshot.error}');
                                                         }
 
-                                                        List<String> subjects = snapshot.data ?? [];
+                                                        List<String> subjects =
+                                                            snapshot.data ?? [];
 
-                                                        return DropdownButton<String>(
-                                                          value: controller.selectedSubject.value,
-                                                          icon: const Icon(Icons.arrow_drop_down, size: 24),
+                                                        return DropdownButton<
+                                                            String>(
+                                                          value: controller
+                                                              .selectedSubject
+                                                              .value,
+                                                          icon: const Icon(
+                                                              Icons
+                                                                  .arrow_drop_down,
+                                                              size: 24),
                                                           iconSize: 24,
-                                                          items: subjects.map((String subject) {
-                                                            return DropdownMenuItem<String>(
+                                                          items: subjects.map(
+                                                              (String subject) {
+                                                            return DropdownMenuItem<
+                                                                String>(
                                                               value: subject,
-                                                              child: Text(subject),
+                                                              child:
+                                                                  Text(subject),
                                                             );
                                                           }).toList(),
-                                                          onChanged: (String? newValue) {
+                                                          onChanged: (String?
+                                                              newValue) {
                                                             // Update the selected subject immediately
-                                                            controller.updateSelectedSubject(newValue ?? 'ALL');
+                                                            controller
+                                                                .updateSelectedSubject(
+                                                                    newValue ??
+                                                                        'ALL');
 
                                                             // Optionally, you can update the training value if needed
-                                                            controller.training.value = newValue!;
+                                                            controller.training
+                                                                    .value =
+                                                                newValue!;
 
                                                             // Add any additional logic here based on the selected subject if needed
                                                           },
@@ -723,7 +817,8 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                                                       'Please pick date range',
                                                       style: TextStyle(
                                                         fontSize: 16,
-                                                        fontWeight: FontWeight.bold,
+                                                        fontWeight:
+                                                            FontWeight.bold,
                                                         color: Colors.black,
                                                       ),
                                                     ),
@@ -884,7 +979,7 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                                                   ),
                                                 ),
 
-                                              SizedBox(height: 20),
+                                                SizedBox(height: 20),
 
                                                 Align(
                                                   alignment:
@@ -932,7 +1027,9 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                                                             "Reset",
                                                             style: TextStyle(
                                                               fontSize: 15,
-                                                              fontWeight: FontWeight.bold,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
                                                               color: Colors.red,
                                                             ),
                                                           ),
@@ -986,7 +1083,9 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                                                                 to: controller
                                                                     .to.value);
 
-                                                            Navigator.of(context).pop();
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
                                                           }
                                                         },
                                                         child: Container(
@@ -1021,8 +1120,11 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                                                             "Apply",
                                                             style: TextStyle(
                                                               fontSize: 15,
-                                                              fontWeight: FontWeight.bold,
-                                                              color: Colors.white,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              color:
+                                                                  Colors.white,
                                                             ),
                                                           ),
                                                         ),
@@ -1043,15 +1145,17 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                           ),
 
                           Center(
-                            child:Obx((){
-                              return  FutureBuilder<void>(
+                            child: Obx(() {
+                              return FutureBuilder<void>(
                                 future: controller.fetchAttendanceData(
                                   trainingType: controller.training.value,
                                   from: controller.from.value,
                                   to: controller.to.value,
                                 ),
-                                builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
-                                  if (snapshot.connectionState == ConnectionState.waiting) {
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<void> snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
                                     return LoadingScreen();
                                   }
 
@@ -1062,12 +1166,14 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                                   print("cek");
                                   print(controller.presentCount.value);
                                   print(controller.absentCount.value);
-                                  if(controller.presentCount.value == 0 && controller.absentCount.value == 0){
+                                  if (controller.presentCount.value == 0 &&
+                                      controller.absentCount.value == 0) {
                                     return EmptyScreenAttendanceData();
                                   }
 
                                   // Check if the data has been fetched and processed
-                                  if (snapshot.connectionState == ConnectionState.done) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.done) {
                                     return Container(
                                       height: 180,
                                       child: Stack(
@@ -1077,14 +1183,16 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                                               sections: [
                                                 PieChartSectionData(
                                                   value: (controller
-                                                      .absentCount.value /
-                                                      (controller
-                                                          .absentCount.value +
-                                                          controller.presentCount
+                                                          .absentCount.value /
+                                                      (controller.absentCount
+                                                              .value +
+                                                          controller
+                                                              .presentCount
                                                               .value)),
-                                                  color: const Color(0xFF116D6E),
+                                                  color:
+                                                      const Color(0xFF116D6E),
                                                   title:
-                                                  '${((controller.absentCount.value * 100 / (controller.absentCount.value + controller.presentCount.value))).toStringAsFixed(1)}%',
+                                                      '${((controller.absentCount.value * 100 / (controller.absentCount.value + controller.presentCount.value))).toStringAsFixed(1)}%',
                                                   radius: 50,
                                                   titleStyle: TextStyle(
                                                     fontSize: 15,
@@ -1094,14 +1202,16 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                                                 ),
                                                 PieChartSectionData(
                                                   value: (controller
-                                                      .presentCount.value /
-                                                      (controller
-                                                          .absentCount.value +
-                                                          controller.presentCount
+                                                          .presentCount.value /
+                                                      (controller.absentCount
+                                                              .value +
+                                                          controller
+                                                              .presentCount
                                                               .value)),
-                                                  color: const Color(0xffFFB000),
+                                                  color:
+                                                      const Color(0xffFFB000),
                                                   title:
-                                                  '${((controller.presentCount.value * 100 / (controller.absentCount.value + controller.presentCount.value))).toStringAsFixed(1)}%',
+                                                      '${((controller.presentCount.value * 100 / (controller.absentCount.value + controller.presentCount.value))).toStringAsFixed(1)}%',
                                                   radius: 50,
                                                   titleStyle: TextStyle(
                                                     fontSize: 15,
@@ -1121,7 +1231,8 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                                             left: 0,
                                             right: -300,
                                             child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
                                                 Text(
                                                   'Desc:',
@@ -1137,8 +1248,10 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                                                       width: 10,
                                                       height: 10,
                                                       decoration: BoxDecoration(
-                                                        color: const Color(0xff116D6E),
-                                                        shape: BoxShape.rectangle,
+                                                        color: const Color(
+                                                            0xff116D6E),
+                                                        shape:
+                                                            BoxShape.rectangle,
                                                       ),
                                                     ),
                                                     SizedBox(width: 5),
@@ -1146,8 +1259,10 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                                                       'Absent',
                                                       style: TextStyle(
                                                         fontSize: 12,
-                                                        fontWeight: FontWeight.bold,
-                                                        color: const Color(0xff116D6E),
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: const Color(
+                                                            0xff116D6E),
                                                       ),
                                                     ),
                                                   ],
@@ -1158,8 +1273,10 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                                                       width: 10,
                                                       height: 10,
                                                       decoration: BoxDecoration(
-                                                        color: const Color(0xffff9900),
-                                                        shape: BoxShape.rectangle,
+                                                        color: const Color(
+                                                            0xffff9900),
+                                                        shape:
+                                                            BoxShape.rectangle,
                                                       ),
                                                     ),
                                                     SizedBox(width: 5),
@@ -1167,8 +1284,10 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                                                       'Present',
                                                       style: TextStyle(
                                                         fontSize: 12,
-                                                        fontWeight: FontWeight.bold,
-                                                        color: const Color(0xffff9900),
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: const Color(
+                                                            0xffff9900),
                                                       ),
                                                     ),
                                                   ],
@@ -1184,8 +1303,7 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                                   return EmptyScreenAttendanceData();
                                 },
                               );
-                            })
-                            ,
+                            }),
                           ),
                         ],
                       ),
