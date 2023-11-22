@@ -483,7 +483,6 @@ class ProfileccController extends GetxController {
         print('No user data found or there was an error.');
       }
 
-
       final List<Map<String, dynamic>>? historyDataBasicIndoc = await getHistoryData(idCrew, "BASIC INDOC", 1);
       final List<Map<String, dynamic>>? historyDataLSWB = await getHistoryData(idCrew, "LOAD SHEET / WEIGHT & BALANCE", 1);
       final List<Map<String, dynamic>>? historyDataRVSM = await getHistoryData(idCrew, "RVSM", 1);

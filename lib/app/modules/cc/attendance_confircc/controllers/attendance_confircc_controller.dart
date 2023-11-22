@@ -20,14 +20,15 @@ import '../../../../../presentation/shared_components/textfieldpdf.dart';
 import '../../../../../presentation/view_model/attendance_detail_model.dart';
 import '../../../../../presentation/view_model/attendance_model.dart';
 import 'package:permission_handler/permission_handler.dart';
+
+import '../../../../routes/app_pages.dart';
+import '../../training/attendance_pilotcc/controllers/attendance_pilotcc_controller.dart';
 class AttendanceConfirccController extends GetxController {
   var selectedMeeting = "Training".obs;
   late UserPreferences userPreferences;
   List<AttendanceModel> administratorModels = [];
+  RxList<Uint8List>? pdfBytes = RxList<Uint8List>();
 
-  List<pw.TableRow> tableRows = [];
-  List<pw.TableRow> instructorTableRows = [];
-  List<pw.TableRow> administratorTableRows = [];
 
   void selectMeeting(String? newValue) {
     selectedMeeting.value =
@@ -55,12 +56,25 @@ class AttendanceConfirccController extends GetxController {
     final Map<String, dynamic> args = Get.arguments as Map<String, dynamic>;
     final String id = args["id"];
     argumentid.value = id;
+    _loadPdf();
     attendanceStream();
-    getCombinedAttendanceStream();
+    getCombinedAttendance();
     cekRole();
     absentList();
+    attendancelist();
+
   }
 
+  Future<void> _loadPdf() async {
+    try {
+      // Memproses PDF dan menyimpannya ke dalam variabel pdfBytes
+      List<int> pdfBytesList = await attendancelist();
+      pdfBytes?.assignAll([Uint8List.fromList(pdfBytesList)]);
+      print("sudah kah ");
+    } catch (e) {
+      print('Error loading PDF: $e');
+    }
+  }
   // List untuk asign Training
   Stream<QuerySnapshot<Map<String, dynamic>>> trainingStream() {
     return FirebaseFirestore.instance
@@ -73,12 +87,13 @@ class AttendanceConfirccController extends GetxController {
   // Menampilkan attendance
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Stream<List<Map<String, dynamic>>> getCombinedAttendanceStream() {
-    return _firestore
-        .collection('attendance')
-        .where("id", isEqualTo: argumentid.value)
-        .snapshots()
-        .asyncMap((attendanceQuery) async {
+  Future<List<Map<String, dynamic>>?> getCombinedAttendance() async {
+    try {
+      final attendanceQuery = await _firestore
+          .collection('attendance')
+          .where("id", isEqualTo: argumentid.value)
+          .get();
+
       List<int?> instructorIds =
       attendanceQuery.docs.map((doc) => AttendanceModel.fromJson(doc.data()).instructor).toList();
 
@@ -93,8 +108,9 @@ class AttendanceConfirccController extends GetxController {
         attendanceQuery.docs.map((doc) async {
           final attendanceModel = AttendanceModel.fromJson(doc.data());
           final user = usersData.firstWhere(
-              (user) => user['ID NO'] == attendanceModel.instructor,
-              orElse: () => {});
+                (user) => user['ID NO'] == attendanceModel.instructor,
+            orElse: () => {},
+          );
           attendanceModel.name = user['NAME'];
           attendanceModel.loano = user['LOA NO'];
           idInstructor.value = attendanceModel.instructor!;
@@ -106,49 +122,66 @@ class AttendanceConfirccController extends GetxController {
           return attendanceModel.toJson();
         }),
       );
-      argumentTrainingType.value = attendanceData[0]["idTrainingType"];
-      return attendanceData;
-    });
+
+      argumentTrainingType.value = attendanceData.isNotEmpty ? attendanceData[0]["idTrainingType"] : null;
+
+      return attendanceData.isNotEmpty ? [attendanceData[0]] : null;
+    } catch (e) {
+      print("Error in getCombinedAttendanceStream: $e");
+      return null;
+    }
   }
 
+
   Future<List<Map<String, dynamic>?>> getCombinedAttendanceDetailStream() async {
-    QuerySnapshot attendanceQuery = await _firestore
-        .collection('attendance-detail')
-        .where("idattendance", isEqualTo: argumentid.value)
-        .where("status", whereIn: ["donescoring"])
-        .get();
+    try {
+      QuerySnapshot attendanceQuery = await _firestore
+          .collection('attendance-detail')
+          .where("idattendance", isEqualTo: argumentid.value)
+          .where("status", whereIn: ["donescoring"])
+          .get();
 
-    List<int?> traineIds = attendanceQuery.docs.map((doc) {
-      final data = doc.data();
-      final attendanceModel = AttendanceDetailModel.fromJson(data as Map<String, dynamic>);
-      return attendanceModel.idtraining;
-    }).toList();
+      List<int?> traineIds = attendanceQuery.docs.map((doc) {
+        final data = doc.data();
+        final attendanceModel = AttendanceDetailModel.fromJson(data as Map<String, dynamic>);
+        return attendanceModel.idtraining;
+      }).toList();
 
-    final attendanceData = await Future.wait(
-      attendanceQuery.docs.map((doc) async {
-        try {
-          final attendanceModel = AttendanceDetailModel.fromJson(doc.data() as Map<String, dynamic>);
-          final usersQuery = await _firestore.collection('users').where("ID NO", whereIn: traineIds).get();
-          final user = usersQuery.docs.firstWhere(
-                (userDoc) => userDoc.data()['ID NO'] == attendanceModel.idtraining,
-          );
-          if (user != null) {
-            final userData = UserModel.fromFirebaseUser(user.data());
-            print(userData.name);
-            attendanceModel.name = userData.name;
-            attendanceModel.license = userData.licenseNo;
-            attendanceModel.rank = userData.rank;
-            attendanceModel.hub = userData.hub;
-          } else {
-            print("User not found for ID NO: ${attendanceModel.idtraining}");
+      final attendanceData = List<Map<String, dynamic>?>.filled(23, null);
+
+      await Future.wait(
+        attendanceQuery.docs.map((doc) async {
+          try {
+            final attendanceModel = AttendanceDetailModel.fromJson(doc.data() as Map<String, dynamic>);
+            final usersQuery = await _firestore.collection('users').where("ID NO", whereIn: traineIds).get();
+            final user = usersQuery.docs.firstWhere(
+                  (userDoc) => userDoc.data()['ID NO'] == attendanceModel.idtraining,
+            );
+            if (user != null) {
+              final userData = UserModel.fromFirebaseUser(user.data());
+              print(userData.name);
+              attendanceModel.name = userData.name;
+              attendanceModel.license = userData.licenseNo;
+              attendanceModel.rank = userData.rank;
+              attendanceModel.hub = userData.hub;
+
+              // Determine the index to place the data in the result list
+              int index = traineIds.indexOf(attendanceModel.idtraining!);
+              attendanceData[index] = attendanceModel.toJson();
+            } else {
+              print("User not found for ID NO: ${attendanceModel.idtraining}");
+            }
+          } catch (error) {
+            print("Error processing attendance detail: $error");
           }
-          return attendanceModel.toJson();
-        } catch (error) {
-          return null;
-        }
-      }),
-    );
-    return attendanceData;
+        }),
+      );
+
+      return attendanceData;
+    } catch (error) {
+      print("Error in getCombinedAttendanceDetailStream: $error");
+      return List<Map<String, dynamic>?>.filled(23, null);
+    }
   }
 
 
@@ -388,8 +421,11 @@ class AttendanceConfirccController extends GetxController {
   }
 
   //Import PDF
-  Future<Uint8List> attendancelist() async {
+  Future<List<int>> attendancelist() async {
     try {
+      List<pw.TableRow> tableRows = [];
+      List<pw.TableRow> instructorTableRows = [];
+      List<pw.TableRow> administratorTableRows = [];
       final pdf = pw.Document();
       final Uint8List backgroundImageData =
           (await rootBundle.load('assets/images/airasia_logo_circle.png'))
@@ -405,60 +441,46 @@ class AttendanceConfirccController extends GetxController {
           .asUint8List();
 
       // Memanggil Data Attendance
-      Stream<List<Map<String, dynamic>>> attendanceStream =
-         await getCombinedAttendanceStream();
-      List<Map<String, dynamic>> attendanceDataList =
-          await attendanceStream.first;
-      List<AttendanceModel> attendanceModels = attendanceDataList.map((data) {
-        return AttendanceModel.fromJson(data);
-      }).toList();
+      final List<Map<String, dynamic>>? attendanceModels = await getCombinedAttendance();
 
-      print("attendanceModels");
-      print(attendanceModels);
       // Memanggil Data Attendance Detail (Daftar Training)
       final List<Map<String, dynamic>?> attendanceDetailStream = await getCombinedAttendanceDetailStream();
-      print("attendanceDetail");
-      print(attendanceDetailStream);
 
       // Memanggil Data Instructor
       final List<Map<String, dynamic>?> instructorSt = await instructorList();
-      print("panjangnya ada ${instructorSt.length}");
 
       // Memanggil Data Pilot Administrator
       final List<Map<String, dynamic>?> administratorSt = await administratorList();
-      print("sda");
-      print(administratorSt);
 
 
-      //menampilkan data training
+      //menampilkan data trainee
       for (int e = 0; e < attendanceDetailStream.length; e++) {
-       // var images = await loadImageFromNetwork(allAttendanceDetailModels[e].signature_url ?? "");
+        String? signatureUrl = attendanceDetailStream[e]?['signature_url'];
 
-        final Uint8List imageBytes = await _getImageBytes(attendanceDetailStream[e]?['signature_url'] ?? "");
-        // final Uint8List resizedImageBytes = await resizeImage(imageBytes, 50, 50);
-
-        pw.MemoryImage images = pw.MemoryImage(imageBytes);
         tableRows.add(
           pw.TableRow(
             children: [
-              NormalTextFieldPdf(title: "${e+1}"),
-              NormalTextFieldPdf(title: "${attendanceDetailStream[e]?['name'] ?? 'N/A'}  "),
-              NormalTextFieldPdf(title: "${attendanceDetailStream[e]?['idtraining'] ?? 'N/A'}"),
-              NormalTextFieldPdf(title: "${attendanceDetailStream[e]?['rank'] ?? 'N/A'}"),
-              NormalTextFieldPdf(title: "${attendanceDetailStream[e]?['license'] ?? 'N/A'}"),
-              NormalTextFieldPdf(title: "${attendanceDetailStream[e]?['hub']?? 'N/A'}"),
-              pw.Container(
-                height: 15,
-                padding: pw.EdgeInsets.all(5),
-                child: pw.Center(
-                  child: pw.Image(
-                    images,
-                    fit: pw.BoxFit.cover,
-                    height: 50,
-                    width: 50,
+              NormalTextFieldPdf(title: "${e + 1}"),
+              NormalTextFieldPdf(title: "${attendanceDetailStream[e]?['name'] ?? ''}"),
+              NormalTextFieldPdf(title: "${attendanceDetailStream[e]?['idtraining'] ?? ''}"),
+              NormalTextFieldPdf(title: "${attendanceDetailStream[e]?['rank'] ?? ''}"),
+              NormalTextFieldPdf(title: "${attendanceDetailStream[e]?['license'] ?? ''}"),
+              NormalTextFieldPdf(title: "${attendanceDetailStream[e]?['hub'] ?? ''}"),
+              if (signatureUrl != null && signatureUrl.isNotEmpty)
+                pw.Container(
+                  height: 15,
+                  padding: pw.EdgeInsets.all(5),
+                  child: pw.Center(
+                    child: pw.Image(
+                      pw.MemoryImage(await _getImageBytes(signatureUrl)),
+                      fit: pw.BoxFit.cover,
+                      height: 15,
+                      width: 40,
+                    ),
                   ),
                 ),
-              ),
+              if (signatureUrl == null || signatureUrl.isEmpty) // Change here
+                NormalTextFieldPdf(title: ""),
             ],
           ),
         );
@@ -516,8 +538,8 @@ class AttendanceConfirccController extends GetxController {
                   child: pw.Image(
                     imagesipa,
                     fit: pw.BoxFit.cover,
-                    height: 50,
-                    width: 50,
+                    height: 15,
+                    width: 15,
                   ),
                 ),
               ),
@@ -602,10 +624,8 @@ class AttendanceConfirccController extends GetxController {
                       ]),
 
                       pw.SizedBox(height: 10),
-                      ...attendanceModels.map((attendanceModel) {
-                        Timestamp? timestamp = attendanceModel.date;
-                        DateTime? dateTime = timestamp?.toDate();
-                        return pw.Column(children: [
+                      for (var attendanceModel in attendanceModels!)
+                        pw.Column(children: [
                           //--------------------------------------- SECTION 2 --------------------------------
                           pw.Container(
                             height: 25,
@@ -630,29 +650,33 @@ class AttendanceConfirccController extends GetxController {
                                                 children: [
                                                   pw.Center(
                                                     child: pw.Image(
-                                                        pw.MemoryImage(attendanceModel.attendanceType == "Meeting" ? checkedImage : uncheckedImage),
+                                                        pw.MemoryImage(attendanceModel['attendanceType'] == "Meeting" ? checkedImage : uncheckedImage),
                                                         fit: pw.BoxFit.cover,
                                                         height: 10,
                                                         width: 10),
                                                   ),
-                                                  pw.Container(
-                                                    padding: pw.EdgeInsets.symmetric(vertical: 5),
-                                                    child: TextFieldPdf(
-                                                        title: "MEETING"),
+                                                  pw.Center(
+                                                    child: pw.Container(
+                                                      padding: pw.EdgeInsets.symmetric(vertical: 5),
+                                                      child: TextFieldPdf(
+                                                          title: "MEETING"),
+                                                    ),
                                                   ),
                                                   pw.SizedBox(width: 10),
                                                   pw.Center(
                                                     child: pw.Image(
-                                                        pw.MemoryImage(attendanceModel.attendanceType == "Training" ? checkedImage : uncheckedImage),
+                                                        pw.MemoryImage(attendanceModel['attendanceType'] == "Training" ? checkedImage : uncheckedImage),
                                                         fit: pw.BoxFit.cover,
                                                         height: 10,
                                                         width: 10),
                                                   ),
-                                                  pw.Container(
-                                                    padding: pw.EdgeInsets.symmetric(vertical: 5),
-                                                    child: TextFieldPdf(
-                                                        title: "TRAINING"),
-                                                  ),
+                                                  pw.Center(
+                                                    child: pw.Container(
+                                                      padding: pw.EdgeInsets.symmetric(vertical: 5),
+                                                      child: TextFieldPdf(
+                                                          title: "TRAINING"),
+                                                    ),
+                                                  )
                                                 ]),
                                           ))
                                     ],
@@ -678,7 +702,7 @@ class AttendanceConfirccController extends GetxController {
                                     children: [
                                       TextFieldPdf(title: "SUBJECT"),
                                       TextFieldPdf(
-                                          title: attendanceModel.subject ?? 'N/A'),
+                                          title: attendanceModel['subject'] ?? 'N/A'),
                                     ],
                                   ),
 
@@ -687,7 +711,7 @@ class AttendanceConfirccController extends GetxController {
                                       TextFieldPdf(title: "DEPARTMENT"),
                                       TextFieldPdf(
                                           title:
-                                              attendanceModel.department ?? 'N/A'),
+                                              attendanceModel['department'] ?? 'N/A'),
                                     ],
                                   ),
 
@@ -695,7 +719,7 @@ class AttendanceConfirccController extends GetxController {
                                     children: [
                                       TextFieldPdf(title: "TRAINING TYPE"),
                                       TextFieldPdf(
-                                          title: attendanceModel.trainingType ??
+                                          title: attendanceModel['trainingType'] ??
                                               ''),
                                     ],
                                   ),
@@ -717,7 +741,7 @@ class AttendanceConfirccController extends GetxController {
                                     children: [
                                       TextFieldPdf(title: "DATE"),
                                       TextFieldPdf(
-                                          title: DateFormat('dd MMMM yyyy').format(dateTime!) ?? 'N/A'),
+                                          title: DateFormat('dd MMMM yyyy').format(attendanceModel['date']?.toDate()!) ?? 'N/A'),
                                     ],
                                   ),
 
@@ -725,7 +749,7 @@ class AttendanceConfirccController extends GetxController {
                                     children: [
                                       TextFieldPdf(title: "VENUE"),
                                       TextFieldPdf(
-                                          title: attendanceModel.venue ?? 'N/A'),
+                                          title: attendanceModel['venue'] ?? 'N/A'),
                                     ],
                                   ),
 
@@ -733,150 +757,146 @@ class AttendanceConfirccController extends GetxController {
                                     children: [
                                       TextFieldPdf(title: "ROOM"),
                                       TextFieldPdf(
-                                          title: attendanceModel.room ?? 'N/A'),
+                                          title: attendanceModel['room'] ?? 'N/A'),
                                     ],
                                   ),
                                 ],
                               ),
                             ),
                           ])
-                        ]);
-                      }),
+                        ]),
                       pw.SizedBox(height: 10),
-                      pw.Expanded(
-                        flex: 1,
-                        child: pw.Table(
-                          border: pw.TableBorder.all(
-                              width: 1, color: PdfColors.black),
-                          columnWidths: {
-                            0: pw.FlexColumnWidth(1),
-                            1: pw.FlexColumnWidth(4),
-                            2: pw.FlexColumnWidth(2),
-                            3: pw.FlexColumnWidth(2),
-                            4: pw.FlexColumnWidth(2),
-                            5: pw.FlexColumnWidth(1.5),
-                            6: pw.FlexColumnWidth(3),
-                          },
-                          children: [
-                            pw.TableRow(
-                              children: [
-                                pw.Container(
-                                  height: 28,
-                                  color: PdfColors.black,
-                                  padding: pw.EdgeInsets.all(3),
-                                  child: pw.Center(
-                                    child: pw.Text(
-                                      'NO \n',
-                                      style: pw.TextStyle(
-                                        fontSize: 9,
-                                        fontWeight: pw.FontWeight.bold,
-                                        color: PdfColor.fromHex('#FFFFFF'),
-                                      ),
-                                      textAlign: pw.TextAlign.center,
+                      pw.Table(
+                        border: pw.TableBorder.all(
+                            width: 1, color: PdfColors.black),
+                        columnWidths: {
+                          0: pw.FlexColumnWidth(1),
+                          1: pw.FlexColumnWidth(5),
+                          2: pw.FlexColumnWidth(2),
+                          3: pw.FlexColumnWidth(2),
+                          4: pw.FlexColumnWidth(2),
+                          5: pw.FlexColumnWidth(1.3),
+                          6: pw.FlexColumnWidth(3),
+                        },
+                        children: [
+                          pw.TableRow(
+                            children: [
+                              pw.Container(
+                                height: 28,
+                                color: PdfColors.black,
+                                padding: pw.EdgeInsets.all(3),
+                                child: pw.Center(
+                                  child: pw.Text(
+                                    'NO \n',
+                                    style: pw.TextStyle(
+                                      fontSize: 9,
+                                      fontWeight: pw.FontWeight.bold,
+                                      color: PdfColor.fromHex('#FFFFFF'),
                                     ),
+                                    textAlign: pw.TextAlign.center,
                                   ),
                                 ),
-                                pw.Container(
-                                  color: PdfColors.black,
-                                  padding: pw.EdgeInsets.all(3),
-                                  height: 28,
-                                  child: pw.Center(
-                                    child: pw.Text(
-                                      'NAME \n',
-                                      style: pw.TextStyle(
-                                        fontSize: 9,
-                                        fontWeight: pw.FontWeight.bold,
-                                        color: PdfColor.fromHex('#FFFFFF'),
-                                      ),
-                                      textAlign: pw.TextAlign.center,
+                              ),
+                              pw.Container(
+                                color: PdfColors.black,
+                                padding: pw.EdgeInsets.all(3),
+                                height: 28,
+                                child: pw.Center(
+                                  child: pw.Text(
+                                    'NAME \n',
+                                    style: pw.TextStyle(
+                                      fontSize: 9,
+                                      fontWeight: pw.FontWeight.bold,
+                                      color: PdfColor.fromHex('#FFFFFF'),
                                     ),
+                                    textAlign: pw.TextAlign.center,
                                   ),
                                 ),
-                                pw.Container(
-                                  color: PdfColors.black,
-                                  padding: pw.EdgeInsets.all(3),
-                                  height: 28,
-                                  child: pw.Center(
-                                    child: pw.Text(
-                                      'ID NO. \n',
-                                      style: pw.TextStyle(
-                                        fontSize: 9,
-                                        fontWeight: pw.FontWeight.bold,
-                                        color: PdfColor.fromHex('#FFFFFF'),
-                                      ),
-                                      textAlign: pw.TextAlign.center,
+                              ),
+                              pw.Container(
+                                color: PdfColors.black,
+                                padding: pw.EdgeInsets.all(3),
+                                height: 28,
+                                child: pw.Center(
+                                  child: pw.Text(
+                                    'ID NO. \n',
+                                    style: pw.TextStyle(
+                                      fontSize: 9,
+                                      fontWeight: pw.FontWeight.bold,
+                                      color: PdfColor.fromHex('#FFFFFF'),
                                     ),
+                                    textAlign: pw.TextAlign.center,
                                   ),
                                 ),
-                                pw.Container(
-                                  color: PdfColors.black,
-                                  padding: pw.EdgeInsets.all(3),
-                                  height: 28,
-                                  child: pw.Center(
-                                    child: pw.Text(
-                                      'RANK \n',
-                                      style: pw.TextStyle(
-                                        fontSize: 9,
-                                        fontWeight: pw.FontWeight.bold,
-                                        color: PdfColor.fromHex('#FFFFFF'),
-                                      ),
-                                      textAlign: pw.TextAlign.center,
+                              ),
+                              pw.Container(
+                                color: PdfColors.black,
+                                padding: pw.EdgeInsets.all(3),
+                                height: 28,
+                                child: pw.Center(
+                                  child: pw.Text(
+                                    'RANK \n',
+                                    style: pw.TextStyle(
+                                      fontSize: 9,
+                                      fontWeight: pw.FontWeight.bold,
+                                      color: PdfColor.fromHex('#FFFFFF'),
                                     ),
+                                    textAlign: pw.TextAlign.center,
                                   ),
                                 ),
-                                pw.Container(
-                                  color: PdfColors.black,
-                                  padding: pw.EdgeInsets.all(3),
-                                  height: 28,
-                                  child: pw.Center(
-                                    child: pw.Text(
-                                      'LICENSE \n /FAC NO.',
-                                      style: pw.TextStyle(
-                                        fontSize: 9,
-                                        fontWeight: pw.FontWeight.bold,
-                                        color: PdfColor.fromHex('#FFFFFF'),
-                                      ),
-                                      textAlign: pw.TextAlign.center,
+                              ),
+                              pw.Container(
+                                color: PdfColors.black,
+                                padding: pw.EdgeInsets.all(3),
+                                height: 28,
+                                child: pw.Center(
+                                  child: pw.Text(
+                                    'LICENSE \n /FAC NO.',
+                                    style: pw.TextStyle(
+                                      fontSize: 9,
+                                      fontWeight: pw.FontWeight.bold,
+                                      color: PdfColor.fromHex('#FFFFFF'),
                                     ),
+                                    textAlign: pw.TextAlign.center,
                                   ),
                                 ),
-                                pw.Container(
-                                  color: PdfColors.black,
-                                  padding: pw.EdgeInsets.all(3),
-                                  height: 28,
-                                  child: pw.Center(
-                                    child: pw.Text(
-                                      'HUB \n',
-                                      style: pw.TextStyle(
-                                        fontSize: 9,
-                                        fontWeight: pw.FontWeight.bold,
-                                        color: PdfColor.fromHex('#FFFFFF'),
-                                      ),
-                                      textAlign: pw.TextAlign.center,
+                              ),
+                              pw.Container(
+                                color: PdfColors.black,
+                                padding: pw.EdgeInsets.all(3),
+                                height: 28,
+                                child: pw.Center(
+                                  child: pw.Text(
+                                    'HUB \n',
+                                    style: pw.TextStyle(
+                                      fontSize: 9,
+                                      fontWeight: pw.FontWeight.bold,
+                                      color: PdfColor.fromHex('#FFFFFF'),
                                     ),
+                                    textAlign: pw.TextAlign.center,
                                   ),
                                 ),
-                                pw.Container(
-                                  color: PdfColors.black,
-                                  padding: pw.EdgeInsets.all(3),
-                                  height: 28,
-                                  child: pw.Center(
-                                    child: pw.Text(
-                                      'SIGNATURE \n',
-                                      style: pw.TextStyle(
-                                        fontSize: 9,
-                                        fontWeight: pw.FontWeight.bold,
-                                        color: PdfColor.fromHex('#FFFFFF'),
-                                      ),
-                                      textAlign: pw.TextAlign.center,
+                              ),
+                              pw.Container(
+                                color: PdfColors.black,
+                                padding: pw.EdgeInsets.all(3),
+                                height: 28,
+                                child: pw.Center(
+                                  child: pw.Text(
+                                    'SIGNATURE \n',
+                                    style: pw.TextStyle(
+                                      fontSize: 9,
+                                      fontWeight: pw.FontWeight.bold,
+                                      color: PdfColor.fromHex('#FFFFFF'),
                                     ),
+                                    textAlign: pw.TextAlign.center,
                                   ),
                                 ),
-                              ],
-                            ),
-                            ...tableRows
-                          ],
-                        ),
+                              ),
+                            ],
+                          ),
+                          ...tableRows
+                        ],
                       ),
                       pw.SizedBox(height: 10),
                       pw.Expanded(
@@ -1073,11 +1093,36 @@ class AttendanceConfirccController extends GetxController {
                           ],
                         ),
                       ),
+                      pw.SizedBox(height: 30),
+                      pw.Row(
+                          mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                          children: [
+                            pw.Text(
+                              "IAA/FOP/F/02",
+                              style: pw.TextStyle(
+                                fontSize: 7,
+                              ),
+                            ),
+                            pw.Text(
+                              "Revision 00/01-Dec-2013",
+                              style: pw.TextStyle(
+                                fontSize: 7,
+                              ),
+                            ),
+                            pw.Text(
+                              "PT.Indonesia AirAsia",
+                              style: pw.TextStyle(
+                                fontSize: 7,
+                              ),
+                            ),
+                          ]
+                      )
                     ])));
           },
         ),
       );
 
+      print("sudah diproses");
       return pdf.save();
     } catch (e) {
       print("Error generating PDF: $e");
@@ -1100,36 +1145,25 @@ class AttendanceConfirccController extends GetxController {
 
   Future<void> savePdfFile(Uint8List byteList) async {
     PermissionStatus status = await Permission.storage.request();
-
-    if (status.isGranted) {
-      // Permission is granted, you can now create directories and write files
-      Directory('/storage/emulated/0/Download/Attendance List/').createSync();
-      var filePath = "/storage/emulated/0/Download/Attendance List/${argumentid.value}.pdf";
-      final file = File(filePath);
+    if(status.isGranted){
+      final output = await getTemporaryDirectory();
+      final filePaths = "${output.path}/${argumentid.value}.pdf";
+      final files = File(filePaths);
       print("step 1");
-      await file.writeAsBytes(byteList);
+      await files.writeAsBytes(byteList);
       print("step 2");
-      await OpenFile.open(filePath);
-      // Rest of your code here...
-    } else {
-      // Handle the case when permission is denied
-      // You may want to display a message to the user or handle the situation accordingly.
+      await OpenFile.open(filePaths);
+      print("stetep 3");
+      //
+      // Directory('/storage/emulated/0/Download/Attendance List/').createSync();
+      // var filePath = "/storage/emulated/0/Download/Attendance List/${argumentid.value}.pdf";
+      // final file = File(filePath);
+      // print("step 1");
+      // await file.writeAsBytes(byteList);
+      // print("DONE");
+
+    }else{
     }
-    // Directory('/storage/emulated/0/Download/Attendance List/').createSync();
-    // final output = await getTemporaryDirectory();
-    // var filePath = "/storage/emulated/0/Download/Attendance List/${argumentid.value}.pdf";
-    // final file = File(filePath);
-    // print("step 1");
-    // await file.writeAsBytes(byteList);
-    // print("step 2");
-    //
-    // final filePaths = "${output.path}/${argumentid.value}.pdf";
-    // final files = File(filePaths);
-    // print("step 1");
-    // await files.writeAsBytes(byteList);
-    // print("step 2");
-    // await OpenFile.open(filePaths);
-    // print("stetep 3");
   }
 
 

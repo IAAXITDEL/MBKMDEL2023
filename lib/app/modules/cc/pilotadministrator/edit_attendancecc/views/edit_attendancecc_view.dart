@@ -45,7 +45,8 @@ class EditAttendanceccView extends GetView<EditAttendanceccController> {
 
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Back'),
+          title:  RedTitleText(text: "EDIT ATTENDANCE"),
+          centerTitle: true,
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -56,7 +57,7 @@ class EditAttendanceccView extends GetView<EditAttendanceccController> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  RedTitleText(text: "EDIT ATTENDANCE"),
+
                   //Text("REDUCED VERTICAL SEPARATION MINIMA (RVSM)"),
 
                   SizedBox(
@@ -111,7 +112,30 @@ class EditAttendanceccView extends GetView<EditAttendanceccController> {
                             ),
 
                             //-------------------------VENUE-----------------------
-                            FormTextField(text: "Venue", textController: venueC),
+                            // FormTextField(text: "Venue", textController: venueC),
+                            DropdownSearch<String>(
+                              selectedItem: venueC.text,
+                              mode: Mode.MENU,
+                              items: ['IAA'],
+                              dropdownSearchDecoration:
+                              InputDecoration(
+                                labelText: "Venue",
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(5),
+                                  ),
+                                ),
+                              ),
+                              onChanged: (String? newValue) {
+                                venueC.text = newValue!;
+                              },
+                              validator: (String? value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please choose a venue';
+                                }
+                                return null;
+                              },
+                            ),
                             SizedBox(
                               height: 10,
                             ),
