@@ -270,89 +270,89 @@ class PilottraininghistorydetailccView
                   height: 20,
                 ),
 
-                //FEEDBACK FROM TRAINER
-                controller.isCPTS.value ?
-                Container(
-                  child: FutureBuilder<List<Map<String, dynamic>>>(
-                    future: controller.getCombinedAttendance(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return LoadingScreen(); // Placeholder while loading
-                      }
-
-                      if (snapshot.hasError) {
-                        return ErrorScreen();
-                      }
-
-                      var listAttendance = snapshot.data!;
-                      if (listAttendance.isEmpty) {
-                        return EmptyScreen();
-                      }
-
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Feedback from Instructor',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                margin: EdgeInsets.only(
-                                    right: 16),
-                                child: CircleAvatar(
-                                  radius: 20,
-                                  backgroundColor: Colors.black26,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(100),
-                                    child: listAttendance[0]["PHOTOURL"] == null
-                                        ? Image.network(
-                                         "${listAttendance[0]["PHOTOURL"]}",
-                                          fit: BoxFit.cover,
-                                          )
-                                        : Image.asset(
-                                          "assets/images/placeholder_person.png",
-                                          fit: BoxFit.cover,
-                                          ),
-                                  ),
-                                ),
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    listAttendance[0]["trainer-name"] ?? "N/A",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                    maxLines: 1,
-                                  ),
-                                  Container(
-                                    constraints: BoxConstraints(
-                                      maxWidth:
-                                          250, // Adjust the width as needed
-                                    ),
-                                    child: Text(
-                                      listAttendance[0]["feedback-from-trainer"] ?? "N/A",
-                                      textAlign: TextAlign.justify,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
-                      );
-                    },
-                  ),
-                ) : SizedBox(),
+                // //FEEDBACK FROM TRAINER
+                // controller.isCPTS.value ?
+                // Container(
+                //   child: FutureBuilder<List<Map<String, dynamic>>>(
+                //     future: controller.getCombinedAttendance(),
+                //     builder: (context, snapshot) {
+                //       if (snapshot.connectionState == ConnectionState.waiting) {
+                //         return LoadingScreen(); // Placeholder while loading
+                //       }
+                //
+                //       if (snapshot.hasError) {
+                //         return ErrorScreen();
+                //       }
+                //
+                //       var listAttendance = snapshot.data!;
+                //       if (listAttendance.isEmpty) {
+                //         return EmptyScreen();
+                //       }
+                //
+                //       return Column(
+                //         crossAxisAlignment: CrossAxisAlignment.start,
+                //         children: [
+                //           Text(
+                //             'Feedback from Instructor',
+                //             style: TextStyle(
+                //               fontWeight: FontWeight.bold,
+                //               fontSize: 15,
+                //             ),
+                //           ),
+                //           SizedBox(
+                //             height: 15,
+                //           ),
+                //           Row(
+                //             crossAxisAlignment: CrossAxisAlignment.start,
+                //             children: [
+                //               Container(
+                //                 margin: EdgeInsets.only(
+                //                     right: 16),
+                //                 child: CircleAvatar(
+                //                   radius: 20,
+                //                   backgroundColor: Colors.black26,
+                //                   child: ClipRRect(
+                //                     borderRadius: BorderRadius.circular(100),
+                //                     child: listAttendance[0]["PHOTOURL"] == null
+                //                         ? Image.network(
+                //                          "${listAttendance[0]["PHOTOURL"]}",
+                //                           fit: BoxFit.cover,
+                //                           )
+                //                         : Image.asset(
+                //                           "assets/images/placeholder_person.png",
+                //                           fit: BoxFit.cover,
+                //                           ),
+                //                   ),
+                //                 ),
+                //               ),
+                //               Column(
+                //                 crossAxisAlignment: CrossAxisAlignment.start,
+                //                 children: [
+                //                   Text(
+                //                     listAttendance[0]["trainer-name"] ?? "N/A",
+                //                     style:
+                //                         TextStyle(fontWeight: FontWeight.bold),
+                //                     maxLines: 1,
+                //                   ),
+                //                   Container(
+                //                     constraints: BoxConstraints(
+                //                       maxWidth:
+                //                           250, // Adjust the width as needed
+                //                     ),
+                //                     child: Text(
+                //                       listAttendance[0]["feedback-from-trainer"] ?? "N/A",
+                //                       textAlign: TextAlign.justify,
+                //                     ),
+                //                   ),
+                //                 ],
+                //               ),
+                //             ],
+                //           ),
+                //         ],
+                //       );
+                //     },
+                //   ),
+                // ) : SizedBox(),
 
                 Obx(() => controller.isAdmin.value  ?
                 Row(
