@@ -543,7 +543,7 @@ class ListAttendancedetailccView
                               ),
                               Row(
                                 children: [
-                                  Expanded(flex: 2,child: Text("Communication Skills", style: tsOneTextTheme.labelSmall)),
+                                  Expanded(flex: 2,child: Text("Communication", style: tsOneTextTheme.labelSmall)),
                                   Expanded(
                                     flex: 3,
                                     child: Obx(() {
@@ -563,9 +563,7 @@ class ListAttendancedetailccView
                                   Text("${controller.ratingCommunication.value.round().toString()}/5"),
                                 ],
                               ),
-                              SizedBox(
-                                height: 5,
-                              ),
+
                               Row(
                                 children: [
                                   Expanded(flex: 2,child: Text("Knowledge", style: tsOneTextTheme.labelSmall,)),
@@ -587,12 +585,10 @@ class ListAttendancedetailccView
                                   Text("${controller.ratingKnowledge.value.round().toString()}/5"),
                                 ],
                               ),
-                              SizedBox(
-                                height: 5,
-                              ),
+
                               Row(
                                 children: [
-                                  Expanded(flex: 2, child: Text("Active Participation", style: tsOneTextTheme.labelSmall)),
+                                  Expanded(flex: 2, child: Text("Participation", style: tsOneTextTheme.labelSmall)),
                                   Expanded(
                                     flex: 3,
                                     child: Obx(() {
@@ -614,7 +610,7 @@ class ListAttendancedetailccView
                               ),
 
                               SizedBox(
-                                height: 5,
+                                height: 15,
                               ),
                               Row(
                                 children: [
