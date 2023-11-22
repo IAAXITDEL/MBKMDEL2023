@@ -32,13 +32,16 @@ class EditAttendanceccController extends GetxController {
 
 
   //Edit Attendance Form
-  Future<void> editAttendanceForm(String subject, DateTime date, String venue, int instructor) async {
+  Future<void> editAttendanceForm(String subject, DateTime date,String trainingType,String department,String room, String venue, int instructor) async {
     CollectionReference attendance = firestore.collection("attendance");
     try {
       if (instructor != 0) {
         await attendance.doc(argument.value).update({
           "subject": subject,
           "date": date,
+          "trainingType": trainingType,
+          "department": department,
+          "room": room,
           "venue": venue,
           "instructor": instructor,
           "updatedTime": DateTime.now().toIso8601String(),

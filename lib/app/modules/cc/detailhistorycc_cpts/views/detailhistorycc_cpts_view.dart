@@ -427,8 +427,6 @@ with SingleTickerProviderStateMixin {
                                               .round()
                                               .toString(),
                                           onChanged: (double value) {
-                                            controller.averageRTimes.value =
-                                                value;
                                           },
                                           //activeColor: Colors.red[900],
                                           activeColor : Color(0XFFF071952),
