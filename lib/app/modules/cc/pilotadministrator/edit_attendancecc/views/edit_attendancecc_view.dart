@@ -232,7 +232,7 @@ class EditAttendanceccView extends GetView<EditAttendanceccController> {
                                     ),
                                   ),
                                   onChanged: (String? newValue) {
-                                    trainingTypeC.text = newValue!;
+                                    roomC.text = newValue!;
                                   },
                                   validator: (String? value) {
                                     if (value == null || value.isEmpty) {
