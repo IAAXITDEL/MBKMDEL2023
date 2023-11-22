@@ -24,6 +24,7 @@ class AttendancePilotccController extends GetxController {
     super.onInit();
 
     idattendance.value = Get.arguments["id"];
+    print("id : ${Get.arguments["id"]}");
     checkSignature();
   }
 

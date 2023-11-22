@@ -49,7 +49,8 @@ class EditAttendanceccView extends GetView<EditAttendanceccController> {
 
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Back'),
+          title:  RedTitleText(text: "EDIT ATTENDANCE"),
+          centerTitle: true,
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -60,7 +61,7 @@ class EditAttendanceccView extends GetView<EditAttendanceccController> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  RedTitleText(text: "EDIT ATTENDANCE"),
+
                   //Text("REDUCED VERTICAL SEPARATION MINIMA (RVSM)"),
 
                   SizedBox(
