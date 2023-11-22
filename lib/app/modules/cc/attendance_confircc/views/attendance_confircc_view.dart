@@ -103,8 +103,8 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
         body: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 20),
-            child: StreamBuilder<List<Map<String, dynamic>>>(
-                stream: controller.getCombinedAttendanceStream(),
+            child: FutureBuilder<List<Map<String, dynamic>>?>(
+                future: controller.getCombinedAttendance(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return LoadingScreen(); // Placeholder while loading
@@ -383,9 +383,13 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                                         },
                                       );
 
-                                      await controller.savePdfFile(
-                                          await controller
-                                              .attendancelist());
+                                      // Check if pdfBytes is not null before accessing its value
+                                      if (controller.pdfBytes != null && controller.pdfBytes!.isNotEmpty) {
+                                        await controller.savePdfFile(controller.pdfBytes![0]);
+                                      } else {
+                                        print("pdfBytes is null or empty");
+                                        // Handle the case where pdfBytes is null or empty
+                                      }
                                     } catch (e) {
                                       print('Error: $e');
                                     } finally {

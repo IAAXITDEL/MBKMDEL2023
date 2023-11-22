@@ -13,6 +13,7 @@ import '../../../../../presentation/view_model/attendance_model.dart';
 import '../../../../routes/app_pages.dart';
 import '../../instructor/training_instructorcc/controllers/training_instructorcc_controller.dart';
 import '../../pilotadministrator/trainingtypecc/controllers/trainingtypecc_controller.dart';
+import '../../training/attendance_pilotcc/controllers/attendance_pilotcc_controller.dart';
 import '../../traininghistorycc_cpts/controllers/traininghistorycc_cpts_controller.dart';
 class TrainingccController extends GetxController {
   FirebaseFirestore firestore = FirebaseFirestore.instance;

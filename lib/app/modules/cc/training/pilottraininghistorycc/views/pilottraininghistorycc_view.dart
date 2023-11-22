@@ -86,7 +86,113 @@ class PilottraininghistoryccView
                   height: 10,
                 ),
 
-               Obx(() =>  StreamBuilder<List<Map<String, dynamic>>>(
+                Form(
+                  key: _formKey,
+                  child: Container(
+                    child:   Row(
+                      children: [
+                        Expanded(
+                          flex: 3,
+                          child: TextFormField(
+                            controller: fromC,
+                            obscureText: false,
+                            readOnly: false,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {   // Validation Logic
+                                return 'Please enter the From Date';
+                              }
+                              return null;
+                            },
+                            decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.symmetric(vertical: 0,horizontal: 10),
+                                prefixIcon: const Icon(Icons.calendar_month, color: TsOneColor.primary,),
+                                enabledBorder: const OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: TsOneColor.primary,
+                                  ),
+                                ),
+                                border: const OutlineInputBorder(
+                                    borderSide: BorderSide(color: TsOneColor.secondaryContainer)
+                                ),
+                                focusedBorder: const OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Colors.green,
+                                  ),
+                                ),
+                                labelText: "From Date"
+                            ),
+                            onTap: () async {
+                              DateTime? pickedDate = await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(1945), lastDate: DateTime(2300));
+                              if(pickedDate != null){
+                                String formattedDate = DateFormat('dd-MM-yyyy').format(pickedDate);
+                                fromC.text = formattedDate;
+                              }
+                            },
+                          ),
+                        ),
+                        Expanded(flex: 1,child: Icon(Icons.compare_arrows_rounded)),
+                        Expanded(
+                          flex: 3,
+                          child: TextFormField(
+                            controller: toC,
+                            obscureText: false,
+                            readOnly: false,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {   // Validation Logic
+                                return 'Please enter the To Date';
+                              }
+                              return null;
+                            },
+                            decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.symmetric(vertical: 0,horizontal: 10),
+                                prefixIcon: const Icon(Icons.calendar_month, color: TsOneColor.primary,),
+                                enabledBorder: const OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: TsOneColor.primary,
+                                  ),
+                                ),
+                                border: const OutlineInputBorder(
+                                    borderSide: BorderSide(color: TsOneColor.secondaryContainer)
+                                ),
+                                focusedBorder: const OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Colors.green,
+                                  ),
+                                ),
+                                labelText: "To Date"
+                            ),
+                            onTap: () async {
+                              DateTime? pickedDate = await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(1945), lastDate: DateTime(2300));
+                              if(pickedDate != null){
+                                String formattedDate = DateFormat('dd-MM-yyyy').format(pickedDate);
+                                toC.text = formattedDate;
+                              }
+                            },
+                          ),
+                        ),
+                        Expanded(flex: 1,child:
+                        InkWell(
+                          onTap: (){
+                            DateTime from = DateFormat('dd-MM-yyyy').parse(fromC.text);
+                            DateTime to = DateFormat('dd-MM-yyyy').parse(toC.text);
+
+                            if (_formKey.currentState != null && _formKey.currentState!.validate()  != 0) {
+                              if (from.isBefore(to)) {
+                                controller.from.value = from;
+                                controller.to.value = to;
+                              } else {
+
+                              }
+                            }
+                          },
+                          child: Icon(Icons.filter_list, color: TsOneColor.primary,),
+                        )
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Obx(() =>  StreamBuilder<List<Map<String, dynamic>>>(
                  stream: controller.historyStream( from: controller.from.value, to:controller.to.value),
                  builder: (context, snapshot) {
                    if (snapshot.connectionState == ConnectionState.waiting) {
@@ -106,112 +212,7 @@ class PilottraininghistoryccView
                    return Column(
                      children: [
                        SizedBox(height: 10),
-                       Form(
-                         key: _formKey,
-                         child: Container(
-                           child:   Row(
-                             children: [
-                               Expanded(
-                                 flex: 3,
-                                 child: TextFormField(
-                                   controller: fromC,
-                                   obscureText: false,
-                                   readOnly: false,
-                                   validator: (value) {
-                                     if (value == null || value.isEmpty) {   // Validation Logic
-                                       return 'Please enter the From Date';
-                                     }
-                                     return null;
-                                   },
-                                   decoration: InputDecoration(
-                                       contentPadding: const EdgeInsets.symmetric(vertical: 0,horizontal: 10),
-                                       prefixIcon: const Icon(Icons.calendar_month, color: TsOneColor.primary,),
-                                       enabledBorder: const OutlineInputBorder(
-                                         borderSide: BorderSide(
-                                           color: TsOneColor.primary,
-                                         ),
-                                       ),
-                                       border: const OutlineInputBorder(
-                                           borderSide: BorderSide(color: TsOneColor.secondaryContainer)
-                                       ),
-                                       focusedBorder: const OutlineInputBorder(
-                                         borderSide: BorderSide(
-                                           color: Colors.green,
-                                         ),
-                                       ),
-                                       labelText: "From Date"
-                                   ),
-                                   onTap: () async {
-                                     DateTime? pickedDate = await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(1945), lastDate: DateTime(2300));
-                                     if(pickedDate != null){
-                                       String formattedDate = DateFormat('dd-MM-yyyy').format(pickedDate);
-                                       fromC.text = formattedDate;
-                                     }
-                                   },
-                                 ),
-                               ),
-                               Expanded(flex: 1,child: Icon(Icons.compare_arrows_rounded)),
-                               Expanded(
-                                 flex: 3,
-                                 child: TextFormField(
-                                   controller: toC,
-                                   obscureText: false,
-                                   readOnly: false,
-                                   validator: (value) {
-                                     if (value == null || value.isEmpty) {   // Validation Logic
-                                       return 'Please enter the To Date';
-                                     }
-                                     return null;
-                                   },
-                                   decoration: InputDecoration(
-                                       contentPadding: const EdgeInsets.symmetric(vertical: 0,horizontal: 10),
-                                       prefixIcon: const Icon(Icons.calendar_month, color: TsOneColor.primary,),
-                                       enabledBorder: const OutlineInputBorder(
-                                         borderSide: BorderSide(
-                                           color: TsOneColor.primary,
-                                         ),
-                                       ),
-                                       border: const OutlineInputBorder(
-                                           borderSide: BorderSide(color: TsOneColor.secondaryContainer)
-                                       ),
-                                       focusedBorder: const OutlineInputBorder(
-                                         borderSide: BorderSide(
-                                           color: Colors.green,
-                                         ),
-                                       ),
-                                       labelText: "To Date"
-                                   ),
-                                   onTap: () async {
-                                     DateTime? pickedDate = await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(1945), lastDate: DateTime(2300));
-                                     if(pickedDate != null){
-                                       String formattedDate = DateFormat('dd-MM-yyyy').format(pickedDate);
-                                       toC.text = formattedDate;
-                                     }
-                                   },
-                                 ),
-                               ),
-                               Expanded(flex: 1,child:
-                               InkWell(
-                                 onTap: (){
-                                   DateTime from = DateFormat('dd-MM-yyyy').parse(fromC.text);
-                                   DateTime to = DateFormat('dd-MM-yyyy').parse(toC.text);
 
-                                   if (_formKey.currentState != null && _formKey.currentState!.validate()  != 0) {
-                                     if (from.isBefore(to)) {
-                                       controller.from.value = from;
-                                       controller.to.value = to;
-                                     } else {
-
-                                     }
-                                   }
-                                 },
-                                 child: Icon(Icons.filter_list, color: TsOneColor.primary,),
-                               )
-                               ),
-                             ],
-                           ),
-                         ),
-                       ),
                        ListView.builder(
                            shrinkWrap: true,
                            itemCount: listAttendance.length,
