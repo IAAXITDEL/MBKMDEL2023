@@ -450,7 +450,7 @@ with SingleTickerProviderStateMixin {
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Container(
-                                              margin: EdgeInsets.only(right: 16),
+                                              margin: EdgeInsets.only(right: 12),
                                               child: CircleAvatar(
                                                 radius: 20,
                                                 backgroundColor: Colors.black26,
@@ -471,59 +471,39 @@ with SingleTickerProviderStateMixin {
                                                 ),
                                               ),
                                             ),
-                                            Column(
-                                              crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  // listFeedback[index]["traineeName"] ??
-                                                  //     "N/A",
-                                                  listFeedback[index]!["name"]
-                                                      .toString(),
-                                                  style: TextStyle(
-                                                      fontWeight: FontWeight.bold),
-                                                  maxLines: 1,
-                                                ),
-                                                // RatingBar.builder(
-                                                //   initialRating: listFeedback[index]
-                                                //   !['rating'] !=
-                                                //       null
-                                                //       ? double.tryParse(
-                                                //       listFeedback[index]
-                                                //       !['rating']
-                                                //           .toString()) ??
-                                                //       0.0
-                                                //       : 0.0,
-                                                //   minRating: 1,
-                                                //   direction: Axis.horizontal,
-                                                //   allowHalfRating: false,
-                                                //   itemCount: 5,
-                                                //   itemPadding: EdgeInsets.symmetric(
-                                                //       horizontal: 1.0),
-                                                //   itemSize: 20.0,
-                                                //   itemBuilder: (context, _) => Icon(
-                                                //     Icons.star,
-                                                //     color: Colors.amber,
-                                                //   ),
-                                                //   ignoreGestures: true,
-                                                //   onRatingUpdate: (rating) {
-                                                //     print(rating);
-                                                //   },
-                                                // ),
-                                                Text(
-                                                  listFeedback[index]
-                                                  ?["feedbackforinstructor"] ??
-                                                      "-",
-                                                  style: TextStyle(
-                                                      fontWeight: FontWeight.normal),
-                                                  maxLines:
-                                                  2, // Set the maximum number of lines you want to display
-                                                  overflow: TextOverflow
-                                                      .ellipsis, // Specify how to handle overflow
-                                                ),
-                                              ],
+                                            Container(
+                                              margin: EdgeInsets.only(top: 10),
+                                              child: Text(
+                                                listFeedback[index]!["name"]
+                                                    .toString(),
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                fontSize: 15),
+                                                maxLines: 1,
+                                              ),
                                             ),
                                           ],
+                                        ),
+                                        SizedBox(
+                                          height: 5,
+                                        ),
+                                        Container(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                listFeedback[index]!["feedbackforinstructor"] ?? "-",
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.normal,
+                                                ),
+                                                textAlign: TextAlign.justify, // Menentukan teks harus di-justify
+                                                maxLines: 50,
+                                                overflow: TextOverflow.ellipsis,
+                                              )
+
+                                            ],
+                                          ),
                                         ),
                                         SizedBox(
                                           height: 10,
