@@ -83,7 +83,7 @@ class AddAttendanceccView extends GetView<AddAttendanceccController> {
                   //-------------------------TRAINING TYPE-----------------------
                   DropdownSearch<String>(
                     mode: Mode.MENU,
-                    items: ['INITIAL', 'RECURRENT'],
+                    items: ['Initial', 'Recurrent'],
                     dropdownSearchDecoration: InputDecoration(
                       labelText: "Training Type",
                       border: OutlineInputBorder(
