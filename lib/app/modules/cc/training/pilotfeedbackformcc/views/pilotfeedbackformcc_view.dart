@@ -33,7 +33,7 @@ class PilotfeedbackformccView extends GetView<PilotfeedbackformccController> {
       );
 
       Get.back();
-      Get.back();
+      // Get.back();
     });
 
 

@@ -282,6 +282,7 @@ class ProfileccController extends GetxController {
               .collection('attendance-detail')
               .where("idtraining", isEqualTo: idTrainee)
               .where("idattendance", whereIn: attendanceIds)
+              .where("score", isEqualTo: "PASS")
               .get();
           attendanceDetailData
               .addAll(attendanceDetailQuery.docs.map((doc) => doc.data()));
@@ -354,11 +355,12 @@ class ProfileccController extends GetxController {
           .get();
 
       if (attendanceQuery.docs.isNotEmpty) {
-        print(subject);
         final attendanceDetailQuery = await firestore.collection(
-            'attendance-detail').where(
-            "idtraining", isEqualTo: idTrainee).where(
-            "status", isEqualTo: "donescoring").get();
+            'attendance-detail')
+            .where("idtraining", isEqualTo: idTrainee)
+            .where("status", isEqualTo: "donescoring")
+            .where("score", isEqualTo: "PASS")
+            .get();
         final attendanceDetailData = attendanceDetailQuery.docs.map((doc) =>
         doc.data() as Map<String, dynamic>).toList();
         if (attendanceDetailData.isEmpty) {

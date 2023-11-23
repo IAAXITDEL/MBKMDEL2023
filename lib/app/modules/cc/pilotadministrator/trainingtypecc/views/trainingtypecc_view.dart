@@ -124,8 +124,8 @@ class _TrainingtypeccViewState extends State<TrainingtypeccView>
                                   cancelBtnText: 'No',
                                   confirmBtnColor: Colors.green,
                                   onConfirmBtnTap: () async {
-                                    await controller.deleteTraining();
                                     Navigator.of(context).pop();
+                                    await controller.deleteTraining();
                                   }
                               );
                             },

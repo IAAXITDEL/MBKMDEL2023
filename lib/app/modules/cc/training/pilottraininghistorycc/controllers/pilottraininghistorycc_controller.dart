@@ -53,6 +53,7 @@ class PilottraininghistoryccController extends GetxController {
               .collection('attendance-detail')
               .where("idtraining", isEqualTo: idTraining.value)
               .where("idattendance", whereIn: attendanceIds)
+              .where("score", isEqualTo: "PASS")
               .get();
           attendanceDetailData
               .addAll(attendanceDetailQuery.docs.map((doc) => doc.data()));
