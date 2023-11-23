@@ -147,7 +147,7 @@ class EditAttendanceccView extends GetView<EditAttendanceccController> {
                               children: [
                                 DropdownSearch<String>(
                                   mode: Mode.MENU,
-                                  items: ['INITIAL', 'RECURRENT'],
+                                  items: ['Initial', 'Recurrent'],
                                   dropdownSearchDecoration: InputDecoration(
                                     labelText: "Training Type",
                                     border: OutlineInputBorder(
