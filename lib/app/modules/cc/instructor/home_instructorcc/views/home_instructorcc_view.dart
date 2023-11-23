@@ -87,6 +87,7 @@ class HomeInstructorccView extends GetView<HomeInstructorccController> {
                   //   ],
                   // ),
                   // const SizedBox(height: 10,),
+
                   StreamBuilder<List<Map<String, dynamic>>>(
                     stream: controller.getCombinedAttendanceStream("pending"),
                     builder: (context, snapshot) {
@@ -104,7 +105,12 @@ class HomeInstructorccView extends GetView<HomeInstructorccController> {
                         return const EmptyScreen();
                       }
 
-
+                      listAttendance.sort((a, b) {
+                        DateTime dateA = (a["date"]).toDate();
+                        DateTime dateB = (b["date"]).toDate();
+                        return dateA.compareTo(dateB); // Compare in descending order
+                      });
+                      
                       return ListView.builder(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
