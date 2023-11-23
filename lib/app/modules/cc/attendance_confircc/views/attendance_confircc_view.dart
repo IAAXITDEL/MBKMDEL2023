@@ -357,13 +357,13 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                       SizedBox(
                         height: 20,
                       ),
-                      Text(
-                        "Absent Trainees",
-                        style: tsOneTextTheme.labelSmall,
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
+                      // Text(
+                      //   "Absent Trainees",
+                      //   style: tsOneTextTheme.labelSmall,
+                      // ),
+                      // SizedBox(
+                      //   height: 10,
+                      // ),
                       listAttendance[0]["status"] == "done" ?
                       //LIST ABSENT
                       Column(

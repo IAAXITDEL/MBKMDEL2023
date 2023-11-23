@@ -316,7 +316,7 @@ class AttendanceInstructorconfirccView
                                         borderRadius: BorderRadius.circular(10)),
                                     child: ListTile(
                                       title: Text(
-                                        "Attendance",
+                                        "Present Trainees",
                                         style: tsOneTextTheme.labelSmall,
                                       ),
                                       subtitle: Text(
@@ -360,7 +360,7 @@ class AttendanceInstructorconfirccView
                           SizedBox(
                             height: 20,
                           ),
-                          Text("Attendance Type"),
+                          Text("Meeting or Training"),
                           Row(
                             children: [
                               Row(

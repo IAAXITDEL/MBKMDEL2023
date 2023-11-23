@@ -50,7 +50,7 @@ class _NavcptsState extends State<NavcptsView> {
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: const Icon(CupertinoIcons.square_list),
+        icon: const Icon(CupertinoIcons.square_list_fill),
         activeColorPrimary: tsOneColorScheme.primary,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
