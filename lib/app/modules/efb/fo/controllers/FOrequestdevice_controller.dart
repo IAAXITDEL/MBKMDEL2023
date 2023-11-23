@@ -123,7 +123,7 @@ class FORequestdeviceController extends GetxController {
   // }
 
   void requestDevice(
-      String deviceUid2, String deviceName2, String deviceUid3, String deviceName3, String statusdevice1, String fieldHub2, String fieldHub3) async {
+      String deviceUid2, String deviceName2, String deviceUid3, String deviceName3, String statusdevice1, String fieldHub2, String fieldHub3, String initialConditionCategory2, String initialConditionRemarks2, String initialConditionCategory3, String initialConditionRemarks3) async {
     User? user = _auth.currentUser;
 
     if (user != null) {
@@ -151,6 +151,10 @@ class FORequestdeviceController extends GetxController {
           'device_uid3': deviceUid3,
           'device_name3': deviceName3,
           'statusDevice': 'waiting-confirmation-1',
+          'initial-condition-category2': initialConditionCategory2,
+          'initial-condition-remarks2': initialConditionRemarks2,
+          'initial-condition-category3': initialConditionCategory3,
+          'initial-condition-remarks3': initialConditionRemarks3,
           'document_id': newDeviceId, // Menyimpan ID dokumen sebagai field
           'timestamp': FieldValue.serverTimestamp(),
           'handover-from': '-',

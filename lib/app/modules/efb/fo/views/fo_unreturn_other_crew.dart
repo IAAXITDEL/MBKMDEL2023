@@ -547,14 +547,41 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                         Expanded(
                                             flex: 6,
                                             child: Text(
-                                              "Condition",
+                                              "Condition Category",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        const Expanded(child: Text(":")),
+                                        Expanded(
+                                            child: Text(
+                                              ":",
+                                              style: tsOneTextTheme.labelMedium,
+                                            )),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
-                                            '${deviceData2['value']['condition'] ?? 'No Data'}',
+                                            '${data['initial-condition-category2'] ?? 'No Data'}',
+                                            style: tsOneTextTheme.labelMedium,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 5.0),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                            flex: 6,
+                                            child: Text(
+                                              "Condition Remark",
+                                              style: tsOneTextTheme.labelMedium,
+                                            )),
+                                        Expanded(
+                                            child: Text(
+                                              ":",
+                                              style: tsOneTextTheme.labelMedium,
+                                            )),
+                                        Expanded(
+                                          flex: 6,
+                                          child: Text(
+                                            '${data['initial-condition-remarks2'] ?? 'No Data'}',
                                             style: tsOneTextTheme.labelMedium,
                                           ),
                                         ),
@@ -685,14 +712,41 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                         Expanded(
                                             flex: 6,
                                             child: Text(
-                                              "Condition",
+                                              "Condition Category",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
-                                        const Expanded(child: Text(":")),
+                                        Expanded(
+                                            child: Text(
+                                              ":",
+                                              style: tsOneTextTheme.labelMedium,
+                                            )),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
-                                            '${deviceData3['value']['condition'] ?? 'No Data'}',
+                                            '${data['initial-condition-category3'] ?? 'No Data'}',
+                                            style: tsOneTextTheme.labelMedium,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 5.0),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                            flex: 6,
+                                            child: Text(
+                                              "Condition Remark",
+                                              style: tsOneTextTheme.labelMedium,
+                                            )),
+                                        Expanded(
+                                            child: Text(
+                                              ":",
+                                              style: tsOneTextTheme.labelMedium,
+                                            )),
+                                        Expanded(
+                                          flex: 6,
+                                          child: Text(
+                                            '${data['initial-condition-remarks3'] ?? 'No Data'}',
                                             style: tsOneTextTheme.labelMedium,
                                           ),
                                         ),

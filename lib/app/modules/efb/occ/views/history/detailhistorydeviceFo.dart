@@ -374,19 +374,83 @@ class DetailHistoryDeviceFOView extends GetView {
                                                         ),
                                                       ],
                                                     ),
-                                                    SizedBox(height: 5.0),
+                                                    // SizedBox(height: 5.0),
+                                                    // Row(
+                                                    //   children: [
+                                                    //     Expanded(flex: 6, child: Text("Condition")),
+                                                    //     Expanded(flex: 1, child: Text(":")),
+                                                    //     Expanded(
+                                                    //       flex: 6,
+                                                    //       child: Text('${deviceData2['value']['condition'] ?? 'No Data'}'),
+                                                    //     ),
+                                                    //   ],
+                                                    // ),
+                                                    SizedBox(height: 15.0,),
+                                                    //device info
+                                                    Text("Device 2 Condition", style: tsOneTextTheme.headlineMedium),
+                                                    SizedBox(height: 7.0),
                                                     Row(
                                                       children: [
-                                                        Expanded(flex: 6, child: Text("Condition")),
+                                                        Expanded(flex: 6, child: Text("Given")),
                                                         Expanded(flex: 1, child: Text(":")),
                                                         Expanded(
                                                           flex: 6,
-                                                          child: Text('${deviceData2['value']['condition'] ?? 'No Data'}'),
+                                                          child: Text('${data['initial-condition-category2'] ?? 'No Data'}'),
                                                         ),
                                                       ],
                                                     ),
+                                                    SizedBox(height: 7.0),
+                                                    Row(
+                                                      children: [
+                                                        Expanded(flex: 6, child: Text("Given Remarks")),
+                                                        Expanded(flex: 1, child: Text(":")),
+                                                        Expanded(
+                                                          flex: 6,
+                                                          child: Text('${data['initial-condition-remarks2'] ?? 'No Data'}'),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    SizedBox(height: 7.0),
+                                                    // Center(
+                                                    //   child: Icon(Icons.arrow_downward, size: 24), // Icon panah ke bawah di tengah
+                                                    // ),
+                                                    SizedBox(height: 7.0),
+                                                    Row(
+                                                      children: [
+                                                        Expanded(flex: 6, child: Text("Accepted")),
+                                                        Expanded(flex: 1, child: Text(":")),
+                                                        Expanded(
+                                                          flex: 6,
+                                                          child: Text('${data['return-condition-category2'] ?? 'No Data'}'),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    SizedBox(height: 7.0),
+                                                    Row(
+                                                      children: [
+                                                        Expanded(flex: 6, child: Text("Accepted Remarks")),
+                                                        Expanded(flex: 1, child: Text(":")),
+                                                        Expanded(
+                                                          flex: 6,
+                                                          child: Text('${data['return-condition-remarks3'] ?? 'No Data'}'),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    SizedBox(height: 8.0),
 
-                                                    SizedBox(height: 15.0),
+                                                    const Padding(
+                                                      padding: EdgeInsets.only(bottom: 16.0),
+                                                      child: Row(
+                                                        children: <Widget>[
+                                                          Expanded(
+                                                            child: Divider(
+                                                              color: Colors.grey,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+
                                                     Text("Device 3", style: tsOneTextTheme.headlineMedium),
                                                     SizedBox(height: 7.0),
                                                     Row(
@@ -454,19 +518,94 @@ class DetailHistoryDeviceFOView extends GetView {
                                                         ),
                                                       ],
                                                     ),
-                                                    SizedBox(height: 5.0),
+                                                    SizedBox(height: 15.0,),
+                                                    // Row(
+                                                    //   children: [
+                                                    //     Expanded(flex: 6, child: Text("Condition")),
+                                                    //     Expanded(flex: 1, child: Text(":")),
+                                                    //     Expanded(
+                                                    //       flex: 6,
+                                                    //       child: Text('${deviceData3['value']['condition'] ?? 'No Data'}'),
+                                                    //     ),
+                                                    //   ],
+                                                    // ),
+                                                    Text("Device 3 Condition", style: tsOneTextTheme.headlineMedium),
+                                                    SizedBox(height: 7.0),
                                                     Row(
                                                       children: [
-                                                        Expanded(flex: 6, child: Text("Condition")),
+                                                        Expanded(flex: 6, child: Text("Given")),
                                                         Expanded(flex: 1, child: Text(":")),
                                                         Expanded(
                                                           flex: 6,
-                                                          child: Text('${deviceData3['value']['condition'] ?? 'No Data'}'),
+                                                          child: Text('${data['initial-condition-category3'] ?? 'No Data'}'),
                                                         ),
                                                       ],
                                                     ),
+                                                    SizedBox(height: 7.0),
+                                                    Row(
+                                                      children: [
+                                                        Expanded(flex: 6, child: Text("Given Remarks")),
+                                                        Expanded(flex: 1, child: Text(":")),
+                                                        Expanded(
+                                                          flex: 6,
+                                                          child: Text('${data['initial-condition-remarks3'] ?? 'No Data'}'),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    SizedBox(height: 7.0),
+                                                    // Center(
+                                                    //   child: Icon(Icons.arrow_downward, size: 24), // Icon panah ke bawah di tengah
+                                                    // ),
+                                                    SizedBox(height: 7.0),
+                                                    Row(
+                                                      children: [
+                                                        Expanded(flex: 6, child: Text("Accepted")),
+                                                        Expanded(flex: 1, child: Text(":")),
+                                                        Expanded(
+                                                          flex: 6,
+                                                          child: Text('${data['return-condition-category3'] ?? 'No Data'}'),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    SizedBox(height: 7.0),
+                                                    Row(
+                                                      children: [
+                                                        Expanded(flex: 6, child: Text("Accepted Remarks")),
+                                                        Expanded(flex: 1, child: Text(":")),
+                                                        Expanded(
+                                                          flex: 6,
+                                                          child: Text('${data['return-condition-remarks3'] ?? 'No Data'}'),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    SizedBox(height: 15.0),
 
-                                                    if (status == 'Done') SizedBox(height: 15),
+                                                    const Padding(
+                                                      padding: EdgeInsets.only(bottom: 15.0),
+                                                      child: Row(
+                                                        children: <Widget>[
+                                                          Expanded(
+                                                            child: Divider(
+                                                              color: Colors.grey,
+                                                            ),
+                                                          ),
+                                                          Padding(
+                                                            padding: EdgeInsets.symmetric(horizontal: 8.0),
+                                                            child: Text(
+                                                              'Handover Documentation',
+                                                              style: TextStyle(color: Colors.grey),
+                                                            ),
+                                                          ),
+                                                          Expanded(
+                                                            child: Divider(
+                                                              color: Colors.grey,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+
+
                                                     if (status == 'Done') Text("OCC On Duty", style: tsOneTextTheme.headlineMedium),
                                                     if (status == 'Done') SizedBox(height: 7.0),
                                                     if (status == 'Done')
@@ -490,7 +629,50 @@ class DetailHistoryDeviceFOView extends GetView {
                                                         ],
                                                       ),
 
-                                                    if (status == 'handover-to-other-crew') SizedBox(height: 15.0),
+                                                    if (status == 'handover-to-other-crew') Text("Given To", style: tsOneTextTheme.headlineMedium),
+                                                    SizedBox(height: 7.0),
+                                                    if (status == 'handover-to-other-crew')
+                                                      Row(
+                                                        children: [
+                                                          Expanded(flex: 6, child: Text("ID NO")),
+                                                          Expanded(flex: 1, child: Text(":")),
+                                                          Expanded(
+                                                            flex: 6,
+                                                            child: handoverTouserData != null
+                                                                ? Text('${handoverTouserData['ID NO'] ?? 'Not Found'}')
+                                                                : Text('Not Found'),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    SizedBox(height: 5.0),
+                                                    if (status == 'handover-to-other-crew')
+                                                      Row(
+                                                        children: [
+                                                          Expanded(flex: 6, child: Text("NAME")),
+                                                          Expanded(flex: 1, child: Text(":")),
+                                                          Expanded(
+                                                            flex: 6,
+                                                            child: handoverTouserData != null
+                                                                ? Text('${handoverTouserData['NAME'] ?? 'Not Found'}')
+                                                                : Text('Not Found'),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    SizedBox(height: 5.0),
+                                                    if (status == 'handover-to-other-crew')
+                                                      Row(
+                                                        children: [
+                                                          Expanded(flex: 6, child: Text("RANK")),
+                                                          Expanded(flex: 1, child: Text(":")),
+                                                          Expanded(
+                                                            flex: 6,
+                                                            child: handoverTouserData != null
+                                                                ? Text('${handoverTouserData['RANK'] ?? 'Not Found'}')
+                                                                : Text('Not Found'),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    if (status == 'handover-to-other-crew')SizedBox(height: 10,),
                                                     if (status == 'handover-to-other-crew')
                                                       Text("Return Documentation", style: tsOneTextTheme.headlineMedium),
                                                     if (status == 'handover-to-other-crew')
@@ -642,7 +824,6 @@ class DetailHistoryDeviceFOView extends GetView {
                                                     //     ],
                                                     //   ),
 
-                                                    if (status == 'handover-to-other-crew') SizedBox(height: 15.0),
                                                     Row(
                                                       children: [
                                                         Expanded(
@@ -696,50 +877,7 @@ class DetailHistoryDeviceFOView extends GetView {
                                                       ],
                                                     ),
 
-                                                    SizedBox(height: 10.0),
-                                                    if (status == 'handover-to-other-crew') Text("Given To", style: tsOneTextTheme.headlineMedium),
-                                                    SizedBox(height: 7.0),
-                                                    if (status == 'handover-to-other-crew')
-                                                      Row(
-                                                        children: [
-                                                          Expanded(flex: 6, child: Text("ID NO")),
-                                                          Expanded(flex: 1, child: Text(":")),
-                                                          Expanded(
-                                                            flex: 6,
-                                                            child: handoverTouserData != null
-                                                                ? Text('${handoverTouserData['ID NO'] ?? 'Not Found'}')
-                                                                : Text('Not Found'),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    SizedBox(height: 5.0),
-                                                    if (status == 'handover-to-other-crew')
-                                                      Row(
-                                                        children: [
-                                                          Expanded(flex: 6, child: Text("NAME")),
-                                                          Expanded(flex: 1, child: Text(":")),
-                                                          Expanded(
-                                                            flex: 6,
-                                                            child: handoverTouserData != null
-                                                                ? Text('${handoverTouserData['NAME'] ?? 'Not Found'}')
-                                                                : Text('Not Found'),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    SizedBox(height: 5.0),
-                                                    if (status == 'handover-to-other-crew')
-                                                      Row(
-                                                        children: [
-                                                          Expanded(flex: 6, child: Text("RANK")),
-                                                          Expanded(flex: 1, child: Text(":")),
-                                                          Expanded(
-                                                            flex: 6,
-                                                            child: handoverTouserData != null
-                                                                ? Text('${handoverTouserData['RANK'] ?? 'Not Found'}')
-                                                                : Text('Not Found'),
-                                                          ),
-                                                        ],
-                                                      ),
+
 
                                                     SizedBox(height: 15.0),
                                                     Row(

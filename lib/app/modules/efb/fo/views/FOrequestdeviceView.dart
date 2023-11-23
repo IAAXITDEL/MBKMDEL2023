@@ -32,6 +32,10 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
   TextEditingController OccOnDutyController = TextEditingController();
   TextEditingController deviceNoController2 = TextEditingController();
   TextEditingController deviceNoController3 = TextEditingController();
+  String dropdownValue2 = 'Good'; // Default value
+  String remarks2 = '';
+  String dropdownValue3 = 'Good'; // Default value
+  String remarks3 = '';
 
   @override
   void initState() {
@@ -186,6 +190,10 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
         'waiting-confirmation-1',
         fieldHub2,
         fieldHub3,
+        dropdownValue2, // Pass the selected dropdown value
+        remarks2, // Pass the remarks
+        dropdownValue3, // Pass the selected dropdown value
+        remarks3, // Pass the remarks
       );
 
       setState(() {
@@ -359,6 +367,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                             ),
                           ],
                         ),
+                        SizedBox(height: 5.0,),
                         Row(
                           children: [
                             const Expanded(flex: 7, child: Text("IOS Version")),
@@ -369,6 +378,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                             ),
                           ],
                         ),
+                        SizedBox(height: 5.0,),
                         Row(
                           children: [
                             const Expanded(flex: 7, child: Text("FlySmart Version")),
@@ -379,6 +389,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                             ),
                           ],
                         ),
+                        SizedBox(height: 5.0,),
                         Row(
                           children: [
                             const Expanded(flex: 7, child: Text("Docunet Version")),
@@ -389,6 +400,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                             ),
                           ],
                         ),
+                        SizedBox(height: 5.0,),
                         Row(
                           children: [
                             const Expanded(flex: 7, child: Text("Lido mPilot Version")),
@@ -399,6 +411,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                             ),
                           ],
                         ),
+                        SizedBox(height: 5.0,),
                         Row(
                           children: [
                             const Expanded(flex: 7, child: Text("Hub")),
@@ -409,15 +422,70 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                             ),
                           ],
                         ),
+                        // Row(
+                        //   children: [
+                        //     const Expanded(flex: 7, child: Text("Condition")),
+                        //     const Expanded(child: Text(":")),
+                        //     Expanded(
+                        //       flex: 6,
+                        //       child: Text('${selectedDevice2!.condition}'),
+                        //     ),
+                        //   ],
+                        // ),
+                        SizedBox(height: 10.0,),
+                        const RedTitleText(text: 'Device Condition'),
+                        Text(
+                          "Provide information on the condition of the device received",
+                          style: TextStyle(
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                        // Row(
+                        //   children: [
+                        //     const Expanded(flex: 7, child: Text("Condition")),
+                        //     const Expanded(child: Text(":")),
+                        //     Expanded(
+                        //       flex: 6,
+                        //       child: Text('${selectedDevice!.condition}'),
+                        //     ),
+                        //   ],
+                        // ),
+                        // Dropdown button for device status
+                        const SizedBox(height: 15.0),
                         Row(
                           children: [
-                            const Expanded(flex: 7, child: Text("Condition")),
-                            const Expanded(child: Text(":")),
-                            Expanded(
-                              flex: 6,
-                              child: Text('${selectedDevice2!.condition}'),
+                            const Expanded(flex: 6, child: Text("Condition Category")),
+                            DropdownButton<String>(
+                              value: dropdownValue2,
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  dropdownValue2 = newValue!;
+                                });
+                              },
+                              items: <String>['Good', 'Good With Remarks', 'Unserviceable']
+                                  .map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
                             ),
                           ],
+                        ),
+
+                        const SizedBox(height: 16.0),
+
+                        // Remarks text field
+                        TextField(
+                          onChanged: (value) {
+                            remarks2 = value;
+                          },
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                            labelText: 'Remarks',
+                            labelStyle: tsOneTextTheme.labelMedium,
+                            border: const OutlineInputBorder(),
+                          ),
                         ),
                       ],
                     ),
@@ -531,6 +599,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                             ),
                           ],
                         ),
+                        SizedBox(height: 5.0,),
                         Row(
                           children: [
                             const Expanded(flex: 7, child: Text("IOS Version")),
@@ -541,6 +610,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                             ),
                           ],
                         ),
+                        SizedBox(height: 5.0,),
                         Row(
                           children: [
                             const Expanded(flex: 7, child: Text("FlySmart Version")),
@@ -551,6 +621,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                             ),
                           ],
                         ),
+                        SizedBox(height: 5.0,),
                         Row(
                           children: [
                             const Expanded(flex: 7, child: Text("Docunet Version")),
@@ -561,6 +632,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                             ),
                           ],
                         ),
+                        SizedBox(height: 5.0,),
                         Row(
                           children: [
                             const Expanded(flex: 7, child: Text("Lido mPilot Version")),
@@ -571,6 +643,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                             ),
                           ],
                         ),
+                        SizedBox(height: 5.0,),
                         Row(
                           children: [
                             const Expanded(flex: 7, child: Text("Hub")),
@@ -581,15 +654,70 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                             ),
                           ],
                         ),
+                        // Row(
+                        //   children: [
+                        //     const Expanded(flex: 7, child: Text("Condition")),
+                        //     const Expanded(child: Text(":")),
+                        //     Expanded(
+                        //       flex: 6,
+                        //       child: Text('${selectedDevice3!.condition}'),
+                        //     ),
+                        //   ],
+                        // ),
+                        SizedBox(height: 10.0,),
+                        const RedTitleText(text: 'Device Condition'),
+                        Text(
+                          "Provide information on the condition of the device received",
+                          style: TextStyle(
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                        // Row(
+                        //   children: [
+                        //     const Expanded(flex: 7, child: Text("Condition")),
+                        //     const Expanded(child: Text(":")),
+                        //     Expanded(
+                        //       flex: 6,
+                        //       child: Text('${selectedDevice!.condition}'),
+                        //     ),
+                        //   ],
+                        // ),
+                        // Dropdown button for device status
+                        const SizedBox(height: 15.0),
                         Row(
                           children: [
-                            const Expanded(flex: 7, child: Text("Condition")),
-                            const Expanded(child: Text(":")),
-                            Expanded(
-                              flex: 6,
-                              child: Text('${selectedDevice3!.condition}'),
+                            const Expanded(flex: 6, child: Text("Condition Category")),
+                            DropdownButton<String>(
+                              value: dropdownValue3,
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  dropdownValue3 = newValue!;
+                                });
+                              },
+                              items: <String>['Good', 'Good With Remarks', 'Unserviceable']
+                                  .map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
                             ),
                           ],
+                        ),
+
+                        const SizedBox(height: 16.0),
+
+                        // Remarks text field
+                        TextField(
+                          onChanged: (value) {
+                            remarks3 = value;
+                          },
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                            labelText: 'Remarks',
+                            labelStyle: tsOneTextTheme.labelMedium,
+                            border: const OutlineInputBorder(),
+                          ),
                         ),
                       ],
                     ),

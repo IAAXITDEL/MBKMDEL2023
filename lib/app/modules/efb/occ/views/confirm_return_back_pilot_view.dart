@@ -22,6 +22,12 @@ class ConfirmReturnBackPilotView extends GetView {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   bool isImageUploading = false;
   bool agree = false;
+  var dropdownValue = 'Good'.obs; // Using Rx for reactive state
+  String remarks = '';
+  var dropdownValue2 = 'Good'.obs; // Using Rx for reactive state
+  String remarks2 = '';
+  var dropdownValue3 = 'Good'.obs; // Using Rx for reactive state
+  String remarks3 = '';
 
   ConfirmReturnBackPilotView({Key? key, required this.dataId}) : super(key: key);
 
@@ -177,6 +183,13 @@ class ConfirmReturnBackPilotView extends GetView {
             'occ-accepted-device': userUid,
             'signature_url_occ': signatureURL,
             'prove_back_to_base': cameraImageUrl,
+            'return-condition-category': dropdownValue.value,
+            'return-condition-remarks' : remarks,
+            'return-condition-category2': dropdownValue2.value,
+            'return-condition-remarks2' : remarks2,
+            'return-condition-category3': dropdownValue3.value,
+            'return-condition-remarks3' : remarks3,
+            'date-occ-confirmed': FieldValue.serverTimestamp(),
           });
 
           print('Data updated successfully!');
@@ -628,18 +641,41 @@ class ConfirmReturnBackPilotView extends GetView {
                                               Expanded(
                                                   flex: 6,
                                                   child: Text(
-                                                    "Condition",
+                                                    "Condition Category",
                                                     style: tsOneTextTheme.bodySmall,
                                                   )),
                                               Expanded(
                                                   child: Text(
-                                                ":",
-                                                style: tsOneTextTheme.bodySmall,
-                                              )),
+                                                    ":",
+                                                    style: tsOneTextTheme.bodySmall,
+                                                  )),
                                               Expanded(
                                                 flex: 6,
                                                 child: Text(
-                                                  '${deviceData2['value']['condition'] ?? 'No Data'}',
+                                                  '${data['initial-condition-category2'] ?? 'No Data'}',
+                                                  style: tsOneTextTheme.bodySmall,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(height: 5.0),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                  flex: 6,
+                                                  child: Text(
+                                                    "Condition Remark",
+                                                    style: tsOneTextTheme.bodySmall,
+                                                  )),
+                                              Expanded(
+                                                  child: Text(
+                                                    ":",
+                                                    style: tsOneTextTheme.bodySmall,
+                                                  )),
+                                              Expanded(
+                                                flex: 6,
+                                                child: Text(
+                                                  '${data['initial-condition-remarks2'] ?? 'No Data'}',
                                                   style: tsOneTextTheme.bodySmall,
                                                 ),
                                               ),
@@ -647,7 +683,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                           ),
 
                                           //DEVICE INFO 2
-                                          const SizedBox(height: 10.0),
+                                          const SizedBox(height: 15.0),
                                           // Align(
                                           //   alignment: Alignment.centerLeft,
                                           //   child: Text(
@@ -800,28 +836,140 @@ class ConfirmReturnBackPilotView extends GetView {
                                               ),
                                             ],
                                           ),
+                                          const SizedBox(height: 5.0),
                                           Row(
                                             children: [
                                               Expanded(
                                                   flex: 6,
                                                   child: Text(
-                                                    "Condition",
+                                                    "Condition Category",
                                                     style: tsOneTextTheme.bodySmall,
                                                   )),
                                               Expanded(
                                                   child: Text(
-                                                ":",
-                                                style: tsOneTextTheme.bodySmall,
-                                              )),
+                                                    ":",
+                                                    style: tsOneTextTheme.bodySmall,
+                                                  )),
                                               Expanded(
                                                 flex: 6,
                                                 child: Text(
-                                                  '${deviceData3['value']['condition'] ?? 'No Data'}',
+                                                  '${data['initial-condition-category3'] ?? 'No Data'}',
                                                   style: tsOneTextTheme.bodySmall,
                                                 ),
                                               ),
                                             ],
                                           ),
+                                          const SizedBox(height: 5.0),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                  flex: 6,
+                                                  child: Text(
+                                                    "Condition Remark",
+                                                    style: tsOneTextTheme.bodySmall,
+                                                  )),
+                                              Expanded(
+                                                  child: Text(
+                                                    ":",
+                                                    style: tsOneTextTheme.bodySmall,
+                                                  )),
+                                              Expanded(
+                                                flex: 6,
+                                                child: Text(
+                                                  '${data['initial-condition-remarks3'] ?? 'No Data'}',
+                                                  style: tsOneTextTheme.bodySmall,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+
+                                          const SizedBox(height: 15.0),
+                                          const Padding(
+                                            padding: EdgeInsets.only(bottom: 16.0),
+                                            child: Row(
+                                              children: <Widget>[
+                                                Expanded(
+                                                  child: Divider(
+                                                    color: Colors.grey,
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding: EdgeInsets.symmetric(horizontal: 8.0),
+                                                  child: Text(
+                                                    'Device Condition',
+                                                    style: TextStyle(color: Colors.grey),
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  child: Divider(
+                                                    color: Colors.grey,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          const SizedBox(height: 7.0),
+
+                                          Obx(() => DropdownButton<String>(
+                                            value: dropdownValue2.value,
+                                            onChanged: (String? newValue) {
+                                              dropdownValue2.value = newValue!;
+                                            },
+                                            items: <String>['Good', 'Good With Remarks', 'Unserviceable']
+                                                .map<DropdownMenuItem<String>>((String value) {
+                                              return DropdownMenuItem<String>(
+                                                value: value,
+                                                child: Text(value),
+                                              );
+                                            }).toList(),
+                                          )),
+
+                                          const SizedBox(height: 16.0),
+
+                                          // Remarks text field
+                                          TextField(
+                                            onChanged: (value) {
+                                              remarks2 = value;
+                                            },
+                                            decoration: InputDecoration(
+                                              contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                                              labelText: 'Remarks',
+                                              labelStyle: tsOneTextTheme.labelMedium,
+                                              border: const OutlineInputBorder(),
+                                            ),
+                                          ),
+                                          const SizedBox(height: 15.0),
+                                          const SizedBox(height: 7.0),
+
+                                          Obx(() => DropdownButton<String>(
+                                            value: dropdownValue3.value,
+                                            onChanged: (String? newValue) {
+                                              dropdownValue3.value = newValue!;
+                                            },
+                                            items: <String>['Good', 'Good With Remarks', 'Unserviceable']
+                                                .map<DropdownMenuItem<String>>((String value) {
+                                              return DropdownMenuItem<String>(
+                                                value: value,
+                                                child: Text(value),
+                                              );
+                                            }).toList(),
+                                          )),
+
+                                          const SizedBox(height: 16.0),
+
+                                          // Remarks text field
+                                          TextField(
+                                            onChanged: (value) {
+                                              remarks3 = value;
+                                            },
+                                            decoration: InputDecoration(
+                                              contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                                              labelText: 'Remarks',
+                                              labelStyle: tsOneTextTheme.labelMedium,
+                                              border: const OutlineInputBorder(),
+                                            ),
+                                          ),
+                                          const SizedBox(height: 15.0),
 
                                           // Padding(
                                           //   padding: EdgeInsets.symmetric(vertical: 20),
@@ -899,7 +1047,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                           Stack(
                                             children: [
                                               Container(
-                                                height: 480,
+                                                height: 380,
                                                 decoration: BoxDecoration(
                                                   borderRadius: const BorderRadius.only(
                                                     topLeft: Radius.circular(10.0),
@@ -1344,43 +1492,99 @@ class ConfirmReturnBackPilotView extends GetView {
                                 Row(
                                   children: [
                                     Expanded(
-                                        flex: 6,
+                                        flex: 7,
                                         child: Text(
-                                          "Condition",
+                                          "Condition Category",
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
                                         child: Text(
-                                      ":",
-                                      style: tsOneTextTheme.bodySmall,
-                                    )),
-                                    Expanded(
-                                        flex: 6,
-                                        child: Text(
-                                          '${deviceData['value']['condition'] ?? 'No Data'}',
+                                          ":",
                                           style: tsOneTextTheme.bodySmall,
                                         )),
+                                    Expanded(
+                                      flex: 7,
+                                      child: Text(
+                                        '${data['initial-condition-category'] ?? 'No Data'}',
+                                        style: tsOneTextTheme.bodySmall,
+                                      ),
+                                    ),
                                   ],
                                 ),
-                                // Padding(
-                                //   padding: EdgeInsets.symmetric(vertical: 20),
-                                //   child: Divider(
-                                //     color: TsOneColor.secondaryContainer,
-                                //   ),
+                                const SizedBox(height: 6.0),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                        flex: 7,
+                                        child: Text(
+                                          "Condition Remarks",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        child: Text(
+                                          ":",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                      flex: 7,
+                                      child: Text(
+                                        '${data['initial-condition-remarks'] ?? 'No Data'}',
+                                        style: tsOneTextTheme.bodySmall,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                // Row(
+                                //   children: [
+                                //     Expanded(
+                                //         flex: 6,
+                                //         child: Text(
+                                //           "Condition",
+                                //           style: tsOneTextTheme.bodySmall,
+                                //         )),
+                                //     Expanded(
+                                //         child: Text(
+                                //       ":",
+                                //       style: tsOneTextTheme.bodySmall,
+                                //     )),
+                                //     Expanded(
+                                //         flex: 6,
+                                //         child: Text(
+                                //           '${deviceData['value']['condition'] ?? 'No Data'}',
+                                //           style: tsOneTextTheme.bodySmall,
+                                //         )),
+                                //   ],
                                 // ),
-                                // Text(
-                                //   "SIGNATURE",
-                                //   style: tsOneTextTheme.headlineLarge,
-                                // ),
-                                // Text(
-                                //   'Please sign in the section provided.',
-                                //   style: TextStyle(
-                                //     color: Colors.red, // Mengatur warna teks menjadi merah
-                                //     fontStyle: FontStyle.italic, // Mengatur teks menjadi italic
-                                //   ),
-                                // ),
-                                // SizedBox(height: 7.0),
-                                const SizedBox(height: 20.0),
+
+                                Obx(() => DropdownButton<String>(
+                                  value: dropdownValue.value,
+                                  onChanged: (String? newValue) {
+                                    dropdownValue.value = newValue!;
+                                  },
+                                  items: <String>['Good', 'Good With Remarks', 'Unserviceable']
+                                      .map<DropdownMenuItem<String>>((String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
+                                    );
+                                  }).toList(),
+                                )),
+
+                                const SizedBox(height: 16.0),
+
+                                // Remarks text field
+                                TextField(
+                                  onChanged: (value) {
+                                    remarks = value;
+                                  },
+                                  decoration: InputDecoration(
+                                    contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                                    labelText: 'Remarks',
+                                    labelStyle: tsOneTextTheme.labelMedium,
+                                    border: const OutlineInputBorder(),
+                                  ),
+                                ),
+                                const SizedBox(height: 15.0),
                                 const Padding(
                                   padding: EdgeInsets.only(bottom: 16.0),
                                   child: Row(
@@ -1436,7 +1640,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                 Stack(
                                   children: [
                                     Container(
-                                      height: 480,
+                                      height: 380,
                                       decoration: BoxDecoration(
                                         borderRadius: const BorderRadius.only(
                                           topLeft: Radius.circular(10.0),
@@ -1631,4 +1835,5 @@ class ConfirmReturnBackPilotView extends GetView {
       ),
     );
   }
+
 }

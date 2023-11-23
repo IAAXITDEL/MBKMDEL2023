@@ -411,7 +411,7 @@ class FOUnRequestDeviceView extends GetView {
                                     Expanded(
                                         flex: 6,
                                         child: Text(
-                                          "Condition",
+                                          "Condition Category",
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
@@ -422,7 +422,30 @@ class FOUnRequestDeviceView extends GetView {
                                     Expanded(
                                       flex: 6,
                                       child: Text(
-                                        '${deviceData2['value']['condition'] ?? 'No Data'}',
+                                        '${data['initial-condition-category2'] ?? 'No Data'}',
+                                        style: tsOneTextTheme.bodySmall,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 5.0),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                          "Condition Remark",//
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        child: Text(
+                                          ":",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                      flex: 6,
+                                      child: Text(
+                                        '${data['initial-condition-remarks2'] ?? 'No Data'}',
                                         style: tsOneTextTheme.bodySmall,
                                       ),
                                     ),
@@ -577,7 +600,7 @@ class FOUnRequestDeviceView extends GetView {
                                     Expanded(
                                         flex: 6,
                                         child: Text(
-                                          "Condition",
+                                          "Condition Category",
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
@@ -588,7 +611,30 @@ class FOUnRequestDeviceView extends GetView {
                                     Expanded(
                                       flex: 6,
                                       child: Text(
-                                        '${deviceData3['value']['condition'] ?? 'No Data'}',
+                                        '${data['initial-condition-category3'] ?? 'No Data'}',
+                                        style: tsOneTextTheme.bodySmall,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 5.0),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                          "Condition Remark",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        child: Text(
+                                          ":",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                      flex: 6,
+                                      child: Text(
+                                        '${data['initial-condition-remarks3'] ?? 'No Data'}',
                                         style: tsOneTextTheme.bodySmall,
                                       ),
                                     ),
