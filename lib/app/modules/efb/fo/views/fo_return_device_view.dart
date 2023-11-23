@@ -82,7 +82,7 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                 future: Future.wait([
                   FirebaseFirestore.instance.collection('Device').where('deviceno', isEqualTo: widget.deviceName2).get(),
                   FirebaseFirestore.instance.collection('Device').where('deviceno', isEqualTo: widget.deviceName3).get(),
-                  FirebaseFirestore.instance.collection('pilot-device-1').where('device_name2', isEqualTo: widget.deviceName2).get(),
+                  FirebaseFirestore.instance.collection('pilot-device-1').where('document_id', isEqualTo: widget.deviceId).get(),
                 ]),
                 builder: (context, snapshotList) {
                   // if (snapshotList.connectionState == ConnectionState.waiting) {
@@ -102,7 +102,7 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
 
                     // Handle data from 'pilot-device-1' collection
                     final occOnDuty = pilotData['occ-on-duty'] as String? ?? 'N/A';
-                    final userUid = pilotData['user_uid'];
+                    final userUid = pilotData['user_uid'] as  String? ?? 'N/A'; //
                     final feedbackFOId = pilotData['feedbackId'];
                     print(feedbackFOId);
 
@@ -144,7 +144,7 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                       future: FirebaseFirestore.instance.collection("users").doc(userUid).get(),
                       builder: (context, userSnapshot) {
                         if (userSnapshot.connectionState == ConnectionState.waiting) {
-                          //return Center(child: CircularProgressIndicator());
+                          return Center(child: CircularProgressIndicator());
                         }
 
                         if (userSnapshot.hasError) {
@@ -768,7 +768,7 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                             });
                           },
                         ),
-                        const Text('Return To Other Pilot'),
+                        const Text('Handover To Other Crew'),
                       ],
                     ),
                   ],

@@ -83,8 +83,8 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
   }
 
   Future<void> _showConfirmationDialog() async {
-    bool deviceInUse2 = await _bookingService.isDeviceInUse(selectedDevice2!.uid, selectedDevice3!.uid);
-    bool deviceInUse3 = await _bookingService.isDeviceInUse(selectedDevice3!.uid, selectedDevice2!.uid);
+    // bool deviceInUse2 = await _bookingService.isDeviceInUse(selectedDevice2!.uid, selectedDevice3!.uid);
+    // bool deviceInUse3 = await _bookingService.isDeviceInUse(selectedDevice3!.uid, selectedDevice2!.uid);
 
     if (selectedDevice2!.deviceno == selectedDevice3!.deviceno) {
       // Show an error message or handle it accordingly
@@ -143,11 +143,11 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                     ),
                     child: const Text('Yes', style: TextStyle(color: TsOneColor.onPrimary)),
                     onPressed: () {
-                      if (!deviceInUse2 && !deviceInUse3) _saveBooking();
-                      if (!deviceInUse2 && !deviceInUse3) _showQuickAlert(context);
+                      _saveBooking();
+                      _showQuickAlert(context);
 
-                      if (deviceInUse2) _showInfo2(context);
-                      if (deviceInUse3) _showInfo3(context);
+                      // if (deviceInUse2) _showInfo2(context);
+                      // if (deviceInUse3) _showInfo3(context);
                     },
                   ),
                 ),

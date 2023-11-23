@@ -406,7 +406,7 @@ Future<void> generateFeedbackForm({
                 children: [
                   pw.Container(
                     height: 25.0,
-                    child: boldTitle('BRACKET (RAM-MOUNT) INTEGRITY', context),
+                    child: boldTitle('VIEWABLE SOFTWARE INTEGRITY', context),
                   )
                 ],
               ),

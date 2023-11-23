@@ -124,11 +124,11 @@
         // Fetch data from Realtime Database (Sheet1)
         DatabaseEvent event = await firebaseDatabase
             .reference()
-            .child('1e46I450DLjot94iVV-_eZKl0Q5kiGczLkZ0jJWP7cds/Sheet1')
+            .child('1zRoTlgi_c0z8g6W27FsEr5_uiSxO9gAhrepRZtzPEFA/Dummy-Device')
             .once();
         DataSnapshot dataSnapshot = event.snapshot;
 
-        // Convert dynamic map to string map
+        // Convert dynamic map to string mapp
         Map<dynamic, dynamic>? dynamicData =
         dataSnapshot.value as Map<dynamic, dynamic>?;
 

@@ -80,11 +80,11 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
           child: Column(
-            children: [
+            children: [ //
               FutureBuilder(
                 future: Future.wait([
                   FirebaseFirestore.instance.collection('Device').where('deviceno', isEqualTo: widget.deviceName).get(),
-                  FirebaseFirestore.instance.collection('pilot-device-1').where('device_name', isEqualTo: widget.deviceName).get(),
+                  FirebaseFirestore.instance.collection('pilot-device-1').where('document_id', isEqualTo: widget.deviceId).get(),
                 ]),
                 builder: (context, snapshotList) {
                   // if (snapshotList.connectionState == ConnectionState.waiting) {
@@ -96,13 +96,13 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                     );
                   } else {
                     final deviceSnapshot = snapshotList.data![0];
-                    final pilotDeviceSnapshot = snapshotList.data![1];
+                    final pilotDeviceSnapshot = snapshotList.data![1]; //
 
                       return FutureBuilder<DocumentSnapshot>(
                       future: FirebaseFirestore.instance.collection("Device").doc(widget.deviceName).get(),
                       builder: (context, deviceSnapshot) {
                       if (deviceSnapshot.connectionState == ConnectionState.waiting) {
-                      //return const Center(child: CircularProgressIndicator());
+                      return const Center(child: CircularProgressIndicator());
                       }
 
                       if (deviceSnapshot.hasError) {
@@ -120,24 +120,26 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                     final occOnDuty = pilotDeviceData['occ-on-duty'] as String? ?? 'N/A';
 
                     final userUid = pilotDeviceData['user_uid'];
-                    final feedbackId = pilotDeviceData['feedbackId'];
 
-                    return FutureBuilder<DocumentSnapshot>(
-                      future: FirebaseFirestore.instance.collection("users").doc(userUid).get(),
-                      builder: (context, userSnapshot) {
-                        if (userSnapshot.connectionState == ConnectionState.waiting) {
-                          //return const Center(child: CircularProgressIndicator());
-                        }
+                      return FutureBuilder<DocumentSnapshot>(
+                        future: FirebaseFirestore.instance.collection("users").doc(userUid).get(),
+                        builder: (context, userSnapshot) {
+                          if (userSnapshot.connectionState == ConnectionState.waiting) {
+                            return const Center(child: CircularProgressIndicator());
+                          }
 
-                        if (userSnapshot.hasError) {
-                          return Center(child: Text('Error: ${userSnapshot.error}'));
-                        }
+                          if (userSnapshot.hasError) {
+                            return Center(child: Text('Error: ${userSnapshot.error}'));
+                          }
 
-                        if (!userSnapshot.hasData || !userSnapshot.data!.exists) {
-                          return const Center(child: Text('User data not found'));
-                        }
+                          if (!userSnapshot.hasData || !userSnapshot.data!.exists) {
+                            return const Center(child: Text('User data not found'));
+                          }
 
-                        final userData = userSnapshot.data!.data() as Map<String, dynamic>;
+                          final userData = userSnapshot.data!.data() as Map<String, dynamic>;
+                          final feedbackId = pilotDeviceData['feedbackId'];
+
+
 
                         return SingleChildScrollView(
                           child: Column(
@@ -500,7 +502,7 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                             });
                           },
                         ),
-                        const Text('Return To Other Pilot'),
+                        const Text('Handover To Other Crew'),
                       ],
                     ),
                   ],

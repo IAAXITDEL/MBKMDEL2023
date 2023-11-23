@@ -68,7 +68,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
   }
 
   Future<void> _showConfirmationDialog() async {
-    bool deviceInUse = await _bookingService.isDeviceInUse(selectedDevice!.uid);
+    // bool deviceInUse = await _bookingService.isDeviceInUse(selectedDevice!.uid);
 
     return showDialog<void>(
       context: context,
@@ -110,10 +110,11 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                     ),
                     child: const Text('Yes', style: TextStyle(color: TsOneColor.onPrimary)),
                     onPressed: () {
-                      if (!deviceInUse) _saveBooking();
-                      if (!deviceInUse) _showQuickAlert(context);
-
-                      if (deviceInUse) _showInfo(context);
+                      // if (!deviceInUse) _saveBooking();
+                      // if (!deviceInUse) _showQuickAlert(context);
+                      _saveBooking();
+                      _showQuickAlert(context);
+                      // if (deviceInUse) _showInfo(context);
                     },
                   ),
                 ),

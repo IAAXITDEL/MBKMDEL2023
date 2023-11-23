@@ -97,42 +97,42 @@ class FORequestdeviceController extends GetxController {
     }
   }
 
-  Future<bool> isDeviceInUse(String deviceUid2, String deviceUid3) async {
-    // Check if deviceUid is in 'device_uid'
-    QuerySnapshot snapshot1 = await _firestore
-        .collection('pilot-device-1')
-        .where('device_uid2', isEqualTo: deviceUid2)
-        .where('statusDevice', whereIn: [
-      'in-use-pilot',
-      'waiting-confirmation-1',
-      'need-confirmation-occ',
-      'waiting-confirmation-other-pilot'
-    ]).get();
-
-    QuerySnapshot snapshot = await _firestore
-        .collection('pilot-device-1')
-        .where('device_uid', isEqualTo: deviceUid2)
-        .where('statusDevice', whereIn: [
-      'in-use-pilot',
-      'waiting-confirmation-1',
-      'need-confirmation-occ',
-      'waiting-confirmation-other-pilot'
-    ]).get();
-
-
-    // Check if deviceUid is in 'device_uid2'
-    QuerySnapshot snapshot2 = await _firestore
-        .collection('pilot-device-1')
-        .where('device_uid3', isEqualTo: deviceUid3)
-        .where('statusDevice', whereIn: [
-      'in-use-pilot',
-      'waiting-confirmation-1',
-      'need-confirmation-occ',
-      'waiting-confirmation-other-pilot'
-    ]).get();
-
-    return snapshot1.docs.isNotEmpty || snapshot2.docs.isNotEmpty || snapshot.docs.isNotEmpty;
-  }
+  // Future<bool> isDeviceInUse(String deviceUid2, String deviceUid3) async {
+  //   // Check if deviceUid is in 'device_uid'
+  //   QuerySnapshot snapshot1 = await _firestore
+  //       .collection('pilot-device-1')
+  //       .where('device_uid2', isEqualTo: deviceUid2)
+  //       .where('statusDevice', whereIn: [
+  //     'in-use-pilot',
+  //     'waiting-confirmation-1',
+  //     'need-confirmation-occ',
+  //     'waiting-confirmation-other-pilot'
+  //   ]).get();
+  //
+  //   QuerySnapshot snapshot = await _firestore
+  //       .collection('pilot-device-1')
+  //       .where('device_uid', isEqualTo: deviceUid2)
+  //       .where('statusDevice', whereIn: [
+  //     'in-use-pilot',
+  //     'waiting-confirmation-1',
+  //     'need-confirmation-occ',
+  //     'waiting-confirmation-other-pilot'
+  //   ]).get();
+  //
+  //
+  //   // Check if deviceUid is in 'device_uid2'
+  //   QuerySnapshot snapshot2 = await _firestore
+  //       .collection('pilot-device-1')
+  //       .where('device_uid3', isEqualTo: deviceUid3)
+  //       .where('statusDevice', whereIn: [
+  //     'in-use-pilot',
+  //     'waiting-confirmation-1',
+  //     'need-confirmation-occ',
+  //     'waiting-confirmation-other-pilot'
+  //   ]).get();
+  //
+  //   return snapshot1.docs.isNotEmpty || snapshot2.docs.isNotEmpty || snapshot.docs.isNotEmpty;
+  // }
 
   void requestDevice(
       String deviceUid2,
