@@ -627,16 +627,22 @@ class ListAttendancedetailccView
                                           fontSize: 15,
                                         ),
                                       ),
-                                      Text(
-                                        documentData["feedback"],
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                        ),
-                                      ),
                                     ],
                                   ),
                                 ],
-                              )
+                              ),
+                              Container(
+                                width: double.infinity,
+                                child: Text(
+                                  documentData["feedback"],
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                  textAlign: TextAlign.justify, // Menentukan teks harus di-justify
+                                  maxLines: 20,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
                             ],
                           )
                               : SizedBox()
