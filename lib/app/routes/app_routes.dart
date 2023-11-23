@@ -14,16 +14,21 @@ abstract class Routes {
   static const detailUser = _Paths.detailUser;
   static const updateUser = _Paths.updateUser;
 
-  static const newAssessmentSimulatorFlight = _Paths.newAssessmentSimulatorFlight;
+  static const newAssessmentSimulatorFlight =
+      _Paths.newAssessmentSimulatorFlight;
   static const newAssessmentCandidate = _Paths.newAssessmentCandidate;
   static const newAssessmentFlightDetails = _Paths.newAssessmentFlightDetails;
   static const newAssessmentVariables = _Paths.newAssessmentVariables;
-  static const newAssessmentVariablesSecond = _Paths.newAssessmentVariablesSecond;
-  static const newAssessmentHumanFactorVariables = _Paths.newAssessmentHumanFactorVariables;
-  static const newAssessmentOverallPerformance = _Paths.newAssessmentOverallPerformance;
+  static const newAssessmentVariablesSecond =
+      _Paths.newAssessmentVariablesSecond;
+  static const newAssessmentHumanFactorVariables =
+      _Paths.newAssessmentHumanFactorVariables;
+  static const newAssessmentOverallPerformance =
+      _Paths.newAssessmentOverallPerformance;
   static const newAssessmentDeclaration = _Paths.newAssessmentDeclaration;
   static const newAssessmentSuccess = _Paths.newAssessmentSuccess;
-  static const newAssessmentInstructorNotes = _Paths.newAssessmentInstructorNotes;
+  static const newAssessmentInstructorNotes =
+      _Paths.newAssessmentInstructorNotes;
 
   static const allAssessmentPeriods = _Paths.allAssessmentPeriods;
   static const detailAssessmentPeriod = _Paths.detailAssessmentPeriod;
@@ -68,7 +73,8 @@ abstract class Routes {
   static const NAVINSTRUCTOR = _Paths.NAVINSTRUCTOR;
   static const ATTENDANCE_PENDINGCC = _Paths.ATTENDANCE_PENDINGCC;
   static const ATTENDANCE_CONFIRCC = _Paths.ATTENDANCE_CONFIRCC;
-  static const ATTENDANCE_INSTRUCTORCONFIRCC = _Paths.ATTENDANCE_INSTRUCTORCONFIRCC;
+  static const ATTENDANCE_INSTRUCTORCONFIRCC =
+      _Paths.ATTENDANCE_INSTRUCTORCONFIRCC;
   static const HOME_PILOTCC = _Paths.HOME_PILOTCC;
   static const NAVPILOT = _Paths.NAVPILOT;
   static const ATTENDANCE_PILOTCC = _Paths.ATTENDANCE_PILOTCC;
@@ -81,14 +87,15 @@ abstract class Routes {
   static const LIST_ATTENDANCEINSTRUCTORCC = _Paths.LIST_ATTENDANCEINSTRUCTORCC;
   static const PILOTCREWDETAILCC = _Paths.PILOTCREWDETAILCC;
   static const PILOTTRAININGHISTORYCC = _Paths.PILOTTRAININGHISTORYCC;
-  static const PILOTTRAININGHISTORYDETAILCC = _Paths.PILOTTRAININGHISTORYDETAILCC;
+  static const PILOTTRAININGHISTORYDETAILCC =
+      _Paths.PILOTTRAININGHISTORYDETAILCC;
   static const PILOTFEEDBACKFORMCC = _Paths.PILOTFEEDBACKFORMCC;
   static const TRAINING_TYPEINSTRUCTORCC = '/training-typeinstructorcc';
   static const ADD_TRAININGCC = _Paths.ADD_TRAININGCC;
-  static const TRAINING_CPTSCC = '/training-cptscc';
   static const TRAININGHISTORYCC_CPTS = _Paths.TRAININGHISTORYCC_CPTS;
   static const DETAILHISTORYCC_CPTS = _Paths.DETAILHISTORYCC_CPTS;
   static const LIST_ABSENTCPTSCC = _Paths.LIST_ABSENTCPTSCC;
+  static const TRAINING_CPTSCC = _Paths.TRAINING_CPTSCC;
 }
 
 abstract class _Paths {
@@ -109,8 +116,10 @@ abstract class _Paths {
   static const newAssessmentFlightDetails = '/newAssessmentFlightDetails';
   static const newAssessmentVariables = '/newAssessmentVariables';
   static const newAssessmentVariablesSecond = '/newAssessmentVariablesSecond';
-  static const newAssessmentHumanFactorVariables = '/newAssessmentHumanFactorVariables';
-  static const newAssessmentOverallPerformance = '/newAssessmentOverallPerformance';
+  static const newAssessmentHumanFactorVariables =
+      '/newAssessmentHumanFactorVariables';
+  static const newAssessmentOverallPerformance =
+      '/newAssessmentOverallPerformance';
   static const newAssessmentDeclaration = '/newAssessmentDeclaration';
   static const newAssessmentSuccess = '/newAssessmentSuccess';
   static const newAssessmentInstructorNotes = '/newAssessmentInstructorNotes';
@@ -181,4 +190,5 @@ abstract class _Paths {
   static const TRAININGHISTORYCC_CPTS = '/traininghistorycc-cpts';
   static const DETAILHISTORYCC_CPTS = '/detailhistorycc-cpts';
   static const LIST_ABSENTCPTSCC = '/list-absentcptscc';
+  static const TRAINING_CPTSCC = '/training-cptscc';
 }

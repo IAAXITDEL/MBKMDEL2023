@@ -48,17 +48,8 @@ class TrainingccController extends GetxController {
   Future<bool> cekRole() async {
     userPreferences = getItLocator<UserPreferences>();
 
-    // SEBAGAI CPTS
-    if (userPreferences.getInstructor().contains(UserModel.keyCPTS) &&
-            userPreferences.getRank().contains(UserModel.keyPositionCaptain) ||
-        userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)) {
-        iscpts.value = true;
-        Get.toNamed(Routes.TRAININGHISTORYCC_CPTS, arguments: {"id": argumentid.value});
-        Get.find<TraininghistoryccCptsController>().onInit();
-    }
-
     // SEBAGAI PILOT
-    else if (userPreferences.getRank().contains(UserModel.keyPositionCaptain) ||
+     if (userPreferences.getRank().contains(UserModel.keyPositionCaptain) ||
         userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)) {
       cekPilot.value = true;
     }
