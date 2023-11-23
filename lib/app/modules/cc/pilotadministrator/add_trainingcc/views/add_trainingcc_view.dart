@@ -1,3 +1,4 @@
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:quickalert/models/quickalert_type.dart';
@@ -30,7 +31,7 @@ class AddTrainingccView extends GetView<AddTrainingccController> {
           text: 'Add Training Completed Successfully!',
         );
 
-        Get.offAllNamed(Routes.TRAININGCC);
+        Get.offAllNamed(Routes.NAVADMIN);
       });
     }
 
@@ -70,41 +71,36 @@ class AddTrainingccView extends GetView<AddTrainingccController> {
                   SizedBox(
                     height: 10,
                   ),
-                  Row(
-                    children: [
-                      Container(
-                        child: DropdownMenu<String>(
-                          hintText: "Recurrent",
-                          width: Get.width / 1.12,
-                          onSelected: (String? value) {
-                            controller.dropdownValue.value = value!;
-                          },
-                          dropdownMenuEntries: controller.list
-                              .map<DropdownMenuEntry<String>>((String value) {
-                            return DropdownMenuEntry<String>(
-                              value: value,
-                              label: value,
-                              style: ButtonStyle(
-                                textStyle: MaterialStateProperty.all<TextStyle>(
-                                  TextStyle(
-                                      fontSize: 11.0), // Set the font size here
-                                ),
-                                backgroundColor: MaterialStateProperty.resolveWith<Color?>(
-                                      (Set<MaterialState> states) {
-                                    // Change the background color when the button is pressed
-                                    if (states.contains(MaterialState.pressed)) {
-                                      return Colors.grey; // You can set a different color here
-                                    }
-                                    // Return the default color
-                                    return Colors.white;
-                                  },
-                                ),
-                              ),
-                            );
-                          }).toList(),
+                  DropdownSearch<String>(
+                    mode: Mode.MENU,
+                    items: ['NONE', '6 MONTH CALENDER', '12 MONTH CALENDER', '24 MONTH CALENDER', '36 MONTH CALENDER', 'LAST MONTH ON THE NEXT YEAR OF THE PREVIOUS TRAINING'],
+                    dropdownSearchDecoration: InputDecoration(
+                      labelText: "Recurrent",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(5),
                         ),
                       ),
-                    ],
+                    ),
+                    onChanged: (String? newValue) {
+                      controller.dropdownValue.value = newValue!;
+                    },
+                    validator: (String? value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please choose a recurent';
+                      }
+                      return null;
+                    },
+                    popupItemBuilder: (BuildContext context, String item, bool isSelected) {
+                      return Padding(
+                        padding: EdgeInsets.zero,
+                        child: ListTile(
+                          title: Text(item),
+                          tileColor: isSelected ? Colors.grey : null,
+                        ),
+                      );
+                    },
+                    maxHeight: 200,
                   ),
                   SizedBox(
                     height: 10,

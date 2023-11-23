@@ -143,7 +143,7 @@ class TrainingtypeccController extends GetxController {
       });
     }
 
-    Get.offAllNamed(Routes.TRAININGCC);
+    Get.offAllNamed(Routes.NAVADMIN);
   }
 
 
