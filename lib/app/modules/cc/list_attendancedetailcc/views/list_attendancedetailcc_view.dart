@@ -68,7 +68,7 @@ class ListAttendancedetailccView
                     var documentData = listAttendance[0];
                     controller.idattendancedetail.value = documentData["id"];
                     feedbackC.text = documentData["feedback"] ?? "";
-                    gradeC.text = documentData["grade"].toString() ?? "";
+                    gradeC.text = documentData["grade"].toString()  == "null" ? "" : documentData["grade"].toString() ;
                     List<String> list = ['PASS', 'FAIL'];
                     RxString dropdownValue =
                         RxString(documentData["score"] ?? list.first);

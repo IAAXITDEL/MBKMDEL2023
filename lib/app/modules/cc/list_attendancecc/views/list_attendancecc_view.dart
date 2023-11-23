@@ -46,7 +46,7 @@ class ListAttendanceccView extends GetView<ListAttendanceccController> {
 
                            color: Colors.white,
                          ),
-                         child:Obx(()=>  Text("Attendance : ${controller.jumlah.value.toString()} person")),
+                         child:Obx(()=>  Text("Present Trainees : ${controller.jumlah.value.toString()} person")),
                        )
                    )
                  ],

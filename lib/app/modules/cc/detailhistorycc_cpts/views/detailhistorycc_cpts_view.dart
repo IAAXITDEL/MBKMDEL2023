@@ -244,7 +244,7 @@ with SingleTickerProviderStateMixin {
                           ),
                           child: ListTile(
                             title: Text(
-                              "Attendance",
+                              "Present Trainees",
                               style: tsOneTextTheme.labelSmall,
                             ),
                             subtitle: Obx(
@@ -285,7 +285,7 @@ with SingleTickerProviderStateMixin {
                           ),
                           child: ListTile(
                             title: Text(
-                              "Absent",
+                              "Absent Trainees",
                               style: tsOneTextTheme.labelSmall,
                             ),
                             subtitle: Obx(() {

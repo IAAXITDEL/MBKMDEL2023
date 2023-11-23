@@ -217,28 +217,75 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                       ),
                       InkWell(
                         onTap: () {},
-                        child: Container(
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                color: TsOneColor.secondaryContainer,
-                                width: 1,
-                              ),
-                              borderRadius: BorderRadius.circular(10)),
-                          child: ListTile(
-                            title: Text(
-                              "Chair Person/ Instructor",
-                              style: tsOneTextTheme.labelSmall,
-                            ),
-                            subtitle: Text(
-                              listAttendance[0]["name"],
-                              style: tsOneTextTheme.headlineMedium,
-                            ),
-                          ),
+                        child:
+                        // Container(
+                        //   decoration: BoxDecoration(
+                        //       border: Border.all(
+                        //         color: TsOneColor.secondaryContainer,
+                        //         width: 1,
+                        //       ),
+                        //       borderRadius: BorderRadius.circular(10)),
+                        //   child:
+                        //   ListTile(
+                        //     title: Text(
+                        //       "Chair Person/ Instructor",
+                        //       style: tsOneTextTheme.labelSmall,
+                        //     ),
+                        //     subtitle: Text(
+                        //       listAttendance[0]["name"],
+                        //       style: tsOneTextTheme.headlineMedium,
+                        //     ),
+                        //   ),
+                        // ),
+                        FormTextField(
+                          text: "Chair Person/ Instructor",
+                          textController: TextEditingController(text: listAttendance[0]["name"]),
+                          readOnly: true,
+                          style: tsOneTextTheme.headlineMedium, // Set the style as needed
                         ),
                       ),
                       SizedBox(
                         height: 20,
                       ),
+
+                      Text("Meeting or Training"),
+                      Row(
+                        children: [
+                          Row(
+                            children: [
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Obx(
+                                    () => Radio<String>(
+                                  value: listAttendance[0]["attendanceType"] ?? "N/A",
+                                  groupValue: controller.selectedMeeting.value,
+                                  onChanged: (String? newValue) {
+                                    controller.selectMeeting(newValue);
+                                  },
+                                ),
+                              ),
+                              Text(
+                                listAttendance[0]["attendanceType"] ?? "N/A",
+                                style: tsOneTextTheme.labelSmall,
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+
+                      Row(
+                        children: [
+                          Text("Present Trainees"),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+
                       StreamBuilder<int>(
                         stream: controller.attendanceStream(),
                         builder: (context, snapshot) {
@@ -260,19 +307,44 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                                       });
                                 }
                               },
-                              child: Container(
+                              child:
+                                  //NEW
+                              // Container(
+                              //   decoration: BoxDecoration(
+                              //     border: Border.all(
+                              //       color: TsOneColor.secondaryContainer,
+                              //       width: 1,
+                              //     ),
+                              //     borderRadius: BorderRadius.circular(10),
+                              //   ),
+                              //   child: FormTextField(
+                              //     text: "Attendance",
+                              //     textController: TextEditingController(text: "${attendanceCount} person"),
+                              //     readOnly: true,
+                              //     style: tsOneTextTheme.headlineMedium, // Set the style as needed
+                              //     suffixIcon: Icon(Icons.navigate_next), // Set the trailing icon
+                              //   ),
+                              // ),
+                              //OLD
+                              Container(
                                 decoration: BoxDecoration(
                                     border: Border.all(
                                       color: TsOneColor.secondaryContainer,
                                       width: 1,
                                     ),
                                     borderRadius: BorderRadius.circular(10)),
-                                child: ListTile(
+                                child:
+                                    // Row(
+                                    //   children: [
+                                    //     Text(
+                                    //       "${attendanceCount} person",
+                                    //       style: tsOneTextTheme.headlineMedium,
+                                    //     ),
+                                    //     Icon(Icons.navigate_next),
+                                    //   ],
+                                    // ),
+                                ListTile(
                                   title: Text(
-                                    "Attendance",
-                                    style: tsOneTextTheme.labelSmall,
-                                  ),
-                                  subtitle: Text(
                                     "${attendanceCount} person",
                                     style: tsOneTextTheme.headlineMedium,
                                   ),
@@ -286,10 +358,18 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                       SizedBox(
                         height: 20,
                       ),
+                      Text(
+                        "Absent Trainees",
+                        style: tsOneTextTheme.labelSmall,
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
                       listAttendance[0]["status"] == "done" ?
                       //LIST ABSENT
                       Column(
-                        children: [InkWell(
+                        children: [
+                          InkWell(
                           onTap: () {
                             if (controller.jumlah.value > 0) {
                               Get.toNamed(
@@ -309,11 +389,7 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: ListTile(
-                              title: Text(
-                                "Absent",
-                                style: tsOneTextTheme.labelSmall,
-                              ),
-                              subtitle: Obx(() {
+                              title: Obx(() {
                                 return Text(
                                   "${controller.total.value.toString()} person",
                                   style: tsOneTextTheme.headlineMedium,
@@ -326,35 +402,7 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                           height: 20,
                         ), ],
                       ): SizedBox(),
-                      Text("Attendance"),
-                      Row(
-                        children: [
-                          Row(
-                            children: [
-                              SizedBox(
-                                width: 10,
-                              ),
 
-                              Obx(
-                                () => Radio<String>(
-                                  value: listAttendance[0]["attendanceType"] ?? "N/A",
-                                  groupValue: controller.selectedMeeting.value,
-                                  onChanged: (String? newValue) {
-                                    controller.selectMeeting(newValue);
-                                  },
-                                ),
-                              ),
-                              Text(
-                                listAttendance[0]["attendanceType"] ?? "N/A",
-                                style: tsOneTextTheme.labelSmall,
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
@@ -448,7 +496,7 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                                 //-------------------------ABSENT-----------------------
                                 Row(
                                   children: [
-                                    Text("Absent"),
+                                    Text("Absent Trainees"),
                                   ],
                                 ),
                                 SizedBox(
@@ -491,7 +539,7 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                                         showSelectedItems: true,
                                         dropdownSearchDecoration:
                                             InputDecoration(
-                                          labelText: "Training",
+                                          labelText: "Select Absentees' Names",
                                           border: InputBorder.none,
                                         ),
                                         showSearchBox: true,

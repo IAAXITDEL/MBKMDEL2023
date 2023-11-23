@@ -45,7 +45,7 @@ class ListAbsentcptsccView extends GetView<ListAbsentcptsccController> {
 
                             color: Colors.white,
                           ),
-                          child:Obx(()=>  Text("Absent : ${controller.total.value.toString()} person")),
+                          child:Obx(()=>  Text("Absent Trainees : ${controller.total.value.toString()} person")),
                         )
                     )
                   ],
