@@ -405,31 +405,31 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                                             ),
                                           ],
                                         ),
-                                        const SizedBox(
-                                          height: 5,
-                                        ),
-                                        Row(
-                                          children: [
-                                            Expanded(
-                                                flex: 6,
-                                                child: Text(
-                                                  "Condition",
-                                                  style: tsOneTextTheme.bodySmall,
-                                                )),
-                                            Expanded(
-                                                child: Text(
-                                              ":",
-                                              style: tsOneTextTheme.bodySmall,
-                                            )),
-                                            Expanded(
-                                              flex: 6,
-                                              child: Text(
-                                                '${deviceData2['value']['condition'] ?? 'No Data'}',
-                                                style: tsOneTextTheme.bodySmall,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
+                                        // const SizedBox(
+                                        //   height: 5,
+                                        // ),
+                                        // Row(
+                                        //   children: [
+                                        //     Expanded(
+                                        //         flex: 6,
+                                        //         child: Text(
+                                        //           "Condition",
+                                        //           style: tsOneTextTheme.bodySmall,
+                                        //         )),
+                                        //     Expanded(
+                                        //         child: Text(
+                                        //       ":",
+                                        //       style: tsOneTextTheme.bodySmall,
+                                        //     )),
+                                        //     Expanded(
+                                        //       flex: 6,
+                                        //       child: Text(
+                                        //         '${deviceData2['value']['condition'] ?? 'No Data'}',
+                                        //         style: tsOneTextTheme.bodySmall,
+                                        //       ),
+                                        //     ),
+                                        //   ],
+                                        // ),
                                         const SizedBox(height: 15.0),
                                         Align(
                                           alignment: Alignment.centerLeft,
@@ -583,26 +583,152 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                                             ),
                                           ],
                                         ),
-                                        const SizedBox(
-                                          height: 8,
+                                        // const SizedBox(
+                                        //   height: 8,
+                                        // ),
+                                        // Row(
+                                        //   children: [
+                                        //     Expanded(
+                                        //         flex: 6,
+                                        //         child: Text(
+                                        //           "Condition",
+                                        //           style: tsOneTextTheme.bodySmall,
+                                        //         )),
+                                        //     Expanded(
+                                        //         child: Text(
+                                        //       ":",
+                                        //       style: tsOneTextTheme.bodySmall,
+                                        //     )),
+                                        //     Expanded(
+                                        //       flex: 6,
+                                        //       child: Text(
+                                        //         '${deviceData3['value']['condition'] ?? 'No Data'}',
+                                        //         style: tsOneTextTheme.bodySmall,
+                                        //       ),
+                                        //     ),
+                                        //   ],
+                                        // ),
+                                        const SizedBox(height: 15.0),
+                                        const Padding(
+                                          padding: EdgeInsets.only(bottom: 16.0),
+                                          child: Row(
+                                            children: <Widget>[
+                                              Expanded(
+                                                child: Divider(
+                                                  color: Colors.grey,
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsets.symmetric(horizontal: 8.0),
+                                                child: Text(
+                                                  'Device Condition',
+                                                  style: TextStyle(color: Colors.grey),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                child: Divider(
+                                                  color: Colors.grey,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
+                                        Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text("Device 2 Condition", style: tsOneTextTheme.displaySmall),
+                                        ),
+                                        const SizedBox(height: 10.0),
                                         Row(
                                           children: [
                                             Expanded(
-                                                flex: 6,
+                                                flex: 7,
                                                 child: Text(
-                                                  "Condition",
+                                                  "Condition Category",
                                                   style: tsOneTextTheme.bodySmall,
                                                 )),
                                             Expanded(
                                                 child: Text(
-                                              ":",
-                                              style: tsOneTextTheme.bodySmall,
-                                            )),
+                                                  ":",
+                                                  style: tsOneTextTheme.bodySmall,
+                                                )),
                                             Expanded(
-                                              flex: 6,
+                                              flex: 7,
                                               child: Text(
-                                                '${deviceData3['value']['condition'] ?? 'No Data'}',
+                                                '${pilotData['initial-condition-category2'] ?? 'No Data'}',
+                                                style: tsOneTextTheme.bodySmall,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 6.0),
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                                flex: 7,
+                                                child: Text(
+                                                  "Condition Remarks",
+                                                  style: tsOneTextTheme.bodySmall,
+                                                )),
+                                            Expanded(
+                                                child: Text(
+                                                  ":",
+                                                  style: tsOneTextTheme.bodySmall,
+                                                )),
+                                            Expanded(
+                                              flex: 7,
+                                              child: Text(
+                                                '${pilotData['initial-condition-remarks2'] ?? 'No Data'}',
+                                                style: tsOneTextTheme.bodySmall,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(height: 10,),
+                                        Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text("Device 3 Condition", style: tsOneTextTheme.displaySmall),
+                                        ),
+                                        const SizedBox(height: 10.0),
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                                flex: 7,
+                                                child: Text(
+                                                  "Condition Category",
+                                                  style: tsOneTextTheme.bodySmall,
+                                                )),
+                                            Expanded(
+                                                child: Text(
+                                                  ":",
+                                                  style: tsOneTextTheme.bodySmall,
+                                                )),
+                                            Expanded(
+                                              flex: 7,
+                                              child: Text(
+                                                '${pilotData['initial-condition-category3'] ?? 'No Data'}',
+                                                style: tsOneTextTheme.bodySmall,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 6.0),
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                                flex: 7,
+                                                child: Text(
+                                                  "Condition Remarks",
+                                                  style: tsOneTextTheme.bodySmall,
+                                                )),
+                                            Expanded(
+                                                child: Text(
+                                                  ":",
+                                                  style: tsOneTextTheme.bodySmall,
+                                                )),
+                                            Expanded(
+                                              flex: 7,
+                                              child: Text(
+                                                '${pilotData['initial-condition-remarks3'] ?? 'No Data'}',
                                                 style: tsOneTextTheme.bodySmall,
                                               ),
                                             ),

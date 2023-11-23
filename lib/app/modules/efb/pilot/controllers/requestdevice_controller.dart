@@ -20,7 +20,7 @@ class RequestdeviceController extends GetxController {
   }
 
   void requestDevice(String deviceUid, String deviceName, String statusdevice1,
-      String fieldHub) async {
+      String fieldHub, String initialConditionCategory, String initialConditionRemarks) async {
     User? user = _auth.currentUser;
 
     if (user != null) {
@@ -56,6 +56,8 @@ class RequestdeviceController extends GetxController {
           'timestamp': FieldValue.serverTimestamp(),
           'handover-from': '-',
           'handover-to-crew': '-',
+          'initial-condition-category': initialConditionCategory,
+          'initial-condition-remarks': initialConditionRemarks,
           'remarks': '',
           'prove_image_url': '',
           'occ-accepted-device': '-',

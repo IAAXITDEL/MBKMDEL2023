@@ -374,7 +374,7 @@ class _AnalyticsHubState extends State<AnalyticsHub> with TickerProviderStateMix
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 8.0),
                   child: Text(
-                    'Device Distribution',
+                    'Available Devices',
                     style: TextStyle(color: Colors.grey),
                   ),
                 ),
@@ -783,7 +783,7 @@ class _AnalyticsHubState extends State<AnalyticsHub> with TickerProviderStateMix
   }
 }
 
-// Pie Chart Device Distribution
+// Pie Chart Available Devices
 class PieChartWidget extends StatefulWidget {
   final Map<String, int> deviceCounts;
 

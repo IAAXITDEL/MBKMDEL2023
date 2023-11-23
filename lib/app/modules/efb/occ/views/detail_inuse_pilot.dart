@@ -122,7 +122,7 @@ class DetailInUsePilot extends GetView {
                           }
 
                           if (!deviceSnapshot.hasData || !deviceSnapshot.data!.exists) {
-                            return const Center(child: Text('Device data not found'));
+                            return const Center(child: Text('Device 2 data not found'));
                           }
 
                           final deviceData2 = deviceSnapshot.data!.data() as Map<String, dynamic>;
@@ -139,7 +139,7 @@ class DetailInUsePilot extends GetView {
                               }
 
                               if (!deviceSnapshot.hasData || !deviceSnapshot.data!.exists) {
-                                return const Center(child: Text('Device data not found'));
+                                return const Center(child: Text('Device 3 data not found'));
                               }
 
                               final deviceData3 = deviceSnapshot.data!.data() as Map<String, dynamic>;
@@ -393,7 +393,7 @@ class DetailInUsePilot extends GetView {
                                           Expanded(
                                               flex: 7,
                                               child: Text(
-                                                "Condition",
+                                                "Condition Category",
                                                 style: tsOneTextTheme.bodySmall,
                                               )),
                                           Expanded(
@@ -404,7 +404,30 @@ class DetailInUsePilot extends GetView {
                                           Expanded(
                                             flex: 6,
                                             child: Text(
-                                              '${deviceData2['value']['condition'] ?? 'No Data'}',
+                                              '${data['initial-condition-category2'] ?? 'No Data'}',
+                                              style: tsOneTextTheme.bodySmall,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 5.0),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                              flex: 7,
+                                              child: Text(
+                                                "Condition Remark",
+                                                style: tsOneTextTheme.bodySmall,
+                                              )),
+                                          Expanded(
+                                              child: Text(
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
+                                          Expanded(
+                                            flex: 6,
+                                            child: Text(
+                                              '${data['initial-condition-remarks2'] ?? 'No Data'}',
                                               style: tsOneTextTheme.bodySmall,
                                             ),
                                           ),
@@ -561,7 +584,7 @@ class DetailInUsePilot extends GetView {
                                           Expanded(
                                               flex: 7,
                                               child: Text(
-                                                "Condition",
+                                                "Condition Category",
                                                 style: tsOneTextTheme.bodySmall,
                                               )),
                                           Expanded(
@@ -572,7 +595,30 @@ class DetailInUsePilot extends GetView {
                                           Expanded(
                                             flex: 6,
                                             child: Text(
-                                              '${deviceData3['value']['condition'] ?? 'No Data'}',
+                                              '${data['initial-condition-category3'] ?? 'No Data'}',
+                                              style: tsOneTextTheme.bodySmall,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 5.0),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                              flex: 7,
+                                              child: Text(
+                                                "Condition Remark",
+                                                style: tsOneTextTheme.bodySmall,
+                                              )),
+                                          Expanded(
+                                              child: Text(
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
+                                          Expanded(
+                                            flex: 6,
+                                            child: Text(
+                                              '${data['initial-condition-remarks3'] ?? 'No Data'}',
                                               style: tsOneTextTheme.bodySmall,
                                             ),
                                           ),
@@ -805,9 +851,9 @@ class DetailInUsePilot extends GetView {
                           Row(
                             children: [
                               Expanded(
-                                  flex: 6,
+                                  flex: 7,
                                   child: Text(
-                                    "Condition",
+                                    "Condition Category",
                                     style: tsOneTextTheme.bodySmall,
                                   )),
                               Expanded(
@@ -816,9 +862,32 @@ class DetailInUsePilot extends GetView {
                                 style: tsOneTextTheme.bodySmall,
                               )),
                               Expanded(
-                                flex: 6,
+                                flex: 7,
                                 child: Text(
-                                  '${deviceData['value']['condition'] ?? 'No Data'}',
+                                  '${data['initial-condition-category'] ?? 'No Data'}',
+                                  style: tsOneTextTheme.bodySmall,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 6.0),
+                          Row(
+                            children: [
+                              Expanded(
+                                  flex: 7,
+                                  child: Text(
+                                    "Condition Remarks",
+                                    style: tsOneTextTheme.bodySmall,
+                                  )),
+                              Expanded(
+                                  child: Text(
+                                ":",
+                                style: tsOneTextTheme.bodySmall,
+                              )),
+                              Expanded(
+                                flex: 7,
+                                child: Text(
+                                  '${data['initial-condition-remarks'] ?? 'No Data'}',
                                   style: tsOneTextTheme.bodySmall,
                                 ),
                               ),

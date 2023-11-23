@@ -28,6 +28,9 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
   Device? selectedDevice;
   TextEditingController OccOnDutyController = TextEditingController();
   TextEditingController deviceNoController = TextEditingController();
+  String dropdownValue = 'Good'; // Default value
+  String remarks = '';
+
 
   @override
   void initState() {
@@ -134,6 +137,8 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
         selectedDevice!.deviceno,
         'waiting-confirmation-1',
         fieldHub,
+        dropdownValue, // Pass the selected dropdown value
+        remarks, // Pass the remarks
       );
 
       setState(() {
@@ -142,6 +147,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
       });
     }
   }
+
 
   Future<Widget> getUserPhoto(String userUid) async {
     final userSnapshot = await FirebaseFirestore.instance.collection("users").doc(userUid).get();
@@ -295,6 +301,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                             ),
                           ],
                         ),
+                        SizedBox(height: 5.0,),
                         Row(
                           children: [
                             const Expanded(flex: 7, child: Text("IOS Version")),
@@ -305,6 +312,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                             ),
                           ],
                         ),
+                        SizedBox(height: 5.0,),
                         Row(
                           children: [
                             const Expanded(flex: 7, child: Text("FlySmart Version")),
@@ -315,6 +323,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                             ),
                           ],
                         ),
+                        SizedBox(height: 5.0,),
                         Row(
                           children: [
                             const Expanded(flex: 7, child: Text("Docunet Version")),
@@ -325,6 +334,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                             ),
                           ],
                         ),
+                        SizedBox(height: 5.0,),
                         Row(
                           children: [
                             const Expanded(flex: 7, child: Text("Lido mPilot Version")),
@@ -335,6 +345,7 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                             ),
                           ],
                         ),
+                        SizedBox(height: 5.0,),
                         Row(
                           children: [
                             const Expanded(flex: 7, child: Text("HUB")),
@@ -345,16 +356,63 @@ class _PilotrequestdeviceView extends State<PilotrequestdeviceView> {
                             ),
                           ],
                         ),
+
+                        SizedBox(height: 10.0,),
+                        const RedTitleText(text: 'Device Condition'),
+                        Text(
+                          "Provide information on the condition of the device received",
+                          style: TextStyle(
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                        // Row(
+                        //   children: [
+                        //     const Expanded(flex: 7, child: Text("Condition")),
+                        //     const Expanded(child: Text(":")),
+                        //     Expanded(
+                        //       flex: 6,
+                        //       child: Text('${selectedDevice!.condition}'),
+                        //     ),
+                        //   ],
+                        // ),
+                        // Dropdown button for device status
+                        const SizedBox(height: 15.0),
                         Row(
                           children: [
-                            const Expanded(flex: 7, child: Text("Condition")),
-                            const Expanded(child: Text(":")),
-                            Expanded(
-                              flex: 6,
-                              child: Text('${selectedDevice!.condition}'),
+                            const Expanded(flex: 6, child: Text("Condition Category")),
+                            DropdownButton<String>(
+                              value: dropdownValue,
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  dropdownValue = newValue!;
+                                });
+                              },
+                              items: <String>['Good', 'Good With Remarks', 'Unserviceable']
+                                  .map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
                             ),
                           ],
                         ),
+
+                        const SizedBox(height: 16.0),
+
+                        // Remarks text field
+                        TextField(
+                          onChanged: (value) {
+                            remarks = value;
+                          },
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                            labelText: 'Remarks',
+                            labelStyle: tsOneTextTheme.labelMedium,
+                            border: const OutlineInputBorder(),
+                          ),
+                        ),
+
                       ],
                     ),
                   ),

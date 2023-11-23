@@ -548,30 +548,108 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                                     ),
                                   ],
                                 ),
-                                const SizedBox(height: 5.0),
+                                // const SizedBox(height: 5.0),
+                                // Row(
+                                //   children: [
+                                //     Expanded(
+                                //         flex: 6,
+                                //         child: Text(
+                                //           "Condition",
+                                //           style: tsOneTextTheme.bodySmall,
+                                //         )),
+                                //     Expanded(
+                                //         child: Text(
+                                //       ":",
+                                //       style: tsOneTextTheme.bodySmall,
+                                //     )),
+                                //     Expanded(
+                                //       flex: 6,
+                                //       child: Text(
+                                //         '${deviceData['value']['condition'] ?? 'No Data'}',
+                                //         style: tsOneTextTheme.bodySmall,
+                                //       ),
+                                //     ),
+                                //   ],
+                                // ),
+                                // const SizedBox(height: 5.0),
+                                const SizedBox(height: 15.0),
+                                const Padding(
+                                  padding: EdgeInsets.only(bottom: 16.0),
+                                  child: Row(
+                                    children: <Widget>[
+                                      Expanded(
+                                        child: Divider(
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(horizontal: 8.0),
+                                        child: Text(
+                                          'Device Condition',
+                                          style: TextStyle(color: Colors.grey),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Divider(
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    "Device Condition",
+                                    style: tsOneTextTheme.headlineMedium,
+                                  ),
+                                ),
+                                SizedBox(height: 7,),
                                 Row(
                                   children: [
                                     Expanded(
-                                        flex: 6,
+                                        flex: 7,
                                         child: Text(
-                                          "Condition",
+                                          "Condition Category",
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
                                         child: Text(
-                                      ":",
-                                      style: tsOneTextTheme.bodySmall,
-                                    )),
+                                          ":",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
                                     Expanded(
-                                      flex: 6,
+                                      flex: 7,
                                       child: Text(
-                                        '${deviceData['value']['condition'] ?? 'No Data'}',
+                                        '${data['initial-condition-category'] ?? 'No Data'}',
                                         style: tsOneTextTheme.bodySmall,
                                       ),
                                     ),
                                   ],
                                 ),
-                                const SizedBox(height: 5.0),
+                                const SizedBox(height: 6.0),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                        flex: 7,
+                                        child: Text(
+                                          "Condition Remarks",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        child: Text(
+                                          ":",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                      flex: 7,
+                                      child: Text(
+                                        '${data['initial-condition-remarks'] ?? 'No Data'}',
+                                        style: tsOneTextTheme.bodySmall,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ],
                             ),
                           );

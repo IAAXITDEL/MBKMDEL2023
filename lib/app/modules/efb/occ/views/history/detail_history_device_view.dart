@@ -335,19 +335,96 @@ class DetailHistoryDeviceView extends GetView {
                                                       ),
                                                     ],
                                                   ),
-                                                  SizedBox(height: 5.0),
+                                                  // SizedBox(height: 5.0),
+                                                  // Row(
+                                                  //   children: [
+                                                  //     Expanded(flex: 6, child: Text("Condition")),
+                                                  //     Expanded(flex: 1, child: Text(":")),
+                                                  //     Expanded(
+                                                  //       flex: 6,
+                                                  //       child: Text('${deviceData['value']['condition'] ?? 'No Data'}'),
+                                                  //     ),
+                                                  //   ],
+                                                  // ),
+                                                  SizedBox(height: 15.0,),
+                                                  //device info
+                                                  Text("Device Condition", style: tsOneTextTheme.headlineMedium),
+                                                  SizedBox(height: 7.0),
                                                   Row(
                                                     children: [
-                                                      Expanded(flex: 6, child: Text("Condition")),
+                                                      Expanded(flex: 6, child: Text("Given")),
                                                       Expanded(flex: 1, child: Text(":")),
                                                       Expanded(
                                                         flex: 6,
-                                                        child: Text('${deviceData['value']['condition'] ?? 'No Data'}'),
+                                                        child: Text('${data['initial-condition-category'] ?? 'No Data'}'),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  SizedBox(height: 7.0),
+                                                  Row(
+                                                    children: [
+                                                      Expanded(flex: 6, child: Text("Given Remarks")),
+                                                      Expanded(flex: 1, child: Text(":")),
+                                                      Expanded(
+                                                        flex: 6,
+                                                        child: Text('${data['initial-condition-remarks'] ?? 'No Data'}'),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  SizedBox(height: 7.0),
+                                                  // Center(
+                                                  //   child: Icon(Icons.arrow_downward, size: 24), // Icon panah ke bawah di tengah
+                                                  // ),
+                                                  SizedBox(height: 7.0),
+                                                  Row(
+                                                    children: [
+                                                      Expanded(flex: 6, child: Text("Accepted")),
+                                                      Expanded(flex: 1, child: Text(":")),
+                                                      Expanded(
+                                                        flex: 6,
+                                                        child: Text('${data['return-condition-category'] ?? 'No Data'}'),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  SizedBox(height: 7.0),
+                                                  Row(
+                                                    children: [
+                                                      Expanded(flex: 6, child: Text("Accepted Remarks")),
+                                                      Expanded(flex: 1, child: Text(":")),
+                                                      Expanded(
+                                                        flex: 6,
+                                                        child: Text('${data['return-condition-remarks'] ?? 'No Data'}'),
                                                       ),
                                                     ],
                                                   ),
 
-                                                  if (status == 'Done') SizedBox(height: 15),
+                                                  SizedBox(height: 15.0),
+
+                                                  const Padding(
+                                                    padding: EdgeInsets.only(bottom: 15.0),
+                                                    child: Row(
+                                                      children: <Widget>[
+                                                        Expanded(
+                                                          child: Divider(
+                                                            color: Colors.grey,
+                                                          ),
+                                                        ),
+                                                        Padding(
+                                                          padding: EdgeInsets.symmetric(horizontal: 8.0),
+                                                          child: Text(
+                                                            'Handover Documentation',
+                                                            style: TextStyle(color: Colors.grey),
+                                                          ),
+                                                        ),
+                                                        Expanded(
+                                                          child: Divider(
+                                                            color: Colors.grey,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+
                                                   if (status == 'Done') Text("OCC On Duty", style: tsOneTextTheme.headlineMedium),
                                                   if (status == 'Done') SizedBox(height: 7.0),
                                                   if (status == 'Done')
@@ -373,8 +450,7 @@ class DetailHistoryDeviceView extends GetView {
                                                         ),
                                                       ],
                                                     ),
-
-                                                  SizedBox(height: 15),
+                                                  SizedBox(height: 10.0),
                                                   Text("Return Documentation", style: tsOneTextTheme.headlineMedium),
 
                                                   SizedBox(height: 10.0),
