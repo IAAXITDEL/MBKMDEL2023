@@ -98,26 +98,26 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                     final deviceSnapshot = snapshotList.data![0];
                     final pilotDeviceSnapshot = snapshotList.data![1]; //
 
-                      return FutureBuilder<DocumentSnapshot>(
+                    return FutureBuilder<DocumentSnapshot>(
                       future: FirebaseFirestore.instance.collection("Device").doc(widget.deviceName).get(),
                       builder: (context, deviceSnapshot) {
                       if (deviceSnapshot.connectionState == ConnectionState.waiting) {
                       return const Center(child: CircularProgressIndicator());
                       }
 
-                      if (deviceSnapshot.hasError) {
-                      return Center(child: Text('Error: ${deviceSnapshot.error}'));
-                      }
+                        if (deviceSnapshot.hasError) {
+                          return Center(child: Text('Error: ${deviceSnapshot.error}'));
+                        }
 
-                      if (!deviceSnapshot.hasData || !deviceSnapshot.data!.exists) {
-                      return const Center(child: Text('Device data not found'));
-                      }
+                        if (!deviceSnapshot.hasData || !deviceSnapshot.data!.exists) {
+                          return const Center(child: Text('Device data not found'));
+                        }
 
-                      final deviceData = deviceSnapshot.data!.data() as Map<String, dynamic>;
+                        final deviceData = deviceSnapshot.data!.data() as Map<String, dynamic>;
 
-                    // Handle data from 'pilot-device-1' collection
-                    final pilotDeviceData = pilotDeviceSnapshot.docs.isNotEmpty ? pilotDeviceSnapshot.docs.first.data() : <String, dynamic>{};
-                    final occOnDuty = pilotDeviceData['occ-on-duty'] as String? ?? 'N/A';
+                        // Handle data from 'pilot-device-1' collection
+                        final pilotDeviceData = pilotDeviceSnapshot.docs.isNotEmpty ? pilotDeviceSnapshot.docs.first.data() : <String, dynamic>{};
+                        final occOnDuty = pilotDeviceData['occ-on-duty'] as String? ?? 'N/A';
 
                     final userUid = pilotDeviceData['user_uid'];
 
@@ -141,51 +141,187 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
 
 
 
-                        return SingleChildScrollView(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                            return SingleChildScrollView(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  Align(
-                                    alignment: Alignment.centerRight,
-                                    child: Text(_formatTimestamp(pilotDeviceData['timestamp']), style: tsOneTextTheme.labelSmall),
-                                  ),
-                                  const SizedBox(height: 15),
-                                  Row(
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      const Expanded(flex: 6, child: Text("ID NO")),
-                                      const Expanded(child: Text(":")),
-                                      Expanded(
-                                        flex: 6,
-                                        child: Text('${userData['ID NO'] ?? 'No Data'}'),
+                                      Align(
+                                        alignment: Alignment.centerRight,
+                                        child: Text(_formatTimestamp(pilotDeviceData['timestamp']), style: tsOneTextTheme.labelSmall),
+                                      ),
+                                      const SizedBox(height: 15),
+                                      Row(
+                                        children: [
+                                          const Expanded(flex: 6, child: Text("ID NO")),
+                                          const Expanded(child: Text(":")),
+                                          Expanded(
+                                            flex: 6,
+                                            child: Text('${userData['ID NO'] ?? 'No Data'}'),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 5.0),
+                                      Row(
+                                        children: [
+                                          const Expanded(flex: 6, child: Text("Name")),
+                                          const Expanded(child: Text(":")),
+                                          Expanded(
+                                            flex: 6,
+                                            child: Text('${userData['NAME'] ?? 'No Data'}'),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 5.0),
+                                      Row(
+                                        children: [
+                                          const Expanded(flex: 6, child: Text("Rank")),
+                                          const Expanded(child: Text(":")),
+                                          Expanded(
+                                            flex: 6,
+                                            child: Text('${userData['RANK'] ?? 'No Data'}'),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 15),
+                                      const Padding(
+                                        padding: EdgeInsets.only(bottom: 16.0),
+                                        child: Row(
+                                          children: <Widget>[
+                                            Expanded(
+                                              child: Divider(
+                                                color: Colors.grey,
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: EdgeInsets.symmetric(horizontal: 8.0),
+                                              child: Text(
+                                                'Device Details',
+                                                style: TextStyle(color: Colors.grey),
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: Divider(
+                                                color: Colors.grey,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text("Device 1", style: tsOneTextTheme.displaySmall),
+                                      ),
+                                      const SizedBox(height: 7.0),
+                                      Row(
+                                        children: [
+                                          const Expanded(flex: 5, child: Text("Device No")),
+                                          const Expanded(child: Text(":")),
+                                          Expanded(
+                                            flex: 5,
+                                            child: Text(
+                                              '${deviceData['value']['deviceno'] ?? 'No Data'}',
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 8,
+                                      ),
+                                      Row(
+                                        children: [
+                                          const Expanded(flex: 5, child: Text("IOS Version")),
+                                          const Expanded(child: Text(":")),
+                                          Expanded(
+                                            flex: 5,
+                                            child: Text(
+                                              '${deviceData['value']['iosver'] ?? 'No Data'}',
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 8,
+                                      ),
+                                      Row(
+                                        children: [
+                                          const Expanded(flex: 5, child: Text("Flysmart Ver")),
+                                          const Expanded(child: Text(":")),
+                                          Expanded(
+                                            flex: 5,
+                                            child: Text(
+                                              '${deviceData['value']['flysmart'] ?? 'No Data'}',
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 8,
+                                      ),
+                                      Row(
+                                        children: [
+                                          const Expanded(flex: 5, child: Text("Docunet Version")),
+                                          const Expanded(child: Text(":")),
+                                          Expanded(
+                                            flex: 5,
+                                            child: Text(
+                                              '${deviceData['value']['docuversion'] ?? 'No Data'}',
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 8,
+                                      ),
+                                      Row(
+                                        children: [
+                                          const Expanded(flex: 5, child: Text("Lido mPilot Version")),
+                                          const Expanded(child: Text(":")),
+                                          Expanded(
+                                            flex: 5,
+                                            child: Text(
+                                              '${deviceData['value']['lidoversion'] ?? 'No Data'}',
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 8,
+                                      ),
+                                      Row(
+                                        children: [
+                                          const Expanded(flex: 5, child: Text("HUB")),
+                                          const Expanded(child: Text(":")),
+                                          Expanded(
+                                            flex: 5,
+                                            child: Text(
+                                              '${deviceData['value']['hub'] ?? 'No Data'}',
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 8,
+                                      ),
+                                      Row(
+                                        children: [
+                                          const Expanded(flex: 5, child: Text("Condition")),
+                                          const Expanded(child: Text(":")),
+                                          Expanded(
+                                            flex: 5,
+                                            child: Text(
+                                              '${deviceData['value']['condition'] ?? 'No Data'}',
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 15,
                                       ),
                                     ],
                                   ),
-                                  const SizedBox(height: 5.0),
-                                  Row(
-                                    children: [
-                                      const Expanded(flex: 6, child: Text("Name")),
-                                      const Expanded(child: Text(":")),
-                                      Expanded(
-                                        flex: 6,
-                                        child: Text('${userData['NAME'] ?? 'No Data'}'),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 5.0),
-                                  Row(
-                                    children: [
-                                      const Expanded(flex: 6, child: Text("Rank")),
-                                      const Expanded(child: Text(":")),
-                                      Expanded(
-                                        flex: 6,
-                                        child: Text('${userData['RANK'] ?? 'No Data'}'),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 15),
                                   const Padding(
                                     padding: EdgeInsets.only(bottom: 16.0),
                                     child: Row(
@@ -198,7 +334,7 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                                         Padding(
                                           padding: EdgeInsets.symmetric(horizontal: 8.0),
                                           child: Text(
-                                            'Device Details',
+                                            'Feedback Form',
                                             style: TextStyle(color: Colors.grey),
                                           ),
                                         ),
@@ -210,228 +346,105 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                                       ],
                                     ),
                                   ),
-                                  Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text("Device 1", style: tsOneTextTheme.displaySmall),
-                                  ),
-                                  const SizedBox(height: 7.0),
-                                  Row(
-                                    children: [
-                                      const Expanded(flex: 5, child: Text("Device No")),
-                                      const Expanded(child: Text(":")),
-                                      Expanded(flex: 5, child: Text(
-                                        '${deviceData['value']['deviceno'] ?? 'No Data'}',
-
-                                      ),),
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 8,
-                                  ),
-                                  Row(
-                                    children: [
-                                      const Expanded(flex: 5, child: Text("IOS Version")),
-                                      const Expanded(child: Text(":")),
-                                      Expanded(flex: 5, child: Text(
-                                        '${deviceData['value']['iosver'] ?? 'No Data'}',
-
-                                      ),),
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 8,
-                                  ),
-                                  Row(
-                                    children: [
-                                      const Expanded(flex: 5, child: Text("Flysmart Ver")),
-                                      const Expanded(child: Text(":")),
-                                      Expanded(flex: 5, child: Text(
-                                        '${deviceData['value']['flysmart'] ?? 'No Data'}',
-
-                                      ),),
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 8,
-                                  ),
-                                  Row(
-                                    children: [
-                                      const Expanded(flex: 5, child: Text("Docunet Version")),
-                                      const Expanded(child: Text(":")),
-                                      Expanded(flex: 5, child: Text(
-                                        '${deviceData['value']['docuversion'] ?? 'No Data'}',
-                                      ),),
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 8,
-                                  ),
-                                  Row(
-                                    children: [
-                                      const Expanded(flex: 5, child: Text("Lido mPilot Version")),
-                                      const Expanded(child: Text(":")),
-                                      Expanded(flex: 5, child: Text(
-                                        '${deviceData['value']['lidoversion'] ?? 'No Data'}',
-
-                                      ),),
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 8,
-                                  ),
-                                  Row(
-                                    children: [
-                                      const Expanded(flex: 5, child: Text("HUB")),
-                                      const Expanded(child: Text(":")),
-                                      Expanded(flex: 5, child: Text(
-                                        '${deviceData['value']['hub'] ?? 'No Data'}',
-
-                                      ),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 8,
-                                  ),
-                                  Row(
-                                    children: [
-                                      const Expanded(flex: 5, child: Text("Condition")),
-                                      const Expanded(child: Text(":")),
-                                      Expanded(flex: 5, child: Text(
-                                        '${deviceData['value']['condition'] ?? 'No Data'}',
-
-                                      ),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 15,
-                                  ),
-                                ],
-                              ),
-                              const Padding(
-                                padding: EdgeInsets.only(bottom: 16.0),
-                                child: Row(
-                                  children: <Widget>[
-                                    Expanded(
-                                      child: Divider(
-                                        color: Colors.grey,
-                                      ),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.grey), // Warna dan ketebalan border dapat disesuaikan
+                                      borderRadius: const BorderRadius.all(Radius.circular(10)), // Untuk sudut yang lebih berbulu
                                     ),
-                                    Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: 8.0),
-                                      child: Text(
-                                        'Feedback Form',
-                                        style: TextStyle(color: Colors.grey),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Divider(
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.grey), // Warna dan ketebalan border dapat disesuaikan
-                                  borderRadius: const BorderRadius.all(Radius.circular(10)), // Untuk sudut yang lebih berbulu
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-                                  child: Column(
-                                    children: [
-                                      // Center(
-                                      //   child: Align(
-                                      //     alignment: Alignment.centerLeft,
-                                      //     child: Text(
-                                      //       "Fill out this form after you complete the flight",
-                                      //       style: tsOneTextTheme.headlineSmall?.copyWith(color: Colors.black), // Mengubah warna teks menjadi hijau
-                                      //     ),
-                                      //   ),
-                                      // ),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                                      child: Column(
                                         children: [
-                                          Text(
-                                            "Fill out this form after you complete the flight",
-                                            style: tsOneTextTheme.headlineSmall?.copyWith(color: Colors.black),
+                                          // Center(
+                                          //   child: Align(
+                                          //     alignment: Alignment.centerLeft,
+                                          //     child: Text(
+                                          //       "Fill out this form after you complete the flight",
+                                          //       style: tsOneTextTheme.headlineSmall?.copyWith(color: Colors.black), // Mengubah warna teks menjadi hijau
+                                          //     ),
+                                          //   ),
+                                          // ),
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "Fill out this form after you complete the flight",
+                                                style: tsOneTextTheme.headlineSmall?.copyWith(color: Colors.black),
+                                              ),
+                                              const SizedBox(height: 5.0),
+                                              Text(
+                                                "(Optional)",
+                                                style: tsOneTextTheme.labelSmall?.copyWith(color: Colors.red),
+                                              ),
+                                            ],
                                           ),
-                                          const SizedBox(height: 5.0),
-                                          Text(
-                                            "(Optional)",
-                                            style: tsOneTextTheme.labelSmall?.copyWith(color: Colors.red),
+                                          const Divider(
+                                            color: Colors.grey,
                                           ),
+                                          const SizedBox(height: 5),
+                                          if (feedbackId == null)
+                                            Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                ElevatedButton(
+                                                  onPressed: () async {
+                                                    String documentId = await getDocumentIdForDevice(widget.deviceId);
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) => PilotFeedBack(
+                                                          documentId: documentId,
+                                                          deviceId: widget.deviceId,
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                  child: const Text("Feedback"),
+                                                )
+                                              ],
+                                            ),
+                                          if (feedbackId != null)
+                                            const Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [Text("Your feedback has been recorded")],
+                                            )
                                         ],
                                       ),
-                                      const Divider(
-                                        color: Colors.grey,
-                                      ),
-                                      const SizedBox(height: 5),
-                                      if (feedbackId == null)
-                                        Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            ElevatedButton(
-                                              onPressed: () async {
-                                                String documentId = await getDocumentIdForDevice(widget.deviceId);
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) => PilotFeedBack(
-                                                      documentId: documentId,
-                                                      deviceId: widget.deviceId,
-                                                    ),
-                                                  ),
-                                                );
-                                              },
-                                              child: const Text("Feedback"),
-                                            )
-                                          ],
-                                        ),
-                                      if (feedbackId != null)
-                                        const Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [Text("Your feedback has been recorded")],
-                                        )
-                                    ],
+                                    ),
                                   ),
-                                ),
+                                  const SizedBox(height: 10),
+                                  // if (feedbackId == null)
+                                  //   Column(
+                                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                                  //     children: [
+                                  //       ElevatedButton(
+                                  //           onPressed: () async {
+                                  //             String documentId = await getDocumentIdForDevice(widget.deviceId);
+                                  //             Navigator.push(
+                                  //               context,
+                                  //               MaterialPageRoute(
+                                  //                 builder: (context) => PilotFeedBack(
+                                  //                   documentId: documentId,
+                                  //                   deviceId: widget.deviceId,
+                                  //                 ),
+                                  //               ),
+                                  //             );
+                                  //           },
+                                  //           child: const Text("FeedBack"))
+                                  //     ],
+                                  //   ),
+                                  // if (feedbackId != null)
+                                  //   const Column(
+                                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                                  //     children: [Text("Your feedback has been recorded")],
+                                  //   )
+                                ],
                               ),
-                              const SizedBox(height: 10),
-                              // if (feedbackId == null)
-                              //   Column(
-                              //     crossAxisAlignment: CrossAxisAlignment.start,
-                              //     children: [
-                              //       ElevatedButton(
-                              //           onPressed: () async {
-                              //             String documentId = await getDocumentIdForDevice(widget.deviceId);
-                              //             Navigator.push(
-                              //               context,
-                              //               MaterialPageRoute(
-                              //                 builder: (context) => PilotFeedBack(
-                              //                   documentId: documentId,
-                              //                   deviceId: widget.deviceId,
-                              //                 ),
-                              //               ),
-                              //             );
-                              //           },
-                              //           child: const Text("FeedBack"))
-                              //     ],
-                              //   ),
-                              // if (feedbackId != null)
-                              //   const Column(
-                              //     crossAxisAlignment: CrossAxisAlignment.start,
-                              //     children: [Text("Your feedback has been recorded")],
-                              //   )
-                            ],
-                          ),
+                            );
+                          },
                         );
                       },
                     );
-                      },
-                      );
                   }
                 },
               ),

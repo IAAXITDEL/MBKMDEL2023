@@ -395,7 +395,7 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                           Padding(
                                             padding: EdgeInsets.symmetric(horizontal: 8.0),
                                             child: Text(
-                                              'Device Details',
+                                              'EFB Details',
                                               style: TextStyle(color: Colors.grey),
                                             ),
                                           ),
@@ -407,6 +407,22 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                         ],
                                       ),
                                     ),
+                                    Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text("Charger", style: tsOneTextTheme.headlineMedium),
+                                    ),
+                                    const SizedBox(height: 5.0),
+                                    Row(
+                                      children: [
+                                        Expanded(flex: 7, child: Text("Charger No")),
+                                        Expanded(child: Text(":")),
+                                        Expanded(
+                                          flex: 6,
+                                          child: Text('${data['charger_no'] ?? 'No Data'}'),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 15.0),
                                     Align(
                                       alignment: Alignment.centerLeft,
                                       child: Text("Device 2", style: tsOneTextTheme.headlineMedium),

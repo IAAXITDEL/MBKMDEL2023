@@ -434,7 +434,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                                 Padding(
                                                   padding: EdgeInsets.symmetric(horizontal: 8.0),
                                                   child: Text(
-                                                    'Device Details',
+                                                    'EFB Details',
                                                     style: TextStyle(color: Colors.grey),
                                                   ),
                                                 ),
@@ -446,11 +446,42 @@ class ConfirmReturnBackPilotView extends GetView {
                                               ],
                                             ),
                                           ),
+                                          if (userData['RANK'] == 'FO')
+                                            Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: Text("Charger", style: tsOneTextTheme.displaySmall),
+                                            ),
+                                          if (userData['RANK'] == 'FO') const SizedBox(height: 10.0),
+                                          if (userData['RANK'] == 'FO')
+                                            Row(
+                                              children: [
+                                                Expanded(
+                                                    flex: 6,
+                                                    child: Text(
+                                                      "Charger No",
+                                                      style: tsOneTextTheme.bodySmall,
+                                                    )),
+                                                Expanded(
+                                                    child: Text(
+                                                  ":",
+                                                  style: tsOneTextTheme.bodySmall,
+                                                )),
+                                                Expanded(
+                                                  flex: 6,
+                                                  child: Text(
+                                                    '${data['charger_no'] ?? 'No Data'}',
+                                                    style: tsOneTextTheme.bodySmall,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          if (userData['RANK'] == 'FO') SizedBox(height: 10.0),
+
                                           Align(
                                             alignment: Alignment.centerLeft,
                                             child: Text(
                                               "Device 2",
-                                              style: tsOneTextTheme.headlineMedium,
+                                              style: tsOneTextTheme.displaySmall,
                                             ),
                                           ),
                                           const SizedBox(height: 5.0),
@@ -628,7 +659,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                             alignment: Alignment.centerLeft,
                                             child: Text(
                                               "Device 3",
-                                              style: tsOneTextTheme.headlineMedium,
+                                              style: tsOneTextTheme.displaySmall,
                                             ),
                                           ),
                                           const SizedBox(height: 5.0),
@@ -1161,7 +1192,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                       Padding(
                                         padding: EdgeInsets.symmetric(horizontal: 8.0),
                                         child: Text(
-                                          'Device Details',
+                                          'EFB Details',
                                           style: TextStyle(color: Colors.grey),
                                         ),
                                       ),
