@@ -269,6 +269,34 @@ class FOUnReturnDeviceView extends GetView {
                                     ],
                                   ),
                                 ),
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text("Handover", style: tsOneTextTheme.displaySmall),
+                                ),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 6,
+                                      child: Text(
+                                        "Remarks",
+                                        style: tsOneTextTheme.bodySmall,
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Text(
+                                        ":",
+                                        style: tsOneTextTheme.bodySmall,
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 6,
+                                      child: Text(
+                                        '${data['remarks-handover'] ?? 'No Remarks'}',
+                                        style: tsOneTextTheme.bodySmall,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                                 const SizedBox(height: 5.0),
                                 Align(
                                   alignment: Alignment.centerLeft,

@@ -240,7 +240,7 @@ class PilotUnReturnDeviceView extends GetView {
                                   Padding(
                                     padding: EdgeInsets.symmetric(horizontal: 8.0),
                                     child: Text(
-                                      'Device Details',
+                                      'EFB Details',
                                       style: TextStyle(color: Colors.grey),
                                     ),
                                   ),
@@ -252,7 +252,36 @@ class PilotUnReturnDeviceView extends GetView {
                                 ],
                               ),
                             ),
-                            const SizedBox(height: 15.0),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text("Handover", style: tsOneTextTheme.displaySmall),
+                            ),
+                            const SizedBox(height: 5.0),
+                            Row(
+                              children: [
+                                Expanded(
+                                  flex: 6,
+                                  child: Text(
+                                    "Remarks",
+                                    style: tsOneTextTheme.bodySmall,
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    ":",
+                                    style: tsOneTextTheme.bodySmall,
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 6,
+                                  child: Text(
+                                    '${data['remarks-handover'] ?? 'No Remarks'}',
+                                    style: tsOneTextTheme.bodySmall,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 5.0),
                             Align(
                               alignment: Alignment.centerLeft,
                               child: Text("Device 1", style: tsOneTextTheme.displaySmall),

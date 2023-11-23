@@ -42,6 +42,7 @@ class _ConfirmSignatureReturnOtherFOViewState extends State<ConfirmSignatureRetu
   String deviceId3 = "";
   String deviceName2 = "";
   String deviceName3 = "";
+  String charger = "";
   String OccOnDuty = "";
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -60,6 +61,7 @@ class _ConfirmSignatureReturnOtherFOViewState extends State<ConfirmSignatureRetu
           deviceId3 = documentSnapshot['device_uid3'];
           deviceName2 = documentSnapshot['device_name2'];
           deviceName3 = documentSnapshot['device_name3'];
+          charger = documentSnapshot['charger_no'];
           OccOnDuty = documentSnapshot['occ-on-duty'];
         });
       }
@@ -239,6 +241,7 @@ class _ConfirmSignatureReturnOtherFOViewState extends State<ConfirmSignatureRetu
                         'handover-to-crew': '-',
                         'occ-accepted-device': '-',
                         'field_hub': hubField, // Add 'hub' field
+                        'charger_no': charger,
                       });
 
                       // Call the _showQuickAlert function

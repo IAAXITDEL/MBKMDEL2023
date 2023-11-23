@@ -34,6 +34,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
   String deviceId3 = "";
   String deviceName2 = "";
   String deviceName3 = "";
+  String charger = "";
   String OccOnDuty = "";
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -49,6 +50,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
           deviceId3 = documentSnapshot['device_uid3'];
           deviceName2 = documentSnapshot['device_name2'];
           deviceName3 = documentSnapshot['device_name3'];
+          charger = documentSnapshot['charger_no'];
           OccOnDuty = documentSnapshot['occ-on-duty'];
         });
       }
@@ -353,7 +355,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                           Padding(
                                             padding: EdgeInsets.symmetric(horizontal: 8.0),
                                             child: Text(
-                                              'Device Details',
+                                              'EFB Details',
                                               style: TextStyle(color: Colors.grey),
                                             ),
                                           ),
@@ -365,6 +367,33 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                         ],
                                       ),
                                     ),
+                                    Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        "Charger",
+                                        style: tsOneTextTheme.headlineMedium,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 10.0),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                            flex: 6,
+                                            child: Text(
+                                              "Charger No",
+                                              style: tsOneTextTheme.labelMedium,
+                                            )),
+                                        const Expanded(child: Text(":")),
+                                        Expanded(
+                                          flex: 6,
+                                          child: Text(
+                                            '${data['charger_no'] ?? 'No Data'}',
+                                            style: tsOneTextTheme.labelMedium,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 20.0),
                                     Align(
                                       alignment: Alignment.centerLeft,
                                       child: Text(
@@ -622,6 +651,25 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                           flex: 6,
                                           child: Text(
                                             '${deviceData3['value']['hub'] ?? 'No Data'}',
+                                            style: tsOneTextTheme.labelMedium,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 5.0),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                            flex: 6,
+                                            child: Text(
+                                              "Condition",
+                                              style: tsOneTextTheme.labelMedium,
+                                            )),
+                                        const Expanded(child: Text(":")),
+                                        Expanded(
+                                          flex: 6,
+                                          child: Text(
+                                            '${deviceData3['value']['condition'] ?? 'No Data'}',
                                             style: tsOneTextTheme.labelMedium,
                                           ),
                                         ),

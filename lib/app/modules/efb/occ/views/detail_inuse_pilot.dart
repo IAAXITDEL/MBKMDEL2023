@@ -289,7 +289,7 @@ class DetailInUsePilot extends GetView {
                                           Expanded(
                                             flex: 6,
                                             child: Text(
-                                              '${deviceData2['iosver'] ?? 'No Data'}',
+                                              '${deviceData2['value']['iosver'] ?? 'No Data'}',
                                               style: tsOneTextTheme.bodySmall,
                                             ),
                                           ),
@@ -312,7 +312,7 @@ class DetailInUsePilot extends GetView {
                                           Expanded(
                                             flex: 6,
                                             child: Text(
-                                              '${deviceData2['flysmart'] ?? 'No Data'}',
+                                              '${deviceData2['value']['flysmart'] ?? 'No Data'}',
                                               style: tsOneTextTheme.bodySmall,
                                             ),
                                           ),
@@ -335,7 +335,7 @@ class DetailInUsePilot extends GetView {
                                           Expanded(
                                             flex: 6,
                                             child: Text(
-                                              '${deviceData2['docuversion'] ?? 'No Data'}',
+                                              '${deviceData2['value']['docuversion'] ?? 'No Data'}',
                                               style: tsOneTextTheme.bodySmall,
                                             ),
                                           ),
@@ -358,7 +358,7 @@ class DetailInUsePilot extends GetView {
                                           Expanded(
                                             flex: 6,
                                             child: Text(
-                                              '${deviceData2['lidoversion'] ?? 'No Data'}',
+                                              '${deviceData2['value']['lidoversion'] ?? 'No Data'}',
                                               style: tsOneTextTheme.bodySmall,
                                             ),
                                           ),
@@ -381,7 +381,7 @@ class DetailInUsePilot extends GetView {
                                           Expanded(
                                             flex: 6,
                                             child: Text(
-                                              '${deviceData2['hub'] ?? 'No Data'}',
+                                              '${deviceData2['value']['hub'] ?? 'No Data'}',
                                               style: tsOneTextTheme.bodySmall,
                                             ),
                                           ),
@@ -404,7 +404,7 @@ class DetailInUsePilot extends GetView {
                                           Expanded(
                                             flex: 6,
                                             child: Text(
-                                              '${deviceData2['condition'] ?? 'No Data'}',
+                                              '${deviceData2['value']['condition'] ?? 'No Data'}',
                                               style: tsOneTextTheme.bodySmall,
                                             ),
                                           ),
@@ -457,7 +457,7 @@ class DetailInUsePilot extends GetView {
                                           Expanded(
                                             flex: 6,
                                             child: Text(
-                                              '${deviceData3['iosver'] ?? 'No Data'}',
+                                              '${deviceData3['value']['iosver'] ?? 'No Data'}',
                                               style: tsOneTextTheme.bodySmall,
                                             ),
                                           ),
@@ -480,7 +480,7 @@ class DetailInUsePilot extends GetView {
                                           Expanded(
                                             flex: 6,
                                             child: Text(
-                                              '${deviceData3['flysmart'] ?? 'No Data'}',
+                                              '${deviceData3['value']['flysmart'] ?? 'No Data'}',
                                               style: tsOneTextTheme.bodySmall,
                                             ),
                                           ),
@@ -503,7 +503,7 @@ class DetailInUsePilot extends GetView {
                                           Expanded(
                                             flex: 6,
                                             child: Text(
-                                              '${deviceData3['docuversion'] ?? 'No Data'}',
+                                              '${deviceData3['value']['docuversion'] ?? 'No Data'}',
                                               style: tsOneTextTheme.bodySmall,
                                             ),
                                           ),
@@ -526,7 +526,7 @@ class DetailInUsePilot extends GetView {
                                           Expanded(
                                             flex: 6,
                                             child: Text(
-                                              '${deviceData3['lidoversion'] ?? 'No Data'}',
+                                              '${deviceData3['value']['lidoversion'] ?? 'No Data'}',
                                               style: tsOneTextTheme.bodySmall,
                                             ),
                                           ),
@@ -549,7 +549,7 @@ class DetailInUsePilot extends GetView {
                                           Expanded(
                                             flex: 6,
                                             child: Text(
-                                              '${deviceData3['hub'] ?? 'No Data'}',
+                                              '${deviceData3['value']['hub'] ?? 'No Data'}',
                                               style: tsOneTextTheme.bodySmall,
                                             ),
                                           ),
@@ -572,7 +572,7 @@ class DetailInUsePilot extends GetView {
                                           Expanded(
                                             flex: 6,
                                             child: Text(
-                                              '${deviceData3['condition'] ?? 'No Data'}',
+                                              '${deviceData3['value']['condition'] ?? 'No Data'}',
                                               style: tsOneTextTheme.bodySmall,
                                             ),
                                           ),

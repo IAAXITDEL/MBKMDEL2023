@@ -57,7 +57,7 @@ class ConfirmRequestPilotView extends GetView {
     return formattedDateTime;
   }
 
-  void confirmInUseCrew(BuildContext context) async {
+  void confirmInUseCrewFO(BuildContext context) async {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -106,6 +106,71 @@ class ConfirmRequestPilotView extends GetView {
                           'statusDevice': 'in-use-pilot',
                           'occ-on-duty': userUid,
                           'charger_no': chargerNumber, // Add charger number to the document
+                        });
+                        _showQuickAlert(context);
+                        print("Data Updated!");
+                      } catch (error) {
+                        print('Error updating data: $error');
+                      }
+                    }
+                  },
+                ),
+              )
+            ]),
+          ],
+        );
+      },
+    );
+  }
+
+  void confirmInUseCrew(BuildContext context) async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'Confirmation',
+            style: tsOneTextTheme.headlineLarge,
+          ),
+          content: const Text('Are you sure you want to approve the usage of this device? '),
+          actions: <Widget>[
+            Row(children: [
+              Expanded(
+                flex: 5,
+                child: TextButton(
+                  child: const Text('No', style: TextStyle(color: TsOneColor.secondaryContainer)),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ),
+              const Spacer(flex: 1),
+              Expanded(
+                flex: 5,
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                    backgroundColor: TsOneColor.greenColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                  ),
+                  child: const Text('Yes', style: TextStyle(color: TsOneColor.onPrimary)),
+                  onPressed: () async {
+                    User? user = _auth.currentUser;
+
+                    if (user != null) {
+                      QuerySnapshot userQuery = await _firestore.collection('users').where('EMAIL', isEqualTo: user.email).get();
+                      String userUid = userQuery.docs.first.id;
+
+                      // Get the charger number from the controller
+                      String chargerNumber = chargeController.text;
+
+                      DocumentReference pilotDeviceRef = FirebaseFirestore.instance.collection("pilot-device-1").doc(dataId);
+
+                      try {
+                        await pilotDeviceRef.update({
+                          'statusDevice': 'in-use-pilot',
+                          'occ-on-duty': userUid,
                         });
                         _showQuickAlert(context);
                         print("Data Updated!");
@@ -424,7 +489,7 @@ class ConfirmRequestPilotView extends GetView {
                                             Padding(
                                               padding: EdgeInsets.symmetric(horizontal: 8.0),
                                               child: Text(
-                                                'Device Details',
+                                                'EFB Details',
                                                 style: TextStyle(color: Colors.grey),
                                               ),
                                             ),
@@ -878,7 +943,7 @@ class ConfirmRequestPilotView extends GetView {
                                 Padding(
                                   padding: EdgeInsets.symmetric(horizontal: 8.0),
                                   child: Text(
-                                    'Device Details',
+                                    'EFB Details',
                                     style: TextStyle(color: Colors.grey),
                                   ),
                                 ),
@@ -1103,21 +1168,12 @@ class ConfirmRequestPilotView extends GetView {
 
             return ElevatedButton(
               onPressed: () async {
-                // if (userData['RANK'] == 'FO') {
-                //   await _confirmAndProcessData(userData);
-                // } else if (userData['RANK'] == 'CAPT'){
-                //   await confirmInUseCrew(context);
-                // }
-                //await _confirmAndProcessData(userData);
                 if (userData['RANK'] == 'FO') {
-                  //_confirmAndProcessData(userData);
                   if (_formKey.currentState?.validate() ?? false) {
-                    confirmInUseCrew(context); // Pass the context to the function
+                    confirmInUseCrewFO(context);
                   }
                 } else if (userData['RANK'] == 'CAPT') {
                   confirmInUseCrew(context);
-                } else {
-                  print("qtryuio");
                 }
               },
               style: ElevatedButton.styleFrom(

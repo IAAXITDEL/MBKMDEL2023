@@ -305,7 +305,7 @@ class PilotUnReturnToOtherCrewView extends GetView {
                                       Padding(
                                         padding: EdgeInsets.symmetric(horizontal: 8.0),
                                         child: Text(
-                                          'Device Details',
+                                          'EFB Details',
                                           style: TextStyle(color: Colors.grey),
                                         ),
                                       ),
@@ -358,148 +358,143 @@ class PilotUnReturnToOtherCrewView extends GetView {
                                       ":",
                                       style: tsOneTextTheme.bodySmall,
                                     )),
-                                Expanded(
-                                  flex: 6,
-                                  child: Text(
-                                    '${deviceData['value']['iosver'] ?? 'No Data'}',
-                                    style: tsOneTextTheme.bodySmall,
-                                  ),
+                                    Expanded(
+                                      flex: 6,
+                                      child: Text(
+                                        '${deviceData['value']['iosver'] ?? 'No Data'}',
+                                        style: tsOneTextTheme.bodySmall,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                            const SizedBox(height: 5.0),
-                            Row(
-                              children: [
-                                Expanded(
-                                    flex: 6,
-                                    child: Text(
-                                      "FlySmart Version",
-                                      style: tsOneTextTheme.bodySmall,
-                                    )),
-                                Expanded(
-                                    
-                                    child: Text(
+                                const SizedBox(height: 5.0),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                          "FlySmart Version",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        child: Text(
                                       ":",
                                       style: tsOneTextTheme.bodySmall,
                                     )),
-                                Expanded(
-                                  flex: 6,
-                                  child: Text(
-                                    '${deviceData['value']['flysmart'] ?? 'No Data'}',
-                                    style: tsOneTextTheme.bodySmall,
-                                  ),
+                                    Expanded(
+                                      flex: 6,
+                                      child: Text(
+                                        '${deviceData['value']['flysmart'] ?? 'No Data'}',
+                                        style: tsOneTextTheme.bodySmall,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                            const SizedBox(height: 5.0),
-                            Row(
-                              children: [
-                                Expanded(
-                                    flex: 6,
-                                    child: Text(
-                                      "Docunet Version",
-                                      style: tsOneTextTheme.bodySmall,
-                                    )),
-                                Expanded(
-                                    
-                                    child: Text(
+                                const SizedBox(height: 5.0),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                          "Docunet Version",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        child: Text(
                                       ":",
                                       style: tsOneTextTheme.bodySmall,
                                     )),
-                                Expanded(
-                                  flex: 6,
-                                  child: Text(
-                                    '${deviceData['value']['docuversion'] ?? 'No Data'}',
-                                    style: tsOneTextTheme.bodySmall,
-                                  ),
+                                    Expanded(
+                                      flex: 6,
+                                      child: Text(
+                                        '${deviceData['value']['docuversion'] ?? 'No Data'}',
+                                        style: tsOneTextTheme.bodySmall,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                            const SizedBox(height: 5.0),
-                            Row(
-                              children: [
-                                Expanded(
-                                    flex: 6,
-                                    child: Text(
-                                      "Lido mPilot Version",
-                                      style: tsOneTextTheme.bodySmall,
-                                    )),
-                                Expanded(
-                                    
-                                    child: Text(
+                                const SizedBox(height: 5.0),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                          "Lido mPilot Version",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        child: Text(
                                       ":",
                                       style: tsOneTextTheme.bodySmall,
                                     )),
-                                Expanded(
-                                  flex: 6,
-                                  child: Text(
-                                    '${deviceData['value']['lidoversion'] ?? 'No Data'}',
-                                    style: tsOneTextTheme.bodySmall,
-                                  ),
+                                    Expanded(
+                                      flex: 6,
+                                      child: Text(
+                                        '${deviceData['value']['lidoversion'] ?? 'No Data'}',
+                                        style: tsOneTextTheme.bodySmall,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                            const SizedBox(height: 5.0),
-                            Row(
-                              children: [
-                                Expanded(
-                                    flex: 6,
-                                    child: Text(
-                                      "HUB",
-                                      style: tsOneTextTheme.bodySmall,
-                                    )),
-                                Expanded(
-                                    
-                                    child: Text(
+                                const SizedBox(height: 5.0),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                          "HUB",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        child: Text(
                                       ":",
                                       style: tsOneTextTheme.bodySmall,
                                     )),
-                                Expanded(
-                                  flex: 6,
-                                  child: Text(
-                                    '${deviceData['value']['hub'] ?? 'No Data'}',
-                                    style: tsOneTextTheme.bodySmall,
-                                  ),
+                                    Expanded(
+                                      flex: 6,
+                                      child: Text(
+                                        '${deviceData['value']['hub'] ?? 'No Data'}',
+                                        style: tsOneTextTheme.bodySmall,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                            const SizedBox(height: 5.0),
-                            Row(
-                              children: [
-                                Expanded(
-                                    flex: 6,
-                                    child: Text(
-                                      "Condition",
-                                      style: tsOneTextTheme.bodySmall,
-                                    )),
-                                Expanded(
-                                    
-                                    child: Text(
+                                const SizedBox(height: 5.0),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                          "Condition",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        child: Text(
                                       ":",
                                       style: tsOneTextTheme.bodySmall,
                                     )),
-                                Expanded(
-                                  flex: 6,
-                                  child: Text(
-                                    '${deviceData['value']['condition'] ?? 'No Data'}',
-                                    style: tsOneTextTheme.bodySmall,
-                                  ),
+                                    Expanded(
+                                      flex: 6,
+                                      child: Text(
+                                        '${deviceData['value']['condition'] ?? 'No Data'}',
+                                        style: tsOneTextTheme.bodySmall,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
-                          ],
-                        ),
+                          );
+                        },
                       );
                     },
                   );
                 },
               );
             },
-          );
-            },
+          ),
         ),
       ),
-    ),
       bottomNavigationBar: BottomAppBar(
         surfaceTintColor: tsOneColorScheme.secondary,
         child: ElevatedButton(

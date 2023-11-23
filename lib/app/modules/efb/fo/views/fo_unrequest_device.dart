@@ -254,7 +254,7 @@ class FOUnRequestDeviceView extends GetView {
                                       Padding(
                                         padding: EdgeInsets.symmetric(horizontal: 8.0),
                                         child: Text(
-                                          'Device Details',
+                                          'EFB Details',
                                           style: TextStyle(color: Colors.grey),
                                         ),
                                       ),
