@@ -267,7 +267,7 @@ class _TrainingtypeccViewState extends State<TrainingtypeccView>
                                   DateTime to = DateFormat('dd-MM-yyyy').parse(toPendingC.text);
 
                                   if (_formPendingKey.currentState != null && _formPendingKey.currentState!.validate()  != 0) {
-                                    if (from.isBefore(to)) {
+                                    if (from.isBefore(to) || from.isAtSameMomentAs(to)) {
                                       controller.fromPending.value = from;
                                       controller.toPending.value = to;
                                     } else {
@@ -430,7 +430,7 @@ class _TrainingtypeccViewState extends State<TrainingtypeccView>
                                   DateTime to = DateFormat('dd-MM-yyyy').parse(toDoneC.text);
 
                                   if (_formConfirmationKey.currentState != null && _formConfirmationKey.currentState!.validate()  != 0) {
-                                    if (from.isBefore(to)) {
+                                    if (from.isBefore(to) || from.isAtSameMomentAs(to)) {
                                       controller.fromConfirmation.value = from;
                                       controller.toConfirmation.value = to;
                                     } else {
@@ -594,7 +594,7 @@ class _TrainingtypeccViewState extends State<TrainingtypeccView>
                                   DateTime to = DateFormat('dd-MM-yyyy').parse(toDoneC.text);
 
                                   if (_formDoneKey.currentState != null && _formDoneKey.currentState!.validate()  != 0) {
-                                    if (from.isBefore(to)) {
+                                    if (from.isBefore(to) || from.isAtSameMomentAs(to)) {
                                       controller.fromDone.value = from;
                                       controller.toDone.value = to;
                                     } else {

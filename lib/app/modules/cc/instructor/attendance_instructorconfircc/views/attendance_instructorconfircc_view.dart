@@ -1,7 +1,6 @@
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -135,7 +134,7 @@ class AttendanceInstructorconfirccView
                         DateTime? dateTime = timestamp?.toDate();
 
                         subjectC.text = listAttendance[0]["subject"];
-                        dateC.text = DateFormat('dd MMM yyyy').format(dateTime!) ?? "N/A";
+                        dateC.text = DateFormat('dd MMM yyyy').format(dateTime!);
                         venueC.text = listAttendance[0]["venue"];
                         instructorC.text = listAttendance[0]["name"];
                         loaNoC.text = listAttendance[0]["loano"] ?? "" ;

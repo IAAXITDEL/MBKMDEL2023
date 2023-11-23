@@ -162,7 +162,7 @@ with SingleTickerProviderStateMixin {
                                       Expanded(
                                           flex: 4,
                                           child: Text(
-                                              dateC ?? "N/A")),
+                                              dateC)),
                                     ],
                                   ),
                                 ),

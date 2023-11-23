@@ -11,8 +11,6 @@ class HomeAdminccController extends GetxController {
   late String titleToGreet;
   late String timeToGreet;
   RxString nameC = "".obs;
-  late bool _isCPTS;
-  late bool _isInstructor;
   late bool _isPilotAdministrator;
 
 

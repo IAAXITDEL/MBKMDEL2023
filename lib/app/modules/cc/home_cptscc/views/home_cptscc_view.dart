@@ -1,20 +1,13 @@
-import 'dart:typed_data';
+
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:screenshot/screenshot.dart';
 import 'package:ts_one/app/modules/cc/home_cptscc/controllers/home_cptscc_controller.dart';
 import 'package:ts_one/util/empty_screen.dart';
 import '../../../../../presentation/theme.dart';
 import '../../../../../util/error_screen.dart';
 import '../../../../../util/loading_screen.dart';
 import '../../../../../util/util.dart';
-import 'package:csv/csv.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:open_file/open_file.dart';
-import 'dart:io';
-import 'package:excel/excel.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
 
@@ -63,7 +56,6 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
     var fromC = TextEditingController();
     var toC = TextEditingController();
 
-    var nameC = TextEditingController();
 
     Future<bool> onWillPop() async {
       controller.resetDate();

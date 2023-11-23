@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:ts_one/app/routes/app_pages.dart';
 
 import '../../../../../../presentation/view_model/attendance_model.dart';
