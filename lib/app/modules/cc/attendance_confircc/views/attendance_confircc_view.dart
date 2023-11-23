@@ -248,6 +248,7 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                           } else if (snapshot.hasError) {
                             return Text('Error: ${snapshot.error}');
                           } else {
+
                             int attendanceCount = snapshot.data ?? 0;
                             return InkWell(
                               onTap: () {
@@ -291,7 +292,6 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                         children: [InkWell(
                           onTap: () {
                             if (controller.jumlah.value > 0) {
-                              print(controller.jumlah.value);
                               Get.toNamed(
                                 Routes.LIST_ABSENTCPTSCC,
                                 arguments: {
@@ -519,8 +519,6 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
 
                                           trainingC = selectedUserId;
                                           // Handle user selection here, including the selectedUserId
-                                          print(
-                                              'Selected name: $selectedName, Selected ID: $selectedUserId');
                                         },
                                       );
                                     },
@@ -608,6 +606,7 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                                   height: 10,
                                 ),
                                 Container(
+                                  height : 200,
                                   decoration: BoxDecoration(
                                     border: Border.all(
                                       color: TsOneColor.secondaryContainer,

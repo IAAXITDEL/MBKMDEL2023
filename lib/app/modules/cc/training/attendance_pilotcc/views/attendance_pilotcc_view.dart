@@ -240,6 +240,7 @@ class AttendancePilotccView extends GetView<AttendancePilotccController> {
                         height: 5,
                       ),
                       Container(
+                        height : 200,
                         decoration: BoxDecoration(
                           border: Border.all(
                             color: TsOneColor.secondaryContainer,

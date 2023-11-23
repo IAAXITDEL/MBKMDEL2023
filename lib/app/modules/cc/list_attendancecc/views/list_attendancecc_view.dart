@@ -132,12 +132,15 @@ class ListAttendanceccView extends GetView<ListAttendanceccController> {
                          itemBuilder: (context, index) {
                            return InkWell(
                              onTap: () {
-                               Get.toNamed(Routes.LIST_ATTENDANCEDETAILCC,
-                                   arguments: {
-                                     "id": listAttendance[index]["idtraining"],
-                                     "status" : controller.argumentstatus.value,
-                                     "idattendance" : controller.argumentid.value
-                                   });
+                               if(!controller.isAdministrator.value){
+                                 Get.toNamed(Routes.LIST_ATTENDANCEDETAILCC,
+                                     arguments: {
+                                       "id": listAttendance[index]["idtraining"],
+                                       "status" : controller.argumentstatus.value,
+                                       "idattendance" : controller.argumentid.value
+                                     });
+                               }
+
                              },
                              child: Container(
                                margin: EdgeInsets.symmetric(vertical: 5),
@@ -190,7 +193,7 @@ class ListAttendanceccView extends GetView<ListAttendanceccController> {
                                      ),
                                    ],
                                  ),
-                                 trailing: const Icon(Icons.navigate_next),
+                                 trailing: !controller.isAdministrator.value ? Icon(Icons.navigate_next) : SizedBox(),
                                ),
                              ),
                            );
