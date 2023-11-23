@@ -20,7 +20,7 @@ class SignaturePadPage extends StatefulWidget {
   Uint8List? signatureImage;
   final String deviceId;
   final TextEditingController remarksController = TextEditingController();
-  final TextEditingController remarksHandoverController = TextEditingController();
+  // final TextEditingController remarksHandoverController = TextEditingController();
 
   SignaturePadPage({required String documentId, required this.deviceId});
 
@@ -201,7 +201,7 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
                     onPressed: () async {
                       final signatureData = widget.signatureImage;
                       final remarks = widget.remarksController.text;
-                      final remarksHandover = widget.remarksHandoverController.text;
+                      // final remarksHandover = widget.remarksHandoverController.text;
 
                       if (signatureData == null && !agree) {
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -296,12 +296,9 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
                                       child: ElevatedButton(
                                         onPressed: () {
                                           try {
-                                            final newDocumentId = addToPilotDeviceCollection(
-                                              signatureData,
-                                              widget.deviceId,
-                                              remarks,
-                                              remarksHandover,
-                                            );
+                                            final newDocumentId = addToPilotDeviceCollection(signatureData, widget.deviceId, remarks
+                                                // remarksHandover,
+                                                );
                                           } catch (error) {
                                             showDialog(
                                               context: context,
@@ -358,7 +355,7 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
     );
   }
 
-  Future<void> addToPilotDeviceCollection(Uint8List signatureData, String deviceId, String remarks, String remarksHandover) async {
+  Future<void> addToPilotDeviceCollection(Uint8List signatureData, String deviceId, String remarks) async {
     User? user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {
@@ -368,7 +365,7 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
         'signature_url': await uploadSignatureToFirestore(signatureData),
         'statusDevice': 'need-confirmation-occ',
         'document_id': deviceId,
-        'handover-to-crew': remarksHandover,
+        // 'handover-to-crew': 'remarksHandover',
         // 'remarks-handover': '-',
         'remarks-handover': remarks,
         // 'remarks': remarks,

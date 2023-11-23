@@ -266,6 +266,37 @@ class DetailHistoryDeviceView extends GetView {
                                                       ],
                                                     ),
                                                   ),
+                                                  const SizedBox(height: 15.0),
+                                                  Align(
+                                                    alignment: Alignment.centerLeft,
+                                                    child: Text("Handover", style: tsOneTextTheme.displaySmall),
+                                                  ),
+                                                  const SizedBox(height: 5.0),
+                                                  Row(
+                                                    children: [
+                                                      Expanded(
+                                                        flex: 6,
+                                                        child: Text(
+                                                          "Remarks",
+                                                          style: tsOneTextTheme.bodySmall,
+                                                        ),
+                                                      ),
+                                                      Expanded(
+                                                        child: Text(
+                                                          ":",
+                                                          style: tsOneTextTheme.bodySmall,
+                                                        ),
+                                                      ),
+                                                      Expanded(
+                                                        flex: 6,
+                                                        child: Text(
+                                                          '${data['remarks-handover'] ?? 'No Remarks'}',
+                                                          style: tsOneTextTheme.bodySmall,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  const SizedBox(height: 5.0),
 
                                                   //device info
                                                   Text("Device 1", style: tsOneTextTheme.headlineMedium),
@@ -346,7 +377,9 @@ class DetailHistoryDeviceView extends GetView {
                                                   //     ),
                                                   //   ],
                                                   // ),
-                                                  SizedBox(height: 15.0,),
+                                                  SizedBox(
+                                                    height: 15.0,
+                                                  ),
                                                   //device info
                                                   Text("Device Condition", style: tsOneTextTheme.headlineMedium),
                                                   SizedBox(height: 7.0),

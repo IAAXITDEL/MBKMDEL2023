@@ -116,6 +116,45 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.red),
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start, // Agar Column rata kiri
+                  children: [
+                    Text(
+                      'Note:',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16.0,
+                      ),
+                    ),
+                    SizedBox(height: 8.0),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Align(
+                            alignment: Alignment.centerRight, // Ganti menjadi Alignment.centerLeft untuk membuat rata kiri
+                            child: Text(
+                              'You must be in one place with the next FO to confirm the return. If you are in a different place, whatever the FO contains, you automatically agree with its statement.',
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontSize: 14.0,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 15,
+              ),
               Center(
                 child: Text(
                   'Please select another crew',
@@ -185,7 +224,7 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                   ],
                 ),
               ),
-              const SizedBox(height: 16.0),
+              const SizedBox(height: 20.0),
 
               // if (usersStream != null)
               //   StreamBuilder<QuerySnapshot>(
@@ -217,87 +256,8 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
               //       );
               //     },
               //   ),
-              const SizedBox(height: 10.0),
-              if (selectedUser != null)
-                Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.red),
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start, // Agar Column rata kiri
-                    children: [
-                      Text(
-                        'Note:',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16.0,
-                        ),
-                      ),
-                      SizedBox(height: 8.0),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Align(
-                              alignment: Alignment.centerRight, // Ganti menjadi Alignment.centerLeft untuk membuat rata kiri
-                              child: Text(
-                                'You must be in one place with the next FO to confirm the return. If you are in a different place, whatever the FO contains, you automatically agree with its statement.',
-                                style: TextStyle(
-                                  color: Colors.red,
-                                  fontSize: 14.0,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              SizedBox(
-                height: 10,
-              ),
-              if (selectedUser != null)
-                Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.red),
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start, // Agar Column rata kiri
-                    children: [
-                      Text(
-                        'Note:',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16.0,
-                        ),
-                      ),
-                      SizedBox(height: 8.0),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Align(
-                              alignment: Alignment.centerRight, // Ganti menjadi Alignment.centerLeft untuk membuat rata kiri
-                              child: Text(
-                                'You must be in one place with the next FO to confirm the return. If you are in a different place, whatever the FO contains, you automatically agree with its statement.',
-                                style: TextStyle(
-                                  color: Colors.red,
-                                  fontSize: 14.0,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 20.0),
+
               if (selectedUser != null)
                 Align(
                   alignment: Alignment.center,
@@ -377,7 +337,7 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                     ],
                   ),
                 ),
-              const SizedBox(height: 10.0),
+              const SizedBox(height: 15.0),
               if (selectedUser != null)
                 Align(
                   alignment: Alignment.center,

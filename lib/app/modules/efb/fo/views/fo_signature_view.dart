@@ -129,7 +129,7 @@ class _FOSignaturePadPageState extends State<FOSignaturePadPage> {
               Stack(
                 children: [
                   Container(
-                    height: 480,
+                    height: 380,
                     decoration: BoxDecoration(
                       borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(10.0),
