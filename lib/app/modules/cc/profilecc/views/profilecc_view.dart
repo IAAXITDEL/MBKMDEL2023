@@ -12,6 +12,7 @@ import '../../../../../util/error_screen.dart';
 import '../../../../../util/loading_screen.dart';
 import '../../../../routes/app_pages.dart';
 import '../controllers/profilecc_controller.dart';
+import '../controllers/trainingCardsPdf.dart';
 
 class ProfileccView extends GetView<ProfileccController> {
   const ProfileccView({Key? key}) : super(key: key);
@@ -355,9 +356,22 @@ class ProfileccView extends GetView<ProfileccController> {
                                      },
                                    );
 
-                                   await controller.savePdfFile(
-                                       await controller
-                                           .getPDFTrainingCard(controller.idTrainee.value));
+                                   // await controller.savePdfFile(
+                                   //     await controller
+                                   //         .getPDFTrainingCard(controller.idTrainee.value));
+                                   //
+                                   // if (controller.pdfBytes != null && controller.pdfBytes!.isNotEmpty) {
+                                   //   await controller.savePdfFile(controller.pdfBytes![0]);
+                                   // } else {
+                                   //   print("pdfBytes is null or empty");
+                                   //   // Handle the case where pdfBytes is null or empty
+                                   // }
+
+                                   String exportedPDFPath = await eksportPDF(controller.idTrainee.value);
+                                   if (exportedPDFPath.isNotEmpty) {
+                                     await openExportedPDF(exportedPDFPath);
+                                   }
+
                                  } catch (e) {
                                    print('Error: $e');
                                  } finally {

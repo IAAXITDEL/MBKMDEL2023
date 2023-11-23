@@ -53,16 +53,13 @@ class AttendanceConfirccController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    final Map<String, dynamic> args = Get.arguments as Map<String, dynamic>;
-    final String id = args["id"];
-    argumentid.value = id;
-    _loadPdf();
+    argumentid.value = Get.arguments["id"];
     attendanceStream();
+    _loadPdf();
     getCombinedAttendance();
     cekRole();
     absentList();
     attendancelist();
-
   }
 
   Future<void> _loadPdf() async {
@@ -70,7 +67,7 @@ class AttendanceConfirccController extends GetxController {
       // Memproses PDF dan menyimpannya ke dalam variabel pdfBytes
       List<int> pdfBytesList = await attendancelist();
       pdfBytes?.assignAll([Uint8List.fromList(pdfBytesList)]);
-      print("sudah kah ");
+      print("sudah");
     } catch (e) {
       print('Error loading PDF: $e');
     }
@@ -114,6 +111,7 @@ class AttendanceConfirccController extends GetxController {
           attendanceModel.name = user['NAME'];
           attendanceModel.loano = user['LOA NO'];
           idInstructor.value = attendanceModel.instructor!;
+          argumentname.value = attendanceModel.subject!;
 
           Timestamp? timestamp = attendanceModel.date;
           date.value = timestamp!.toDate();
@@ -159,7 +157,6 @@ class AttendanceConfirccController extends GetxController {
             );
             if (user != null) {
               final userData = UserModel.fromFirebaseUser(user.data());
-              print(userData.name);
               attendanceModel.name = userData.name;
               attendanceModel.license = userData.licenseNo;
               attendanceModel.rank = userData.rank;
@@ -286,6 +283,7 @@ class AttendanceConfirccController extends GetxController {
         .where("status", isEqualTo: "donescoring")
         .snapshots()
         .map((attendanceQuery) {
+
       jumlah.value = attendanceQuery.docs.length;
       return attendanceQuery.docs.length;
     });
@@ -375,7 +373,6 @@ class AttendanceConfirccController extends GetxController {
           return attendanceModel.toJson();
         }),
       );
-      print(attendanceData);
       return attendanceData;
     }
 
@@ -401,7 +398,6 @@ class AttendanceConfirccController extends GetxController {
           return attendanceModel.toJson();
         }),
       );
-      print(attendanceData);
       return attendanceData;
   }
 

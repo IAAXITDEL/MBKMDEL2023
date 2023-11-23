@@ -86,7 +86,7 @@ class _TrainingtypeccViewState extends State<TrainingtypeccView>
               children: [
                 Expanded(
                   flex: 8,
-                  child: RedTitleText(text: controller.argumentname.value),
+                  child: Obx(() =>  RedTitleText(text: controller.argumentname.value)),
                 ),
                 Expanded(
                   flex: 1,
@@ -487,9 +487,10 @@ class _TrainingtypeccViewState extends State<TrainingtypeccView>
                                       title: Text(listAttendance[index]["name"].toString()),
                                       subtitle: Text(dateC),
                                       trailing: Icon(Icons.navigate_next),
-                                      onTap: () => Get.toNamed(Routes.ATTENDANCE_CONFIRCC,  arguments: {
-                                        "id" : listAttendance[index]["id"],
-                                      }),
+                                      onTap: (() {
+                                          Get.toNamed(Routes.ATTENDANCE_CONFIRCC,  arguments: {
+                                          "id" : listAttendance[index]["id"],
+                                          });}),
                                     );
                                   }
                               )
