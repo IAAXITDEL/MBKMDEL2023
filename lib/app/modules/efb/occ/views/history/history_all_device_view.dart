@@ -731,7 +731,7 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
         duration: const Duration(seconds: 2),
         child: FloatingActionButton(
           onPressed: () {
-            Navigator.pushReplacement(
+            Navigator.push(
               context,
               //MaterialPageRoute(builder: (BuildContext context) => const EfbDokumenView()),
               MaterialPageRoute(builder: (BuildContext context) => const documentpdf()),

@@ -33,6 +33,7 @@ Future<void> generateLogPdfDevice23({
   String? deviceCondition2,
   String? deviceNo3,
   String? iosVer3,
+  String? charger,
   String? flySmart3,
   String? lido3,
   String? docunet3,
@@ -361,26 +362,26 @@ Future<void> generateLogPdfDevice23({
                   ),
                 ],
               ),
-              pw.TableRow(
-                children: [
-                  pw.Container(
-                    height: 20.0,
-                    child: _buildHeaderCellLeft('Charger No 2', context),
-                  ),
-                  pw.Container(
-                    height: 20.0,
-                    child: _buildHeaderCellRight('xxxx', context),
-                  ),
-                  pw.Container(
-                    height: 20.0,
-                    child: _buildHeaderCellLeft('Charger No 3', context),
-                  ),
-                  pw.Container(
-                    height: 20.0,
-                    child: _buildHeaderCellRight('xxxx', context),
-                  ),
-                ],
-              ),
+              // pw.TableRow(
+              //   children: [
+              //     pw.Container(
+              //       height: 20.0,
+              //       child: _buildHeaderCellLeft('Charger No 2', context),
+              //     ),
+              //     pw.Container(
+              //       height: 20.0,
+              //       child: _buildHeaderCellRight('xxxx', context),
+              //     ),
+              //     pw.Container(
+              //       height: 20.0,
+              //       child: _buildHeaderCellLeft('Charger No 3', context),
+              //     ),
+              //     pw.Container(
+              //       height: 20.0,
+              //       child: _buildHeaderCellRight('xxxx', context),
+              //     ),
+              //   ],
+              // ),
               pw.TableRow(
                 children: [
                   pw.Container(
@@ -398,6 +399,28 @@ Future<void> generateLogPdfDevice23({
                   pw.Container(
                     height: 20.0,
                     child: _buildHeaderCellRight('$iosVer3', context),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          pw.Table(
+            tableWidth: pw.TableWidth.min,
+            border: pw.TableBorder.all(),
+            columnWidths: {
+              0: const pw.FlexColumnWidth(1),
+              1: const pw.FlexColumnWidth(4),
+            },
+            children: [
+              pw.TableRow(
+                children: [
+                  pw.Container(
+                    height: 20.0,
+                    child: _buildHeaderCellLeft('Charger No', context),
+                  ),
+                  pw.Container(
+                    height: 20.0,
+                    child: _buildHeaderCellRight('$charger', context),
                   ),
                 ],
               ),
@@ -658,7 +681,7 @@ Future<void> generateLogPdfDevice23({
                   flex: 5,
                   child: pw.Column(
                     children: [
-                      pw.Text('OCC Accepted Device'),
+                      pw.Text('Accepted By'),
                     ],
                   ),
                 ),
@@ -688,6 +711,11 @@ Future<void> generateLogPdfDevice23({
                       pw.SizedBox(height: 5.0),
                       pw.Text(
                         '$occAccept',
+                        style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+                      ),
+                      pw.SizedBox(height: 2.0),
+                      pw.Text(
+                        'OCC',
                         style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
                       ),
                     ],

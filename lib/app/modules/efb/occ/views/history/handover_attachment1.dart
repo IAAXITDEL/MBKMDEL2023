@@ -352,18 +352,18 @@ Future<void> generateLogPdfDevice1({
                   ),
                 ],
               ),
-              pw.TableRow(
-                children: [
-                  pw.Container(
-                    height: 20.0,
-                    child: _buildHeaderCellLeft('Charger No', context),
-                  ),
-                  pw.Container(
-                    height: 20.0,
-                    child: _buildHeaderCellRight('xxxx', context),
-                  ),
-                ],
-              ),
+              // pw.TableRow(
+              //   children: [
+              //     pw.Container(
+              //       height: 20.0,
+              //       child: _buildHeaderCellLeft('Charger No', context),
+              //     ),
+              //     pw.Container(
+              //       height: 20.0,
+              //       child: _buildHeaderCellRight('xxxx', context),
+              //     ),
+              //   ],
+              // ),
               pw.TableRow(
                 children: [
                   pw.Container(
@@ -600,7 +600,7 @@ Future<void> generateLogPdfDevice1({
                   flex: 5,
                   child: pw.Column(
                     children: [
-                      pw.Text('OCC Accepted Device'),
+                      pw.Text('Accepted By'),
                     ],
                   ),
                 ),
@@ -630,6 +630,11 @@ Future<void> generateLogPdfDevice1({
                       pw.SizedBox(height: 5.0),
                       pw.Text(
                         '$occAccept',
+                        style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+                      ),
+                      pw.SizedBox(height: 2.0),
+                      pw.Text(
+                        'OCC',
                         style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
                       ),
                     ],

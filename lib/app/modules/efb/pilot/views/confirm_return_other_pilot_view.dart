@@ -589,7 +589,7 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
         surfaceTintColor: tsOneColorScheme.secondary,
         child: ElevatedButton(
           onPressed: () {
-            Navigator.pushReplacement(
+            Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => ConfirmSignatureReturnOtherPilotView(

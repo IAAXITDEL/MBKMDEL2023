@@ -12,13 +12,16 @@ class UpdateFeedback extends StatefulWidget {
   _UpdateFeedbackState createState() => _UpdateFeedbackState();
 }
 
-//
 class _UpdateFeedbackState extends State<UpdateFeedback> {
   TextEditingController recNoController = TextEditingController();
   TextEditingController dateController = TextEditingController();
   TextEditingController pageController = TextEditingController();
   TextEditingController footerLeftController = TextEditingController();
   TextEditingController footerRightController = TextEditingController();
+
+  final FocusNode _dateFocus = FocusNode();
+  final FocusNode _footerLeftFocus = FocusNode();
+  final FocusNode _footerRightFocus = FocusNode();
 
   @override
   void initState() {
@@ -89,7 +92,7 @@ class _UpdateFeedbackState extends State<UpdateFeedback> {
       type: QuickAlertType.success,
       text: 'You have successfully updated',
     ).then((value) {
-      Navigator.pushReplacement(
+      Navigator.push(
         context,
         MaterialPageRoute(
           builder: (BuildContext context) => documentpdf(),
@@ -117,29 +120,65 @@ class _UpdateFeedbackState extends State<UpdateFeedback> {
             children: [
               TextFormField(
                 controller: recNoController,
-                decoration: InputDecoration(labelText: 'RecNo'),
+                autofocus: false,
+                decoration: InputDecoration(
+                  labelText: 'RecNo',
+                  contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                  labelStyle: tsOneTextTheme.labelMedium,
+                  border: const OutlineInputBorder(),
+                ),
+                onEditingComplete: () {
+                  FocusScope.of(context).requestFocus(_dateFocus);
+                },
               ),
               SizedBox(height: 16.0),
               TextFormField(
                 controller: dateController,
-                decoration: InputDecoration(labelText: 'Date'),
+                autofocus: false,
+                focusNode: _dateFocus,
+                decoration: InputDecoration(
+                  labelText: 'Date',
+                  contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                  labelStyle: tsOneTextTheme.labelMedium,
+                  border: const OutlineInputBorder(),
+                ),
+                onEditingComplete: () {
+                  FocusScope.of(context).requestFocus(_footerLeftFocus);
+                },
               ),
               SizedBox(height: 16.0),
-              TextFormField(
-                controller: pageController,
-                decoration: InputDecoration(labelText: 'Page'),
-              ),
-              SizedBox(height: 16.0),
+              // TextFormField(
+              //   controller: pageController,
+              //   decoration: InputDecoration(labelText: 'Page'),
+              // ),
+              // SizedBox(height: 16.0),
               TextFormField(
                 controller: footerLeftController,
-                decoration: InputDecoration(labelText: 'FooterLeft'),
+                autofocus: false,
+                focusNode: _footerLeftFocus,
+                decoration: InputDecoration(
+                  labelText: 'FooterLeft',
+                  contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                  labelStyle: tsOneTextTheme.labelMedium,
+                  border: const OutlineInputBorder(),
+                ),
+                onEditingComplete: () {
+                  FocusScope.of(context).requestFocus(_footerRightFocus);
+                },
               ),
               SizedBox(height: 16.0),
               TextFormField(
                 controller: footerRightController,
-                decoration: InputDecoration(labelText: 'FooterRight'),
+                autofocus: false,
+                focusNode: _footerRightFocus,
+                decoration: InputDecoration(
+                  labelText: 'FooterRight',
+                  contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                  labelStyle: tsOneTextTheme.labelMedium,
+                  border: const OutlineInputBorder(),
+                ),
               ),
-              SizedBox(height: 16.0),
+              SizedBox(height: 25.0),
               ElevatedButton(
                 onPressed: () {
                   updateData();

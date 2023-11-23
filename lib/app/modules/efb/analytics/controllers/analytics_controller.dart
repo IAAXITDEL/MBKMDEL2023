@@ -96,10 +96,10 @@ class AnalyticsController extends GetxController {
     }
   }
 
-  Future<Map<String, int>> countDevicesHub(String hub) async {
+  Future<Map<String, int>> countDevicesHub() async {
     final firestore = FirebaseFirestore.instance;
     final QuerySnapshot querySnapshot = await firestore.collection('Device').get();
-
+    final QuerySnapshot inUseDevicesSnapshot = await firestore.collection("pilot-device-1").where("statusDevice", isEqualTo: 'in-use-pilot').get();
     final Map<String, int> deviceCountByHub = {
       'CGK': 0,
       'KNO': 0,
@@ -110,6 +110,18 @@ class AnalyticsController extends GetxController {
       final hubValue = doc["value"]['hub'] as String;
       if (deviceCountByHub.containsKey(hubValue)) {
         deviceCountByHub[hubValue] = (deviceCountByHub[hubValue] ?? 0) + 1;
+      }
+    });
+    inUseDevicesSnapshot.docs.forEach((doc) {
+      final hubValue = doc['field_hub'] as String;
+      if (deviceCountByHub.containsKey(hubValue)) {
+        deviceCountByHub[hubValue] = (deviceCountByHub[hubValue] ?? 0) - 1;
+      }
+    });
+    inUseDevicesSnapshot.docs.forEach((doc) {
+      final hubValue = doc['field_hub2'] as String;
+      if (deviceCountByHub.containsKey(hubValue)) {
+        deviceCountByHub[hubValue] = (deviceCountByHub[hubValue] ?? 0) - 1;
       }
     });
     return deviceCountByHub;

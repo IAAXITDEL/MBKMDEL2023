@@ -213,7 +213,7 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                                               Padding(
                                                 padding: EdgeInsets.symmetric(horizontal: 8.0),
                                                 child: Text(
-                                                  'Device Details',
+                                                  'EFB Details',
                                                   style: TextStyle(color: Colors.grey),
                                                 ),
                                               ),
@@ -225,6 +225,34 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                                             ],
                                           ),
                                         ),
+                                        Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text("Charger", style: tsOneTextTheme.displaySmall),
+                                        ),
+                                        const SizedBox(height: 10.0),
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                                flex: 6,
+                                                child: Text(
+                                                  "Charger No",
+                                                  style: tsOneTextTheme.bodySmall,
+                                                )),
+                                            Expanded(
+                                                child: Text(
+                                              ":",
+                                              style: tsOneTextTheme.bodySmall,
+                                            )),
+                                            Expanded(
+                                              flex: 6,
+                                              child: Text(
+                                                '${pilotData['charger_no'] ?? 'No Data'}',
+                                                style: tsOneTextTheme.bodySmall,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 15),
                                         Align(
                                           alignment: Alignment.centerLeft,
                                           child: Text("Device 2", style: tsOneTextTheme.displaySmall),
@@ -641,7 +669,7 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                                                       ElevatedButton(
                                                         onPressed: () async {
                                                           String documentId = await getDocumentIdForDevice(widget.deviceId);
-                                                          Navigator.pushReplacement(
+                                                          Navigator.push(
                                                             context,
                                                             MaterialPageRoute(
                                                               builder: (context) => FOFeedBack(

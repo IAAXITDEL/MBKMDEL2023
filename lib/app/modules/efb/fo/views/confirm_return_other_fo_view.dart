@@ -646,7 +646,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
         surfaceTintColor: tsOneColorScheme.secondary,
         child: ElevatedButton(
           onPressed: () {
-            Navigator.pushReplacement(
+            Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => ConfirmSignatureReturnOtherFOView(

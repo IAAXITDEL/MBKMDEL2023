@@ -387,7 +387,7 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                                                 ElevatedButton(
                                                   onPressed: () async {
                                                     String documentId = await getDocumentIdForDevice(widget.deviceId);
-                                                    Navigator.pushReplacement(
+                                                    Navigator.push(
                                                       context,
                                                       MaterialPageRoute(
                                                         builder: (context) => PilotFeedBack(
@@ -531,7 +531,7 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
             if (isReturnToOCC) {
               String documentId = await getDocumentIdForDevice(widget.deviceId);
 
-              Navigator.pushReplacement(
+              Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => SignaturePadPage(
@@ -543,7 +543,7 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
             } else if (isReturnToOtherPilot) {
               String documentId = await getDocumentIdForDevice(widget.deviceId);
 
-              Navigator.pushReplacement(
+              Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => ReturnOtherPilotView(

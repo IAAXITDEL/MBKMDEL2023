@@ -112,7 +112,7 @@ class _documentpdfState extends State<documentpdf> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.pushReplacement(
+                      Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (BuildContext context) => UpdateLog(),
@@ -145,7 +145,7 @@ class _documentpdfState extends State<documentpdf> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.pushReplacement(
+                      Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (BuildContext context) => UpdateFeedback(),
@@ -216,16 +216,16 @@ Widget _buildContentLog() {
                   Expanded(flex: 6, child: Text('${snapshot.data?['Date'] ?? "-"}')),
                 ],
               ),
-              const SizedBox(
-                height: 8,
-              ),
-              Row(
-                children: [
-                  const Expanded(flex: 4, child: Text('Page')),
-                  const Expanded(child: Text(':')),
-                  Expanded(flex: 6, child: Text('${snapshot.data?['Page'] ?? "-"}')),
-                ],
-              ),
+              // const SizedBox(
+              //   height: 8,
+              // ),
+              // Row(
+              //   children: [
+              //     const Expanded(flex: 4, child: Text('Page')),
+              //     const Expanded(child: Text(':')),
+              //     Expanded(flex: 6, child: Text('${snapshot.data?['Page'] ?? "-"}')),
+              //   ],
+              // ),
               const SizedBox(
                 height: 15,
               ),
@@ -282,8 +282,7 @@ Widget _buildContentLog() {
 
 Future<Map<String, dynamic>> getDocumentLog() async {
   try {
-    final DocumentSnapshot<Map<String, dynamic>> result =
-    await FirebaseFirestore.instance.collection('efb-document').doc('handover-log').get();
+    final DocumentSnapshot<Map<String, dynamic>> result = await FirebaseFirestore.instance.collection('efb-document').doc('handover-log').get();
 
     if (result.exists) {
       final Map<String, dynamic> data = result.data() ?? {};
@@ -337,16 +336,16 @@ Widget _buildContentFeedback() {
                   Expanded(flex: 6, child: Text('${snapshot.data?['Date'] ?? "-"}')),
                 ],
               ),
-              const SizedBox(
-                height: 8,
-              ),
-              Row(
-                children: [
-                  const Expanded(flex: 4, child: Text('Page')),
-                  const Expanded(child: Text(':')),
-                  Expanded(flex: 6, child: Text('${snapshot.data?['Page'] ?? "-"}')),
-                ],
-              ),
+              // const SizedBox(
+              //   height: 8,
+              // ),
+              // Row(
+              //   children: [
+              //     const Expanded(flex: 4, child: Text('Page')),
+              //     const Expanded(child: Text(':')),
+              //     Expanded(flex: 6, child: Text('${snapshot.data?['Page'] ?? "-"}')),
+              //   ],
+              // ),
               const SizedBox(
                 height: 15,
               ),
@@ -387,8 +386,7 @@ Widget _buildContentFeedback() {
 
 Future<Map<String, dynamic>> getDocumentFeedback() async {
   try {
-    final DocumentSnapshot<Map<String, dynamic>> result =
-    await FirebaseFirestore.instance.collection('efb-document').doc('feedback-form').get();
+    final DocumentSnapshot<Map<String, dynamic>> result = await FirebaseFirestore.instance.collection('efb-document').doc('feedback-form').get();
 
     if (result.exists) {
       final Map<String, dynamic> data = result.data() ?? {};
@@ -401,4 +399,3 @@ Future<Map<String, dynamic>> getDocumentFeedback() async {
     throw e;
   }
 }
-

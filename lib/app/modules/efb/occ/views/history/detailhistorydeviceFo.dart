@@ -261,6 +261,51 @@ class DetailHistoryDeviceFOView extends GetView {
                                                     ),
                                                     SizedBox(height: 15.0),
 
+                                                    const Padding(
+                                                      padding: EdgeInsets.only(bottom: 16.0),
+                                                      child: Row(
+                                                        children: <Widget>[
+                                                          Expanded(
+                                                            child: Divider(
+                                                              color: Colors.grey,
+                                                            ),
+                                                          ),
+                                                          Padding(
+                                                            padding: EdgeInsets.symmetric(horizontal: 8.0),
+                                                            child: Text(
+                                                              'EFB Details',
+                                                              style: TextStyle(color: Colors.grey),
+                                                            ),
+                                                          ),
+                                                          Expanded(
+                                                            child: Divider(
+                                                              color: Colors.grey,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    if (userData['RANK'] == 'FO')
+                                                      Align(
+                                                        alignment: Alignment.centerLeft,
+                                                        child: Text("Charger", style: tsOneTextTheme.headlineMedium),
+                                                      ),
+                                                    if (userData['RANK'] == 'FO') const SizedBox(height: 10.0),
+                                                    if (userData['RANK'] == 'FO')
+                                                      Row(
+                                                        children: [
+                                                          Expanded(flex: 6, child: Text("Charger No")),
+                                                          Expanded(child: Text(":")),
+                                                          Expanded(
+                                                            flex: 6,
+                                                            child: Text(
+                                                              '${data['charger_no'] ?? 'No Data'}',
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    if (userData['RANK'] == 'FO') SizedBox(height: 15.0),
+
                                                     //device info
                                                     Text("Device 2", style: tsOneTextTheme.headlineMedium),
                                                     SizedBox(height: 7.0),
@@ -420,11 +465,34 @@ class DetailHistoryDeviceFOView extends GetView {
                                                         ),
                                                       ],
                                                     ),
-                                                    SizedBox(height: 15.0),
 
+                                                    if (status == 'Done') SizedBox(height: 15),
+                                                    if (status == 'Done') Text("OCC On Duty", style: tsOneTextTheme.headlineMedium),
+                                                    if (status == 'Done') SizedBox(height: 7.0),
+                                                    if (status == 'Done')
+                                                      Row(
+                                                        children: [
+                                                          Expanded(flex: 6, child: Text("Given by")),
+                                                          Expanded(flex: 1, child: Text(":")),
+                                                          Expanded(
+                                                            flex: 6,
+                                                            child: Text('${occOnDutyuserData?['NAME'] ?? 'No Data'}'),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    if (status == 'Done') SizedBox(height: 5.0),
+                                                    if (status == 'Done')
+                                                      Row(
+                                                        children: [
+                                                          Expanded(flex: 6, child: Text("Received by")),
+                                                          Expanded(flex: 1, child: Text(":")),
+                                                          Expanded(flex: 6, child: Text('${occAccepteduserData?['NAME'] ?? 'No Data'}')),
+                                                        ],
+                                                      ),
+
+                                                    if (status == 'handover-to-other-crew') SizedBox(height: 15.0),
                                                     if (status == 'handover-to-other-crew')
                                                       Text("Return Documentation", style: tsOneTextTheme.headlineMedium),
-                                                    SizedBox(height: 7.0),
                                                     if (status == 'handover-to-other-crew')
                                                       Row(
                                                         children: [
@@ -438,7 +506,7 @@ class DetailHistoryDeviceFOView extends GetView {
                                                           ),
                                                         ],
                                                       ),
-                                                    SizedBox(height: 7.0),
+                                                    if (status == 'handover-to-other-crew') SizedBox(height: 7.0),
                                                     if (status == 'handover-to-other-crew')
                                                       Row(
                                                         children: [
@@ -493,9 +561,9 @@ class DetailHistoryDeviceFOView extends GetView {
                                                         ],
                                                       ),
 
-                                                    SizedBox(height: 5.0),
+                                                    if (status == 'Done') SizedBox(height: 15.0),
                                                     if (status == 'Done') Text("Return Documentation", style: tsOneTextTheme.headlineMedium),
-                                                    if (status == 'Done') SizedBox(height: 5.0),
+                                                    if (status == 'Done') SizedBox(height: 10.0),
                                                     if (status == 'Done')
                                                       Row(
                                                         children: [
@@ -550,36 +618,36 @@ class DetailHistoryDeviceFOView extends GetView {
                                                         ],
                                                       ),
 
-                                                    if (status == 'Done') SizedBox(height: 15),
-                                                    if (status == 'Done') Text("OCC On Duty", style: tsOneTextTheme.headlineMedium),
-                                                    if (status == 'Done') SizedBox(height: 7.0),
-                                                    if (status == 'Done')
-                                                      Row(
-                                                        children: [
-                                                          Expanded(flex: 6, child: Text("OCC (Given)")),
-                                                          Expanded(flex: 1, child: Text(":")),
-                                                          Expanded(
-                                                            flex: 6,
-                                                            child: Text('${occOnDutyuserData?['NAME'] ?? 'No Data'}'),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    if (status == 'Done') SizedBox(height: 5.0),
-                                                    if (status == 'Done')
-                                                      Row(
-                                                        children: [
-                                                          Expanded(flex: 6, child: Text("OCC (Received)")),
-                                                          Expanded(flex: 1, child: Text(":")),
-                                                          Expanded(flex: 6, child: Text('${occAccepteduserData?['NAME'] ?? 'No Data'}')),
-                                                        ],
-                                                      ),
+                                                    // if (status == 'Done') SizedBox(height: 15),
+                                                    // if (status == 'Done') Text("OCC On Duty", style: tsOneTextTheme.headlineMedium),
+                                                    // if (status == 'Done') SizedBox(height: 7.0),
+                                                    // if (status == 'Done')
+                                                    //   Row(
+                                                    //     children: [
+                                                    //       Expanded(flex: 6, child: Text("Given by")),
+                                                    //       Expanded(flex: 1, child: Text(":")),
+                                                    //       Expanded(
+                                                    //         flex: 6,
+                                                    //         child: Text('${occOnDutyuserData?['NAME'] ?? 'No Data'}'),
+                                                    //       ),
+                                                    //     ],
+                                                    //   ),
+                                                    // if (status == 'Done') SizedBox(height: 5.0),
+                                                    // if (status == 'Done')
+                                                    //   Row(
+                                                    //     children: [
+                                                    //       Expanded(flex: 6, child: Text("Received by")),
+                                                    //       Expanded(flex: 1, child: Text(":")),
+                                                    //       Expanded(flex: 6, child: Text('${occAccepteduserData?['NAME'] ?? 'No Data'}')),
+                                                    //     ],
+                                                    //   ),
 
-                                                    SizedBox(height: 15.0),
+                                                    if (status == 'handover-to-other-crew') SizedBox(height: 15.0),
                                                     Row(
                                                       children: [
                                                         Expanded(
                                                           flex: 6,
-                                                          child: Text("Feedback Form", style: tsOneTextTheme.headlineMedium),
+                                                          child: Text("Feedback Form"),
                                                         ),
                                                         Expanded(child: Text(":")),
                                                         Expanded(
@@ -587,14 +655,12 @@ class DetailHistoryDeviceFOView extends GetView {
                                                           child: TextButton(
                                                             onPressed: () async {
                                                               if (feedbackId != null && feedbackId.isNotEmpty) {
-                                                                // Menggunakan Navigator untuk berpindah ke halaman FeedbackDetailPage
                                                                 Navigator.of(context).push(
                                                                   MaterialPageRoute(
                                                                     builder: (context) => FeedbackDetailPage(feedbackId: feedbackId),
                                                                   ),
                                                                 );
                                                               } else {
-                                                                // Tindakan alternatif jika feedbackId tidak ada atau kosong
                                                                 ScaffoldMessenger.of(context).showSnackBar(
                                                                   SnackBar(
                                                                     content: Text('No Feedback'),
@@ -613,14 +679,6 @@ class DetailHistoryDeviceFOView extends GetView {
                                                               }
                                                               print(feedbackId);
                                                             },
-                                                            // style: ButtonStyle(
-                                                            //   foregroundColor: MaterialStateProperty.all(TsOneColor.primary),
-                                                            //   textStyle: MaterialStateProperty.all(TextStyle(
-                                                            //     fontWeight: FontWeight.bold,
-                                                            //     decoration: TextDecoration.underline,
-                                                            //     decorationColor: TsOneColor.primary,
-                                                            //   )),
-                                                            // ),
                                                             child: Align(
                                                               alignment: Alignment.center,
                                                               child: Text(
@@ -683,7 +741,7 @@ class DetailHistoryDeviceFOView extends GetView {
                                                         ],
                                                       ),
 
-                                                    SizedBox(height: 30.0),
+                                                    SizedBox(height: 15.0),
                                                     Row(
                                                       children: [
                                                         Expanded(
@@ -714,6 +772,7 @@ class DetailHistoryDeviceFOView extends GetView {
                                                                 occGiven: occOnDutyuserData?['NAME'],
                                                                 deviceNo2: data['device_name2'],
                                                                 iosVer2: deviceData2['value']['iosver'],
+                                                                charger: data['charger_no'] ?? '-',
                                                                 flySmart2: deviceData2['value']['flysmart'],
                                                                 lido2: deviceData2['value']['lidoversion'],
                                                                 docunet2: deviceData2['value']['docuversion'],

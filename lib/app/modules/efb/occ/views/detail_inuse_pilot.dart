@@ -17,7 +17,6 @@ class DetailInUsePilot extends GetView {
 
   DetailInUsePilot({Key? key, required this.dataId}) : super(key: key);
 
-
   String getMonthText(int month) {
     const List<String> months = [
       'January',
@@ -46,7 +45,6 @@ class DetailInUsePilot extends GetView {
     return formattedDateTime;
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +52,7 @@ class DetailInUsePilot extends GetView {
         centerTitle: true,
         backgroundColor: Colors.white,
         title: Text(
-          'Confirmation Request',
+          'In Use',
           style: tsOneTextTheme.headlineLarge,
         ),
       ),
@@ -189,6 +187,7 @@ class DetailInUsePilot extends GetView {
                                           ),
                                         ],
                                       ),
+
                                       const SizedBox(height: 15.0),
 
                                       const Padding(
@@ -203,7 +202,7 @@ class DetailInUsePilot extends GetView {
                                             Padding(
                                               padding: EdgeInsets.symmetric(horizontal: 8.0),
                                               child: Text(
-                                                'Device Details',
+                                                'EFB Details',
                                                 style: TextStyle(color: Colors.grey),
                                               ),
                                             ),
@@ -215,6 +214,37 @@ class DetailInUsePilot extends GetView {
                                           ],
                                         ),
                                       ),
+                                      if (userData['RANK'] == 'FO')
+                                        Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text("Charger", style: tsOneTextTheme.displaySmall),
+                                        ),
+                                      if (userData['RANK'] == 'FO') const SizedBox(height: 10.0),
+                                      if (userData['RANK'] == 'FO')
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                                flex: 7,
+                                                child: Text(
+                                                  "Charger No",
+                                                  style: tsOneTextTheme.bodySmall,
+                                                )),
+                                            Expanded(
+                                                child: Text(
+                                              ":",
+                                              style: tsOneTextTheme.bodySmall,
+                                            )),
+                                            Expanded(
+                                              flex: 6,
+                                              child: Text(
+                                                '${data['charger_no'] ?? 'No Data'}',
+                                                style: tsOneTextTheme.bodySmall,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      if (userData['RANK'] == 'FO') SizedBox(height: 10.0),
+
                                       Align(
                                         alignment: Alignment.centerLeft,
                                         child: Text("Device 2", style: tsOneTextTheme.displaySmall),
@@ -230,9 +260,9 @@ class DetailInUsePilot extends GetView {
                                               )),
                                           Expanded(
                                               child: Text(
-                                                ":",
-                                                style: tsOneTextTheme.bodySmall,
-                                              )),
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
                                           Expanded(
                                             flex: 6,
                                             child: Text(
@@ -253,9 +283,9 @@ class DetailInUsePilot extends GetView {
                                               )),
                                           Expanded(
                                               child: Text(
-                                                ":",
-                                                style: tsOneTextTheme.bodySmall,
-                                              )),
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
                                           Expanded(
                                             flex: 6,
                                             child: Text(
@@ -276,9 +306,9 @@ class DetailInUsePilot extends GetView {
                                               )),
                                           Expanded(
                                               child: Text(
-                                                ":",
-                                                style: tsOneTextTheme.bodySmall,
-                                              )),
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
                                           Expanded(
                                             flex: 6,
                                             child: Text(
@@ -299,9 +329,9 @@ class DetailInUsePilot extends GetView {
                                               )),
                                           Expanded(
                                               child: Text(
-                                                ":",
-                                                style: tsOneTextTheme.bodySmall,
-                                              )),
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
                                           Expanded(
                                             flex: 6,
                                             child: Text(
@@ -322,9 +352,9 @@ class DetailInUsePilot extends GetView {
                                               )),
                                           Expanded(
                                               child: Text(
-                                                ":",
-                                                style: tsOneTextTheme.bodySmall,
-                                              )),
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
                                           Expanded(
                                             flex: 6,
                                             child: Text(
@@ -345,9 +375,9 @@ class DetailInUsePilot extends GetView {
                                               )),
                                           Expanded(
                                               child: Text(
-                                                ":",
-                                                style: tsOneTextTheme.bodySmall,
-                                              )),
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
                                           Expanded(
                                             flex: 6,
                                             child: Text(
@@ -368,9 +398,9 @@ class DetailInUsePilot extends GetView {
                                               )),
                                           Expanded(
                                               child: Text(
-                                                ":",
-                                                style: tsOneTextTheme.bodySmall,
-                                              )),
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
                                           Expanded(
                                             flex: 6,
                                             child: Text(
@@ -398,9 +428,9 @@ class DetailInUsePilot extends GetView {
                                               )),
                                           Expanded(
                                               child: Text(
-                                                ":",
-                                                style: tsOneTextTheme.bodySmall,
-                                              )),
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
                                           Expanded(
                                             flex: 6,
                                             child: Text(
@@ -421,9 +451,9 @@ class DetailInUsePilot extends GetView {
                                               )),
                                           Expanded(
                                               child: Text(
-                                                ":",
-                                                style: tsOneTextTheme.bodySmall,
-                                              )),
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
                                           Expanded(
                                             flex: 6,
                                             child: Text(
@@ -444,9 +474,9 @@ class DetailInUsePilot extends GetView {
                                               )),
                                           Expanded(
                                               child: Text(
-                                                ":",
-                                                style: tsOneTextTheme.bodySmall,
-                                              )),
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
                                           Expanded(
                                             flex: 6,
                                             child: Text(
@@ -467,9 +497,9 @@ class DetailInUsePilot extends GetView {
                                               )),
                                           Expanded(
                                               child: Text(
-                                                ":",
-                                                style: tsOneTextTheme.bodySmall,
-                                              )),
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
                                           Expanded(
                                             flex: 6,
                                             child: Text(
@@ -490,9 +520,9 @@ class DetailInUsePilot extends GetView {
                                               )),
                                           Expanded(
                                               child: Text(
-                                                ":",
-                                                style: tsOneTextTheme.bodySmall,
-                                              )),
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
                                           Expanded(
                                             flex: 6,
                                             child: Text(
@@ -513,9 +543,9 @@ class DetailInUsePilot extends GetView {
                                               )),
                                           Expanded(
                                               child: Text(
-                                                ":",
-                                                style: tsOneTextTheme.bodySmall,
-                                              )),
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
                                           Expanded(
                                             flex: 6,
                                             child: Text(
@@ -536,9 +566,9 @@ class DetailInUsePilot extends GetView {
                                               )),
                                           Expanded(
                                               child: Text(
-                                                ":",
-                                                style: tsOneTextTheme.bodySmall,
-                                              )),
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
                                           Expanded(
                                             flex: 6,
                                             child: Text(
@@ -616,7 +646,7 @@ class DetailInUsePilot extends GetView {
                                 Padding(
                                   padding: EdgeInsets.symmetric(horizontal: 8.0),
                                   child: Text(
-                                    'Device Details',
+                                    'EFB Details',
                                     style: TextStyle(color: Colors.grey),
                                   ),
                                 ),
@@ -644,9 +674,9 @@ class DetailInUsePilot extends GetView {
                                   )),
                               Expanded(
                                   child: Text(
-                                    ":",
-                                    style: tsOneTextTheme.bodySmall,
-                                  )),
+                                ":",
+                                style: tsOneTextTheme.bodySmall,
+                              )),
                               Expanded(
                                 flex: 7,
                                 child: Text(
@@ -667,9 +697,9 @@ class DetailInUsePilot extends GetView {
                                   )),
                               Expanded(
                                   child: Text(
-                                    ":",
-                                    style: tsOneTextTheme.bodySmall,
-                                  )),
+                                ":",
+                                style: tsOneTextTheme.bodySmall,
+                              )),
                               Expanded(
                                 flex: 6,
                                 child: Text(
@@ -690,9 +720,9 @@ class DetailInUsePilot extends GetView {
                                   )),
                               Expanded(
                                   child: Text(
-                                    ":",
-                                    style: tsOneTextTheme.bodySmall,
-                                  )),
+                                ":",
+                                style: tsOneTextTheme.bodySmall,
+                              )),
                               Expanded(
                                 flex: 6,
                                 child: Text(
@@ -713,9 +743,9 @@ class DetailInUsePilot extends GetView {
                                   )),
                               Expanded(
                                   child: Text(
-                                    ":",
-                                    style: tsOneTextTheme.bodySmall,
-                                  )),
+                                ":",
+                                style: tsOneTextTheme.bodySmall,
+                              )),
                               Expanded(
                                 flex: 6,
                                 child: Text(
@@ -736,9 +766,9 @@ class DetailInUsePilot extends GetView {
                                   )),
                               Expanded(
                                   child: Text(
-                                    ":",
-                                    style: tsOneTextTheme.bodySmall,
-                                  )),
+                                ":",
+                                style: tsOneTextTheme.bodySmall,
+                              )),
                               Expanded(
                                 flex: 6,
                                 child: Text(
@@ -759,9 +789,9 @@ class DetailInUsePilot extends GetView {
                                   )),
                               Expanded(
                                   child: Text(
-                                    ":",
-                                    style: tsOneTextTheme.bodySmall,
-                                  )),
+                                ":",
+                                style: tsOneTextTheme.bodySmall,
+                              )),
                               Expanded(
                                 flex: 6,
                                 child: Text(
@@ -782,9 +812,9 @@ class DetailInUsePilot extends GetView {
                                   )),
                               Expanded(
                                   child: Text(
-                                    ":",
-                                    style: tsOneTextTheme.bodySmall,
-                                  )),
+                                ":",
+                                style: tsOneTextTheme.bodySmall,
+                              )),
                               Expanded(
                                 flex: 6,
                                 child: Text(
@@ -814,8 +844,7 @@ class DetailInUsePilot extends GetView {
               backgroundColor: TsOneColor.primary,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(4.0),
-              )
-          ),
+              )),
           child: const Text('Back', style: TextStyle(color: Colors.white)),
         ),
       ),

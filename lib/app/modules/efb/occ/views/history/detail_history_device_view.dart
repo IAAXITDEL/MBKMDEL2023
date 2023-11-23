@@ -208,11 +208,6 @@ class DetailHistoryDeviceView extends GetView {
                                                   ),
                                                   SizedBox(height: 15.0),
 
-                                                  //show crew info
-                                                  // Text(
-                                                  //   "CREW INFO",
-                                                  //   style: tsOneTextTheme.headlineLarge,
-                                                  // ),
                                                   Row(
                                                     children: [
                                                       Expanded(flex: 6, child: Text("ID NO")),
@@ -246,6 +241,31 @@ class DetailHistoryDeviceView extends GetView {
                                                     ],
                                                   ),
                                                   SizedBox(height: 15.0),
+
+                                                  const Padding(
+                                                    padding: EdgeInsets.only(bottom: 16.0),
+                                                    child: Row(
+                                                      children: <Widget>[
+                                                        Expanded(
+                                                          child: Divider(
+                                                            color: Colors.grey,
+                                                          ),
+                                                        ),
+                                                        Padding(
+                                                          padding: EdgeInsets.symmetric(horizontal: 8.0),
+                                                          child: Text(
+                                                            'EFB Details',
+                                                            style: TextStyle(color: Colors.grey),
+                                                          ),
+                                                        ),
+                                                        Expanded(
+                                                          child: Divider(
+                                                            color: Colors.grey,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
 
                                                   //device info
                                                   Text("Device 1", style: tsOneTextTheme.headlineMedium),
@@ -327,10 +347,37 @@ class DetailHistoryDeviceView extends GetView {
                                                     ],
                                                   ),
 
+                                                  if (status == 'Done') SizedBox(height: 15),
+                                                  if (status == 'Done') Text("OCC On Duty", style: tsOneTextTheme.headlineMedium),
+                                                  if (status == 'Done') SizedBox(height: 7.0),
+                                                  if (status == 'Done')
+                                                    Row(
+                                                      children: [
+                                                        Expanded(flex: 6, child: Text("Given by")),
+                                                        Expanded(flex: 1, child: Text(":")),
+                                                        Expanded(
+                                                          flex: 6,
+                                                          child: Text('${occOnDutyuserData?['NAME'] ?? 'No Data'}'),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  SizedBox(height: 5.0),
+                                                  if (status == 'Done')
+                                                    Row(
+                                                      children: [
+                                                        Expanded(flex: 6, child: Text("Received by")),
+                                                        Expanded(flex: 1, child: Text(":")),
+                                                        Expanded(
+                                                          flex: 6,
+                                                          child: Text('${occAccepteduserData?['NAME'] ?? 'No Data'}'),
+                                                        ),
+                                                      ],
+                                                    ),
+
                                                   SizedBox(height: 15),
                                                   Text("Return Documentation", style: tsOneTextTheme.headlineMedium),
 
-                                                  SizedBox(height: 5.0),
+                                                  SizedBox(height: 10.0),
                                                   if (status == 'Done')
                                                     Row(
                                                       children: [
@@ -454,7 +501,7 @@ class DetailHistoryDeviceView extends GetView {
                                                       ],
                                                     ),
 
-                                                  SizedBox(height: 15.0),
+                                                  if (status == 'handover-to-other-crew') SizedBox(height: 15.0),
 
                                                   if (status == 'handover-to-other-crew') Text("Handover To", style: tsOneTextTheme.headlineMedium),
                                                   if (status == 'handover-to-other-crew') SizedBox(height: 7.0),
@@ -500,38 +547,11 @@ class DetailHistoryDeviceView extends GetView {
                                                       ],
                                                     ),
 
-                                                  SizedBox(height: 10),
-                                                  if (status == 'Done') Text("OCC On Duty", style: tsOneTextTheme.headlineMedium),
-                                                  SizedBox(height: 7.0),
-                                                  if (status == 'Done')
-                                                    Row(
-                                                      children: [
-                                                        Expanded(flex: 6, child: Text("OCC (Given)")),
-                                                        Expanded(flex: 1, child: Text(":")),
-                                                        Expanded(
-                                                          flex: 6,
-                                                          child: Text('${occOnDutyuserData?['NAME'] ?? 'No Data'}'),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  SizedBox(height: 5.0),
-                                                  if (status == 'Done')
-                                                    Row(
-                                                      children: [
-                                                        Expanded(flex: 6, child: Text("OCC (Received)")),
-                                                        Expanded(flex: 1, child: Text(":")),
-                                                        Expanded(
-                                                          flex: 6,
-                                                          child: Text('${occAccepteduserData?['NAME'] ?? 'No Data'}'),
-                                                        ),
-                                                      ],
-                                                    ),
-
                                                   Row(
                                                     children: [
                                                       Expanded(
                                                         flex: 6,
-                                                        child: Text("Feedback Form", style: tsOneTextTheme.headlineMedium),
+                                                        child: Text("Feedback Form"),
                                                       ),
                                                       Expanded(child: Text(":")),
                                                       Expanded(
@@ -632,7 +652,7 @@ class DetailHistoryDeviceView extends GetView {
                                                   //   ],
                                                   // ),
 
-                                                  SizedBox(height: 50.0),
+                                                  SizedBox(height: 30.0),
                                                   Row(
                                                     children: [
                                                       Expanded(
