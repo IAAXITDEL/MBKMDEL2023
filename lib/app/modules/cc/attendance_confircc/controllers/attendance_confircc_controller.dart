@@ -21,8 +21,6 @@ import '../../../../../presentation/view_model/attendance_detail_model.dart';
 import '../../../../../presentation/view_model/attendance_model.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import '../../../../routes/app_pages.dart';
-import '../../training/attendance_pilotcc/controllers/attendance_pilotcc_controller.dart';
 class AttendanceConfirccController extends GetxController {
   var selectedMeeting = "Training".obs;
   late UserPreferences userPreferences;
@@ -737,7 +735,7 @@ class AttendanceConfirccController extends GetxController {
                                     children: [
                                       TextFieldPdf(title: "DATE"),
                                       TextFieldPdf(
-                                          title: DateFormat('dd MMMM yyyy').format(attendanceModel['date']?.toDate()!) ?? 'N/A'),
+                                          title: DateFormat('dd MMMM yyyy').format(attendanceModel['date']?.toDate()!)),
                                     ],
                                   ),
 
@@ -756,8 +754,7 @@ class AttendanceConfirccController extends GetxController {
                                           title: attendanceModel['room'] ?? 'N/A'),
                                     ],
                                   ),
-                                ],
-                              ),
+                                ],),
                             ),
                           ])
                         ]),

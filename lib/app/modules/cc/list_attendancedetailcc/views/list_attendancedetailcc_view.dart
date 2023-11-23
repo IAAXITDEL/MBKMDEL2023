@@ -452,7 +452,7 @@ class ListAttendancedetailccView
                                                     vertical: 3,
                                                     horizontal: 10),
                                                 child: Text(
-                                                  documentData["grade"].round().toString() ?? "",
+                                                  documentData["grade"].round().toString(),
                                                 ),
                                               ),
                                             ],

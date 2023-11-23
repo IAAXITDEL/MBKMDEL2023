@@ -29,8 +29,6 @@ class TrainingccView extends GetView<TrainingccController> {
     });
 
     Future<void> add(int training) async {
-      String message = '';
-
       List<AttendanceModel> attendanceList =
           await controller.checkClassStream(controller.argumentid.value);
       List<AttendanceModel> classList =

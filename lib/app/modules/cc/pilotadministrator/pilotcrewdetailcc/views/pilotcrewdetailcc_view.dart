@@ -158,7 +158,7 @@ class PilotcrewdetailccView extends GetView<PilotcrewdetailccController> {
                                   Expanded(flex: 3, child: Text("ID NO")),
                                   Expanded(flex: 1, child: Text(":")),
                                   Expanded(
-                                      flex: 6, child: Text( documentData["ID NO"].toString() ?? "N/A")),
+                                      flex: 6, child: Text( documentData["ID NO"].toString())),
                                 ],
                               ),
                             ],

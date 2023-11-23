@@ -76,7 +76,6 @@ class ListAttendanceccView extends GetView<ListAttendanceccController> {
                               controller: nameC,
                               onChanged: (value){
                                 controller.nameS.value = value;
-                                print(controller.nameS.value);
                               },
                               decoration: InputDecoration(
                                 hintText: 'Type trainee name...',
@@ -115,7 +114,6 @@ class ListAttendanceccView extends GetView<ListAttendanceccController> {
                      }
 
                      if (snapshot.hasError) {
-                       print(snapshot.error.toString());
                        return ErrorScreen();
                      }
 
@@ -186,7 +184,7 @@ class ListAttendanceccView extends GetView<ListAttendanceccController> {
                                          borderRadius: BorderRadius.circular(10),
                                        ),
                                        child: Text(
-                                         listAttendance[index]["grade"].toString() ?? "0",
+                                         listAttendance[index]["grade"].toString() ,
                                          style: TextStyle(
                                            fontSize: 10, color: Colors.orange),
                                        ),

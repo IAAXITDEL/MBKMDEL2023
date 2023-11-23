@@ -31,7 +31,6 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
     var instructorC = TextEditingController();
     var loaNoC = TextEditingController();
 
-    int? trainingC = 0;
 
     var departmentC = TextEditingController();
     var trainingtypeC = TextEditingController();
@@ -565,8 +564,6 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                                             selectedUserId = 0;
                                           }
 
-                                          trainingC = selectedUserId;
-                                          // Handle user selection here, including the selectedUserId
                                         },
                                       );
                                     },
