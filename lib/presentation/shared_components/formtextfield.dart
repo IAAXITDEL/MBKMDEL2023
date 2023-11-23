@@ -7,7 +7,7 @@ class FormTextField extends StatelessWidget {
   final TextEditingController textController;
   final String text;
   final bool readOnly;
-  const FormTextField( {Key? key,required this.text, required this.textController, this.readOnly = false}) : super(key: key);
+  const FormTextField( {Key? key,required this.text, required this.textController, this.readOnly = false, TextStyle? style,  Icon? suffixIcon}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
