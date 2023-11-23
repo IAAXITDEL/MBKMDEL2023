@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:googleapis/androidpublisher/v3.dart';
 import 'package:intl/intl.dart';
 import '../../../../../../presentation/theme.dart';
 import '../../../../../../util/empty_screen.dart';
@@ -94,6 +95,11 @@ class HomePilotccView extends GetView<HomePilotccController> {
                       return EmptyScreenFeedbackRequired();
                     }
 
+                    listAttendance.sort((a, b) {
+                      DateTime dateA = (a["date"]).toDate();
+                      DateTime dateB = (b["date"]).toDate();
+                      return dateA.compareTo(dateB); // Compare in descending order
+                    });
 
                     return ListView.builder(
                         shrinkWrap: true,
