@@ -225,35 +225,6 @@ class ConfirmRequestPilotView extends GetView {
     return {};
   }
 
-  // Future<void> _confirmAndProcessData(Map<String, dynamic> userData) async {
-  //   try {
-  //     // Mendapatkan data dari pilot-device-1
-  //     DocumentSnapshot<Map<String, dynamic>> pilotDeviceSnapshot = await FirebaseFirestore.instance.collection("pilot-device-1").doc(dataId).get();
-
-  //     if (!pilotDeviceSnapshot.exists) {
-  //       // Handle jika data tidak ditemukan
-  //       print('Data not found');
-  //       return;
-  //     }
-
-  //     Map<String, dynamic> pilotDeviceData = pilotDeviceSnapshot.data()!;
-
-  //     // Validasi chargerno hanya untuk rank FO
-  //     if (userData['RANK'] == 'FO') {
-  //       if (_formKey.currentState?.validate() ?? false) {
-  //         // Panggil fungsi confirmInUseCrew
-  //         confirmInUseCrew(context);
-  //       }
-  //     } else {
-  //       // Jika rank bukan FO, langsung proses konfirmasi tanpa validasi
-  //       confirmInUseCrew(context);
-  //     }
-  //   } catch (error) {
-  //     print('Error: $error');
-  //     // Handle error sesuai kebutuhan
-  //   }
-  // }
-
   Future<Map<String, dynamic>> getUserDataFromDevice(String dataId) async {
     try {
       // Mendapatkan data dari pilot-device-1
@@ -516,9 +487,9 @@ class ConfirmRequestPilotView extends GetView {
                                               )),
                                           Expanded(
                                               child: Text(
-                                            ":",
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
+                                                ":",
+                                                style: tsOneTextTheme.bodySmall,
+                                              )),
                                           Expanded(
                                             flex: 6,
                                             child: Text(
@@ -539,9 +510,9 @@ class ConfirmRequestPilotView extends GetView {
                                               )),
                                           Expanded(
                                               child: Text(
-                                            ":",
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
+                                                ":",
+                                                style: tsOneTextTheme.bodySmall,
+                                              )),
                                           Expanded(
                                             flex: 6,
                                             child: Text(
@@ -562,9 +533,9 @@ class ConfirmRequestPilotView extends GetView {
                                               )),
                                           Expanded(
                                               child: Text(
-                                            ":",
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
+                                                ":",
+                                                style: tsOneTextTheme.bodySmall,
+                                              )),
                                           Expanded(
                                             flex: 6,
                                             child: Text(
@@ -585,9 +556,9 @@ class ConfirmRequestPilotView extends GetView {
                                               )),
                                           Expanded(
                                               child: Text(
-                                            ":",
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
+                                                ":",
+                                                style: tsOneTextTheme.bodySmall,
+                                              )),
                                           Expanded(
                                             flex: 6,
                                             child: Text(
@@ -608,9 +579,9 @@ class ConfirmRequestPilotView extends GetView {
                                               )),
                                           Expanded(
                                               child: Text(
-                                            ":",
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
+                                                ":",
+                                                style: tsOneTextTheme.bodySmall,
+                                              )),
                                           Expanded(
                                             flex: 6,
                                             child: Text(
@@ -631,9 +602,9 @@ class ConfirmRequestPilotView extends GetView {
                                               )),
                                           Expanded(
                                               child: Text(
-                                            ":",
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
+                                                ":",
+                                                style: tsOneTextTheme.bodySmall,
+                                              )),
                                           Expanded(
                                             flex: 6,
                                             child: Text(
@@ -643,29 +614,29 @@ class ConfirmRequestPilotView extends GetView {
                                           ),
                                         ],
                                       ),
-                                      // const SizedBox(height: 5.0),
-                                      // Row(
-                                      //   children: [
-                                      //     Expanded(
-                                      //         flex: 7,
-                                      //         child: Text(
-                                      //           "Condition",
-                                      //           style: tsOneTextTheme.bodySmall,
-                                      //         )),
-                                      //     Expanded(
-                                      //         child: Text(
-                                      //       ":",
-                                      //       style: tsOneTextTheme.bodySmall,
-                                      //     )),
-                                      //     Expanded(
-                                      //       flex: 6,
-                                      //       child: Text(
-                                      //         '${deviceData2['value']['condition'] ?? 'No Data'}',
-                                      //         style: tsOneTextTheme.bodySmall,
-                                      //       ),
-                                      //     ),
-                                      //   ],
-                                      // ),
+                                      const SizedBox(height: 5.0),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                              flex: 7,
+                                              child: Text(
+                                                "Condition",
+                                                style: tsOneTextTheme.bodySmall,
+                                              )),
+                                          Expanded(
+                                              child: Text(
+                                                ":",
+                                                style: tsOneTextTheme.bodySmall,
+                                              )),
+                                          Expanded(
+                                            flex: 6,
+                                            child: Text(
+                                              '${deviceData2['value']['condition'] ?? 'No Data'}',
+                                              style: tsOneTextTheme.bodySmall,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
 
                                       //Device 3
                                       SizedBox(height: 20.0),
@@ -684,9 +655,9 @@ class ConfirmRequestPilotView extends GetView {
                                               )),
                                           Expanded(
                                               child: Text(
-                                            ":",
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
+                                                ":",
+                                                style: tsOneTextTheme.bodySmall,
+                                              )),
                                           Expanded(
                                             flex: 6,
                                             child: Text(
@@ -707,9 +678,9 @@ class ConfirmRequestPilotView extends GetView {
                                               )),
                                           Expanded(
                                               child: Text(
-                                            ":",
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
+                                                ":",
+                                                style: tsOneTextTheme.bodySmall,
+                                              )),
                                           Expanded(
                                             flex: 6,
                                             child: Text(
@@ -730,9 +701,9 @@ class ConfirmRequestPilotView extends GetView {
                                               )),
                                           Expanded(
                                               child: Text(
-                                            ":",
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
+                                                ":",
+                                                style: tsOneTextTheme.bodySmall,
+                                              )),
                                           Expanded(
                                             flex: 6,
                                             child: Text(
@@ -753,9 +724,9 @@ class ConfirmRequestPilotView extends GetView {
                                               )),
                                           Expanded(
                                               child: Text(
-                                            ":",
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
+                                                ":",
+                                                style: tsOneTextTheme.bodySmall,
+                                              )),
                                           Expanded(
                                             flex: 6,
                                             child: Text(
@@ -776,9 +747,9 @@ class ConfirmRequestPilotView extends GetView {
                                               )),
                                           Expanded(
                                               child: Text(
-                                            ":",
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
+                                                ":",
+                                                style: tsOneTextTheme.bodySmall,
+                                              )),
                                           Expanded(
                                             flex: 6,
                                             child: Text(
@@ -799,9 +770,9 @@ class ConfirmRequestPilotView extends GetView {
                                               )),
                                           Expanded(
                                               child: Text(
-                                            ":",
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
+                                                ":",
+                                                style: tsOneTextTheme.bodySmall,
+                                              )),
                                           Expanded(
                                             flex: 6,
                                             child: Text(
@@ -811,66 +782,13 @@ class ConfirmRequestPilotView extends GetView {
                                           ),
                                         ],
                                       ),
-                                      // const SizedBox(height: 5.0),
-                                      // Row(
-                                      //   children: [
-                                      //     Expanded(
-                                      //         flex: 7,
-                                      //         child: Text(
-                                      //           "Condition",
-                                      //           style: tsOneTextTheme.bodySmall,
-                                      //         )),
-                                      //     Expanded(
-                                      //         child: Text(
-                                      //       ":",
-                                      //       style: tsOneTextTheme.bodySmall,
-                                      //     )),
-                                      //     Expanded(
-                                      //       flex: 6,
-                                      //       child: Text(
-                                      //         '${deviceData3['value']['condition'] ?? 'No Data'}',
-                                      //         style: tsOneTextTheme.bodySmall,
-                                      //       ),
-                                      //     ),
-                                      //   ],
-                                      // ),
-
-                                      const SizedBox(height: 15.0),
-                                      const Padding(
-                                        padding: EdgeInsets.only(bottom: 16.0),
-                                        child: Row(
-                                          children: <Widget>[
-                                            Expanded(
-                                              child: Divider(
-                                                color: Colors.grey,
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: EdgeInsets.symmetric(horizontal: 8.0),
-                                              child: Text(
-                                                'Device Condition',
-                                                style: TextStyle(color: Colors.grey),
-                                              ),
-                                            ),
-                                            Expanded(
-                                              child: Divider(
-                                                color: Colors.grey,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text("Device 2 Condition", style: tsOneTextTheme.displaySmall),
-                                      ),
-                                      const SizedBox(height: 10.0),
+                                      const SizedBox(height: 5.0),
                                       Row(
                                         children: [
                                           Expanded(
                                               flex: 7,
                                               child: Text(
-                                                "Condition Category",
+                                                "Condition",
                                                 style: tsOneTextTheme.bodySmall,
                                               )),
                                           Expanded(
@@ -879,129 +797,14 @@ class ConfirmRequestPilotView extends GetView {
                                                 style: tsOneTextTheme.bodySmall,
                                               )),
                                           Expanded(
-                                            flex: 7,
+                                            flex: 6,
                                             child: Text(
-                                              '${data['initial-condition-category2'] ?? 'No Data'}',
+                                              '${deviceData3['value']['condition'] ?? 'No Data'}',
                                               style: tsOneTextTheme.bodySmall,
                                             ),
                                           ),
                                         ],
                                       ),
-                                      const SizedBox(height: 6.0),
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                              flex: 7,
-                                              child: Text(
-                                                "Condition Remarks",
-                                                style: tsOneTextTheme.bodySmall,
-                                              )),
-                                          Expanded(
-                                              child: Text(
-                                                ":",
-                                                style: tsOneTextTheme.bodySmall,
-                                              )),
-                                          Expanded(
-                                            flex: 7,
-                                            child: Text(
-                                              '${data['initial-condition-remarks2'] ?? 'No Data'}',
-                                              style: tsOneTextTheme.bodySmall,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(height: 10,),
-                                      Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text("Device 3 Condition", style: tsOneTextTheme.displaySmall),
-                                      ),
-                                      const SizedBox(height: 10.0),
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                              flex: 7,
-                                              child: Text(
-                                                "Condition Category",
-                                                style: tsOneTextTheme.bodySmall,
-                                              )),
-                                          Expanded(
-                                              child: Text(
-                                                ":",
-                                                style: tsOneTextTheme.bodySmall,
-                                              )),
-                                          Expanded(
-                                            flex: 7,
-                                            child: Text(
-                                              '${data['initial-condition-category3'] ?? 'No Data'}',
-                                              style: tsOneTextTheme.bodySmall,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(height: 6.0),
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                              flex: 7,
-                                              child: Text(
-                                                "Condition Remarks",
-                                                style: tsOneTextTheme.bodySmall,
-                                              )),
-                                          Expanded(
-                                              child: Text(
-                                                ":",
-                                                style: tsOneTextTheme.bodySmall,
-                                              )),
-                                          Expanded(
-                                            flex: 7,
-                                            child: Text(
-                                              '${data['initial-condition-remarks3'] ?? 'No Data'}',
-                                              style: tsOneTextTheme.bodySmall,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      // const SizedBox(height: 15.0),
-
-                                      // const Padding(
-                                      //   padding: EdgeInsets.only(bottom: 16.0),
-                                      //   child: Row(
-                                      //     children: <Widget>[
-                                      //       Expanded(
-                                      //         child: Divider(
-                                      //           color: Colors.grey,
-                                      //         ),
-                                      //       ),
-                                      //       Padding(
-                                      //         padding: EdgeInsets.symmetric(horizontal: 8.0),
-                                      //         child: Text(
-                                      //           'Charge',
-                                      //           style: TextStyle(color: Colors.grey),
-                                      //         ),
-                                      //       ),
-                                      //       Expanded(
-                                      //         child: Divider(
-                                      //           color: Colors.grey,
-                                      //         ),
-                                      //       ),
-                                      //     ],
-                                      //   ),
-                                      // ),
-                                      // Text(
-                                      //   'Fill in the following fields if you also borrowed the charger.',
-                                      //   style: tsOneTextTheme.bodySmall,
-                                      // ),
-                                      // SizedBox(height: 16.0),
-                                      // TextFormField(
-                                      //   controller: chargeController,
-                                      //   autofocus: false,
-                                      //   decoration: InputDecoration(
-                                      //     labelText: 'Charge No',
-                                      //     contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                                      //     labelStyle: tsOneTextTheme.labelMedium,
-                                      //     border: const OutlineInputBorder(),
-                                      //   ),
-                                      // ),
                                     ],
                                   ),
                                 ),
@@ -1098,9 +901,9 @@ class ConfirmRequestPilotView extends GetView {
                                   )),
                               Expanded(
                                   child: Text(
-                                ":",
-                                style: tsOneTextTheme.bodySmall,
-                              )),
+                                    ":",
+                                    style: tsOneTextTheme.bodySmall,
+                                  )),
                               Expanded(
                                 flex: 7,
                                 child: Text(
@@ -1121,9 +924,9 @@ class ConfirmRequestPilotView extends GetView {
                                   )),
                               Expanded(
                                   child: Text(
-                                ":",
-                                style: tsOneTextTheme.bodySmall,
-                              )),
+                                    ":",
+                                    style: tsOneTextTheme.bodySmall,
+                                  )),
                               Expanded(
                                 flex: 6,
                                 child: Text(
@@ -1144,9 +947,9 @@ class ConfirmRequestPilotView extends GetView {
                                   )),
                               Expanded(
                                   child: Text(
-                                ":",
-                                style: tsOneTextTheme.bodySmall,
-                              )),
+                                    ":",
+                                    style: tsOneTextTheme.bodySmall,
+                                  )),
                               Expanded(
                                 flex: 6,
                                 child: Text(
@@ -1167,9 +970,9 @@ class ConfirmRequestPilotView extends GetView {
                                   )),
                               Expanded(
                                   child: Text(
-                                ":",
-                                style: tsOneTextTheme.bodySmall,
-                              )),
+                                    ":",
+                                    style: tsOneTextTheme.bodySmall,
+                                  )),
                               Expanded(
                                 flex: 6,
                                 child: Text(
@@ -1190,9 +993,9 @@ class ConfirmRequestPilotView extends GetView {
                                   )),
                               Expanded(
                                   child: Text(
-                                ":",
-                                style: tsOneTextTheme.bodySmall,
-                              )),
+                                    ":",
+                                    style: tsOneTextTheme.bodySmall,
+                                  )),
                               Expanded(
                                 flex: 6,
                                 child: Text(
@@ -1213,9 +1016,9 @@ class ConfirmRequestPilotView extends GetView {
                                   )),
                               Expanded(
                                   child: Text(
-                                ":",
-                                style: tsOneTextTheme.bodySmall,
-                              )),
+                                    ":",
+                                    style: tsOneTextTheme.bodySmall,
+                                  )),
                               Expanded(
                                 flex: 6,
                                 child: Text(
@@ -1236,84 +1039,13 @@ class ConfirmRequestPilotView extends GetView {
                                   )),
                               Expanded(
                                   child: Text(
-                                ":",
-                                style: tsOneTextTheme.bodySmall,
-                              )),
+                                    ":",
+                                    style: tsOneTextTheme.bodySmall,
+                                  )),
                               Expanded(
                                 flex: 6,
                                 child: Text(
                                   '${deviceData['value']['condition'] ?? 'No Data'}',
-                                  style: tsOneTextTheme.bodySmall,
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 15.0),
-                          const Padding(
-                            padding: EdgeInsets.only(bottom: 16.0),
-                            child: Row(
-                              children: <Widget>[
-                                Expanded(
-                                  child: Divider(
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 8.0),
-                                  child: Text(
-                                    'Device Condition',
-                                    style: TextStyle(color: Colors.grey),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Divider(
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 10.0),
-                          Row(
-                            children: [
-                              Expanded(
-                                  flex: 7,
-                                  child: Text(
-                                    "Condition Category",
-                                    style: tsOneTextTheme.bodySmall,
-                                  )),
-                              Expanded(
-                                  child: Text(
-                                    ":",
-                                    style: tsOneTextTheme.bodySmall,
-                                  )),
-                              Expanded(
-                                flex: 7,
-                                child: Text(
-                                  '${data['initial-condition-category'] ?? 'No Data'}',
-                                  style: tsOneTextTheme.bodySmall,
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 6.0),
-                          Row(
-                            children: [
-                              Expanded(
-                                  flex: 7,
-                                  child: Text(
-                                    "Condition Remarks",
-                                    style: tsOneTextTheme.bodySmall,
-                                  )),
-                              Expanded(
-                                  child: Text(
-                                    ":",
-                                    style: tsOneTextTheme.bodySmall,
-                                  )),
-                              Expanded(
-                                flex: 7,
-                                child: Text(
-                                  '${data['initial-condition-remarks'] ?? 'No Data'}',
                                   style: tsOneTextTheme.bodySmall,
                                 ),
                               ),
@@ -1329,22 +1061,6 @@ class ConfirmRequestPilotView extends GetView {
           },
         ),
       ),
-      // bottomNavigationBar: BottomAppBar(
-      //   surfaceTintColor: tsOneColorScheme.secondary,
-      //   child: ElevatedButton(
-      //     onPressed: () async {
-      //       // confirmInUseCrew(context);
-      //       //await _confirmAndProcessData(context);
-
-      //     },
-      //     style: ElevatedButton.styleFrom(
-      //         backgroundColor: TsOneColor.greenColor,
-      //         shape: RoundedRectangleBorder(
-      //           borderRadius: BorderRadius.circular(4.0),
-      //         )),
-      //     child: const Text('Confirm', style: TextStyle(color: Colors.white)),
-      //   ),
-      // ),
       bottomNavigationBar: BottomAppBar(
         surfaceTintColor: tsOneColorScheme.secondary,
         child: FutureBuilder<Map<String, dynamic>>(
