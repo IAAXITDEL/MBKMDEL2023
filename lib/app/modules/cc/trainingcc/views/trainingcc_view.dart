@@ -29,8 +29,6 @@ class TrainingccView extends GetView<TrainingccController> {
     });
 
     Future<void> add(int training) async {
-      String message = '';
-
       List<AttendanceModel> attendanceList =
           await controller.checkClassStream(controller.argumentid.value);
       List<AttendanceModel> classList =
@@ -104,7 +102,6 @@ class TrainingccView extends GetView<TrainingccController> {
 
               try {
                  List<Map<String, dynamic>> listAttendance = await controller.joinClassFuture(passwordC.text, training);
-                  print(listAttendance);
                 if (listAttendance.isEmpty) {
                   Navigator.of(context, rootNavigator: true).pop();
                   await QuickAlert.show(
@@ -113,12 +110,12 @@ class TrainingccView extends GetView<TrainingccController> {
                     text: "The class key is wrong, Please enter the key again!",
                   );
                 } else {
-                  Navigator.of(context, rootNavigator: true).pop();
-                  await Get.toNamed(Routes.ATTENDANCE_PILOTCC, arguments: {
-                    "id": listAttendance[0]["id"],
-                  });
-                  Get.find<AttendancePilotccController>().onInit();
-                  passwordC.clear();
+                  // passwordC.clear();
+                  // Navigator.of(context, rootNavigator: true).pop();
+                  print("idad ${listAttendance[0]["id"]}");
+                  add(training);
+                  // controller.moveToAttendanceTrainee(listAttendance[0]["id"]);
+                  passwordC.text = '';
                 }
               } catch (e) {
                 print("Error joining class: $e");

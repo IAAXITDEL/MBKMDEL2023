@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:googleapis/androidpublisher/v3.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../../../presentation/shared_components/TitleText.dart';
 import '../../../../../../presentation/theme.dart';
 import '../../../../../../util/empty_screen.dart';
 import '../../../../../../util/error_screen.dart';
@@ -87,6 +85,7 @@ class HomeInstructorccView extends GetView<HomeInstructorccController> {
                   //   ],
                   // ),
                   // const SizedBox(height: 10,),
+
                   StreamBuilder<List<Map<String, dynamic>>>(
                     stream: controller.getCombinedAttendanceStream("pending"),
                     builder: (context, snapshot) {
@@ -104,7 +103,12 @@ class HomeInstructorccView extends GetView<HomeInstructorccController> {
                         return const EmptyScreen();
                       }
 
-
+                      listAttendance.sort((a, b) {
+                        DateTime dateA = (a["date"]).toDate();
+                        DateTime dateB = (b["date"]).toDate();
+                        return dateA.compareTo(dateB); // Compare in descending order
+                      });
+                      
                       return ListView.builder(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),

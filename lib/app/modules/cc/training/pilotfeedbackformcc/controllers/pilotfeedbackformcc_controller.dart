@@ -11,6 +11,9 @@ class PilotfeedbackformccController extends GetxController {
   RxDouble rating = 1.0.obs;
 
   late UserPreferences userPreferences;
+  RxDouble ratingTeachingMethod = 1.0.obs;
+  RxDouble ratingMastery = 1.0.obs;
+  RxDouble ratingTimeManagement = 1.0.obs;
 
   @override
   void onInit() {
@@ -43,11 +46,10 @@ class PilotfeedbackformccController extends GetxController {
           'name': userData['NAME'],
           'department':  attendanceModel.department,
           'trainingType': attendanceModel.trainingType,
-          'vanue': attendanceModel.vanue,
+          'venue': attendanceModel.venue,
           'room': attendanceModel.room,
         };
 
-        // Tambahkan data ke list
         attendanceData.add(data);
       }
 
@@ -69,13 +71,16 @@ class PilotfeedbackformccController extends GetxController {
 
     querySnapshot.docs.forEach((doc) async {
       await doc.reference.update({
-        "rating": rating.value,
+        // "rating": rating.value,
+
+        "rTeachingMethod": ratingTeachingMethod.value,
+        "rMastery": ratingMastery.value,
+        "rTimeManagement": ratingTimeManagement.value,
         "feedbackforinstructor" : feedback,
         "updatedTime": DateTime.now().toIso8601String(),
       });
     });
   }
-
 
   Future<List<AttendanceDetailModel>> feedbackStream() async {
     userPreferences = getItLocator<UserPreferences>();
@@ -86,6 +91,7 @@ class PilotfeedbackformccController extends GetxController {
         .get();
 
     List<AttendanceDetailModel> attendanceList = [];
+
     attendanceQuery.docs.forEach((attendanceDoc) {
       AttendanceDetailModel attendance = AttendanceDetailModel();
 
@@ -94,20 +100,40 @@ class PilotfeedbackformccController extends GetxController {
         attendance.feedbackforinstructor = attendanceDoc['feedbackforinstructor'];
       }
 
-      // Check if 'rating' exists in the document
-      if (attendanceDoc.data().containsKey('rating')) {
-        attendance.rating = attendanceDoc['rating'].toDouble();
+      if (attendanceDoc.data().containsKey('rTeachingMethod')) {
+        attendance.rTeachingMethod = attendanceDoc['rTeachingMethod'];
       }
+
+      if (attendanceDoc.data().containsKey('rMastery')) {
+        attendance.rMastery = attendanceDoc['rMastery'];
+      }
+
+      if (attendanceDoc.data().containsKey('rTimeManagement')) {
+        attendance.rTimeManagement = attendanceDoc['rTimeManagement'];
+      }
+
       attendanceList.add(attendance);
     });
 
-    rating.value = attendanceList.isNotEmpty ? attendanceList[0].rating ?? 1.0 : 1.0;
+    // Check if the list is not empty before accessing its elements
+    if (attendanceList.isNotEmpty) {
+      rating.value = attendanceList[0].rating ?? 1.0;
 
-    print("asda");
-    print(attendanceList);
+      if (attendanceList[0].rTeachingMethod != null) {
+        ratingTeachingMethod.value = attendanceList[0].rTeachingMethod!;
+      }
+
+      if (attendanceList[0].rMastery != null) {
+        ratingMastery.value = attendanceList[0].rMastery!;
+      }
+
+      if (attendanceList[0].rTimeManagement != null) {
+        ratingTimeManagement.value = attendanceList[0].rTimeManagement!;
+      }
+    }
+
     return attendanceList;
   }
-
 
   @override
   void onReady() {

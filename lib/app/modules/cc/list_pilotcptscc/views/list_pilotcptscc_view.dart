@@ -199,8 +199,7 @@ class ListPilotcptsccView extends GetView<ListPilotcptsccController> {
                                         children: [
                                           Text(
                                             listAttendance[index]["ID NO"]
-                                                .toString() ??
-                                                "",
+                                                .toString(),
                                             style: tsOneTextTheme.labelSmall,
                                           ),
                                           Container(

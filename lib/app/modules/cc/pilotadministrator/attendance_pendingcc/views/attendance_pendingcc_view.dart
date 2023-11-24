@@ -18,7 +18,10 @@ class AttendancePendingccView extends GetView<AttendancePendingccController> {
   @override
   Widget build(BuildContext context) {
     var subjectC = TextEditingController();
-    var vanueC = TextEditingController();
+    var trainingTypeC = TextEditingController();
+    var departmentC = TextEditingController();
+    var roomC = TextEditingController();
+    var venueC = TextEditingController();
     var dateC = TextEditingController();
     var instructorC = TextEditingController();
 
@@ -106,7 +109,10 @@ class AttendancePendingccView extends GetView<AttendancePendingccController> {
 
                     subjectC.text = listAttendance[0]["subject"];
                    // dateC.text = DateFormat('dd MMM yyyy').format(dateTime!) ?? "N/A";
-                    vanueC.text = listAttendance[0]["vanue"];
+                    trainingTypeC.text = listAttendance[0]["trainingType"];
+                    departmentC.text = listAttendance[0]["department"];
+                    roomC.text = listAttendance[0]["room"];
+                    venueC.text = listAttendance[0]["venue"];
                     instructorC.text = listAttendance[0]["name"];
                   } else {
                     // Handle the case where the list is empty or null
@@ -147,8 +153,40 @@ class AttendancePendingccView extends GetView<AttendancePendingccController> {
                         children: [
                           Expanded(
                             child: FormTextField(
-                                text: "Vanue",
-                                textController: vanueC,
+                                text: "Department",
+                                textController: departmentC,
+                                readOnly: true),
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Expanded(
+                            child: FormTextField(
+                                text: "Venue",
+                                textController: venueC,
+                                readOnly: true),
+                          )
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Expanded(
+                            child: FormTextField(
+                                text: "Training Type",
+                                textController: trainingTypeC,
+                                readOnly: true),
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Expanded(
+                            child: FormTextField(
+                                text: "Room",
+                                textController: roomC,
                                 readOnly: true),
                           )
                         ],

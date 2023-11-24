@@ -26,12 +26,11 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
   @override
   Widget build(BuildContext context) {
     var subjectC = TextEditingController();
-    var vanueC = TextEditingController();
+    var venueC = TextEditingController();
     var dateC = TextEditingController();
     var instructorC = TextEditingController();
     var loaNoC = TextEditingController();
 
-    int? trainingC = 0;
 
     var departmentC = TextEditingController();
     var trainingtypeC = TextEditingController();
@@ -103,8 +102,8 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
         body: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 20),
-            child: StreamBuilder<List<Map<String, dynamic>>>(
-                stream: controller.getCombinedAttendanceStream(),
+            child: FutureBuilder<List<Map<String, dynamic>>?>(
+                future: controller.getCombinedAttendance(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return LoadingScreen(); // Placeholder while loading
@@ -124,7 +123,7 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                     subjectC.text = listAttendance[0]["subject"] ?? "N/A";
                     dateC.text = DateFormat('dd MMM yyyy').format(dateTime!);
                     departmentC.text = listAttendance[0]["department"] ?? "N/A";
-                    vanueC.text = listAttendance[0]["vanue"] ?? "N/A";
+                    venueC.text = listAttendance[0]["venue"] ?? "N/A";
                     trainingtypeC.text = listAttendance[0]["trainingType"] ?? "N/A";
                     roomC.text = listAttendance[0]["room"] ?? "N/A";
                     instructorC.text = listAttendance[0]["name"] ?? "N/A";
@@ -178,8 +177,8 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                           ),
                           Expanded(
                             child: FormTextField(
-                                text: "Vanue",
-                                textController: vanueC,
+                                text: "Venue",
+                                textController: venueC,
                                 readOnly: true),
                           )
                         ],
@@ -203,6 +202,7 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                             child: FormTextField(
                               text: "Room",
                               textController: roomC,
+                                readOnly: true
                             ),
                           )
                         ],
@@ -210,122 +210,44 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                       SizedBox(
                         height: 20,
                       ),
-                      FormTextField(text: "LOA NO.", textController: loaNoC),
+                      FormTextField(text: "LOA NO.", textController: loaNoC, readOnly: true),
                       SizedBox(
                         height: 20,
                       ),
                       InkWell(
                         onTap: () {},
-                        child: Container(
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                color: TsOneColor.secondaryContainer,
-                                width: 1,
-                              ),
-                              borderRadius: BorderRadius.circular(10)),
-                          child: ListTile(
-                            title: Text(
-                              "Chair Person/ Instructor",
-                              style: tsOneTextTheme.labelSmall,
-                            ),
-                            subtitle: Text(
-                              listAttendance[0]["name"],
-                              style: tsOneTextTheme.headlineMedium,
-                            ),
-                          ),
+                        child:
+                        // Container(
+                        //   decoration: BoxDecoration(
+                        //       border: Border.all(
+                        //         color: TsOneColor.secondaryContainer,
+                        //         width: 1,
+                        //       ),
+                        //       borderRadius: BorderRadius.circular(10)),
+                        //   child:
+                        //   ListTile(
+                        //     title: Text(
+                        //       "Chair Person/ Instructor",
+                        //       style: tsOneTextTheme.labelSmall,
+                        //     ),
+                        //     subtitle: Text(
+                        //       listAttendance[0]["name"],
+                        //       style: tsOneTextTheme.headlineMedium,
+                        //     ),
+                        //   ),
+                        // ),
+                        FormTextField(
+                          text: "Chair Person/ Instructor",
+                          textController: TextEditingController(text: listAttendance[0]["name"]),
+                          readOnly: true,
+                          style: tsOneTextTheme.headlineMedium, // Set the style as needed
                         ),
                       ),
                       SizedBox(
                         height: 20,
                       ),
-                      StreamBuilder<int>(
-                        stream: controller.attendanceStream(),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return CircularProgressIndicator();
-                          } else if (snapshot.hasError) {
-                            return Text('Error: ${snapshot.error}');
-                          } else {
-                            int attendanceCount = snapshot.data ?? 0;
-                            return InkWell(
-                              onTap: () {
-                                if (controller.jumlah.value > 0) {
-                                  Get.toNamed(Routes.LIST_ATTENDANCECC,
-                                      arguments: {
-                                        "id": controller.argumentid.value,
-                                        "status": "confirmation"
-                                      });
-                                }
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: TsOneColor.secondaryContainer,
-                                      width: 1,
-                                    ),
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: ListTile(
-                                  title: Text(
-                                    "Attendance",
-                                    style: tsOneTextTheme.labelSmall,
-                                  ),
-                                  subtitle: Text(
-                                    "${attendanceCount} person",
-                                    style: tsOneTextTheme.headlineMedium,
-                                  ),
-                                  trailing: Icon(Icons.navigate_next),
-                                ),
-                              ),
-                            );
-                          }
-                        },
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      listAttendance[0]["status"] == "done" ?
-                      //LIST ABSENT
-                      Column(
-                        children: [InkWell(
-                          onTap: () {
-                            if (controller.jumlah.value > 0) {
-                              print(controller.jumlah.value);
-                              Get.toNamed(
-                                Routes.LIST_ABSENTCPTSCC,
-                                arguments: {
-                                  "id": controller.argumentid.value
-                                },
-                              );
-                            }
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: TsOneColor.secondaryContainer,
-                                width: 1,
-                              ),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: ListTile(
-                              title: Text(
-                                "Absent",
-                                style: tsOneTextTheme.labelSmall,
-                              ),
-                              subtitle: Obx(() {
-                                return Text(
-                                  "${controller.total.value.toString()} person",
-                                  style: tsOneTextTheme.headlineMedium,
-                                );
-                              }),
-                              trailing: Icon(Icons.navigate_next),
-                            ),
-                          ),
-                        ) , SizedBox(
-                          height: 20,
-                        ), ],
-                      ): SizedBox(),
-                      Text("Attendance"),
+
+                      Text("Meeting or Training"),
                       Row(
                         children: [
                           Row(
@@ -333,9 +255,8 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                               SizedBox(
                                 width: 10,
                               ),
-
                               Obx(
-                                () => Radio<String>(
+                                    () => Radio<String>(
                                   value: listAttendance[0]["attendanceType"] ?? "N/A",
                                   groupValue: controller.selectedMeeting.value,
                                   onChanged: (String? newValue) {
@@ -354,6 +275,133 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                       SizedBox(
                         height: 10,
                       ),
+
+                      Row(
+                        children: [
+                          Text("Present Trainees"),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+
+                      StreamBuilder<int>(
+                        stream: controller.attendanceStream(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return CircularProgressIndicator();
+                          } else if (snapshot.hasError) {
+                            return Text('Error: ${snapshot.error}');
+                          } else {
+
+                            int attendanceCount = snapshot.data ?? 0;
+                            return InkWell(
+                              onTap: () {
+                                if (controller.jumlah.value > 0) {
+                                  Get.toNamed(Routes.LIST_ATTENDANCECC,
+                                      arguments: {
+                                        "id": controller.argumentid.value,
+                                        "status": listAttendance[0]["status"]
+                                      });
+                                }
+                              },
+                              child:
+                                  //NEW
+                              // Container(
+                              //   decoration: BoxDecoration(
+                              //     border: Border.all(
+                              //       color: TsOneColor.secondaryContainer,
+                              //       width: 1,
+                              //     ),
+                              //     borderRadius: BorderRadius.circular(10),
+                              //   ),
+                              //   child: FormTextField(
+                              //     text: "Attendance",
+                              //     textController: TextEditingController(text: "${attendanceCount} person"),
+                              //     readOnly: true,
+                              //     style: tsOneTextTheme.headlineMedium, // Set the style as needed
+                              //     suffixIcon: Icon(Icons.navigate_next), // Set the trailing icon
+                              //   ),
+                              // ),
+                              //OLD
+                              Container(
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: TsOneColor.secondaryContainer,
+                                      width: 1,
+                                    ),
+                                    borderRadius: BorderRadius.circular(10)),
+                                child:
+                                    // Row(
+                                    //   children: [
+                                    //     Text(
+                                    //       "${attendanceCount} person",
+                                    //       style: tsOneTextTheme.headlineMedium,
+                                    //     ),
+                                    //     Icon(Icons.navigate_next),
+                                    //   ],
+                                    // ),
+                                ListTile(
+                                  title: Text(
+                                    "${attendanceCount} person",
+                                    style: tsOneTextTheme.headlineMedium,
+                                  ),
+                                  trailing: Icon(Icons.navigate_next),
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      // Text(
+                      //   "Absent Trainees",
+                      //   style: tsOneTextTheme.labelSmall,
+                      // ),
+                      // SizedBox(
+                      //   height: 10,
+                      // ),
+                      listAttendance[0]["status"] == "done" ?
+                      //LIST ABSENT
+                      Column(
+                        children: [
+                          InkWell(
+                          onTap: () {
+                            if (controller.jumlah.value > 0) {
+                              Get.toNamed(
+                                Routes.LIST_ABSENTCPTSCC,
+                                arguments: {
+                                  "id": controller.argumentid.value
+                                },
+                              );
+                            }
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: TsOneColor.secondaryContainer,
+                                width: 1,
+                              ),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: ListTile(
+                              title: Obx(() {
+                                return Text(
+                                  "${controller.total.value.toString()} person",
+                                  style: tsOneTextTheme.headlineMedium,
+                                );
+                              }),
+                              trailing: Icon(Icons.navigate_next),
+                            ),
+                          ),
+                        ) , SizedBox(
+                          height: 20,
+                        ), ],
+                      ): SizedBox(),
+
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
@@ -382,9 +430,13 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                                         },
                                       );
 
-                                      await controller.savePdfFile(
-                                          await controller
-                                              .attendancelist());
+                                      // Check if pdfBytes is not null before accessing its value
+                                      if (controller.pdfBytes != null && controller.pdfBytes!.isNotEmpty) {
+                                        await controller.savePdfFile(controller.pdfBytes![0]);
+                                      } else {
+                                        print("pdfBytes is null or empty");
+                                        // Handle the case where pdfBytes is null or empty
+                                      }
                                     } catch (e) {
                                       print('Error: $e');
                                     } finally {
@@ -443,7 +495,7 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                                 //-------------------------ABSENT-----------------------
                                 Row(
                                   children: [
-                                    Text("Absent"),
+                                    Text("Absent Trainees"),
                                   ],
                                 ),
                                 SizedBox(
@@ -486,7 +538,7 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                                         showSelectedItems: true,
                                         dropdownSearchDecoration:
                                             InputDecoration(
-                                          labelText: "Training",
+                                          labelText: "Select Absentees' Names",
                                           border: InputBorder.none,
                                         ),
                                         showSearchBox: true,
@@ -512,10 +564,6 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                                             selectedUserId = 0;
                                           }
 
-                                          trainingC = selectedUserId;
-                                          // Handle user selection here, including the selectedUserId
-                                          print(
-                                              'Selected name: $selectedName, Selected ID: $selectedUserId');
                                         },
                                       );
                                     },
@@ -603,6 +651,7 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                                   height: 10,
                                 ),
                                 Container(
+                                  height : 200,
                                   decoration: BoxDecoration(
                                     border: Border.all(
                                       color: TsOneColor.secondaryContainer,

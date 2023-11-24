@@ -56,6 +56,7 @@ class AttendancePilotccView extends GetView<AttendancePilotccController> {
     return Scaffold(
       appBar: AppBar(
         title: const RedTitleText(text: "TRAINING",),
+        centerTitle: true,
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
@@ -115,6 +116,7 @@ class AttendancePilotccView extends GetView<AttendancePilotccController> {
                           ),
 
                           //DEPARTEMENT
+                          listAttendance[0]["department"] != null ?
                           Padding(
                             padding: EdgeInsets.symmetric(vertical: 5),
                             child:  Row(
@@ -130,9 +132,10 @@ class AttendancePilotccView extends GetView<AttendancePilotccController> {
                                     child: Text(listAttendance[0]["department"] ?? "N/A")),
                               ],
                             ),
-                          ),
+                          ) : SizedBox(),
 
                           //TRAINING TYPE
+                          listAttendance[0]["trainingType"] != null ?
                           Padding(
                             padding: EdgeInsets.symmetric(vertical: 5),
                             child:  Row(
@@ -148,7 +151,7 @@ class AttendancePilotccView extends GetView<AttendancePilotccController> {
                                     child: Text(listAttendance[0]["trainingType"] ?? "N/A")),
                               ],
                             ),
-                          ),
+                          ) : SizedBox(),
 
                           //DATE
                           Padding(
@@ -168,25 +171,26 @@ class AttendancePilotccView extends GetView<AttendancePilotccController> {
                             ),
                           ),
 
-                          //VANUE
+                          //VENUE
                           Padding(
                             padding: EdgeInsets.symmetric(vertical: 5),
                             child:  Row(
                               children: [
                                 Expanded(
                                     flex: 3,
-                                    child: Text("Vanue")),
+                                    child: Text("Venue")),
                                 Expanded(
                                     flex: 1,
                                     child: Text(":")),
                                 Expanded(
                                     flex: 4,
-                                    child: Text(listAttendance[0]["vanue"] ?? "N/A")),
+                                    child: Text(listAttendance[0]["venue"] ?? "N/A")),
                               ],
                             ),
                           ),
 
                           //ROOM
+                          listAttendance[0]["room"] != null ?
                           Padding(
                             padding: EdgeInsets.symmetric(vertical: 5),
                             child: Row(
@@ -202,7 +206,7 @@ class AttendancePilotccView extends GetView<AttendancePilotccController> {
                                     child: Text(listAttendance[0]["room"] ?? "N/A")),
                               ],
                             ),
-                          ),
+                          ) : SizedBox(),
 
                           //INSTRUCTOR
                            Padding(
@@ -236,6 +240,7 @@ class AttendancePilotccView extends GetView<AttendancePilotccController> {
                         height: 5,
                       ),
                       Container(
+                        height : 200,
                         decoration: BoxDecoration(
                           border: Border.all(
                             color: TsOneColor.secondaryContainer,

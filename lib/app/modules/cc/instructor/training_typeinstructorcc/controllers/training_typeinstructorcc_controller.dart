@@ -1,13 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 
 import '../../../../../../data/users/user_preferences.dart';
 import '../../../../../../data/users/users.dart';
 import '../../../../../../di/locator.dart';
-import '../../../../../../presentation/view_model/attendance_detail_model.dart';
 import '../../../../../../presentation/view_model/attendance_model.dart';
 import '../../../../../routes/app_pages.dart';
 import '../../../pilotadministrator/trainingtypecc/controllers/trainingtypecc_controller.dart';
@@ -91,7 +87,6 @@ class TrainingTypeinstructorccController extends GetxController {
     else {
       return false;
     }
-    return false;
   }
 
   Stream<List<Map<String, dynamic>>> getCombinedAttendanceStream(

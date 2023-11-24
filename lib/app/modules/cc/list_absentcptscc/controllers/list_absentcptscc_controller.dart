@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 import '../../../../../data/users/user_preferences.dart';
-import '../../../../../di/locator.dart';
 import '../../../../../presentation/view_model/attendance_detail_model.dart';
 
 class ListAbsentcptsccController extends GetxController {

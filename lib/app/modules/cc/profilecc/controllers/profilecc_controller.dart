@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -25,7 +24,7 @@ class ProfileccController extends GetxController {
 
   late UserViewModel viewModel;
   late UserPreferences userPreferences;
-
+  RxList<Uint8List>? pdfBytes = RxList<Uint8List>();
   RxBool isTraining = false.obs;
   RxBool isInstructor = false.obs;
   RxBool isAdministrator = false.obs;
@@ -47,7 +46,19 @@ class ProfileccController extends GetxController {
     idTrainee.value = userPreferences.getIDNo();
     cekRole();
     fetchAttendanceData(userPreferences.getIDNo());
+    // _loadPdf(userPreferences.getIDNo());
     super.onInit();
+  }
+
+  Future<void> _loadPdf(int idCrew) async {
+    try {
+      // Memproses PDF dan menyimpannya ke dalam variabel pdfBytes
+      List<int> pdfBytesList = await getPDFTrainingCard(idCrew);
+      pdfBytes?.assignAll([Uint8List.fromList(pdfBytesList)]);
+      print("sudah");
+    } catch (e) {
+      print('Error loading PDF: $e');
+    }
   }
 
   //Mendapatkan data pribadi
@@ -91,19 +102,15 @@ class ProfileccController extends GetxController {
   Future<void> cekRole() async {
     userPreferences = getItLocator<UserPreferences>();
 
-    // SEBAGAI CPTS
-    if( userPreferences.getInstructor().contains(UserModel.keyCPTS) && userPreferences.getRank().contains(UserModel.keyPositionCaptain) || userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)){
-
-    }
     // SEBAGAI INSTRUCTOR
-    else if( userPreferences.getInstructor().contains(UserModel.keySubPositionCCP) || userPreferences.getInstructor().contains(UserModel.keySubPositionFIA) || userPreferences.getInstructor().contains(UserModel.keySubPositionFIS) || userPreferences.getInstructor().contains(UserModel.keySubPositionPGI)&& userPreferences.getRank().contains(UserModel.keyPositionCaptain) || userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)){
+    if( userPreferences.getInstructor().contains(UserModel.keySubPositionCCP) || userPreferences.getInstructor().contains(UserModel.keySubPositionFIA) || userPreferences.getInstructor().contains(UserModel.keySubPositionFIS) || userPreferences.getInstructor().contains(UserModel.keySubPositionPGI)&& userPreferences.getRank().contains(UserModel.keyPositionCaptain) || userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)){
       isTraining.value = true;
       isInstructor.value = true;
       instructorType.value = userPreferences.getInstructorString();
       print(userPreferences.getInstructorString());
     }
     // SEBAGAI TRAINING
-    else if( userPreferences.getRank().contains(UserModel.keyPositionCaptain) || userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)){
+   if( userPreferences.getRank().contains(UserModel.keyPositionCaptain) || userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)){
       isTraining.value = true;
     }
     // SEBAGAI PILOT ADMINISTRATOR
@@ -275,6 +282,7 @@ class ProfileccController extends GetxController {
               .collection('attendance-detail')
               .where("idtraining", isEqualTo: idTrainee)
               .where("idattendance", whereIn: attendanceIds)
+              .where("score", isEqualTo: "PASS")
               .get();
           attendanceDetailData
               .addAll(attendanceDetailQuery.docs.map((doc) => doc.data()));
@@ -347,11 +355,12 @@ class ProfileccController extends GetxController {
           .get();
 
       if (attendanceQuery.docs.isNotEmpty) {
-        print(subject);
         final attendanceDetailQuery = await firestore.collection(
-            'attendance-detail').where(
-            "idtraining", isEqualTo: idTrainee).where(
-            "status", isEqualTo: "donescoring").get();
+            'attendance-detail')
+            .where("idtraining", isEqualTo: idTrainee)
+            .where("status", isEqualTo: "donescoring")
+            .where("score", isEqualTo: "PASS")
+            .get();
         final attendanceDetailData = attendanceDetailQuery.docs.map((doc) =>
         doc.data() as Map<String, dynamic>).toList();
         if (attendanceDetailData.isEmpty) {
@@ -483,6 +492,1623 @@ class ProfileccController extends GetxController {
         print('No user data found or there was an error.');
       }
 
+      final List<Map<String, dynamic>>? historyDataBasicIndoc = await getHistoryData(idCrew, "BASIC INDOC", 1);
+      final List<Map<String, dynamic>>? historyDataLSWB = await getHistoryData(idCrew, "LOAD SHEET / WEIGHT & BALANCE", 1);
+      final List<Map<String, dynamic>>? historyDataRVSM = await getHistoryData(idCrew, "RVSM", 1);
+      final List<Map<String, dynamic>>? historyDataWNDSHEAR = await getHistoryData(idCrew, "WNDSHEAR", 8);
+      final List<Map<String, dynamic>>? historyDataAlarCfit = await getHistoryData(idCrew, "ALAR/CFIT", 4);
+      final List<Map<String, dynamic>>? historyDataSEP = await getHistoryData(idCrew, "SEP", 4);
+      final List<Map<String, dynamic>>? historyDataSEPDRILL = await getHistoryData(idCrew, "SEP DRILL", 2);
+      final List<Map<String, dynamic>>? historyDataDGR = await getHistoryData(idCrew, "DGR & AVSEC", 2);
+      final List<Map<String, dynamic>>? historyDataSMS = await getHistoryData(idCrew, "SMS", 4);
+      final List<Map<String, dynamic>>? historyDataCRM = await getHistoryData(idCrew, "CRM", 4);
+      final List<Map<String, dynamic>>? historyDataPBN = await getHistoryData(idCrew, "PBN", 2);
+      final List<Map<String, dynamic>>? historyDataRGT = await getHistoryData(idCrew, "RGT", 8);
+      final List<Map<String, dynamic>>? historyDataRHS = await getHistoryData(idCrew, "RHS CHECK (SIM)", 8);
+      final List<Map<String, dynamic>>? historyDataUPRT = await getHistoryData(idCrew, "UPRT", 2);
+      final List<Map<String, dynamic>>? historyDataRNP = await getHistoryData(idCrew, "RNP (GNSS)", 4);
+      final List<Map<String, dynamic>>? historyDataLINECHECK = await getHistoryData(idCrew, "LINE CHECK", 4);
+      final List<Map<String, dynamic>>? historyDataLVO = await getHistoryData(idCrew, "LVO", 2);
+      final List<Map<String, dynamic>>? historyDataETOPSSIM = await getHistoryData(idCrew, "ETOPS SIM", 2);
+      final List<Map<String, dynamic>>? historyDataETOPSFLT = await getHistoryData(idCrew, "ETOPS FLT", 2);
+
+
+      // ------------------- PAGE 1 ------------------
+      pdf.addPage(
+        pw.Page(
+          pageTheme: pw.PageTheme(
+            margin: const pw.EdgeInsets.all(16),
+            pageFormat: PdfPageFormat.a4.landscape,
+          ),
+          build: (pw.Context context) {
+
+            return pw.Center(
+              child: pw.Padding(
+                  padding: pw.EdgeInsets.all(17),
+                  child: pw.Column(
+                      children: [
+                        pw.Expanded(
+                            flex: 1,
+                            child: pw.Row(
+                                mainAxisSize: pw.MainAxisSize.min,
+                                children: [
+                                  // ------------------- PAGE 1 TABEL 1 ------------------
+                                  pw.SizedBox(width: 28),
+                                  pw.Expanded(
+                                    child: pw.Stack(
+                                        children: [
+                                          pw.Positioned.fill(
+                                              child: pw.Center(
+                                                  child: pw.Image(
+                                                      pw.MemoryImage(
+                                                          backgroundImageData
+                                                      ),
+                                                      fit: pw.BoxFit.cover,
+                                                      height: 210,
+                                                      width: 210
+                                                  )
+                                              )
+                                          ),
+                                          pw.Column(
+                                              mainAxisAlignment: pw.MainAxisAlignment.center,
+                                              crossAxisAlignment: pw.CrossAxisAlignment.center,
+                                              children: [
+                                                pw.Table(
+                                                  border: pw.TableBorder.all(width: 1, color: PdfColors.black),
+                                                  columnWidths: {
+                                                    0: pw.FlexColumnWidth(1),
+                                                    1: pw.FlexColumnWidth(1),
+                                                    2: pw.FlexColumnWidth(1),
+                                                  },
+                                                  children: [
+                                                    // Header row
+                                                    pw.TableRow(
+                                                      children: [
+                                                        pw.Container(
+                                                          color: PdfColors.grey300,
+                                                          height: 30,
+                                                          child: pw.Padding(
+                                                              padding: pw.EdgeInsets.all(3),
+                                                              child: pw.Center(
+                                                                child : pw.Text('TRAINING', style: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold), textAlign: pw.TextAlign.center,),
+                                                              )
+                                                          ),
+                                                        ),
+
+                                                        pw.Container(
+                                                          color: PdfColors.grey300,
+                                                          height: 30,
+                                                          child: pw.Padding(
+                                                              padding: pw.EdgeInsets.all(3),
+                                                              child: pw.Center(
+                                                                child : pw.Text('DATE', style: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold), textAlign: pw.TextAlign.center,),
+                                                              )
+                                                          ),
+                                                        ),
+
+                                                        pw.Container(
+                                                          color: PdfColors.grey300,
+                                                          height: 30,
+                                                          child: pw.Padding(
+                                                              padding: pw.EdgeInsets.all(3),
+                                                              child: pw.Center(
+                                                                child : pw.Text('VALID TO', style: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold), textAlign: pw.TextAlign.center,),
+                                                              )
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+
+                                                pw.Row(
+                                                  mainAxisSize: pw.MainAxisSize.min,
+                                                  children: [
+                                                    pw.Expanded(
+                                                      flex: 1,
+                                                      child: pw.Table(
+                                                        border: pw.TableBorder.all(width: 1, color: PdfColors.black),
+                                                        columnWidths: {
+                                                          0: pw.FlexColumnWidth(1), // Adjust as needed
+                                                        },
+                                                        children: [
+                                                          pw.TableRow(
+                                                            children: [
+                                                              pw.Container(
+                                                                height: 4 * 15,
+                                                                child: pw.Center(
+                                                                  child: pw.Text("RNP (GNSS)", style: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold), textAlign: pw.TextAlign.center,),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    // Right Table with Data
+                                                    pw.Expanded(
+                                                      flex: 2,
+                                                      child:  pw.Table(
+                                                        border: pw.TableBorder.all(width: 1, color: PdfColors.black),
+                                                        columnWidths: {
+                                                          0: pw.FlexColumnWidth(2),
+                                                          1: pw.FlexColumnWidth(2),
+                                                        },
+                                                        children: [
+                                                          // Data rows
+                                                          for (var item in historyDataRNP!)
+                                                            pw.TableRow(
+                                                              children: [
+                                                                TextCard(text: item['date'] ?? ''),
+                                                                TextCard(text: item['valid_to'] ?? ''),
+                                                              ],
+                                                            ),
+                                                        ],
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+
+                                                pw.Row(
+                                                  mainAxisSize: pw.MainAxisSize.min,
+                                                  children: [
+                                                    pw.Expanded(
+                                                      flex: 1,
+                                                      child: pw.Table(
+                                                        border: pw.TableBorder.all(width: 1, color: PdfColors.black),
+                                                        columnWidths: {
+                                                          0: pw.FlexColumnWidth(1), // Adjust as needed
+                                                        },
+                                                        children: [
+                                                          pw.TableRow(
+                                                            children: [
+                                                              pw.Container(
+                                                                height: 4 * 15,
+                                                                child: pw.Center(
+                                                                  child: pw.Text("LINE CHECK", style: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold), textAlign: pw.TextAlign.center,),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    // Right Table with Data
+                                                    pw.Expanded(
+                                                      flex: 2,
+                                                      child:  pw.Table(
+                                                        border: pw.TableBorder.all(width: 1, color: PdfColors.black),
+                                                        columnWidths: {
+                                                          0: pw.FlexColumnWidth(2),
+                                                          1: pw.FlexColumnWidth(2),
+                                                        },
+                                                        children: [
+                                                          // Data rows
+                                                          for (var item in historyDataLINECHECK!)
+                                                            pw.TableRow(
+                                                              children: [
+                                                                TextCard(text: item['date'] ?? ''),
+                                                                TextCard(text: item['valid_to'] ?? ''),
+                                                              ],
+                                                            ),
+                                                        ],
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+
+                                                pw.Row(
+                                                  mainAxisSize: pw.MainAxisSize.min,
+                                                  children: [
+                                                    pw.Expanded(
+                                                      flex: 1,
+                                                      child: pw.Table(
+                                                        border: pw.TableBorder.all(width: 1, color: PdfColors.black),
+                                                        columnWidths: {
+                                                          0: pw.FlexColumnWidth(1), // Adjust as needed
+                                                        },
+                                                        children: [
+                                                          pw.TableRow(
+                                                            children: [
+                                                              pw.Container(
+                                                                height: 2 * 15,
+                                                                child: pw.Center(
+                                                                  child: pw.Text("LVO", style: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold), textAlign: pw.TextAlign.center,),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    // Right Table with Data
+                                                    pw.Expanded(
+                                                      flex: 2,
+                                                      child:  pw.Table(
+                                                        border: pw.TableBorder.all(width: 1, color: PdfColors.black),
+                                                        columnWidths: {
+                                                          0: pw.FlexColumnWidth(2),
+                                                          1: pw.FlexColumnWidth(2),
+                                                        },
+                                                        children: [
+                                                          // Data rows
+                                                          for (var item in historyDataLVO!)
+                                                            pw.TableRow(
+                                                              children: [
+                                                                TextCard(text: item['date'] ?? ''),
+                                                                TextCard(text: item['valid_to'] ?? ''),
+                                                              ],
+                                                            ),
+                                                        ],
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+
+                                                pw.Row(
+                                                  mainAxisSize: pw.MainAxisSize.min,
+                                                  children: [
+                                                    pw.Expanded(
+                                                      flex: 1,
+                                                      child: pw.Table(
+                                                        border: pw.TableBorder.all(width: 1, color: PdfColors.black),
+                                                        columnWidths: {
+                                                          0: pw.FlexColumnWidth(1), // Adjust as needed
+                                                        },
+                                                        children: [
+                                                          pw.TableRow(
+                                                            children: [
+                                                              pw.Container(
+                                                                height: 2 * 15,
+                                                                child: pw.Center(
+                                                                  child: pw.Text("ETOPS SIM", style: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold), textAlign: pw.TextAlign.center,),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    // Right Table with Data
+                                                    pw.Expanded(
+                                                      flex: 2,
+                                                      child:  pw.Table(
+                                                        border: pw.TableBorder.all(width: 1, color: PdfColors.black),
+                                                        columnWidths: {
+                                                          0: pw.FlexColumnWidth(2),
+                                                          1: pw.FlexColumnWidth(2),
+                                                        },
+                                                        children: [
+                                                          for (var item in historyDataETOPSSIM!)
+                                                            pw.TableRow(
+                                                              children: [
+                                                                TextCard(text: item['date'] ?? ''),
+                                                                TextCard(text: item['valid_to'] ?? ''),
+                                                              ],
+                                                            ),
+                                                        ],
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+
+                                                pw.Row(
+                                                  mainAxisSize: pw.MainAxisSize.min,
+                                                  children: [
+                                                    pw.Expanded(
+                                                      flex: 1,
+                                                      child: pw.Table(
+                                                        border: pw.TableBorder.all(width: 1, color: PdfColors.black),
+                                                        columnWidths: {
+                                                          0: pw.FlexColumnWidth(1), // Adjust as needed
+                                                        },
+                                                        children: [
+                                                          pw.TableRow(
+                                                            children: [
+                                                              pw.Container(
+                                                                height: 2 * 15,
+                                                                child: pw.Center(
+                                                                  child: pw.Text("ETOPS FLT", style: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold), textAlign: pw.TextAlign.center,),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    // Right Table with Data
+                                                    pw.Expanded(
+                                                      flex: 2,
+                                                      child:  pw.Table(
+                                                        border: pw.TableBorder.all(width: 1, color: PdfColors.black),
+                                                        columnWidths: {
+                                                          0: pw.FlexColumnWidth(2),
+                                                          1: pw.FlexColumnWidth(2),
+                                                        },
+                                                        children: [
+                                                          for (var item in historyDataETOPSFLT!)
+                                                            pw.TableRow(
+                                                              children: [
+                                                                TextCard(text: item['date'] ?? ''),
+                                                                TextCard(text: item['valid_to'] ?? ''),
+                                                              ],
+                                                            ),
+                                                        ],
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+
+                                                pw.Table(
+                                                  border: pw.TableBorder.all(width: 1, color: PdfColors.black),
+                                                  columnWidths: {
+                                                    0: pw.FlexColumnWidth(1),
+                                                    1: pw.FlexColumnWidth(1),
+                                                    2: pw.FlexColumnWidth(1),
+                                                  },
+                                                  children: [
+                                                    // Data rows
+                                                    for (int i = 0; i < 4; i++)
+                                                      pw.TableRow(
+                                                        children: [
+                                                          TextCard(text: ""),
+                                                          TextCard(text: ""),
+                                                          TextCard(text: ""),
+                                                        ],
+                                                      ),
+
+                                                  ],
+                                                ),
+                                              ]),
+                                        ]
+                                    ),
+                                  ),
+                                  pw.SizedBox(width: 25),
+
+                                  // ------------------- PAGE 1 TABEL 2 ------------------
+                                  pw.Expanded(
+                                    child: pw.Stack(
+                                        children: [
+                                          pw.Positioned.fill(
+                                              child: pw.Center(
+                                                  child: pw.Image(
+                                                      pw.MemoryImage(
+                                                          backgroundImageData
+                                                      ),
+                                                      fit: pw.BoxFit.cover,
+                                                      height: 210,
+                                                      width: 210
+                                                  )
+                                              )
+                                          ),
+                                          pw.Column(
+                                              mainAxisAlignment: pw.MainAxisAlignment.center,
+                                              crossAxisAlignment: pw.CrossAxisAlignment.center,
+                                              children: [
+                                                pw.Table(
+                                                  border: pw.TableBorder.all(width: 1, color: PdfColors.black),
+                                                  columnWidths: {
+                                                    0: pw.FlexColumnWidth(1),
+                                                    1: pw.FlexColumnWidth(2),
+                                                  },
+                                                  children: [
+                                                    // Header row
+                                                    pw.TableRow(
+                                                      children: [
+                                                        pw.Container(
+                                                          color: PdfColors.grey300,
+                                                          height: 30,
+                                                          child: pw.Padding(
+                                                            padding: pw.EdgeInsets.all(3),
+                                                            child: pw.Text('TRAINING CODE', style: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold), textAlign: pw.TextAlign.center,),
+                                                          ),
+                                                        ),
+
+                                                        pw.Container(
+                                                            color: PdfColors.grey300,
+                                                            height: 30,
+                                                            child: pw.Center(
+                                                              child: pw.Padding(
+                                                                padding: pw.EdgeInsets.all(3),
+                                                                child: pw.Text('REMARK', style: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold), textAlign: pw.TextAlign.left,),
+                                                              ),
+                                                            )
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    // Data rows
+                                                    pw.TableRow(
+                                                      children: [
+                                                        TextTrainingCodeCard(text: "RVSM"),
+                                                        RemarkTextCard(text: "Reduced Vertical Separation Minima")
+                                                      ],
+                                                    ),
+
+                                                    pw.TableRow(
+                                                      children: [
+                                                        TextTrainingCodeCard(text: "DGR"),
+                                                        RemarkTextCard(text: "Dangerous Goods and Regulations")
+                                                      ],
+                                                    ),
+
+                                                    pw.TableRow(
+                                                      children: [
+                                                        TextTrainingCodeCard(text: "AVSEC"),
+                                                        RemarkTextCard(text: "Aviation Security")
+                                                      ],
+                                                    ),
+
+                                                    pw.TableRow(
+                                                      children: [
+                                                        TextTrainingCodeCard(text: "SMS"),
+                                                        RemarkTextCard(text: "Safety Management System")
+                                                      ],
+                                                    ),
+
+                                                    pw.TableRow(
+                                                      children: [
+                                                        TextTrainingCodeCard(text: "CRM"),
+                                                        RemarkTextCard(text: "Crew Resource Management")
+                                                      ],
+                                                    ),
+
+                                                    pw.TableRow(
+                                                      children: [
+                                                        TextTrainingCodeCard(text: "ALAR/CFIT"),
+                                                        RemarkTextCard(text: "Approach and Landing Accident Reduction/Controlled Flight Into Terrain")
+                                                      ],
+                                                    ),
+                                                    pw.TableRow(
+                                                      children: [
+                                                        TextTrainingCodeCard(text: "PBN"),
+                                                        RemarkTextCard(text: "Performance Based Navigation")
+                                                      ],
+                                                    ),
+
+                                                    pw.TableRow(
+                                                      children: [
+                                                        TextTrainingCodeCard(text: "RGT"),
+                                                        RemarkTextCard(text: "Recurrent Ground Training")
+                                                      ],
+                                                    ),
+
+                                                    pw.TableRow(
+                                                      children: [
+                                                        pw.Container(
+                                                          height: 36,
+                                                          child: TextTrainingCodeCard(text: "RNAV (GNSS)"),
+                                                        ),
+                                                        RemarkTextCard(text: "Required Navigation (GNSS)")
+                                                      ],
+                                                    ),
+
+                                                    pw.TableRow(
+                                                      children: [
+                                                        TextTrainingCodeCard(text: "LVO"),
+                                                        RemarkTextCard(text: "Low Visibility Operation")
+                                                      ],
+                                                    ),
+                                                    pw.TableRow(
+                                                      children: [
+                                                        TextTrainingCodeCard(text: "RHS CHECK"),
+                                                        RemarkTextCard(text: "Right Hand Seat Check")
+                                                      ],
+                                                    ),
+
+                                                    pw.TableRow(
+                                                      children: [
+                                                        TextTrainingCodeCard(text: "UPRT"),
+                                                        RemarkTextCard(text: "Upset and Recovery Training")
+                                                      ],
+                                                    ),
+                                                    pw.TableRow(
+                                                      children: [
+                                                        TextTrainingCodeCard(text: ""),
+                                                        RemarkTextCard(text: "")
+                                                      ],
+                                                    ),
+                                                    pw.TableRow(
+                                                      children: [
+                                                        TextTrainingCodeCard(text: ""),
+                                                        RemarkTextCard(text: "")
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ]),
+                                        ]
+                                    ),
+                                  ),
+                                  pw.SizedBox(width: 25),
+
+
+                                  // ------------------- PAGE 1 TABEL 3 ------------------
+                                  pw.Expanded(
+                                    child: pw.Stack(
+                                        children: [
+                                          pw.Column(
+                                              mainAxisAlignment: pw.MainAxisAlignment.center,
+                                              crossAxisAlignment: pw.CrossAxisAlignment.center,
+                                              children: [
+                                                pw.Row(
+                                                    mainAxisSize: pw.MainAxisSize.min,
+                                                    children: [
+                                                      pw.Expanded(
+                                                          flex: 1,
+                                                          child: pw.Image(
+                                                              pw.MemoryImage(
+                                                                  AirAsiaLogo
+                                                              ),
+                                                              fit: pw.BoxFit.cover,
+                                                              height: 50,
+                                                              width: 50
+                                                          )
+                                                      ),
+                                                      pw.Expanded(
+                                                          flex : 2,
+                                                          child: pw.Column(
+                                                              crossAxisAlignment: pw.CrossAxisAlignment.end,
+                                                              children: [
+                                                                pw.Text(
+                                                                  "PILOT TRAINING", style: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold),
+                                                                ),
+                                                                pw.Text(
+                                                                  "AND" , style: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold),
+                                                                ),
+                                                                pw.Text(
+                                                                  "PROFICIENCY CONTROL CARD" , style: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold),
+                                                                ),
+                                                              ]
+                                                          )
+                                                      )
+                                                    ]
+                                                ),
+
+                                                pw.SizedBox(height: 10),
+
+                                                pw.Row(
+                                                    mainAxisAlignment: pw.MainAxisAlignment.start,
+                                                    crossAxisAlignment: pw.CrossAxisAlignment.start,
+                                                    mainAxisSize: pw.MainAxisSize.min,
+                                                    children: [
+                                                      pw.Expanded(
+                                                        flex: 1,
+                                                        child: pw.Table(
+                                                          border: pw.TableBorder.all(width: 1, color: PdfColors.black),
+                                                          columnWidths: {
+                                                            0: pw.FlexColumnWidth(1), // Adjust as needed
+                                                          },
+                                                          children: [
+                                                            pw.TableRow(
+                                                              children: [
+                                                                pw.Container(
+                                                                  height: 5 * 18,
+                                                                  child: pw.Center(
+                                                                    child: pw.Text("", style: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold), textAlign: pw.TextAlign.center,),
+                                                                  ),
+                                                                ),
+
+                                                              ],
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+
+                                                      pw.SizedBox(width: 10),
+
+                                                      pw.Expanded(
+                                                        flex: 2,
+                                                        child: pw.Table(
+                                                          border: pw.TableBorder.all(width: 1, color: PdfColors.black),
+                                                          columnWidths: {
+                                                            0: pw.FlexColumnWidth(1), // Adjust as needed
+                                                          },
+                                                          children: [
+                                                            pw.TableRow(
+                                                              children: [
+                                                                pw.Container(
+                                                                    color: PdfColors.grey300,
+                                                                    height: 3 * 16.65,
+                                                                    child: pw.Padding(
+                                                                      padding: pw.EdgeInsets.all(3),
+                                                                      child: pw.Text("This is to ceritify that the holder has conducted the training and/or test in accordance with Indonesia Civil Aviation Safety Regulations", style: pw.TextStyle(fontSize: 7.5), textAlign: pw.TextAlign.right),
+                                                                    )
+                                                                ),
+
+                                                              ],
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ]
+                                                ),
+
+                                                pw.SizedBox(height: 15),
+
+                                                // ------------------- Name --------------------
+                                                pw.Row(
+                                                    mainAxisAlignment: pw.MainAxisAlignment.start,
+                                                    crossAxisAlignment: pw.CrossAxisAlignment.start,
+                                                    mainAxisSize: pw.MainAxisSize.min,
+                                                    children: [
+                                                      pw.Expanded(
+                                                        flex: 6,
+                                                        child: pw.Text("Name", style: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold)),
+                                                      ),
+                                                      pw.Expanded(
+                                                        flex: 1,
+                                                        child: pw.Text(":", style: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold)),
+                                                      ),
+                                                      pw.Expanded(
+                                                        flex: 15,
+                                                        child: pw.Text(userName, style: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold)),
+                                                      ),
+
+                                                    ]
+                                                ),
+                                                pw.SizedBox(height: 10),
+                                                // ------------------- License --------------------
+                                                pw.Row(
+                                                    mainAxisAlignment: pw.MainAxisAlignment.start,
+                                                    crossAxisAlignment: pw.CrossAxisAlignment.start,
+                                                    mainAxisSize: pw.MainAxisSize.min,
+                                                    children: [
+                                                      pw.Expanded(
+                                                        flex: 6,
+                                                        child: pw.Text("License", style: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold)),
+                                                      ),
+                                                      pw.Expanded(
+                                                        flex: 1,
+                                                        child: pw.Text(":", style: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold)),
+                                                      ),
+                                                      pw.Expanded(
+                                                        flex: 15,
+                                                        child: pw.Text(userLicense, style: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold)),
+                                                      ),
+
+                                                    ]
+                                                ),
+
+                                                pw.SizedBox(height: 10),
+
+                                                // ------------------- Emp No. --------------------
+                                                pw.Row(
+                                                    mainAxisAlignment: pw.MainAxisAlignment.start,
+                                                    crossAxisAlignment: pw.CrossAxisAlignment.start,
+                                                    mainAxisSize: pw.MainAxisSize.min,
+                                                    children: [
+                                                      pw.Expanded(
+                                                        flex: 6,
+                                                        child: pw.Text("Emp. No", style: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold)),
+                                                      ),
+                                                      pw.Expanded(
+                                                        flex: 1,
+                                                        child: pw.Text(":", style: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold)),
+                                                      ),
+                                                      pw.Expanded(
+                                                        flex: 15,
+                                                        child: pw.Text(userEmp.toString(), style: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold)),
+                                                      ),
+
+                                                    ]
+                                                ),
+
+                                                pw.SizedBox(height: 15),
+
+                                                pw.Expanded(
+                                                  flex: 2,
+                                                  child: pw.Table(
+                                                    border: pw.TableBorder.all(width: 1, color: PdfColors.black),
+                                                    columnWidths: {
+                                                      0: pw.FlexColumnWidth(1), // Adjust as needed
+                                                    },
+                                                    children: [
+                                                      pw.TableRow(
+                                                        children: [
+                                                          pw.Container(
+                                                              height: 3 * 16.65,
+                                                              child: pw.Padding(
+                                                                padding: pw.EdgeInsets.all(3),
+                                                                child: pw.Text("Issued by Flight Operation Departement \n PT. Indonesia AirAsia, Office Management Building \n Jl. Marsekal Suryadharma (M1), No. 1 \n Kelurahan Selapajang Jaya, Kec. Neglasari, \n Kota Tangerang, Provinsi Banten 15217 \n Office: + 62 21 2985 0888, Facsimile: +62 21 2985 0891 ", style: pw.TextStyle(fontSize: 6.5), textAlign: pw.TextAlign.center),
+                                                              )
+                                                          ),
+
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+
+
+                                              ]),
+                                        ]
+                                    ),
+                                  ),
+                                  pw.SizedBox(width: 28),
+                                ]
+                            )
+                        ),
+                      ]
+                  )
+              ),
+            );
+          },
+        ),
+      );
+
+      // ------------------- PAGE 2 ------------------
+      pdf.addPage(
+        pw.Page(
+          pageTheme: pw.PageTheme(
+            margin: const pw.EdgeInsets.all(16),
+            pageFormat: PdfPageFormat.a4.landscape,
+          ),
+          build: (pw.Context context) {
+            return pw.Center(
+              child: pw.Padding(
+                  padding: pw.EdgeInsets.all(17),
+                  child: pw.Column(
+                      children: [
+                        pw.Expanded(
+                            flex: 1,
+                            child: pw.Row(
+                                mainAxisSize: pw.MainAxisSize.min,
+                                children: [
+                                  pw.SizedBox(width: 28),
+                                  pw.Expanded(
+                                    child: pw.Stack(
+                                        children: [
+                                          pw.Positioned.fill(
+                                              child: pw.Center(
+                                                  child: pw.Image(
+                                                      pw.MemoryImage(
+                                                          backgroundImageData
+                                                      ),
+                                                      fit: pw.BoxFit.cover,
+                                                      height: 210,
+                                                      width: 210
+                                                  )
+                                              )
+                                          ),
+                                          pw.Column(
+                                              mainAxisAlignment: pw.MainAxisAlignment.center,
+                                              crossAxisAlignment: pw.CrossAxisAlignment.center,
+                                              children: [
+                                                pw.Table(
+                                                  border: pw.TableBorder.all(width: 1, color: PdfColors.black),
+                                                  columnWidths: {
+                                                    0: pw.FlexColumnWidth(1),
+                                                    1: pw.FlexColumnWidth(1),
+                                                    2: pw.FlexColumnWidth(1),
+                                                  },
+                                                  children: [
+                                                    // Header row
+                                                    pw.TableRow(
+                                                      children: [
+                                                        pw.Container(
+                                                          color: PdfColors.grey300,
+                                                          height: 30,
+                                                          child: pw.Padding(
+                                                              padding: pw.EdgeInsets.all(3),
+                                                              child: pw.Center(
+                                                                child : pw.Text('TRAINING', style: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold), textAlign: pw.TextAlign.center,),
+                                                              )
+                                                          ),
+                                                        ),
+
+                                                        pw.Container(
+                                                          color: PdfColors.grey300,
+                                                          height: 30,
+                                                          child: pw.Padding(
+                                                              padding: pw.EdgeInsets.all(3),
+                                                              child: pw.Center(
+                                                                child : pw.Text('DATE', style: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold), textAlign: pw.TextAlign.center,),
+                                                              )
+                                                          ),
+                                                        ),
+
+                                                        pw.Container(
+                                                          color: PdfColors.grey300,
+                                                          height: 30,
+                                                          child: pw.Padding(
+                                                              padding: pw.EdgeInsets.all(3),
+                                                              child: pw.Center(
+                                                                child : pw.Text('VALID TO', style: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold), textAlign: pw.TextAlign.center,),
+                                                              )
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    // Data rows
+                                                    for (var item in historyDataBasicIndoc!)
+                                                      pw.TableRow(
+                                                        children: [
+                                                          pw.Container(
+                                                            height: 28,
+                                                            child: TextCard(text: "BASIC INDOC"),
+                                                          ),
+                                                          TextCard(text: item['date'] ?? ''),
+                                                          TextCard(text:'-'),
+                                                        ],
+                                                      ),
+
+                                                    for (var item in historyDataLSWB!)
+                                                      pw.TableRow(
+                                                        children: [
+                                                          pw.Container(
+                                                            height: 47,
+                                                            child: TextCard(text: "LOAD SHEET / WEIGHT & BALANCE"),
+                                                          ),
+                                                          TextCard(text: item['date'] ?? ''),
+                                                          TextCard(text: '-'),
+                                                        ],
+                                                      ),
+
+                                                    for (var item in historyDataRVSM!)
+                                                      pw.TableRow(
+                                                        children: [
+                                                          TextCard(text: "RVSM"),
+                                                          TextCard(text: item['date'] ?? ''),
+                                                          TextCard(text: '-'),
+                                                        ],
+                                                      ),
+                                                  ],
+                                                ),
+
+                                                pw.Row(
+                                                  mainAxisSize: pw.MainAxisSize.min,
+                                                  children: [
+                                                    pw.Expanded(
+                                                      flex: 1,
+                                                      child: pw.Table(
+                                                        border: pw.TableBorder.all(width: 1, color: PdfColors.black),
+                                                        columnWidths: {
+                                                          0: pw.FlexColumnWidth(1), // Adjust as needed
+                                                        },
+                                                        children: [
+                                                          pw.TableRow(
+                                                            children: [
+                                                              pw.Container(
+                                                                height: 8 * 15,
+                                                                child: pw.Center(
+                                                                  child: pw.Text("WNDSHEAR", style: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold), textAlign: pw.TextAlign.center,),
+                                                                ),
+                                                              ),
+
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    // Right Table with Data
+                                                    pw.Expanded(
+                                                      flex: 2,
+                                                      child:  pw.Table(
+                                                        border: pw.TableBorder.all(width: 1, color: PdfColors.black),
+                                                        columnWidths: {
+                                                          0: pw.FlexColumnWidth(2),
+                                                          1: pw.FlexColumnWidth(2),
+                                                        },
+                                                        children: [
+                                                          for (var item in historyDataWNDSHEAR!)
+                                                            pw.TableRow(
+                                                              children: [
+                                                                TextCard(text: item['date'] ?? ''),
+                                                                TextCard(text: item['valid_to'] ?? ''),
+                                                              ],
+                                                            ),
+                                                        ],
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+
+                                                pw.Row(
+                                                  mainAxisSize: pw.MainAxisSize.min,
+                                                  children: [
+                                                    pw.Expanded(
+                                                      flex: 1,
+                                                      child: pw.Table(
+                                                        border: pw.TableBorder.all(width: 1, color: PdfColors.black),
+                                                        columnWidths: {
+                                                          0: pw.FlexColumnWidth(1), // Adjust as needed
+                                                        },
+                                                        children: [
+                                                          pw.TableRow(
+                                                            children: [
+                                                              pw.Container(
+                                                                height: 4 * 15,
+                                                                child:  pw.Padding(
+                                                                  padding: pw.EdgeInsets.symmetric(vertical: 3, horizontal: 12),
+                                                                  child: pw.Center(
+                                                                      child: pw.Text("ALAR / CFIT", style: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold), textAlign: pw.TextAlign.center,)
+                                                                  ),
+                                                                ),
+                                                              ),
+
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    // Right Table with Data
+                                                    pw.Expanded(
+                                                      flex: 2,
+                                                      child:  pw.Table(
+                                                        border: pw.TableBorder.all(width: 1, color: PdfColors.black),
+                                                        columnWidths: {
+                                                          0: pw.FlexColumnWidth(1),
+                                                          1: pw.FlexColumnWidth(1),
+                                                        },
+                                                        children: [
+                                                          for (var item in historyDataAlarCfit!)
+                                                            pw.TableRow(
+                                                              children: [
+                                                                TextCard(text: item['date'] ?? ''),
+                                                                TextCard(text: item['valid_to'] ?? ''),
+                                                              ],
+                                                            ),
+                                                        ],
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              ]),
+                                        ]
+                                    ),
+                                  ),
+                                  pw.SizedBox(width: 25),
+
+                                  // ------------------- PAGE 2 TABEL 2 ------------------
+                                  pw.Expanded(
+                                    child: pw.Stack(
+                                        children: [
+                                          pw.Positioned.fill(
+                                              child: pw.Center(
+                                                  child: pw.Image(
+                                                      pw.MemoryImage(
+                                                          backgroundImageData
+                                                      ),
+                                                      fit: pw.BoxFit.cover,
+                                                      height: 210,
+                                                      width: 210
+                                                  )
+                                              )
+                                          ),
+                                          pw.Column(
+                                              mainAxisAlignment: pw.MainAxisAlignment.center,
+                                              crossAxisAlignment: pw.CrossAxisAlignment.center,
+                                              children: [
+                                                pw.Table(
+                                                  border: pw.TableBorder.all(width: 1, color: PdfColors.black),
+                                                  columnWidths: {
+                                                    0: pw.FlexColumnWidth(1),
+                                                    1: pw.FlexColumnWidth(1),
+                                                    2: pw.FlexColumnWidth(1),
+                                                  },
+                                                  children: [
+                                                    // Header row
+                                                    pw.TableRow(
+                                                      children: [
+                                                        pw.Container(
+                                                          color: PdfColors.grey300,
+                                                          height: 30,
+                                                          child: pw.Padding(
+                                                              padding: pw.EdgeInsets.all(3),
+                                                              child: pw.Center(
+                                                                child : pw.Text('TRAINING', style: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold), textAlign: pw.TextAlign.center,),
+                                                              )
+                                                          ),
+                                                        ),
+
+                                                        pw.Container(
+                                                          color: PdfColors.grey300,
+                                                          height: 30,
+                                                          child: pw.Padding(
+                                                              padding: pw.EdgeInsets.all(3),
+                                                              child: pw.Center(
+                                                                child : pw.Text('DATE', style: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold), textAlign: pw.TextAlign.center,),
+                                                              )
+                                                          ),
+                                                        ),
+
+                                                        pw.Container(
+                                                          color: PdfColors.grey300,
+                                                          height: 30,
+                                                          child: pw.Padding(
+                                                              padding: pw.EdgeInsets.all(3),
+                                                              child: pw.Center(
+                                                                child : pw.Text('VALID TO', style: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold), textAlign: pw.TextAlign.center,),
+                                                              )
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+
+                                                pw.Row(
+                                                  mainAxisSize: pw.MainAxisSize.min,
+                                                  children: [
+                                                    pw.Expanded(
+                                                      flex: 1,
+                                                      child: pw.Table(
+                                                        border: pw.TableBorder.all(width: 1, color: PdfColors.black),
+                                                        columnWidths: {
+                                                          0: pw.FlexColumnWidth(1), // Adjust as needed
+                                                        },
+                                                        children: [
+                                                          pw.TableRow(
+                                                            children: [
+                                                              pw.Container(
+                                                                height: 4 * 15,
+                                                                child: pw.Center(
+                                                                  child: pw.Text("SEP", style: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold), textAlign: pw.TextAlign.center,),
+                                                                ),
+                                                              ),
+
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    // Right Table with Data
+                                                    pw.Expanded(
+                                                      flex: 2,
+                                                      child:  pw.Table(
+                                                        border: pw.TableBorder.all(width: 1, color: PdfColors.black),
+                                                        columnWidths: {
+                                                          0: pw.FlexColumnWidth(2),
+                                                          1: pw.FlexColumnWidth(2),
+                                                        },
+                                                        children: [
+                                                          // Data rows
+                                                          for (var item in historyDataSEP!)
+                                                            pw.TableRow(
+                                                              children: [
+                                                                TextCard(text: item['date'] ?? ''),
+                                                                TextCard(text: item['valid_to'] ?? ''),
+                                                              ],
+                                                            ),
+                                                        ],
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+
+                                                pw.Row(
+                                                  mainAxisSize: pw.MainAxisSize.min,
+                                                  children: [
+                                                    pw.Expanded(
+                                                      flex: 1,
+                                                      child: pw.Table(
+                                                        border: pw.TableBorder.all(width: 1, color: PdfColors.black),
+                                                        columnWidths: {
+                                                          0: pw.FlexColumnWidth(1), // Adjust as needed
+                                                        },
+                                                        children: [
+                                                          pw.TableRow(
+                                                            children: [
+                                                              pw.Container(
+                                                                height: 2 * 15,
+                                                                child:  pw.Padding(
+                                                                  padding: pw.EdgeInsets.symmetric(vertical: 3, horizontal: 12),
+                                                                  child: pw.Center(
+                                                                      child: pw.Text("SEP DRILL", style: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold), textAlign: pw.TextAlign.center,)
+                                                                  ),
+                                                                ),
+                                                              ),
+
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    // Right Table with Data
+                                                    pw.Expanded(
+                                                      flex: 2,
+                                                      child:  pw.Table(
+                                                        border: pw.TableBorder.all(width: 1, color: PdfColors.black),
+                                                        columnWidths: {
+                                                          0: pw.FlexColumnWidth(1),
+                                                          1: pw.FlexColumnWidth(1),
+                                                        },
+                                                        children: [
+                                                          // Data rows
+                                                          for (var item in historyDataSEPDRILL!)
+                                                            pw.TableRow(
+                                                              children: [
+                                                                TextCard(text: item['date'] ?? ''),
+                                                                TextCard(text: item['valid_to'] ?? ''),
+                                                              ],
+                                                            ),
+                                                        ],
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+
+                                                pw.Row(
+                                                  mainAxisSize: pw.MainAxisSize.min,
+                                                  children: [
+                                                    pw.Expanded(
+                                                      flex: 1,
+                                                      child: pw.Table(
+                                                        border: pw.TableBorder.all(width: 1, color: PdfColors.black),
+                                                        columnWidths: {
+                                                          0: pw.FlexColumnWidth(1), // Adjust as needed
+                                                        },
+                                                        children: [
+                                                          pw.TableRow(
+                                                            children: [
+                                                              pw.Container(
+                                                                height: 2 * 15,
+                                                                child:  pw.Padding(
+                                                                  padding: pw.EdgeInsets.symmetric(vertical: 3, horizontal: 12),
+                                                                  child: pw.Center(
+                                                                      child: pw.Text("DGR & AVSEC", style: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold), textAlign: pw.TextAlign.center,)
+                                                                  ),
+                                                                ),
+                                                              ),
+
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    // Right Table with Data
+                                                    pw.Expanded(
+                                                      flex: 2,
+                                                      child:  pw.Table(
+                                                        border: pw.TableBorder.all(width: 1, color: PdfColors.black),
+                                                        columnWidths: {
+                                                          0: pw.FlexColumnWidth(1),
+                                                          1: pw.FlexColumnWidth(1),
+                                                        },
+                                                        children: [
+
+                                                          for (var item in historyDataDGR!)
+                                                            pw.TableRow(
+                                                              children: [
+                                                                TextCard(text: item['date'] ?? ''),
+                                                                TextCard(text: item['valid_to'] ?? ''),
+                                                              ],
+                                                            ),
+                                                        ],
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+
+                                                pw.Row(
+                                                  mainAxisSize: pw.MainAxisSize.min,
+                                                  children: [
+                                                    pw.Expanded(
+                                                      flex: 1,
+                                                      child: pw.Table(
+                                                        border: pw.TableBorder.all(width: 1, color: PdfColors.black),
+                                                        columnWidths: {
+                                                          0: pw.FlexColumnWidth(1), // Adjust as needed
+                                                        },
+                                                        children: [
+                                                          pw.TableRow(
+                                                            children: [
+                                                              pw.Container(
+                                                                height: 4 * 15,
+                                                                child:  pw.Padding(
+                                                                  padding: pw.EdgeInsets.symmetric(vertical: 3, horizontal: 12),
+                                                                  child: pw.Center(
+                                                                      child: pw.Text("SMS", style: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold), textAlign: pw.TextAlign.center,)
+                                                                  ),
+                                                                ),
+                                                              ),
+
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    // Right Table with Data
+                                                    pw.Expanded(
+                                                      flex: 2,
+                                                      child:  pw.Table(
+                                                        border: pw.TableBorder.all(width: 1, color: PdfColors.black),
+                                                        columnWidths: {
+                                                          0: pw.FlexColumnWidth(1),
+                                                          1: pw.FlexColumnWidth(1),
+                                                        },
+                                                        children: [
+                                                          for (var item in historyDataSMS!)
+                                                            pw.TableRow(
+                                                              children: [
+                                                                TextCard(text: item['date'] ?? ''),
+                                                                TextCard(text: item['valid_to'] ?? ''),
+                                                              ],
+                                                            ),
+                                                        ],
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+
+                                                pw.Row(
+                                                  mainAxisSize: pw.MainAxisSize.min,
+                                                  children: [
+                                                    pw.Expanded(
+                                                      flex: 1,
+                                                      child: pw.Table(
+                                                        border: pw.TableBorder.all(width: 1, color: PdfColors.black),
+                                                        columnWidths: {
+                                                          0: pw.FlexColumnWidth(1), // Adjust as needed
+                                                        },
+                                                        children: [
+                                                          pw.TableRow(
+                                                            children: [
+                                                              pw.Container(
+                                                                height: 4 * 15,
+                                                                child:  pw.Padding(
+                                                                  padding: pw.EdgeInsets.symmetric(vertical: 3, horizontal: 12),
+                                                                  child: pw.Center(
+                                                                      child: pw.Text("CRM", style: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold), textAlign: pw.TextAlign.center,)
+                                                                  ),
+                                                                ),
+                                                              ),
+
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    // Right Table with Data
+                                                    pw.Expanded(
+                                                      flex: 2,
+                                                      child:  pw.Table(
+                                                        border: pw.TableBorder.all(width: 1, color: PdfColors.black),
+                                                        columnWidths: {
+                                                          0: pw.FlexColumnWidth(1),
+                                                          1: pw.FlexColumnWidth(1),
+                                                        },
+                                                        children: [
+                                                          for (var item in historyDataCRM!)
+                                                            pw.TableRow(
+                                                              children: [
+                                                                TextCard(text: item['date'] ?? ''),
+                                                                TextCard(text: item['valid_to'] ?? ''),
+                                                              ],
+                                                            ),
+                                                        ],
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+
+                                                pw.Row(
+                                                  mainAxisSize: pw.MainAxisSize.min,
+                                                  children: [
+                                                    pw.Expanded(
+                                                      flex: 1,
+                                                      child: pw.Table(
+                                                        border: pw.TableBorder.all(width: 1, color: PdfColors.black),
+                                                        columnWidths: {
+                                                          0: pw.FlexColumnWidth(1), // Adjust as needed
+                                                        },
+                                                        children: [
+                                                          pw.TableRow(
+                                                            children: [
+                                                              pw.Container(
+                                                                height: 2 * 15,
+                                                                child:  pw.Padding(
+                                                                  padding: pw.EdgeInsets.symmetric(vertical: 3, horizontal: 12),
+                                                                  child: pw.Center(
+                                                                      child: pw.Text("PBN", style: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold), textAlign: pw.TextAlign.center,)
+                                                                  ),
+                                                                ),
+                                                              ),
+
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    // Right Table with Data
+                                                    pw.Expanded(
+                                                      flex: 2,
+                                                      child:  pw.Table(
+                                                        border: pw.TableBorder.all(width: 1, color: PdfColors.black),
+                                                        columnWidths: {
+                                                          0: pw.FlexColumnWidth(1),
+                                                          1: pw.FlexColumnWidth(1),
+                                                        },
+                                                        children: [
+                                                          for (var item in historyDataPBN!)
+                                                            pw.TableRow(
+                                                              children: [
+                                                                TextCard(text: item['date'] ?? ''),
+                                                                TextCard(text: item['valid_to'] ?? ''),
+                                                              ],
+                                                            ),
+                                                        ],
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              ]),
+                                        ]
+                                    ),
+                                  ),
+                                  pw.SizedBox(width: 25),
+                                  // ------------------- PAGE 2 TABEL 3 ------------------
+                                  pw.Expanded(
+                                    child: pw.Stack(
+                                        children: [
+                                          pw.Positioned.fill(
+                                              child: pw.Center(
+                                                  child: pw.Image(
+                                                      pw.MemoryImage(
+                                                          backgroundImageData
+                                                      ),
+                                                      fit: pw.BoxFit.cover,
+                                                      height: 210,
+                                                      width: 210
+                                                  )
+                                              )
+                                          ),
+                                          pw.Column(
+                                              mainAxisAlignment: pw.MainAxisAlignment.center,
+                                              crossAxisAlignment: pw.CrossAxisAlignment.center,
+                                              children: [
+                                                pw.Table(
+                                                  border: pw.TableBorder.all(width: 1, color: PdfColors.black),
+                                                  columnWidths: {
+                                                    0: pw.FlexColumnWidth(1),
+                                                    1: pw.FlexColumnWidth(1),
+                                                    2: pw.FlexColumnWidth(1),
+                                                  },
+                                                  children: [
+                                                    // Header row
+                                                    pw.TableRow(
+                                                      children: [
+                                                        pw.Container(
+                                                          color: PdfColors.grey300,
+                                                          height: 30,
+                                                          child: pw.Padding(
+                                                              padding: pw.EdgeInsets.all(3),
+                                                              child: pw.Center(
+                                                                child : pw.Text('TRAINING', style: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold), textAlign: pw.TextAlign.center,),
+                                                              )
+                                                          ),
+                                                        ),
+
+                                                        pw.Container(
+                                                          color: PdfColors.grey300,
+                                                          height: 30,
+                                                          child: pw.Padding(
+                                                              padding: pw.EdgeInsets.all(3),
+                                                              child: pw.Center(
+                                                                child : pw.Text('DATE', style: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold), textAlign: pw.TextAlign.center,),
+                                                              )
+                                                          ),
+                                                        ),
+
+                                                        pw.Container(
+                                                          color: PdfColors.grey300,
+                                                          height: 30,
+                                                          child: pw.Padding(
+                                                              padding: pw.EdgeInsets.all(3),
+                                                              child: pw.Center(
+                                                                child : pw.Text('VALID TO', style: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold), textAlign: pw.TextAlign.center,),
+                                                              )
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+
+                                                pw.Row(
+                                                  mainAxisSize: pw.MainAxisSize.min,
+                                                  children: [
+                                                    pw.Expanded(
+                                                      flex: 1,
+                                                      child: pw.Table(
+                                                        border: pw.TableBorder.all(width: 1, color: PdfColors.black),
+                                                        columnWidths: {
+                                                          0: pw.FlexColumnWidth(1), // Adjust as needed
+                                                        },
+                                                        children: [
+                                                          pw.TableRow(
+                                                            children: [
+                                                              pw.Container(
+                                                                height: 8 * 15,
+                                                                child: pw.Center(
+                                                                  child: pw.Text("RGT", style: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold), textAlign: pw.TextAlign.center,),
+                                                                ),
+                                                              ),
+
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    // Right Table with Data
+                                                    pw.Expanded(
+                                                      flex: 2,
+                                                      child:  pw.Table(
+                                                        border: pw.TableBorder.all(width: 1, color: PdfColors.black),
+                                                        columnWidths: {
+                                                          0: pw.FlexColumnWidth(2),
+                                                          1: pw.FlexColumnWidth(2),
+                                                        },
+                                                        children: [
+                                                          // Data rows
+                                                          for (var item in historyDataRGT!)
+                                                            pw.TableRow(
+                                                              children: [
+                                                                TextCard(text: item['date'] ?? ''),
+                                                                TextCard(text: item['valid_to'] ?? ''),
+                                                              ],
+                                                            ),
+                                                        ],
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+
+                                                pw.Row(
+                                                  mainAxisSize: pw.MainAxisSize.min,
+                                                  children: [
+                                                    pw.Expanded(
+                                                      flex: 1,
+                                                      child: pw.Table(
+                                                        border: pw.TableBorder.all(width: 1, color: PdfColors.black),
+                                                        columnWidths: {
+                                                          0: pw.FlexColumnWidth(1), // Adjust as needed
+                                                        },
+                                                        children: [
+                                                          pw.TableRow(
+                                                            children: [
+                                                              pw.Container(
+                                                                height: 8 * 15,
+                                                                child:  pw.Padding(
+                                                                  padding: pw.EdgeInsets.symmetric(vertical: 3, horizontal: 12),
+                                                                  child: pw.Center(
+                                                                      child: pw.Text("RHS CHECK (SIM)", style: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold), textAlign: pw.TextAlign.center,)
+                                                                  ),
+                                                                ),
+                                                              ),
+
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    // Right Table with Data
+                                                    pw.Expanded(
+                                                      flex: 2,
+                                                      child:  pw.Table(
+                                                        border: pw.TableBorder.all(width: 1, color: PdfColors.black),
+                                                        columnWidths: {
+                                                          0: pw.FlexColumnWidth(1),
+                                                          1: pw.FlexColumnWidth(1),
+                                                        },
+                                                        children: [
+                                                          // Data rows
+                                                          for (var item in historyDataRHS!)
+                                                            pw.TableRow(
+                                                              children: [
+                                                                TextCard(text: item['date'] ?? ''),
+                                                                TextCard(text: item['valid_to'] ?? ''),
+                                                              ],
+                                                            ),
+                                                        ],
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                                pw.Row(
+                                                  mainAxisSize: pw.MainAxisSize.min,
+                                                  children: [
+                                                    pw.Expanded(
+                                                      flex: 1,
+                                                      child: pw.Table(
+                                                        border: pw.TableBorder.all(width: 1, color: PdfColors.black),
+                                                        columnWidths: {
+                                                          0: pw.FlexColumnWidth(1), // Adjust as needed
+                                                        },
+                                                        children: [
+                                                          pw.TableRow(
+                                                            children: [
+                                                              pw.Container(
+                                                                height: 2 * 15,
+                                                                child:  pw.Padding(
+                                                                  padding: pw.EdgeInsets.symmetric(vertical: 3, horizontal: 12),
+                                                                  child: pw.Center(
+                                                                      child: pw.Text("UPRT", style: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold), textAlign: pw.TextAlign.center,)
+                                                                  ),
+                                                                ),
+                                                              ),
+
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    // Right Table with Data
+                                                    pw.Expanded(
+                                                      flex: 2,
+                                                      child:  pw.Table(
+                                                        border: pw.TableBorder.all(width: 1, color: PdfColors.black),
+                                                        columnWidths: {
+                                                          0: pw.FlexColumnWidth(1),
+                                                          1: pw.FlexColumnWidth(1),
+                                                        },
+                                                        children: [
+                                                          // Data rows
+                                                          for (var item in historyDataUPRT!)
+                                                            pw.TableRow(
+                                                              children: [
+                                                                TextCard(text: item['date'] ?? ''),
+                                                                TextCard(text: item['valid_to'] ?? ''),
+                                                              ],
+                                                            ),
+                                                        ],
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              ]),
+                                        ]
+                                    ),
+                                  ),
+                                  pw.SizedBox(width: 28),
+                                ]
+                            )
+                        ),
+                      ]
+                  )
+              ),
+            );
+          },
+        ),
+      );
+
+      // Save the PDF to a file or perform other actions
+      return pdf.save();
+    } catch (e) {
+      print("Error generating PDF: $e");
+      return Future.value();
+    }
+  }
+
+
+  Future<Uint8List> getPDFTrainingCard2(int idCrew) async {
+    try {
+      final font = await rootBundle.load("assets/fonts/Poppins-Regular.ttf");
+      final ttf = pw.Font.ttf(font);
+      final pdf = pw.Document();
+
+      final Uint8List backgroundImageData = (await rootBundle.load('assets/images/AirAsiaTrainingCards.png')).buffer.asUint8List();
+      final Uint8List AirAsiaLogo =
+      (await rootBundle.load('assets/images/airasia_logo_circle.png'))
+          .buffer
+          .asUint8List();
+      final pw.ImageProvider backgroundImageProvider = pw.MemoryImage(backgroundImageData);
+
+      List<UserModel>? usersData = await getProfileData(idCrew);
+
+      String userName = "";
+      String userLicense = "";
+      int userEmp = 0;
+      if (usersData != null) {
+        // You can now work with the usersData list
+        for (UserModel user in usersData) {
+          userName = user.name;
+          userLicense = user.licenseNo;
+          userEmp = user.idNo;
+        }
+      } else {
+        print('No user data found or there was an error.');
+      }
 
       final List<Map<String, dynamic>>? historyDataBasicIndoc = await getHistoryData(idCrew, "BASIC INDOC", 1);
       final List<Map<String, dynamic>>? historyDataLSWB = await getHistoryData(idCrew, "LOAD SHEET / WEIGHT & BALANCE", 1);
@@ -2092,31 +3718,26 @@ class ProfileccController extends GetxController {
     PermissionStatus status = await Permission.storage.request();
 
     if (status.isGranted) {
-      Directory('/storage/emulated/0/Download/Training Cards/').createSync();
-        var filePath = "/storage/emulated/0/Download/Training Cards/training-cards-${userPreferences.getIDNo()}.pdf";
-        final file = File(filePath);
-        print("step 1");
-        await file.writeAsBytes(byteList);
-        print("step 2");
-      await OpenFile.open(filePath);
+      // Directory('/storage/emulated/0/Download/Training Cards/').createSync();
+      //   var filePath = "/storage/emulated/0/Download/Training Cards/training-cards-${userPreferences.getIDNo()}.pdf";
+      //   final file = File(filePath);
+      //   print("step 1");
+      //   await file.writeAsBytes(byteList);
+      //   print("step 2");
+      // await OpenFile.open(filePath);
+
+      final output = await getTemporaryDirectory();
+      final filePaths = "${output.path}/training-cards-${userPreferences.getIDNo()}.pdf";
+      final files = File(filePaths);
+      print("step 1");
+      await files.writeAsBytes(byteList);
+      print("step 2");
+      await OpenFile.open(filePaths);
+      print("step 3");
     } else {
       // Handle the case when permission is denied
       // You may want to display a message to the user or handle the situation accordingly.
     }
-    // Directory('/storage/emulated/0/Download/Training Cards/').createSync();
-    // final output = await getTemporaryDirectory();
-    // var filePath = "/storage/emulated/0/Download/Training Cards/training-cards-${userPreferences.getIDNo()}.pdf";
-    // final file = File(filePath);
-    // print("step 1");
-    // await file.writeAsBytes(byteList);
-    // print("step 2");
-    //
-    // final filePaths = "${output.path}/training-cards-${userPreferences.getIDNo()}.pdf";
-    // final files = File(filePaths);
-    // print("step 1");
-    // await files.writeAsBytes(byteList);
-    // print("step 2");
-    // await OpenFile.open(filePaths);
-    // print("step 3");
+
   }
 }

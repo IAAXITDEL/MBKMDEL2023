@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:ts_one/app/modules/cc/training/attendance_pilotcc/controllers/attendance_pilotcc_controller.dart';
 
@@ -13,11 +14,11 @@ class HomePilotccController extends GetxController {
   late String titleToGreet;
   late String timeToGreet;
   RxString nameC = "".obs;
-
-
+  RxInt idTrainee = 0.obs;
   @override
   void onInit() {
     userPreferences = getItLocator<UserPreferences>();
+    idTrainee.value = userPreferences.getIDNo();
     getName();
 
     switch (userPreferences.getRank()) {
@@ -74,13 +75,16 @@ class HomePilotccController extends GetxController {
     }
   }
 
+
   Stream<List<Map<String, dynamic>>> getCombinedAttendanceStream() {
     userPreferences = getItLocator<UserPreferences>();
-    return firestore.collection('attendance').where("status", isEqualTo: "pending").snapshots().asyncMap((attendanceQuery) async {
-
+    return firestore.collection('attendance').where("status", isEqualTo: "done").snapshots().asyncMap((attendanceQuery) async {
       var attendanceDetailData = <Map<String, dynamic>>[];
       if (attendanceQuery.docs.isNotEmpty) {
-        final attendanceDetailQuery = await firestore.collection('attendance-detail').where("idtraining", isEqualTo: userPreferences.getIDNo()).where("status", isEqualTo: "confirmation").get();
+        final attendanceDetailQuery = await firestore.collection('attendance-detail')
+            .where("idtraining", isEqualTo: userPreferences.getIDNo())
+            .get();
+
         attendanceDetailData = attendanceDetailQuery.docs.map((doc) => doc.data()).toList();
       }
 
@@ -91,7 +95,8 @@ class HomePilotccController extends GetxController {
       // Filter attendanceQuery based on whether there is a corresponding attendanceDetail
       final filteredAttendanceQuery = attendanceQuery.docs.where((doc) {
         final attendanceModel = AttendanceModel.fromJson(doc.data());
-        return attendanceDetailData.any((attendanceDetail) => attendanceDetail['idattendance'] == attendanceModel.id);
+        return attendanceDetailData.any((attendanceDetail) =>
+        attendanceDetail['idattendance'] == attendanceModel.id && !attendanceDetail.containsKey('feedbackforinstructor'));
       });
 
       final attendanceData = <Map<String, dynamic>>[];
@@ -101,20 +106,38 @@ class HomePilotccController extends GetxController {
               (attendanceDetail) => attendanceDetail['idattendance'] == attendanceModel.id,
           orElse: () => <String, dynamic>{}, // Return an empty map
         );
-
         attendanceData.add(attendanceModel.toJson());
       }
-
+      attendanceData.sort((a, b) => b['date'].compareTo(a['date']));
       return attendanceData;
     });
   }
 
-  Future<void> toAttendance(String id) async {
-    Get.toNamed(Routes.ATTENDANCE_PILOTCC, arguments: {
-      "id": id,
-    });
-    Get.find<AttendancePilotccController>().onInit();
+  Future<void> refreshData() async {
+    // Implement the logic to fetch updated data here
+    try {
+      // For example, you might await a new data fetch operation
+      await getCombinedAttendanceStream();
+
+      // Update the state or perform other actions with the new data as needed
+
+    } catch (error) {
+      // Handle errors if the data fetching fails
+      print('Error fetching data: $error');
+    }
   }
+
+
+
+
+  // Future<void> toAttendance(String id) async {
+  //   Get.toNamed(Routes.PILOTTRAININGHISTORYDETAILCC, arguments: {
+  //     "idTrainingType": idTrainingType.value,
+  //     "idAttendance": id,
+  //     "idTraining": idTraining.value,
+  //   });
+  //   Get.find<AttendancePilotccController>().onInit();
+  // }
 
 
   @override

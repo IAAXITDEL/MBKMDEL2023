@@ -20,7 +20,13 @@ class AttendanceDetailModel {
   String? feedbackforinstructor;
   String? formatNo;
   String? certificatemandatory;
-
+  double? grade;
+  double? rCommunication;
+  double? rKnowledge;
+  double? rActive;
+  double? rTeachingMethod;
+  double? rMastery;
+  double? rTimeManagement;
 
   AttendanceDetailModel({
     this.id,
@@ -42,6 +48,14 @@ class AttendanceDetailModel {
     this.feedbackforinstructor,
     this.formatNo,
     this.certificatemandatory,
+    this.grade,
+    this.rCommunication,
+    this.rKnowledge,
+    this.rActive,
+    this.rTeachingMethod,
+    this.rMastery,
+    this.rTimeManagement
+
   });
 
   factory AttendanceDetailModel.fromJson(Map<String, dynamic> json) {
@@ -64,7 +78,14 @@ class AttendanceDetailModel {
         rating: json['rating']?.toDouble(),
         feedbackforinstructor: json['feedbackforinstructor'],
         formatNo: json['formatNo'],
-        certificatemandatory : json['certificatemandatory']
+        certificatemandatory : json['certificatemandatory'],
+        grade: json['grade'],
+        rCommunication: json['rCommunication'],
+        rKnowledge: json['rKnowledge'],
+        rActive: json['rActive'],
+        rTeachingMethod : json['rTeachingMethod'],
+        rMastery : json['rMastery'],
+        rTimeManagement : json['rTimeManagement']
     );
   }
 
@@ -89,6 +110,25 @@ class AttendanceDetailModel {
     data['feedbackforinstructor'] = this.feedbackforinstructor;
     data['formatNo'] = this.formatNo;
     data['certificatemandatory'] = this.certificatemandatory;
+    data['grade'] = this.grade;
+    data['rCommunication'] = this.rCommunication;
+    data['rKnowledge'] = this.rKnowledge;
+    data['rActive'] = this.rActive;
+    data['rTeachingMethod'] = this.rTeachingMethod;
+    data['rMastery'] = this.rMastery;
+    data['rTimeManagement'] = this.rTimeManagement;
     return data;
+  }
+
+  @override
+  String toString() {
+    return 'AttendanceDetailModel{id: $id, idattendance: $idattendance, idtraining: $idtraining, '
+        'signature_url: $signature_url, score: $score, feedback: $feedback, status: $status, '
+        'creationTime: $creationTime, updatedTime: $updatedTime, name: $name, email: $email, '
+        'photoURL: $photoURL, rank: $rank, license: $license, hub: $hub, rating: $rating, '
+        'feedbackforinstructor: $feedbackforinstructor, formatNo: $formatNo, '
+        'certificatemandatory: $certificatemandatory, grade: $grade, rCommunication: $rCommunication, '
+        'rKnowledge: $rKnowledge, rActive: $rActive, rTeachingMethod: $rTeachingMethod, '
+        'rMastery: $rMastery, rTimeManagement: $rTimeManagement}';
   }
 }

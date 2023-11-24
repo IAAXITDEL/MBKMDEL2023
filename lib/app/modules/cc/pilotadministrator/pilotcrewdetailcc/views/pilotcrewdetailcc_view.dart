@@ -10,6 +10,7 @@ import '../../../../../../util/error_screen.dart';
 import '../../../../../../util/loading_screen.dart';
 import '../../../../../routes/app_pages.dart';
 import '../../../profilecc/controllers/profilecc_controller.dart';
+import '../../../profilecc/controllers/trainingCardsPdf.dart';
 import '../controllers/pilotcrewdetailcc_controller.dart';
 
 class PilotcrewdetailccView extends GetView<PilotcrewdetailccController> {
@@ -157,7 +158,7 @@ class PilotcrewdetailccView extends GetView<PilotcrewdetailccController> {
                                   Expanded(flex: 3, child: Text("ID NO")),
                                   Expanded(flex: 1, child: Text(":")),
                                   Expanded(
-                                      flex: 6, child: Text( documentData["ID NO"].toString() ?? "N/A")),
+                                      flex: 6, child: Text( documentData["ID NO"].toString())),
                                 ],
                               ),
                             ],
@@ -186,9 +187,13 @@ class PilotcrewdetailccView extends GetView<PilotcrewdetailccController> {
                             },
                           );
 
-                          await Get.find<ProfileccController>().savePdfFile(
-                              await Get.find<ProfileccController>()
-                                  .getPDFTrainingCard(controller.argumentid.value));
+                          // await Get.find<ProfileccController>().savePdfFile(
+                          //     await Get.find<ProfileccController>()
+                          //         .getPDFTrainingCard(controller.argumentid.value));
+                          String exportedPDFPath = await eksportPDF(controller.argumentid.value);
+                          if (exportedPDFPath.isNotEmpty) {
+                            await openExportedPDF(exportedPDFPath);
+                          }
                         } catch (e) {
                           print('Error: $e');
                         } finally {

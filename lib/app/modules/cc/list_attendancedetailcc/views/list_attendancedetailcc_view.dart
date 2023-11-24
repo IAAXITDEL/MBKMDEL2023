@@ -1,5 +1,4 @@
 import 'package:avatar_glow/avatar_glow.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -21,9 +20,12 @@ class ListAttendancedetailccView
   Widget build(BuildContext context) {
     var scoreC = TextEditingController();
     var feedbackC = TextEditingController();
+    // var gradeC = TextEditingController();
+    var gradeC = TextEditingController(text: "DEFAULT_VALUE");
 
-    Future<void> updateScoring(String score, String feedback) async {
-      controller.updateScoring(score, feedback).then((status) async {
+
+    Future<void> updateScoring(String score, String feedback, double grade, double communication, double knowledge, double active) async {
+      controller.updateScoring(score, feedback, grade, communication, knowledge, active ).then((status) async {
         await QuickAlert.show(
           context: context,
           type: QuickAlertType.success,
@@ -36,41 +38,40 @@ class ListAttendancedetailccView
     }
 
     return Scaffold(
-        appBar: AppBar(
-          title: RedTitleText(text : "PROFILE"),
-          centerTitle: true,
-        ),
-        body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Container(
-                  child: StreamBuilder<List<Map<String, dynamic>>>(
-                      stream: controller.profileList(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return LoadingScreen(); // Placeholder while loading
-                        }
+      appBar: AppBar(
+        title: RedTitleText(text: "PROFILE"),
+        centerTitle: true,
+      ),
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                child: StreamBuilder<List<Map<String, dynamic>>>(
+                  stream: controller.profileList(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return LoadingScreen();
+                    }
 
-                        if (snapshot.hasError) {
-                          return ErrorScreen();
-                        }
+                    if (snapshot.hasError) {
+                      print(snapshot.error);
+                      return ErrorScreen();
+                    }
 
-                        var listAttendance = snapshot.data!;
-                        if (listAttendance.isEmpty) {
-                          return EmptyScreen();
-                        }
-                        var documentData = listAttendance[0];
-                        controller.idattendancedetail.value =
-                            documentData["id"];
-                        feedbackC.text = documentData["feedback"] ?? "";
+                    var listAttendance = snapshot.data!;
 
-                        List<String> list = ['SUCCESS', 'FAIL'];
-                        RxString dropdownValue =
-                            RxString(documentData["score"] ?? list.first);
-
+                    if (listAttendance.isEmpty) {
+                      return EmptyScreen();
+                    }
+                    var documentData = listAttendance[0];
+                    controller.idattendancedetail.value = documentData["id"];
+                    feedbackC.text = documentData["feedback"] ?? "";
+                    gradeC.text = documentData["grade"].toString()  == "null" ? "" : documentData["grade"].toString() ;
+                    List<String> list = ['PASS', 'FAIL'];
+                    RxString dropdownValue =
+                        RxString(documentData["score"] ?? list.first);
                         return Container(
                           child: Column(
                             children: [
@@ -96,103 +97,32 @@ class ListAttendancedetailccView
                               SizedBox(
                                 height: 10,
                               ),
-                              controller.argumentstatus.value == "pending"
-                                  ? SizedBox()
-                                  : Row(
-                                      children: [
-                                        Expanded(flex: 3, child: Text("SCORE")),
-                                        Expanded(flex: 1, child: Text(":")),
-                                        Expanded(
-                                            flex: 6,
-                                            child: Row(
-                                              children: [
-                                                Container(
-                                                  padding: EdgeInsets.symmetric(
-                                                      vertical: 3,
-                                                      horizontal: 10),
-                                                  decoration: BoxDecoration(
-                                                    color: documentData[
-                                                                "score"] ==
-                                                            "SUCCESS"
-                                                        ? Colors.green
-                                                            .withOpacity(0.4)
-                                                        : Colors.red
-                                                            .withOpacity(0.4),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                  ),
-                                                  child: Text(
-                                                    documentData["score"],
-                                                    style: TextStyle(
-                                                        fontSize: 10,
-                                                        color: documentData[
-                                                                    "score"] ==
-                                                                "SUCCESS"
-                                                            ? Colors.green
-                                                            : Colors.red),
-                                                  ),
-                                                ),
-                                              ],
-                                            ))
-                                      ],
-                                    ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Row(
-                                children: [
-                                  Expanded(flex: 3, child: Text("NAME")),
-                                  Expanded(flex: 1, child: Text(":")),
-                                  Expanded(
-                                      flex: 6,
-                                      child:
-                                          Text(documentData["name"] ?? "N/A")),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Row(
-                                children: [
-                                  Expanded(flex: 3, child: Text("EMAIL")),
-                                  Expanded(flex: 1, child: Text(":")),
-                                  Expanded(
-                                      flex: 6,
-                                      child:
-                                          Text(documentData["email"] ?? "N/A")),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Row(
-                                children: [
-                                  Expanded(flex: 3, child: Text("RANK")),
-                                  Expanded(flex: 1, child: Text(":")),
-                                  Expanded(
-                                      flex: 6,
-                                      child:
-                                          Text(documentData["rank"] ?? "N/A")),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Row(
-                                children: [
-                                  Expanded(flex: 3, child: Text("LICENSE NO")),
-                                  Expanded(flex: 1, child: Text(":")),
-                                  Expanded(
-                                      flex: 6,
-                                      child: Text(
-                                          documentData["license"] ?? "N/A")),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              controller.argumentstatus.value == "pending"
+
+                          Row(
+                            children: [
+                              Expanded(flex: 3, child: Text("NAME")),
+                              Expanded(flex: 1, child: Text(":")),
+                              Expanded(
+                                  flex: 6,
+                                  child: Text(documentData["name"] ?? "N/A")),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            children: [
+                              Expanded(flex: 3, child: Text("RANK")),
+                              Expanded(flex: 1, child: Text(":")),
+                              Expanded(
+                                  flex: 6,
+                                  child: Text(documentData["rank"] ?? "N/A")),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                            controller.argumentstatus.value == "pending"
                                   ? Form(
                                       key: _formKey,
                                       child: Column(
@@ -216,51 +146,28 @@ class ListAttendancedetailccView
                                                                         8),
                                                             decoration:
                                                                 BoxDecoration(
-                                                              color: scoreC
-                                                                          .text ==
-                                                                      "SUCCESS"
-                                                                  ? Colors.green
-                                                                      .withOpacity(
-                                                                          0.4)
-                                                                  : Colors.red
-                                                                      .withOpacity(
-                                                                          0.4),
+                                                              color: scoreC.text.isEmpty ? Colors.green.withOpacity(0.4) : scoreC.text == "PASS" ? Colors.green.withOpacity(0.4) : Colors.red.withOpacity(0.4),
                                                               borderRadius:
                                                                   BorderRadius
                                                                       .circular(
                                                                           10),
                                                             ),
                                                             child:
-                                                                DropdownButton<
-                                                                    String>(
-                                                              underline:
-                                                                  Container(),
-                                                              focusColor:
-                                                                  tsOneColorScheme
-                                                                      .onSecondaryContainer,
-                                                              value:
-                                                                  dropdownValue
-                                                                      .value,
-                                                              onChanged: (String?
-                                                                  newValue) {
-                                                                dropdownValue
-                                                                        .value =
-                                                                    newValue!;
-                                                                scoreC.text =
-                                                                    dropdownValue
-                                                                        .value;
+                                                                DropdownButton<String>(
+                                                              underline: Container(),
+                                                              focusColor: tsOneColorScheme.onSecondaryContainer,
+                                                              value: dropdownValue.value,
+                                                              onChanged: (String? newValue) {
+                                                                dropdownValue.value = newValue!;
+                                                                scoreC.text = dropdownValue.value;
                                                               },
                                                               items: list.map(
-                                                                  (String
-                                                                      value) {
+                                                                  (String value) {
                                                                 return DropdownMenuItem<
                                                                     String>(
                                                                   value: value,
-                                                                  child: Text(
-                                                                    value,
-                                                                    style: TextStyle(
-                                                                        fontSize:
-                                                                            14),
+                                                                  child: Text(value,
+                                                                    style: TextStyle(fontSize: 14),
                                                                   ),
                                                                 );
                                                               }).toList(),
@@ -277,14 +184,134 @@ class ListAttendancedetailccView
                                             children: [
                                               Expanded(
                                                   flex: 3,
-                                                  child: Text("FEEDBACK")),
+                                                  child: Text("GRADE")),
                                               Expanded(
                                                   flex: 1, child: Text(":")),
                                               Expanded(
                                                   flex: 6,
-                                                  child: Row(
-                                                    children: [],
-                                                  ))
+                                                  child:  TextFormField(
+                                                    controller: gradeC,
+                                                    keyboardType: TextInputType.number,
+                                                    validator: (value) {
+                                                      if (value == null || value.isEmpty) {
+                                                        // Validation Logic
+                                                        return 'Please enter the Grade';
+                                                      } else {
+                                                        // Convert the value to double for numeric comparison
+                                                        double? numericValue = double.tryParse(value);
+                                                        if (numericValue == null || numericValue < 0 || numericValue > 100) {
+                                                          return 'Please enter a valid numeric Grade between 0 and 100';
+                                                        }
+                                                      }
+                                                      return null;
+                                                    },
+                                                  )
+                                                ,)
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 30,
+                                          ),
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text("Communication Skills", style: tsOneTextTheme.headlineMedium,textAlign: TextAlign.center,),
+                                              Text("Clear and effective communication", style: TextStyle(color: TsOneColor.secondaryContainer, fontSize: 11),textAlign: TextAlign.start,),
+                                              SizedBox(height: 10,),
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Text("Very Poor", style: tsOneTextTheme.labelSmall,),
+                                                  Text("Excellent", style: tsOneTextTheme.labelSmall,)
+                                                ],
+                                              ),
+                                              Obx(() {
+                                                return Slider(
+                                                  value: controller.ratingCommunication.value,
+                                                  min: 1,
+                                                  max: 5,
+                                                  divisions: 4,
+                                                  label: controller.ratingCommunication.value.round().toString(),
+                                                  onChanged: (double value) {
+                                                    controller.ratingCommunication.value = value;
+                                                  },
+                                                  // activeColor: Colors.blue[900],
+                                                  activeColor : Color(0XFFFFFB000),
+                                                );
+                                              }),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 15,
+                                          ),
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text("Knowledge Acquisition", style: tsOneTextTheme.headlineMedium,textAlign: TextAlign.center,),
+                                              Text("Understanding and applying training materials", style: TextStyle(color: TsOneColor.secondaryContainer, fontSize: 11),textAlign: TextAlign.start,),
+                                              SizedBox(height: 10,),
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Text("Very Low", style: tsOneTextTheme.labelSmall,),
+                                                  Text("Very High", style: tsOneTextTheme.labelSmall,)
+                                                ],
+                                              ),
+                                              Obx(() {
+                                                return Slider(
+                                                  value: controller.ratingKnowledge.value,
+                                                  min: 1,
+                                                  max: 5,
+                                                  divisions: 4,
+                                                  label: controller.ratingKnowledge.value.round().toString(),
+                                                  onChanged: (double value) {
+                                                    controller.ratingKnowledge.value = value;
+                                                  },
+                                                  // activeColor: Colors.green[900],
+                                                  activeColor : Color(0XFFF004225),
+                                                );
+                                              }),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 15,
+                                          ),
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text("Active Participation", style: tsOneTextTheme.headlineMedium,textAlign: TextAlign.center,),
+                                              Text("Engaging actively", style: TextStyle(color: TsOneColor.secondaryContainer, fontSize: 11),textAlign: TextAlign.start,),
+                                              SizedBox(height: 10,),
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Text("Very Low", style: tsOneTextTheme.labelSmall,),
+                                                  Text("Very High", style: tsOneTextTheme.labelSmall,)
+                                                ],
+                                              ),
+                                              Obx(() {
+                                                return Slider(
+                                                  value: controller.ratingActive.value,
+                                                  min: 1,
+                                                  max: 5,
+                                                  divisions: 4,
+                                                  label: controller.ratingActive.value.round().toString(),
+                                                  onChanged: (double value) {
+                                                    controller.ratingActive.value = value;
+                                                  },
+                                                  // activeColor: Colors.red[900],
+                                                  activeColor : Color(0XFFF071952),
+                                                );
+                                              }),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 15,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                  child: Text("Provide Additional Information", style: tsOneTextTheme.headlineMedium,)),
                                             ],
                                           ),
                                           SizedBox(
@@ -374,26 +401,14 @@ class ListAttendancedetailccView
                                                       context: context,
                                                       builder: (BuildContext
                                                           context) {
-                                                        return FutureBuilder<
-                                                            void>(
-                                                          future: updateScoring(
-                                                              dropdownValue
-                                                                  .value,
-                                                              feedbackC.text),
-                                                          builder: (BuildContext
-                                                                  context,
-                                                              AsyncSnapshot<
-                                                                      void>
-                                                                  snapshot) {
-                                                            if (snapshot
-                                                                    .connectionState ==
-                                                                ConnectionState
-                                                                    .waiting) {
+                                                        return FutureBuilder<void>(
+                                                          future: updateScoring(dropdownValue.value, feedbackC.text, double.tryParse(gradeC.text)! , controller.ratingCommunication.value, controller.ratingKnowledge.value, controller.ratingActive.value ),
+                                                          builder: (BuildContextcontext, AsyncSnapshot<void>snapshot) {
+                                                            if (snapshot.connectionState == ConnectionState.waiting) {
                                                               return LoadingScreen(); // Show loading screen
                                                             }
 
-                                                            if (snapshot
-                                                                .hasError) {
+                                                            if (snapshot.hasError) {
                                                               // Handle error if needed
                                                               return ErrorScreen();
                                                             } else {
@@ -420,48 +435,227 @@ class ListAttendancedetailccView
                                       ),
                                     )
                                   : SizedBox(),
-                              controller.isCPTS.value ?
-                             Row(
+                              controller.argumentstatus.value == "pending" || controller.argumentstatus.value == "confirmation"
+                                  ? SizedBox()
+                                  : Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Expanded(flex: 3, child: Text("GRADE")),
+                                      Expanded(flex: 1, child: Text(":")),
+                                      Expanded(
+                                          flex: 6,
+                                          child: Row(
+                                            children: [
+                                              Container(
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: 3,
+                                                    horizontal: 10),
+                                                child: Text(
+                                                  documentData["grade"].round().toString(),
+                                                ),
+                                              ),
+                                            ],
+                                          ))
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Row(
+                                  children: [
+                                    Expanded(flex: 3, child: Text("SCORE")),
+                                    Expanded(flex: 1, child: Text(":")),
+                                    Expanded(
+                                        flex: 6,
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: 3,
+                                                  horizontal: 10),
+                                              decoration: BoxDecoration(
+                                                color: documentData["score"] == "PASS" || documentData["score"] ==  null ? Colors.green.withOpacity(0.4)
+                                                    : Colors.red
+                                                    .withOpacity(0.4),
+                                                borderRadius:
+                                                BorderRadius.circular(
+                                                    10),
+                                              ),
+                                              child: Text(
+                                                documentData["score"],
+                                                style: TextStyle(
+                                                    fontSize: 10,
+                                                    color: documentData[
+                                                    "score"] ==
+                                                        "PASS"  || documentData["score"] ==  null
+                                                        ? Colors.green
+                                                        : Colors.red),
+                                              ),
+                                            ),
+                                          ],
+                                        ))
+                                  ],
+                                )
+                                ],
+                              ),
+                              SizedBox(
+                                height: 30,
+                              ),
+                          controller.isCPTS.value
+                              ? Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Container(
+                                    width:
+                                    40, // Atur lebar garis kiri sesuai kebutuhan
+                                    child: Divider(
+                                      color: Colors.red,
+                                      thickness: 1,
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 1, // Atur flex ke 3 untuk teks
+                                    child: Center(
+                                      child: Text(
+                                        'Feedback from instructor',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    width:
+                                    40, // Atur lebar garis kanan sesuai kebutuhan
+                                    child: Divider(
+                                      color: Colors.red,
+                                      thickness: 1,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(flex: 2,child: Text("Communication", style: tsOneTextTheme.labelSmall)),
+                                  Expanded(
+                                    flex: 3,
+                                    child: Obx(() {
+                                      return Slider(
+                                        value: controller.ratingCommunication.value,
+                                        min: 1,
+                                        max: 5,
+                                        divisions: 4,
+                                        label: controller.ratingCommunication.value.round().toString(),
+                                        onChanged: (double value) {
+                                        },
+                                        // activeColor: Colors.blue[900],
+                                        activeColor : Color(0XFFFFFB000),
+                                      );
+                                    }),
+                                  ),
+                                  Text("${controller.ratingCommunication.value.round().toString()}/5"),
+                                ],
+                              ),
 
-                               children: [
-                                 Expanded(child:  Container(
-                                   padding: const EdgeInsets.symmetric(
-                                       horizontal: 20, vertical: 20),
-                                   decoration: BoxDecoration(
-                                     borderRadius: BorderRadius.circular(10.0),
-                                     color: TsOneColor.surface,
-                                   ),
-                                   child: Column(
-                                     crossAxisAlignment: CrossAxisAlignment.start,
-                                     mainAxisAlignment: MainAxisAlignment.start,
-                                     children: [
-                                       Text(
-                                         'Feedback to Trainee',
-                                         style: TextStyle(
-                                           fontWeight: FontWeight.bold,
-                                           fontSize: 15,
-                                         ),
-                                       ),
-                                       Text(
-                                         documentData["feedback"],
-                                         style: TextStyle(
-                                           fontSize: 15,
-                                         ),
-                                       ),
+                              Row(
+                                children: [
+                                  Expanded(flex: 2,child: Text("Knowledge", style: tsOneTextTheme.labelSmall,)),
+                                  Expanded( flex: 3,
+                                    child: Obx(() {
+                                      return Slider(
+                                        value: controller.ratingKnowledge.value,
+                                        min: 1,
+                                        max: 5,
+                                        divisions: 4,
+                                        label: controller.ratingKnowledge.value.round().toString(),
+                                        onChanged: (double value) {
+                                        },
+                                        // activeColor: Colors.green[900],
+                                        activeColor : Color(0XFFF004225),
+                                      );
+                                    }),
+                                  ),
+                                  Text("${controller.ratingKnowledge.value.round().toString()}/5"),
+                                ],
+                              ),
 
-                                     ],
-                                   ),
-                                 ))
-                               ],
-                             ) : SizedBox()
+                              Row(
+                                children: [
+                                  Expanded(flex: 2, child: Text("Participation", style: tsOneTextTheme.labelSmall)),
+                                  Expanded(
+                                    flex: 3,
+                                    child: Obx(() {
+                                      return Slider(
+                                        value: controller.ratingActive.value,
+                                        min: 1,
+                                        max: 5,
+                                        divisions: 4,
+                                        label: controller.ratingActive.value.round().toString(),
+                                        onChanged: (double value) {
+                                        },
+                                        // activeColor: Colors.red[900],
+                                        activeColor : Color(0XFFF071952),
+                                      );
+                                    }),
+                                  ),
+                                  Text("${controller.ratingActive.value.round().toString()}/5"),
+                                ],
+                              ),
+
+                              SizedBox(
+                                height: 15,
+                              ),
+                              Row(
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Notes:',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              Container(
+                                width: double.infinity,
+                                child: Text(
+                                  documentData["feedback"],
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                  textAlign: TextAlign.justify, // Menentukan teks harus di-justify
+                                  maxLines: 20,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
                             ],
-                          ),
-                        );
-                      }),
-                )
-              ],
-            ),
+                          )
+                              : SizedBox()
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              )
+            ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 }
