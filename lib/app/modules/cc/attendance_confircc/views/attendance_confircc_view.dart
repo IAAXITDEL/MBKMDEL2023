@@ -429,14 +429,17 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                                           return LoadingScreen();
                                         },
                                       );
-
+                                      // await controller.savePdfFile(controller.attendancelist() as Uint8List);
                                       // Check if pdfBytes is not null before accessing its value
-                                      if (controller.pdfBytes != null && controller.pdfBytes!.isNotEmpty) {
-                                        await controller.savePdfFile(controller.pdfBytes![0]);
-                                      } else {
-                                        print("pdfBytes is null or empty");
-                                        // Handle the case where pdfBytes is null or empty
-                                      }
+                                      // if (controller.pdfBytes != null && controller.pdfBytes!.isNotEmpty) {
+                                      //
+                                      // } else {
+                                      //   print("pdfBytes is null or empty");
+                                      //   // Handle the case where pdfBytes is null or empty
+                                      // }
+                                      await controller.savePdfFile(
+                                          await controller
+                                              .attendancelist());
                                     } catch (e) {
                                       print('Error: $e');
                                     } finally {

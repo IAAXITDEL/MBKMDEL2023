@@ -53,7 +53,6 @@ class AttendanceConfirccController extends GetxController {
     super.onInit();
     argumentid.value = Get.arguments["id"];
     attendanceStream();
-    _loadPdf();
     getCombinedAttendance();
     cekRole();
     absentList();
@@ -415,7 +414,7 @@ class AttendanceConfirccController extends GetxController {
   }
 
   //Import PDF
-  Future<List<int>> attendancelist() async {
+  Future<Uint8List> attendancelist() async {
     try {
       List<pw.TableRow> tableRows = [];
       List<pw.TableRow> instructorTableRows = [];
