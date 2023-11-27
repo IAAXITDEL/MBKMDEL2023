@@ -242,7 +242,7 @@ class _AnalyticsHubState extends State<AnalyticsHub> with TickerProviderStateMix
     selectedStartDate = DateTime.now();
     selectedEndDate = DateTime.now();
     tabController = TabController(length: 1, vsync: this);
-    AnalyticsController().countDevicesHub('CGK').then((result) {
+    AnalyticsController().countDevicesHub().then((result) {
       setState(() {
         totalDeviceCounts = result;
         deviceCounts_InUse_AllHubs = result['CGK'] ?? 0;
@@ -361,47 +361,46 @@ class _AnalyticsHubState extends State<AnalyticsHub> with TickerProviderStateMix
           percentageDevicesInUse('CGK'),
           percentageDevices23InUse('CGK'),
           percentageDevices23InUsed('CGK'),
-          // SizedBox(height: 20),
-          // Padding(
-          //   padding: EdgeInsets.only(bottom: 8.0),
-          //   child: Row(
-          //     children: <Widget>[
-          //       Expanded(
-          //         child: Divider(
-          //           color: Colors.grey,
-          //         ),
-          //       ),
-          //       Padding(
-          //         padding: EdgeInsets.symmetric(horizontal: 8.0),
-          //         child: Text(
-          //           'Device Distribution',
-          //           style: TextStyle(color: Colors.grey),
-          //         ),
-          //       ),
-          //       Expanded(
-          //         child: Divider(
-          //           color: Colors.grey,
-          //         ),
-          //       ),
-          //     ],
-          //   ),
-          // ),
-          // SizedBox(
-          //   height: 20,
-          // ),
-          // Padding(
-          //   padding: const EdgeInsets.only(top: 16.0, right: 16.0, left: 16.0),
-          //   child: LegendsListWidget(
-          //     legends: [
-          //       Legend('CGK', Color.fromARGB(255, 255, 243, 226)),
-          //       Legend('KNO', Color.fromARGB(255, 255, 229, 202)),
-          //       Legend('DPS', Color.fromARGB(250, 250, 152, 132)),
-          //       Legend('SUB', Color.fromARGB(231, 231, 70, 70)),
-          //     ],
-          //   ),
-          // ),
-          // PieChartWidget(totalDeviceCounts),
-          // SizedBox(height: 16),
+          SizedBox(height: 20),
+          Padding(
+            padding: EdgeInsets.only(bottom: 8.0),
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  child: Divider(
+                    color: Colors.grey,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Text(
+                    'Available Devices',
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                ),
+                Expanded(
+                  child: Divider(
+                    color: Colors.grey,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 16.0, right: 16.0, left: 16.0),
+            child: LegendsListWidget(
+              legends: [
+                Legend('CGK', Color.fromARGB(255, 255, 243, 226)),
+                Legend('KNO', Color.fromARGB(255, 255, 229, 202)),
+                Legend('DPS', Color.fromARGB(250, 250, 152, 132)),
+                Legend('SUB', Color.fromARGB(231, 231, 70, 70)),
+              ],
+            ),
+          ),
+          PieChartWidget(totalDeviceCounts),
         ],
       ),
     );
@@ -784,73 +783,73 @@ class _AnalyticsHubState extends State<AnalyticsHub> with TickerProviderStateMix
   }
 }
 
-// Pie Chart Device Distribution
-// class PieChartWidget extends StatefulWidget {
-//   final Map<String, int> deviceCounts;
+// Pie Chart Available Devices
+class PieChartWidget extends StatefulWidget {
+  final Map<String, int> deviceCounts;
 
-//   PieChartWidget(this.deviceCounts);
-//   @override
-//   _PieChartWidgetState createState() => _PieChartWidgetState();
-// }
+  PieChartWidget(this.deviceCounts);
+  @override
+  _PieChartWidgetState createState() => _PieChartWidgetState();
+}
 
-// class _PieChartWidgetState extends State<PieChartWidget> {
-//   int touchedIndex = -1;
+class _PieChartWidgetState extends State<PieChartWidget> {
+  int touchedIndex = -1;
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return FutureBuilder<int>(
-//       future: AnalyticsController().countDevicesInUse(),
-//       builder: (context, snapshot) {
-//         if (snapshot.connectionState == ConnectionState.waiting) {
-//           return CircularProgressIndicator(); // Display a loading indicator while fetching data.
-//         } else if (snapshot.hasError) {
-//           return Text('Error: ${snapshot.error}');
-//         } else {
-//           final deviceCountInUse = snapshot.data;
-//           return AspectRatio(
-//             aspectRatio: 1,
-//             child: PieChart(
-//               PieChartData(
-//                 sectionsSpace: 2,
-//                 centerSpaceRadius: 30,
-//                 sections: _getChartSections(deviceCountInUse),
-//                 borderData: FlBorderData(show: false),
-//                 startDegreeOffset: 180,
-//               ),
-//             ),
-//           );
-//         }
-//       },
-//     );
-//   }
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<int>(
+      future: AnalyticsController().countDevicesInUse(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return CircularProgressIndicator(); // Display a loading indicator while fetching data.
+        } else if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        } else {
+          final deviceCountInUse = snapshot.data;
+          return AspectRatio(
+            aspectRatio: 1,
+            child: PieChart(
+              PieChartData(
+                sectionsSpace: 2,
+                centerSpaceRadius: 30,
+                sections: _getChartSections(deviceCountInUse),
+                borderData: FlBorderData(show: false),
+                startDegreeOffset: 180,
+              ),
+            ),
+          );
+        }
+      },
+    );
+  }
 
-// //Color myColor = Color.fromARGB(255, 255, 0, 0); // Membuat warna merah (RGB: 255, 0, 0)
+//Color myColor = Color.fromARGB(255, 255, 0, 0); // Membuat warna merah (RGB: 255, 0, 0)
 
-//   List<PieChartSectionData> _getChartSections(int? deviceCountInUse) {
-//     final List<Color> colors = [
-//       Color.fromARGB(255, 255, 243, 226),
-//       Color.fromARGB(255, 255, 229, 202),
-//       Color.fromARGB(250, 250, 152, 132),
-//       Color.fromARGB(231, 231, 70, 70),
-//     ];
+  List<PieChartSectionData> _getChartSections(int? deviceCountInUse) {
+    final List<Color> colors = [
+      Color.fromARGB(255, 234, 153, 39),
+      Color.fromARGB(255, 255, 229, 202),
+      Color.fromARGB(250, 250, 152, 132),
+      Color.fromARGB(231, 231, 70, 70),
+    ];
 
-//     final otherSections = List.generate(widget.deviceCounts.length, (i) {
-//       final hub = widget.deviceCounts.keys.toList()[i];
-//       final count = widget.deviceCounts[hub] ?? 0;
+    final otherSections = List.generate(widget.deviceCounts.length, (i) {
+      final hub = widget.deviceCounts.keys.toList()[i];
+      final count = widget.deviceCounts[hub] ?? 0;
 
-//       return PieChartSectionData(
-//         title: '$count', // Update the title
-//         value: count.toDouble(),
-//         color: colors[i % colors.length],
-//         radius: 80,
-//         titleStyle: TextStyle(
-//           fontSize: 16,
-//           fontWeight: FontWeight.w500,
-//           color: Colors.black,
-//           fontFamily: 'Poppins',
-//         ),
-//       );
-//     });
-//     return otherSections;
-//   }
-// }
+      return PieChartSectionData(
+        title: '$count', // Update the title
+        value: count.toDouble(),
+        color: colors[i % colors.length],
+        radius: 80,
+        titleStyle: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w500,
+          color: Colors.black,
+          fontFamily: 'Poppins',
+        ),
+      );
+    });
+    return otherSections;
+  }
+}

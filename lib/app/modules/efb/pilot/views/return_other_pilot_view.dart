@@ -109,6 +109,47 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(4.0),
+                  border: Border.all(
+                    color: tsOneColorScheme.onSecondary,
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Note:',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16.0,
+                        ),
+                      ),
+                      SizedBox(height: 8.0),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Align(
+                              alignment: Alignment.centerRight, // Ganti menjadi Alignment.centerLeft untuk membuat rata kiri
+                              child: Text(
+                                'You must be in one place with the next FO to confirm the return. If you are in a different place, whatever the FO contains, you automatically agree with its statement.',
+                                style: TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 14.0,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 15.0),
               Center(
                 child: Text(
                   'Please select another crew',
@@ -186,122 +227,87 @@ class _ReturnOtherPilotViewState extends State<ReturnOtherPilotView> {
                   ],
                 ),
               ),
-              const SizedBox(height: 16.0),
+              SizedBox(height: 20),
               if (selectedUser != null)
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4.0),
-                    border: Border.all(
-                      color: tsOneColorScheme.onSecondary,
-                    ),
+                Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    "Crew Info",
+                    style: tsOneTextTheme.headlineMedium,
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                            "Crew Info",
-                            style: tsOneTextTheme.headlineMedium,
+                ),
+              if (selectedUser != null)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Card(
+                        color: tsOneColorScheme.secondary,
+                        surfaceTintColor: TsOneColor.surface,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        elevation: 3,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SizedBox(width: 8.0),
+                              CircleAvatar(
+                                backgroundImage: selectedUser!['PHOTOURL'] != null
+                                    ? NetworkImage(selectedUser!['PHOTOURL'] as String)
+                                    : AssetImage('assets/default_profile_image.png') as ImageProvider,
+                                radius: 25.0,
+                              ),
+                              SizedBox(width: 12.0),
+                              Flexible(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      width: double.infinity,
+                                      child: Text(
+                                        '${selectedUser!['NAME']}',
+                                        style: tsOneTextTheme.titleMedium,
+                                      ),
+                                    ),
+                                    Text(
+                                      '${selectedUser!['ID NO']}',
+                                      style: tsOneTextTheme.labelMedium,
+                                    ),
+                                    Text(
+                                      '${selectedUser!['RANK']}',
+                                      style: tsOneTextTheme.labelSmall,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        // Row(
-                        //   children: [
-                        //     Expanded(
-                        //         flex: 6,
-                        //         child: Text(
-                        //           "ID NO",
-                        //           style: tsOneTextTheme.bodySmall,
-                        //         )),
-                        //     Expanded(
-                        //
-                        //         child: Text(
-                        //           ":",
-                        //           style: tsOneTextTheme.bodySmall,
-                        //         )),
-                        //     Expanded(
-                        //       flex: 6,
-                        //       child: Text(
-                        //         '${selectedUser!['ID NO']}',
-                        //         style: tsOneTextTheme.bodySmall,
-                        //       ),
-                        //     ),
-                        //   ],
-                        // ),
-                        const SizedBox(height: 5.0),
-                        Row(
-                          children: [
-                            Expanded(
-                                flex: 3,
-                                child: Text(
-                                  "Name",
-                                  style: tsOneTextTheme.bodySmall,
-                                )),
-                            Expanded(
-                                child: Text(
-                              ":",
-                              style: tsOneTextTheme.bodySmall,
-                            )),
-                            Expanded(
-                              flex: 6,
-                              child: Text(
-                                '${selectedUser!['NAME']}',
-                                style: tsOneTextTheme.bodySmall,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Expanded(
-                                flex: 3,
-                                child: Text(
-                                  "Rank",
-                                  style: tsOneTextTheme.bodySmall,
-                                )),
-                            Expanded(
-                                child: Text(
-                              ":",
-                              style: tsOneTextTheme.bodySmall,
-                            )),
-                            Expanded(
-                              flex: 6,
-                              child: Text(
-                                '${selectedUser!['RANK']}',
-                                style: tsOneTextTheme.bodySmall,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Expanded(
-                                flex: 3,
-                                child: Text(
-                                  "HUB",
-                                  style: tsOneTextTheme.bodySmall,
-                                )),
-                            Expanded(
-                                child: Text(
-                              ":",
-                              style: tsOneTextTheme.bodySmall,
-                            )),
-                            Expanded(
-                              flex: 6,
-                              child: Text(
-                                '${selectedUser!['HUB']}',
-                                style: tsOneTextTheme.bodySmall,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
+                      ),
                     ),
                   ),
                 ),
-              const SizedBox(height: 20.0),
+              const SizedBox(height: 15.0),
+              if (selectedUser != null)
+                const Padding(
+                  padding: EdgeInsets.only(bottom: 10.0),
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Divider(
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              const SizedBox(height: 15.0),
               if (selectedUser != null)
                 Align(
                   alignment: Alignment.center,

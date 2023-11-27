@@ -84,6 +84,8 @@ import '../modules/cc/traininghistorycc_cpts/bindings/traininghistorycc_cpts_bin
 import '../modules/cc/traininghistorycc_cpts/views/traininghistorycc_cpts_view.dart';
 import '../modules/efb/analytics/bindings/analytics_binding.dart';
 import '../modules/efb/analytics/views/analytics_view.dart';
+import '../modules/efb/dokumen/bindings/efb_dokumen_binding.dart';
+import '../modules/efb/dokumen/views/efb_dokumen_view.dart';
 import '../modules/efb/fo/bindings/homefo_binding.dart';
 import '../modules/efb/fo/views/main_view_fo.dart';
 import '../modules/efb/occ/bindings/device_binding.dart';
@@ -107,6 +109,13 @@ import '../modules/pa/navpilot/bindings/navpilot_binding.dart';
 import '../modules/pa/navpilot/views/navpilot_view.dart';
 import '../modules/pa/occ/bindings/navocc_binding.dart';
 import '../modules/pa/occ/views/navocc_view.dart';
+
+// import '../modules/add_attendancecc/bindings/add_attendancecc_binding.dart';
+// import '../modules/add_attendancecc/views/add_attendancecc_view.dart';
+// import '../modules/attendance_confircc/bindings/attendance_confircc_binding.dart';
+// import '../modules/attendance_confircc/views/attendance_confircc_view.dart';
+// import '../modules/attendance_pendingcc/bindings/attendance_pendingcc_binding.dart';
+// import '../modules/attendance_pendingcc/views/attendance_pendingcc_view.dart';
 
 part 'app_routes.dart';
 
@@ -187,8 +196,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.newAssessmentInstructorNotes,
-      page: () =>
-          NewAssessmentInstructorNotes(examineeId: Get.arguments as int),
+      page: () => NewAssessmentInstructorNotes(examineeId: Get.arguments as int),
     ),
     GetPage(
       name: _Paths.newAssessmentDeclaration,
@@ -209,8 +217,7 @@ class AppPages {
 
     GetPage(
       name: _Paths.detailAssessmentPeriod,
-      page: () => DetailAssessmentPeriodView(
-          assessmentPeriodId: Get.arguments as String),
+      page: () => DetailAssessmentPeriodView(assessmentPeriodId: Get.arguments as String),
     ),
 
     GetPage(
@@ -220,8 +227,7 @@ class AppPages {
 
     GetPage(
       name: _Paths.updateAssessmentPeriod,
-      page: () => UpdateAssessmentPeriodView(
-          assessmentPeriodId: Get.arguments as String),
+      page: () => UpdateAssessmentPeriodView(assessmentPeriodId: Get.arguments as String),
     ),
 
     GetPage(
@@ -460,5 +466,10 @@ class AppPages {
       binding: TrainingCptsccBinding(),
     ),
 
+    GetPage(
+      name: _Paths.EFB_DOKUMEN,
+      page: () => const EfbDokumenView(),
+      binding: EfbDokumenBinding(),
+    ),
   ];
 }

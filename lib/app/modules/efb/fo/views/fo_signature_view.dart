@@ -19,7 +19,7 @@ class FOSignaturePadPage extends StatefulWidget {
   final GlobalKey<SfSignaturePadState> _signaturePadKey = GlobalKey<SfSignaturePadState>();
   Uint8List? signatureImage;
   final String deviceId;
-
+  final TextEditingController remarksController = TextEditingController();
   FOSignaturePadPage({required String documentId, required this.deviceId});
 
   @override
@@ -41,9 +41,62 @@ class _FOSignaturePadPageState extends State<FOSignaturePadPage> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           child: Column(
             children: [
+              Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.red),
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start, // Agar Column rata kiri
+                  children: [
+                    Text(
+                      'Note:',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16.0,
+                      ),
+                    ),
+                    SizedBox(height: 8.0),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Align(
+                            alignment: Alignment.centerRight, // Ganti menjadi Alignment.centerLeft untuk membuat rata kiri
+                            child: Text(
+                              'You must be in one place with the OCC to confirm the return. If you are in a different place, whatever the OCC contains, you automatically agree with its statement.',
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontSize: 14.0,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 10),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Enter your remarks",
+                  style: tsOneTextTheme.headlineMedium,
+                ),
+              ),
+              const SizedBox(height: 10),
+              TextField(
+                controller: widget.remarksController,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Fill if returned via CAPT',
+                ),
+              ),
+              const SizedBox(height: 10),
               Align(
                 alignment: Alignment.center,
                 child: Text(
@@ -76,7 +129,7 @@ class _FOSignaturePadPageState extends State<FOSignaturePadPage> {
               Stack(
                 children: [
                   Container(
-                    height: 480,
+                    height: 380,
                     decoration: BoxDecoration(
                       borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(10.0),
@@ -142,11 +195,23 @@ class _FOSignaturePadPageState extends State<FOSignaturePadPage> {
                       )
                     ],
                   ),
+                  // const SizedBox(height: 10),
+                  // TextField(
+                  //   controller: widget.remarksController,
+                  //   decoration: const InputDecoration(
+                  //     border: OutlineInputBorder(),
+                  //     hintText: 'Enter your remarks',
+                  //   ),
+                  // ),
                   const SizedBox(height: 10),
                   ElevatedButton(
                     onPressed: () async {
                       final signatureData = widget.signatureImage;
+                      final remarks = widget.remarksController.text;
+
                       if (signatureData == null && !agree) {
+                        // ... (validasi lainnya)
+
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: const Text("Please provide signature & consent"),
@@ -160,6 +225,8 @@ class _FOSignaturePadPageState extends State<FOSignaturePadPage> {
                           ),
                         );
                       } else if (signatureData == null) {
+                        // ... (validasi lainnya)
+
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: const Text("Please provide signature"),
@@ -173,6 +240,8 @@ class _FOSignaturePadPageState extends State<FOSignaturePadPage> {
                           ),
                         );
                       } else if (agree && signatureData == null) {
+                        // ... (validasi lainnya)
+
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: const Text("Please provide signature"),
@@ -186,6 +255,8 @@ class _FOSignaturePadPageState extends State<FOSignaturePadPage> {
                           ),
                         );
                       } else if (!agree) {
+                        // ... (validasi lainnya)
+
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: const Text("Please checklist consent"),
@@ -199,7 +270,8 @@ class _FOSignaturePadPageState extends State<FOSignaturePadPage> {
                           ),
                         );
                       } else if (widget._signaturePadKey.currentState?.clear == null) {
-                        //widget._signaturePadKey.currentState!.clear();
+                        // ... (validasi lainnya)
+
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: const Text("Please provide signature"),
@@ -238,18 +310,14 @@ class _FOSignaturePadPageState extends State<FOSignaturePadPage> {
                                     Expanded(
                                       flex: 5,
                                       child: ElevatedButton(
-                                        onPressed: () async {
+                                        onPressed: () {
                                           try {
-                                            // Simpan tanda tangan ke koleksi pilot-device-1
-                                            final newDocumentId = await addToPilotDeviceCollection(
+                                            final newDocumentId = addToPilotDeviceCollection(
                                               signatureData,
                                               widget.deviceId,
+                                              remarks, // Sertakan remarks dalam pemanggilan
                                             );
-                                            _showQuickAlert(context);
-
-                                            // Tampilkan pesan sukses
                                           } catch (error) {
-                                            // Handle error jika diperlukan
                                             showDialog(
                                               context: context,
                                               builder: (context) {
@@ -259,7 +327,7 @@ class _FOSignaturePadPageState extends State<FOSignaturePadPage> {
                                                   actions: [
                                                     ElevatedButton(
                                                       onPressed: () {
-                                                        Navigator.pop(context); // Tutup dialog error
+                                                        Navigator.pop(context);
                                                       },
                                                       child: const Text('OK'),
                                                     ),
@@ -268,6 +336,7 @@ class _FOSignaturePadPageState extends State<FOSignaturePadPage> {
                                               },
                                             );
                                           }
+                                          _showQuickAlert(context, remarks); // Sertakan remarks dalam pemanggilan
                                         },
                                         child: const Text('Yes', style: TextStyle(color: TsOneColor.onPrimary)),
                                         style: ElevatedButton.styleFrom(
@@ -287,16 +356,16 @@ class _FOSignaturePadPageState extends State<FOSignaturePadPage> {
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                        backgroundColor: TsOneColor.greenColor,
-                        minimumSize: const Size(double.infinity, 50),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4),
-                        )),
+                      backgroundColor: TsOneColor.greenColor,
+                      minimumSize: const Size(double.infinity, 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                    ),
                     child: const Text('Submit', style: TextStyle(color: Colors.white)),
                   ),
                 ],
               ),
-              // Teks untuk menampilkan deviceId
             ],
           ),
         ),
@@ -304,35 +373,25 @@ class _FOSignaturePadPageState extends State<FOSignaturePadPage> {
     );
   }
 
-  // Fungsi untuk menyimpan tanda tangan ke dokumen pilot-device-1
-  // Fungsi untuk menyimpan tanda tangan ke dokumen pilot-device-1
-  // Fungsi untuk menyimpan tanda tangan ke dokumen pilot-device-1
-  Future<void> addToPilotDeviceCollection(Uint8List signatureData, String deviceId) async {
+  Future<void> addToPilotDeviceCollection(Uint8List signatureData, String deviceId, String remarks) async {
     User? user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {
       String uid = user.uid;
 
-      // Mendefinisikan data tambahan yang akan ditambahkan ke dokumen
       Map<String, dynamic> additionalData = {
         'signature_url': await uploadSignatureToFirestore(signatureData),
-        'statusDevice': 'need-confirmation-occ', // Update the status here
-        'document_id': deviceId, // Associate the signature with the deviceId
-        'handover-to-crew': '-', // Associate the signature with the deviceId
-        // Tambahkan field lain jika diperlukan
+        'statusDevice': 'need-confirmation-occ',
+        'document_id': deviceId,
+        'handover-to-crew': '-',
+        'remarks-handover': remarks,
       };
 
       try {
-        // Update dokumen yang ada di koleksi pilot-device-1 dengan field baru
-        await FirebaseFirestore.instance
-            .collection('pilot-device-1')
-            .doc(deviceId) // Gunakan deviceId untuk mengidentifikasi dokumen yang akan diperbarui
-            .update(additionalData);
+        await FirebaseFirestore.instance.collection('pilot-device-1').doc(deviceId).update(additionalData);
 
-        // Kembalikan tanpa perlu mengembalikan ID dokumen
         return;
       } catch (e) {
-        // Handle error jika diperlukan
         print("Error updating document in Firestore: $e");
         rethrow;
       }
@@ -341,7 +400,6 @@ class _FOSignaturePadPageState extends State<FOSignaturePadPage> {
     throw Exception("User not authenticated");
   }
 
-  // Fungsi untuk mengunggah tanda tangan ke Firebase Firestore
   Future<String> uploadSignatureToFirestore(Uint8List signatureData) async {
     try {
       final Reference storageRef = FirebaseStorage.instance.ref().child('signatures/${DateTime.now()}.png');
@@ -350,19 +408,18 @@ class _FOSignaturePadPageState extends State<FOSignaturePadPage> {
       final String downloadUrl = await storageRef.getDownloadURL();
       return downloadUrl;
     } catch (e) {
-      // Handle error jika diperlukan
       print("Error uploading signature: $e");
       rethrow;
     }
   }
-}
 
-Future<void> _showQuickAlert(BuildContext context) async {
-  await QuickAlert.show(
-    context: context,
-    type: QuickAlertType.success,
-    text: 'You have returned to OCC!\nPlease kindly wait until OCC confirms the device.',
-  ).then((value) {
-    Get.offAllNamed(Routes.NAVOCC);
-  });
+  Future<void> _showQuickAlert(BuildContext context, String remarks) async {
+    await QuickAlert.show(
+      context: context,
+      type: QuickAlertType.success,
+      text: 'You have returned to OCC!\nPlease kindly wait until OCC confirms the device.\nRemarks: $remarks',
+    ).then((value) {
+      Get.offAllNamed(Routes.NAVOCC);
+    });
+  }
 }

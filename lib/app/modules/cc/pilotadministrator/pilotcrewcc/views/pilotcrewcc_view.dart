@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -163,8 +162,7 @@ class PilotcrewccView extends GetView<PilotcrewccController> {
                                             children: [
                                               Text(
                                                 listAttendance[index]["ID NO"]
-                                                        .toString() ??
-                                                    "",
+                                                        .toString(),
                                                 style:
                                                     tsOneTextTheme.labelSmall,
                                               ),

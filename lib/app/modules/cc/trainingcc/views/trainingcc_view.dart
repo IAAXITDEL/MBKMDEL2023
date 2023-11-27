@@ -29,8 +29,6 @@ class TrainingccView extends GetView<TrainingccController> {
     });
 
     Future<void> add(int training) async {
-      String message = '';
-
       List<AttendanceModel> attendanceList =
           await controller.checkClassStream(controller.argumentid.value);
       List<AttendanceModel> classList =
@@ -179,7 +177,7 @@ class TrainingccView extends GetView<TrainingccController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              controller.isInstructor.value ?
+              controller.isInstructor.value || controller.iscpts.value ?
               Text("TRAINEE / PILOT", style: tsOneTextTheme.labelMedium,) : SizedBox(),
               // ------------------------------------ LIST TRAINING ----------------------------------
 

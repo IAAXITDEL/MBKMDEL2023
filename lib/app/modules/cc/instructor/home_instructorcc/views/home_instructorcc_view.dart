@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:googleapis/androidpublisher/v3.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../../../presentation/shared_components/TitleText.dart';
 import '../../../../../../presentation/theme.dart';
 import '../../../../../../util/empty_screen.dart';
 import '../../../../../../util/error_screen.dart';

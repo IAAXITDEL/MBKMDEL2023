@@ -44,6 +44,8 @@ class _ConfirmSignatureReturnOtherPilotViewState extends State<ConfirmSignatureR
   final GlobalKey<SfSignaturePadState> _signaturePadKey = GlobalKey<SfSignaturePadState>();
   bool isSignatureEmpty = true;
   bool agree = false;
+  String dropdownValue = 'Good'; // Default value
+  String remarksAccepted = '';
 
   @override
   void initState() {
@@ -199,6 +201,8 @@ class _ConfirmSignatureReturnOtherPilotViewState extends State<ConfirmSignatureR
                           'remarks': remarks,
                           'prove_image_url': imageUrl,
                           'signature_url_other_crew': signatureUrl,
+                          'return-condition-category': dropdownValue,
+                          'return-condition-remarks' : remarksAccepted,
                         });
                       });
 
@@ -222,6 +226,8 @@ class _ConfirmSignatureReturnOtherPilotViewState extends State<ConfirmSignatureR
                         'occ-on-duty': OccOnDuty,
                         'handover-from': '-',
                         'statusDevice': 'in-use-pilot',
+                        'initial-condition-category': dropdownValue,
+                        'initial-condition-remarks':remarksAccepted,
                         'timestamp': FieldValue.serverTimestamp(),
                         'remarks': '',
                         'prove_image_url': '',
@@ -361,15 +367,104 @@ class _ConfirmSignatureReturnOtherPilotViewState extends State<ConfirmSignatureR
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
+                                const SizedBox(height: 15.0),
+                                const Padding(
+                                  padding: EdgeInsets.only(bottom: 16.0),
+                                  child: Row(
+                                    children: <Widget>[
+                                      Expanded(
+                                        child: Divider(
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(horizontal: 8.0),
+                                        child: Text(
+                                          'Device Condition',
+                                          style: TextStyle(color: Colors.grey),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Divider(
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Text("Here you can explain the condition of the device you received",
+                                  style: TextStyle(
+                                    fontStyle: FontStyle.italic,
+                                  ),
+                                ),
+                                SizedBox(height: 7,),
+                                Row(
+                                  children: [
+                                    const Expanded(flex: 6, child: Text("Condition Category")),
+                                    DropdownButton<String>(
+                                      value: dropdownValue,
+                                      onChanged: (String? newValue) {
+                                        setState(() {
+                                          dropdownValue = newValue!;
+                                        });
+                                      },
+                                      items: <String>['Good', 'Good With Remarks', 'Unserviceable']
+                                          .map<DropdownMenuItem<String>>((String value) {
+                                        return DropdownMenuItem<String>(
+                                          value: value,
+                                          child: Text(value),
+                                        );
+                                      }).toList(),
+                                    ),
+                                  ],
+                                ),
+
+                                const SizedBox(height: 16.0),
+
+                                // Remarks text field
+                                TextField(
+                                  onChanged: (value) {
+                                    remarksAccepted = value;
+                                  },
+                                  decoration: InputDecoration(
+                                    contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                                    labelText: 'Remarks',
+                                    labelStyle: tsOneTextTheme.labelMedium,
+                                    border: const OutlineInputBorder(),
+                                  ),
+                                ),
+
                                 const SizedBox(height: 20.0),
-                                Align(
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    "Report Any Damage",
-                                    style: tsOneTextTheme.headlineMedium,
+                                const Padding(
+                                  padding: EdgeInsets.only(bottom: 16.0),
+                                  child: Row(
+                                    children: <Widget>[
+                                      Expanded(
+                                        child: Divider(
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(horizontal: 8.0),
+                                        child: Text(
+                                          'Report Any Damage',
+                                          style: TextStyle(color: Colors.grey),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Divider(
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                                 //Text('If something doesn' 't match, please inform us!'),
+                                Text("Here you can explain the damage of the device you received",
+                                  style: TextStyle(
+                                    fontStyle: FontStyle.italic,
+                                  ),
+                                ),
 
                                 const SizedBox(height: 10.0),
 
@@ -619,17 +714,57 @@ class _ConfirmSignatureReturnOtherPilotViewState extends State<ConfirmSignatureR
   }
 }
 
-Future<String> getHubFromDeviceName(String deviceName) async {
-  String hub = "Unknown Hub"; // Default value
+// Future<String> getHubFromDeviceName(String deviceName) async {
+//   String hub = "Unknown Hub"; // Default value
+//
+//   try {
+//     // Fetch the document from the 'Device' collection based on deviceName
+//     QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Device')
+//         .where('deviceno', isEqualTo: deviceName)
+//         .get();
+//
+//     if (querySnapshot.docs.isNotEmpty) {
+//       // Access the 'value' map from the document data
+//       Map<String, dynamic> documentData = querySnapshot.docs.first.data() as Map<String, dynamic>;
+//
+//       // Check if 'value' map exists and contains 'hub' key
+//       if (documentData.containsKey('value') && documentData['value'] is Map<String, dynamic>) {
+//         Map<String, dynamic> valueMap = documentData['value'] as Map<String, dynamic>;
+//
+//         // Access the 'hub' field from the 'value' map
+//         hub = valueMap['hub'] ?? "Unknown Hub";
+//       }
+//     }
+//   } catch (e) {
+//     print("Error getting hub from Device: $e");
+//   }
+//
+//   return hub;
+// }
+
+Future<String> getHubFromDeviceName(String deviceId) async {
+  String hub = "Unknown Hub"; // Nilai default
 
   try {
-    // Fetch the 'hub' field from the 'Device' collection based on deviceName
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Device').where('deviceno', whereIn: [
-      deviceName,
-    ]).get();
+    // Fetch the document from the 'Device' collection based on document ID
+    DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance.collection('Device')
+        .doc(deviceId)
+        .get();
 
-    if (querySnapshot.docs.isNotEmpty) {
-      hub = querySnapshot.docs.first['hub'];
+    if (documentSnapshot.exists) {
+      // Access the data map from the document
+      Map<String, dynamic> documentData = documentSnapshot.data() as Map<String, dynamic>;
+
+      // Check if 'value' map exists and contains 'hub' key
+      if (documentData.containsKey('value') && documentData['value'] is Map<String, dynamic>) {
+        Map<String, dynamic> valueMap = documentData['value'] as Map<String, dynamic>;
+
+        // Check if 'hub' exists in 'value' map
+        if (valueMap.containsKey('hub')) {
+          // Access the 'hub' field from the 'value' map
+          hub = valueMap['hub'] ?? "Unknown Hub";
+        }
+      }
     }
   } catch (e) {
     print("Error getting hub from Device: $e");
@@ -637,3 +772,4 @@ Future<String> getHubFromDeviceName(String deviceName) async {
 
   return hub;
 }
+

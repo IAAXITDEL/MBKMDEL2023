@@ -113,11 +113,6 @@ class DetailhistoryccCptsController extends GetxController {
         .where("id", isEqualTo: idAttendance.value)
         .get();
 
-    final attendanceDetailQuery = await firestore
-        .collection('attendance-detail')
-        .where("idattendance", isEqualTo: idAttendance.value)
-        .get();
-
     List<Map<String, dynamic>> attendanceData = [];
 
     for (var doc in attendanceQuery.docs) {

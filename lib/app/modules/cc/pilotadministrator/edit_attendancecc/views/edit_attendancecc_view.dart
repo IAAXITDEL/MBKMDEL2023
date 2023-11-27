@@ -28,7 +28,6 @@ class EditAttendanceccView extends GetView<EditAttendanceccController> {
     var roomC = TextEditingController();
     var venueC = TextEditingController();
     var dateC = TextEditingController();
-    int? instructorC = 0;
 
 
     Future<void> edit(String subject, DateTime date, String trainingType,String department,String room,String venue, int instructor) async {

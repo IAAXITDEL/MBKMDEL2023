@@ -20,7 +20,7 @@ class RequestdeviceController extends GetxController {
   }
 
   void requestDevice(String deviceUid, String deviceName, String statusdevice1,
-      String fieldHub) async {
+      String fieldHub, String initialConditionCategory, String initialConditionRemarks) async {
     User? user = _auth.currentUser;
 
     if (user != null) {
@@ -56,6 +56,8 @@ class RequestdeviceController extends GetxController {
           'timestamp': FieldValue.serverTimestamp(),
           'handover-from': '-',
           'handover-to-crew': '-',
+          'initial-condition-category': initialConditionCategory,
+          'initial-condition-remarks': initialConditionRemarks,
           'remarks': '',
           'prove_image_url': '',
           'occ-accepted-device': '-',
@@ -68,39 +70,39 @@ class RequestdeviceController extends GetxController {
   }
 
   // Tambahkan method untuk memeriksa apakah perangkat sudah digunakan
-  Future<bool> isDeviceInUse(String deviceUid) async {
-    QuerySnapshot snapshot = await _firestore
-        .collection('pilot-device-1')
-        .where('device_uid', isEqualTo: deviceUid)
-        .where('statusDevice', whereIn: [
-      'in-use-pilot',
-      'waiting-confirmation-1',
-      'need-confirmation-occ',
-      'waiting-handover-to-other-crew'
-    ]).get();
-
-    QuerySnapshot snapshot2 = await _firestore
-        .collection('pilot-device-1')
-        .where('device_uid2', isEqualTo: deviceUid)
-        .where('statusDevice', whereIn: [
-      'in-use-pilot',
-      'waiting-confirmation-1',
-      'need-confirmation-occ',
-      'waiting-handover-to-other-crew'
-    ]).get();
-
-    QuerySnapshot snapshot3 = await _firestore
-        .collection('pilot-device-1')
-        .where('device_uid3', isEqualTo: deviceUid)
-        .where('statusDevice', whereIn: [
-      'in-use-pilot',
-      'waiting-confirmation-1',
-      'need-confirmation-occ',
-      'waiting-handover-to-other-crew'
-    ]).get();
-
-    return snapshot.docs.isNotEmpty || snapshot2.docs.isNotEmpty || snapshot3.docs.isNotEmpty;
-  }
+  // Future<bool> isDeviceInUse(String deviceUid) async {
+  //   QuerySnapshot snapshot = await _firestore
+  //       .collection('pilot-device-1')
+  //       .where('device_uid', isEqualTo: deviceUid)
+  //       .where('statusDevice', whereIn: [
+  //     'in-use-pilot',
+  //     'waiting-confirmation-1',
+  //     'need-confirmation-occ',
+  //     'waiting-handover-to-other-crew'
+  //   ]).get();
+  //
+  //   QuerySnapshot snapshot2 = await _firestore
+  //       .collection('pilot-device-1')
+  //       .where('device_uid2', isEqualTo: deviceUid)
+  //       .where('statusDevice', whereIn: [
+  //     'in-use-pilot',
+  //     'waiting-confirmation-1',
+  //     'need-confirmation-occ',
+  //     'waiting-handover-to-other-crew'
+  //   ]).get();
+  //
+  //   QuerySnapshot snapshot3 = await _firestore
+  //       .collection('pilot-device-1')
+  //       .where('device_uid3', isEqualTo: deviceUid)
+  //       .where('statusDevice', whereIn: [
+  //     'in-use-pilot',
+  //     'waiting-confirmation-1',
+  //     'need-confirmation-occ',
+  //     'waiting-handover-to-other-crew'
+  //   ]).get();
+  //
+  //   return snapshot.docs.isNotEmpty || snapshot2.docs.isNotEmpty || snapshot3.docs.isNotEmpty;
+  // }
 
   Future<QuerySnapshot> getPilotDevices() async {
     User? user = _auth.currentUser;

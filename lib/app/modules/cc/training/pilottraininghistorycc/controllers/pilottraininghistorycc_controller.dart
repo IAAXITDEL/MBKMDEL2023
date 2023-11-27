@@ -53,6 +53,7 @@ class PilottraininghistoryccController extends GetxController {
               .collection('attendance-detail')
               .where("idtraining", isEqualTo: idTraining.value)
               .where("idattendance", whereIn: attendanceIds)
+              .where("score", isEqualTo: "PASS")
               .get();
           attendanceDetailData
               .addAll(attendanceDetailQuery.docs.map((doc) => doc.data()));
@@ -95,15 +96,15 @@ class PilottraininghistoryccController extends GetxController {
       // Sort attendanceData based on valid_to in descending order
       attendanceData.sort((a, b) {
         Timestamp timestampA =
-        Timestamp.fromMillisecondsSinceEpoch(a['valid_to'].millisecondsSinceEpoch);
+        Timestamp.fromMillisecondsSinceEpoch(a['date'].millisecondsSinceEpoch);
         Timestamp timestampB =
-        Timestamp.fromMillisecondsSinceEpoch(b['valid_to'].millisecondsSinceEpoch);
+        Timestamp.fromMillisecondsSinceEpoch(b['date'].millisecondsSinceEpoch);
         return timestampB.compareTo(timestampA);
       });
 
       if (from != null && to != null) {
         final filteredAttendance = attendanceData.where((attendance) {
-          DateTime attendanceDate = attendance["valid_to"].toDate();
+          DateTime attendanceDate = attendance["date"].toDate();
 
           // Compare dates only, ignoring the time component
           DateTime fromDate = DateTime(from.year, from.month, from.day);
@@ -117,8 +118,6 @@ class PilottraininghistoryccController extends GetxController {
 
         if (attendanceData.isNotEmpty) {
           expiryC.value = attendanceData[0]["expiry"];
-          print("test");
-          print(expiryC.value);
         }
 
         return filteredAttendance;
@@ -126,8 +125,6 @@ class PilottraininghistoryccController extends GetxController {
 
       if (attendanceData.isNotEmpty) {
         expiryC.value = attendanceData[0]["expiry"];
-        print("test");
-        print(expiryC.value);
       }
 
       return attendanceData;

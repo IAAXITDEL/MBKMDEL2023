@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:ts_one/app/routes/app_pages.dart';
 
 import '../../../../../../presentation/view_model/attendance_model.dart';
@@ -28,12 +27,8 @@ class TrainingtypeccController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    final Map<String, dynamic> args = Get.arguments as Map<String, dynamic>;
-    final int id = args["id"] as int;
-    argumentid.value = id;
-
-    final String name = (Get.arguments as Map<String, dynamic>)["name"];
-    argumentname.value = name;
+    argumentid.value = Get.arguments["id"];
+    argumentname.value = Get.arguments["name"];
   }
 
   // List untuk training remark
@@ -148,7 +143,7 @@ class TrainingtypeccController extends GetxController {
       });
     }
 
-    Get.offAllNamed(Routes.TRAININGCC);
+    Get.offAllNamed(Routes.NAVADMIN);
   }
 
 

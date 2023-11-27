@@ -13,14 +13,13 @@ String _formatTimestamp(Timestamp? timestamp) {
   if (timestamp == null) return 'No Data';
 
   DateTime dateTime = timestamp.toDate();
-  // Format the date and time as desired, e.g., 'dd/MM/yyyy HH:mm:ss'
+  // Format the date and time as desired dd/MM/ss
   String formattedDateTime = '${dateTime.day}/${dateTime.month}/${dateTime.year}'
       ' at '
       '${dateTime.hour}:${dateTime.minute}';
   return formattedDateTime;
 }
-
-// PDF FEEDBACK
+// PDF FEEDBACK./////
 Future<void> generateFeedbackForm({
   Timestamp? date,
   String? q1,
@@ -52,6 +51,11 @@ Future<void> generateFeedbackForm({
   String? devicename3,
   String? userName,
   String? userRank,
+  String? recNo,
+  String? datedoc,
+  String? page,
+  String? footerLeft,
+  String? footerRight,
 }) async {
   final pdf = pw.Document();
 
@@ -64,13 +68,32 @@ Future<void> generateFeedbackForm({
   final font = await rootBundle.load("assets/fonts/Poppins-Regular.ttf");
   final ttf = pw.Font.ttf(font);
 
+  final footer = pw.Container(
+    padding: const pw.EdgeInsets.all(5.0),
+    child: pw.Row(
+      mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: pw.CrossAxisAlignment.end,
+      children: [
+        pw.Container(
+          alignment: pw.Alignment.centerLeft,
+          child: pw.Text('$footerLeft'),
+        ),
+        pw.Spacer(),
+        pw.Container(
+          alignment: pw.Alignment.centerRight,
+          child: pw.Text('$footerRight'),
+        ),
+      ],
+    ),
+  );
+
   pdf.addPage(
     pw.Page(
       pageFormat: PdfPageFormat.letter.copyWith(
         marginLeft: 72.0,
         marginRight: 72.0,
         marginTop: 36.0,
-        marginBottom: 72.0,
+        marginBottom: 36.0,
       ),
       build: (context) {
         return pw.Column(children: [
@@ -123,7 +146,7 @@ Future<void> generateFeedbackForm({
                             ),
                           ),
                           pw.SizedBox(height: 5),
-                          if (devicename1 != null && devicename2 == null)
+                          if (devicename2 == '-' && devicename3 == '-')
                             pw.Text(
                               '$devicename1',
                               style: pw.TextStyle(
@@ -146,7 +169,7 @@ Future<void> generateFeedbackForm({
                   pw.Expanded(
                     flex: 2,
                     child: pw.Padding(
-                      padding: pw.EdgeInsets.all(5),
+                      padding: pw.EdgeInsets.symmetric(horizontal: 5, vertical: 10),
                       child: pw.Column(
                         mainAxisAlignment: pw.MainAxisAlignment.center,
                         crossAxisAlignment: pw.CrossAxisAlignment.center,
@@ -155,34 +178,14 @@ Future<void> generateFeedbackForm({
                             mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                             children: [
                               pw.Text(
-                                'DCC No.',
+                                'Rec. No.',
                                 style: pw.TextStyle(
                                   font: ttf,
                                   fontSize: 8,
                                 ),
                               ),
                               pw.Text(
-                                'IAA/FOP/F/009',
-                                style: pw.TextStyle(
-                                  font: ttf,
-                                  fontSize: 8,
-                                ),
-                              ),
-                            ],
-                          ),
-                          pw.SizedBox(height: 4),
-                          pw.Row(
-                            mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                            children: [
-                              pw.Text(
-                                'Revision',
-                                style: pw.TextStyle(
-                                  font: ttf,
-                                  fontSize: 8,
-                                ),
-                              ),
-                              pw.Text(
-                                '3',
+                                '$recNo',
                                 style: pw.TextStyle(
                                   font: ttf,
                                   fontSize: 8,
@@ -202,7 +205,7 @@ Future<void> generateFeedbackForm({
                                 ),
                               ),
                               pw.Text(
-                                '06-12-21',
+                                '$datedoc',
                                 style: pw.TextStyle(
                                   font: ttf,
                                   fontSize: 8,
@@ -222,7 +225,7 @@ Future<void> generateFeedbackForm({
                                 ),
                               ),
                               pw.Text(
-                                '1 of 1',
+                                '$page',
                                 style: pw.TextStyle(
                                   font: ttf,
                                   fontSize: 8,
@@ -230,6 +233,26 @@ Future<void> generateFeedbackForm({
                               ),
                             ],
                           ),
+                          // pw.SizedBox(height: 4),
+                          // pw.Row(
+                          //   mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                          //   children: [
+                          //     pw.Text(
+                          //       'Page',
+                          //       style: pw.TextStyle(
+                          //         font: ttf,
+                          //         fontSize: 8,
+                          //       ),
+                          //     ),
+                          //     pw.Text(
+                          //       '1 of 1',
+                          //       style: pw.TextStyle(
+                          //         font: ttf,
+                          //         fontSize: 8,
+                          //       ),
+                          //     ),
+                          //   ],
+                          // ),
                         ],
                       ),
                     ),
@@ -406,7 +429,7 @@ Future<void> generateFeedbackForm({
                 children: [
                   pw.Container(
                     height: 25.0,
-                    child: boldTitle('BRACKET (RAM-MOUNT) INTEGRITY', context),
+                    child: boldTitle('VIEWABLE SOFTWARE INTEGRITY', context),
                   )
                 ],
               ),
@@ -484,7 +507,11 @@ Future<void> generateFeedbackForm({
                 fontSize: 8,
               ),
             ),
-          )
+          ),
+          pw.SizedBox(height: 20.0),
+          pw.Column(
+            children: [footer],
+          ),
         ]);
       },
     ),

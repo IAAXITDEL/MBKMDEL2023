@@ -255,7 +255,7 @@ class _ConfirmPageFeedbackFOState extends State<ConfirmPageFeedbackFO> {
                           child: Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              "BRACKET (RAM-MOUNT) INTEGRITY",
+                              "VIEWABLE SOFTWARE INTEGRITY",
                               style: tsOneTextTheme.titleMedium?.copyWith(color: Colors.red), // Mengubah warna teks menjadi hijau
                             ),
                           ),
