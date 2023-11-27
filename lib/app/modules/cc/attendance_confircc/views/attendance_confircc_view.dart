@@ -505,18 +505,18 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                                 Container(
                                   padding: EdgeInsets.symmetric(horizontal: 10),
                                   decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: TsOneColor.secondaryContainer,
-                                        width: 1,
-                                      ),
-                                      borderRadius: BorderRadius.circular(10)),
+                                    border: Border.all(
+                                      color: TsOneColor.secondaryContainer,
+                                      width: 1,
+                                    ),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
                                   child: StreamBuilder<QuerySnapshot>(
                                     stream: controller.trainingStream(),
                                     builder: (context, snapshot) {
-                                      List<String> userNames = [];
+                                      List<String> userNamesWithId = [];
 
-                                      if (snapshot.connectionState ==
-                                          ConnectionState.waiting) {
+                                      if (snapshot.connectionState == ConnectionState.waiting) {
                                         return CircularProgressIndicator();
                                       }
 
@@ -524,21 +524,19 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                                         return Text('Error: ${snapshot.error}');
                                       }
 
-                                      final users = snapshot.data?.docs.reversed
-                                              .toList() ??
-                                          [];
+                                      final users = snapshot.data?.docs.reversed.toList() ?? [];
 
-                                      userNames.addAll(users.map(
-                                          (user) => user['NAME'] as String));
+                                      // Create a list of names with their corresponding IDs in the desired format
+                                      userNamesWithId.addAll(users.map(
+                                            (user) => '${user['NAME']} (${user['ID NO']})',
+                                      ));
 
-                                      int selectedUserId =
-                                          0; // Default selected user ID
+                                      int selectedUserId = 0; // Default selected user ID
 
                                       return DropdownSearch<String>(
                                         mode: Mode.MENU,
                                         showSelectedItems: true,
-                                        dropdownSearchDecoration:
-                                            InputDecoration(
+                                        dropdownSearchDecoration: InputDecoration(
                                           labelText: "Select Absentees' Names",
                                           border: InputBorder.none,
                                         ),
@@ -546,34 +544,29 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                                         searchFieldProps: TextFieldProps(
                                           cursorColor: TsOneColor.primary,
                                         ),
-                                        items: userNames,
+                                        items: userNamesWithId,
                                         onChanged: (selectedName) {
-                                          // Find the corresponding user ID based on the selected name
-                                          final selectedUser = users.firstWhere(
-                                              (user) =>
-                                                  user['NAME'] == selectedName);
+                                          // Extract the ID from the selected string
+                                          final selectedUserIdMatch = RegExp(r'\((\d+)\)').firstMatch(selectedName!);
 
-                                          if (selectedUser != null) {
-                                            final selectedUserIdValue =
-                                                selectedUser['ID NO'] as int;
-                                            selectedUserId =
-                                                selectedUserIdValue;
+                                          if (selectedUserIdMatch != null) {
+                                            final selectedUserIdValue = int.parse(selectedUserIdMatch.group(1)!);
+                                            selectedUserId = selectedUserIdValue;
 
-                                            controller
-                                                .addAbsentForm(selectedUserId);
+                                            controller.addAbsentForm(selectedUserId);
                                           } else {
                                             selectedUserId = 0;
                                           }
 
                                           trainingC = selectedUserId;
                                           // Handle user selection here, including the selectedUserId
-                                          print(
-                                              'Selected name: $selectedName, Selected ID: $selectedUserId');
+                                          print('Selected name: $selectedName, Selected ID: $selectedUserId');
                                         },
                                       );
                                     },
                                   ),
                                 ),
+
                                 SizedBox(
                                   height: 10,
                                 ),
@@ -595,53 +588,43 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                                     }
 
                                     return ListView.builder(
-                                        itemCount: listAttendance.length,
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        shrinkWrap: true,
-                                        itemBuilder: (context, index) {
-                                          return Container(
-                                            margin: EdgeInsets.symmetric(
-                                                vertical: 5),
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(10.0),
-                                              color: Colors.white,
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: Colors.grey
-                                                      .withOpacity(0.3),
-                                                  spreadRadius: 2,
-                                                  blurRadius: 3,
-                                                  offset: const Offset(0, 2),
-                                                ),
-                                              ],
+                                      itemCount: listAttendance.length,
+                                      physics: const NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemBuilder: (context, index) {
+                                        return Container(
+                                          margin: EdgeInsets.symmetric(vertical: 5),
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(10.0),
+                                            color: Colors.white,
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.grey.withOpacity(0.3),
+                                                spreadRadius: 2,
+                                                blurRadius: 3,
+                                                offset: const Offset(0, 2),
+                                              ),
+                                            ],
+                                          ),
+                                          child: ListTile(
+                                            title: Text(
+                                              '${listAttendance[index]["name"]} (${listAttendance[index]["idtraining"]})',
+                                              style: tsOneTextTheme.headlineMedium,
                                             ),
-                                            child: ListTile(
-                                                title: Text(
-                                                  listAttendance[index]["name"],
-                                                  style: tsOneTextTheme
-                                                      .headlineMedium,
-                                                ),
-                                                // subtitle: Text(
-                                                //   listAttendance[index]["name"],
-                                                //   style: tsOneTextTheme.headlineMedium,
-                                                // ),
-                                                trailing: InkWell(
-                                                  onTap: () {
-                                                    controller.deleteAbsent(
-                                                        listAttendance[index]
-                                                            ["id"]);
-                                                  },
-                                                  child: Icon(
-                                                    Icons.clear_sharp,
-                                                    color: tsOneColorScheme
-                                                        .primary,
-                                                    size: 20,
-                                                  ),
-                                                )),
-                                          );
-                                        });
+                                            trailing: InkWell(
+                                              onTap: () {
+                                                controller.deleteAbsent(listAttendance[index]["id"]);
+                                              },
+                                              child: Icon(
+                                                Icons.clear_sharp,
+                                                color: tsOneColorScheme.primary,
+                                                size: 20,
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
                                   },
                                 ),
                                 SizedBox(
