@@ -514,23 +514,19 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                               height:
                                   20), // Add some space between the pie chart and the cards
 
-                          Row(
-                            children: [
-                              // Card for "CCP", "FIA", "FIS", "PGI"
-                              Expanded(
-                                child: Container(
-                                  height: 105, // Set the desired height
+                          IntrinsicHeight(
+                            child: Row(
+                              children: [
+                                // Card for "CCP", "FIA", "FIS", "PGI"
+                                Expanded(
                                   child: Card(
                                     elevation: 5,
-                                    // color: Colors.green,
                                     color: const Color(0xFFEEEEEE),
                                     child: Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.start,
                                         children: [
                                           Center(
                                             child: Text(
@@ -544,42 +540,40 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                                           ),
                                           SizedBox(height: 8),
                                           // Display counts for "CCP", "FIA", "FIS", "GI"
-                                          for (String category in [
-                                            "CCP",
-                                            "FIA",
-                                            "FIS",
-                                            "GI"
-                                          ])
-                                            Obx(() => Text(
-                                                '$category: ${controller.counts[category]}',
-                                                style: TextStyle(
-                                                    fontSize: 10,
-                                                    fontWeight:
-                                                        FontWeight.bold))),
+                                          // for (String category in ["CCP", "FIA", "FIS", "GI"])
+                                          //   Obx(() => Text(
+                                          //       '$category: ${controller.counts[category]}',
+                                          //       style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold))),
+                                          Obx(() => Text(
+                                              'CCP  : ${controller.counts["CCP"]}',
+                                              style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold))),
+                                          Obx(() => Text(
+                                              'FIA    : ${controller.counts["FIA"]}',
+                                              style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold))),
+                                          Obx(() => Text(
+                                              'FIS     : ${controller.counts["FIS"]}',
+                                              style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold))),
+                                          Obx(() => Text(
+                                              'GI       : ${controller.counts["GI"]}',
+                                              style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold))),
                                         ],
                                       ),
                                     ),
                                   ),
                                 ),
-                              ),
 
-                              SizedBox(width: 8),
+                                SizedBox(width: 8),
 
-                              // Card for "CAPT" and "FO"
-                              Expanded(
-                                child: Container(
-                                  height: 105, // Set the desired height
+                                // Card for "CAPT" and "FO"
+                                Expanded(
                                   child: Card(
                                     elevation: 5,
-                                    // color: Colors.green,
                                     color: const Color(0xFFEEEEEE),
                                     child: Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.start,
                                         children: [
                                           Center(
                                             child: Text(
@@ -594,24 +588,18 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                                           SizedBox(height: 8),
                                           // Display counts for "CAPT" and "FO"
                                           Obx(() => Text(
-                                              'CAPT: ${controller.captCount.value}',
-                                              style: TextStyle(
-                                                  fontSize: 10,
-                                                  fontWeight:
-                                                      FontWeight.bold))),
+                                              'CAPT : ${controller.captCount.value}',
+                                              style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold))),
                                           Obx(() => Text(
-                                              'FO: ${controller.foCount.value}',
-                                              style: TextStyle(
-                                                  fontSize: 10,
-                                                  fontWeight:
-                                                      FontWeight.bold))),
+                                              'FO       : ${controller.foCount.value}',
+                                              style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold))),
                                         ],
                                       ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ],
                       ),
