@@ -239,7 +239,7 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                         // ),
                         FormTextField(
                           text: "Chair Person/ Instructor",
-                          textController: TextEditingController(text: listAttendance[0]["name"]),
+                          textController: TextEditingController(text: '${listAttendance[0]["name"]} (${listAttendance[0]["instructor"]})'),
                           readOnly: true,
                           style: tsOneTextTheme.headlineMedium, // Set the style as needed
                         ),
