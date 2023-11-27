@@ -154,6 +154,8 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
       String handoverToHub = '-';
       String handoverToRank = '-';
 
+
+
       if (device['occ-accepted-device'] != null && device['occ-accepted-device'] != '-') {
         // If device_uid is not '-', get the 'iosver'
         DocumentSnapshot userSnapshot = await usersCollection.doc(device['occ-accepted-device']).get();
@@ -175,36 +177,36 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
         // If device_uid is not '-', get the 'iosver'
         DocumentSnapshot deviceSnapshot = await devicesCollection.doc(device['device_uid']).get();
         Map<String, dynamic> deviceData = deviceSnapshot.data() as Map<String, dynamic>;
-        iosVersion = deviceData['iosver'] ?? '-';
-        flysmartVersion = deviceData['flysmart'] ?? '-';
-        docuVersion = deviceData['docuversion'] ?? '-';
-        lidoVersion = deviceData['lidoversion'] ?? '-';
-        hub = deviceData['hub'] ?? '-';
-        condition = deviceData['condition'] ?? '-';
+        iosVersion = deviceData['value']['iosver'] ?? '-';
+        flysmartVersion = deviceData['value']['flysmart'] ?? '-';
+        docuVersion = deviceData['value']['docuversion'] ?? '-';
+        lidoVersion = deviceData['value']['lidoversion'] ?? '-';
+        hub = deviceData['value']['hub'] ?? '-';
+        // condition = deviceData['condition'] ?? '-';
       }
 
       if (device['device_uid2'] != null && device['device_uid2'] != '-') {
         // If device_uid is not '-', get the 'iosver'
         DocumentSnapshot device2Snapshot = await devicesCollection.doc(device['device_uid2']).get();
         Map<String, dynamic> deviceData = device2Snapshot.data() as Map<String, dynamic>;
-        iosVersion2 = deviceData['iosver'] ?? '-';
-        flysmartVersion2 = deviceData['flysmart'] ?? '-';
-        docuVersion2 = deviceData['docuversion'] ?? '-';
-        lidoVersion2 = deviceData['lidoversion'] ?? '-';
-        hub2 = deviceData['hub'] ?? '-';
-        condition2 = deviceData['condition'] ?? '-';
+        iosVersion2 = deviceData['value']['iosver'] ?? '-';
+        flysmartVersion2 = deviceData['value']['flysmart'] ?? '-';
+        docuVersion2 = deviceData['value']['docuversion'] ?? '-';
+        lidoVersion2 = deviceData['value']['lidoversion'] ?? '-';
+        hub2 = deviceData['value']['hub'] ?? '-';
+        // condition2 = deviceData['condition'] ?? '-';
       }
 
       if (device['device_uid3'] != null && device['device_uid3'] != '-') {
         // If device_uid is not '-', get the 'iosver'
         DocumentSnapshot device3Snapshot = await devicesCollection.doc(device['device_uid3']).get();
         Map<String, dynamic> deviceData = device3Snapshot.data() as Map<String, dynamic>;
-        iosVersion3 = deviceData['iosver'] ?? '-';
-        flysmartVersion3 = deviceData['flysmart'] ?? '-';
-        docuVersion3 = deviceData['docuversion'] ?? '-';
-        lidoVersion3 = deviceData['lidoversion'] ?? '-';
-        hub3 = deviceData['hub'] ?? '-';
-        condition3 = deviceData['condition'] ?? '-';
+        iosVersion3 = deviceData['value']['iosver'] ?? '-';
+        flysmartVersion3 = deviceData['value']['flysmart'] ?? '-';
+        docuVersion3 = deviceData['value']['docuversion'] ?? '-';
+        lidoVersion3 = deviceData['value']['lidoversion'] ?? '-';
+        hub3 = deviceData['value']['hub'] ?? '-';
+        // condition3 = deviceData['value']['condition'] ?? '-';
       }
 
       // Check if device_name is '-'
@@ -213,6 +215,7 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
       String deviceName3 = (device['device_name3'] ?? '-') == '-' ? '-' : device['device_name3'] ?? '-';
       String OccAccepted = (device['occ-accepted-device'] ?? '-') == '-' ? '-' : device['occ-accepted-device'] ?? '-';
       String HandoverToCrew = (device['handover-to-crew'] ?? '-') == '-' ? '-' : device['handover-to-crew'] ?? '-';
+      String initConditionCategory = (device['handover-to-crew'] ?? '-') == '-' ? '-' : device['handover-to-crew'] ?? '-';
 
       // sheet
       //     .cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: i + 1))

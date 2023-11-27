@@ -938,21 +938,41 @@ class ConfirmReturnBackPilotView extends GetView {
                                               ],
                                             ),
                                           ),
+                                          Text("Here you can explain the condition of the device you received",
+                                            style: TextStyle(
+                                              fontStyle: FontStyle.italic,
+                                            ),
+                                          ),
                                           const SizedBox(height: 7.0),
+                                          Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Text(
+                                              "Device 2",
+                                              style: tsOneTextTheme.headlineMedium,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 7,
+                                          ),
 
-                                          Obx(() => DropdownButton<String>(
-                                                value: dropdownValue2.value,
-                                                onChanged: (String? newValue) {
-                                                  dropdownValue2.value = newValue!;
-                                                },
-                                                items: <String>['Good', 'Good With Remarks', 'Unserviceable']
-                                                    .map<DropdownMenuItem<String>>((String value) {
-                                                  return DropdownMenuItem<String>(
-                                                    value: value,
-                                                    child: Text(value),
-                                                  );
-                                                }).toList(),
-                                              )),
+                                          Row(
+                                            children: [
+                                              const Expanded(flex: 6, child: Text("Condition Category")),
+                                              Obx(() => DropdownButton<String>(
+                                                    value: dropdownValue2.value,
+                                                    onChanged: (String? newValue) {
+                                                      dropdownValue2.value = newValue!;
+                                                    },
+                                                    items: <String>['Good', 'Good With Remarks', 'Unserviceable']
+                                                        .map<DropdownMenuItem<String>>((String value) {
+                                                      return DropdownMenuItem<String>(
+                                                        value: value,
+                                                        child: Text(value),
+                                                      );
+                                                    }).toList(),
+                                                  )),
+                                            ],
+                                          ),
 
                                           const SizedBox(height: 16.0),
 
@@ -968,22 +988,37 @@ class ConfirmReturnBackPilotView extends GetView {
                                               border: const OutlineInputBorder(),
                                             ),
                                           ),
-                                          const SizedBox(height: 15.0),
                                           const SizedBox(height: 7.0),
+                                          Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Text(
+                                              "Device 3",
+                                              style: tsOneTextTheme.headlineMedium,
+                                            ),
+                                          ),
+                                          //Text('If something doesn' 't match, please inform us!'),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
 
-                                          Obx(() => DropdownButton<String>(
-                                                value: dropdownValue3.value,
-                                                onChanged: (String? newValue) {
-                                                  dropdownValue3.value = newValue!;
-                                                },
-                                                items: <String>['Good', 'Good With Remarks', 'Unserviceable']
-                                                    .map<DropdownMenuItem<String>>((String value) {
-                                                  return DropdownMenuItem<String>(
-                                                    value: value,
-                                                    child: Text(value),
-                                                  );
-                                                }).toList(),
-                                              )),
+                                          Row(
+                                            children: [
+                                              const Expanded(flex: 6, child: Text("Condition Category")),
+                                              Obx(() => DropdownButton<String>(
+                                                    value: dropdownValue3.value,
+                                                    onChanged: (String? newValue) {
+                                                      dropdownValue3.value = newValue!;
+                                                    },
+                                                    items: <String>['Good', 'Good With Remarks', 'Unserviceable']
+                                                        .map<DropdownMenuItem<String>>((String value) {
+                                                      return DropdownMenuItem<String>(
+                                                        value: value,
+                                                        child: Text(value),
+                                                      );
+                                                    }).toList(),
+                                                  )),
+                                            ],
+                                          ),
 
                                           const SizedBox(height: 16.0),
 
@@ -999,7 +1034,7 @@ class ConfirmReturnBackPilotView extends GetView {
                                               border: const OutlineInputBorder(),
                                             ),
                                           ),
-                                          const SizedBox(height: 15.0),
+                                          const SizedBox(height: 10.0),
 
                                           // Padding(
                                           //   padding: EdgeInsets.symmetric(vertical: 20),
@@ -1617,19 +1652,54 @@ class ConfirmReturnBackPilotView extends GetView {
                                 //         )),
                                 //   ],
                                 // ),
-
-                                Obx(() => DropdownButton<String>(
-                                      value: dropdownValue.value,
-                                      onChanged: (String? newValue) {
-                                        dropdownValue.value = newValue!;
-                                      },
-                                      items: <String>['Good', 'Good With Remarks', 'Unserviceable'].map<DropdownMenuItem<String>>((String value) {
-                                        return DropdownMenuItem<String>(
-                                          value: value,
-                                          child: Text(value),
-                                        );
-                                      }).toList(),
-                                    )),
+                                const SizedBox(height: 15.0),
+                                const Padding(
+                                  padding: EdgeInsets.only(bottom: 16.0),
+                                  child: Row(
+                                    children: <Widget>[
+                                      Expanded(
+                                        child: Divider(
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(horizontal: 8.0),
+                                        child: Text(
+                                          'Device Condition',
+                                          style: TextStyle(color: Colors.grey),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Divider(
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Text("Here you can explain the condition of the device you received",
+                                  style: TextStyle(
+                                    fontStyle: FontStyle.italic,
+                                  ),
+                                ),
+                                SizedBox(height: 7,),
+                                Row(
+                                  children: [
+                                    const Expanded(flex: 6, child: Text("Condition Category")),
+                                    Obx(() => DropdownButton<String>(
+                                          value: dropdownValue.value,
+                                          onChanged: (String? newValue) {
+                                            dropdownValue.value = newValue!;
+                                          },
+                                          items: <String>['Good', 'Good With Remarks', 'Unserviceable'].map<DropdownMenuItem<String>>((String value) {
+                                            return DropdownMenuItem<String>(
+                                              value: value,
+                                              child: Text(value),
+                                            );
+                                          }).toList(),
+                                        )),
+                                  ],
+                                ),
 
                                 const SizedBox(height: 16.0),
 

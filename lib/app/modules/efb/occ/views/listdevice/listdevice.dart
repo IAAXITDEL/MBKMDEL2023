@@ -124,7 +124,7 @@
         // Fetch data from Realtime Database (Sheet1)
         DatabaseEvent event = await firebaseDatabase
             .reference()
-            .child('1zRoTlgi_c0z8g6W27FsEr5_uiSxO9gAhrepRZtzPEFA/Dummy-Device')
+            .child('1zRoTlgi_c0z8g6W27FsEr5_uiSxO9gAhrepRZtzPEFA/EFB-Device')
             .once();
         DataSnapshot dataSnapshot = event.snapshot;
 
@@ -244,25 +244,25 @@
         final device = data[i];
         sheet
             .cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: i + 1))
-            .value = device['deviceno'];
+            .value = device['value']['deviceno'];
         sheet
             .cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: i + 1))
-            .value = device['iosver'];
+            .value = device['value']['iosver'];
         sheet
             .cell(CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: i + 1))
-            .value = device['lidoversion'];
+            .value = device['value']['lidoversion'];
         sheet
             .cell(CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: i + 1))
-            .value = device['flysmart'];
+            .value = device['value']['flysmart'];
         sheet
             .cell(CellIndex.indexByColumnRow(columnIndex: 4, rowIndex: i + 1))
-            .value = device['docuversion'];
+            .value = device['value']['docuversion'];
         sheet
             .cell(CellIndex.indexByColumnRow(columnIndex: 5, rowIndex: i + 1))
-            .value = device['hub'];
+            .value = device['value']['hub'];
         sheet
             .cell(CellIndex.indexByColumnRow(columnIndex: 6, rowIndex: i + 1))
-            .value = device['condition'];
+            .value = device['value']['condition'];
       }
 
       // Save the Excel file
