@@ -24,7 +24,6 @@ import '../../presentation/view/users/all_users.dart';
 import '../../presentation/view/users/detail_user.dart';
 import '../../presentation/view/users/login.dart';
 import '../../presentation/view/users/update_user.dart';
-import '../../presentation/view/users/update_user.dart';
 import '../modules/cc/attendance_confircc/bindings/attendance_confircc_binding.dart';
 import '../modules/cc/attendance_confircc/views/attendance_confircc_view.dart';
 import '../modules/cc/detailhistorycc_cpts/bindings/detailhistorycc_cpts_binding.dart';
@@ -77,6 +76,8 @@ import '../modules/cc/training/pilottraininghistorycc/bindings/pilottraininghist
 import '../modules/cc/training/pilottraininghistorycc/views/pilottraininghistorycc_view.dart';
 import '../modules/cc/training/pilottraininghistorydetailcc/bindings/pilottraininghistorydetailcc_binding.dart';
 import '../modules/cc/training/pilottraininghistorydetailcc/views/pilottraininghistorydetailcc_view.dart';
+import '../modules/cc/training_cptscc/bindings/training_cptscc_binding.dart';
+import '../modules/cc/training_cptscc/views/training_cptscc_view.dart';
 import '../modules/cc/trainingcc/bindings/trainingcc_binding.dart';
 import '../modules/cc/trainingcc/views/trainingcc_view.dart';
 import '../modules/cc/traininghistorycc_cpts/bindings/traininghistorycc_cpts_binding.dart';
@@ -195,8 +196,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.newAssessmentInstructorNotes,
-      page: () =>
-          NewAssessmentInstructorNotes(examineeId: Get.arguments as int),
+      page: () => NewAssessmentInstructorNotes(examineeId: Get.arguments as int),
     ),
     GetPage(
       name: _Paths.newAssessmentDeclaration,
@@ -217,8 +217,7 @@ class AppPages {
 
     GetPage(
       name: _Paths.detailAssessmentPeriod,
-      page: () => DetailAssessmentPeriodView(
-          assessmentPeriodId: Get.arguments as String),
+      page: () => DetailAssessmentPeriodView(assessmentPeriodId: Get.arguments as String),
     ),
 
     GetPage(
@@ -228,8 +227,7 @@ class AppPages {
 
     GetPage(
       name: _Paths.updateAssessmentPeriod,
-      page: () => UpdateAssessmentPeriodView(
-          assessmentPeriodId: Get.arguments as String),
+      page: () => UpdateAssessmentPeriodView(assessmentPeriodId: Get.arguments as String),
     ),
 
     GetPage(
@@ -444,9 +442,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.DETAILHISTORYCC_CPTS,
-      page: () => const DetailhistoryccCptsView(
-        listAttendance: [],
-      ),
+      page: () => DetailhistoryccCptsView(),
       binding: DetailhistoryccCptsBinding(),
     ),
     GetPage(
@@ -464,6 +460,12 @@ class AppPages {
       page: () => ProfileView(),
       binding: ProfileBinding(),
     ),
+    GetPage(
+      name: _Paths.TRAINING_CPTSCC,
+      page: () => const TrainingCptsccView(),
+      binding: TrainingCptsccBinding(),
+    ),
+
     GetPage(
       name: _Paths.EFB_DOKUMEN,
       page: () => const EfbDokumenView(),

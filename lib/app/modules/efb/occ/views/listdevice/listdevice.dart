@@ -537,21 +537,21 @@
             ],
           ),
         ),
-        floatingActionButton: AvatarGlow(
-          endRadius: 40,
-          glowColor: Colors.black,
-          duration: const Duration(seconds: 2),
-          child: FloatingActionButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (BuildContext context) => const AddDevice()),
-              );
-            },
-            child: const Icon(Icons.add),
-            backgroundColor: TsOneColor.primary,
-          ),
-        ),
+        // floatingActionButton: AvatarGlow(
+        //   endRadius: 40,
+        //   glowColor: Colors.black,
+        //   duration: const Duration(seconds: 2),
+        //   child: FloatingActionButton(
+        //     onPressed: () {
+        //       Navigator.push(
+        //         context,
+        //         MaterialPageRoute(builder: (BuildContext context) => const AddDevice()),
+        //       );
+        //     },
+        //     child: const Icon(Icons.add),
+        //     backgroundColor: TsOneColor.primary,
+        //   ),
+        // ),
       );
     }
   }

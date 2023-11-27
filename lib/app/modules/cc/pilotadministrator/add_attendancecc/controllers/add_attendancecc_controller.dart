@@ -13,11 +13,8 @@ class AddAttendanceccController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    final Map<String, dynamic> args = Get.arguments as Map<String, dynamic>;
-    final int id = args["id"] as int;
-    argumentid.value = id;
-    final String name = (Get.arguments as Map<String, dynamic>)["name"];
-    argumentname.value = name;
+    argumentid.value = Get.arguments["id"];
+    argumentname.value = Get.arguments["name"];
   }
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -31,7 +28,7 @@ class AddAttendanceccController extends GetxController {
 
 
   //Membuat attendance baru
-  Future<void> addAttendanceForm( String subject, DateTime date, String vanue, int instructor, int idtrainingtype ) async {
+  Future<void> addAttendanceForm( String subject, DateTime date, String trainingType,String department,String room,String venue, int instructor, int idtrainingtype ) async {
     CollectionReference attendance = firestore.collection("attendance");
 
     String formattedDate = DateFormat('ddMMyyyyHHmmss').format(DateTime.now());
@@ -41,7 +38,10 @@ class AddAttendanceccController extends GetxController {
           "id" : "attendance-$idtrainingtype-$formattedDate",
           "subject": subject,
           "date": date,
-          "vanue": vanue,
+          'trainingType' : trainingType,
+          'department' : department,
+          'room' : room,
+          "venue": venue,
           "instructor": instructor,
           "status": "pending",
           "keyAttendance": getRandomString(6),

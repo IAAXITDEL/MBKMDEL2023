@@ -16,7 +16,7 @@ class AttendanceModel {
   Timestamp? date;
   Timestamp? valid_to;
   String? department;
-  String? vanue;
+  String? venue;
   String? creationTime;
   String? updatedTime;
   String? name;
@@ -41,7 +41,7 @@ class AttendanceModel {
     this.date,
     this.valid_to,
     this.department,
-    this.vanue,
+    this.venue,
     this.creationTime,
     this.updatedTime,
     this.name,
@@ -68,7 +68,7 @@ class AttendanceModel {
         date: json['date'],
         valid_to: json['valid_to'],
         department: json['department'],
-        vanue: json['vanue'],
+        venue: json['venue'],
         creationTime: json['creationTime'],
         updatedTime: json['updatedTime'],
         name: json['name'],
@@ -96,7 +96,7 @@ class AttendanceModel {
     data['date'] = this.date;
     data['valid_to'] = this.valid_to;
     data['department'] = this.department;
-    data['vanue'] = this.vanue;
+    data['venue'] = this.venue;
     data['creationTime'] = this.creationTime;
     data['updatedTime'] =  this.updatedTime;
     data['name'] = this.name;

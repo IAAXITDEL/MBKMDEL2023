@@ -12,19 +12,26 @@ class DetailhistoryccCptsController extends GetxController {
   RxInt idTrainingType = 0.obs;
   RxString idAttendance = "".obs;
   RxString trainingName = "".obs;
+  RxDouble ratingMethod = 1.0.obs;
+
+  RxDouble averageRTeachings = 0.0.obs;
+  RxDouble averageRMastery = 0.0.obs;
+  RxDouble averageRTimes = 0.0.obs;
+
+  RxDouble allAverage = 0.0.obs;
+
+
 
   @override
   void onInit() {
     super.onInit();
     idTrainingType.value = Get.arguments["idTrainingType"];
     idAttendance.value = Get.arguments["idAttendance"];
-    print(idAttendance.value);
     getCombinedAttendance();
     getFeedbackDataList();
     /* final String id = (Get.arguments as Map<String, dynamic>)["id"];
     argument.value = id;*/
     attendanceStream();
-    print(jumlah.value);
   }
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -106,11 +113,6 @@ class DetailhistoryccCptsController extends GetxController {
         .where("id", isEqualTo: idAttendance.value)
         .get();
 
-    final attendanceDetailQuery = await firestore
-        .collection('attendance-detail')
-        .where("idattendance", isEqualTo: idAttendance.value)
-        .get();
-
     List<Map<String, dynamic>> attendanceData = [];
 
     for (var doc in attendanceQuery.docs) {
@@ -149,7 +151,7 @@ class DetailhistoryccCptsController extends GetxController {
             'trainee-name': traineeData['NAME'],
             'department': attendanceModel.department,
             'trainingType': attendanceModel.trainingType,
-            'vanue': attendanceModel.vanue,
+            'venue': attendanceModel.venue,
             'room': attendanceModel.room,
             'feedback-from-trainer': attendanceDetailData['feedback'],
             'feedback-from-trainee':
@@ -173,8 +175,34 @@ class DetailhistoryccCptsController extends GetxController {
         .where("idattendance", isEqualTo: idAttendance.value)
         .get();
 
-    List<int?> traineeIds =
-    attendanceDetailQuery.docs.map((doc) => AttendanceDetailModel.fromJson(doc.data()).idtraining).toList();
+    List<int?> traineeIds = [];
+    List<double?> rTeachings = [];
+    List<double?> rMasterys = [];
+    List<double?> rTimes = [];
+
+    double calculateAverage(List<double?> values) {
+      double sum = values.fold(0, (previousValue, element) {
+        return previousValue + (element ?? 0);
+      });
+
+      return values.isNotEmpty ? sum / values.length : 0;
+    }
+
+    for (var doc in attendanceDetailQuery.docs) {
+      var attendanceDetailModel = AttendanceDetailModel.fromJson(doc.data());
+      if (attendanceDetailModel.feedbackforinstructor != null) {
+        traineeIds.add(attendanceDetailModel.idtraining);
+        rTeachings.add(attendanceDetailModel.rTeachingMethod);
+        rMasterys.add(attendanceDetailModel.rMastery);
+        rTimes.add(attendanceDetailModel.rTimeManagement);
+      }
+    }
+
+    averageRTeachings.value = calculateAverage(rTeachings);
+    averageRMastery.value = calculateAverage(rMasterys);
+    averageRTimes.value = calculateAverage(rTimes);
+
+    allAverage.value = (averageRTeachings.value + averageRMastery.value + averageRTimes.value) / 3;
 
     final usersData = <Map<String, dynamic>>[];
 
@@ -183,17 +211,31 @@ class DetailhistoryccCptsController extends GetxController {
       usersData.addAll(usersQuery.docs.map((doc) => doc.data()));
     }
 
-
     final attendanceDetailData = await Future.wait(
-      attendanceDetailQuery.docs.map((doc) async {
-        final attendanceDetailModel = AttendanceDetailModel.fromJson(doc.data());
-        final user = usersData.firstWhere(
+      attendanceDetailQuery.docs.where((doc) {
+        var attendanceDetailModel = AttendanceDetailModel.fromJson(doc.data());
+        try {
+          var user = usersData.firstWhere(
+                (user) => user['ID NO'] == attendanceDetailModel.idtraining,
+          );
+
+          attendanceDetailModel.name = user['NAME'];
+          attendanceDetailModel.photoURL = user['PHOTOURL'];
+
+          return true;
+        } catch (e) {
+          return false;
+        }
+      }).map((doc) async {
+        var attendanceDetailModel = AttendanceDetailModel.fromJson(doc.data());
+        var user = usersData.firstWhere(
               (user) => user['ID NO'] == attendanceDetailModel.idtraining,
           orElse: () => {},
         );
 
         attendanceDetailModel.name = user['NAME'];
         attendanceDetailModel.photoURL = user['PHOTOURL'];
+
         return attendanceDetailModel.toJson();
       }),
     );

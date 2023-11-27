@@ -11,9 +11,7 @@ import '../../../../../di/locator.dart';
 import '../../../../../presentation/view_model/attendance_detail_model.dart';
 import '../../../../../presentation/view_model/attendance_model.dart';
 import '../../../../routes/app_pages.dart';
-import '../../instructor/training_instructorcc/controllers/training_instructorcc_controller.dart';
 import '../../pilotadministrator/trainingtypecc/controllers/trainingtypecc_controller.dart';
-import '../../traininghistorycc_cpts/controllers/traininghistorycc_cpts_controller.dart';
 class TrainingccController extends GetxController {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   late UserPreferences userPreferences;
@@ -47,27 +45,8 @@ class TrainingccController extends GetxController {
   Future<bool> cekRole() async {
     userPreferences = getItLocator<UserPreferences>();
 
-    // SEBAGAI CPTS
-    if (userPreferences.getInstructor().contains(UserModel.keyCPTS) &&
-            userPreferences.getRank().contains(UserModel.keyPositionCaptain) ||
-        userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)) {
-        iscpts.value = true;
-        Get.toNamed(Routes.TRAININGHISTORYCC_CPTS, arguments: {"id": argumentid.value});
-        Get.find<TraininghistoryccCptsController>().onInit();
-    }
-    // SEBAGAI INSTRUCTOR
-    else if (userPreferences
-            .getInstructor()
-            .contains(UserModel.keySubPositionCCP) ||
-        userPreferences.getInstructor().contains(UserModel.keySubPositionFIA) ||
-        userPreferences.getInstructor().contains(UserModel.keySubPositionFIS) ||
-        userPreferences.getInstructor().contains(UserModel.keySubPositionPGI) &&
-            userPreferences.getRank().contains(UserModel.keyPositionCaptain) ||
-        userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)) {
-      isInstructor.value= true;
-    }
     // SEBAGAI PILOT
-    else if (userPreferences.getRank().contains(UserModel.keyPositionCaptain) ||
+     if (userPreferences.getRank().contains(UserModel.keyPositionCaptain) ||
         userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)) {
       cekPilot.value = true;
     }
@@ -84,6 +63,18 @@ class TrainingccController extends GetxController {
     else {
       return false;
     }
+
+    // SEBAGAI INSTRUCTOR
+    if (userPreferences
+        .getInstructor()
+        .contains(UserModel.keySubPositionCCP) ||
+    userPreferences.getInstructor().contains(UserModel.keySubPositionFIA) ||
+    userPreferences.getInstructor().contains(UserModel.keySubPositionFIS) ||
+    userPreferences.getInstructor().contains(UserModel.keySubPositionPGI) &&
+    userPreferences.getRank().contains(UserModel.keyPositionCaptain) ||
+    userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)) {
+    isInstructor.value= true;
+    }
     return false;
   }
 
@@ -98,7 +89,6 @@ class TrainingccController extends GetxController {
     else {
       return false;
     }
-    return false;
   }
 
   // Add a new subject to Firestore

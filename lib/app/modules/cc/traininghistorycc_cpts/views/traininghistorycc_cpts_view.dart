@@ -270,12 +270,10 @@ class TraininghistoryccCptsView
                                                         DateTime to = DateFormat('dd-MM-yyyy').parse(toC.text);
 
                                                         if (_formKey.currentState != null && _formKey.currentState!.validate()  != 0) {
-                                                          if (from.isBefore(to)) {
+                                                          if (from.isBefore(to) || from.isAtSameMomentAs(to)) {
                                                             controller.from.value = from;
                                                             controller.to.value = to;
 
-                                                            print(controller.from.value );
-                                                            print(controller.to.value );
                                                             Navigator.of(context).pop();
                                                           } else {
 

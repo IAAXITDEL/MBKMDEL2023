@@ -9,9 +9,12 @@ import '../../../../../../presentation/view_model/attendance_model.dart';
 class AttendanceInstructorconfirccController extends GetxController {
   var selectedMeeting = "Training".obs;
   late UserPreferences userPreferences;
+  // late RxString dropdownValueDepartment = "".obs;
+  // late RxString dropdownValueTrainingType = "".obs;
+  // late RxString dropdownValueRoom = "".obs;
 
   void selectMeeting(String? newValue) {
-    selectedMeeting.value = newValue ?? "Training"; // Default to "Meeting 1" if newValue is null
+    selectedMeeting.value = newValue ?? "Training";
   }
 
   final RxString argumentid = "".obs;
@@ -80,12 +83,12 @@ class AttendanceInstructorconfirccController extends GetxController {
   }
 
   //confir attendance oleh instructor
-  Future<void> confirattendance(String department, String trainingType, String room, String loano) async {
+  Future<void> confirattendance(String loano) async {
     CollectionReference attendance = _firestore.collection('attendance');
     await attendance.doc(argumentid.value.toString()).update({
-      "department": department,
-      "trainingType" :  trainingType,
-      "room" : room,
+    //   "department": department,
+    //   "trainingType" :  trainingType,
+    //   "room" : room,
       "attendanceType" : selectedMeeting.value,
       "status" : "confirmation",
       "updatedTime": DateTime.now().toIso8601String(),

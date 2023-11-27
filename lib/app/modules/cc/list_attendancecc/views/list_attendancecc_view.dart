@@ -46,7 +46,7 @@ class ListAttendanceccView extends GetView<ListAttendanceccController> {
 
                            color: Colors.white,
                          ),
-                         child:Obx(()=>  Text("Attendance : ${controller.jumlah.value.toString()} person")),
+                         child:Obx(()=>  Text("Present Trainees : ${controller.jumlah.value.toString()} person")),
                        )
                    )
                  ],
@@ -76,7 +76,6 @@ class ListAttendanceccView extends GetView<ListAttendanceccController> {
                               controller: nameC,
                               onChanged: (value){
                                 controller.nameS.value = value;
-                                print(controller.nameS.value);
                               },
                               decoration: InputDecoration(
                                 hintText: 'Type trainee name...',
@@ -115,7 +114,6 @@ class ListAttendanceccView extends GetView<ListAttendanceccController> {
                      }
 
                      if (snapshot.hasError) {
-                       print(snapshot.error.toString());
                        return ErrorScreen();
                      }
 
@@ -124,6 +122,7 @@ class ListAttendanceccView extends GetView<ListAttendanceccController> {
                        return EmptyScreen();
                      }
 
+                     print(listAttendance);
                      return ListView.builder(
                          itemCount: listAttendance.length,
                          physics: const NeverScrollableScrollPhysics(),
@@ -131,12 +130,15 @@ class ListAttendanceccView extends GetView<ListAttendanceccController> {
                          itemBuilder: (context, index) {
                            return InkWell(
                              onTap: () {
-                               Get.toNamed(Routes.LIST_ATTENDANCEDETAILCC,
-                                   arguments: {
-                                     "id": listAttendance[index]["idtraining"],
-                                     "status" : controller.argumentstatus.value,
-                                     "idattendance" : controller.argumentid.value
-                                   });
+                               if(!controller.isAdministrator.value){
+                                 Get.toNamed(Routes.LIST_ATTENDANCEDETAILCC,
+                                     arguments: {
+                                       "id": listAttendance[index]["idtraining"],
+                                       "status" : controller.argumentstatus.value,
+                                       "idattendance" : controller.argumentid.value
+                                     });
+                               }
+
                              },
                              child: Container(
                                margin: EdgeInsets.symmetric(vertical: 5),
@@ -163,18 +165,33 @@ class ListAttendanceccView extends GetView<ListAttendanceccController> {
                                        padding: EdgeInsets.symmetric(
                                            vertical: 3, horizontal: 10),
                                        decoration: BoxDecoration(
-                                         color: listAttendance[index]["score"] == "SUCCESS" ? Colors.green.withOpacity(0.4) : Colors.red.withOpacity(0.4),
+                                         color: listAttendance[index]["score"] == "PASS" ? Colors.green.withOpacity(0.4) : Colors.red.withOpacity(0.4),
                                          borderRadius: BorderRadius.circular(10),
                                        ),
                                        child: Text(
                                          listAttendance[index]["score"] ?? "",
                                          style: TextStyle(
-                                           fontSize: 10, color: listAttendance[index]["score"] == "SUCCESS" ? Colors.green : Colors.red,),
+                                           fontSize: 10, color: listAttendance[index]["score"] == "PASS" ? Colors.green : Colors.red,),
+                                       ),
+                                     ),
+
+                                     SizedBox(width: 10,),
+                                     Container(
+                                       padding: EdgeInsets.symmetric(
+                                           vertical: 3, horizontal: 10),
+                                       decoration: BoxDecoration(
+                                         color: Colors.yellow.withOpacity(0.4) ,
+                                         borderRadius: BorderRadius.circular(10),
+                                       ),
+                                       child: Text(
+                                         listAttendance[index]["grade"].toString() ,
+                                         style: TextStyle(
+                                           fontSize: 10, color: Colors.orange),
                                        ),
                                      ),
                                    ],
                                  ),
-                                 trailing: const Icon(Icons.navigate_next),
+                                 trailing: !controller.isAdministrator.value ? Icon(Icons.navigate_next) : SizedBox(),
                                ),
                              ),
                            );

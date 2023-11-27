@@ -22,12 +22,17 @@ class ListAttendancedetailccController extends GetxController {
   RxBool isCPTS = false.obs;
 
   late UserPreferences userPreferences;
+  RxDouble ratingCommunication = 1.0.obs;
+  RxDouble ratingKnowledge = 1.0.obs;
+  RxDouble ratingActive = 1.0.obs;
 
   @override
   void onInit() {
     super.onInit();
     argumentid.value = Get.arguments["id"];
     argumentstatus.value = Get.arguments["status"];
+    print("this");
+    print(argumentstatus.value);
     argumentidattendance.value = Get.arguments["idattendance"];
     cekRole();
   }
@@ -102,6 +107,18 @@ class ListAttendancedetailccController extends GetxController {
           attendanceModel.rank = user['RANK'];
           attendanceModel.license = user['LICENSE NO.'];
 
+          if(attendanceModel.rCommunication != null){
+            ratingCommunication.value = attendanceModel.rCommunication!;
+          }
+
+          if(attendanceModel.rKnowledge != null){
+            ratingKnowledge.value = attendanceModel.rKnowledge!;
+          }
+
+          if(attendanceModel.rActive != null){
+            ratingActive.value = attendanceModel.rActive!;
+          }
+
           return attendanceModel.toJson();
         }),
       );
@@ -126,7 +143,7 @@ class ListAttendancedetailccController extends GetxController {
   }
 
   // Update score dan feedback dilakukan oleh instructor
-  Future<void> updateScoring(String score, String feedback) async {
+  Future<void> updateScoring(String score, String feedback, double grade, double communication, double knowledge, double active) async {
     CollectionReference attendance = firestore.collection('attendance-detail');
 
     // Get attendance detail
@@ -137,7 +154,7 @@ class ListAttendancedetailccController extends GetxController {
     if (attendanceDetailQuery.docs.isNotEmpty) {
       final attendanceDetailData = AttendanceDetailModel.fromJson(attendanceDetailQuery.docs.first.data() as Map<String, dynamic>);
 
-      if (score == "SUCCESS" && attendanceDetailData.formatNo == null) {
+      if (score == "PASS" && attendanceDetailData.formatNo == null) {
         final attendanceQuery = await firestore
             .collection('attendance')
             .where("id", isEqualTo: attendanceDetailData.idattendance)
@@ -186,7 +203,7 @@ class ListAttendancedetailccController extends GetxController {
             final attendanceDetailQuery = await firestore
                 .collection('attendance-detail')
                 .where("idattendance", whereIn: attendanceIds)
-                .where("score", isEqualTo: "SUCCESS")
+                .where("score", isEqualTo: "PASS")
                 .get();
             attendanceDetailData.addAll(attendanceDetailQuery.docs.map((doc) => doc.data()));
           }
@@ -213,7 +230,7 @@ class ListAttendancedetailccController extends GetxController {
           });
 
         }
-      } else if (score == "FAIL" && attendanceDetailData.score == "SUCCESS") {
+      } else if (score == "FAIL" && attendanceDetailData.score == "PASS") {
         await attendance.doc(idattendancedetail.value).update({
           "formatNo": null,
           "certificatemandatory" : null
@@ -224,6 +241,10 @@ class ListAttendancedetailccController extends GetxController {
     await attendance.doc(idattendancedetail.value).update({
       "score": score,
       "feedback": feedback,
+      "grade" : grade,
+      "rCommunication" : communication,
+      "rKnowledge" : knowledge,
+      "rActive" : active,
       "status": "donescoring",
       "updatedTime": DateTime.now().toIso8601String(),
     });

@@ -13,7 +13,7 @@ String _formatTimestamp(Timestamp? timestamp) {
   if (timestamp == null) return 'No Data';
 
   DateTime dateTime = timestamp.toDate();
-  // Format the date and time as desired dd/MM/ss..
+  // Format the date and time as desired dd/MM/ss
   String formattedDateTime = '${dateTime.day}/${dateTime.month}/${dateTime.year}'
       ' at '
       '${dateTime.hour}:${dateTime.minute}';

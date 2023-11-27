@@ -28,7 +28,7 @@ class AttendanceInstructorconfirccView
   @override
   Widget build(BuildContext context) {
     var subjectC = TextEditingController();
-    var vanueC = TextEditingController();
+    var venueC = TextEditingController();
     var dateC = TextEditingController();
     var instructorC = TextEditingController();
     var loaNoC = TextEditingController();
@@ -69,11 +69,10 @@ class AttendanceInstructorconfirccView
           .update({'signatureIccUrl': imageUrl});
     }
 
-    Future<void> confir(
-        String department, String trainingType, String room, String loano) async {
+    Future<void> confir( String loano) async {
       try {
         controller
-            .confirattendance(department, trainingType, room, loano)
+            .confirattendance( loano)
             .then((status) async {
           // Menunggu hingga saveSignature selesai
           await saveSignature();
@@ -135,10 +134,13 @@ class AttendanceInstructorconfirccView
                         DateTime? dateTime = timestamp?.toDate();
 
                         subjectC.text = listAttendance[0]["subject"];
-                        dateC.text = DateFormat('dd MMM yyyy').format(dateTime!) ?? "N/A";
-                        vanueC.text = listAttendance[0]["vanue"];
+                        dateC.text = DateFormat('dd MMM yyyy').format(dateTime!);
+                        venueC.text = listAttendance[0]["venue"];
                         instructorC.text = listAttendance[0]["name"];
                         loaNoC.text = listAttendance[0]["loano"] ?? "" ;
+                        roomC.text = listAttendance[0]["room"];
+                        departmentC.text = listAttendance[0]["department"];
+                        trainingtypeC.text = listAttendance[0]["trainingType"];
                         controller.argumentname.value =
                             listAttendance[0]["subject"];
                       } else {
@@ -157,19 +159,29 @@ class AttendanceInstructorconfirccView
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Expanded(
-                                child: FormTextField(
-                                    text: "Subject",
-                                    textController: subjectC,
-                                    readOnly: true),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey.withOpacity(0.3)
+                                  ),
+                                  child: FormTextField(
+                                      text: "Subject",
+                                      textController: subjectC,
+                                      readOnly: true),
+                                )
                               ),
                               SizedBox(
                                 width: 10,
                               ),
                               Expanded(
-                                child: FormDateField(
-                                    text: "Date",
-                                    textController: dateC,
-                                    readOnly: true),
+                                child: Container(
+                                    decoration: BoxDecoration(
+                                        color: Colors.grey.withOpacity(0.3)
+                                    ),
+                                  child: FormDateField(
+                                      text: "Date",
+                                      textController: dateC,
+                                      readOnly: true),
+                                )
                               )
                             ],
                           ),
@@ -180,45 +192,67 @@ class AttendanceInstructorconfirccView
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Expanded(
-                                child: FormTextField(
-                                  text: "Department",
-                                  textController: departmentC,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      color: Colors.grey.withOpacity(0.3)
+                                  ),
+                                  child: FormTextField(
+                                      text: "Department",
+                                      textController: departmentC,
+                                      readOnly: true),
                                 ),
                               ),
+
                               SizedBox(
                                 width: 10,
                               ),
                               Expanded(
-                                child: FormTextField(
-                                    text: "Vanue",
-                                    textController: vanueC,
-                                    readOnly: true),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      color: Colors.grey.withOpacity(0.3)
+                                  ),
+                                  child: FormTextField(
+                                      text: "Venue",
+                                      textController: venueC,
+                                      readOnly: true),
+                                ),
                               )
                             ],
                           ),
                           SizedBox(
                             height: 20,
                           ),
+
                           Row(
-                            mainAxisSize: MainAxisSize.min,
                             children: [
                               Expanded(
-                                child: FormTextField(
-                                  text: "Training Type",
-                                  textController: trainingtypeC,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      color: Colors.grey.withOpacity(0.3)
+                                  ),
+                                  child: FormTextField(
+                                      text: "Training Type",
+                                      textController: trainingtypeC,
+                                      readOnly: true),
                                 ),
                               ),
                               SizedBox(
                                 width: 10,
                               ),
                               Expanded(
-                                child: FormTextField(
-                                  text: "Room",
-                                  textController: roomC,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      color: Colors.grey.withOpacity(0.3)
+                                  ),
+                                  child: FormTextField(
+                                      text: "Room",
+                                      textController: roomC,
+                                      readOnly: true),
                                 ),
-                              )
+                              ),
                             ],
                           ),
+
                           SizedBox(
                             height: 20,
                           ),
@@ -282,7 +316,7 @@ class AttendanceInstructorconfirccView
                                         borderRadius: BorderRadius.circular(10)),
                                     child: ListTile(
                                       title: Text(
-                                        "Attendance",
+                                        "Present Trainees",
                                         style: tsOneTextTheme.labelSmall,
                                       ),
                                       subtitle: Text(
@@ -315,7 +349,7 @@ class AttendanceInstructorconfirccView
                                 }
                                 return attendanceCount > 0 ? Row(
                                   children: [
-                                    Text("*Please doing Scoring!*",
+                                    Text("*Please do Scoring!*",
                                         style: TextStyle(color: Colors.red, fontSize: 12)),
                                   ],
                                 )
@@ -326,7 +360,7 @@ class AttendanceInstructorconfirccView
                           SizedBox(
                             height: 20,
                           ),
-                          Text("Attendance Type"),
+                          Text("Meeting or Training"),
                           Row(
                             children: [
                               Row(
@@ -543,8 +577,7 @@ class AttendanceInstructorconfirccView
                                       context: context,
                                       builder: (BuildContext context) {
                                         return FutureBuilder<void>(
-                                          future: confir(departmentC.text,
-                                              trainingtypeC.text, roomC.text, loaNoC.text),
+                                          future: confir(loaNoC.text),
                                           builder: (BuildContext context,
                                               AsyncSnapshot<void> snapshot) {
                                             if (snapshot.connectionState ==
