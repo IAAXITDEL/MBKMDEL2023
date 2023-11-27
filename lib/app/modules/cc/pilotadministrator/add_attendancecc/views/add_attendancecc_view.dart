@@ -219,7 +219,7 @@ class AddAttendanceccView extends GetView<AddAttendanceccController> {
                   StreamBuilder<QuerySnapshot>(
                     stream: controller.instructorStream(),
                     builder: (context, snapshot) {
-                      List<String> userNames = []; // Default value
+                      List<String> userNamesWithId = []; // Updated to store names with IDs
 
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return CircularProgressIndicator();
@@ -231,44 +231,42 @@ class AddAttendanceccView extends GetView<AddAttendanceccController> {
 
                       final users = snapshot.data?.docs.reversed.toList() ?? [];
 
-                      userNames.addAll(users.map((user) => user['NAME'] as String));
+                      // Create a list of names with their corresponding IDs in the desired format
+                      userNamesWithId.addAll(users.map(
+                            (user) => '${user['NAME']} (${user['ID NO']})',
+                      ));
 
                       int selectedUserId = 0; // Default selected user ID
 
                       return DropdownSearch<String>(
-
                         mode: Mode.MENU,
                         showSelectedItems: true,
                         dropdownSearchDecoration: InputDecoration(
-                          labelText: "INSTRUCTOR",
+                          labelText: "Instructor",
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.all(
-                              Radius.circular(5), // Mengatur radius border menjadi 0 membuatnya berbentuk petak
+                              Radius.circular(5),
                             ),
                             borderSide: BorderSide(
-                              color: Colors.red, // Ganti warna border sesuai keinginan
-                              width: 5.0, // Atur ketebalan border sesuai keinginan
+                              color: Colors.red,
+                              width: 5.0,
                             ),
                           ),
-
                         ),
                         showSearchBox: true,
                         searchFieldProps: TextFieldProps(
                           cursorColor: TsOneColor.secondaryContainer,
                         ),
-                        items: userNames,
+                        items: userNamesWithId,
                         onChanged: (selectedName) {
-                          // Find the corresponding user ID based on the selected name
-                          final selectedUser = users.firstWhere(
-                                  (user) => user['NAME'] == selectedName
-                          );
+                          // Extract the ID from the selected string
+                          final selectedUserIdMatch = RegExp(r'\((\d+)\)').firstMatch(selectedName!);
 
-                          if (selectedUser != null) {
-                            final selectedUserIdValue = selectedUser['ID NO'] as int; // Cast as int
-                            selectedUserId = selectedUserIdValue; // Convert to string
+                          if (selectedUserIdMatch != null) {
+                            final selectedUserIdValue = int.parse(selectedUserIdMatch.group(1)!);
+                            selectedUserId = selectedUserIdValue;
                           } else {
-                            // Handle the case where selectedUser is null
-                            selectedUserId = 0; // or some other appropriate value
+                            selectedUserId = 0;
                           }
 
                           instructorC = selectedUserId;
