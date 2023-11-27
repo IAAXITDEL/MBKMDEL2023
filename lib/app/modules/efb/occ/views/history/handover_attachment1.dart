@@ -45,6 +45,11 @@ Future<void> generateLogPdfDevice1({
   String? statusdevice,
   String? handoverName,
   String? handoverID,
+  String? recNo,
+  String? date,
+  String? page,
+  String? footerLeft,
+  String? footerRight,
 }) async {
   final pdf = pw.Document();
 
@@ -65,12 +70,12 @@ Future<void> generateLogPdfDevice1({
       children: [
         pw.Container(
           alignment: pw.Alignment.centerLeft,
-          child: pw.Text('IAA/FOP/F/001'),
+          child: pw.Text('$footerLeft'),
         ),
         pw.Spacer(),
         pw.Container(
           alignment: pw.Alignment.centerRight,
-          child: pw.Text('PT Indonesia AirAsia'),
+          child: pw.Text('$footerRight'),
         ),
       ],
     ),
@@ -124,29 +129,167 @@ Future<void> generateLogPdfDevice1({
         marginLeft: 72.0,
         marginRight: 72.0,
         marginTop: 36.0,
-        marginBottom: 72.0,
+        marginBottom: 36.0,
       ),
       build: (context) {
         return pw.Column(children: [
-          pw.Row(
+          pw.Table(
+            tableWidth: pw.TableWidth.min,
+            border: pw.TableBorder.all(),
+            columnWidths: {
+              0: pw.FlexColumnWidth(1),
+            },
             children: [
-              pw.Image(
-                pw.MemoryImage(uint8list),
-                width: 75,
-                height: 75,
-              ),
-              pw.Spacer(),
-              pw.Align(
-                alignment: pw.Alignment.center,
-                child: pw.Text(
-                  'EFB Handover Log',
-                  style: pw.TextStyle(
-                    fontSize: 23,
-                    fontWeight: pw.FontWeight.bold,
+              pw.TableRow(
+                children: [
+                  pw.Expanded(
+                    flex: 1,
+                    child: pw.Column(
+                      mainAxisAlignment: pw.MainAxisAlignment.center,
+                      crossAxisAlignment: pw.CrossAxisAlignment.center,
+                      children: [
+                        pw.Image(
+                          pw.MemoryImage(uint8list),
+                          width: 65,
+                          height: 65,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
+                  pw.Expanded(
+                    flex: 3,
+                    child: pw.Padding(
+                      padding: pw.EdgeInsets.symmetric(vertical: 15.0),
+                      child: pw.Column(
+                        mainAxisAlignment: pw.MainAxisAlignment.center,
+                        crossAxisAlignment: pw.CrossAxisAlignment.center,
+                        children: [
+                          pw.Text(
+                            'IAA EFB',
+                            style: pw.TextStyle(
+                              // font: ttf,
+                              fontSize: 12,
+                              fontWeight: pw.FontWeight.bold,
+                            ),
+                          ),
+                          pw.SizedBox(height: 5),
+                          pw.Text(
+                            'Handover Log',
+                            style: pw.TextStyle(
+                              // font: ttf,
+                              fontSize: 12,
+                              fontWeight: pw.FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  pw.Expanded(
+                    flex: 2,
+                    child: pw.Padding(
+                      padding: pw.EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+                      child: pw.Column(
+                        mainAxisAlignment: pw.MainAxisAlignment.center,
+                        crossAxisAlignment: pw.CrossAxisAlignment.center,
+                        children: [
+                          pw.Row(
+                            mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                            children: [
+                              pw.Text(
+                                'Rec. No.',
+                                style: pw.TextStyle(
+                                  font: ttf,
+                                  fontSize: 8,
+                                ),
+                              ),
+                              pw.Text(
+                                '$recNo',
+                                style: pw.TextStyle(
+                                  font: ttf,
+                                  fontSize: 8,
+                                ),
+                              ),
+                            ],
+                          ),
+                          pw.SizedBox(height: 4),
+                          pw.Row(
+                            mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                            children: [
+                              pw.Text(
+                                'Date',
+                                style: pw.TextStyle(
+                                  font: ttf,
+                                  fontSize: 8,
+                                ),
+                              ),
+                              pw.Text(
+                                '$date',
+                                style: pw.TextStyle(
+                                  font: ttf,
+                                  fontSize: 8,
+                                ),
+                              ),
+                            ],
+                          ),
+                          pw.SizedBox(height: 4),
+                          pw.Row(
+                            mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                            children: [
+                              pw.Text(
+                                'Page',
+                                style: pw.TextStyle(
+                                  font: ttf,
+                                  fontSize: 8,
+                                ),
+                              ),
+                              pw.Text(
+                                '$page',
+                                style: pw.TextStyle(
+                                  font: ttf,
+                                  fontSize: 8,
+                                ),
+                              ),
+                            ],
+                          ),
+                          // pw.SizedBox(height: 4),
+                          // pw.Row(
+                          //   mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                          //   children: [
+                          //     pw.Text(
+                          //       'Page',
+                          //       style: pw.TextStyle(
+                          //         font: ttf,
+                          //         fontSize: 8,
+                          //       ),
+                          //     ),
+                          //     pw.Text(
+                          //       '1 of 1',
+                          //       style: pw.TextStyle(
+                          //         font: ttf,
+                          //         fontSize: 8,
+                          //       ),
+                          //     ),
+                          //   ],
+                          // ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
+          ),
+          pw.SizedBox(height: 20),
+          pw.Align(
+            alignment: pw.Alignment.center,
+            child: pw.Text(
+              'EFB Handover Log',
+              style: pw.TextStyle(
+                fontSize: 30,
+                fontWeight: pw.FontWeight.bold,
+              ),
+            ),
           ),
           pw.SizedBox(height: 10),
           pw.Row(
@@ -209,18 +352,18 @@ Future<void> generateLogPdfDevice1({
                   ),
                 ],
               ),
-              pw.TableRow(
-                children: [
-                  pw.Container(
-                    height: 20.0,
-                    child: _buildHeaderCellLeft('Charger No', context),
-                  ),
-                  pw.Container(
-                    height: 20.0,
-                    child: _buildHeaderCellRight('xxxx', context),
-                  ),
-                ],
-              ),
+              // pw.TableRow(
+              //   children: [
+              //     pw.Container(
+              //       height: 20.0,
+              //       child: _buildHeaderCellLeft('Charger No', context),
+              //     ),
+              //     pw.Container(
+              //       height: 20.0,
+              //       child: _buildHeaderCellRight('xxxx', context),
+              //     ),
+              //   ],
+              // ),
               pw.TableRow(
                 children: [
                   pw.Container(
@@ -399,9 +542,9 @@ Future<void> generateLogPdfDevice1({
               ],
             ),
 
-          pw.SizedBox(height: 40),
+          pw.SizedBox(height: 30),
 
-          //handover to other crew
+          //handover to other crew.
           if ('$statusdevice' == 'handover-to-other-crew')
             pw.Row(
               children: [
@@ -457,7 +600,7 @@ Future<void> generateLogPdfDevice1({
                   flex: 5,
                   child: pw.Column(
                     children: [
-                      pw.Text('OCC Accepted Device'),
+                      pw.Text('Accepted By'),
                     ],
                   ),
                 ),
@@ -485,7 +628,15 @@ Future<void> generateLogPdfDevice1({
                         height: 90,
                       ),
                       pw.SizedBox(height: 5.0),
-                      pw.Text('$occAccept'),
+                      pw.Text(
+                        '$occAccept',
+                        style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+                      ),
+                      pw.SizedBox(height: 2.0),
+                      pw.Text(
+                        'OCC',
+                        style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+                      ),
                     ],
                   ),
                 ),
@@ -500,9 +651,15 @@ Future<void> generateLogPdfDevice1({
                         height: 90,
                       ),
                       pw.SizedBox(height: 5.0),
-                      pw.Text('$userName'),
+                      pw.Text(
+                        '$userName',
+                        style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+                      ),
                       pw.SizedBox(height: 2.0),
-                      pw.Text('$userRank'),
+                      pw.Text(
+                        '$userRank',
+                        style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+                      ),
                     ],
                   ),
                 ),

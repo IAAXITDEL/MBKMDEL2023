@@ -213,7 +213,7 @@ class FOUnReturnDeviceView extends GetView {
                                 Row(
                                   children: [
                                     const Expanded(flex: 7, child: Text("ID NO")),
-                                    const Expanded( child: Text(":")),
+                                    const Expanded(child: Text(":")),
                                     Expanded(
                                       flex: 6,
                                       child: Text('${userData['ID NO'] ?? 'No Data'}'),
@@ -226,7 +226,7 @@ class FOUnReturnDeviceView extends GetView {
                                 Row(
                                   children: [
                                     const Expanded(flex: 7, child: Text("Name")),
-                                    const Expanded( child: Text(":")),
+                                    const Expanded(child: Text(":")),
                                     Expanded(
                                       flex: 6,
                                       child: Text('${userData['NAME'] ?? 'No Data'}'),
@@ -237,7 +237,7 @@ class FOUnReturnDeviceView extends GetView {
                                 Row(
                                   children: [
                                     const Expanded(flex: 7, child: Text("Rank")),
-                                    const Expanded( child: Text(":")),
+                                    const Expanded(child: Text(":")),
                                     Expanded(
                                       flex: 6,
                                       child: Text('${userData['RANK'] ?? 'No Data'}'),
@@ -257,7 +257,7 @@ class FOUnReturnDeviceView extends GetView {
                                       Padding(
                                         padding: EdgeInsets.symmetric(horizontal: 8.0),
                                         child: Text(
-                                          'Device Details',
+                                          'EFB Details',
                                           style: TextStyle(color: Colors.grey),
                                         ),
                                       ),
@@ -269,7 +269,63 @@ class FOUnReturnDeviceView extends GetView {
                                     ],
                                   ),
                                 ),
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text("Handover", style: tsOneTextTheme.displaySmall),
+                                ),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 6,
+                                      child: Text(
+                                        "Remarks",
+                                        style: tsOneTextTheme.bodySmall,
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Text(
+                                        ":",
+                                        style: tsOneTextTheme.bodySmall,
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 6,
+                                      child: Text(
+                                        '${data['remarks-handover'] ?? 'No Remarks'}',
+                                        style: tsOneTextTheme.bodySmall,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                                 const SizedBox(height: 5.0),
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text("Charger", style: tsOneTextTheme.displaySmall),
+                                ),
+                                const SizedBox(height: 5.0),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                        flex: 7,
+                                        child: Text(
+                                          "Charger No",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        child: Text(
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
+                                    Expanded(
+                                      flex: 6,
+                                      child: Text(
+                                        '${data['charger_no'] ?? 'No Data'}',
+                                        style: tsOneTextTheme.bodySmall,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 15.0),
                                 Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text("Device 2", style: tsOneTextTheme.displaySmall),
@@ -284,11 +340,10 @@ class FOUnReturnDeviceView extends GetView {
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
-                                        
                                         child: Text(
-                                          ":",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
                                     Expanded(
                                       flex: 6,
                                       child: Text(
@@ -308,11 +363,10 @@ class FOUnReturnDeviceView extends GetView {
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
-                                        
                                         child: Text(
-                                          ":",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
                                     Expanded(
                                       flex: 6,
                                       child: Text(
@@ -332,11 +386,10 @@ class FOUnReturnDeviceView extends GetView {
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
-                                        
                                         child: Text(
-                                          ":",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
                                     Expanded(
                                       flex: 6,
                                       child: Text(
@@ -356,11 +409,10 @@ class FOUnReturnDeviceView extends GetView {
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
-                                        
                                         child: Text(
-                                          ":",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
                                     Expanded(
                                       flex: 6,
                                       child: Text(
@@ -380,11 +432,10 @@ class FOUnReturnDeviceView extends GetView {
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
-                                        
                                         child: Text(
-                                          ":",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
                                     Expanded(
                                       flex: 6,
                                       child: Text(
@@ -404,11 +455,10 @@ class FOUnReturnDeviceView extends GetView {
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
-                                        
                                         child: Text(
-                                          ":",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
                                     Expanded(
                                       flex: 6,
                                       child: Text(
@@ -424,11 +474,10 @@ class FOUnReturnDeviceView extends GetView {
                                     Expanded(
                                         flex: 6,
                                         child: Text(
-                                          "Condition",
+                                          "Condition Category",
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
-                                        
                                         child: Text(
                                           ":",
                                           style: tsOneTextTheme.bodySmall,
@@ -436,12 +485,58 @@ class FOUnReturnDeviceView extends GetView {
                                     Expanded(
                                       flex: 6,
                                       child: Text(
-                                        '${deviceData2['value']['condition'] ?? 'No Data'}',
+                                        '${data['initial-condition-category2'] ?? 'No Data'}',
                                         style: tsOneTextTheme.bodySmall,
                                       ),
                                     ),
                                   ],
                                 ),
+                                const SizedBox(height: 5.0),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                          "Condition Remark",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        child: Text(
+                                          ":",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                      flex: 6,
+                                      child: Text(
+                                        '${data['initial-condition-remarks2'] ?? 'No Data'}',
+                                        style: tsOneTextTheme.bodySmall,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+
+                                // Row(
+                                //   children: [
+                                //     Expanded(
+                                //         flex: 6,
+                                //         child: Text(
+                                //           "Condition",
+                                //           style: tsOneTextTheme.bodySmall,
+                                //         )),
+                                //     Expanded(
+                                //         child: Text(
+                                //       ":",
+                                //       style: tsOneTextTheme.bodySmall,
+                                //     )),
+                                //     Expanded(
+                                //       flex: 6,
+                                //       child: Text(
+                                //         '${deviceData2['value']['condition'] ?? 'No Data'}',
+                                //         style: tsOneTextTheme.bodySmall,
+                                //       ),
+                                //     ),
+                                //   ],
+                                // ),
                                 const SizedBox(height: 15.0),
                                 Align(
                                   alignment: Alignment.centerLeft,
@@ -456,7 +551,7 @@ class FOUnReturnDeviceView extends GetView {
                                           "Device No",
                                           style: tsOneTextTheme.bodySmall,
                                         )),
-                                    const Expanded( child: Text(":")),
+                                    const Expanded(child: Text(":")),
                                     Expanded(
                                       flex: 6,
                                       child: Text(
@@ -476,11 +571,10 @@ class FOUnReturnDeviceView extends GetView {
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
-                                        
                                         child: Text(
-                                          ":",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
                                     Expanded(
                                       flex: 6,
                                       child: Text(
@@ -500,11 +594,10 @@ class FOUnReturnDeviceView extends GetView {
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
-                                        
                                         child: Text(
-                                          ":",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
                                     Expanded(
                                       flex: 6,
                                       child: Text(
@@ -524,11 +617,10 @@ class FOUnReturnDeviceView extends GetView {
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
-                                        
                                         child: Text(
-                                          ":",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
                                     Expanded(
                                       flex: 6,
                                       child: Text(
@@ -548,11 +640,10 @@ class FOUnReturnDeviceView extends GetView {
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
-                                        
                                         child: Text(
-                                          ":",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
                                     Expanded(
                                       flex: 6,
                                       child: Text(
@@ -572,11 +663,10 @@ class FOUnReturnDeviceView extends GetView {
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
-                                        
                                         child: Text(
-                                          ":",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
                                     Expanded(
                                       flex: 6,
                                       child: Text(
@@ -592,11 +682,10 @@ class FOUnReturnDeviceView extends GetView {
                                     Expanded(
                                         flex: 6,
                                         child: Text(
-                                          "Condition",
+                                          "Condition Category",
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
-                                        
                                         child: Text(
                                           ":",
                                           style: tsOneTextTheme.bodySmall,
@@ -604,13 +693,58 @@ class FOUnReturnDeviceView extends GetView {
                                     Expanded(
                                       flex: 6,
                                       child: Text(
-                                        '${deviceData3['value']['condition'] ?? 'No Data'}',
+                                        '${data['initial-condition-category3'] ?? 'No Data'}',
                                         style: tsOneTextTheme.bodySmall,
                                       ),
                                     ),
                                   ],
                                 ),
-                                const SizedBox(height: 70.0),
+                                const SizedBox(height: 5.0),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                        flex: 6,
+                                        child: Text(
+                                          "Condition Remark",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                        child: Text(
+                                          ":",
+                                          style: tsOneTextTheme.bodySmall,
+                                        )),
+                                    Expanded(
+                                      flex: 6,
+                                      child: Text(
+                                        '${data['initial-condition-remarks3'] ?? 'No Data'}',
+                                        style: tsOneTextTheme.bodySmall,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                // const SizedBox(height: 5.0),
+                                // Row(
+                                //   children: [
+                                //     Expanded(
+                                //         flex: 6,
+                                //         child: Text(
+                                //           "Condition",
+                                //           style: tsOneTextTheme.bodySmall,
+                                //         )),
+                                //     Expanded(
+                                //         child: Text(
+                                //       ":",
+                                //       style: tsOneTextTheme.bodySmall,
+                                //     )),
+                                //     Expanded(
+                                //       flex: 6,
+                                //       child: Text(
+                                //         '${deviceData3['value']['condition'] ?? 'No Data'}',
+                                //         style: tsOneTextTheme.bodySmall,
+                                //       ),
+                                //     ),
+                                //   ],
+                                // ),
                               ],
                             ),
                           );

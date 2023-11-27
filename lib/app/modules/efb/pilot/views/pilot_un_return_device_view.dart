@@ -240,7 +240,7 @@ class PilotUnReturnDeviceView extends GetView {
                                   Padding(
                                     padding: EdgeInsets.symmetric(horizontal: 8.0),
                                     child: Text(
-                                      'Device Details',
+                                      'EFB Details',
                                       style: TextStyle(color: Colors.grey),
                                     ),
                                   ),
@@ -252,7 +252,36 @@ class PilotUnReturnDeviceView extends GetView {
                                 ],
                               ),
                             ),
-                            const SizedBox(height: 15.0),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text("Handover", style: tsOneTextTheme.displaySmall),
+                            ),
+                            const SizedBox(height: 5.0),
+                            Row(
+                              children: [
+                                Expanded(
+                                  flex: 6,
+                                  child: Text(
+                                    "Remarks",
+                                    style: tsOneTextTheme.bodySmall,
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    ":",
+                                    style: tsOneTextTheme.bodySmall,
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 6,
+                                  child: Text(
+                                    '${data['remarks-handover'] ?? 'No Remarks'}',
+                                    style: tsOneTextTheme.bodySmall,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 5.0),
                             Align(
                               alignment: Alignment.centerLeft,
                               child: Text("Device 1", style: tsOneTextTheme.displaySmall),
@@ -399,20 +428,43 @@ class PilotUnReturnDeviceView extends GetView {
                             Row(
                               children: [
                                 Expanded(
-                                    flex: 6,
+                                    flex: 7,
                                     child: Text(
-                                      "Condition",
+                                      "Condition Category",
                                       style: tsOneTextTheme.bodySmall,
                                     )),
                                 Expanded(
                                     child: Text(
-                                  ":",
-                                  style: tsOneTextTheme.bodySmall,
-                                )),
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
                                 Expanded(
-                                  flex: 6,
+                                  flex: 7,
                                   child: Text(
-                                    '${deviceData['value']['condition'] ?? 'No Data'}',
+                                    '${data['initial-condition-category'] ?? 'No Data'}',
+                                    style: tsOneTextTheme.bodySmall,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 6.0),
+                            Row(
+                              children: [
+                                Expanded(
+                                    flex: 7,
+                                    child: Text(
+                                      "Condition Remarks",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
+                                Expanded(
+                                    child: Text(
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
+                                Expanded(
+                                  flex: 7,
+                                  child: Text(
+                                    '${data['initial-condition-remarks'] ?? 'No Data'}',
                                     style: tsOneTextTheme.bodySmall,
                                   ),
                                 ),

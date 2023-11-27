@@ -31,7 +31,6 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
     var instructorC = TextEditingController();
     var loaNoC = TextEditingController();
 
-    int? trainingC = 0;
 
     var departmentC = TextEditingController();
     var trainingtypeC = TextEditingController();
@@ -295,6 +294,7 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                           } else if (snapshot.hasError) {
                             return Text('Error: ${snapshot.error}');
                           } else {
+
                             int attendanceCount = snapshot.data ?? 0;
                             return InkWell(
                               onTap: () {
@@ -371,7 +371,6 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                           InkWell(
                           onTap: () {
                             if (controller.jumlah.value > 0) {
-                              print(controller.jumlah.value);
                               Get.toNamed(
                                 Routes.LIST_ABSENTCPTSCC,
                                 arguments: {
@@ -430,14 +429,17 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                                           return LoadingScreen();
                                         },
                                       );
-
+                                      // await controller.savePdfFile(controller.attendancelist() as Uint8List);
                                       // Check if pdfBytes is not null before accessing its value
-                                      if (controller.pdfBytes != null && controller.pdfBytes!.isNotEmpty) {
-                                        await controller.savePdfFile(controller.pdfBytes![0]);
-                                      } else {
-                                        print("pdfBytes is null or empty");
-                                        // Handle the case where pdfBytes is null or empty
-                                      }
+                                      // if (controller.pdfBytes != null && controller.pdfBytes!.isNotEmpty) {
+                                      //
+                                      // } else {
+                                      //   print("pdfBytes is null or empty");
+                                      //   // Handle the case where pdfBytes is null or empty
+                                      // }
+                                      await controller.savePdfFile(
+                                          await controller
+                                              .attendancelist());
                                     } catch (e) {
                                       print('Error: $e');
                                     } finally {
@@ -557,7 +559,6 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                                           } else {
                                             selectedUserId = 0;
                                           }
-
                                           trainingC = selectedUserId;
                                           // Handle user selection here, including the selectedUserId
                                           print('Selected name: $selectedName, Selected ID: $selectedUserId');
@@ -639,6 +640,7 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                                   height: 10,
                                 ),
                                 Container(
+                                  height : 200,
                                   decoration: BoxDecoration(
                                     border: Border.all(
                                       color: TsOneColor.secondaryContainer,

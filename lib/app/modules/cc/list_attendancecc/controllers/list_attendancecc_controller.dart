@@ -15,6 +15,8 @@ class ListAttendanceccController extends GetxController {
   RxInt jumlah  = 0.obs;
   RxString nameS = "".obs;
 
+  RxBool isAdministrator = false.obs;
+
   final Rx<List<Map<String, dynamic>>> streamData = Rx<List<Map<String, dynamic>>>([]);
   late UserPreferences userPreferences;
 
@@ -24,6 +26,8 @@ class ListAttendanceccController extends GetxController {
     argumentid.value = Get.arguments["id"];
     argumentstatus.value = Get.arguments["status"];
     searchC = TextEditingController();
+    cekRole();
+
   }
 
 
@@ -81,6 +85,15 @@ class ListAttendanceccController extends GetxController {
     } catch (e) {
       print('An error occurred: $e');
       return Stream<List<Map<String, dynamic>>>.empty();
+    }
+  }
+
+  Future<void> cekRole() async {
+    userPreferences = getItLocator<UserPreferences>();
+
+    // SEBAGAI PILOT ADMINISTRATOR
+    if (userPreferences.getRank().contains("Pilot Administrator")) {
+      isAdministrator.value = true;
     }
   }
 

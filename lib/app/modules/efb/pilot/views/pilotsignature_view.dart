@@ -19,6 +19,8 @@ class SignaturePadPage extends StatefulWidget {
   final GlobalKey<SfSignaturePadState> _signaturePadKey = GlobalKey<SfSignaturePadState>();
   Uint8List? signatureImage;
   final String deviceId;
+  final TextEditingController remarksController = TextEditingController();
+  // final TextEditingController remarksHandoverController = TextEditingController();
 
   SignaturePadPage({required String documentId, required this.deviceId});
 
@@ -45,6 +47,59 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           child: Column(
             children: [
+              Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.red),
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start, // Agar Column rata kiri
+                  children: [
+                    Text(
+                      'Note:',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16.0,
+                      ),
+                    ),
+                    SizedBox(height: 8.0),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Align(
+                            alignment: Alignment.centerRight, // Ganti menjadi Alignment.centerLeft untuk membuat rata kiri
+                            child: Text(
+                              'You must be in one place with the OCC to confirm the return. If you are in a different place, whatever the OCC contains, you automatically agree with its statement.',
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontSize: 14.0,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 10),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Enter your remarks",
+                  style: tsOneTextTheme.headlineMedium,
+                ),
+              ),
+              const SizedBox(height: 10),
+              TextField(
+                controller: widget.remarksController,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Fill if returned via FO',
+                ),
+              ),
+              const SizedBox(height: 10),
               Align(
                 alignment: Alignment.center,
                 child: Text(
@@ -145,6 +200,9 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
                   ElevatedButton(
                     onPressed: () async {
                       final signatureData = widget.signatureImage;
+                      final remarks = widget.remarksController.text;
+                      // final remarksHandover = widget.remarksHandoverController.text;
+
                       if (signatureData == null && !agree) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
@@ -198,7 +256,6 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
                           ),
                         );
                       } else if (widget._signaturePadKey.currentState?.clear == null) {
-                        //widget._signaturePadKey.currentState!.clear();
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: const Text("Please provide signature"),
@@ -239,10 +296,9 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
                                       child: ElevatedButton(
                                         onPressed: () {
                                           try {
-                                            final newDocumentId = addToPilotDeviceCollection(
-                                              signatureData,
-                                              widget.deviceId,
-                                            );
+                                            final newDocumentId = addToPilotDeviceCollection(signatureData, widget.deviceId, remarks
+                                                // remarksHandover,
+                                                );
                                           } catch (error) {
                                             showDialog(
                                               context: context,
@@ -262,7 +318,7 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
                                               },
                                             );
                                           }
-                                          _showQuickAlert(context);
+                                          _showQuickAlert(context, remarks);
                                         },
                                         child: const Text('Yes', style: TextStyle(color: TsOneColor.onPrimary)),
                                         style: ElevatedButton.styleFrom(
@@ -299,7 +355,7 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
     );
   }
 
-  Future<void> addToPilotDeviceCollection(Uint8List signatureData, String deviceId) async {
+  Future<void> addToPilotDeviceCollection(Uint8List signatureData, String deviceId, String remarks) async {
     User? user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {
@@ -309,7 +365,10 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
         'signature_url': await uploadSignatureToFirestore(signatureData),
         'statusDevice': 'need-confirmation-occ',
         'document_id': deviceId,
-        'handover-to-crew': '-',
+        // 'handover-to-crew': 'remarksHandover',
+        // 'remarks-handover': '-',
+        'remarks-handover': remarks,
+        // 'remarks': remarks,
       };
 
       try {
@@ -337,14 +396,14 @@ class _SignaturePadPageState extends State<SignaturePadPage> {
       rethrow;
     }
   }
-}
 
-Future<void> _showQuickAlert(BuildContext context) async {
-  await QuickAlert.show(
-    context: context,
-    type: QuickAlertType.success,
-    text: 'You have returned to OCC!\nPlease kindly wait until OCC confirms the device.',
-  ).then((value) {
-    Get.offAllNamed(Routes.NAVOCC);
-  });
+  Future<void> _showQuickAlert(BuildContext context, String remarks) async {
+    await QuickAlert.show(
+      context: context,
+      type: QuickAlertType.success,
+      text: 'You have returned to OCC!\nPlease kindly wait until OCC confirms the device.\nRemarks: $remarks',
+    ).then((value) {
+      Get.offAllNamed(Routes.NAVOCC);
+    });
+  }
 }

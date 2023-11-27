@@ -10,15 +10,11 @@ class HomeInstructorccController extends GetxController {
   late UserPreferences userPreferences;
   late String titleToGreet;
   late String timeToGreet;
-  late bool _isCPTS;
-  late bool _isInstructor;
-  late bool _isPilotAdministrator;
   RxString nameC  = "".obs;
 
   @override
   void onInit() {
     userPreferences = getItLocator<UserPreferences>();
-    _isPilotAdministrator = false;
     getName();
 
     switch (userPreferences.getRank()) {
@@ -27,10 +23,6 @@ class HomeInstructorccController extends GetxController {
         break;
       case 'FO':
         titleToGreet = 'First Officer';
-        break;
-      case 'Pilot Administrator':
-        titleToGreet = 'Pilot Administrator';
-        _isPilotAdministrator = true;
         break;
       default:
         titleToGreet = 'Allstar';

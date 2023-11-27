@@ -319,7 +319,7 @@ class HomePilotView extends GetView<HomePilotController> {
                             const Align(
                                 alignment: Alignment.centerLeft,
                                 child: BlackTitleText(
-                                    text: "Waiting OCC To Confirm")),
+                                    text: "Waiting For OCC To Confirm")),
                             const SizedBox(height: 10),
                             Column(
                               children: waitingConfirmationDocs.map((doc) {

@@ -11,10 +11,7 @@ import '../../../../../di/locator.dart';
 import '../../../../../presentation/view_model/attendance_detail_model.dart';
 import '../../../../../presentation/view_model/attendance_model.dart';
 import '../../../../routes/app_pages.dart';
-import '../../instructor/training_instructorcc/controllers/training_instructorcc_controller.dart';
 import '../../pilotadministrator/trainingtypecc/controllers/trainingtypecc_controller.dart';
-import '../../training/attendance_pilotcc/controllers/attendance_pilotcc_controller.dart';
-import '../../traininghistorycc_cpts/controllers/traininghistorycc_cpts_controller.dart';
 class TrainingccController extends GetxController {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   late UserPreferences userPreferences;
@@ -28,6 +25,7 @@ class TrainingccController extends GetxController {
   RxBool iscpts = false.obs;
   final RxString passwordKey = "".obs;
   final RxBool isLoading = false.obs;
+
   // List untuk training remark
   Stream<QuerySnapshot<Map<String, dynamic>>> trainingRemarkStream() {
     return firestore
@@ -48,6 +46,13 @@ class TrainingccController extends GetxController {
   Future<bool> cekRole() async {
     userPreferences = getItLocator<UserPreferences>();
 
+    // SEBAGAI CPTS
+    if (userPreferences.getInstructor().contains(UserModel.keyCPTS) &&
+        (userPreferences.getRank().contains(UserModel.keyPositionCaptain) ||
+        userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer))) {
+      iscpts.value = true;
+      print("cek");
+    }
     // SEBAGAI PILOT
      if (userPreferences.getRank().contains(UserModel.keyPositionCaptain) ||
         userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)) {
@@ -87,6 +92,12 @@ class TrainingccController extends GetxController {
     if (userPreferences.getRank().contains("Pilot Administrator")) {
       isAdministrator.value = true;
       return true;
+    }
+
+    if (userPreferences.getInstructor().contains(UserModel.keyCPTS) &&
+        (userPreferences.getRank().contains(UserModel.keyPositionCaptain) ||
+            userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer))) {
+      iscpts.value = true;
     }
     // SEBAGAI ALL STAR
     else {
@@ -283,6 +294,7 @@ class TrainingccController extends GetxController {
   void onInit() {
     super.onInit();
     cekAdministrator();
+
   }
 
   @override

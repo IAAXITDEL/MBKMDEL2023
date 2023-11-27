@@ -21,8 +21,6 @@ import '../../../../../presentation/view_model/attendance_detail_model.dart';
 import '../../../../../presentation/view_model/attendance_model.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import '../../../../routes/app_pages.dart';
-import '../../training/attendance_pilotcc/controllers/attendance_pilotcc_controller.dart';
 class AttendanceConfirccController extends GetxController {
   var selectedMeeting = "Training".obs;
   late UserPreferences userPreferences;
@@ -53,16 +51,12 @@ class AttendanceConfirccController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    final Map<String, dynamic> args = Get.arguments as Map<String, dynamic>;
-    final String id = args["id"];
-    argumentid.value = id;
-    _loadPdf();
+    argumentid.value = Get.arguments["id"];
     attendanceStream();
     getCombinedAttendance();
     cekRole();
     absentList();
     attendancelist();
-
   }
 
   Future<void> _loadPdf() async {
@@ -70,7 +64,7 @@ class AttendanceConfirccController extends GetxController {
       // Memproses PDF dan menyimpannya ke dalam variabel pdfBytes
       List<int> pdfBytesList = await attendancelist();
       pdfBytes?.assignAll([Uint8List.fromList(pdfBytesList)]);
-      print("sudah kah ");
+      print("sudah");
     } catch (e) {
       print('Error loading PDF: $e');
     }
@@ -114,6 +108,7 @@ class AttendanceConfirccController extends GetxController {
           attendanceModel.name = user['NAME'];
           attendanceModel.loano = user['LOA NO'];
           idInstructor.value = attendanceModel.instructor!;
+          argumentname.value = attendanceModel.subject!;
 
           Timestamp? timestamp = attendanceModel.date;
           date.value = timestamp!.toDate();
@@ -159,7 +154,6 @@ class AttendanceConfirccController extends GetxController {
             );
             if (user != null) {
               final userData = UserModel.fromFirebaseUser(user.data());
-              print(userData.name);
               attendanceModel.name = userData.name;
               attendanceModel.license = userData.licenseNo;
               attendanceModel.rank = userData.rank;
@@ -286,6 +280,7 @@ class AttendanceConfirccController extends GetxController {
         .where("status", isEqualTo: "donescoring")
         .snapshots()
         .map((attendanceQuery) {
+
       jumlah.value = attendanceQuery.docs.length;
       return attendanceQuery.docs.length;
     });
@@ -375,7 +370,6 @@ class AttendanceConfirccController extends GetxController {
           return attendanceModel.toJson();
         }),
       );
-      print(attendanceData);
       return attendanceData;
     }
 
@@ -401,7 +395,6 @@ class AttendanceConfirccController extends GetxController {
           return attendanceModel.toJson();
         }),
       );
-      print(attendanceData);
       return attendanceData;
   }
 
@@ -421,7 +414,7 @@ class AttendanceConfirccController extends GetxController {
   }
 
   //Import PDF
-  Future<List<int>> attendancelist() async {
+  Future<Uint8List> attendancelist() async {
     try {
       List<pw.TableRow> tableRows = [];
       List<pw.TableRow> instructorTableRows = [];
@@ -741,7 +734,7 @@ class AttendanceConfirccController extends GetxController {
                                     children: [
                                       TextFieldPdf(title: "DATE"),
                                       TextFieldPdf(
-                                          title: DateFormat('dd MMMM yyyy').format(attendanceModel['date']?.toDate()!) ?? 'N/A'),
+                                          title: DateFormat('dd MMMM yyyy').format(attendanceModel['date']?.toDate()!)),
                                     ],
                                   ),
 
@@ -760,8 +753,7 @@ class AttendanceConfirccController extends GetxController {
                                           title: attendanceModel['room'] ?? 'N/A'),
                                     ],
                                   ),
-                                ],
-                              ),
+                                ],),
                             ),
                           ])
                         ]),

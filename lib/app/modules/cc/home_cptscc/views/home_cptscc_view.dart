@@ -1,20 +1,11 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:screenshot/screenshot.dart';
 import 'package:ts_one/app/modules/cc/home_cptscc/controllers/home_cptscc_controller.dart';
 import 'package:ts_one/util/empty_screen.dart';
 import '../../../../../presentation/theme.dart';
 import '../../../../../util/error_screen.dart';
 import '../../../../../util/loading_screen.dart';
 import '../../../../../util/util.dart';
-import 'package:csv/csv.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:open_file/open_file.dart';
-import 'dart:io';
-import 'package:excel/excel.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
 
@@ -62,8 +53,6 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
   Widget build(BuildContext context) {
     var fromC = TextEditingController();
     var toC = TextEditingController();
-
-    var nameC = TextEditingController();
 
     Future<bool> onWillPop() async {
       controller.resetDate();
@@ -542,20 +531,45 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                                               ),
                                             ),
                                           ),
-                                          SizedBox(height: 8),
+                                          SizedBox(height: 5),
                                           // Display counts for "CCP", "FIA", "FIS", "GI"
-                                          for (String category in [
-                                            "CCP",
-                                            "FIA",
-                                            "FIS",
-                                            "GI"
-                                          ])
-                                            Obx(() => Text(
-                                                '$category: ${controller.counts[category]}',
+                                            Obx(
+                                              () => Text(
+                                                'CCP : ${controller.counts["CCP"]}',
                                                 style: TextStyle(
                                                     fontSize: 10,
                                                     fontWeight:
-                                                        FontWeight.bold))),
+                                                        FontWeight.bold),
+                                              ),
+                                            ),
+                                          Obx(
+                                                () => Text(
+                                              'FIA   : ${controller.counts["FIA"]}',
+                                              style: TextStyle(
+                                                  fontSize: 10,
+                                                  fontWeight:
+                                                  FontWeight.bold),
+                                            ),
+                                          ),
+                                          Obx(
+                                                () => Text(
+                                              'FIS   : ${controller.counts["FIS"]}',
+                                              style: TextStyle(
+                                                  fontSize: 10,
+                                                  fontWeight:
+                                                  FontWeight.bold),
+                                            ),
+                                          ),
+                                          Obx(
+                                                () => Text(
+                                              'GI     : ${controller.counts["GI"]}',
+                                              style: TextStyle(
+                                                  fontSize: 10,
+                                                  fontWeight:
+                                                  FontWeight.bold),
+                                            ),
+                                          ),
+
                                         ],
                                       ),
                                     ),
@@ -591,16 +605,17 @@ class HomeCptsccView extends GetView<HomeCptsccController> {
                                               ),
                                             ),
                                           ),
-                                          SizedBox(height: 8),
+                                          SizedBox(height: 5),
+
                                           // Display counts for "CAPT" and "FO"
                                           Obx(() => Text(
-                                              'CAPT: ${controller.captCount.value}',
+                                              'CAPT : ${controller.captCount.value}',
                                               style: TextStyle(
                                                   fontSize: 10,
                                                   fontWeight:
                                                       FontWeight.bold))),
                                           Obx(() => Text(
-                                              'FO: ${controller.foCount.value}',
+                                              'FO       : ${controller.foCount.value}',
                                               style: TextStyle(
                                                   fontSize: 10,
                                                   fontWeight:
