@@ -175,7 +175,7 @@ class PilotcrewdetailccView extends GetView<PilotcrewdetailccController> {
                 children: [
                   Text("TRAINING", style: tsOneTextTheme.headlineLarge,),
                   Obx(() {
-                    return  controller.isReady.value && controller.isCPTS.value == false ?
+                    return  controller.isCPTS.value == false ?
                     InkWell(
                       onTap: () async {
                         try {
@@ -256,7 +256,6 @@ class PilotcrewdetailccView extends GetView<PilotcrewdetailccController> {
                     itemBuilder: (context, index) {
                       return InkWell(
                         onTap: () {
-                          print(controller.idTraining.value);
                           Get.toNamed(Routes.PILOTTRAININGHISTORYCC, arguments: {
                             "idTrainingType" : listTraining[index]["id"],
                             "idTraining" : controller.idTraining.value,
@@ -284,9 +283,9 @@ class PilotcrewdetailccView extends GetView<PilotcrewdetailccController> {
                               child: ClipRRect(
                                 borderRadius:
                                 BorderRadius.circular(100),
-                                child: StreamBuilder<String>(
+                                child: StreamBuilder<List<dynamic>>(
                                   stream: Get.find<ProfileccController>().cekValidationTraining(listTraining[index]['id'], controller.idTraining.value),
-                                  builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+                                  builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
                                     if (snapshot.connectionState == ConnectionState.waiting) {
                                       // Menampilkan sesuatu saat data sedang diambil
                                       return Text("Loading...");
@@ -294,10 +293,12 @@ class PilotcrewdetailccView extends GetView<PilotcrewdetailccController> {
                                       // Menampilkan pesan error jika terjadi kesalahan
                                       return Text("Error: ${snapshot.error}");
                                     } else {
-                                      // Menampilkan hasil dari Future ketika sudah tersedia
+                                      final List<dynamic> data = snapshot.data ?? [];
+                                      final String expiry = data[0]["expiry"] != null ? data[0]["expiry"] : "";
+
                                       return Image.asset(
-                                        snapshot.data == "VALID" ?
-                                        "assets/images/Green_check.png" : "assets/images/Red_check.png" ,
+                                        expiry == "VALID" ?
+                                        "assets/images/Green_check.png" : expiry == "WARNING" ?  "assets/images/Yellow_check.png" : expiry == "APPROACHING" ? "assets/images/Orange_check.png" : "assets/images/Red_check.png",
                                         fit: BoxFit.cover,
                                       );
                                     }
@@ -305,9 +306,9 @@ class PilotcrewdetailccView extends GetView<PilotcrewdetailccController> {
                                 ),),
                             ),
                             title: Text(listTraining[index]["training"], maxLines: 1, style: tsOneTextTheme.labelMedium,),
-                            subtitle: StreamBuilder<String>(
+                            subtitle: StreamBuilder<List<dynamic>>(
                               stream: Get.find<ProfileccController>().cekValidationTraining(listTraining[index]['id'], controller.idTraining.value),
-                              builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+                              builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
                                 if (snapshot.connectionState == ConnectionState.waiting) {
                                   // Menampilkan sesuatu saat data sedang diambil
                                   return Text("Loading...");
@@ -315,16 +316,34 @@ class PilotcrewdetailccView extends GetView<PilotcrewdetailccController> {
                                   // Menampilkan pesan error jika terjadi kesalahan
                                   return Text("Error: ${snapshot.error}");
                                 } else {
-                                  // Menampilkan hasil dari Future ketika sudah tersedia
+                                  final List<dynamic> data = snapshot.data ?? [];
+                                  final String expiry = data[0]["expiry"] != null ? data[0]["expiry"] : "EXPIRED";
                                   return Row(
                                     children: [
                                       Container(
+                                        margin: EdgeInsets.symmetric(vertical: 5),
                                         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 3),
                                         decoration: BoxDecoration(
                                           color: TsOneColor.secondaryContainer.withOpacity(0.2),
                                           borderRadius: BorderRadius.circular(10),
                                         ),
-                                        child: Text(snapshot.data ?? "NOT VALID", style: TextStyle(fontSize: 11)),
+                                        child: Text(expiry, style: TextStyle(fontSize: 11)),
+                                      ),
+                                      SizedBox(width: 10,),
+                                      Container(
+                                        margin: EdgeInsets.symmetric(vertical: 5),
+                                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+                                        decoration: BoxDecoration(
+                                          color: TsOneColor.secondaryContainer.withOpacity(data[0]["valid_to"] != null ? 0.2 : 0.0 ),
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        child: Text(
+                                          data[0]["valid_to"] != null
+                                              ? DateFormat('dd MMM yyyy').format(data[0]["valid_to"]?.toDate() ?? DateTime.now()).toString()
+                                              : "",
+                                          style: TextStyle(fontSize: 11),
+                                        ),
+
                                       )
                                     ],
                                   );

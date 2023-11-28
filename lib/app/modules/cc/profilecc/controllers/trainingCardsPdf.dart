@@ -19,96 +19,63 @@ Future<List<Map<String, dynamic>>?> getHistoryData(int idTrainee, String subject
   try {
     QuerySnapshot attendanceQuery = await firestore
         .collection('attendance')
-        .where("expiry", isEqualTo: "VALID")
         .where("status", isEqualTo: "done")
         .where("subject", isEqualTo: subject)
         .where("is_delete", isEqualTo: 0)
         .get();
 
-    if (attendanceQuery.docs.isNotEmpty) {
-      print(subject);
-      final attendanceDetailQuery = await firestore.collection(
-          'attendance-detail').where(
-          "idtraining", isEqualTo: idTrainee).where(
-          "status", isEqualTo: "donescoring").get();
-      final attendanceDetailData = attendanceDetailQuery.docs.map((doc) =>
-      doc.data() as Map<String, dynamic>).toList();
-      if (attendanceDetailData.isEmpty) {
-        return null; // Mengembalikan null jika data kosong
-      }
-
-      final attendanceData = await Future.wait(
-        attendanceQuery.docs.map((doc) async {
-          final attendanceModel = AttendanceModel.fromJson(
-              doc.data() as Map<String, dynamic>);
-          final matchingDetail = attendanceDetailData.where((
-              attendanceDetail) =>
-          attendanceDetail['idattendance'] == attendanceModel.id);
-
-          if (matchingDetail.isNotEmpty) {
-            return attendanceModel.toJson();
-          }
-
-          return null;
-        }),
-      );
-
-      List<Map<String, dynamic>> relevantData = [];
-      for (var attendanceModel in attendanceData) {
-        // final date = attendanceModel?['date'];
-        // Timestamp? timestamp = attendanceModel?['date'];
-        // DateTime? dateTime = timestamp?.toDate();
-        final validTo = attendanceModel?['valid_to'];
-        final dates = attendanceModel?['date'];
-        if (dates != null) {
-          print(dates);
-          print(validTo);
-          relevantData.add({
-            'date': dates,
-            'valid_to': validTo,
-          });
-        }
-      }
-
-      // Mengurutkan berdasarkan tanggal valid_to yang terkecil
-      relevantData.sort((a, b) =>
-          a['valid_to'].toDate().compareTo(b['valid_to'].toDate()));
-
-      // Tentukan panjang target list
-      int targetLength = longlist;
-
-      // Mengambil panjang sesuai yang lebih kecil
-      int finalLength = min(targetLength, relevantData.length);
-
-      final DateFormat dateFormat = DateFormat('dd-MM-yyyy');
-
-      // Membuat list dengan panjang sesuai target
-      List<Map<String, dynamic>> finalData = List.generate(targetLength, (index) {
-        if (index < finalLength) {
-          final DateTime validTo = relevantData[index]['valid_to'].toDate();
-          String formattedValidTo = dateFormat.format(validTo);
-
-          final DateTime dates = relevantData[index]['date'].toDate();
-          String formatteddates = dateFormat.format(dates);
-
-          Timestamp? timestamp = relevantData[index]['date'];
-          DateTime? dateTime = timestamp?.toDate();
-          return {
-            'date': formatteddates,
-            'valid_to': formattedValidTo,
-          };
-        } else {
-          return {'date': null, 'valid_to': null};
-        }
-      });
-
-      return finalData; // Mengembalikan finalData
+    if (attendanceQuery.docs.isEmpty) {
+      return List.generate(longlist, (index) => {'date': null, 'valid_to': null});
     }
+
+    final attendanceDetailQuery = await firestore.collection('attendance-detail')
+        .where("idtraining", isEqualTo: idTrainee)
+        .where("status", isEqualTo: "donescoring")
+        .get();
+
+    final attendanceDetailData = attendanceDetailQuery.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+
+    if (attendanceDetailData.isEmpty) {
+      return List.generate(longlist, (index) => {'date': null, 'valid_to': null});
+    }
+
+    final DateFormat dateFormat = DateFormat('dd-MM-yyyy');
+
+    List<Map<String, dynamic>> relevantData = attendanceQuery.docs.map((doc) {
+      final attendanceModel = AttendanceModel.fromJson(doc.data() as Map<String, dynamic>);
+      final matchingDetail = attendanceDetailData.where((attendanceDetail) =>
+      attendanceDetail['idattendance'] == attendanceModel.id);
+
+      if (matchingDetail.isNotEmpty) {
+        final DateTime? validTo = attendanceModel.valid_to?.toDate();
+        String formattedValidTo = dateFormat.format(validTo!);
+
+        final DateTime? dates = attendanceModel.date?.toDate();
+        String formatteddates = dateFormat.format(dates!);
+
+        return {'date': formatteddates, 'valid_to': formattedValidTo};
+      }
+
+      return {'date': null, 'valid_to': null};
+    }).toList();
+
+    relevantData.sort((a, b) => a['valid_to'].compareTo(b['valid_to']));
+
+    int finalLength = min(longlist, relevantData.length);
+
+    return List.generate(longlist, (index) {
+      if (index < finalLength) {
+        return relevantData[index];
+      } else {
+        return {'date': null, 'valid_to': null};
+      }
+    });
   } catch (error) {
     print('Error fetching attendance data: $error');
-    return null; // Mengembalikan null jika terjadi kesalahan
+    return null;
   }
 }
+
 
 Future<List<UserModel>?> getProfileData(int id) async {
   try {

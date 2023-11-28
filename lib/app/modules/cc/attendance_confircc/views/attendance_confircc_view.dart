@@ -17,6 +17,7 @@ import '../../../../../presentation/theme.dart';
 import '../../../../../util/error_screen.dart';
 import '../../../../../util/loading_screen.dart';
 import '../../../../routes/app_pages.dart';
+import '../controllers/attendanceListPdf.dart';
 import '../controllers/attendance_confircc_controller.dart';
 import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
 import 'dart:ui' as ui;
@@ -437,9 +438,14 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                                       //   print("pdfBytes is null or empty");
                                       //   // Handle the case where pdfBytes is null or empty
                                       // }
-                                      await controller.savePdfFile(
-                                          await controller
-                                              .attendancelist());
+                                      // await controller.savePdfFile(
+                                      //     await controller
+                                      //         .attendancelist());
+
+                                      String exportedPDFPath = await eksportAttendanceListPDF(controller.argumentid.value);
+                                      if (exportedPDFPath.isNotEmpty) {
+                                        await openExportedPDF(exportedPDFPath);
+                                      }
                                     } catch (e) {
                                       print('Error: $e');
                                     } finally {
