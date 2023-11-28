@@ -13,7 +13,6 @@ class PilotcrewdetailccController extends GetxController {
 
   RxInt idTraining = 0.obs;
 
-  RxBool isReady = false.obs;
   late UserPreferences userPreferences;
   RxBool isCPTS = false.obs;
 
@@ -21,7 +20,6 @@ class PilotcrewdetailccController extends GetxController {
   void onInit() {
     super.onInit();
     argumentid.value = Get.arguments["id"];
-    fetchAttendanceData(argumentid.value);
     cekRole();
   }
 
@@ -41,15 +39,6 @@ class PilotcrewdetailccController extends GetxController {
         .snapshots();
   }
 
-  Future<void> fetchAttendanceData(int idCrew) async {
-    try {
-      isReady.value = await Get.find<ProfileccController>().fetchAttendanceData(idCrew);
-    }catch (e) {
-      print("Error generating PDF: $e");
-      return ;
-
-    }
-  }
 
   Future<bool> cekRole() async {
     userPreferences = getItLocator<UserPreferences>();
