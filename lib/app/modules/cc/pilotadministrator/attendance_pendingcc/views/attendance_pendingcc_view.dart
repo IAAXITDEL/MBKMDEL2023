@@ -209,7 +209,7 @@ class AttendancePendingccView extends GetView<AttendancePendingccController> {
                               style: tsOneTextTheme.labelSmall,
                             ),
                             subtitle: Text(
-                              listAttendance[0]["name"],
+                              '${listAttendance[0]["name"]} (${listAttendance[0]["instructor"]})',
                               style: tsOneTextTheme.headlineMedium,
                             ),
                             trailing: Icon(Icons.navigate_next),
