@@ -604,20 +604,22 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                                     style: tsOneTextTheme.headlineMedium,
                                   ),
                                 ),
-                                SizedBox(height: 7,),
+                                SizedBox(
+                                  height: 7,
+                                ),
                                 Row(
                                   children: [
                                     Expanded(
                                         flex: 7,
                                         child: Text(
-                                          "Condition Category",
+                                          "Category",
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
                                         child: Text(
-                                          ":",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
                                     Expanded(
                                       flex: 7,
                                       child: Text(
@@ -638,9 +640,9 @@ class _ConfirmReturnOtherPilotViewState extends State<ConfirmReturnOtherPilotVie
                                         )),
                                     Expanded(
                                         child: Text(
-                                          ":",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
                                     Expanded(
                                       flex: 7,
                                       child: Text(

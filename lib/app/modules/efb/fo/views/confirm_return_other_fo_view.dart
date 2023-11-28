@@ -696,7 +696,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                         Expanded(
                                             flex: 7,
                                             child: Text(
-                                              "Condition Category",
+                                              "Category",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
                                         Expanded(
@@ -754,7 +754,7 @@ class _ConfirmReturnOtherFOViewState extends State<ConfirmReturnOtherFOView> {
                                         Expanded(
                                             flex: 7,
                                             child: Text(
-                                              "Condition Category",
+                                              "Category",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
                                         Expanded(
