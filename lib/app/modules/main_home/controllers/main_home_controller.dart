@@ -21,10 +21,6 @@ class MainHomeController extends GetxController {
   @override
   void onInit() {
     cekRoleAccess();
-    print(isTsOne.value);
-    print(isCC.value);
-    print(isEFB.value);
-    print("sdadsa");
     super.onInit();
     updateInvalidAttendances();
   }
@@ -61,15 +57,12 @@ class MainHomeController extends GetxController {
 
   Future<void> cekRoleAccess() async {
     userPreferences = getItLocator<UserPreferences>();
-
-    print("akses");
     // SEBAGAI CPTS
     if (userPreferences.getInstructor().contains(UserModel.keyCPTS) && userPreferences.getRank().contains(UserModel.keyPositionCaptain) ||
         userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)) {
       isTsOne.value = true;
       isCC.value = true;
       isEFB.value = true;
-      print("satu");
     }
     // SEBAGAI INSTRUCTOR
     else if (userPreferences.getInstructor().contains(UserModel.keySubPositionCCP) ||
@@ -80,7 +73,6 @@ class MainHomeController extends GetxController {
       isTsOne.value = true;
       isCC.value = true;
       isEFB.value = true;
-      print("dua");
     }
     // SEBAGAI PILOT
     else if (userPreferences.getRank().contains(UserModel.keyPositionCaptain) ||
@@ -95,7 +87,6 @@ class MainHomeController extends GetxController {
       isCC.value = true;
     } else if (userPreferences.getPrivileges().contains(UserModel.keyPrivilegeOCC)) {
       isEFB.value = true;
-      print("ada");
     }
     // SEBAGAI ALL STAR
     else {
@@ -141,7 +132,7 @@ class MainHomeController extends GetxController {
     final querySnapshot = await firestore
         .collection('attendance')
         .where("status", isEqualTo: "done")
-        .where("expiry", isEqualTo: "VALID")
+        .where("expiry", whereIn: ["VALID", "WARNING", "APPROACHING"])
         .where("is_delete", isEqualTo: 0)
         .get();
 
@@ -150,14 +141,22 @@ class MainHomeController extends GetxController {
       final subject = attendanceModel.subject;
       final validTo = attendanceModel.valid_to?.toDate();
 
-      if (!invalidSubjects.contains(subject) && (validTo != null && now.isAfter(validTo))) {
-        print("Attendance with ID ${attendanceModel.id} is invalid. Updating to NOT VALID.");
-
-        // Update status ke "NOT VALID"
-        await firestore.collection('attendance').doc(attendanceModel.id).update({
-          "expiry": "NOT VALID",
-        });
+      if (!invalidSubjects.contains(subject) && validTo != null) {
+        if (now.isAfter(validTo)) {
+          await firestore.collection('attendance').doc(attendanceModel.id).update({
+            "expiry": "EXPIRED",
+          });
+        } else if (now.isAfter(validTo.subtract(Duration(days: 30)))) {
+          await firestore.collection('attendance').doc(attendanceModel.id).update({
+            "expiry": "APPROACHING",
+          });
+        } else if (now.isAfter(validTo.subtract(Duration(days: 60)))) {
+          await firestore.collection('attendance').doc(attendanceModel.id).update({
+            "expiry": "WARNING",
+          });
+        }
       }
     }
   }
+
 }

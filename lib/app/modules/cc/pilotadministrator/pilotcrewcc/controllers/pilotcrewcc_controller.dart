@@ -34,8 +34,7 @@ class PilotcrewccController extends GetxController {
   Stream<List<Map<String, dynamic>>> pilotCrewStream(String name) {
     final query = FirebaseFirestore.instance
         .collection('users')
-        .where("RANK", whereIn: ["CAPT", "FO"])
-        .limit(50);
+        .where("RANK", whereIn: ["CAPT", "FO"]);
 
     if (name.isNotEmpty) {
       return query.snapshots().map((snapshot) {
