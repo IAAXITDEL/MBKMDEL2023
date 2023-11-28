@@ -25,6 +25,7 @@ class TrainingccController extends GetxController {
   RxBool iscpts = false.obs;
   final RxString passwordKey = "".obs;
   final RxBool isLoading = false.obs;
+
   // List untuk training remark
   Stream<QuerySnapshot<Map<String, dynamic>>> trainingRemarkStream() {
     return firestore
@@ -45,6 +46,13 @@ class TrainingccController extends GetxController {
   Future<bool> cekRole() async {
     userPreferences = getItLocator<UserPreferences>();
 
+    // SEBAGAI CPTS
+    if (userPreferences.getInstructor().contains(UserModel.keyCPTS) &&
+        (userPreferences.getRank().contains(UserModel.keyPositionCaptain) ||
+        userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer))) {
+      iscpts.value = true;
+      print("cek");
+    }
     // SEBAGAI PILOT
      if (userPreferences.getRank().contains(UserModel.keyPositionCaptain) ||
         userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)) {
@@ -85,10 +93,17 @@ class TrainingccController extends GetxController {
       isAdministrator.value = true;
       return true;
     }
+
+    if (userPreferences.getInstructor().contains(UserModel.keyCPTS) &&
+        (userPreferences.getRank().contains(UserModel.keyPositionCaptain) ||
+            userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer))) {
+      iscpts.value = true;
+    }
     // SEBAGAI ALL STAR
     else {
       return false;
     }
+    return false;
   }
 
   // Add a new subject to Firestore
@@ -279,6 +294,7 @@ class TrainingccController extends GetxController {
   void onInit() {
     super.onInit();
     cekAdministrator();
+
   }
 
   @override

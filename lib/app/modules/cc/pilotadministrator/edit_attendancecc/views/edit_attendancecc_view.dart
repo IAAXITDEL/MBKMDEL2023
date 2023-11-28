@@ -295,68 +295,67 @@ class EditAttendanceccView extends GetView<EditAttendanceccController> {
                       }),
 
                   //-------------------------INSTRUCTOR-----------------------
+                  StreamBuilder<QuerySnapshot>(
+                    stream: controller.instructorStream(),
+                    builder: (context, snapshot) {
+                      List<String> userNames = [];
+                      int selectedInstructorId = controller.instructor.value; // Default selected instructor ID
 
-              StreamBuilder<QuerySnapshot>(
-                stream: controller.instructorStream(),
-                builder: (context, snapshot) {
-                  List<String> userNames = [];
-                  int selectedInstructorId = controller.instructor.value; // Default selected instructor ID
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircularProgressIndicator();
+                      }
 
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator();
-                  }
+                      if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      }
 
-                  if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  }
+                      final users = snapshot.data?.docs.reversed.toList() ?? [];
 
-                  final users = snapshot.data?.docs.reversed.toList() ?? [];
+                      // Populate userNames with names from Firestore
+                      userNames.addAll(users.map((user) => '${user['NAME']} (${user['ID NO']})'));
 
-                  // Populate userNames with names from Firestore
-                  userNames.addAll(users.map((user) => user['NAME'] as String));
-
-                  // Find the selected user based on the ID
-                  final selectedUser = users.firstWhere(
-                        (user) => user['ID NO'] == selectedInstructorId,
-                  );
-
-                  String selectedInstructorName = selectedUser != null ? selectedUser['NAME'] as String : '';
-
-                  return DropdownSearch<String>(
-                    mode: Mode.MENU,
-                    showSelectedItems: true,
-                    dropdownSearchDecoration: InputDecoration(
-                      labelText: "Instructor",
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(5),
-                        ),
-                      ),
-                    ),
-                    showSearchBox: true,
-                    searchFieldProps: TextFieldProps(
-                      cursorColor: TsOneColor.primary,
-                    ),
-                    items: userNames,
-                    selectedItem: selectedInstructorName, // Set the selected item
-                    onChanged: (selectedName) {
-                      // Find the corresponding user based on the selected name
+                      // Find the selected user based on the ID
                       final selectedUser = users.firstWhere(
-                            (user) => user['NAME'] == selectedName,
+                            (user) => user['ID NO'] == selectedInstructorId,
                       );
 
-                      final selectedUserIdValue = selectedUser['ID NO'] as int;
-                      selectedInstructorId = selectedUserIdValue;
-                      controller.instructor.value = selectedInstructorId;
+                      String selectedInstructorName = selectedUser != null ? '${selectedUser['NAME']} (${selectedUser['ID NO']})' : '';
 
+                      return DropdownSearch<String>(
+                        mode: Mode.MENU,
+                        showSelectedItems: true,
+                        dropdownSearchDecoration: InputDecoration(
+                          labelText: "Instructor",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(5),
+                            ),
+                          ),
+                        ),
+                        showSearchBox: true,
+                        searchFieldProps: TextFieldProps(
+                          cursorColor: TsOneColor.primary,
+                        ),
+                        items: userNames,
+                        selectedItem: selectedInstructorName, // Set the selected item
+                        onChanged: (selectedName) {
+                          // Extract the ID from the selected string
+                          final selectedUserIdMatch = RegExp(r'\((\d+)\)').firstMatch(selectedName!);
 
-                      print('Selected name: $selectedName, Selected ID: $selectedInstructorId');
+                          if (selectedUserIdMatch != null) {
+                            final selectedUserIdValue = int.parse(selectedUserIdMatch.group(1)!);
+                            selectedInstructorId = selectedUserIdValue;
+                            controller.instructor.value = selectedInstructorId;
+                          }
+
+                          print('Selected name: $selectedName, Selected ID: $selectedInstructorId');
+                        },
+                      );
                     },
-                  );
-                },
-              ),
+                  ),
 
-              SizedBox(
+
+                  SizedBox(
                     height: 30,
                   ),
 
