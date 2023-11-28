@@ -944,6 +944,11 @@ class ConfirmReturnBackPilotView extends GetView {
                                               fontStyle: FontStyle.italic,
                                             ),
                                           ),
+                                          Text("Here you can explain the condition of the device you received",
+                                            style: TextStyle(
+                                              fontStyle: FontStyle.italic,
+                                            ),
+                                          ),
                                           const SizedBox(height: 7.0),
                                           Align(
                                             alignment: Alignment.centerLeft,

@@ -29,6 +29,16 @@ class ConfirmRequestPilotView extends GetView {
     });
   }
 
+  Future<void> _showQuickAlert2(BuildContext context) async {
+    await QuickAlert.show(
+      context: context,
+      type: QuickAlertType.success,
+      text: 'You have successfully reject the request',
+    ).then((value) {
+      Get.offAllNamed(Routes.NAVOCC);
+    });
+  }
+
   String getMonthText(int month) {
     const List<String> months = [
       'January',
@@ -256,6 +266,64 @@ class ConfirmRequestPilotView extends GetView {
       // Handle error sesuai kebutuhan
       return {};
     }
+  }
+
+  void confirmRejected(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirmation', style: tsOneTextTheme.headlineLarge),
+          content: const Text('Are you sure you want to reject the usage?'),
+          actions: <Widget>[
+            Row(
+              children: [
+                Expanded(
+                  flex: 5,
+                  child: TextButton(
+                    child: const Text('No', style: TextStyle(color: TsOneColor.secondaryContainer)),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ),
+                const Spacer(flex: 1),
+                Expanded(
+                  flex: 5,
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      backgroundColor: TsOneColor.greenColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                    ),
+                    child: const Text('Yes', style: TextStyle(color: TsOneColor.onPrimary)),
+                    onPressed: () async {
+                      User? user = _auth.currentUser;
+                      if (user != null) {
+                        QuerySnapshot userQuery = await _firestore.collection('users').where('EMAIL', isEqualTo: user.email).get();
+                        String userUid = userQuery.docs.first.id;
+
+                        DocumentReference pilotDeviceRef = FirebaseFirestore.instance.collection("pilot-device-1").doc(dataId);
+
+                        try {
+                          await pilotDeviceRef.delete(); // Delete the document
+                          print('Data deleted successfully!');
+                        } catch (error) {
+                          print('Error deleting data: $error');
+                        }
+                      }
+                      _showQuickAlert2(context);
+                    },
+
+                  ),
+                ),
+              ],
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -1080,27 +1148,49 @@ class ConfirmRequestPilotView extends GetView {
 
             final userData = snapshot.data!;
 
-            return ElevatedButton(
-              onPressed: () async {
-                if (userData['RANK'] == 'FO') {
-                  if (_formKey.currentState?.validate() ?? false) {
-                    confirmInUseCrewFO(context);
-                  }
-                } else if (userData['RANK'] == 'CAPT') {
-                  confirmInUseCrew(context);
-                }
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: TsOneColor.greenColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(4.0),
+            return Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      confirmRejected(context);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red, // Choose the color for the reject button
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4.0),
+                      ),
+                    ),
+                    child: const Text('Reject', style: TextStyle(color: Colors.white)),
+                  ),
                 ),
-              ),
-              child: const Text('Confirm', style: TextStyle(color: Colors.white)),
+                SizedBox(width: 8.0), // Adjust the spacing between buttons as needed
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      if (userData['RANK'] == 'FO') {
+                        if (_formKey.currentState?.validate() ?? false) {
+                          confirmInUseCrewFO(context);
+                        }
+                      } else if (userData['RANK'] == 'CAPT') {
+                        confirmInUseCrew(context);
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: TsOneColor.greenColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4.0),
+                      ),
+                    ),
+                    child: const Text('Confirm', style: TextStyle(color: Colors.white)),
+                  ),
+                ),
+              ],
             );
           },
         ),
       ),
+
     );
   }
 }

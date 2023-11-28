@@ -215,6 +215,7 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
       String deviceName3 = (device['device_name3'] ?? '-') == '-' ? '-' : device['device_name3'] ?? '-';
       String OccAccepted = (device['occ-accepted-device'] ?? '-') == '-' ? '-' : device['occ-accepted-device'] ?? '-';
       String HandoverToCrew = (device['handover-to-crew'] ?? '-') == '-' ? '-' : device['handover-to-crew'] ?? '-';
+      String initConditionCategory = (device['handover-to-crew'] ?? '-') == '-' ? '-' : device['handover-to-crew'] ?? '-';
 
       // sheet
       //     .cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: i + 1))
