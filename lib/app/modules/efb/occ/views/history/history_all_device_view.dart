@@ -6,6 +6,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
@@ -49,7 +51,7 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
       },
     );
 
-    // Delay execution for demonstration purposes (you can remove this in your actual code)
+    // Delay execution for demonstration purposes (you can remove this in your actual code).
     await Future.delayed(const Duration(seconds: 2));
 
     final CollectionReference deviceCollection = FirebaseFirestore.instance.collection('pilot-device-1');
@@ -175,36 +177,36 @@ class _HistoryAllDeviceViewState extends State<HistoryAllDeviceView> {
         // If device_uid is not '-', get the 'iosver'
         DocumentSnapshot deviceSnapshot = await devicesCollection.doc(device['device_uid']).get();
         Map<String, dynamic> deviceData = deviceSnapshot.data() as Map<String, dynamic>;
-        iosVersion = deviceData['iosver'] ?? '-';
-        flysmartVersion = deviceData['flysmart'] ?? '-';
-        docuVersion = deviceData['docuversion'] ?? '-';
-        lidoVersion = deviceData['lidoversion'] ?? '-';
-        hub = deviceData['hub'] ?? '-';
-        condition = deviceData['condition'] ?? '-';
+        iosVersion = deviceData['value']['iosver'] ?? '-';
+        flysmartVersion = deviceData['value']['flysmart'] ?? '-';
+        docuVersion = deviceData['value']['docuversion'] ?? '-';
+        lidoVersion = deviceData['value']['lidoversion'] ?? '-';
+        hub = deviceData['value']['hub'] ?? '-';
+        condition = deviceData['value']['condition'] ?? '-';
       }
 
       if (device['device_uid2'] != null && device['device_uid2'] != '-') {
         // If device_uid is not '-', get the 'iosver'
         DocumentSnapshot device2Snapshot = await devicesCollection.doc(device['device_uid2']).get();
         Map<String, dynamic> deviceData = device2Snapshot.data() as Map<String, dynamic>;
-        iosVersion2 = deviceData['iosver'] ?? '-';
-        flysmartVersion2 = deviceData['flysmart'] ?? '-';
-        docuVersion2 = deviceData['docuversion'] ?? '-';
-        lidoVersion2 = deviceData['lidoversion'] ?? '-';
-        hub2 = deviceData['hub'] ?? '-';
-        condition2 = deviceData['condition'] ?? '-';
+        iosVersion2 = deviceData['value']['iosver'] ?? '-';
+        flysmartVersion2 = deviceData['value']['flysmart'] ?? '-';
+        docuVersion2 = deviceData['value']['docuversion'] ?? '-';
+        lidoVersion2 = deviceData['value']['lidoversion'] ?? '-';
+        hub2 = deviceData['value']['hub'] ?? '-';
+        condition2 = deviceData['value']['condition'] ?? '-';
       }
 
       if (device['device_uid3'] != null && device['device_uid3'] != '-') {
         // If device_uid is not '-', get the 'iosver'
         DocumentSnapshot device3Snapshot = await devicesCollection.doc(device['device_uid3']).get();
         Map<String, dynamic> deviceData = device3Snapshot.data() as Map<String, dynamic>;
-        iosVersion3 = deviceData['iosver'] ?? '-';
-        flysmartVersion3 = deviceData['flysmart'] ?? '-';
-        docuVersion3 = deviceData['docuversion'] ?? '-';
-        lidoVersion3 = deviceData['lidoversion'] ?? '-';
-        hub3 = deviceData['hub'] ?? '-';
-        condition3 = deviceData['condition'] ?? '-';
+        iosVersion3 = deviceData['value']['iosver'] ?? '-';
+        flysmartVersion3 = deviceData['value']['flysmart'] ?? '-';
+        docuVersion3 = deviceData['value']['docuversion'] ?? '-';
+        lidoVersion3 = deviceData['value']['lidoversion'] ?? '-';
+        hub3 = deviceData['value']['hub'] ?? '-';
+        condition3 = deviceData['value']['condition'] ?? '-';
       }
 
       // Check if device_name is '-'
@@ -874,9 +876,17 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 250,
-      child: SingleChildScrollView(
+    return SingleChildScrollView(
+      child: Container(
+        width: Get.width,
+        padding: EdgeInsets.only(top: 20, right: 10, left: 10),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20.0),
+            topRight: Radius.circular(20.0),
+          ),
+          color: TsOneColor.secondary,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -987,59 +997,63 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
               padding: const EdgeInsets.all(16.0),
               child: Row(
                 children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      _applyFilters();
-                      Navigator.pop(context);
-                      print(startDate);
-                      print(endDate);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      elevation: 5.0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(4.0),
-                      ),
-                      primary: TsOneColor.primary,
-                      minimumSize: Size(
-                        MediaQuery.of(context).size.width / 2 - 24,
-                        48,
-                      ),
-                    ),
-                    child: const Padding(
-                      padding: EdgeInsets.all(15.0),
-                      child: Text(
-                        'Apply',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16.0,
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        _applyFilters();
+                        Navigator.pop(context);
+                        print(startDate);
+                        print(endDate);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        elevation: 5.0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4.0),
                         ),
-                        textAlign: TextAlign.center,
+                        primary: TsOneColor.primary,
+                        minimumSize: Size(
+                          MediaQuery.of(context).size.width / 2 - 24,
+                          48,
+                        ),
+                      ),
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 15),
+                        child: Text(
+                          'Apply',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16.0,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     ),
                   ),
                   const SizedBox(width: 16),
-                  ElevatedButton(
-                    onPressed: _resetFilters,
-                    style: ElevatedButton.styleFrom(
-                      elevation: 5.0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(4.0),
-                      ),
-                      primary: TsOneColor.primary,
-                      minimumSize: Size(
-                        MediaQuery.of(context).size.width / 2 - 24,
-                        48,
-                      ),
-                    ),
-                    child: const Padding(
-                      padding: EdgeInsets.all(15.0),
-                      child: Text(
-                        'Reset',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16.0,
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: _resetFilters,
+                      style: ElevatedButton.styleFrom(
+                        elevation: 5.0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4.0),
                         ),
-                        textAlign: TextAlign.center,
+                        primary: TsOneColor.primary,
+                        minimumSize: Size(
+                          MediaQuery.of(context).size.width / 2 - 24,
+                          48,
+                        ),
+                      ),
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 15),
+                        child: Text(
+                          'Reset',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16.0,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     ),
                   ),

@@ -393,7 +393,7 @@ class DetailInUsePilot extends GetView {
                                           Expanded(
                                               flex: 7,
                                               child: Text(
-                                                "Condition Category",
+                                                "Category",
                                                 style: tsOneTextTheme.bodySmall,
                                               )),
                                           Expanded(
@@ -584,7 +584,7 @@ class DetailInUsePilot extends GetView {
                                           Expanded(
                                               flex: 7,
                                               child: Text(
-                                                "Condition Category",
+                                                "Category",
                                                 style: tsOneTextTheme.bodySmall,
                                               )),
                                           Expanded(
@@ -853,7 +853,7 @@ class DetailInUsePilot extends GetView {
                               Expanded(
                                   flex: 7,
                                   child: Text(
-                                    "Condition Category",
+                                    "Category",
                                     style: tsOneTextTheme.bodySmall,
                                   )),
                               Expanded(

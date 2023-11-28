@@ -202,7 +202,7 @@ class _ConfirmSignatureReturnOtherPilotViewState extends State<ConfirmSignatureR
                           'prove_image_url': imageUrl,
                           'signature_url_other_crew': signatureUrl,
                           'return-condition-category': dropdownValue,
-                          'return-condition-remarks' : remarksAccepted,
+                          'return-condition-remarks': remarksAccepted,
                         });
                       });
 
@@ -227,7 +227,7 @@ class _ConfirmSignatureReturnOtherPilotViewState extends State<ConfirmSignatureR
                         'handover-from': '-',
                         'statusDevice': 'in-use-pilot',
                         'initial-condition-category': dropdownValue,
-                        'initial-condition-remarks':remarksAccepted,
+                        'initial-condition-remarks': remarksAccepted,
                         'timestamp': FieldValue.serverTimestamp(),
                         'remarks': '',
                         'prove_image_url': '',
@@ -392,15 +392,18 @@ class _ConfirmSignatureReturnOtherPilotViewState extends State<ConfirmSignatureR
                                     ],
                                   ),
                                 ),
-                                Text("Here you can explain the condition of the device you received",
+                                Text(
+                                  "Here you can explain the condition of the device you received",
                                   style: TextStyle(
                                     fontStyle: FontStyle.italic,
                                   ),
                                 ),
-                                SizedBox(height: 7,),
+                                SizedBox(
+                                  height: 7,
+                                ),
                                 Row(
                                   children: [
-                                    const Expanded(flex: 6, child: Text("Condition Category")),
+                                    const Expanded(flex: 6, child: Text("Category")),
                                     DropdownButton<String>(
                                       value: dropdownValue,
                                       onChanged: (String? newValue) {
@@ -408,8 +411,7 @@ class _ConfirmSignatureReturnOtherPilotViewState extends State<ConfirmSignatureR
                                           dropdownValue = newValue!;
                                         });
                                       },
-                                      items: <String>['Good', 'Good With Remarks', 'Unserviceable']
-                                          .map<DropdownMenuItem<String>>((String value) {
+                                      items: <String>['Good', 'Good With Remarks', 'Unserviceable'].map<DropdownMenuItem<String>>((String value) {
                                         return DropdownMenuItem<String>(
                                           value: value,
                                           child: Text(value),
@@ -460,7 +462,8 @@ class _ConfirmSignatureReturnOtherPilotViewState extends State<ConfirmSignatureR
                                   ),
                                 ),
                                 //Text('If something doesn' 't match, please inform us!'),
-                                Text("Here you can explain the damage of the device you received",
+                                Text(
+                                  "Here you can explain the damage of the device you received",
                                   style: TextStyle(
                                     fontStyle: FontStyle.italic,
                                   ),
@@ -578,7 +581,7 @@ class _ConfirmSignatureReturnOtherPilotViewState extends State<ConfirmSignatureR
                                 Stack(
                                   children: [
                                     Container(
-                                      height: 480,
+                                      height: 380,
                                       decoration: BoxDecoration(
                                         borderRadius: const BorderRadius.only(
                                           topLeft: Radius.circular(10.0),
@@ -747,9 +750,7 @@ Future<String> getHubFromDeviceName(String deviceId) async {
 
   try {
     // Fetch the document from the 'Device' collection based on document ID
-    DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance.collection('Device')
-        .doc(deviceId)
-        .get();
+    DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance.collection('Device').doc(deviceId).get();
 
     if (documentSnapshot.exists) {
       // Access the data map from the document
@@ -772,4 +773,3 @@ Future<String> getHubFromDeviceName(String deviceId) async {
 
   return hub;
 }
-

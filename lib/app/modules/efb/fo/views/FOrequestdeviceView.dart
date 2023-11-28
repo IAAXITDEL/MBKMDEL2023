@@ -367,7 +367,9 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 5.0,),
+                        SizedBox(
+                          height: 5.0,
+                        ),
                         Row(
                           children: [
                             const Expanded(flex: 7, child: Text("IOS Version")),
@@ -378,7 +380,9 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 5.0,),
+                        SizedBox(
+                          height: 5.0,
+                        ),
                         Row(
                           children: [
                             const Expanded(flex: 7, child: Text("FlySmart Version")),
@@ -389,7 +393,9 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 5.0,),
+                        SizedBox(
+                          height: 5.0,
+                        ),
                         Row(
                           children: [
                             const Expanded(flex: 7, child: Text("Docunet Version")),
@@ -400,7 +406,9 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 5.0,),
+                        SizedBox(
+                          height: 5.0,
+                        ),
                         Row(
                           children: [
                             const Expanded(flex: 7, child: Text("Lido mPilot Version")),
@@ -411,7 +419,9 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 5.0,),
+                        SizedBox(
+                          height: 5.0,
+                        ),
                         Row(
                           children: [
                             const Expanded(flex: 7, child: Text("Hub")),
@@ -432,13 +442,13 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                         //     ),
                         //   ],
                         // ),
-                        SizedBox(height: 10.0,),
+                        SizedBox(
+                          height: 10.0,
+                        ),
                         const RedTitleText(text: 'Device Condition'),
                         Text(
                           "Provide information on the condition of the device received",
-                          style: TextStyle(
-                            fontStyle: FontStyle.italic,
-                          ),
+                          style: tsOneTextTheme.labelSmall?.copyWith(fontStyle: FontStyle.italic) ?? TextStyle(fontStyle: FontStyle.italic),
                         ),
                         // Row(
                         //   children: [
@@ -454,7 +464,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                         const SizedBox(height: 15.0),
                         Row(
                           children: [
-                            const Expanded(flex: 6, child: Text("Condition Category")),
+                            const Expanded(flex: 6, child: Text("Category")),
                             DropdownButton<String>(
                               value: dropdownValue2,
                               onChanged: (String? newValue) {
@@ -462,8 +472,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                                   dropdownValue2 = newValue!;
                                 });
                               },
-                              items: <String>['Good', 'Good With Remarks', 'Unserviceable']
-                                  .map<DropdownMenuItem<String>>((String value) {
+                              items: <String>['Good', 'Good With Remarks', 'Unserviceable'].map<DropdownMenuItem<String>>((String value) {
                                 return DropdownMenuItem<String>(
                                   value: value,
                                   child: Text(value),
@@ -599,7 +608,9 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 5.0,),
+                        SizedBox(
+                          height: 5.0,
+                        ),
                         Row(
                           children: [
                             const Expanded(flex: 7, child: Text("IOS Version")),
@@ -610,7 +621,9 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 5.0,),
+                        SizedBox(
+                          height: 5.0,
+                        ),
                         Row(
                           children: [
                             const Expanded(flex: 7, child: Text("FlySmart Version")),
@@ -621,7 +634,9 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 5.0,),
+                        SizedBox(
+                          height: 5.0,
+                        ),
                         Row(
                           children: [
                             const Expanded(flex: 7, child: Text("Docunet Version")),
@@ -632,7 +647,9 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 5.0,),
+                        SizedBox(
+                          height: 5.0,
+                        ),
                         Row(
                           children: [
                             const Expanded(flex: 7, child: Text("Lido mPilot Version")),
@@ -643,7 +660,9 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 5.0,),
+                        SizedBox(
+                          height: 5.0,
+                        ),
                         Row(
                           children: [
                             const Expanded(flex: 7, child: Text("Hub")),
@@ -664,13 +683,13 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                         //     ),
                         //   ],
                         // ),
-                        SizedBox(height: 10.0,),
+                        SizedBox(
+                          height: 10.0,
+                        ),
                         const RedTitleText(text: 'Device Condition'),
                         Text(
                           "Provide information on the condition of the device received",
-                          style: TextStyle(
-                            fontStyle: FontStyle.italic,
-                          ),
+                          style: tsOneTextTheme.labelSmall?.copyWith(fontStyle: FontStyle.italic) ?? TextStyle(fontStyle: FontStyle.italic),
                         ),
                         // Row(
                         //   children: [
@@ -686,7 +705,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                         const SizedBox(height: 15.0),
                         Row(
                           children: [
-                            const Expanded(flex: 6, child: Text("Condition Category")),
+                            const Expanded(flex: 6, child: Text("Category")),
                             DropdownButton<String>(
                               value: dropdownValue3,
                               onChanged: (String? newValue) {
@@ -694,8 +713,7 @@ class _FOrequestdeviceView extends State<FOrequestdeviceView> {
                                   dropdownValue3 = newValue!;
                                 });
                               },
-                              items: <String>['Good', 'Good With Remarks', 'Unserviceable']
-                                  .map<DropdownMenuItem<String>>((String value) {
+                              items: <String>['Good', 'Good With Remarks', 'Unserviceable'].map<DropdownMenuItem<String>>((String value) {
                                 return DropdownMenuItem<String>(
                                   value: value,
                                   child: Text(value),

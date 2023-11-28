@@ -472,7 +472,7 @@ class _ConfirmSignatureReturnOtherFOViewState extends State<ConfirmSignatureRetu
                                     ),
                                     Row(
                                       children: [
-                                        const Expanded(flex: 6, child: Text("Condition Category")),
+                                        const Expanded(flex: 6, child: Text("Category")),
                                         DropdownButton<String>(
                                           value: dropdownValue2,
                                           onChanged: (String? newValue) {
@@ -521,7 +521,7 @@ class _ConfirmSignatureReturnOtherFOViewState extends State<ConfirmSignatureRetu
                                     ),
                                     Row(
                                       children: [
-                                        const Expanded(flex: 6, child: Text("Condition Category")),
+                                        const Expanded(flex: 6, child: Text("Category")),
                                         DropdownButton<String>(
                                           value: dropdownValue3,
                                           onChanged: (String? newValue) {

@@ -411,7 +411,7 @@ class FOUnRequestDeviceView extends GetView {
                                     Expanded(
                                         flex: 6,
                                         child: Text(
-                                          "Condition Category",
+                                          "Category",
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
@@ -434,14 +434,14 @@ class FOUnRequestDeviceView extends GetView {
                                     Expanded(
                                         flex: 6,
                                         child: Text(
-                                          "Condition Remark",//
+                                          "Condition Remark", //
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
                                         child: Text(
-                                          ":",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
                                     Expanded(
                                       flex: 6,
                                       child: Text(
@@ -600,7 +600,7 @@ class FOUnRequestDeviceView extends GetView {
                                     Expanded(
                                         flex: 6,
                                         child: Text(
-                                          "Condition Category",
+                                          "Category",
                                           style: tsOneTextTheme.bodySmall,
                                         )),
                                     Expanded(
@@ -628,9 +628,9 @@ class FOUnRequestDeviceView extends GetView {
                                         )),
                                     Expanded(
                                         child: Text(
-                                          ":",
-                                          style: tsOneTextTheme.bodySmall,
-                                        )),
+                                      ":",
+                                      style: tsOneTextTheme.bodySmall,
+                                    )),
                                     Expanded(
                                       flex: 6,
                                       child: Text(
