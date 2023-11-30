@@ -37,6 +37,8 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
     var trainingtypeC = TextEditingController();
     var roomC = TextEditingController();
 
+    var trainingC = TextEditingController();
+
     final GlobalKey<SfSignaturePadState> _signaturePadKey;
     _signaturePadKey = GlobalKey();
     void _clearSignature() {
@@ -565,7 +567,7 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
                                           } else {
                                             selectedUserId = 0;
                                           }
-                                          trainingC = selectedUserId;
+                                          trainingC = selectedUserId as TextEditingController;
                                           // Handle user selection here, including the selectedUserId
                                           print('Selected name: $selectedName, Selected ID: $selectedUserId');
                                         },
