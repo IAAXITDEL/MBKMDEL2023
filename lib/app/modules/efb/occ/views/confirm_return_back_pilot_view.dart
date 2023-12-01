@@ -944,7 +944,8 @@ class ConfirmReturnBackPilotView extends GetView {
                                               fontStyle: FontStyle.italic,
                                             ),
                                           ),
-                                          Text("Here you can explain the condition of the device you received",
+                                          Text(
+                                            "Here you can explain the condition of the device you received",
                                             style: TextStyle(
                                               fontStyle: FontStyle.italic,
                                             ),
@@ -1096,72 +1097,79 @@ class ConfirmReturnBackPilotView extends GetView {
                                           ),
                                           const SizedBox(height: 15.0),
 
-                                          ConstrainedBox(
-                                            constraints: const BoxConstraints(
-                                              minHeight: 40,
-                                              minWidth: 400,
-                                            ),
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                color: tsOneColorScheme.primary,
-                                                borderRadius: const BorderRadius.only(
-                                                  topLeft: Radius.circular(25.0),
-                                                  topRight: Radius.circular(25.0),
-                                                ),
+                                          Padding(
+                                            padding: EdgeInsets.symmetric(horizontal: 10),
+                                            child: ConstrainedBox(
+                                              constraints: const BoxConstraints(
+                                                minHeight: 40,
+                                                minWidth: 400,
                                               ),
-                                              child: Align(
-                                                alignment: Alignment.center,
-                                                child: Text("Draw", style: TextStyle(color: tsOneColorScheme.secondary, fontWeight: FontWeight.w600)),
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  color: tsOneColorScheme.primary,
+                                                  borderRadius: const BorderRadius.only(
+                                                    topLeft: Radius.circular(25.0),
+                                                    topRight: Radius.circular(25.0),
+                                                  ),
+                                                ),
+                                                child: Align(
+                                                  alignment: Alignment.center,
+                                                  child:
+                                                      Text("Draw", style: TextStyle(color: tsOneColorScheme.secondary, fontWeight: FontWeight.w600)),
+                                                ),
                                               ),
                                             ),
                                           ),
-                                          Stack(
-                                            children: [
-                                              Container(
-                                                height: 380,
-                                                decoration: BoxDecoration(
-                                                  borderRadius: const BorderRadius.only(
-                                                    topLeft: Radius.circular(10.0),
-                                                    topRight: Radius.circular(10.0),
-                                                    bottomLeft: Radius.circular(25.0),
-                                                    bottomRight: Radius.circular(25.0),
-                                                  ),
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      color: Colors.grey.withOpacity(0.5),
-                                                      blurRadius: 5,
-                                                      offset: const Offset(0, 2),
+                                          Padding(
+                                            padding: EdgeInsets.symmetric(horizontal: 10),
+                                            child: Stack(
+                                              children: [
+                                                Container(
+                                                  height: 300,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius: const BorderRadius.only(
+                                                      topLeft: Radius.circular(10.0),
+                                                      topRight: Radius.circular(10.0),
+                                                      bottomLeft: Radius.circular(25.0),
+                                                      bottomRight: Radius.circular(25.0),
                                                     ),
-                                                  ],
-                                                ),
-                                                child: SfSignaturePad(
-                                                  key: signatureKey,
-                                                  backgroundColor: Colors.white,
-                                                  onDrawEnd: () async {
-                                                    final signatureImageData = await signatureKey.currentState!.toImage();
-                                                    final byteData = await signatureImageData.toByteData(format: ImageByteFormat.png);
-                                                    // if (byteData != null) {
-                                                    //   setState(() {
-                                                    //     widget.signatureImage = byteData.buffer.asUint8List();
-                                                    //   });
-                                                    // }
-                                                  },
-                                                ),
-                                              ),
-                                              Container(
-                                                alignment: Alignment.topRight,
-                                                child: IconButton(
-                                                  icon: const Icon(
-                                                    Icons.delete_outline_outlined,
-                                                    size: 32,
-                                                    color: TsOneColor.primary,
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                        color: Colors.grey.withOpacity(0.5),
+                                                        blurRadius: 5,
+                                                        offset: const Offset(0, 2),
+                                                      ),
+                                                    ],
                                                   ),
-                                                  onPressed: () {
-                                                    signatureKey.currentState?.clear();
-                                                  },
+                                                  child: SfSignaturePad(
+                                                    key: signatureKey,
+                                                    backgroundColor: Colors.white,
+                                                    onDrawEnd: () async {
+                                                      final signatureImageData = await signatureKey.currentState!.toImage();
+                                                      final byteData = await signatureImageData.toByteData(format: ImageByteFormat.png);
+                                                      // if (byteData != null) {
+                                                      //   setState(() {
+                                                      //     widget.signatureImage = byteData.buffer.asUint8List();
+                                                      //   });
+                                                      // }
+                                                    },
+                                                  ),
                                                 ),
-                                              ),
-                                            ],
+                                                Container(
+                                                  alignment: Alignment.topRight,
+                                                  child: IconButton(
+                                                    icon: const Icon(
+                                                      Icons.delete_outline_outlined,
+                                                      size: 32,
+                                                      color: TsOneColor.primary,
+                                                    ),
+                                                    onPressed: () {
+                                                      signatureKey.currentState?.clear();
+                                                    },
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                           const SizedBox(
                                             height: 15,
@@ -1758,72 +1766,78 @@ class ConfirmReturnBackPilotView extends GetView {
                                 ),
                                 const SizedBox(height: 15.0),
 
-                                ConstrainedBox(
-                                  constraints: const BoxConstraints(
-                                    minHeight: 40,
-                                    minWidth: 400,
-                                  ),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: tsOneColorScheme.primary,
-                                      borderRadius: const BorderRadius.only(
-                                        topLeft: Radius.circular(25.0),
-                                        topRight: Radius.circular(25.0),
-                                      ),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 10),
+                                  child: ConstrainedBox(
+                                    constraints: const BoxConstraints(
+                                      minHeight: 40,
+                                      minWidth: 400,
                                     ),
-                                    child: Align(
-                                      alignment: Alignment.center,
-                                      child: Text("Draw", style: TextStyle(color: tsOneColorScheme.secondary, fontWeight: FontWeight.w600)),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: tsOneColorScheme.primary,
+                                        borderRadius: const BorderRadius.only(
+                                          topLeft: Radius.circular(25.0),
+                                          topRight: Radius.circular(25.0),
+                                        ),
+                                      ),
+                                      child: Align(
+                                        alignment: Alignment.center,
+                                        child: Text("Draw", style: TextStyle(color: tsOneColorScheme.secondary, fontWeight: FontWeight.w600)),
+                                      ),
                                     ),
                                   ),
                                 ),
-                                Stack(
-                                  children: [
-                                    Container(
-                                      height: 380,
-                                      decoration: BoxDecoration(
-                                        borderRadius: const BorderRadius.only(
-                                          topLeft: Radius.circular(10.0),
-                                          topRight: Radius.circular(10.0),
-                                          bottomLeft: Radius.circular(25.0),
-                                          bottomRight: Radius.circular(25.0),
-                                        ),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.grey.withOpacity(0.5),
-                                            blurRadius: 5,
-                                            offset: const Offset(0, 2),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 10),
+                                  child: Stack(
+                                    children: [
+                                      Container(
+                                        height: 300,
+                                        decoration: BoxDecoration(
+                                          borderRadius: const BorderRadius.only(
+                                            topLeft: Radius.circular(10.0),
+                                            topRight: Radius.circular(10.0),
+                                            bottomLeft: Radius.circular(25.0),
+                                            bottomRight: Radius.circular(25.0),
                                           ),
-                                        ],
-                                      ),
-                                      child: SfSignaturePad(
-                                        key: signatureKey,
-                                        backgroundColor: Colors.white,
-                                        onDrawEnd: () async {
-                                          final signatureImageData = await signatureKey.currentState!.toImage();
-                                          final byteData = await signatureImageData.toByteData(format: ImageByteFormat.png);
-                                          // if (byteData != null) {
-                                          //   setState(() {
-                                          //     widget.signatureImage = byteData.buffer.asUint8List();
-                                          //   });
-                                          // }
-                                        },
-                                      ),
-                                    ),
-                                    Container(
-                                      alignment: Alignment.topRight,
-                                      child: IconButton(
-                                        icon: const Icon(
-                                          Icons.delete_outline_outlined,
-                                          size: 32,
-                                          color: TsOneColor.primary,
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.grey.withOpacity(0.5),
+                                              blurRadius: 5,
+                                              offset: const Offset(0, 2),
+                                            ),
+                                          ],
                                         ),
-                                        onPressed: () {
-                                          signatureKey.currentState?.clear();
-                                        },
+                                        child: SfSignaturePad(
+                                          key: signatureKey,
+                                          backgroundColor: Colors.white,
+                                          onDrawEnd: () async {
+                                            final signatureImageData = await signatureKey.currentState!.toImage();
+                                            final byteData = await signatureImageData.toByteData(format: ImageByteFormat.png);
+                                            // if (byteData != null) {
+                                            //   setState(() {
+                                            //     widget.signatureImage = byteData.buffer.asUint8List();
+                                            //   });
+                                            // }
+                                          },
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                      Container(
+                                        alignment: Alignment.topRight,
+                                        child: IconButton(
+                                          icon: const Icon(
+                                            Icons.delete_outline_outlined,
+                                            size: 32,
+                                            color: TsOneColor.primary,
+                                          ),
+                                          onPressed: () {
+                                            signatureKey.currentState?.clear();
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                                 const SizedBox(
                                   height: 15,
