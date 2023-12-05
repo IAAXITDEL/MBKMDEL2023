@@ -12,6 +12,8 @@ import '../../../../../presentation/view_model/attendance_model.dart';
 import '../../../../../util/error_screen.dart';
 import '../../../../../util/loading_screen.dart';
 import '../../../../routes/app_pages.dart';
+import '../../attendance_confircc/controllers/trainingCardSheetsApi.dart';
+import '../../attendance_confircc/controllers/trainingCardsFields.dart';
 import '../../training/attendance_pilotcc/controllers/attendance_pilotcc_controller.dart';
 import '../../traininghistorycc_cpts/controllers/traininghistorycc_cpts_controller.dart';
 import '../controllers/trainingcc_controller.dart';
@@ -216,7 +218,7 @@ class TrainingccView extends GetView<TrainingccController> {
                         shadowColor: Colors.white,
                         elevation: 5,
                         child: InkWell(
-                          onTap: () {
+                          onTap: () async {
                             controller.argumentid.value = trainingData["id"];
                             controller.argumentname.value =
                                 trainingData["training"];

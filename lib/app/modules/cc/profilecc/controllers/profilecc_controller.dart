@@ -20,6 +20,8 @@ import '../../../../../presentation/view_model/user_viewmodel.dart';
 import '../../../../routes/app_pages.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../../attendance_confircc/controllers/trainingCardSheetsApi.dart';
+
 class ValidationResult {
   final String expiry;
   final Timestamp validTo;
@@ -51,9 +53,9 @@ class ProfileccController extends GetxController {
     idTrainee.value = userPreferences.getIDNo();
     cekRole();
     fetchAttendanceData(userPreferences.getIDNo());
-    // _loadPdf(userPreferences.getIDNo());
     super.onInit();
   }
+
 
   //Mendapatkan data pribadi
   Stream<QuerySnapshot<Map<String, dynamic>>> profileList() {
@@ -222,8 +224,6 @@ class ProfileccController extends GetxController {
           });
           return false;
         }else{
-          await getHistoryData(idCrew, "ALAR / CFIT", 5);
-
           await firestore.collection('users').doc(idCrew.toString()).update({
             "STATUS" : "VALID"
           });
