@@ -1,13 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../../../../data/assessments/assessment_results.dart';
 import '../../../../data/users/user_preferences.dart';
 import '../../../../data/users/users.dart';
 import '../../../../di/locator.dart';
-import '../../../../presentation/view_model/assessment_results_viewmodel.dart';
 import '../../../../presentation/view_model/attendance_model.dart';
 import '../../../routes/app_pages.dart';
 
@@ -57,6 +53,7 @@ class MainHomeController extends GetxController {
 
   Future<void> cekRoleAccess() async {
     userPreferences = getItLocator<UserPreferences>();
+
     // SEBAGAI CPTS
     if (userPreferences.getInstructor().contains(UserModel.keyCPTS) && userPreferences.getRank().contains(UserModel.keyPositionCaptain) ||
         userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)) {

@@ -14,6 +14,7 @@ import 'package:ts_one/presentation/view/splash_screen.dart';
 import 'package:ts_one/presentation/view_model/assessment_results_viewmodel.dart';
 import 'package:ts_one/presentation/view_model/assessment_viewmodel.dart';
 import 'package:ts_one/presentation/view_model/user_viewmodel.dart';
+import 'app/modules/cc/attendance_confircc/controllers/trainingCardSheetsApi.dart';
 import 'firebase_options.dart';
 import 'package:get/get.dart';
 import 'app/routes/app_pages.dart';
@@ -37,6 +38,8 @@ void main() async {
     );
     // wait for the preferences and other async dependencies to be ready before starting the app
     await getItLocator.allReady().then((value) => "All dependencies are ready");
+
+    await TrainingCardSheetsApi.init();
   } catch (e) {
     log("Something went wrong during initialization");
     log("This is the exception: $e");

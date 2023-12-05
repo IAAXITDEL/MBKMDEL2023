@@ -24,6 +24,7 @@ Future<List<Map<String, dynamic>>?> getHistoryData(int idTrainee, String subject
         .where("is_delete", isEqualTo: 0)
         .get();
 
+    print(subject);
     if (attendanceQuery.docs.isEmpty) {
       return List.generate(longlist, (index) => {'date': null, 'valid_to': null});
     }
@@ -48,18 +49,38 @@ Future<List<Map<String, dynamic>>?> getHistoryData(int idTrainee, String subject
 
       if (matchingDetail.isNotEmpty) {
         final DateTime? validTo = attendanceModel.valid_to?.toDate();
-        String formattedValidTo = dateFormat.format(validTo!);
-
         final DateTime? dates = attendanceModel.date?.toDate();
-        String formatteddates = dateFormat.format(dates!);
 
-        return {'date': formatteddates, 'valid_to': formattedValidTo};
+        if (validTo != null && dates != null) {
+          String formattedValidTo = dateFormat.format(validTo);
+          String formattedDates = dateFormat.format(dates);
+
+          return {'date': formattedDates, 'valid_to': formattedValidTo};
+        }
       }
 
       return {'date': null, 'valid_to': null};
     }).toList();
 
-    relevantData.sort((a, b) => a['valid_to'].compareTo(b['valid_to']));
+    relevantData.sort((a, b) {
+      final validToA = a['valid_to'] as String?;
+      final validToB = b['valid_to'] as String?;
+
+      if (validToA != null && validToB != null) {
+        return validToA.compareTo(validToB);
+      } else {
+        // Handle the case where either validToA or validToB is null
+        // You may want to customize this based on your requirements
+        if (validToA == null && validToB == null) {
+          return 0; // or handle it differently based on your needs
+        } else if (validToA == null) {
+          return 1; // or handle it differently based on your needs
+        } else {
+          return -1; // or handle it differently based on your needs
+        }
+      }
+    });
+
 
     int finalLength = min(longlist, relevantData.length);
 
@@ -101,27 +122,25 @@ Future<List<UserModel>?> getProfileData(int id) async {
 
 Future<String> eksportPDF(int idCrew) async {
   try {
-
     final List<Map<String, dynamic>>? historyDataBasicIndoc = await getHistoryData(idCrew, "BASIC INDOC", 1);
     final List<Map<String, dynamic>>? historyDataLSWB = await getHistoryData(idCrew, "LOAD SHEET / WEIGHT & BALANCE", 1);
     final List<Map<String, dynamic>>? historyDataRVSM = await getHistoryData(idCrew, "RVSM", 1);
     final List<Map<String, dynamic>>? historyDataWNDSHEAR = await getHistoryData(idCrew, "WNDSHEAR", 8);
-    final List<Map<String, dynamic>>? historyDataAlarCfit = await getHistoryData(idCrew, "ALAR/CFIT", 4);
+    final List<Map<String, dynamic>>? historyDataAlarCfit = await getHistoryData(idCrew, "PBN/ALAR/CFIT", 4);
     final List<Map<String, dynamic>>? historyDataSEP = await getHistoryData(idCrew, "SEP", 4);
-    final List<Map<String, dynamic>>? historyDataSEPDRILL = await getHistoryData(idCrew, "SEP DRILL", 2);
-    final List<Map<String, dynamic>>? historyDataDGR = await getHistoryData(idCrew, "DGR & AVSEC", 2);
+    final List<Map<String, dynamic>>? historyDataDRILL = await getHistoryData(idCrew, "DRILL", 2);
+    final List<Map<String, dynamic>>? historyDataDGR = await getHistoryData(idCrew, "DGR", 2);
     final List<Map<String, dynamic>>? historyDataSMS = await getHistoryData(idCrew, "SMS", 4);
     final List<Map<String, dynamic>>? historyDataCRM = await getHistoryData(idCrew, "CRM", 4);
-    final List<Map<String, dynamic>>? historyDataPBN = await getHistoryData(idCrew, "PBN", 2);
+    final List<Map<String, dynamic>>? historyDataRNP = await getHistoryData(idCrew, "RNP", 2);
     final List<Map<String, dynamic>>? historyDataRGT = await getHistoryData(idCrew, "RGT", 8);
     final List<Map<String, dynamic>>? historyDataRHS = await getHistoryData(idCrew, "RHS CHECK (SIM)", 8);
     final List<Map<String, dynamic>>? historyDataUPRT = await getHistoryData(idCrew, "UPRT", 2);
-    final List<Map<String, dynamic>>? historyDataRNP = await getHistoryData(idCrew, "RNP (GNSS)", 4);
+    final List<Map<String, dynamic>>? historyDataAVSEC = await getHistoryData(idCrew, "AVSEC", 4);
     final List<Map<String, dynamic>>? historyDataLINECHECK = await getHistoryData(idCrew, "LINE CHECK", 4);
     final List<Map<String, dynamic>>? historyDataLVO = await getHistoryData(idCrew, "LVO", 2);
     final List<Map<String, dynamic>>? historyDataETOPSSIM = await getHistoryData(idCrew, "ETOPS SIM", 2);
     final List<Map<String, dynamic>>? historyDataETOPSFLT = await getHistoryData(idCrew, "ETOPS FLT", 2);
-
 
     List<UserModel>? usersData = await getProfileData(idCrew);
 
@@ -181,8 +200,8 @@ Future<String> eksportPDF(int idCrew) async {
     double cellHeight = 10.3;
 
 
-    // --------------------RNP----------------
-    for (var item in historyDataRNP!) {
+    // --------------------AVSEC----------------
+    for (var item in historyDataAVSEC!) {
       x = 105; // Reset x to the beginning of the row
 
       page.graphics.drawString(
@@ -445,7 +464,7 @@ Future<String> eksportPDF(int idCrew) async {
     }
 
     // --------------------SEP DRILL----------------
-    for (var item in historyDataSEPDRILL!) {
+    for (var item in historyDataDRILL!) {
       x = 268;
       y = 336;
       page.graphics.drawString(
@@ -541,7 +560,7 @@ Future<String> eksportPDF(int idCrew) async {
     }
 
     // --------------------PBN----------------
-    for (var item in historyDataPBN!) {
+    for (var item in historyDataRNP!) {
       x = 268;
       y = 460;
       page.graphics.drawString(

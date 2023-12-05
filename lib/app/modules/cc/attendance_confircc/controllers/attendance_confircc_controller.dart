@@ -11,6 +11,8 @@ import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:ts_one/app/modules/cc/attendance_confircc/controllers/trainingCardSheetsApi.dart';
+import 'package:ts_one/app/modules/cc/attendance_confircc/controllers/trainingCardsFields.dart';
 
 import '../../../../../data/users/user_preferences.dart';
 import '../../../../../data/users/users.dart';
@@ -216,10 +218,13 @@ class AttendanceConfirccController extends GetxController {
         .get();
 
     var lastDayOfMonth;
+    var passed;
+    var validTo;
 
     if (querySnapshot.docs.isNotEmpty) {
       for (DocumentSnapshot document in querySnapshot.docs) {
         var dates = date.value;
+        passed = DateFormat('dd-MMM-yy').format(dates!);
 
 
         var recurrent = (document.data() as Map<String, dynamic>)['recurrent'];
@@ -250,6 +255,9 @@ class AttendanceConfirccController extends GetxController {
     } else {
       print('No documents found');
     }
+
+    validTo = DateFormat('dd-MMM-yy').format(lastDayOfMonth!);
+    await addTrainingCardsSheet(argumentid.value, passed, validTo);
 
     await attendance.doc(argumentid.value.toString()).update({
       "status": "done",
@@ -333,6 +341,75 @@ class AttendanceConfirccController extends GetxController {
         .delete()
         .then((value) => print("User Deleted"))
         .catchError((error) => print("Failed to delete user: $error"));
+  }
+
+
+  Future addTrainingCardsSheet(String idAttendance, String passed, String validTo) async {
+    final attendanceQuery = await _firestore
+        .collection('attendance-detail')
+        .where("idattendance", isEqualTo: argumentid.value)
+        .where("status", isEqualTo: "donescoring")
+        .get();
+
+    List<int?> traineeIds = attendanceQuery.docs.map((doc) => AttendanceDetailModel.fromJson(doc.data()).idtraining).toList();
+
+    if (traineeIds.isNotEmpty) {
+      for (int? traineeId in traineeIds) {
+        if (traineeId != null) {
+          final trainingCards = await TrainingCardSheetsApi.getById(traineeId);
+
+          if(trainingCards == null){
+            final traineeQuery = await _firestore
+                .collection('users')
+                .where("ID NO", isEqualTo: traineeId)
+                .get();
+
+            if (traineeQuery.docs.isNotEmpty) {
+              final attendanceModel = AttendanceDetailModel.fromJson(attendanceQuery.docs[0].data());
+
+              final user = traineeQuery.docs.firstWhere(
+                    (user) => user['ID NO'] == attendanceModel.idtraining,
+              );
+
+              if (user != null) {
+                attendanceModel.name = user['NAME'];
+                attendanceModel.hub = user['HUB'];
+                attendanceModel.email = user['EMAIL'];
+                attendanceModel.rank = user['RANK'];
+
+
+                final training = {
+                  TrainingCardsFields.id: attendanceModel.id,
+                  TrainingCardsFields.name: attendanceModel.name,
+                  TrainingCardsFields.rank: attendanceModel.rank,
+                  TrainingCardsFields.hub: attendanceModel.hub,
+                  TrainingCardsFields.nolicense: attendanceModel.license,
+                };
+
+                await TrainingCardSheetsApi.insert([training]);
+                print("Training card berhasil ditambahkan untuk ID: $traineeId");
+              } else {
+                print("Tidak ada data user yang cocok untuk ID: ${attendanceModel.idtraining}");
+              }
+            } else {
+              print("traineeQuery.docs kosong, tidak ada data trainee untuk ID: $traineeId");
+              // Lakukan sesuatu jika query tidak mengembalikan hasil apa pun
+            }
+
+          }
+
+          TrainingCardSheetsApi.updateCell(id: traineeId, key: 'LAST PASSED ${argumentname.value}', value: passed);
+          TrainingCardSheetsApi.updateCell(id: traineeId, key: 'EXPIRY ${argumentname.value}', value: validTo);
+        } else {
+          print("traineeId null, penanganan khusus jika diperlukan.");
+        }
+      }
+      // Lakukan sesuatu setelah loop selesai, jika diperlukan
+    } else {
+      print("traineeIds kosong, tidak ada data training untuk diproses.");
+      // Atau lakukan sesuatu yang sesuai dengan kasus ketika traineeIds kosong
+    }
+
   }
 
 

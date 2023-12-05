@@ -101,13 +101,9 @@ class HomeAdminccController extends GetxController {
 
           // Konversi Timestamp menjadi DateTime
           DateTime? dateTime = timestamp?.toDate();
-
-          print('DateTime: $dateTime');
-          print(attendanceModel.name);
           return attendanceModel.toJson();
         }),
       );
-      print(attendanceData);
 
       return attendanceData;
     });

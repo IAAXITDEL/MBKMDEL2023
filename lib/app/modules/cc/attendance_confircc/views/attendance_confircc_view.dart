@@ -59,11 +59,13 @@ class AttendanceConfirccView extends GetView<AttendanceConfirccController> {
           await controller.saveSignature(signatureData);
           controller.confirattendance().then((status) async {
             // Menampilkan QuickAlert setelah saveSignature berhasil
+
             await QuickAlert.show(
               context: context,
               type: QuickAlertType.success,
               text: 'Confirmation Attendance Completed Successfully!',
             );
+
 
             // Navigasi ke halaman lain setelah menampilkan QuickAlert
             Get.offAllNamed(Routes.TRAININGTYPECC, arguments: {
