@@ -19,6 +19,7 @@ class AttendanceModel {
   String? venue;
   String? creationTime;
   String? updatedTime;
+  String? remarks;
   String? name;
   String? photoURL;
   String? loano;
@@ -44,6 +45,7 @@ class AttendanceModel {
     this.venue,
     this.creationTime,
     this.updatedTime,
+    this.remarks,
     this.name,
     this.photoURL,
     this.loano,
@@ -71,6 +73,7 @@ class AttendanceModel {
         venue: json['venue'],
         creationTime: json['creationTime'],
         updatedTime: json['updatedTime'],
+        remarks: json['remarks'],
         name: json['name'],
         photoURL: json['photoURL'],
         loano: json['loano'],
@@ -99,6 +102,7 @@ class AttendanceModel {
     data['venue'] = this.venue;
     data['creationTime'] = this.creationTime;
     data['updatedTime'] =  this.updatedTime;
+    data['remarks'] = this.remarks;
     data['name'] = this.name;
     data['photoURL'] = this.photoURL;
     data['loano'] = this.loano;

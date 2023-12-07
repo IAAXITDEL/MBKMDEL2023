@@ -37,6 +37,8 @@ class AttendanceInstructorconfirccView
     var trainingtypeC = TextEditingController();
     var roomC = TextEditingController();
 
+    var remarksC = TextEditingController();
+
     final GlobalKey<SfSignaturePadState> _signaturePadKey;
     _signaturePadKey = GlobalKey();
     void _clearSignature() {
@@ -69,10 +71,10 @@ class AttendanceInstructorconfirccView
           .update({'signatureIccUrl': imageUrl});
     }
 
-    Future<void> confir( String loano) async {
+    Future<void> confir( String loano, String remarks) async {
       try {
         controller
-            .confirattendance( loano)
+            .confirattendance( loano, remarks)
             .then((status) async {
           // Menunggu hingga saveSignature selesai
           await saveSignature();
@@ -493,6 +495,29 @@ class AttendanceInstructorconfirccView
                           SizedBox(
                             height: 10,
                           ),
+                          Text("Remarks"),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Container(
+                            padding: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: tsOneColorScheme
+                                        .secondaryContainer),
+                                borderRadius:
+                                BorderRadius.circular(5)),
+                            child: TextFormField(
+                              controller: remarksC,
+                              maxLines: 4,
+                              keyboardType: TextInputType.multiline,
+                              decoration: InputDecoration.collapsed(
+                                  hintText: "Add remarks"),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
                           Text("Signature"),
                           SizedBox(height: 10,),
                           Container(
@@ -577,7 +602,7 @@ class AttendanceInstructorconfirccView
                                       context: context,
                                       builder: (BuildContext context) {
                                         return FutureBuilder<void>(
-                                          future: confir(loaNoC.text),
+                                          future: confir(loaNoC.text, remarksC.text),
                                           builder: (BuildContext context,
                                               AsyncSnapshot<void> snapshot) {
                                             if (snapshot.connectionState ==

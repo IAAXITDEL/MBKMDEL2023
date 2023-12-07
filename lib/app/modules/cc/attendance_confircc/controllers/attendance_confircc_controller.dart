@@ -349,6 +349,7 @@ class AttendanceConfirccController extends GetxController {
         .collection('attendance-detail')
         .where("idattendance", isEqualTo: argumentid.value)
         .where("status", isEqualTo: "donescoring")
+        .where("score", isEqualTo: "PASS")
         .get();
 
     List<int?> traineeIds = attendanceQuery.docs.map((doc) => AttendanceDetailModel.fromJson(doc.data()).idtraining).toList();

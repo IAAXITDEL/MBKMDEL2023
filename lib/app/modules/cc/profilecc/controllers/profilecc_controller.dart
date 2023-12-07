@@ -410,7 +410,7 @@ class ProfileccController extends GetxController {
       }
     } catch (error) {
       print('Error fetching attendance data: $error');
-      return null; // Mengembalikan null jika terjadi kesalahan
+      return null;
     }
   }
 

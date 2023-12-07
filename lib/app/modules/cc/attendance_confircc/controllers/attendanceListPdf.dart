@@ -184,7 +184,6 @@ Future<String> eksportAttendanceListPDF(String idAttendance) async {
     final List<Map<String, dynamic>?> administratorSt = await administratorList(idAttendance);
 
 
-
     final outputDirectory = await getTemporaryDirectory();
     // Load the existing PDF document.
     final ByteData data = await rootBundle.load('assets/documents/AttendanceList.pdf');
@@ -198,9 +197,44 @@ Future<String> eksportAttendanceListPDF(String idAttendance) async {
     double cellHeight = 14.5;
     double y = 133;
 
+
+
     for (var item in attendanceModels!) {
       x = 170;
       y = 133;
+
+
+      var meeting = "square";
+      var training = "square";
+
+      if(item['attendanceType'] == 'Training'){
+          training = "check";
+      }else if(item['attendanceType'] == 'Meeting'){
+          meeting = "check";
+      }
+
+      final ByteData datamtg = await rootBundle.load('assets/images/${meeting}.png');
+      final List<int> bytesmtg = datamtg.buffer.asUint8List();
+
+      PdfBitmap imagemeeting = PdfBitmap(Uint8List.fromList(bytesmtg));
+
+      page.graphics.drawImage(
+        imagemeeting,
+        Rect.fromLTWH(240, 117, 10, 10),
+      );
+
+
+      final ByteData datatrn = await rootBundle.load('assets/images/${training}.png');
+      final List<int> bytestrn = datatrn.buffer.asUint8List();
+
+      PdfBitmap imagetraining = PdfBitmap(Uint8List.fromList(bytestrn));
+
+      page.graphics.drawImage(
+        imagetraining,
+        Rect.fromLTWH(310, 117, 10, 10),
+      );
+
+
       page.graphics.drawString(
         item['subject'] ?? '',
         PdfStandardFont(PdfFontFamily.helvetica, 9),
@@ -379,10 +413,20 @@ Future<String> eksportAttendanceListPDF(String idAttendance) async {
       y += cellHeight;
     }
 
+    for (var item in attendanceModels!) {
+      x =  59;
+      y = 640;
 
+      page.graphics.drawString(
+        item['remarks'] ?? '',
+        PdfStandardFont(PdfFontFamily.helvetica,8),
+        brush: PdfSolidBrush(PdfColor(0, 0, 0)),
+        bounds: Rect.fromLTWH(x, y, 485, 35),
+      );
+    }
 
     y = 690;
-    //LIST OF TRAINER
+    //LIST OF ADMIN
     for (var item in administratorSt!) {
       x = 59;
 
