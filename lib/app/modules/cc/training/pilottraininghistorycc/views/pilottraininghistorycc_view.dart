@@ -44,7 +44,7 @@ class PilottraininghistoryccView
                 //--------------KELAS TRAINING-------------'
                 Row(
                   children: [
-                    Expanded(flex:4 , child: Container(
+                    Expanded(flex:3 , child: Container(
                       child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
                         stream: controller.trainingStream(),
                         builder: (context, snapshot) {
@@ -69,7 +69,7 @@ class PilottraininghistoryccView
                    Obx(() =>  Expanded(flex: 1, child: Container(
                      padding: EdgeInsets.symmetric(vertical: 3, horizontal: 10),
                      decoration: BoxDecoration(
-                       color: controller.expiryC.value == "" ? Colors.white : controller.expiryC.value == "VALID" ? Colors.green : Colors.red,
+                       color: controller.expiryC.value == "" ? Colors.white : controller.expiryC.value == "VALID" ? Colors.green : controller.expiryC.value == "WARNING" ? Colors.yellow : controller.expiryC.value == "APPROACHING" ? Colors.orange : Colors.red,
                        borderRadius: BorderRadius.circular(5),
                      ),
                      child: Center(

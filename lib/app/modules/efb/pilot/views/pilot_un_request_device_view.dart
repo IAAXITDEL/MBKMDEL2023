@@ -439,14 +439,14 @@ class PilotUnRequestDeviceView extends GetView {
                                 Expanded(
                                     flex: 7,
                                     child: Text(
-                                      "Condition Category",
+                                      "Category",
                                       style: tsOneTextTheme.bodySmall,
                                     )),
                                 Expanded(
                                     child: Text(
-                                      ":",
-                                      style: tsOneTextTheme.bodySmall,
-                                    )),
+                                  ":",
+                                  style: tsOneTextTheme.bodySmall,
+                                )),
                                 Expanded(
                                   flex: 7,
                                   child: Text(
@@ -467,9 +467,9 @@ class PilotUnRequestDeviceView extends GetView {
                                     )),
                                 Expanded(
                                     child: Text(
-                                      ":",
-                                      style: tsOneTextTheme.bodySmall,
-                                    )),
+                                  ":",
+                                  style: tsOneTextTheme.bodySmall,
+                                )),
                                 Expanded(
                                   flex: 7,
                                   child: Text(

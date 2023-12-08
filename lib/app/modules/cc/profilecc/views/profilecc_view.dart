@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 
@@ -343,74 +344,71 @@ class ProfileccView extends GetView<ProfileccController> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text("TRAINING", style: tsOneTextTheme.headlineLarge,),
-                           Obx(() {
-                             return  controller.isReady.value ?
-                             InkWell(
-                               onTap: () async {
-                                 try {
-                                   // Tampilkan LoadingScreen
-                                   showDialog(
-                                     context: context,
-                                     builder: (BuildContext context) {
-                                       return LoadingScreen();
-                                     },
-                                   );
+                            InkWell(
+                              onTap: () async {
+                                try {
+                                  // Tampilkan LoadingScreen
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return LoadingScreen();
+                                    },
+                                  );
 
-                                   // await controller.savePdfFile(
-                                   //     await controller
-                                   //         .getPDFTrainingCard(controller.idTrainee.value));
-                                   //
-                                   // if (controller.pdfBytes != null && controller.pdfBytes!.isNotEmpty) {
-                                   //   await controller.savePdfFile(controller.pdfBytes![0]);
-                                   // } else {
-                                   //   print("pdfBytes is null or empty");
-                                   //   // Handle the case where pdfBytes is null or empty
-                                   // }
+                                  // await controller.savePdfFile(
+                                  //     await controller
+                                  //         .getPDFTrainingCard(controller.idTrainee.value));
+                                  //
+                                  // if (controller.pdfBytes != null && controller.pdfBytes!.isNotEmpty) {
+                                  //   await controller.savePdfFile(controller.pdfBytes![0]);
+                                  // } else {
+                                  //   print("pdfBytes is null or empty");
+                                  //   // Handle the case where pdfBytes is null or empty
+                                  // }
 
-                                   String exportedPDFPath = await eksportPDF(controller.idTrainee.value);
-                                   if (exportedPDFPath.isNotEmpty) {
-                                     await openExportedPDF(exportedPDFPath);
-                                   }
+                                  String exportedPDFPath = await eksportPDF(controller.idTrainee.value);
+                                  if (exportedPDFPath.isNotEmpty) {
+                                    await openExportedPDF(exportedPDFPath);
+                                  }
 
-                                 } catch (e) {
-                                   print('Error: $e');
-                                 } finally {
+                                } catch (e) {
+                                  print('Error: $e');
+                                } finally {
 
-                                 }
-                               },
-                               child: Container(
-                                 padding: EdgeInsets.all(5),
-                                 decoration: BoxDecoration(
-                                   borderRadius:
-                                   BorderRadius.circular(10.0),
-                                   color: Colors.blue,
-                                   boxShadow: [
-                                     BoxShadow(
-                                       color: Colors.grey
-                                           .withOpacity(0.3),
-                                       spreadRadius: 2,
-                                       blurRadius: 3,
-                                       offset: const Offset(0, 2),
-                                     ),
-                                   ],
-                                 ),
-                                 child: Row(
-                                   children: [
-                                     Icon(
-                                       Icons.picture_as_pdf,
-                                       size: 16,
-                                       color: Colors.white,
-                                     ),
-                                     SizedBox(
-                                       width: 5,
-                                     ),
-                                     Text(
-                                       "Save PDF",
-                                       style: TextStyle(
-                                           color: Colors.white),
-                                     ),],),) ,
-                             ):  SizedBox();
-                           })
+                                }
+                              },
+                              child: Container(
+                                padding: EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                  borderRadius:
+                                  BorderRadius.circular(10.0),
+                                  color: Colors.blue,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey
+                                          .withOpacity(0.3),
+                                      spreadRadius: 2,
+                                      blurRadius: 3,
+                                      offset: const Offset(0, 2),
+                                    ),
+                                  ],
+                                ),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.picture_as_pdf,
+                                      size: 16,
+                                      color: Colors.white,
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(
+                                      "Save PDF",
+                                      style: TextStyle(
+                                          color: Colors.white),
+                                    ),],),) ,
+                            )
                           ],
                         ),
                         SizedBox(
@@ -468,9 +466,9 @@ class ProfileccView extends GetView<ProfileccController> {
                                         child: ClipRRect(
                                             borderRadius:
                                                 BorderRadius.circular(100),
-                                            child: StreamBuilder<String>(
+                                            child: StreamBuilder<List<dynamic>>(
                                               stream: controller.cekValidationTraining(listTraining[index]['id'], controller.idTrainee.value),
-                                              builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+                                              builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
                                                 if (snapshot.connectionState == ConnectionState.waiting) {
                                                   // Menampilkan sesuatu saat data sedang diambil
                                                   return Text("Loading...");
@@ -479,9 +477,11 @@ class ProfileccView extends GetView<ProfileccController> {
                                                   return Text("Error: ${snapshot.error}");
                                                 } else {
                                                   // Menampilkan hasil dari Future ketika sudah tersedia
+                                                  final List<dynamic> data = snapshot.data ?? [];
+                                                  final String expiry = data.isNotEmpty ? data[0]["expiry"] : "NOT VALID";
                                                   return Image.asset(
-                                                    snapshot.data == "VALID" ?
-                                                    "assets/images/Green_check.png" : "assets/images/Red_check.png" ,
+                                                    expiry == "VALID" ?
+                                                    "assets/images/Green_check.png" : expiry == "WARNING" ?  "assets/images/Yellow_check.png" : expiry == "APPROACHING" ? "assets/images/Orange_check.png" : "assets/images/Red_check.png",
                                                     fit: BoxFit.cover,
                                                   );
                                                 }
@@ -493,26 +493,38 @@ class ProfileccView extends GetView<ProfileccController> {
                                         maxLines: 1,
                                         style: tsOneTextTheme.labelMedium,
                                       ),
-                                        subtitle: StreamBuilder<String>(
+                                        subtitle: StreamBuilder<List<dynamic>>(
                                           stream: controller.cekValidationTraining(listTraining[index]['id'], controller.idTrainee.value),
-                                          builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+                                          builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
                                             if (snapshot.connectionState == ConnectionState.waiting) {
                                               // Menampilkan sesuatu saat data sedang diambil
                                               return Text("Loading...");
                                             } else if (snapshot.hasError) {
-                                              // Menampilkan pesan error jika terjadi kesalahan
                                               return Text("Error: ${snapshot.error}");
                                             } else {
-                                              // Menampilkan hasil dari Future ketika sudah tersedia
+                                              final List<dynamic> data = snapshot.data ?? [];
+                                              final String expiry = data.isNotEmpty ? data[0]["expiry"] : "";
+
                                               return Row(
                                                 children: [
                                                   Container(
+                                                    margin: EdgeInsets.symmetric(vertical: 5),
                                                     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 3),
                                                     decoration: BoxDecoration(
                                                       color: TsOneColor.secondaryContainer.withOpacity(0.2),
                                                       borderRadius: BorderRadius.circular(10),
                                                     ),
-                                                    child: Text(snapshot.data ?? "NOT VALID", style: TextStyle(fontSize: 11)),
+                                                    child: Text(expiry, style: TextStyle(fontSize: 11)),
+                                                  ),
+                                                  SizedBox(width: 10,),
+                                                  Container(
+                                                    margin: EdgeInsets.symmetric(vertical: 5),
+                                                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+                                                    decoration: BoxDecoration(
+                                                      color: TsOneColor.secondaryContainer.withOpacity( data[0]["valid_to"] != null ? 0.2 : 0.0),
+                                                      borderRadius: BorderRadius.circular(10),
+                                                    ),
+                                                    child: Text(  data[0]["valid_to"] != null ? DateFormat('dd MMM yyyy').format(data[0]["valid_to"].toDate()!).toString() : "", style: TextStyle(fontSize: 11)),
                                                   )
                                                 ],
                                               );

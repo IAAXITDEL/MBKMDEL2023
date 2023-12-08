@@ -102,7 +102,7 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
 
                     // Handle data from 'pilot-device-1' collection
                     final occOnDuty = pilotData['occ-on-duty'] as String? ?? 'N/A';
-                    final userUid = pilotData['user_uid'] as  String? ?? 'N/A'; //
+                    final userUid = pilotData['user_uid'] as String? ?? 'N/A'; //
                     final feedbackFOId = pilotData['feedbackId'];
                     print(feedbackFOId);
 
@@ -140,12 +140,12 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
 
                             final deviceData3 = deviceUid3Snapshot.data!.data() as Map<String, dynamic>;
 
-                    return FutureBuilder<DocumentSnapshot>(
-                      future: FirebaseFirestore.instance.collection("users").doc(userUid).get(),
-                      builder: (context, userSnapshot) {
-                        if (userSnapshot.connectionState == ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator());
-                        }
+                            return FutureBuilder<DocumentSnapshot>(
+                              future: FirebaseFirestore.instance.collection("users").doc(userUid).get(),
+                              builder: (context, userSnapshot) {
+                                if (userSnapshot.connectionState == ConnectionState.waiting) {
+                                  return Center(child: CircularProgressIndicator());
+                                }
 
                                 if (userSnapshot.hasError) {
                                   return Center(child: Text('Error: ${userSnapshot.error}'));
@@ -643,14 +643,14 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                                             Expanded(
                                                 flex: 7,
                                                 child: Text(
-                                                  "Condition Category",
+                                                  "Category",
                                                   style: tsOneTextTheme.bodySmall,
                                                 )),
                                             Expanded(
                                                 child: Text(
-                                                  ":",
-                                                  style: tsOneTextTheme.bodySmall,
-                                                )),
+                                              ":",
+                                              style: tsOneTextTheme.bodySmall,
+                                            )),
                                             Expanded(
                                               flex: 7,
                                               child: Text(
@@ -671,9 +671,9 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                                                 )),
                                             Expanded(
                                                 child: Text(
-                                                  ":",
-                                                  style: tsOneTextTheme.bodySmall,
-                                                )),
+                                              ":",
+                                              style: tsOneTextTheme.bodySmall,
+                                            )),
                                             Expanded(
                                               flex: 7,
                                               child: Text(
@@ -683,7 +683,9 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                                             ),
                                           ],
                                         ),
-                                        SizedBox(height: 10,),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
                                         Align(
                                           alignment: Alignment.centerLeft,
                                           child: Text("Device 3 Condition", style: tsOneTextTheme.displaySmall),
@@ -694,14 +696,14 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                                             Expanded(
                                                 flex: 7,
                                                 child: Text(
-                                                  "Condition Category",
+                                                  "Category",
                                                   style: tsOneTextTheme.bodySmall,
                                                 )),
                                             Expanded(
                                                 child: Text(
-                                                  ":",
-                                                  style: tsOneTextTheme.bodySmall,
-                                                )),
+                                              ":",
+                                              style: tsOneTextTheme.bodySmall,
+                                            )),
                                             Expanded(
                                               flex: 7,
                                               child: Text(
@@ -722,9 +724,9 @@ class _FOreturndeviceviewViewState extends State<FOreturndeviceviewView> {
                                                 )),
                                             Expanded(
                                                 child: Text(
-                                                  ":",
-                                                  style: tsOneTextTheme.bodySmall,
-                                                )),
+                                              ":",
+                                              style: tsOneTextTheme.bodySmall,
+                                            )),
                                             Expanded(
                                               flex: 7,
                                               child: Text(

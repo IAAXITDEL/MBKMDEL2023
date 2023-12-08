@@ -20,6 +20,13 @@ import '../../../../../presentation/view_model/user_viewmodel.dart';
 import '../../../../routes/app_pages.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+class ValidationResult {
+  final String expiry;
+  final Timestamp validTo;
+
+  ValidationResult(this.expiry, this.validTo);
+}
+
 class ProfileccController extends GetxController {
 
   late UserViewModel viewModel;
@@ -35,10 +42,8 @@ class ProfileccController extends GetxController {
   GoogleSignIn _googleSignIn = GoogleSignIn();
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  RxBool isReady = false.obs;
   final RxBool isLoading = false.obs;
 
-  List<pw.TableRow> alarcfitList = [];
 
   @override
   void onInit() {
@@ -48,17 +53,6 @@ class ProfileccController extends GetxController {
     fetchAttendanceData(userPreferences.getIDNo());
     // _loadPdf(userPreferences.getIDNo());
     super.onInit();
-  }
-
-  Future<void> _loadPdf(int idCrew) async {
-    try {
-      // Memproses PDF dan menyimpannya ke dalam variabel pdfBytes
-      List<int> pdfBytesList = await getPDFTrainingCard(idCrew);
-      pdfBytes?.assignAll([Uint8List.fromList(pdfBytesList)]);
-      print("sudah");
-    } catch (e) {
-      print('Error loading PDF: $e');
-    }
   }
 
   //Mendapatkan data pribadi
@@ -107,7 +101,6 @@ class ProfileccController extends GetxController {
       isTraining.value = true;
       isInstructor.value = true;
       instructorType.value = userPreferences.getInstructorString();
-      print(userPreferences.getInstructorString());
     }
     // SEBAGAI TRAINING
    if( userPreferences.getRank().contains(UserModel.keyPositionCaptain) || userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)){
@@ -140,12 +133,11 @@ class ProfileccController extends GetxController {
     try {
       QuerySnapshot attendanceQuery = await firestore
           .collection('attendance')
-          .where("expiry", isEqualTo: "VALID")
+          .where("expiry", whereIn: ["VALID", "WARNING", "APPROACHING"] )
           .where("status", isEqualTo: "done")
           .where("is_delete", isEqualTo: 0)
           .get();
 
-      print("test 1");
       if (attendanceQuery.docs.isNotEmpty) {
         final attendanceDetailQuery = await firestore.collection('attendance-detail').where("idtraining", isEqualTo: idCrew).where("status", isEqualTo: "donescoring").get();
         final attendanceDetailData = attendanceDetailQuery.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
@@ -182,9 +174,6 @@ class ProfileccController extends GetxController {
           }
         }
 
-
-        print("groupedAttendanceData");
-        print(groupedAttendanceData);
         // Sort the grouped attendance data by valid_to
         final sortedAttendanceData = groupedAttendanceData.values.toList()
           ..sort((a, b) {
@@ -196,8 +185,6 @@ class ProfileccController extends GetxController {
           });
 
 
-        print("sorted");
-        print(sortedAttendanceData);
         QuerySnapshot trainingQuery = await firestore
             .collection('trainingType')
             .where('is_delete', isEqualTo: 0)
@@ -208,8 +195,6 @@ class ProfileccController extends GetxController {
           return data != null ? data['training']?.toString() : null;
         }).toList();
 
-        print("trainingNames");
-        print(trainingNames);
         // Create a map with keys from trainingNames and values from sortedAttendanceData
         Map<String?, List<Map<String, dynamic>>> attendanceMap = {};
 
@@ -232,17 +217,12 @@ class ProfileccController extends GetxController {
         }
 
         if(trainingNames.length > attendanceMap.length){
-          print("NOT VALID");
-          isReady.value = false;
           await firestore.collection('users').doc(idCrew.toString()).update({
             "STATUS" : "NOT VALID"
           });
           return false;
         }else{
-          print("VALID");
-          isReady.value = true;
           await getHistoryData(idCrew, "ALAR / CFIT", 5);
-          print("test 2");
 
           await firestore.collection('users').doc(idCrew.toString()).update({
             "STATUS" : "VALID"
@@ -259,7 +239,8 @@ class ProfileccController extends GetxController {
     }
   }
 
-  Stream<String> cekValidationTraining(int idTrainingType, int idTrainee) {
+
+  Stream<List<dynamic>> cekValidationTraining(int idTrainingType, int idTrainee) {
     return firestore
         .collection('attendance')
         .where("idTrainingType", isEqualTo: idTrainingType)
@@ -268,7 +249,6 @@ class ProfileccController extends GetxController {
         .snapshots()
         .asyncMap((attendanceQuery) async {
       final attendanceDetailData = <Map<String, dynamic>>[];
-
       final usersData = <Map<String, dynamic>>[];
 
       if (attendanceQuery.docs.isNotEmpty) {
@@ -276,7 +256,6 @@ class ProfileccController extends GetxController {
             .map((doc) => AttendanceModel.fromJson(doc.data()).id)
             .toList();
 
-        print(attendanceIds);
         if (attendanceIds.isNotEmpty) {
           final attendanceDetailQuery = await firestore
               .collection('attendance-detail')
@@ -286,7 +265,6 @@ class ProfileccController extends GetxController {
               .get();
           attendanceDetailData
               .addAll(attendanceDetailQuery.docs.map((doc) => doc.data()));
-
         }
 
         if (attendanceDetailData.isNotEmpty) {
@@ -298,7 +276,6 @@ class ProfileccController extends GetxController {
         }
       }
 
-      // Filter attendanceQuery based on whether there is a corresponding attendanceDetail
       final filteredAttendanceQuery = attendanceQuery.docs.where((doc) {
         final attendanceModel = AttendanceModel.fromJson(doc.data());
         return attendanceDetailData.any((attendanceDetail) => attendanceDetail['idattendance'] == attendanceModel.id);
@@ -312,24 +289,23 @@ class ProfileccController extends GetxController {
           orElse: () => <String, dynamic>{}, // Return an empty map
         );
 
-        attendanceData.add(attendanceModel.toJson());
+        attendanceData.add({
+          "expiry": attendanceModel.toJson()["expiry"],
+          "valid_to": attendanceModel.toJson()["valid_to"],
+        });
       }
 
       // Sort attendanceData based on valid_to in descending order
       attendanceData.sort((a, b) {
-        Timestamp timestampA =
-        Timestamp.fromMillisecondsSinceEpoch(a['valid_to'].millisecondsSinceEpoch);
-        Timestamp timestampB =
-        Timestamp.fromMillisecondsSinceEpoch(b['valid_to'].millisecondsSinceEpoch);
+        Timestamp timestampA = Timestamp.fromMillisecondsSinceEpoch(a['valid_to'].millisecondsSinceEpoch);
+        Timestamp timestampB = Timestamp.fromMillisecondsSinceEpoch(b['valid_to'].millisecondsSinceEpoch);
         return timestampB.compareTo(timestampA);
       });
 
-      if (attendanceData.isNotEmpty) {
-        return attendanceData[0]["expiry"];
-      }
-      return "NOT VALID";
+      return attendanceData.isNotEmpty ? attendanceData : [{"expiry": "NOT VALID" , "valid_to": null}];
     });
   }
+
 
 
 
@@ -391,8 +367,6 @@ class ProfileccController extends GetxController {
           final validTo = attendanceModel?['valid_to'];
           final dates = attendanceModel?['date'];
           if (dates != null) {
-            print(dates);
-            print(validTo);
             relevantData.add({
               'date': dates,
               'valid_to': validTo,
@@ -454,8 +428,6 @@ class ProfileccController extends GetxController {
           return UserModel.fromFirebaseUser(doc.data() as Map<String, dynamic>);
         }).toList();
       }
-
-      print(usersData);
       return usersData;
     } catch (error) {
       print('Error getting profile data: $error');
@@ -3698,19 +3670,6 @@ class ProfileccController extends GetxController {
     }
   }
 
-  // Future<void> savePdfFile(Uint8List byteList) async {
-  //   isLoading.value = true;
-  //   userPreferences = getItLocator<UserPreferences>();
-  //   final output = await getTemporaryDirectory();
-  //   var filePath = "${output.path}/training-cards-${userPreferences.getIDNo()}.pdf";
-  //   final file = File(filePath);
-  //   print("step 1");
-  //   await file.writeAsBytes(byteList);
-  //   print("step 2");
-  //   await OpenFile.open(filePath);
-  //   print("stetep 3");
-  //   isLoading.value = false;
-  // }
 
   Future<void> savePdfFile(Uint8List byteList) async {
     userPreferences = getItLocator<UserPreferences>();

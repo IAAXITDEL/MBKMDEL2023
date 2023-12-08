@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 import 'package:ts_one/app/modules/efb/occ/views/history/detail_history_device_view.dart';
 
@@ -46,10 +48,7 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
       String userEmail = user.email ?? "";
 
       // Query the 'users' collection to find the document with the matching email
-      QuerySnapshot userSnapshot = await _firestore
-          .collection('users')
-          .where('EMAIL', isEqualTo: userEmail)
-          .get();
+      QuerySnapshot userSnapshot = await _firestore.collection('users').where('EMAIL', isEqualTo: userEmail).get();
 
       if (userSnapshot.docs.isNotEmpty) {
         // Get the user's document ID (user_id)
@@ -60,9 +59,7 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
             .collection('pilot-device-1')
             .where('user_uid', isEqualTo: userId)
             .where('statusDevice', whereIn: ['Done', 'handover-to-other-crew'])
-            .where('timestamp',
-                isGreaterThanOrEqualTo: _startDate,
-                isLessThanOrEqualTo: _endDate) // Add this line
+            .where('timestamp', isGreaterThanOrEqualTo: _startDate, isLessThanOrEqualTo: _endDate) // Add this line
             .get();
 
         return snapshot; // Return the QuerySnapshot directly.
@@ -70,8 +67,7 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
         throw Exception('User not found in the "users" collection');
       }
     } else {
-      throw Exception(
-          'User not logged in'); // You can handle this case as needed.
+      throw Exception('User not logged in'); // You can handle this case as needed.
     }
   }
 
@@ -147,12 +143,9 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
                   final filteredDocuments = documents.where((document) {
                     final data = document.data() as Map<String, dynamic>;
                     final userName = data['NAME'].toString().toLowerCase();
-                    final deviceName =
-                        data['device_name'].toString().toLowerCase();
-                    final deviceName2 =
-                        data['device_name2'].toString().toLowerCase();
-                    final deviceName3 =
-                        data['device_nam3'].toString().toLowerCase();
+                    final deviceName = data['device_name'].toString().toLowerCase();
+                    final deviceName2 = data['device_name2'].toString().toLowerCase();
+                    final deviceName3 = data['device_nam3'].toString().toLowerCase();
                     final searchTerm = _searchController.text.toLowerCase();
 
                     return userName.contains(searchTerm) ||
@@ -174,13 +167,9 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
                       return Padding(
                         padding: const EdgeInsets.only(top: 7),
                         child: FutureBuilder<DocumentSnapshot>(
-                          future: FirebaseFirestore.instance
-                              .collection('users')
-                              .doc(userUid)
-                              .get(),
+                          future: FirebaseFirestore.instance.collection('users').doc(userUid).get(),
                           builder: (context, userSnapshot) {
-                            if (userSnapshot.connectionState ==
-                                ConnectionState.waiting) {
+                            if (userSnapshot.connectionState == ConnectionState.waiting) {
                               return CircularProgressIndicator();
                             }
 
@@ -188,8 +177,7 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
                               return Text('Error: ${userSnapshot.error}');
                             }
 
-                            final userData = userSnapshot.data?.data()
-                                as Map<String, dynamic>?;
+                            final userData = userSnapshot.data?.data() as Map<String, dynamic>?;
 
                             if (userData == null) {
                               return Text('User data not found');
@@ -197,17 +185,12 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
 
                             final userName = userData['NAME'];
                             final userRank = userData['RANK'];
-                            final photoUrl = userData['PHOTOURL']
-                                as String?; // Get the profile photo URL
+                            final photoUrl = userData['PHOTOURL'] as String?; // Get the profile photo URL
 
                             return FutureBuilder<DocumentSnapshot>(
-                              future: FirebaseFirestore.instance
-                                  .collection('Device')
-                                  .doc(deviceUid)
-                                  .get(),
+                              future: FirebaseFirestore.instance.collection('Device').doc(deviceUid).get(),
                               builder: (context, deviceSnapshot) {
-                                if (deviceSnapshot.connectionState ==
-                                    ConnectionState.waiting) {
+                                if (deviceSnapshot.connectionState == ConnectionState.waiting) {
                                   return CircularProgressIndicator();
                                 }
 
@@ -215,174 +198,119 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
                                   return Text('Error: ${deviceSnapshot.error}');
                                 }
 
-                                final deviceData = deviceSnapshot.data?.data()
-                                    as Map<String, dynamic>?;
+                                final deviceData = deviceSnapshot.data?.data() as Map<String, dynamic>?;
 
-                                if (!deviceSnapshot.hasData ||
-                                    !deviceSnapshot.data!.exists) {
+                                if (!deviceSnapshot.hasData || !deviceSnapshot.data!.exists) {
                                   final deviceUid2 = data['device_uid2'];
                                   final deviceUid3 = data['device_uid3'];
 
                                   return FutureBuilder<DocumentSnapshot>(
-                                    future: FirebaseFirestore.instance
-                                        .collection('Device')
-                                        .doc(deviceUid2)
-                                        .get(),
+                                    future: FirebaseFirestore.instance.collection('Device').doc(deviceUid2).get(),
                                     builder: (context, deviceUid2Snapshot) {
-                                      if (deviceUid2Snapshot.connectionState ==
-                                          ConnectionState.waiting) {
+                                      if (deviceUid2Snapshot.connectionState == ConnectionState.waiting) {
                                         return CircularProgressIndicator();
                                       }
 
                                       if (deviceUid2Snapshot.hasError) {
-                                        return Text(
-                                            'Error: ${deviceUid2Snapshot.error}');
+                                        return Text('Error: ${deviceUid2Snapshot.error}');
                                       }
 
-                                      final deviceData2 =
-                                          deviceUid2Snapshot.data?.data()
-                                              as Map<String, dynamic>?;
+                                      final deviceData2 = deviceUid2Snapshot.data?.data() as Map<String, dynamic>?;
 
-                                      if (!deviceUid2Snapshot.hasData ||
-                                          !deviceUid2Snapshot.data!.exists) {
+                                      if (!deviceUid2Snapshot.hasData || !deviceUid2Snapshot.data!.exists) {
                                         return Text('Device Not Found');
                                       }
 
-                                      final deviceno2 =
-                                          deviceData2?['value']['deviceno'];
+                                      final deviceno2 = deviceData2?['value']['deviceno'];
 
                                       return FutureBuilder<DocumentSnapshot>(
-                                        future: FirebaseFirestore.instance
-                                            .collection('Device')
-                                            .doc(deviceUid3)
-                                            .get(),
+                                        future: FirebaseFirestore.instance.collection('Device').doc(deviceUid3).get(),
                                         builder: (context, deviceUid3Snapshot) {
-                                          if (deviceUid3Snapshot
-                                                  .connectionState ==
-                                              ConnectionState.waiting) {
+                                          if (deviceUid3Snapshot.connectionState == ConnectionState.waiting) {
                                             return CircularProgressIndicator();
                                           }
 
                                           if (deviceUid3Snapshot.hasError) {
-                                            return Text(
-                                                'Error: ${deviceUid3Snapshot.error}');
+                                            return Text('Error: ${deviceUid3Snapshot.error}');
                                           }
 
-                                          final deviceData3 =
-                                              deviceUid3Snapshot.data?.data()
-                                                  as Map<String, dynamic>?;
+                                          final deviceData3 = deviceUid3Snapshot.data?.data() as Map<String, dynamic>?;
 
-                                          if (!deviceUid2Snapshot.hasData ||
-                                              !deviceUid3Snapshot
-                                                  .data!.exists) {
+                                          if (!deviceUid2Snapshot.hasData || !deviceUid3Snapshot.data!.exists) {
                                             return Text('Device Not Found');
                                           }
 
-                                          final deviceno3 =
-                                              deviceData3?['value']['deviceno'];
+                                          final deviceno3 = deviceData3?['value']['deviceno'];
 
                                           return Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 10.0),
+                                            padding: const EdgeInsets.symmetric(horizontal: 10.0),
                                             child: SizedBox(
-                                              width: MediaQuery.of(context)
-                                                  .size
-                                                  .width,
+                                              width: MediaQuery.of(context).size.width,
                                               child: Align(
                                                 alignment: Alignment.centerLeft,
                                                 child: Card(
-                                                  color: tsOneColorScheme
-                                                      .secondary,
-                                                  surfaceTintColor:
-                                                      TsOneColor.surface,
+                                                  color: tsOneColorScheme.secondary,
+                                                  surfaceTintColor: TsOneColor.surface,
                                                   shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            15),
+                                                    borderRadius: BorderRadius.circular(15),
                                                   ),
-                                                  elevation:
-                                                      3, // You can adjust the elevation as needed
+                                                  elevation: 3, // You can adjust the elevation as needed
                                                   child: InkWell(
                                                     onTap: () {
-                                                      Navigator.of(context)
-                                                          .push(
+                                                      Navigator.of(context).push(
                                                         MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              DetailHistoryDeviceFOView(
+                                                          builder: (context) => DetailHistoryDeviceFOView(
                                                             dataId: dataId,
                                                             userName: userName,
-                                                            deviceno2:
-                                                                deviceno2,
-                                                            deviceno3:
-                                                                deviceno3,
+                                                            deviceno2: deviceno2,
+                                                            deviceno3: deviceno3,
                                                           ),
                                                         ),
                                                       );
                                                     },
                                                     child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              10.0),
+                                                      padding: const EdgeInsets.all(10.0),
                                                       child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .center,
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
                                                         children: [
                                                           SizedBox(width: 8.0),
                                                           CircleAvatar(
-                                                            backgroundImage: photoUrl !=
-                                                                    null
-                                                                ? NetworkImage(
-                                                                    photoUrl
-                                                                        as String)
-                                                                : AssetImage(
-                                                                        'assets/default_profile_image.png')
-                                                                    as ImageProvider,
+                                                            backgroundImage: photoUrl != null
+                                                                ? NetworkImage(photoUrl as String)
+                                                                : AssetImage('assets/default_profile_image.png') as ImageProvider,
                                                             radius: 25.0,
                                                           ),
                                                           SizedBox(width: 12.0),
                                                           Flexible(
                                                             child: Column(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
+                                                              crossAxisAlignment: CrossAxisAlignment.start,
                                                               children: [
                                                                 Container(
-                                                                  width: double
-                                                                      .infinity,
+                                                                  width: double.infinity,
                                                                   child: Text(
                                                                     '$userName',
-                                                                    style: tsOneTextTheme
-                                                                        .titleMedium,
+                                                                    style: tsOneTextTheme.titleMedium,
                                                                   ),
                                                                 ),
                                                                 Text(
                                                                   '$userRank',
-                                                                  style: tsOneTextTheme
-                                                                      .labelSmall,
+                                                                  style: tsOneTextTheme.labelSmall,
                                                                 ),
                                                                 Text(
-                                                                  '$deviceno2' +
-                                                                      ' & ' +
-                                                                      '$deviceno3',
-                                                                  style: tsOneTextTheme
-                                                                      .labelSmall,
+                                                                  '$deviceno2' + ' & ' + '$deviceno3',
+                                                                  style: tsOneTextTheme.labelSmall,
                                                                 ),
                                                                 Text(
                                                                   '${DateFormat('yyyy-MM-dd HH:mm a').format(timestamp.toDate())}',
-                                                                  style: tsOneTextTheme
-                                                                      .labelSmall,
+                                                                  style: tsOneTextTheme.labelSmall,
                                                                 ),
                                                               ],
                                                             ),
                                                           ),
                                                           const Icon(
                                                             Icons.chevron_right,
-                                                            color: TsOneColor
-                                                                .onSecondary,
+                                                            color: TsOneColor.onSecondary,
                                                             size: 30,
                                                           )
                                                         ],
@@ -402,8 +330,7 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
                                 final deviceno = deviceData?['value']['deviceno'];
 
                                 return Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10.0),
+                                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
                                   child: Card(
                                     color: tsOneColorScheme.secondary,
 
@@ -411,15 +338,12 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(15),
                                     ),
-                                    elevation:
-                                        3, // You can adjust the elevation as needed
+                                    elevation: 3, // You can adjust the elevation as needed
                                     child: InkWell(
                                       borderRadius: BorderRadius.circular(15.0),
                                       onTap: () {
-                                        Navigator.of(context)
-                                            .push(MaterialPageRoute(
-                                          builder: (context) =>
-                                              DetailHistoryDeviceView(
+                                        Navigator.of(context).push(MaterialPageRoute(
+                                          builder: (context) => DetailHistoryDeviceView(
                                             dataId: dataId,
                                             userName: userName,
                                             deviceno: deviceno,
@@ -427,47 +351,38 @@ class _HistoryEachCrewViewState extends State<HistoryEachCrewView> {
                                         ));
                                       },
                                       child: Padding(
-                                        padding: const EdgeInsets.all(
-                                            10.0), // Adjust padding as needed
+                                        padding: const EdgeInsets.all(10.0), // Adjust padding as needed
                                         child: Row(
                                           children: [
                                             CircleAvatar(
                                               backgroundImage: photoUrl != null
-                                                  ? NetworkImage(
-                                                      photoUrl as String)
-                                                  : AssetImage(
-                                                          'assets/default_profile_image.png')
-                                                      as ImageProvider,
+                                                  ? NetworkImage(photoUrl as String)
+                                                  : AssetImage('assets/default_profile_image.png') as ImageProvider,
                                               radius: 25.0,
                                             ),
                                             SizedBox(width: 12.0),
                                             Expanded(
                                               child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
                                                   Container(
                                                     width: double.infinity,
                                                     child: Text(
                                                       '$userName',
-                                                      style: tsOneTextTheme
-                                                          .titleMedium,
+                                                      style: tsOneTextTheme.titleMedium,
                                                     ),
                                                   ),
                                                   Text(
                                                     '$userRank',
-                                                    style: tsOneTextTheme
-                                                        .labelSmall,
+                                                    style: tsOneTextTheme.labelSmall,
                                                   ),
                                                   Text(
                                                     '$deviceno',
-                                                    style: tsOneTextTheme
-                                                        .labelSmall,
+                                                    style: tsOneTextTheme.labelSmall,
                                                   ),
                                                   Text(
                                                     '${DateFormat('yyyy-MM-dd HH:mm a').format(timestamp.toDate())}',
-                                                    style: tsOneTextTheme
-                                                        .labelSmall,
+                                                    style: tsOneTextTheme.labelSmall,
                                                   ),
                                                 ],
                                               ),
@@ -541,9 +456,17 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 250,
-      child: SingleChildScrollView(
+    return SingleChildScrollView(
+      child: Container(
+        width: Get.width,
+        padding: EdgeInsets.only(top: 20, right: 10, left: 10),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20.0),
+            topRight: Radius.circular(20.0),
+          ),
+          color: TsOneColor.secondary,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -595,31 +518,33 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
             ),
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: ElevatedButton(
-                onPressed: () {
-                  widget.onDateRangeSelected(startDate, endDate);
-                  Navigator.pop(context);
-                },
-                style: ElevatedButton.styleFrom(
-                  elevation: 5.0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4.0),
-                  ),
-                  primary: TsOneColor.primary,
-                  minimumSize: Size(
-                    MediaQuery.of(context).size.width,
-                    48,
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Text(
-                    'Apply',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16.0,
+              child: Expanded(
+                child: ElevatedButton(
+                  onPressed: () {
+                    widget.onDateRangeSelected(startDate, endDate);
+                    Navigator.pop(context);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    elevation: 5.0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(4.0),
                     ),
-                    textAlign: TextAlign.center,
+                    primary: TsOneColor.primary,
+                    minimumSize: Size(
+                      MediaQuery.of(context).size.width,
+                      48,
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Text(
+                      'Apply',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16.0,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                 ),
               ),

@@ -132,88 +132,88 @@ class _ConfirmPageFeedbackFOState extends State<ConfirmPageFeedbackFO> {
       text: 'You have successfully added a device',
     );
 
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) {
-          return FutureBuilder<DocumentSnapshot>(
-            future: FirebaseFirestore.instance.collection('feedback-device').doc(feedbackId).get(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return CircularProgressIndicator(); // Loading indicator or other loading UI
-              }
+    // Navigator.of(context).push(
+    //   MaterialPageRoute(
+    //     builder: (context) {
+    //       return FutureBuilder<DocumentSnapshot>(
+    //         future: FirebaseFirestore.instance.collection('feedback-device').doc(feedbackId).get(),
+    //         builder: (context, snapshot) {
+    //           if (snapshot.connectionState == ConnectionState.waiting) {
+    //             return CircularProgressIndicator(); // Loading indicator or other loading UI
+    //           }
 
-              if (snapshot.hasError) {
-                return Text('Error: ${snapshot.error}');
-              }
+    //           if (snapshot.hasError) {
+    //             return Text('Error: ${snapshot.error}');
+    //           }
 
-              var documentData = snapshot.data?.data() as Map<String, dynamic>?;
+    //           var documentData = snapshot.data?.data() as Map<String, dynamic>?;
 
-              if (documentData == null) {
-                return Text('Document not found'); // Handle case when document is not found
-              }
+    //           if (documentData == null) {
+    //             return Text('Document not found'); // Handle case when document is not found
+    //           }
 
-              final feedbackData = snapshot.data!.data() as Map<String, dynamic>;
-              final pilotDeviceId = feedbackData['handover-id'];
+    //           final feedbackData = snapshot.data!.data() as Map<String, dynamic>;
+    //           final pilotDeviceId = feedbackData['handover-id'];
 
-              return FutureBuilder<DocumentSnapshot>(
-                future: FirebaseFirestore.instance.collection('pilot-device-1').doc(pilotDeviceId).get(),
-                builder: (context, pilotDeviceSnapshot) {
-                  if (pilotDeviceSnapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
-                  }
+    //           return FutureBuilder<DocumentSnapshot>(
+    //             future: FirebaseFirestore.instance.collection('pilot-device-1').doc(pilotDeviceId).get(),
+    //             builder: (context, pilotDeviceSnapshot) {
+    //               if (pilotDeviceSnapshot.connectionState == ConnectionState.waiting) {
+    //                 return Center(child: CircularProgressIndicator());
+    //               }
 
-                  if (pilotDeviceSnapshot.hasError) {
-                    return Center(child: Text('Error: ${pilotDeviceSnapshot.error}'));
-                  }
+    //               if (pilotDeviceSnapshot.hasError) {
+    //                 return Center(child: Text('Error: ${pilotDeviceSnapshot.error}'));
+    //               }
 
-                  if (!pilotDeviceSnapshot.hasData || !pilotDeviceSnapshot.data!.exists) {
-                    return Center(child: Text('Pilot device data not found'));
-                  }
+    //               if (!pilotDeviceSnapshot.hasData || !pilotDeviceSnapshot.data!.exists) {
+    //                 return Center(child: Text('Pilot device data not found'));
+    //               }
 
-                  final pilotDeviceData = pilotDeviceSnapshot.data!.data() as Map<String, dynamic>;
-                  final deviceName = pilotDeviceData['device_name'] ?? '-';
-                  final deviceName2 = pilotDeviceData['device_name2'] ?? '-';
-                  final deviceName3 = pilotDeviceData['device_name3'] ?? '-';
-                  final deviceId = pilotDeviceData['deviceId'] ?? '-';
-                  final occOnDuty = pilotDeviceData['OccOnDuty'] ?? '-';
+    //               final pilotDeviceData = pilotDeviceSnapshot.data!.data() as Map<String, dynamic>;
+    //               final deviceName = pilotDeviceData['device_name'] ?? '-';
+    //               final deviceName2 = pilotDeviceData['device_name2'] ?? '-';
+    //               final deviceName3 = pilotDeviceData['device_name3'] ?? '-';
+    //               final deviceId = pilotDeviceData['deviceId'] ?? '-';
+    //               final occOnDuty = pilotDeviceData['OccOnDuty'] ?? '-';
 
-                  final userid = pilotDeviceData['user_uid'];
+    //               final userid = pilotDeviceData['user_uid'];
 
-                  return FutureBuilder<DocumentSnapshot>(
-                    future: FirebaseFirestore.instance.collection('users').doc(userid).get(),
-                    builder: (context, userDeviceSnapshot) {
-                      if (userDeviceSnapshot.connectionState == ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator());
-                      }
+    //               return FutureBuilder<DocumentSnapshot>(
+    //                 future: FirebaseFirestore.instance.collection('users').doc(userid).get(),
+    //                 builder: (context, userDeviceSnapshot) {
+    //                   if (userDeviceSnapshot.connectionState == ConnectionState.waiting) {
+    //                     return Center(child: CircularProgressIndicator());
+    //                   }
 
-                      if (userDeviceSnapshot.hasError) {
-                        return Center(child: Text('Error: ${userDeviceSnapshot.error}'));
-                      }
+    //                   if (userDeviceSnapshot.hasError) {
+    //                     return Center(child: Text('Error: ${userDeviceSnapshot.error}'));
+    //                   }
 
-                      if (!userDeviceSnapshot.hasData || !userDeviceSnapshot.data!.exists) {
-                        return Center(child: Text('User not found'));
-                      }
+    //                   if (!userDeviceSnapshot.hasData || !userDeviceSnapshot.data!.exists) {
+    //                     return Center(child: Text('User not found'));
+    //                   }
 
-                      final userData = userDeviceSnapshot.data?.data() as Map<String, dynamic> ?? {};
-                      final userRank = userData['RANK'] as String? ?? '-';
+    //                   final userData = userDeviceSnapshot.data?.data() as Map<String, dynamic> ?? {};
+    //                   final userRank = userData['RANK'] as String? ?? '-';
 
-                      return FOreturndeviceviewView(
-                        deviceName2: deviceName2,
-                        deviceName3: deviceName3,
-                        deviceId: deviceId,
-                        OccOnDuty: occOnDuty,
-                      );
-                    },
-                  );
-                },
-              );
-            },
-          );
-        },
-      ),
-    );
+    //                   return FOreturndeviceviewView(
+    //                     deviceName2: deviceName2,
+    //                     deviceName3: deviceName3,
+    //                     deviceId: deviceId,
+    //                     OccOnDuty: occOnDuty,
+    //                   );
+    //                 },
+    //               );
+    //             },
+    //           );
+    //         },
+    //       );
+    //     },
+    //   ),
+    // );
 
-    Get.offAllNamed(Routes.NAVOCC);
+    await Get.offAllNamed(Routes.NAVOCC);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: const Text("Successfully fill in the Feedback Form"),

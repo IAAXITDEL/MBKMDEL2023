@@ -547,14 +547,14 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                         Expanded(
                                             flex: 6,
                                             child: Text(
-                                              "Condition Category",
+                                              "Category",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
                                         Expanded(
                                             child: Text(
-                                              ":",
-                                              style: tsOneTextTheme.labelMedium,
-                                            )),
+                                          ":",
+                                          style: tsOneTextTheme.labelMedium,
+                                        )),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -575,9 +575,9 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                             )),
                                         Expanded(
                                             child: Text(
-                                              ":",
-                                              style: tsOneTextTheme.labelMedium,
-                                            )),
+                                          ":",
+                                          style: tsOneTextTheme.labelMedium,
+                                        )),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -712,14 +712,14 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                         Expanded(
                                             flex: 6,
                                             child: Text(
-                                              "Condition Category",
+                                              "Category",
                                               style: tsOneTextTheme.labelMedium,
                                             )),
                                         Expanded(
                                             child: Text(
-                                              ":",
-                                              style: tsOneTextTheme.labelMedium,
-                                            )),
+                                          ":",
+                                          style: tsOneTextTheme.labelMedium,
+                                        )),
                                         Expanded(
                                           flex: 6,
                                           child: Text(
@@ -740,9 +740,9 @@ class _FOUnReturnOtherCrewState extends State<FOUnReturnOtherCrew> {
                                             )),
                                         Expanded(
                                             child: Text(
-                                              ":",
-                                              style: tsOneTextTheme.labelMedium,
-                                            )),
+                                          ":",
+                                          style: tsOneTextTheme.labelMedium,
+                                        )),
                                         Expanded(
                                           flex: 6,
                                           child: Text(

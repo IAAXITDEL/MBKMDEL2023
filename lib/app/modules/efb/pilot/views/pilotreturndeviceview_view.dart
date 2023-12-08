@@ -89,8 +89,7 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                 builder: (context, snapshotList) {
                   if (snapshotList.connectionState == ConnectionState.waiting) {
                     return const CircularProgressIndicator();
-                  } else
-                  if (snapshotList.hasError) {
+                  } else if (snapshotList.hasError) {
                     return Center(
                       child: Text('Error: ${snapshotList.error.toString()}'),
                     );
@@ -315,9 +314,9 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                                           ),
                                         ],
                                       ),
-
                                     ],
-                                  ), const SizedBox(height: 15.0),
+                                  ),
+                                  const SizedBox(height: 15.0),
                                   const Padding(
                                     padding: EdgeInsets.only(bottom: 16.0),
                                     child: Row(
@@ -348,14 +347,14 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                                       Expanded(
                                           flex: 7,
                                           child: Text(
-                                            "Condition Category",
+                                            "Category",
                                             style: tsOneTextTheme.bodySmall,
                                           )),
                                       Expanded(
                                           child: Text(
-                                            ":",
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
+                                        ":",
+                                        style: tsOneTextTheme.bodySmall,
+                                      )),
                                       Expanded(
                                         flex: 7,
                                         child: Text(
@@ -376,9 +375,9 @@ class _PilotreturndeviceviewViewState extends State<PilotreturndeviceviewView> {
                                           )),
                                       Expanded(
                                           child: Text(
-                                            ":",
-                                            style: tsOneTextTheme.bodySmall,
-                                          )),
+                                        ":",
+                                        style: tsOneTextTheme.bodySmall,
+                                      )),
                                       Expanded(
                                         flex: 7,
                                         child: Text(

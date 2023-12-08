@@ -350,73 +350,79 @@ class _ReturnOtherFOViewState extends State<ReturnOtherFOView> {
                 height: 15,
               ),
               if (selectedUser != null)
-                ConstrainedBox(
-                  constraints: const BoxConstraints(
-                    minHeight: 40,
-                    minWidth: 400,
-                  ),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: tsOneColorScheme.primary,
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(25.0),
-                        topRight: Radius.circular(25.0),
-                      ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(
+                      minHeight: 40,
+                      minWidth: 400,
                     ),
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: Text("Draw", style: TextStyle(color: tsOneColorScheme.secondary, fontWeight: FontWeight.w600)),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: tsOneColorScheme.primary,
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(25.0),
+                          topRight: Radius.circular(25.0),
+                        ),
+                      ),
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text("Draw", style: TextStyle(color: tsOneColorScheme.secondary, fontWeight: FontWeight.w600)),
+                      ),
                     ),
                   ),
                 ),
               if (selectedUser != null)
-                Stack(
-                  children: [
-                    Container(
-                      height: 380,
-                      decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(10.0),
-                          topRight: Radius.circular(10.0),
-                          bottomLeft: Radius.circular(25.0),
-                          bottomRight: Radius.circular(25.0),
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            blurRadius: 5,
-                            offset: const Offset(0, 2),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: Stack(
+                    children: [
+                      Container(
+                        height: 300,
+                        decoration: BoxDecoration(
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(10.0),
+                            topRight: Radius.circular(10.0),
+                            bottomLeft: Radius.circular(25.0),
+                            bottomRight: Radius.circular(25.0),
                           ),
-                        ],
-                      ),
-                      child: SfSignaturePad(
-                        key: _signaturePadKey,
-                        backgroundColor: Colors.white,
-                        onDrawEnd: () async {
-                          final signatureImageData = await _signaturePadKey.currentState!.toImage();
-                          final byteData = await signatureImageData.toByteData(format: ImageByteFormat.png);
-                          if (byteData != null) {
-                            setState(() {
-                              signatureImage = byteData.buffer.asUint8List();
-                            });
-                          }
-                        },
-                      ),
-                    ),
-                    Container(
-                      alignment: Alignment.topRight,
-                      child: IconButton(
-                        icon: const Icon(
-                          Icons.delete_outline_outlined,
-                          size: 32,
-                          color: TsOneColor.primary,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              blurRadius: 5,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
                         ),
-                        onPressed: () {
-                          _signaturePadKey.currentState?.clear();
-                        },
+                        child: SfSignaturePad(
+                          key: _signaturePadKey,
+                          backgroundColor: Colors.white,
+                          onDrawEnd: () async {
+                            final signatureImageData = await _signaturePadKey.currentState!.toImage();
+                            final byteData = await signatureImageData.toByteData(format: ImageByteFormat.png);
+                            if (byteData != null) {
+                              setState(() {
+                                signatureImage = byteData.buffer.asUint8List();
+                              });
+                            }
+                          },
+                        ),
                       ),
-                    ),
-                  ],
+                      Container(
+                        alignment: Alignment.topRight,
+                        child: IconButton(
+                          icon: const Icon(
+                            Icons.delete_outline_outlined,
+                            size: 32,
+                            color: TsOneColor.primary,
+                          ),
+                          onPressed: () {
+                            _signaturePadKey.currentState?.clear();
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               const SizedBox(height: 10),
               if (selectedUser != null)

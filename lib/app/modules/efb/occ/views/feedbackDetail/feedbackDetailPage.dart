@@ -842,7 +842,7 @@ class FeedbackDetailPage extends StatelessWidget {
                                       child: Padding(
                                         padding: EdgeInsets.all(15),
                                         child: Text(
-                                          'Open Attachment Feedback',
+                                          'Open Feedback Form',
                                           style: TextStyle(color: Colors.white),
                                         ),
                                       ),

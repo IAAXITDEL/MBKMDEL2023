@@ -202,7 +202,7 @@ class _ConfirmSignatureReturnOtherPilotViewState extends State<ConfirmSignatureR
                           'prove_image_url': imageUrl,
                           'signature_url_other_crew': signatureUrl,
                           'return-condition-category': dropdownValue,
-                          'return-condition-remarks' : remarksAccepted,
+                          'return-condition-remarks': remarksAccepted,
                         });
                       });
 
@@ -227,7 +227,7 @@ class _ConfirmSignatureReturnOtherPilotViewState extends State<ConfirmSignatureR
                         'handover-from': '-',
                         'statusDevice': 'in-use-pilot',
                         'initial-condition-category': dropdownValue,
-                        'initial-condition-remarks':remarksAccepted,
+                        'initial-condition-remarks': remarksAccepted,
                         'timestamp': FieldValue.serverTimestamp(),
                         'remarks': '',
                         'prove_image_url': '',
@@ -392,15 +392,18 @@ class _ConfirmSignatureReturnOtherPilotViewState extends State<ConfirmSignatureR
                                     ],
                                   ),
                                 ),
-                                Text("Here you can explain the condition of the device you received",
+                                Text(
+                                  "Here you can explain the condition of the device you received",
                                   style: TextStyle(
                                     fontStyle: FontStyle.italic,
                                   ),
                                 ),
-                                SizedBox(height: 7,),
+                                SizedBox(
+                                  height: 7,
+                                ),
                                 Row(
                                   children: [
-                                    const Expanded(flex: 6, child: Text("Condition Category")),
+                                    const Expanded(flex: 6, child: Text("Category")),
                                     DropdownButton<String>(
                                       value: dropdownValue,
                                       onChanged: (String? newValue) {
@@ -408,8 +411,7 @@ class _ConfirmSignatureReturnOtherPilotViewState extends State<ConfirmSignatureR
                                           dropdownValue = newValue!;
                                         });
                                       },
-                                      items: <String>['Good', 'Good With Remarks', 'Unserviceable']
-                                          .map<DropdownMenuItem<String>>((String value) {
+                                      items: <String>['Good', 'Good With Remarks', 'Unserviceable'].map<DropdownMenuItem<String>>((String value) {
                                         return DropdownMenuItem<String>(
                                           value: value,
                                           child: Text(value),
@@ -460,7 +462,8 @@ class _ConfirmSignatureReturnOtherPilotViewState extends State<ConfirmSignatureR
                                   ),
                                 ),
                                 //Text('If something doesn' 't match, please inform us!'),
-                                Text("Here you can explain the damage of the device you received",
+                                Text(
+                                  "Here you can explain the damage of the device you received",
                                   style: TextStyle(
                                     fontStyle: FontStyle.italic,
                                   ),
@@ -556,72 +559,78 @@ class _ConfirmSignatureReturnOtherPilotViewState extends State<ConfirmSignatureR
                                   ),
                                 ),
                                 const SizedBox(height: 15.0),
-                                ConstrainedBox(
-                                  constraints: const BoxConstraints(
-                                    minHeight: 40,
-                                    minWidth: 400,
-                                  ),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: tsOneColorScheme.primary,
-                                      borderRadius: const BorderRadius.only(
-                                        topLeft: Radius.circular(25.0),
-                                        topRight: Radius.circular(25.0),
-                                      ),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 10),
+                                  child: ConstrainedBox(
+                                    constraints: const BoxConstraints(
+                                      minHeight: 40,
+                                      minWidth: 400,
                                     ),
-                                    child: Align(
-                                      alignment: Alignment.center,
-                                      child: Text("Draw", style: TextStyle(color: tsOneColorScheme.secondary, fontWeight: FontWeight.w600)),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: tsOneColorScheme.primary,
+                                        borderRadius: const BorderRadius.only(
+                                          topLeft: Radius.circular(25.0),
+                                          topRight: Radius.circular(25.0),
+                                        ),
+                                      ),
+                                      child: Align(
+                                        alignment: Alignment.center,
+                                        child: Text("Draw", style: TextStyle(color: tsOneColorScheme.secondary, fontWeight: FontWeight.w600)),
+                                      ),
                                     ),
                                   ),
                                 ),
-                                Stack(
-                                  children: [
-                                    Container(
-                                      height: 480,
-                                      decoration: BoxDecoration(
-                                        borderRadius: const BorderRadius.only(
-                                          topLeft: Radius.circular(10.0),
-                                          topRight: Radius.circular(10.0),
-                                          bottomLeft: Radius.circular(25.0),
-                                          bottomRight: Radius.circular(25.0),
-                                        ),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.grey.withOpacity(0.5),
-                                            blurRadius: 5,
-                                            offset: const Offset(0, 2),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 10),
+                                  child: Stack(
+                                    children: [
+                                      Container(
+                                        height: 300,
+                                        decoration: BoxDecoration(
+                                          borderRadius: const BorderRadius.only(
+                                            topLeft: Radius.circular(10.0),
+                                            topRight: Radius.circular(10.0),
+                                            bottomLeft: Radius.circular(25.0),
+                                            bottomRight: Radius.circular(25.0),
                                           ),
-                                        ],
-                                      ),
-                                      child: SfSignaturePad(
-                                        key: _signaturePadKey,
-                                        backgroundColor: Colors.white,
-                                        onDrawEnd: () async {
-                                          final signatureImageData = await _signaturePadKey.currentState!.toImage();
-                                          final byteData = await signatureImageData.toByteData(format: ImageByteFormat.png);
-                                          // if (byteData != null) {
-                                          //   setState(() {
-                                          //     widget.signatureImage = byteData.buffer.asUint8List();
-                                          //   });
-                                          // }
-                                        },
-                                      ),
-                                    ),
-                                    Container(
-                                      alignment: Alignment.topRight,
-                                      child: IconButton(
-                                        icon: const Icon(
-                                          Icons.delete_outline_outlined,
-                                          size: 32,
-                                          color: TsOneColor.primary,
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.grey.withOpacity(0.5),
+                                              blurRadius: 5,
+                                              offset: const Offset(0, 2),
+                                            ),
+                                          ],
                                         ),
-                                        onPressed: () {
-                                          _clearSignature();
-                                        },
+                                        child: SfSignaturePad(
+                                          key: _signaturePadKey,
+                                          backgroundColor: Colors.white,
+                                          onDrawEnd: () async {
+                                            final signatureImageData = await _signaturePadKey.currentState!.toImage();
+                                            final byteData = await signatureImageData.toByteData(format: ImageByteFormat.png);
+                                            // if (byteData != null) {
+                                            //   setState(() {
+                                            //     widget.signatureImage = byteData.buffer.asUint8List();
+                                            //   });
+                                            // }
+                                          },
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                      Container(
+                                        alignment: Alignment.topRight,
+                                        child: IconButton(
+                                          icon: const Icon(
+                                            Icons.delete_outline_outlined,
+                                            size: 32,
+                                            color: TsOneColor.primary,
+                                          ),
+                                          onPressed: () {
+                                            _clearSignature();
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                                 const SizedBox(
                                   height: 15,
@@ -747,9 +756,7 @@ Future<String> getHubFromDeviceName(String deviceId) async {
 
   try {
     // Fetch the document from the 'Device' collection based on document ID
-    DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance.collection('Device')
-        .doc(deviceId)
-        .get();
+    DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance.collection('Device').doc(deviceId).get();
 
     if (documentSnapshot.exists) {
       // Access the data map from the document
@@ -772,4 +779,3 @@ Future<String> getHubFromDeviceName(String deviceId) async {
 
   return hub;
 }
-
