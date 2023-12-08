@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 
 import '../../../../../../data/users/user_preferences.dart';
+import '../../../../../../data/users/users.dart';
 import '../../../../../../di/locator.dart';
 import '../../../../../../presentation/view_model/attendance_model.dart';
 
@@ -23,6 +24,35 @@ class TrainingInstructorccController extends GetxController {
   @override
   void onReady() {
     super.onReady();
+  }
+
+  Future<bool> cekRole() async {
+    userPreferences = getItLocator<UserPreferences>();
+
+    // SEBAGAI CPTS
+    if (userPreferences.getInstructor().contains(UserModel.keyCPTS) &&
+        userPreferences.getRank().contains(UserModel.keyPositionCaptain) ||
+        userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)) {
+      return true;
+    }
+    // SEBAGAI INSTRUCTOR
+    else if (userPreferences
+        .getInstructor()
+        .contains(UserModel.keySubPositionCCP) ||
+        userPreferences.getInstructor().contains(UserModel.keySubPositionFIA) ||
+        userPreferences.getInstructor().contains(UserModel.keySubPositionFIS) ||
+        userPreferences.getInstructor().contains(UserModel.keySubPositionPGI) &&
+            userPreferences.getRank().contains(UserModel.keyPositionCaptain) ||
+        userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)) {
+
+      return false;
+    }
+
+    // SEBAGAI ALL STAR
+    else {
+      return false;
+    }
+    return false;
   }
 
 

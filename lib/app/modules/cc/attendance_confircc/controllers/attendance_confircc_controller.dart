@@ -399,8 +399,8 @@ class AttendanceConfirccController extends GetxController {
 
           }
 
-          TrainingCardSheetsApi.updateCell(id: traineeId, key: 'LAST PASSED ${argumentname.value}', value: passed);
-          TrainingCardSheetsApi.updateCell(id: traineeId, key: 'EXPIRY ${argumentname.value}', value: validTo);
+          await TrainingCardSheetsApi.updateCell(id: traineeId, key: 'LAST PASSED ${argumentname.value}', value: passed);
+          await TrainingCardSheetsApi.updateCell(id: traineeId, key: 'EXPIRY ${argumentname.value}', value: validTo);
         } else {
           print("traineeId null, penanganan khusus jika diperlukan.");
         }

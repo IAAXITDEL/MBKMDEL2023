@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:ts_one/app/modules/pa/navcpts/views/navcpts_view.dart';
 
 import '../../../../../../presentation/shared_components/TitleText.dart';
 import '../../../../../../presentation/theme.dart';
@@ -43,8 +44,13 @@ class _TrainingInstructorccViewState extends State<TrainingInstructorccView>
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Get.to(()=>NavinstructorView(initialIndex: 1,));
+          onPressed: () async {
+            if(await controller.cekRole()){
+              Get.to(()=>NavcptsView(initialIndex: 2,));
+            }else{
+              Get.to(()=>NavinstructorView(initialIndex: 1,));
+            }
+
           },
         ),
         title: RedTitleText(text: "TRAINING",),

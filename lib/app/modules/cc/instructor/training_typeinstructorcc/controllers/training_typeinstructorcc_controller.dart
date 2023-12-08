@@ -40,13 +40,8 @@ class TrainingTypeinstructorccController extends GetxController {
   Future<bool> cekRole() async {
     userPreferences = getItLocator<UserPreferences>();
 
-    // SEBAGAI CPTS
-    if (userPreferences.getInstructor().contains(UserModel.keyCPTS) &&
-        userPreferences.getRank().contains(UserModel.keyPositionCaptain) ||
-        userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)) {
-    }
     // SEBAGAI INSTRUCTOR
-    else if (userPreferences
+    if (userPreferences
         .getInstructor()
         .contains(UserModel.keySubPositionCCP) ||
         userPreferences.getInstructor().contains(UserModel.keySubPositionFIA) ||

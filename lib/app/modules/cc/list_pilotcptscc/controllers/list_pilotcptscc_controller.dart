@@ -42,8 +42,7 @@ class ListPilotcptsccController extends GetxController {
   Stream<List<Map<String, dynamic>>> getFilteredStream() {
     var query = FirebaseFirestore.instance
         .collection('users')
-        .where("RANK", whereIn: ["CAPT", "FO"])
-        .limit(50);
+        .where("RANK", whereIn: ["CAPT", "FO"]);
 
     if (filterType == FilterType.instructor) {
       query = query

@@ -137,6 +137,7 @@ class PilottraininghistorydetailccController extends GetxController {
         userPreferences.getInstructor().contains(UserModel.keySubPositionPGI) &&
             userPreferences.getRank().contains(UserModel.keyPositionCaptain) ||
         userPreferences.getRank().contains(UserModel.keyPositionFirstOfficer)) {
+      isTrainee.value = true;
     }
     // SEBAGAI PILOT
     else if (userPreferences.getRank().contains(UserModel.keyPositionCaptain) ||

@@ -96,7 +96,7 @@ class PilotcrewdetailccView extends GetView<PilotcrewdetailccController> {
                                     ),
 
                                     child : Text(
-                                      documentData["STATUS"],
+                                      documentData["STATUS"] ?? 'NOT VALID',
                                       textAlign: TextAlign.center,
                                       style: TextStyle(color: Colors.white),
 
