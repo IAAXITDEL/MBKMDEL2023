@@ -416,7 +416,9 @@ class DetailHistoryDeviceFOView extends GetView {
                                                     //     ),
                                                     //   ],
                                                     // ),
-                                                    SizedBox(height: 15.0,),
+                                                    SizedBox(
+                                                      height: 15.0,
+                                                    ),
                                                     //device info
                                                     Text("Device 2 Condition", style: tsOneTextTheme.headlineMedium),
                                                     SizedBox(height: 7.0),
@@ -549,7 +551,9 @@ class DetailHistoryDeviceFOView extends GetView {
                                                         ),
                                                       ],
                                                     ),
-                                                    SizedBox(height: 15.0,),
+                                                    SizedBox(
+                                                      height: 15.0,
+                                                    ),
                                                     // Row(
                                                     //   children: [
                                                     //     Expanded(flex: 6, child: Text("Condition")),
@@ -636,7 +640,6 @@ class DetailHistoryDeviceFOView extends GetView {
                                                       ),
                                                     ),
 
-
                                                     if (status == 'Done') Text("OCC On Duty", style: tsOneTextTheme.headlineMedium),
                                                     if (status == 'Done') SizedBox(height: 7.0),
                                                     if (status == 'Done')
@@ -703,7 +706,10 @@ class DetailHistoryDeviceFOView extends GetView {
                                                           ),
                                                         ],
                                                       ),
-                                                    if (status == 'handover-to-other-crew')SizedBox(height: 10,),
+                                                    if (status == 'handover-to-other-crew')
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
                                                     if (status == 'handover-to-other-crew')
                                                       Text("Return Documentation", style: tsOneTextTheme.headlineMedium),
                                                     if (status == 'handover-to-other-crew')
@@ -908,8 +914,6 @@ class DetailHistoryDeviceFOView extends GetView {
                                                       ],
                                                     ),
 
-
-
                                                     SizedBox(height: 15.0),
                                                     Row(
                                                       children: [
@@ -982,7 +986,7 @@ class DetailHistoryDeviceFOView extends GetView {
                                                             child: Padding(
                                                               padding: EdgeInsets.all(15),
                                                               child: Text(
-                                                                'Open Attachment History',
+                                                                'Open Handover Log',
                                                                 style: TextStyle(color: Colors.white),
                                                               ),
                                                             ),

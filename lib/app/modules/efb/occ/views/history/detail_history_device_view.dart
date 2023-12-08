@@ -825,7 +825,7 @@ class DetailHistoryDeviceView extends GetView {
                                                             child: Padding(
                                                               padding: EdgeInsets.all(15),
                                                               child: Text(
-                                                                'Open Attachment History',
+                                                                'Open Handover Log',
                                                                 style: TextStyle(color: Colors.white),
                                                               ),
                                                             )),
