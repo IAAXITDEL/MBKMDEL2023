@@ -766,9 +766,9 @@ class FeedbackDetailPage extends StatelessWidget {
                                 children: [
                                   Expanded(
                                     child: ElevatedButton(
-                                      onPressed: () {
-                                        // Show AlertDialog with CircularProgressIndicator
-                                        showDialog(
+                                      onPressed: () async {
+                                        // Show AlertDialog with CircularProgressIndicator immediately
+                                        var dialog = showDialog(
                                           context: context,
                                           barrierDismissible: false,
                                           builder: (context) {
@@ -783,9 +783,13 @@ class FeedbackDetailPage extends StatelessWidget {
                                               ),
                                             );
                                           },
-                                        ).then((_) {
+                                        );
+                                        // Delay for 7 seconds
+                                        await Future.delayed(Duration(seconds: 7));
+
+                                        try {
                                           // Call your asynchronous function (generateFeedbackForm)
-                                          generateFeedbackForm(
+                                          await generateFeedbackForm(
                                             //handoverID: handoverTouserData != null ? handoverTouserData['ID NO'].toString() : 'Not Found',
                                             date: feedbackData['timestamp'] ?? '-',
                                             q1: feedbackData['q1'] ?? '-',
@@ -821,20 +825,13 @@ class FeedbackDetailPage extends StatelessWidget {
                                             page: formatData?['Page'] ?? '-',
                                             footerLeft: formatData?['FooterLeft'] ?? '-',
                                             footerRight: formatData?['FooterRight'] ?? '-',
-                                          ).then((_) {
-                                            // Open PDF or navigate to the PDF view screen
-                                            // Add your code to open the PDF here
-
-                                            // Dismiss the AlertDialog
-                                            Navigator.pop(context);
-                                          }).catchError((error) {
-                                            // Dismiss the AlertDialog
-                                            Navigator.pop(context);
-
-                                            // Handle error (show a snackbar, log the error, etc.)
-                                            print('Error generating PDF: $error');
-                                          });
-                                        });
+                                          );
+                                        } catch (error) {
+                                          print('Error generating PDF: $error');
+                                        } finally {
+                                          // Close the AlertDialog when the asynchronous function completes or encounters an error
+                                          Navigator.pop(context);
+                                        }
                                       },
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: TsOneColor.greenColor,
@@ -845,11 +842,14 @@ class FeedbackDetailPage extends StatelessWidget {
                                       child: Padding(
                                         padding: EdgeInsets.all(15),
                                         child: Text(
-                                          'Open Attachment Feedback',
+                                          'Open Feedback Form',
                                           style: TextStyle(color: Colors.white),
                                         ),
                                       ),
                                     ),
+
+
+
                                   ),
                                 ],
                               ),

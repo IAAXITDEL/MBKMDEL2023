@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -16,6 +17,7 @@ class ConfirmRequestPilotView extends GetView {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   TextEditingController chargeController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  final ScrollController _scrollController = ScrollController();
 
   ConfirmRequestPilotView({Key? key, required this.dataId}) : super(key: key);
 
@@ -111,17 +113,40 @@ class ConfirmRequestPilotView extends GetView {
 
                       DocumentReference pilotDeviceRef = FirebaseFirestore.instance.collection("pilot-device-1").doc(dataId);
 
-                      try {
-                        await pilotDeviceRef.update({
-                          'statusDevice': 'in-use-pilot',
-                          'occ-on-duty': userUid,
-                          'charger_no': chargerNumber, // Add charger number to the document
+                      if (chargeController.text.isEmpty) {
+                        // Scroll to the charger field
+                        Timer(Duration(milliseconds: 500), () {
+                          _scrollController.animateTo(
+                            _scrollController.position.maxScrollExtent,
+                            duration: Duration(milliseconds: 500),
+                            curve: Curves.easeInOut,
+                          );
                         });
-                        _showQuickAlert(context);
-                        print("Data Updated!");
-                      } catch (error) {
-                        print('Error updating data: $error');
+                      } else {
+                        try {
+                          await pilotDeviceRef.update({
+                            'statusDevice': 'in-use-pilot',
+                            'occ-on-duty': userUid,
+                            'charger_no': chargerNumber, // Add charger number to the document
+                          });
+                          _showQuickAlert(context);
+                          print("Data Updated!");
+                        } catch (error) {
+                          print('Error updating data: $error');
+                        }
                       }
+
+                      // try {
+                      //   await pilotDeviceRef.update({
+                      //     'statusDevice': 'in-use-pilot',
+                      //     'occ-on-duty': userUid,
+                      //     'charger_no': chargerNumber, // Add charger number to the document
+                      //   });
+                      //   _showQuickAlert(context);
+                      //   print("Data Updated!");
+                      // } catch (error) {
+                      //   print('Error updating data: $error');
+                      // }
                     }
                   },
                 ),
@@ -315,7 +340,6 @@ class ConfirmRequestPilotView extends GetView {
                       }
                       _showQuickAlert2(context);
                     },
-
                   ),
                 ),
               ],
@@ -338,6 +362,7 @@ class ConfirmRequestPilotView extends GetView {
         ),
       ),
       body: SingleChildScrollView(
+        controller: _scrollController,
         child: FutureBuilder<DocumentSnapshot>(
           future: FirebaseFirestore.instance.collection("pilot-device-1").doc(dataId).get(),
           builder: (context, snapshot) {
@@ -555,9 +580,9 @@ class ConfirmRequestPilotView extends GetView {
                                               )),
                                           Expanded(
                                               child: Text(
-                                                ":",
-                                                style: tsOneTextTheme.bodySmall,
-                                              )),
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
                                           Expanded(
                                             flex: 6,
                                             child: Text(
@@ -578,9 +603,9 @@ class ConfirmRequestPilotView extends GetView {
                                               )),
                                           Expanded(
                                               child: Text(
-                                                ":",
-                                                style: tsOneTextTheme.bodySmall,
-                                              )),
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
                                           Expanded(
                                             flex: 6,
                                             child: Text(
@@ -601,9 +626,9 @@ class ConfirmRequestPilotView extends GetView {
                                               )),
                                           Expanded(
                                               child: Text(
-                                                ":",
-                                                style: tsOneTextTheme.bodySmall,
-                                              )),
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
                                           Expanded(
                                             flex: 6,
                                             child: Text(
@@ -624,9 +649,9 @@ class ConfirmRequestPilotView extends GetView {
                                               )),
                                           Expanded(
                                               child: Text(
-                                                ":",
-                                                style: tsOneTextTheme.bodySmall,
-                                              )),
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
                                           Expanded(
                                             flex: 6,
                                             child: Text(
@@ -647,9 +672,9 @@ class ConfirmRequestPilotView extends GetView {
                                               )),
                                           Expanded(
                                               child: Text(
-                                                ":",
-                                                style: tsOneTextTheme.bodySmall,
-                                              )),
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
                                           Expanded(
                                             flex: 6,
                                             child: Text(
@@ -670,9 +695,9 @@ class ConfirmRequestPilotView extends GetView {
                                               )),
                                           Expanded(
                                               child: Text(
-                                                ":",
-                                                style: tsOneTextTheme.bodySmall,
-                                              )),
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
                                           Expanded(
                                             flex: 6,
                                             child: Text(
@@ -723,9 +748,9 @@ class ConfirmRequestPilotView extends GetView {
                                               )),
                                           Expanded(
                                               child: Text(
-                                                ":",
-                                                style: tsOneTextTheme.bodySmall,
-                                              )),
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
                                           Expanded(
                                             flex: 6,
                                             child: Text(
@@ -746,9 +771,9 @@ class ConfirmRequestPilotView extends GetView {
                                               )),
                                           Expanded(
                                               child: Text(
-                                                ":",
-                                                style: tsOneTextTheme.bodySmall,
-                                              )),
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
                                           Expanded(
                                             flex: 6,
                                             child: Text(
@@ -769,9 +794,9 @@ class ConfirmRequestPilotView extends GetView {
                                               )),
                                           Expanded(
                                               child: Text(
-                                                ":",
-                                                style: tsOneTextTheme.bodySmall,
-                                              )),
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
                                           Expanded(
                                             flex: 6,
                                             child: Text(
@@ -792,9 +817,9 @@ class ConfirmRequestPilotView extends GetView {
                                               )),
                                           Expanded(
                                               child: Text(
-                                                ":",
-                                                style: tsOneTextTheme.bodySmall,
-                                              )),
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
                                           Expanded(
                                             flex: 6,
                                             child: Text(
@@ -815,9 +840,9 @@ class ConfirmRequestPilotView extends GetView {
                                               )),
                                           Expanded(
                                               child: Text(
-                                                ":",
-                                                style: tsOneTextTheme.bodySmall,
-                                              )),
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
                                           Expanded(
                                             flex: 6,
                                             child: Text(
@@ -838,9 +863,9 @@ class ConfirmRequestPilotView extends GetView {
                                               )),
                                           Expanded(
                                               child: Text(
-                                                ":",
-                                                style: tsOneTextTheme.bodySmall,
-                                              )),
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
                                           Expanded(
                                             flex: 6,
                                             child: Text(
@@ -913,9 +938,9 @@ class ConfirmRequestPilotView extends GetView {
                                               )),
                                           Expanded(
                                               child: Text(
-                                                ":",
-                                                style: tsOneTextTheme.bodySmall,
-                                              )),
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
                                           Expanded(
                                             flex: 7,
                                             child: Text(
@@ -936,9 +961,9 @@ class ConfirmRequestPilotView extends GetView {
                                               )),
                                           Expanded(
                                               child: Text(
-                                                ":",
-                                                style: tsOneTextTheme.bodySmall,
-                                              )),
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
                                           Expanded(
                                             flex: 7,
                                             child: Text(
@@ -948,7 +973,9 @@ class ConfirmRequestPilotView extends GetView {
                                           ),
                                         ],
                                       ),
-                                      SizedBox(height: 10,),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
                                       Align(
                                         alignment: Alignment.centerLeft,
                                         child: Text("Device 3 Condition", style: tsOneTextTheme.displaySmall),
@@ -964,9 +991,9 @@ class ConfirmRequestPilotView extends GetView {
                                               )),
                                           Expanded(
                                               child: Text(
-                                                ":",
-                                                style: tsOneTextTheme.bodySmall,
-                                              )),
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
                                           Expanded(
                                             flex: 7,
                                             child: Text(
@@ -987,9 +1014,9 @@ class ConfirmRequestPilotView extends GetView {
                                               )),
                                           Expanded(
                                               child: Text(
-                                                ":",
-                                                style: tsOneTextTheme.bodySmall,
-                                              )),
+                                            ":",
+                                            style: tsOneTextTheme.bodySmall,
+                                          )),
                                           Expanded(
                                             flex: 7,
                                             child: Text(
@@ -1095,9 +1122,9 @@ class ConfirmRequestPilotView extends GetView {
                                   )),
                               Expanded(
                                   child: Text(
-                                    ":",
-                                    style: tsOneTextTheme.bodySmall,
-                                  )),
+                                ":",
+                                style: tsOneTextTheme.bodySmall,
+                              )),
                               Expanded(
                                 flex: 7,
                                 child: Text(
@@ -1118,9 +1145,9 @@ class ConfirmRequestPilotView extends GetView {
                                   )),
                               Expanded(
                                   child: Text(
-                                    ":",
-                                    style: tsOneTextTheme.bodySmall,
-                                  )),
+                                ":",
+                                style: tsOneTextTheme.bodySmall,
+                              )),
                               Expanded(
                                 flex: 6,
                                 child: Text(
@@ -1141,9 +1168,9 @@ class ConfirmRequestPilotView extends GetView {
                                   )),
                               Expanded(
                                   child: Text(
-                                    ":",
-                                    style: tsOneTextTheme.bodySmall,
-                                  )),
+                                ":",
+                                style: tsOneTextTheme.bodySmall,
+                              )),
                               Expanded(
                                 flex: 6,
                                 child: Text(
@@ -1164,9 +1191,9 @@ class ConfirmRequestPilotView extends GetView {
                                   )),
                               Expanded(
                                   child: Text(
-                                    ":",
-                                    style: tsOneTextTheme.bodySmall,
-                                  )),
+                                ":",
+                                style: tsOneTextTheme.bodySmall,
+                              )),
                               Expanded(
                                 flex: 6,
                                 child: Text(
@@ -1187,9 +1214,9 @@ class ConfirmRequestPilotView extends GetView {
                                   )),
                               Expanded(
                                   child: Text(
-                                    ":",
-                                    style: tsOneTextTheme.bodySmall,
-                                  )),
+                                ":",
+                                style: tsOneTextTheme.bodySmall,
+                              )),
                               Expanded(
                                 flex: 6,
                                 child: Text(
@@ -1210,9 +1237,9 @@ class ConfirmRequestPilotView extends GetView {
                                   )),
                               Expanded(
                                   child: Text(
-                                    ":",
-                                    style: tsOneTextTheme.bodySmall,
-                                  )),
+                                ":",
+                                style: tsOneTextTheme.bodySmall,
+                              )),
                               Expanded(
                                 flex: 6,
                                 child: Text(
@@ -1281,9 +1308,9 @@ class ConfirmRequestPilotView extends GetView {
                                   )),
                               Expanded(
                                   child: Text(
-                                    ":",
-                                    style: tsOneTextTheme.bodySmall,
-                                  )),
+                                ":",
+                                style: tsOneTextTheme.bodySmall,
+                              )),
                               Expanded(
                                 flex: 7,
                                 child: Text(
@@ -1304,9 +1331,9 @@ class ConfirmRequestPilotView extends GetView {
                                   )),
                               Expanded(
                                   child: Text(
-                                    ":",
-                                    style: tsOneTextTheme.bodySmall,
-                                  )),
+                                ":",
+                                style: tsOneTextTheme.bodySmall,
+                              )),
                               Expanded(
                                 flex: 7,
                                 child: Text(
@@ -1387,7 +1414,6 @@ class ConfirmRequestPilotView extends GetView {
           },
         ),
       ),
-
     );
   }
 }
