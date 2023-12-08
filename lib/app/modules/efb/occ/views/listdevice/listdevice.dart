@@ -491,7 +491,7 @@
                                         lidoversion: e["value"]["lidoversion"],
                                         docuversion: e["value"]["docuversion"],
                                         hub: e["value"]["hub"],
-                                        condition: e["value"]["condition"],
+                                        // condition: e["value"]["condition"],
                                       ),
                                     ),
                                   ),

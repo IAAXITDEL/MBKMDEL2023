@@ -8,7 +8,6 @@ class Device {
   final String lidoversion;
   final String docuversion;
   final String hub;
-  final String condition;
 
   Device({
     required this.uid,
@@ -18,7 +17,6 @@ class Device {
     required this.lidoversion,
     required this.docuversion,
     required this.hub,
-    required this.condition,
   });
 
   factory Device.fromFirestore(DocumentSnapshot doc) {
@@ -32,7 +30,6 @@ class Device {
       lidoversion: valueData['lidoversion'] ?? '',
       docuversion: valueData['docuversion'] ?? '',
       hub: valueData['hub'] ?? '',
-      condition: valueData['condition'] ?? '',
     );
   }
 }

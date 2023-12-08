@@ -36,7 +36,7 @@ class _EditDevice extends State<EditDevice> {
     _flysmartver.text = widget.device?.flysmart.toString() ?? '';
     _lidoversion.text = widget.device?.lidoversion.toString() ?? '';
     _docuversion.text = widget.device?.docuversion.toString() ?? '';
-    _selectedCondition = widget.device?.condition ?? 'Good';
+    // _selectedCondition = widget.device?.condition ?? 'Good';
     _selectedHub = widget.device?.hub ?? 'CGK';
   }
 
