@@ -172,16 +172,16 @@ class _ShowDeviceState extends State<ShowDevice> {
                           Expanded(flex: 6, child: Text('${widget.device.hub}')),
                         ],
                       ),
-                      const SizedBox(
-                        height: 8,
-                      ),
-                      Row(
-                        children: [
-                          const Expanded(flex: 7, child: Text('Device Condition')),
-                          const Expanded(child: Text(':')),
-                          Expanded(flex: 6, child: Text('${widget.device.condition}')),
-                        ],
-                      ),
+                      // const SizedBox(
+                      //   height: 8,
+                      // ),
+                      // Row(
+                      //   children: [
+                      //     const Expanded(flex: 7, child: Text('Device Condition')),
+                      //     const Expanded(child: Text(':')),
+                      //     Expanded(flex: 6, child: Text('${widget.device.condition}')),
+                      //   ],
+                      // ),
                       const SizedBox(
                         height: 15,
                       ),
