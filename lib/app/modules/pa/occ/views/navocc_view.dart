@@ -35,7 +35,7 @@ class _NavOCCView extends State<NavOCCView> {
   @override
   void initState() {
     _userPreferences = getItLocator<UserPreferences>();
-    if (_userPreferences.getPrivileges().contains(UserModel.keyPrivilegeOCC)) {
+    if (_userPreferences.getRank().contains(UserModel.keyPositionOCC)) {
       _canManageDevice = true;
       _screens = [
         HomeOCCView(),
@@ -45,7 +45,7 @@ class _NavOCCView extends State<NavOCCView> {
         AnalyticsView(),
         ProfileView(),
       ];
-    } else if (_userPreferences.getPrivileges().contains(UserModel.keyPilotRequestDevice)) {
+    } else if (_userPreferences.getRank().contains(UserModel.keyPositionCaptain)) {
       _pilotRequestDevice = true;
       _screens = [
         HomePilotView(),
@@ -107,7 +107,7 @@ class _NavOCCView extends State<NavOCCView> {
             ),
             // const GButton(
             //   icon: Icons.list_alt_rounded,
-            //   text: 'Device',
+            //   text: 'Device',//
             // ),
             if (_canManageDevice)
               const GButton(
