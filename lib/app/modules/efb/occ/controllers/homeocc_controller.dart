@@ -74,7 +74,7 @@ class HomeOCCController extends GetxController {
     userPreferences = getItLocator<UserPreferences>();
 
     // AS OCC
-    if (userPreferences.getPrivileges().contains(UserModel.keyPrivilegeOCC)) {
+    if (userPreferences.getRank().contains(UserModel.keyPositionOCC)) {
       Get.toNamed(Routes.NAVOCC);
     }
     // AS PILOT
