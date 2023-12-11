@@ -85,7 +85,7 @@ class MainHomeController extends GetxController {
     else if (userPreferences.getRank().contains("Pilot Administrator")) {
       isTsOne.value = true;
       isCC.value = true;
-    } else if (userPreferences.getPrivileges().contains(UserModel.keyPrivilegeOCC)) {
+    } else if (userPreferences.getRank().contains("OCC")) {
       isEFB.value = true;
     }
     // SEBAGAI ALL STAR
@@ -105,7 +105,7 @@ class MainHomeController extends GetxController {
     userPreferences = getItLocator<UserPreferences>();
 
     // AS OCC
-    if (userPreferences.getPrivileges().contains(UserModel.keyPrivilegeOCC)) {
+    if (userPreferences.getRank().contains(UserModel.keyPositionOCC)) {
       Get.toNamed(Routes.NAVOCC);
     }
     // AS PILOT
