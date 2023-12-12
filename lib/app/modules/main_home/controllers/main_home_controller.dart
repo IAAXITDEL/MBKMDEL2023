@@ -45,7 +45,7 @@ class MainHomeController extends GetxController {
     // SEBAGAI PILOT ADMINISTRATOR
     else if (userPreferences.getRank().contains("Pilot Administrator")) {
       Get.toNamed(Routes.NAVADMIN);
-    } else if (userPreferences.getPrivileges().contains("manage-device-occ")) {
+    } else if (userPreferences.getRank().contains("OCC")) {//
     }
     // SEBAGAI ALL STAR
     else {}
