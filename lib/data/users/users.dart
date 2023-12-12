@@ -70,7 +70,7 @@ class UserModel with ChangeNotifier {
   /// ALL POSITIONS
   static String keyPositionCaptain = "CAPT";
   static String keyPositionFirstOfficer = "FO";
-  static String keyPositionOCC = "OCC";
+  static String keyPositionOCC = "OCC";//
 
   /// ALL SUBPOSITIONS
   static String keySubPositionCCP = "CCP"; // chief check pilot
