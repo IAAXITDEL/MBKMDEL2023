@@ -70,6 +70,7 @@ class UserModel with ChangeNotifier {
   /// ALL POSITIONS
   static String keyPositionCaptain = "CAPT";
   static String keyPositionFirstOfficer = "FO";
+  static String keyPositionOCC = "OCC";//
 
   /// ALL SUBPOSITIONS
   static String keySubPositionCCP = "CCP"; // chief check pilot
@@ -96,7 +97,7 @@ class UserModel with ChangeNotifier {
         map[keyLicenseExpiry].seconds * 1000);
     if (map[keyPrivileges] != null) {
       privileges = (map[keyPrivileges] as List<dynamic>)
-          .map((item) => item.toString())
+          .map((item) => item.toString())//
           .toList();
     }
     hub = map[keyHub];

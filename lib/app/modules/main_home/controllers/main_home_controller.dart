@@ -45,7 +45,7 @@ class MainHomeController extends GetxController {
     // SEBAGAI PILOT ADMINISTRATOR
     else if (userPreferences.getRank().contains("Pilot Administrator")) {
       Get.toNamed(Routes.NAVADMIN);
-    } else if (userPreferences.getPrivileges().contains("manage-device-occ")) {
+    } else if (userPreferences.getRank().contains("OCC")) {//
     }
     // SEBAGAI ALL STAR
     else {}
@@ -82,7 +82,7 @@ class MainHomeController extends GetxController {
     else if (userPreferences.getRank().contains("Pilot Administrator")) {
       isTsOne.value = true;
       isCC.value = true;
-    } else if (userPreferences.getPrivileges().contains(UserModel.keyPrivilegeOCC)) {
+    } else if (userPreferences.getRank().contains("OCC")) {
       isEFB.value = true;
     }
     // SEBAGAI ALL STAR
@@ -102,7 +102,7 @@ class MainHomeController extends GetxController {
     userPreferences = getItLocator<UserPreferences>();
 
     // AS OCC
-    if (userPreferences.getPrivileges().contains(UserModel.keyPrivilegeOCC)) {
+    if (userPreferences.getRank().contains(UserModel.keyPositionOCC)) {
       Get.toNamed(Routes.NAVOCC);
     }
     // AS PILOT
