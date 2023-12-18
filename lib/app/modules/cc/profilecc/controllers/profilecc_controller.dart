@@ -20,8 +20,6 @@ import '../../../../../presentation/view_model/user_viewmodel.dart';
 import '../../../../routes/app_pages.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import '../../attendance_confircc/controllers/trainingCardSheetsApi.dart';
-
 class ValidationResult {
   final String expiry;
   final Timestamp validTo;

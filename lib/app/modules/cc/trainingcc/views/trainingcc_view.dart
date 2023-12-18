@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 import 'package:get/get.dart';
 import 'package:quickalert/models/quickalert_type.dart';
@@ -12,10 +11,7 @@ import '../../../../../presentation/view_model/attendance_model.dart';
 import '../../../../../util/error_screen.dart';
 import '../../../../../util/loading_screen.dart';
 import '../../../../routes/app_pages.dart';
-import '../../attendance_confircc/controllers/trainingCardSheetsApi.dart';
-import '../../attendance_confircc/controllers/trainingCardsFields.dart';
 import '../../training/attendance_pilotcc/controllers/attendance_pilotcc_controller.dart';
-import '../../traininghistorycc_cpts/controllers/traininghistorycc_cpts_controller.dart';
 import '../controllers/trainingcc_controller.dart';
 
 class TrainingccView extends GetView<TrainingccController> {

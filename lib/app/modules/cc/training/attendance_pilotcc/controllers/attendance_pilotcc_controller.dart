@@ -8,7 +8,6 @@ import '../../../../../../di/locator.dart';
 import 'dart:ui' as ui;
 import 'dart:typed_data';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 import '../../../../../../presentation/view_model/attendance_model.dart';

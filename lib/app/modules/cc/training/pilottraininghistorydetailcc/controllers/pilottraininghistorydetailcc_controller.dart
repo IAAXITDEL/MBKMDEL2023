@@ -193,7 +193,6 @@ class PilottraininghistorydetailccController extends GetxController {
         }),
       );
 
-      print(attendanceData);
       return attendanceData;
     }catch (e){
           return [];
@@ -217,7 +216,6 @@ class PilottraininghistorydetailccController extends GetxController {
       attendanceDetailData.add(attendanceDetailModel.toJson());
     }
 
-    print(attendanceDetailData[0]);
     if (attendanceDetailData[0]["feedbackforinstructor"] != null) {
       return true;
     } else {
@@ -229,7 +227,6 @@ class PilottraininghistorydetailccController extends GetxController {
 
   Future<bool> checkFeedbackForAdmin() async {
     userPreferences = getItLocator<UserPreferences>();
-    print("kan");
     if (userPreferences.getRank().contains("Pilot Administrator")) {
       final attendanceDetailQuery = await firestore
           .collection('attendance-detail')
@@ -244,12 +241,8 @@ class PilottraininghistorydetailccController extends GetxController {
         attendanceDetailData.add(attendanceDetailModel.toJson());
       }
 
-      print("jhuis");
-      print(attendanceDetailData[0]["formatNo"] );
       if (attendanceDetailData[0]["formatNo"] != null) {
         isAdmin.value = true;
-        print("disini");
-        print(isAdmin.value);
         return true;
       } else {
         return false;
@@ -259,7 +252,8 @@ class PilottraininghistorydetailccController extends GetxController {
   }
 
 
-  Future<Uint8List> createCertificate() async {
+  //Future<Uint8List> createCertificate() async {
+    Future<String> createCertificate() async {
     try {
       final font = await rootBundle.load("assets/fonts/Poppins-Regular.ttf");
       final ttf = pw.Font.ttf(font);
@@ -410,10 +404,32 @@ class PilottraininghistorydetailccController extends GetxController {
         ),
       );
 
-      return pdf.save();
+      // return pdf.save();
+
+      final outputDirectory = await getTemporaryDirectory();
+      // Save the document.
+      final List<int> outputBytes = await pdf.save();
+      final File file = File('${outputDirectory.path}/Certificate-${name}-${subject}.pdf');
+      await file.writeAsBytes(outputBytes);
+
+      // Dispose the document.
+      // pdf.dispose();
+
+      return file.path;
     } catch (e) {
       print("Error generating PDF: $e");
       return Future.value();
+    }
+  }
+
+
+
+  Future<void> openExportedPDF(String path) async {
+    try {
+      await OpenFile.open(path);
+    } catch (e) {
+      print("Error opening PDF: $e");
+      // Handle the error as needed
     }
   }
 

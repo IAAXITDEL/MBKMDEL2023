@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
-import 'package:ts_one/app/modules/cc/profilecc/controllers/profilecc_controller.dart';
-
 import '../../../../../../data/users/user_preferences.dart';
 import '../../../../../../data/users/users.dart';
 import '../../../../../../di/locator.dart';

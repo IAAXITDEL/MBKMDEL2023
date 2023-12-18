@@ -12,8 +12,6 @@ import '../../../../../presentation/theme.dart';
 import '../../../../../util/error_screen.dart';
 import '../../../../../util/loading_screen.dart';
 import '../../../../routes/app_pages.dart';
-import '../../attendance_confircc/controllers/trainingCardSheetsApi.dart';
-import '../../attendance_confircc/controllers/trainingCardsFields.dart';
 import '../controllers/profilecc_controller.dart';
 import '../controllers/trainingCardsPdf.dart';
 
@@ -66,8 +64,6 @@ class ProfileccView extends GetView<ProfileccController> {
     var loaNoC = TextEditingController();
 
     Future<void> add() async {
-      String message = '';
-
       await QuickAlert.show(
           context: context,
           type: QuickAlertType.info,

@@ -1,7 +1,4 @@
-import 'dart:typed_data';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -11,15 +8,12 @@ import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
 import 'package:ts_one/presentation/shared_components/TitleText.dart';
 
-import '../../../../../../presentation/shared_components/TitleText.dart';
 import '../../../../../../presentation/theme.dart';
 import '../../../../../../util/empty_screen.dart';
 import '../../../../../../util/error_screen.dart';
 import '../../../../../../util/loading_screen.dart';
-import '../../../../../../util/util.dart';
 import '../../../../../routes/app_pages.dart';
 import '../controllers/attendance_pilotcc_controller.dart';
-import 'dart:ui' as ui;
 class AttendancePilotccView extends GetView<AttendancePilotccController> {
   const AttendancePilotccView({Key? key}) : super(key: key);
   @override
