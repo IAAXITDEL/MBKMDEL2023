@@ -18,7 +18,6 @@ class PilottraininghistoryccController extends GetxController {
     super.onInit();
     idTrainingType.value = Get.arguments["idTrainingType"];
     idTraining.value = Get.arguments["idTraining"];
-    print(to.value);
   }
 
   //Mendapatkan Training

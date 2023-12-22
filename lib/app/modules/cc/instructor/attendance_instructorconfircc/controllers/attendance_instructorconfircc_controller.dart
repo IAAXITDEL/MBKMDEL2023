@@ -83,7 +83,7 @@ class AttendanceInstructorconfirccController extends GetxController {
   }
 
   //confir attendance oleh instructor
-  Future<void> confirattendance(String loano) async {
+  Future<void> confirattendance(String loano, String remarks) async {
     CollectionReference attendance = _firestore.collection('attendance');
     await attendance.doc(argumentid.value.toString()).update({
     //   "department": department,
@@ -91,6 +91,7 @@ class AttendanceInstructorconfirccController extends GetxController {
     //   "room" : room,
       "attendanceType" : selectedMeeting.value,
       "status" : "confirmation",
+      "remarks" : remarks,
       "updatedTime": DateTime.now().toIso8601String(),
       "keyAttendance" : null
       //signature icc url

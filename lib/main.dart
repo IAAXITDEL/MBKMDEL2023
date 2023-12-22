@@ -14,7 +14,7 @@ import 'package:ts_one/presentation/view/splash_screen.dart';
 import 'package:ts_one/presentation/view_model/assessment_results_viewmodel.dart';
 import 'package:ts_one/presentation/view_model/assessment_viewmodel.dart';
 import 'package:ts_one/presentation/view_model/user_viewmodel.dart';
-import 'app/modules/cc/attendance_confircc/controllers/trainingCardSheetsApi.dart';
+import 'app/modules/cc/pilotadministrator/attendance_confircc/controllers/trainingCardSheetsApi.dart';
 import 'firebase_options.dart';
 import 'package:get/get.dart';
 import 'app/routes/app_pages.dart';

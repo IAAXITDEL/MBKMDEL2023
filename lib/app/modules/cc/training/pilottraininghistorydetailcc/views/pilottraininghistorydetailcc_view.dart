@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -54,7 +53,6 @@ class PilottraininghistorydetailccView
                        Expanded(
                          child: ElevatedButton(
                              onPressed: () async {
-
                                if(await controller.checkFeedbackIsProvided()){
                                  try {
                                    // Tampilkan LoadingScreen
@@ -67,7 +65,7 @@ class PilottraininghistorydetailccView
                                      },
                                    );
 
-                                   await controller.savePdfFile(
+                                   await controller.openExportedPDF(
                                        await controller
                                            .createCertificate());
                                  } catch (e) {
@@ -371,7 +369,7 @@ class PilottraininghistorydetailccView
                                 },
                               );
 
-                              await controller.savePdfFile(
+                              await controller.openExportedPDF(
                                   await controller
                                       .createCertificate());
                             } catch (e) {
